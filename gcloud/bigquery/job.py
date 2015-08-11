@@ -18,6 +18,8 @@ import six
 
 from gcloud.bigquery._helpers import _datetime_from_prop
 from gcloud.bigquery.table import SchemaField
+from gcloud.bigquery.table import _build_schema_resource
+from gcloud.bigquery.table import _parse_schema_resource
 
 
 class _LoadConfiguration(object):
@@ -552,3 +554,105 @@ class LoadFromStorageJob(object):
     def write_disposition(self):
         """Delete write_disposition."""
         del self._configuration._write_disposition
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: :class:`gcloud.bigquery.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self._client
+        return client
+
+    def _build_resource(self):
+        """Generate a resource for ``begin``."""
+        resource = {
+            'jobReference': {
+                'projectId': self.project,
+                'jobId': self.name,
+            },
+            'configuration': {
+                'sourceUris': self.source_uris,
+                'destinationTable': {
+                    'projectId': self.destination.project,
+                    'datasetId': self.destination.dataset_name,
+                    'tableId': self.destination.name,
+                },
+                'load': {},
+            },
+        }
+        configuration = resource['configuration']['load']
+
+        if self.allow_jagged_rows is not None:
+            configuration['allowJaggedRows'] = self.allow_jagged_rows
+        if self.allow_quoted_newlines is not None:
+            configuration['allowQuotedNewlines'] = self.allow_quoted_newlines
+        if self.create_disposition is not None:
+            configuration['createDisposition'] = self.create_disposition
+        if self.encoding is not None:
+            configuration['encoding'] = self.encoding
+        if self.field_delimiter is not None:
+            configuration['fieldDelimiter'] = self.field_delimiter
+        if self.ignore_unknown_values is not None:
+            configuration['ignoreUnknownValues'] = self.ignore_unknown_values
+        if self.max_bad_records is not None:
+            configuration['maxBadRecords'] = self.max_bad_records
+        if self.quote_character is not None:
+            configuration['quote'] = self.quote_character
+        if self.skip_leading_rows is not None:
+            configuration['skipLeadingRows'] = self.skip_leading_rows
+        if self.source_format is not None:
+            configuration['sourceFormat'] = self.source_format
+        if self.write_disposition is not None:
+            configuration['writeDisposition'] = self.write_disposition
+
+        if len(self.schema) > 0:
+            configuration['schema'] = {
+                'fields': _build_schema_resource(self.schema)}
+
+        if len(configuration) == 0:
+            del resource['configuration']['load']
+
+        return resource
+
+    def _set_properties(self, api_response):
+        """Update properties from resource in body of ``api_response``
+
+        :type api_response: httplib2.Response
+        :param api_response: response returned from an API call
+        """
+        self._properties.clear()
+        cleaned = api_response.copy()
+        schema = cleaned.pop('schema', {'fields': ()})
+        self.schema = _parse_schema_resource(schema)
+
+        statistics = cleaned.get('statistics', {})
+        if 'creationTime' in statistics:
+            statistics['creationTime'] = float(statistics['creationTime'])
+        if 'startTime' in statistics:
+            statistics['startTime'] = float(statistics['startTime'])
+        if 'endTime' in statistics:
+            statistics['endTime'] = float(statistics['endTime'])
+
+        self._properties.update(cleaned)
+
+    def begin(self, client=None):
+        """API call:  begin the job via a POST request
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+        path = '/projects/%s/jobs' % (self.project,)
+        api_response = client.connection.api_request(
+            method='POST', path=path, data=self._build_resource())
+        self._set_properties(api_response)

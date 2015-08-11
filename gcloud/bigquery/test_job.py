@@ -18,6 +18,8 @@ import unittest2
 class TestLoadFromStorageJob(unittest2.TestCase):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
+    DS_NAME = 'datset_name'
+    TABLE_NAME = 'table_name'
     JOB_NAME = 'job_name'
 
     def _getTargetClass(self):
@@ -26,6 +28,146 @@ class TestLoadFromStorageJob(unittest2.TestCase):
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
+
+    def _setUpConstants(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        self.WHEN_TS = 1437767599.006
+        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
+            tzinfo=UTC)
+        self.ETAG = 'ETAG'
+        self.JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_NAME)
+        self.RESOURCE_URL = 'http://example.com/path/to/resource'
+        self.USER_EMAIL = 'phred@example.com'
+        self.INPUT_FILES = 2
+        self.INPUT_BYTES = 12345
+        self.OUTPUT_BYTES = 23456
+        self.OUTPUT_ROWS = 345
+
+    def _makeResource(self, started=False, ended=False):
+        self._setUpConstants()
+        resource = {
+            'configuration': {
+                'load': {
+                },
+            },
+            'statistics': {
+                'creationTime': self.WHEN_TS * 1000,
+                'load': {
+                }
+            },
+            'etag': self.ETAG,
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'selfLink': self.RESOURCE_URL,
+            'user_email': self.USER_EMAIL,
+        }
+
+        if started or ended:
+            resource['statistics']['startTime'] = self.WHEN_TS * 1000
+
+        if ended:
+            resource['statistics']['endTime'] = (self.WHEN_TS + 1000) * 1000
+            resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
+            resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
+            resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
+            resource['statistics']['load']['outputRows'] = self.OUTPUT_ROWS
+
+        return resource
+
+    def _verifyReadonlyResourceProperties(self, job, resource):
+        from datetime import timedelta
+
+        self.assertEqual(job.job_id, self.JOB_ID)
+
+        if 'creationTime' in resource.get('statistics', {}):
+            self.assertEqual(job.created, self.WHEN)
+        else:
+            self.assertEqual(job.created, None)
+        if 'startTime' in resource.get('statistics', {}):
+            self.assertEqual(job.started, self.WHEN)
+        else:
+            self.assertEqual(job.started, None)
+        if 'endTime' in resource.get('statistics', {}):
+            self.assertEqual(job.ended, self.WHEN + timedelta(seconds=1000))
+        else:
+            self.assertEqual(job.ended, None)
+        if 'etag' in resource:
+            self.assertEqual(job.etag, self.ETAG)
+        else:
+            self.assertEqual(job.etag, None)
+        if 'selfLink' in resource:
+            self.assertEqual(job.self_link, self.RESOURCE_URL)
+        else:
+            self.assertEqual(job.self_link, None)
+        if 'user_email' in resource:
+            self.assertEqual(job.user_email, self.USER_EMAIL)
+        else:
+            self.assertEqual(job.user_email, None)
+
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('load')
+        if 'allowJaggedRows' in config:
+            self.assertEqual(job.allow_jagged_rows,
+                             config['allowJaggedRows'])
+        else:
+            self.assertTrue(job.allow_jagged_rows is None)
+        if 'allowQuotedNewlines' in config:
+            self.assertEqual(job.allow_quoted_newlines,
+                             config['allowQuotedNewlines'])
+        else:
+            self.assertTrue(job.allow_quoted_newlines is None)
+        if 'createDisposition' in config:
+            self.assertEqual(job.create_disposition,
+                             config['createDisposition'])
+        else:
+            self.assertTrue(job.create_disposition is None)
+        if 'encoding' in config:
+            self.assertEqual(job.encoding,
+                             config['encoding'])
+        else:
+            self.assertTrue(job.encoding is None)
+        if 'fieldDelimiter' in config:
+            self.assertEqual(job.field_delimiter,
+                             config['fieldDelimiter'])
+        else:
+            self.assertTrue(job.field_delimiter is None)
+        if 'ignoreUnknownValues' in config:
+            self.assertEqual(job.ignore_unknown_values,
+                             config['ignoreUnknownValues'])
+        else:
+            self.assertTrue(job.ignore_unknown_values is None)
+        if 'maxBadRecords' in config:
+            self.assertEqual(job.max_bad_records,
+                             config['maxBadRecords'])
+        else:
+            self.assertTrue(job.max_bad_records is None)
+        if 'quote' in config:
+            self.assertEqual(job.quote_character,
+                             config['quote'])
+        else:
+            self.assertTrue(job.quote_character is None)
+        if 'skipLeadingRows' in config:
+            self.assertEqual(job.skip_leading_rows,
+                             config['skipLeadingRows'])
+        else:
+            self.assertTrue(job.skip_leading_rows is None)
+        if 'sourceFormat' in config:
+            self.assertEqual(job.source_format,
+                             config['sourceFormat'])
+        else:
+            self.assertTrue(job.source_format is None)
+        if 'writeDisposition' in config:
+            self.assertEqual(job.write_disposition,
+                             config['writeDisposition'])
+        else:
+            self.assertTrue(job.write_disposition is None)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -342,6 +484,111 @@ class TestLoadFromStorageJob(unittest2.TestCase):
         del job.write_disposition
         self.assertTrue(job.write_disposition is None)
 
+    def test_begin_w_bound_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'sourceUris': [self.SOURCE1],
+                'destinationTable': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_NAME,
+                    'tableId': self.TABLE_NAME,
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_alternate_client(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource(ended=True)
+        LOAD_CONFIGURATION = {
+            'allowJaggedRows': True,
+            'allowQuotedNewlines': True,
+            'createDisposition': 'CREATE_NEVER',
+            'encoding': 'ISO-8559-1',
+            'fieldDelimiter': '|',
+            'ignoreUnknownValues': True,
+            'maxBadRecords': 100,
+            'quote': "'",
+            'skipLeadingRows': 1,
+            'sourceFormat': 'CSV',
+            'writeDisposition': 'WRITE_TRUNCATE',
+            'schema': {'fields': [
+                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
+                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'},
+            ]}
+        }
+        RESOURCE['configuration']['load'] = LOAD_CONFIGURATION
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        table = _Table()
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1,
+                            schema=[full_name, age])
+
+        job.allow_jagged_rows = True
+        job.allow_quoted_newlines = True
+        job.create_disposition = 'CREATE_NEVER'
+        job.encoding = 'ISO-8559-1'
+        job.field_delimiter = '|'
+        job.ignore_unknown_values = True
+        job.max_bad_records = 100
+        job.quote_character = "'"
+        job.skip_leading_rows = 1
+        job.source_format = 'CSV'
+        job.write_disposition = 'WRITE_TRUNCATE'
+
+        job.begin(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'sourceUris': [self.SOURCE1],
+                'destinationTable': {
+                    'projectId': self.PROJECT,
+                    'datasetId': self.DS_NAME,
+                    'tableId': self.TABLE_NAME,
+                },
+                'load': LOAD_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
 
 class _Client(object):
 
@@ -354,3 +601,33 @@ class _Table(object):
 
     def __init__(self):
         pass
+
+    @property
+    def name(self):
+        return TestLoadFromStorageJob.TABLE_NAME
+
+    @property
+    def project(self):
+        return TestLoadFromStorageJob.PROJECT
+
+    @property
+    def dataset_name(self):
+        return TestLoadFromStorageJob.DS_NAME
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        from gcloud.exceptions import NotFound
+        self._requested.append(kw)
+
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:  # pragma: NO COVER  temporary, until 'get()' w/ miss
+            raise NotFound('miss')
+        else:
+            return response
