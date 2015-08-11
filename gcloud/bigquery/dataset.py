@@ -292,8 +292,8 @@ class Dataset(object):
             role = grant.pop('role')
             # Hypothetical case:  we don't know that the back-end will ever
             # return such structures, but they are logical.  See:
-            #https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
-            for entity_type, entity_id in grant.items():
+            # https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
+            for entity_type, entity_id in sorted(grant.items()):
                 result.append(
                     AccessGrant(role, entity_type, entity_id))
         return result

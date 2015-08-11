@@ -77,7 +77,7 @@ class TestDataset(unittest2.TestCase):
         r_grants = []
         for r_grant in resource['access']:
             role = r_grant.pop('role')
-            for entity_type, entity_id in r_grant.items():
+            for entity_type, entity_id in sorted(r_grant.items()):
                 r_grants.append({'role': role,
                                  'entity_type': entity_type,
                                  'entity_id': entity_id})
@@ -266,7 +266,7 @@ class TestDataset(unittest2.TestCase):
     def test__parse_access_grants_w_multiple_entity_types(self):
         # Hypothetical case:  we don't know that the back-end will ever
         # return such structures, but they are logical.  See:
-        #https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
+        # https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
         USER_EMAIL = 'phred@example.com'
         OTHER_EMAIL = 'bharney@example.com'
         GROUP_EMAIL = 'group-name@lists.example.com'
