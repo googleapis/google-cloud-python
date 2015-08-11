@@ -692,6 +692,7 @@ class Table(object):
 
         return errors
 
+
 def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
 

@@ -109,10 +109,7 @@ class TestLoadFromStorageJob(unittest2.TestCase):
         else:
             self.assertEqual(job.user_email, None)
 
-    def _verifyResourceProperties(self, job, resource):
-        self._verifyReadonlyResourceProperties(job, resource)
-
-        config = resource.get('configuration', {}).get('load')
+    def _verifyBooleanConfigProperties(self, job, config):
         if 'allowJaggedRows' in config:
             self.assertEqual(job.allow_jagged_rows,
                              config['allowJaggedRows'])
@@ -123,6 +120,13 @@ class TestLoadFromStorageJob(unittest2.TestCase):
                              config['allowQuotedNewlines'])
         else:
             self.assertTrue(job.allow_quoted_newlines is None)
+        if 'ignoreUnknownValues' in config:
+            self.assertEqual(job.ignore_unknown_values,
+                             config['ignoreUnknownValues'])
+        else:
+            self.assertTrue(job.ignore_unknown_values is None)
+
+    def _verifyEnumConfigProperties(self, job, config):
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
                              config['createDisposition'])
@@ -133,16 +137,30 @@ class TestLoadFromStorageJob(unittest2.TestCase):
                              config['encoding'])
         else:
             self.assertTrue(job.encoding is None)
+        if 'sourceFormat' in config:
+            self.assertEqual(job.source_format,
+                             config['sourceFormat'])
+        else:
+            self.assertTrue(job.source_format is None)
+        if 'writeDisposition' in config:
+            self.assertEqual(job.write_disposition,
+                             config['writeDisposition'])
+        else:
+            self.assertTrue(job.write_disposition is None)
+
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('load')
+
+        self._verifyBooleanConfigProperties(job, config)
+        self._verifyEnumConfigProperties(job, config)
+
         if 'fieldDelimiter' in config:
             self.assertEqual(job.field_delimiter,
                              config['fieldDelimiter'])
         else:
             self.assertTrue(job.field_delimiter is None)
-        if 'ignoreUnknownValues' in config:
-            self.assertEqual(job.ignore_unknown_values,
-                             config['ignoreUnknownValues'])
-        else:
-            self.assertTrue(job.ignore_unknown_values is None)
         if 'maxBadRecords' in config:
             self.assertEqual(job.max_bad_records,
                              config['maxBadRecords'])
@@ -158,16 +176,6 @@ class TestLoadFromStorageJob(unittest2.TestCase):
                              config['skipLeadingRows'])
         else:
             self.assertTrue(job.skip_leading_rows is None)
-        if 'sourceFormat' in config:
-            self.assertEqual(job.source_format,
-                             config['sourceFormat'])
-        else:
-            self.assertTrue(job.source_format is None)
-        if 'writeDisposition' in config:
-            self.assertEqual(job.write_disposition,
-                             config['writeDisposition'])
-        else:
-            self.assertTrue(job.write_disposition is None)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -621,6 +629,41 @@ class TestLoadFromStorageJob(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
+
+        job.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        table = _Table()
+        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client1)
+
+        job.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
 
 
 class _Client(object):

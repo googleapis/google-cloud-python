@@ -570,24 +570,7 @@ class LoadFromStorageJob(object):
             client = self._client
         return client
 
-    def _build_resource(self):
-        """Generate a resource for ``begin``."""
-        resource = {
-            'jobReference': {
-                'projectId': self.project,
-                'jobId': self.name,
-            },
-            'configuration': {
-                'sourceUris': self.source_uris,
-                'destinationTable': {
-                    'projectId': self.destination.project,
-                    'datasetId': self.destination.dataset_name,
-                    'tableId': self.destination.name,
-                },
-                'load': {},
-            },
-        }
-        configuration = resource['configuration']['load']
+    def _populate_config_resource(self, configuration):
 
         if self.allow_jagged_rows is not None:
             configuration['allowJaggedRows'] = self.allow_jagged_rows
@@ -611,6 +594,26 @@ class LoadFromStorageJob(object):
             configuration['sourceFormat'] = self.source_format
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
+
+    def _build_resource(self):
+        """Generate a resource for ``begin``."""
+        resource = {
+            'jobReference': {
+                'projectId': self.project,
+                'jobId': self.name,
+            },
+            'configuration': {
+                'sourceUris': self.source_uris,
+                'destinationTable': {
+                    'projectId': self.destination.project,
+                    'datasetId': self.destination.dataset_name,
+                    'tableId': self.destination.name,
+                },
+                'load': {},
+            },
+        }
+        configuration = resource['configuration']['load']
+        self._populate_config_resource(configuration)
 
         if len(self.schema) > 0:
             configuration['schema'] = {
@@ -677,3 +680,19 @@ class LoadFromStorageJob(object):
             return False
         else:
             return True
+
+    def reload(self, client=None):
+        """API call:  refresh job properties via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='GET', path=self.path)
+        self._set_properties(api_response)
