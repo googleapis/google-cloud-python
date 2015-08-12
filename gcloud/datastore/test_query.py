@@ -363,16 +363,15 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(iterator._offset, 29)
 
     def test_next_page_no_cursors_no_more(self):
-        from base64 import b64encode
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
-        self._addQueryResults(connection)
+        self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client)
         entities, more_results, cursor = iterator.next_page()
 
-        self.assertEqual(cursor, b64encode(self._END))
+        self.assertEqual(cursor, None)
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
         self.assertEqual(len(entities), 1)
@@ -390,16 +389,15 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(connection._called_with, [EXPECTED])
 
     def test_next_page_no_cursors_no_more_w_offset_and_limit(self):
-        from base64 import b64encode
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
-        self._addQueryResults(connection)
+        self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client, 13, 29)
         entities, more_results, cursor = iterator.next_page()
 
-        self.assertEqual(cursor, b64encode(self._END))
+        self.assertEqual(cursor, None)
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
         self.assertEqual(len(entities), 1)
