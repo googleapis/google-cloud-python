@@ -21,6 +21,8 @@ script:
 after_success:
   - tox -e coveralls
 
+before_deploy:
+  - scripts/custom_pip_install.sh twine
 deploy:
   provider: pypi
   user: silvolu
