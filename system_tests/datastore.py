@@ -19,6 +19,7 @@ from gcloud._helpers import UTC
 from gcloud import datastore
 from gcloud.datastore import client
 from gcloud.environment_vars import TESTS_DATASET
+from gcloud.exceptions import Conflict
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 from system_tests import populate_datastore
@@ -341,3 +342,31 @@ class TestDatastoreTransaction(TestDatastore):
         retrieved_entity = CLIENT.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
+
+    def test_failure_with_contention(self):
+        contention_key = 'baz'
+        # Fool the Client constructor to avoid creating a new connection.
+        local_client = datastore.Client(dataset_id=CLIENT.dataset_id,
+                                        http=object())
+        local_client.connection = CLIENT.connection
+
+        # Insert an entity which will be retrieved in a transaction
+        # and updated outside it with a contentious value.
+        key = local_client.key('BreakTxn', 1234)
+        orig_entity = datastore.Entity(key=key)
+        orig_entity['foo'] = u'bar'
+        local_client.put(orig_entity)
+        self.case_entities_to_delete.append(orig_entity)
+
+        with self.assertRaises(Conflict):
+            with local_client.transaction() as txn:
+                entity_in_txn = local_client.get(key)
+
+                # Update the original entity outside the transaction.
+                orig_entity[contention_key] = u'outside'
+                CLIENT.put(orig_entity)
+
+                # Try to update the entity which we already updated outside the
+                # transaction.
+                entity_in_txn[contention_key] = u'inside'
+                txn.put(entity_in_txn)
