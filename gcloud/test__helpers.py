@@ -298,7 +298,7 @@ class Test__millis_from_datetime(unittest2.TestCase):
 
         NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         NOW_MICROS = _microseconds_from_datetime(NOW)
-        MILLIS, _ = divmod(NOW_MICROS, 1000)
+        MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, int))
         self.assertEqual(result, MILLIS)
@@ -315,7 +315,7 @@ class Test__millis_from_datetime(unittest2.TestCase):
         zone = CET()
         NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=zone)
         NOW_MICROS = _microseconds_from_datetime(NOW)
-        MILLIS, _ = divmod(NOW_MICROS, 1000)
+        MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, int))
         self.assertEqual(result, MILLIS)
@@ -328,7 +328,7 @@ class Test__millis_from_datetime(unittest2.TestCase):
         NOW = datetime.datetime.utcnow()
         UTC_NOW = NOW.replace(tzinfo=UTC)
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
-        MILLIS, _ = divmod(UTC_NOW_MICROS, 1000)
+        MILLIS = UTC_NOW_MICROS // 1000
         result = self._callFUT(NOW)
         self.assertTrue(isinstance(result, int))
         self.assertEqual(result, MILLIS)

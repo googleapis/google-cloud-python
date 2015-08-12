@@ -219,8 +219,7 @@ def _millis(when):
     :returns: milliseconds since epoch for ``when``
     """
     micros = _microseconds_from_datetime(when)
-    millis, _ = divmod(micros, 1000)
-    return millis
+    return micros // 1000
 
 
 def _datetime_from_microseconds(value):
