@@ -38,3 +38,4 @@ fi
 python system_tests/run_system_test.py --package datastore
 python system_tests/run_system_test.py --package storage
 python system_tests/run_system_test.py --package pubsub
+python system_tests/run_system_test.py --package bigquery
