@@ -418,7 +418,10 @@ class Iterator(object):
         #       for discussion.
         entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
 
-        self._start_cursor = base64.b64encode(cursor_as_bytes)
+        if cursor_as_bytes == b'':
+            self._start_cursor = None
+        else:
+            self._start_cursor = base64.b64encode(cursor_as_bytes)
         self._end_cursor = None
 
         if more_results_enum == self._NOT_FINISHED:
