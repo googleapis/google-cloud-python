@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blobs / Objects &mdash; gcloud 5a4e766 documentation</title>
+    <title>Blobs / Objects &mdash; gcloud 6a47028 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5a4e766',
+        VERSION:     '6a47028',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 5a4e766 documentation" href="index.html" />
+    <link rel="top" title="gcloud 6a47028 documentation" href="index.html" />
     <link rel="next" title="Buckets" href="storage-buckets.html" />
     <link rel="prev" title="Storage Client" href="storage-client.html" /> 
   </head>
@@ -60,7 +60,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%205a4e766" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%206a47028" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (5a4e766)
+              Version History (6a47028)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -634,39 +634,6 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>string</cite></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The public URL for this blob.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.storage.blob.Blob.rename">
-<code class="descname">rename</code><span class="sig-paren">(</span><em>new_name</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/blob.html#Blob.rename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.blob.Blob.rename" title="Permalink to this definition">#</a></dt>
-<dd><p>Renames this blob using copy and delete operations.</p>
-<p>Effectively, copies blob to the same bucket with a new name, then
-deletes the blob.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This method will first duplicate the data and then delete the
-old blob.  This means that with very large objects renaming
-could be a very (temporarily) costly or a very slow operation.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>new_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The new name for this blob.</li>
-<li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
-to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.storage.blob.Blob" title="gcloud.storage.blob.Blob"><code class="xref py py-class docutils literal"><span class="pre">Blob</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The newly-copied blob.</p>
-</td>
 </tr>
 </tbody>
 </table>
