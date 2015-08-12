@@ -232,21 +232,6 @@ class Test_Blob(unittest2.TestCase):
         bucket._blobs[BLOB_NAME] = 1
         self.assertTrue(blob.exists())
 
-    def test_rename(self):
-        BLOB_NAME = 'blob-name'
-        NEW_NAME = 'new-name'
-        connection = _Connection()
-        client = _Client(connection)
-        bucket = _Bucket(client=client)
-        blob = self._makeOne(BLOB_NAME, bucket=bucket)
-        bucket._blobs[BLOB_NAME] = 1
-        new_blob = blob.rename(NEW_NAME)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(new_blob.name, NEW_NAME)
-        self.assertFalse(BLOB_NAME in bucket._blobs)
-        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
-        self.assertTrue(NEW_NAME in bucket._blobs)
-
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
@@ -1057,11 +1042,6 @@ class _Bucket(object):
         self._blobs = {}
         self._copied = []
         self._deleted = []
-
-    def copy_blob(self, blob, destination_bucket, new_name, client=None):
-        self._copied.append((blob, destination_bucket, new_name, client))
-        destination_bucket._blobs[new_name] = self._blobs[blob.name]
-        return blob.__class__(new_name, bucket=destination_bucket)
 
     def delete_blob(self, blob_name, client=None):
         del self._blobs[blob_name]
