@@ -26,7 +26,7 @@ _helpers.PROJECT = TESTS_PROJECT
 CLIENT = bigquery.Client()
 
 
-class TestPubsub(unittest2.TestCase):
+class TestBigQuery(unittest2.TestCase):
 
     def setUp(self):
         self.to_delete = []
