@@ -251,6 +251,106 @@ class Test__determine_default_project(unittest2.TestCase):
         self.assertEqual(callers, ['prod_mock'])
 
 
+class Test__millis(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _millis
+        return _millis(value)
+
+    def test_one_second_from_epoch(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        WHEN = datetime.datetime(1970, 1, 1, 0, 0, 1, tzinfo=UTC)
+        self.assertEqual(self._callFUT(WHEN), 1000)
+
+
+class Test__microseconds_from_datetime(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _microseconds_from_datetime
+        return _microseconds_from_datetime(value)
+
+    def test_it(self):
+        import datetime
+
+        microseconds = 314159
+        timestamp = datetime.datetime(1970, 1, 1, hour=0,
+                                      minute=0, second=0,
+                                      microsecond=microseconds)
+        result = self._callFUT(timestamp)
+        self.assertEqual(result, microseconds)
+
+
+class Test__millis_from_datetime(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _millis_from_datetime
+        return _millis_from_datetime(value)
+
+    def test_w_none(self):
+        self.assertTrue(self._callFUT(None) is None)
+
+    def test_w_utc_datetime(self):
+        import datetime
+        from gcloud._helpers import UTC
+        from gcloud._helpers import _microseconds_from_datetime
+
+        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        NOW_MICROS = _microseconds_from_datetime(NOW)
+        MILLIS = NOW_MICROS // 1000
+        result = self._callFUT(NOW)
+        self.assertTrue(isinstance(result, int))
+        self.assertEqual(result, MILLIS)
+
+    def test_w_non_utc_datetime(self):
+        import datetime
+        from gcloud._helpers import _UTC
+        from gcloud._helpers import _microseconds_from_datetime
+
+        class CET(_UTC):
+            _tzname = 'CET'
+            _utcoffset = datetime.timedelta(hours=-1)
+
+        zone = CET()
+        NOW = datetime.datetime(2015, 7, 28, 16, 34, 47, tzinfo=zone)
+        NOW_MICROS = _microseconds_from_datetime(NOW)
+        MILLIS = NOW_MICROS // 1000
+        result = self._callFUT(NOW)
+        self.assertTrue(isinstance(result, int))
+        self.assertEqual(result, MILLIS)
+
+    def test_w_naive_datetime(self):
+        import datetime
+        from gcloud._helpers import UTC
+        from gcloud._helpers import _microseconds_from_datetime
+
+        NOW = datetime.datetime.utcnow()
+        UTC_NOW = NOW.replace(tzinfo=UTC)
+        UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
+        MILLIS = UTC_NOW_MICROS // 1000
+        result = self._callFUT(NOW)
+        self.assertTrue(isinstance(result, int))
+        self.assertEqual(result, MILLIS)
+
+
+class Test__datetime_from_microseconds(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _datetime_from_microseconds
+        return _datetime_from_microseconds(value)
+
+    def test_it(self):
+        import datetime
+        from gcloud._helpers import UTC
+        from gcloud._helpers import _microseconds_from_datetime
+
+        NOW = datetime.datetime(2015, 7, 29, 17, 45, 21, 123456,
+                                tzinfo=UTC)
+        NOW_MICROS = _microseconds_from_datetime(NOW)
+        self.assertEqual(self._callFUT(NOW_MICROS), NOW)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

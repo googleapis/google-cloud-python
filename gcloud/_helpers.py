@@ -16,6 +16,7 @@
 This module is not part of the public API surface of `gcloud`.
 """
 
+import calendar
 import datetime
 import os
 import socket
@@ -36,6 +37,7 @@ except ImportError:
 from gcloud.environment_vars import PROJECT
 
 
+_NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
 
 
@@ -207,7 +209,65 @@ def _determine_default_project(project=None):
     return project
 
 
+def _millis(when):
+    """Convert a zone-aware datetime to integer milliseconds.
+
+    :type when: :class:`datetime.datetime`
+    :param when: the datetime to convert
+
+    :rtype: integer
+    :returns: milliseconds since epoch for ``when``
+    """
+    micros = _microseconds_from_datetime(when)
+    return micros // 1000
+
+
+def _datetime_from_microseconds(value):
+    """Convert timestamp to datetime, assuming UTC.
+
+    :type value: float
+    :param value: The timestamp to convert
+
+    :rtype: :class:`datetime.datetime`
+    :returns: The datetime object created from the value.
+    """
+    return _EPOCH + datetime.timedelta(microseconds=value)
+
+
+def _microseconds_from_datetime(value):
+    """Convert non-none datetime to microseconds.
+
+    :type value: :class:`datetime.datetime`
+    :param value: The timestamp to convert.
+
+    :rtype: integer
+    :returns: The timestamp, in microseconds.
+    """
+    if not value.tzinfo:
+        value = value.replace(tzinfo=UTC)
+    # Regardless of what timezone is on the value, convert it to UTC.
+    value = value.astimezone(UTC)
+    # Convert the datetime to a microsecond timestamp.
+    return int(calendar.timegm(value.timetuple()) * 1e6) + value.microsecond
+
+
+def _millis_from_datetime(value):
+    """Convert non-none datetime to timestamp, assuming UTC.
+
+    :type value: :class:`datetime.datetime`, or None
+    :param value: the timestamp
+
+    :rtype: integer, or ``NoneType``
+    :returns: the timestamp, in milliseconds, or None
+    """
+    if value is not None:
+        return _millis(value)
+
+
 try:
     from pytz import UTC  # pylint: disable=unused-import
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
+
+# Need to define _EPOCH at the end of module since it relies on UTC.
+_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=UTC)

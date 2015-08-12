@@ -240,7 +240,7 @@ class TestTable(unittest2.TestCase):
     def test_props_set_by_server(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
 
         CREATED = datetime.datetime(2015, 7, 29, 12, 13, 22, tzinfo=UTC)
         MODIFIED = datetime.datetime(2015, 7, 29, 14, 47, 15, tzinfo=UTC)
@@ -516,8 +516,8 @@ class TestTable(unittest2.TestCase):
     def test_create_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
-        from gcloud.bigquery._helpers import _millis
 
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
         DESCRIPTION = 'DESCRIPTION'
@@ -716,7 +716,7 @@ class TestTable(unittest2.TestCase):
     def test_patch_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
@@ -825,7 +825,7 @@ class TestTable(unittest2.TestCase):
     def test_update_w_alternate_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
         from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
@@ -914,7 +914,7 @@ class TestTable(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
         from gcloud.bigquery.table import SchemaField
-        from gcloud.bigquery._helpers import _prop_from_datetime
+        from gcloud._helpers import _millis_from_datetime
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -932,17 +932,17 @@ class TestTable(unittest2.TestCase):
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
                     {'v': '32'},
-                    {'v': _prop_from_datetime(WHEN)},
+                    {'v': _millis_from_datetime(WHEN)},
                 ]},
                 {'f': [
                     {'v': 'Bharney Rhubble'},
                     {'v': '33'},
-                    {'v': _prop_from_datetime(WHEN_1)},
+                    {'v': _millis_from_datetime(WHEN_1)},
                 ]},
                 {'f': [
                     {'v': 'Wylma Phlyntstone'},
                     {'v': '29'},
-                    {'v': _prop_from_datetime(WHEN_2)},
+                    {'v': _millis_from_datetime(WHEN_2)},
                 ]},
                 {'f': [
                     {'v': 'Bhettye Rhubble'},
@@ -1145,7 +1145,7 @@ class TestTable(unittest2.TestCase):
     def test_insert_data_w_bound_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _prop_from_datetime
+        from gcloud._helpers import _millis_from_datetime
         from gcloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -1171,7 +1171,7 @@ class TestTable(unittest2.TestCase):
         def _row_data(row):
             return {'full_name': row[0],
                     'age': row[1],
-                    'joined': _prop_from_datetime(row[2])}
+                    'joined': _millis_from_datetime(row[2])}
 
         SENT = {
             'rows': [{'json': _row_data(row)} for row in ROWS],

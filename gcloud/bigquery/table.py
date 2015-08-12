@@ -18,9 +18,9 @@ import datetime
 
 import six
 
+from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _millis_from_datetime
 from gcloud.exceptions import NotFound
-from gcloud.bigquery._helpers import _datetime_from_prop
-from gcloud.bigquery._helpers import _prop_from_datetime
 
 
 _MARKER = object()
@@ -116,7 +116,10 @@ class Table(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the creation time (None until set from the server).
         """
-        return _datetime_from_prop(self._properties.get('creationTime'))
+        creation_time = self._properties.get('creationTime')
+        if creation_time is not None:
+            # creation_time will be in milliseconds.
+            return _datetime_from_microseconds(1000.0 * creation_time)
 
     @property
     def etag(self):
@@ -134,7 +137,10 @@ class Table(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the modification time (None until set from the server).
         """
-        return _datetime_from_prop(self._properties.get('lastModifiedTime'))
+        modified_time = self._properties.get('lastModifiedTime')
+        if modified_time is not None:
+            # modified_time will be in milliseconds.
+            return _datetime_from_microseconds(1000.0 * modified_time)
 
     @property
     def num_bytes(self):
@@ -212,7 +218,10 @@ class Table(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the expiration time, or None
         """
-        return _datetime_from_prop(self._properties.get('expirationTime'))
+        expiration_time = self._properties.get('expirationTime')
+        if expiration_time is not None:
+            # expiration_time will be in milliseconds.
+            return _datetime_from_microseconds(1000.0 * expiration_time)
 
     @expires.setter
     def expires(self, value):
@@ -223,7 +232,7 @@ class Table(object):
         """
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
-        self._properties['expirationTime'] = _prop_from_datetime(value)
+        self._properties['expirationTime'] = _millis_from_datetime(value)
 
     @property
     def friendly_name(self):
@@ -405,7 +414,7 @@ class Table(object):
             resource['description'] = self.description
 
         if self.expires is not None:
-            value = _prop_from_datetime(self.expires)
+            value = _millis_from_datetime(self.expires)
             resource['expirationTime'] = value
 
         if self.friendly_name is not None:
@@ -518,7 +527,7 @@ class Table(object):
             if (not isinstance(expires, datetime.datetime) and
                     expires is not None):
                 raise ValueError("Pass a datetime, or None")
-            partial['expirationTime'] = _prop_from_datetime(expires)
+            partial['expirationTime'] = _millis_from_datetime(expires)
 
         if description is not _MARKER:
             partial['description'] = description
@@ -678,7 +687,7 @@ class Table(object):
 
             for field, value in zip(self._schema, row):
                 if field.field_type == 'TIMESTAMP':
-                    value = _prop_from_datetime(value)
+                    value = _millis_from_datetime(value)
                 row_info[field.name] = value
 
             info = {'json': row_info}
@@ -727,7 +736,8 @@ def _bool_from_json(value, field):
 
 def _datetime_from_json(value, field):
     if _not_null(value, field):
-        return _datetime_from_prop(float(value))
+        # Field value will be in milliseconds.
+        return _datetime_from_microseconds(1000.0 * float(value))
 
 
 def _record_from_json(value, field):
