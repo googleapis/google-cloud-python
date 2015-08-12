@@ -13,7 +13,8 @@
 # limitations under the License.
 
 import os
+from gcloud.environment_vars import TESTS_PROJECT
 
 __all__ = ['PROJECT_ID']
 
-PROJECT_ID = os.getenv('GCLOUD_TESTS_PROJECT_ID')
+PROJECT_ID = os.getenv(TESTS_PROJECT)
