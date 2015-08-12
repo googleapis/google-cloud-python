@@ -291,6 +291,6 @@ html_context.update(
 # httplib2 libraries.
 intersphinx_mapping = {
     'httplib2': ('http://bitworking.org/projects/httplib2/doc/html/', None),
-    'oauth2client': ('http://google.github.io/oauth2client/', None),
+    'oauth2client': ('http://oauth2client.readthedocs.org/en/latest/', None),
     'python': ('https://docs.python.org/', None),
 }
