@@ -197,7 +197,7 @@ class TestBigQuery(unittest2.TestCase):
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
 
-    def test_load_dump_table(self):
+    def test_load_table_then_dump_table(self):
         ROWS = [
             ('Phred Phlyntstone', 32),
             ('Bharney Rhubble', 33),
