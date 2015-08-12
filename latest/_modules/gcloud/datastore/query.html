@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 7c367fe documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud e1913fa documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -15,7 +15,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7c367fe',
+        VERSION:     'e1913fa',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7c367fe documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud e1913fa documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%207c367fe" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%20e1913fa" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7c367fe)
+              Version History (e1913fa)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -505,7 +505,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c">#       for discussion.</span>
         <span class="n">entity_pbs</span><span class="p">,</span> <span class="n">cursor_as_bytes</span><span class="p">,</span> <span class="n">more_results_enum</span> <span class="o">=</span> <span class="n">query_results</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cursor</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">cursor_as_bytes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cursor_as_bytes</span> <span class="o">==</span> <span class="n">b</span><span class="s">&#39;&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_cursor</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_start_cursor</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">cursor_as_bytes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_cursor</span> <span class="o">=</span> <span class="bp">None</span>
 
         <span class="k">if</span> <span class="n">more_results_enum</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NOT_FINISHED</span><span class="p">:</span>
