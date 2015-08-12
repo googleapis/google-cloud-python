@@ -229,6 +229,7 @@ class TestBigQuery(unittest2.TestCase):
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
 
         while len(rows) == 0 and counter > 0:
+            counter -= 1
             rows, _, _ = table.fetch_data()
             if len(rows) == 0:
                 time.sleep(10)
