@@ -261,7 +261,7 @@ class TestLoadFromStorageJob(unittest2.TestCase):
     def test_props_set_by_server(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud.bigquery._helpers import _millis
+        from gcloud._helpers import _millis
 
         CREATED = datetime.datetime(2015, 8, 11, 12, 13, 22, tzinfo=UTC)
         STARTED = datetime.datetime(2015, 8, 11, 13, 47, 15, tzinfo=UTC)

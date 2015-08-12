@@ -17,7 +17,7 @@
 import six
 
 from gcloud.exceptions import NotFound
-from gcloud.bigquery._helpers import _datetime_from_prop
+from gcloud._helpers import _datetime_from_microseconds
 from gcloud.bigquery.table import SchemaField
 from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
@@ -153,7 +153,9 @@ class LoadFromStorageJob(object):
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
-            return _datetime_from_prop(statistics.get('creationTime'))
+            millis = statistics.get('creationTime')
+            if millis is not None:
+                return _datetime_from_microseconds(millis * 1000.0)
 
     @property
     def started(self):
@@ -164,7 +166,9 @@ class LoadFromStorageJob(object):
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
-            return _datetime_from_prop(statistics.get('startTime'))
+            millis = statistics.get('startTime')
+            if millis is not None:
+                return _datetime_from_microseconds(millis * 1000.0)
 
     @property
     def ended(self):
@@ -175,7 +179,9 @@ class LoadFromStorageJob(object):
         """
         statistics = self._properties.get('statistics')
         if statistics is not None:
-            return _datetime_from_prop(statistics.get('endTime'))
+            millis = statistics.get('endTime')
+            if millis is not None:
+                return _datetime_from_microseconds(millis * 1000.0)
 
     @property
     def input_file_bytes(self):
