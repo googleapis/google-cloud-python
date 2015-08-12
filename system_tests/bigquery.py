@@ -98,7 +98,8 @@ class TestBigQuery(unittest2.TestCase):
             self.to_delete.append(dataset)
 
         # Retrieve the datasets.
-        all_datasets, _ = CLIENT.list_datasets()
+        all_datasets, token = CLIENT.list_datasets()
+        self.assertTrue(token is None)
         created = [dataset for dataset in all_datasets
                    if dataset.name in datasets_to_create and
                    dataset.project == CLIENT.project]
@@ -142,7 +143,8 @@ class TestBigQuery(unittest2.TestCase):
             self.to_delete.insert(0, table)
 
         # Retrieve the tables.
-        all_tables, _ = dataset.list_tables()
+        all_tables, token = dataset.list_tables()
+        self.assertTrue(token is None)
         created = [table for table in all_tables
                    if table.name in tables_to_create and
                    table._dataset.name == DATASET_NAME]
