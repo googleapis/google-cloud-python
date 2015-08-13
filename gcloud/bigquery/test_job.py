@@ -734,6 +734,63 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestCopyJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'copy'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import CopyJob
+        return CopyJob
+
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        source, destination = _Table(), _Table()
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        self.assertTrue(job.destination is destination)
+        self.assertEqual(job.sources, [source])
+        self.assertTrue(job._client is client)
+        self.assertEqual(
+            job.path,
+            '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # set/read from resource['configuration']['copy']
+        self.assertTrue(job.create_disposition is None)
+        self.assertTrue(job.write_disposition is None)
+
+    def test_create_disposition_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source, destination = _Table(), _Table()
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        with self.assertRaises(ValueError):
+            job.create_disposition = 'BOGUS'
+
+    def test_create_disposition_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source, destination = _Table(), _Table()
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job.create_disposition = 'CREATE_IF_NEEDED'
+        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
+        del job.create_disposition
+        self.assertTrue(job.create_disposition is None)
+
+    def test_write_disposition_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source, destination = _Table(), _Table()
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        with self.assertRaises(ValueError):
+            job.write_disposition = 'BOGUS'
+
+    def test_write_disposition_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source, destination = _Table(), _Table()
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job.write_disposition = 'WRITE_TRUNCATE'
+        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
+        del job.write_disposition
+        self.assertTrue(job.write_disposition is None)
+
+
 class _Client(object):
 
     def __init__(self, project='project', connection=None):

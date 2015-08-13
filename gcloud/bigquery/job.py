@@ -776,3 +776,82 @@ class LoadTableFromStorageJob(_BaseJob):
         api_response = client.connection.api_request(
             method='POST', path='%s/cancel' % self.path)
         self._set_properties(api_response)
+
+
+class _CopyConfiguration(object):
+    """User-settable configuration options for copy jobs."""
+    # None -> use server default.
+    _create_disposition = None
+    _write_disposition = None
+
+
+class CopyJob(_BaseJob):
+    """Asynchronous job: copy data into a BQ table from other tables.
+
+    :type name: string
+    :param name: the name of the job
+
+    :type destination: :class:`gcloud.bigquery.table.Table`
+    :param destination: Table into which data is to be loaded.
+
+    :type sources: list of :class:`gcloud.bigquery.table.Table`
+    :param sources: Table into which data is to be loaded.
+
+    :type client: :class:`gcloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the dataset (which requires a project).
+    """
+    def __init__(self, name, destination, sources, client):
+        super(CopyJob, self).__init__(name, client)
+        self.destination = destination
+        self.sources = sources
+        self._configuration = _CopyConfiguration()
+
+    @property
+    def create_disposition(self):
+        """Handling for missing destination table.
+
+        :rtype: string, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._create_disposition
+
+    @create_disposition.setter
+    def create_disposition(self, value):
+        """Update create_disposition.
+
+        :type value: boolean
+        :param value: new create_disposition: one of "CREATE_IF_NEEDED" or
+                      "CREATE_NEVER"
+        """
+        CreateDisposition.validate(value)   # raises ValueError if invalid
+        self._configuration._create_disposition = value
+
+    @create_disposition.deleter
+    def create_disposition(self):
+        """Delete create_disposition."""
+        del self._configuration._create_disposition
+
+    @property
+    def write_disposition(self):
+        """Allow rows with missing trailing commas for optional fields.
+
+        :rtype: boolean, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._write_disposition
+
+    @write_disposition.setter
+    def write_disposition(self, value):
+        """Update write_disposition.
+
+        :type value: string
+        :param value: allowed values for :class:`WriteDisposition`.
+        """
+        WriteDisposition.validate(value)  # raises ValueError if invalid
+        self._configuration._write_disposition = value
+
+    @write_disposition.deleter
+    def write_disposition(self):
+        """Delete write_disposition."""
+        del self._configuration._write_disposition
