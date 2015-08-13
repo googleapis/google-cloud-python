@@ -237,3 +237,69 @@ class TestBigQuery(unittest2.TestCase):
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
                          sorted(ROWS, key=by_age))
+
+    def test_load_table_from_storage_then_dump_table(self):
+        import csv
+        import tempfile
+        from gcloud.storage import Client as StorageClient
+        TIMESTAMP = 1000 * time.time()
+        BUCKET_NAME = 'bq_load_test_%d' % (TIMESTAMP,)
+        BLOB_NAME = 'person_ages.csv'
+        GS_URL = 'gs://%s/%s' % (BUCKET_NAME, BLOB_NAME)
+        ROWS = [
+            ('Phred Phlyntstone', 32),
+            ('Bharney Rhubble', 33),
+            ('Wylma Phlyntstone', 29),
+            ('Bhettye Rhubble', 27),
+        ]
+        DATASET_NAME = 'system_tests'
+        TABLE_NAME = 'test_table'
+
+        s_client = StorageClient()
+
+        # In the **very** rare case the bucket name is reserved, this
+        # fails with a ConnectionError.
+        bucket = s_client.create_bucket(BUCKET_NAME)
+        self.to_delete.append(bucket)
+
+        blob = bucket.blob(BLOB_NAME)
+        self.to_delete.insert(0, blob)
+
+        with tempfile.TemporaryFile() as f:
+            writer = csv.writer(f)
+            writer.writerow(('Full Name', 'Age'))
+            writer.writerows(ROWS)
+            blob.upload_from_file(f, rewind=True, content_type='text/csv')
+
+        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset.create()
+        self.to_delete.append(dataset)
+
+        full_name = bigquery.SchemaField('full_name', 'STRING',
+                                         mode='REQUIRED')
+        age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = dataset.table(TABLE_NAME, schema=[full_name, age])
+        table.create()
+        self.to_delete.insert(0, table)
+
+        job = CLIENT.load_from_storage(
+            'bq_load_storage_test_%d' % (TIMESTAMP,), table, GS_URL)
+        job.create_disposition = 'CREATE_NEVER'
+        job.skip_leading_rows = 1
+        job.source_format = 'CSV'
+        job.write_disposition = 'WRITE_EMPTY'
+
+        job.begin()
+
+        counter = 9  # Allow for 90 seconds of lag.
+
+        while job.state not in ('DONE', 'done') and counter > 0:
+            counter -= 1
+            job.reload()
+            if job.state not in ('DONE', 'done'):
+                time.sleep(10)
+
+        rows, _, _ = table.fetch_data()
+        by_age = operator.itemgetter(1)
+        self.assertEqual(sorted(rows, key=by_age),
+                         sorted(ROWS, key=by_age))
