@@ -44,6 +44,15 @@
 
   bigquery-usage
 
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: External Links
+
+  GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
+  Issues <https://github.com/GoogleCloudPlatform/gcloud-python/issues>
+  Stack Overflow <http://stackoverflow.com/questions/tagged/gcloud-python>
+  PyPI <https://pypi.python.org/pypi/gcloud>
 
 Getting started
 ---------------
