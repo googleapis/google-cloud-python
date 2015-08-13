@@ -609,13 +609,14 @@ class LoadFromStorageJob(object):
                 'jobId': self.name,
             },
             'configuration': {
-                'sourceUris': self.source_uris,
-                'destinationTable': {
-                    'projectId': self.destination.project,
-                    'datasetId': self.destination.dataset_name,
-                    'tableId': self.destination.name,
+                'load': {
+                    'sourceUris': self.source_uris,
+                    'destinationTable': {
+                        'projectId': self.destination.project,
+                        'datasetId': self.destination.dataset_name,
+                        'tableId': self.destination.name,
+                    },
                 },
-                'load': {},
             },
         }
         configuration = resource['configuration']['load']
@@ -624,9 +625,6 @@ class LoadFromStorageJob(object):
         if len(self.schema) > 0:
             configuration['schema'] = {
                 'fields': _build_schema_resource(self.schema)}
-
-        if len(configuration) == 0:
-            del resource['configuration']['load']
 
         return resource
 

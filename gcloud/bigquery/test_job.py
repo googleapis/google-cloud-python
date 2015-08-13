@@ -517,11 +517,13 @@ class TestLoadFromStorageJob(unittest2.TestCase):
                 'jobId': self.JOB_NAME,
             },
             'configuration': {
-                'sourceUris': [self.SOURCE1],
-                'destinationTable': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_NAME,
-                    'tableId': self.TABLE_NAME,
+                'load': {
+                    'sourceUris': [self.SOURCE1],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.TABLE_NAME,
+                    },
                 },
             },
         }
@@ -533,6 +535,12 @@ class TestLoadFromStorageJob(unittest2.TestCase):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource(ended=True)
         LOAD_CONFIGURATION = {
+            'sourceUris': [self.SOURCE1],
+            'destinationTable': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.TABLE_NAME,
+            },
             'allowJaggedRows': True,
             'allowQuotedNewlines': True,
             'createDisposition': 'CREATE_NEVER',
@@ -585,12 +593,6 @@ class TestLoadFromStorageJob(unittest2.TestCase):
                 'jobId': self.JOB_NAME,
             },
             'configuration': {
-                'sourceUris': [self.SOURCE1],
-                'destinationTable': {
-                    'projectId': self.PROJECT,
-                    'datasetId': self.DS_NAME,
-                    'tableId': self.TABLE_NAME,
-                },
                 'load': LOAD_CONFIGURATION,
             },
         }
