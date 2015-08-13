@@ -577,7 +577,7 @@ class LoadFromStorageJob(object):
         return client
 
     def _populate_config_resource(self, configuration):
-
+        """Helper for _build_resource: copy config properties to resource"""
         if self.allow_jagged_rows is not None:
             configuration['allowJaggedRows'] = self.allow_jagged_rows
         if self.allow_quoted_newlines is not None:
