@@ -147,6 +147,26 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(list(job.source_uris), [SOURCE_URI])
         self.assertTrue(job.destination is destination)
 
+    def test_copy_table(self):
+        from gcloud.bigquery.job import CopyJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        DATASET = 'dataset_name'
+        SOURCE = 'source_table'
+        DESTINATION = 'destination_table'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        source = dataset.table(SOURCE)
+        destination = dataset.table(DESTINATION)
+        job = client.copy_table(JOB, destination, source)
+        self.assertTrue(isinstance(job, CopyJob))
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(list(job.sources), [source])
+        self.assertTrue(job.destination is destination)
+
 
 class _Credentials(object):
 
