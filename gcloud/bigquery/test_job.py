@@ -14,17 +14,12 @@
 
 import unittest2
 
-
-class TestLoadTableFromStorageJob(unittest2.TestCase):
+class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_NAME = 'datset_name'
     TABLE_NAME = 'table_name'
     JOB_NAME = 'job_name'
-
-    def _getTargetClass(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
-        return LoadTableFromStorageJob
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -40,21 +35,17 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self.JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.USER_EMAIL = 'phred@example.com'
-        self.INPUT_FILES = 2
-        self.INPUT_BYTES = 12345
-        self.OUTPUT_BYTES = 23456
-        self.OUTPUT_ROWS = 345
 
     def _makeResource(self, started=False, ended=False):
         self._setUpConstants()
         resource = {
             'configuration': {
-                'load': {
+                self.JOB_TYPE: {
                 },
             },
             'statistics': {
                 'creationTime': self.WHEN_TS * 1000,
-                'load': {
+                self.JOB_TYPE: {
                 }
             },
             'etag': self.ETAG,
@@ -72,42 +63,89 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
 
         if ended:
             resource['statistics']['endTime'] = (self.WHEN_TS + 1000) * 1000
-            resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
-            resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
-            resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
-            resource['statistics']['load']['outputRows'] = self.OUTPUT_ROWS
 
         return resource
+
+    def _verifyInitialReadonlyProperties(self, job):
+        # root elements of resource
+        self.assertEqual(job.etag, None)
+        self.assertEqual(job.job_id, None)
+        self.assertEqual(job.self_link, None)
+        self.assertEqual(job.user_email, None)
+
+        # derived from resource['statistics']
+        self.assertEqual(job.created, None)
+        self.assertEqual(job.started, None)
+        self.assertEqual(job.ended, None)
+
+        # derived from resource['status']
+        self.assertEqual(job.error_result, None)
+        self.assertEqual(job.errors, None)
+        self.assertEqual(job.state, None)
 
     def _verifyReadonlyResourceProperties(self, job, resource):
         from datetime import timedelta
 
         self.assertEqual(job.job_id, self.JOB_ID)
 
-        if 'creationTime' in resource.get('statistics', {}):
+        statistics = resource.get('statistics', {})
+
+        if 'creationTime' in statistics:
             self.assertEqual(job.created, self.WHEN)
         else:
             self.assertEqual(job.created, None)
-        if 'startTime' in resource.get('statistics', {}):
+
+        if 'startTime' in statistics:
             self.assertEqual(job.started, self.WHEN)
         else:
             self.assertEqual(job.started, None)
-        if 'endTime' in resource.get('statistics', {}):
+
+        if 'endTime' in statistics:
             self.assertEqual(job.ended, self.WHEN + timedelta(seconds=1000))
         else:
             self.assertEqual(job.ended, None)
+
         if 'etag' in resource:
             self.assertEqual(job.etag, self.ETAG)
         else:
             self.assertEqual(job.etag, None)
+
         if 'selfLink' in resource:
             self.assertEqual(job.self_link, self.RESOURCE_URL)
         else:
             self.assertEqual(job.self_link, None)
+
         if 'user_email' in resource:
             self.assertEqual(job.user_email, self.USER_EMAIL)
         else:
             self.assertEqual(job.user_email, None)
+
+
+class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'load'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        return LoadTableFromStorageJob
+
+    def _setUpConstants(self):
+        super(TestLoadTableFromStorageJob, self)._setUpConstants()
+        self.INPUT_FILES = 2
+        self.INPUT_BYTES = 12345
+        self.OUTPUT_BYTES = 23456
+        self.OUTPUT_ROWS = 345
+
+    def _makeResource(self, started=False, ended=False):
+        resource = super(TestLoadTableFromStorageJob, self)._makeResource(
+            started, ended)
+
+        if ended:
+            resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
+            resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
+            resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
+            resource['statistics']['load']['outputRows'] = self.OUTPUT_ROWS
+
+        return resource
 
     def _verifyBooleanConfigProperties(self, job, config):
         if 'allowJaggedRows' in config:
@@ -188,6 +226,16 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
         self.assertEqual(job.schema, [])
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # derived from resource['statistics']['load']
+        self.assertEqual(job.input_file_bytes, None)
+        self.assertEqual(job.input_files, None)
+        self.assertEqual(job.output_bytes, None)
+        self.assertEqual(job.output_rows, None)
+
+        # set/read from resource['configuration']['load']
         self.assertTrue(job.allow_jagged_rows is None)
         self.assertTrue(job.allow_quoted_newlines is None)
         self.assertTrue(job.create_disposition is None)
@@ -199,28 +247,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self.assertTrue(job.skip_leading_rows is None)
         self.assertTrue(job.source_format is None)
         self.assertTrue(job.write_disposition is None)
-
-        # root elements of resource
-        self.assertEqual(job.etag, None)
-        self.assertEqual(job.job_id, None)
-        self.assertEqual(job.self_link, None)
-        self.assertEqual(job.user_email, None)
-
-        # derived from resource['statistics']
-        self.assertEqual(job.created, None)
-        self.assertEqual(job.started, None)
-        self.assertEqual(job.ended, None)
-
-        # derived from resource['statistics']['load']
-        self.assertEqual(job.input_file_bytes, None)
-        self.assertEqual(job.input_files, None)
-        self.assertEqual(job.output_bytes, None)
-        self.assertEqual(job.output_rows, None)
-
-        # derived from resource['status']
-        self.assertEqual(job.error_result, None)
-        self.assertEqual(job.errors, None)
-        self.assertEqual(job.state, None)
 
     def test_ctor_w_schema(self):
         from gcloud.bigquery.table import SchemaField
