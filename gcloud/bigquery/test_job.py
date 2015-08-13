@@ -319,11 +319,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         load_stats['outputBytes'] = 23456
         load_stats['outputRows'] = 345
 
-        status = job._properties['status'] = {}
-        status['errorResult'] = ERROR_RESULT
-        status['errors'] = [ERROR_RESULT]
-        status['state'] = 'STATE'
-
         self.assertEqual(job.etag, 'ETAG')
         self.assertEqual(job.job_id, JOB_ID)
         self.assertEqual(job.self_link, URL)
@@ -337,6 +332,16 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self.assertEqual(job.input_files, 1)
         self.assertEqual(job.output_bytes, 23456)
         self.assertEqual(job.output_rows, 345)
+
+        status = job._properties['status'] = {}
+
+        self.assertEqual(job.error_result, None)
+        self.assertEqual(job.errors, None)
+        self.assertEqual(job.state, None)
+
+        status['errorResult'] = ERROR_RESULT
+        status['errors'] = [ERROR_RESULT]
+        status['state'] = 'STATE'
 
         self.assertEqual(job.error_result, ERROR_RESULT)
         self.assertEqual(job.errors, [ERROR_RESULT])
