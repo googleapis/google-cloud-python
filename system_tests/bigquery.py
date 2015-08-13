@@ -265,11 +265,12 @@ class TestBigQuery(unittest2.TestCase):
         blob = bucket.blob(BLOB_NAME)
         self.to_delete.insert(0, blob)
 
-        with tempfile.TemporaryFile() as f:
-            writer = csv.writer(f)
+        with tempfile.TemporaryFile() as csv_file:
+            writer = csv.writer(csv_file)
             writer.writerow(('Full Name', 'Age'))
             writer.writerows(ROWS)
-            blob.upload_from_file(f, rewind=True, content_type='text/csv')
+            blob.upload_from_file(
+                csv_file, rewind=True, content_type='text/csv')
 
         dataset = CLIENT.dataset(DATASET_NAME)
         dataset.create()
