@@ -227,6 +227,112 @@ class _BaseJob(object):
         if status is not None:
             return status.get('state')
 
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: :class:`gcloud.bigquery.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self._client
+        return client
+
+    def _scrub_local_properties(self, cleaned):
+        """Helper:  handle subclass properties in cleaned."""
+        pass
+
+    def _set_properties(self, api_response):
+        """Update properties from resource in body of ``api_response``
+
+        :type api_response: httplib2.Response
+        :param api_response: response returned from an API call
+        """
+        cleaned = api_response.copy()
+        self._scrub_local_properties(cleaned)
+
+        statistics = cleaned.get('statistics', {})
+        if 'creationTime' in statistics:
+            statistics['creationTime'] = float(statistics['creationTime'])
+        if 'startTime' in statistics:
+            statistics['startTime'] = float(statistics['startTime'])
+        if 'endTime' in statistics:
+            statistics['endTime'] = float(statistics['endTime'])
+
+        self._properties.clear()
+        self._properties.update(cleaned)
+
+    def begin(self, client=None):
+        """API call:  begin the job via a POST request
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+        path = '/projects/%s/jobs' % (self.project,)
+        api_response = client.connection.api_request(
+            method='POST', path=path, data=self._build_resource())
+        self._set_properties(api_response)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the job via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        try:
+            client.connection.api_request(method='GET', path=self.path,
+                                          query_params={'fields': 'id'})
+        except NotFound:
+            return False
+        else:
+            return True
+
+    def reload(self, client=None):
+        """API call:  refresh job properties via a GET request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='GET', path=self.path)
+        self._set_properties(api_response)
+
+    def cancel(self, client=None):
+        """API call:  cancel job via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='POST', path='%s/cancel' % self.path)
+        self._set_properties(api_response)
+
 
 class _LoadConfiguration(object):
     """User-settable configuration options for load jobs."""
@@ -622,20 +728,6 @@ class LoadTableFromStorageJob(_BaseJob):
         """Delete write_disposition."""
         del self._configuration._write_disposition
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`gcloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
         if self.allow_jagged_rows is not None:
@@ -688,94 +780,10 @@ class LoadTableFromStorageJob(_BaseJob):
 
         return resource
 
-    def _set_properties(self, api_response):
-        """Update properties from resource in body of ``api_response``
-
-        :type api_response: httplib2.Response
-        :param api_response: response returned from an API call
-        """
-        self._properties.clear()
-        cleaned = api_response.copy()
+    def _scrub_local_properties(self, cleaned):
+        """Helper:  handle subclass properties in cleaned."""
         schema = cleaned.pop('schema', {'fields': ()})
         self.schema = _parse_schema_resource(schema)
-
-        statistics = cleaned.get('statistics', {})
-        if 'creationTime' in statistics:
-            statistics['creationTime'] = float(statistics['creationTime'])
-        if 'startTime' in statistics:
-            statistics['startTime'] = float(statistics['startTime'])
-        if 'endTime' in statistics:
-            statistics['endTime'] = float(statistics['endTime'])
-
-        self._properties.update(cleaned)
-
-    def begin(self, client=None):
-        """API call:  begin the job via a POST request
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/insert
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-        path = '/projects/%s/jobs' % (self.project,)
-        api_response = client.connection.api_request(
-            method='POST', path=path, data=self._build_resource())
-        self._set_properties(api_response)
-
-    def exists(self, client=None):
-        """API call:  test for the existence of the job via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        try:
-            client.connection.api_request(method='GET', path=self.path,
-                                          query_params={'fields': 'id'})
-        except NotFound:
-            return False
-        else:
-            return True
-
-    def reload(self, client=None):
-        """API call:  refresh job properties via a GET request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/get
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        api_response = client.connection.api_request(
-            method='GET', path=self.path)
-        self._set_properties(api_response)
-
-    def cancel(self, client=None):
-        """API call:  cancel job via a POST request
-
-        See
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-        """
-        client = self._require_client(client)
-
-        api_response = client.connection.api_request(
-            method='POST', path='%s/cancel' % self.path)
-        self._set_properties(api_response)
 
 
 class _CopyConfiguration(object):
@@ -855,3 +863,40 @@ class CopyJob(_BaseJob):
     def write_disposition(self):
         """Delete write_disposition."""
         del self._configuration._write_disposition
+
+    def _populate_config_resource(self, configuration):
+
+        if self.create_disposition is not None:
+            configuration['createDisposition'] = self.create_disposition
+        if self.write_disposition is not None:
+            configuration['writeDisposition'] = self.write_disposition
+
+    def _build_resource(self):
+        """Generate a resource for ``begin``."""
+
+        source_refs = [{
+            'projectId': table.project,
+            'datasetId': table.dataset_name,
+            'tableId': table.name,
+        } for table in self.sources]
+
+        resource = {
+            'jobReference': {
+                'projectId': self.project,
+                'jobId': self.name,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': source_refs,
+                    'destinationTable': {
+                        'projectId': self.destination.project,
+                        'datasetId': self.destination.dataset_name,
+                        'tableId': self.destination.name,
+                    },
+                },
+            },
+        }
+        configuration = resource['configuration']['copy']
+        self._populate_config_resource(configuration)
+
+        return resource

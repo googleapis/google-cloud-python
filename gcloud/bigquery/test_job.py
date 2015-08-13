@@ -14,6 +14,7 @@
 
 import unittest2
 
+
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
@@ -736,14 +737,34 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
 
 class TestCopyJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'copy'
+    SOURCE_TABLE = 'source_table'
+    DESTINATION_TABLE = 'destination_table'
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import CopyJob
         return CopyJob
 
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('copy')
+
+        if 'createDisposition' in config:
+            self.assertEqual(job.create_disposition,
+                             config['createDisposition'])
+        else:
+            self.assertTrue(job.create_disposition is None)
+
+        if 'writeDisposition' in config:
+            self.assertEqual(job.write_disposition,
+                             config['writeDisposition'])
+        else:
+            self.assertTrue(job.write_disposition is None)
+
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        source, destination = _Table(), _Table()
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
         self.assertTrue(job.destination is destination)
         self.assertEqual(job.sources, [source])
@@ -760,14 +781,16 @@ class TestCopyJob(unittest2.TestCase, _Base):
 
     def test_create_disposition_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        source, destination = _Table(), _Table()
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
         with self.assertRaises(ValueError):
             job.create_disposition = 'BOGUS'
 
     def test_create_disposition_setter_deleter(self):
         client = _Client(self.PROJECT)
-        source, destination = _Table(), _Table()
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
         job.create_disposition = 'CREATE_IF_NEEDED'
         self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
@@ -776,19 +799,184 @@ class TestCopyJob(unittest2.TestCase, _Base):
 
     def test_write_disposition_setter_bad_value(self):
         client = _Client(self.PROJECT)
-        source, destination = _Table(), _Table()
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
         with self.assertRaises(ValueError):
             job.write_disposition = 'BOGUS'
 
     def test_write_disposition_setter_deleter(self):
         client = _Client(self.PROJECT)
-        source, destination = _Table(), _Table()
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
         job = self._makeOne(self.JOB_NAME, destination, [source], client)
         job.write_disposition = 'WRITE_TRUNCATE'
         self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
         del job.write_disposition
         self.assertTrue(job.write_disposition is None)
+
+    def test_begin_w_bound_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [{
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE
+                    }],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_alternate_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource(ended=True)
+        COPY_CONFIGURATION = {
+            'sourceTables': [{
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.SOURCE_TABLE,
+            }],
+            'destinationTable': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.DESTINATION_TABLE,
+            },
+            'createDisposition': 'CREATE_NEVER',
+            'writeDisposition': 'WRITE_TRUNCATE',
+        }
+        RESOURCE['configuration']['copy'] = COPY_CONFIGURATION
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        job.create_disposition = 'CREATE_NEVER'
+        job.write_disposition = 'WRITE_TRUNCATE'
+
+        job.begin(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': COPY_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        self.assertFalse(job.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        self.assertTrue(job.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        job.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        job.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
 
 
 class _Client(object):
@@ -800,11 +988,13 @@ class _Client(object):
 
 class _Table(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, name=None):
+        self._name = name
 
     @property
     def name(self):
+        if self._name is not None:
+            return self._name
         return TestLoadTableFromStorageJob.TABLE_NAME
 
     @property
