@@ -700,3 +700,19 @@ class LoadFromStorageJob(object):
         api_response = client.connection.api_request(
             method='GET', path=self.path)
         self._set_properties(api_response)
+
+    def cancel(self, client=None):
+        """API call:  cancel job via a POST request
+
+        See
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/cancel
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='POST', path='%s/cancel' % self.path)
+        self._set_properties(api_response)
