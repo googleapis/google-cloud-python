@@ -34,18 +34,6 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
-    def test_dataset(self):
-        from gcloud.bigquery.dataset import Dataset
-        PROJECT = 'PROJECT'
-        DATASET = 'dataset_name'
-        creds = _Credentials()
-        http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
-        dataset = client.dataset(DATASET)
-        self.assertTrue(isinstance(dataset, Dataset))
-        self.assertEqual(dataset.name, DATASET)
-        self.assertTrue(dataset._client is client)
-
     def test_list_datasets_defaults(self):
         from gcloud.bigquery.dataset import Dataset
         PROJECT = 'PROJECT'
@@ -127,6 +115,37 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'],
                          {'all': True, 'maxResults': 3, 'pageToken': TOKEN})
+
+    def test_dataset(self):
+        from gcloud.bigquery.dataset import Dataset
+        PROJECT = 'PROJECT'
+        DATASET = 'dataset_name'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        self.assertTrue(isinstance(dataset, Dataset))
+        self.assertEqual(dataset.name, DATASET)
+        self.assertTrue(dataset._client is client)
+
+    def test_load_table_from_storage(self):
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        DATASET = 'dataset_name'
+        DESTINATION = 'destination_table'
+        SOURCE_URI = 'http://example.com/source.csv'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        destination = dataset.table(DESTINATION)
+        job = client.load_table_from_storage(JOB, destination, SOURCE_URI)
+        self.assertTrue(isinstance(job, LoadTableFromStorageJob))
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(list(job.source_uris), [SOURCE_URI])
+        self.assertTrue(job.destination is destination)
 
 
 class _Credentials(object):

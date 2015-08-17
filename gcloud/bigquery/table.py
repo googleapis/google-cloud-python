@@ -78,6 +78,24 @@ class Table(object):
         self.schema = schema
 
     @property
+    def project(self):
+        """Project bound to the table.
+
+        :rtype: string
+        :returns: the project (derived from the dataset).
+        """
+        return self._dataset.project
+
+    @property
+    def dataset_name(self):
+        """Name of dataset containing the table.
+
+        :rtype: string
+        :returns: the ID (derived from the dataset).
+        """
+        return self._dataset.name
+
+    @property
     def path(self):
         """URL path for the table's APIs.
 
@@ -343,30 +361,6 @@ class Table(object):
             client = self._dataset._client
         return client
 
-    def _parse_schema_resource(self, info):
-        """Parse a resource fragment into a schema field.
-
-        :type info: mapping
-        :param info: should contain a "fields" key to be parsed
-
-        :rtype: list of :class:`SchemaField`, or ``NoneType``
-        :returns: a list of parsed fields, or ``None`` if no "fields" key is
-                  present in ``info``.
-        """
-        if 'fields' not in info:
-            return None
-
-        schema = []
-        for r_field in info['fields']:
-            name = r_field['name']
-            field_type = r_field['type']
-            mode = r_field['mode']
-            description = r_field.get('description')
-            sub_fields = self._parse_schema_resource(r_field)
-            schema.append(
-                SchemaField(name, field_type, mode, description, sub_fields))
-        return schema
-
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -376,7 +370,7 @@ class Table(object):
         self._properties.clear()
         cleaned = api_response.copy()
         schema = cleaned.pop('schema', {'fields': ()})
-        self.schema = self._parse_schema_resource(schema)
+        self.schema = _parse_schema_resource(schema)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
@@ -385,22 +379,6 @@ class Table(object):
             cleaned['expirationTime'] = float(cleaned['expirationTime'])
         self._properties.update(cleaned)
 
-    def _build_schema_resource(self, fields=None):
-        """Generate a resource fragment for table's schema."""
-        if fields is None:
-            fields = self._schema
-        infos = []
-        for field in fields:
-            info = {'name': field.name,
-                    'type': field.field_type,
-                    'mode': field.mode}
-            if field.description is not None:
-                info['description'] = field.description
-            if field.fields is not None:
-                info['fields'] = self._build_schema_resource(field.fields)
-            infos.append(info)
-        return infos
-
     def _build_resource(self):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
@@ -408,7 +386,7 @@ class Table(object):
                 'projectId': self._dataset.project,
                 'datasetId': self._dataset.name,
                 'tableId': self.name},
-            'schema': {'fields': self._build_schema_resource()},
+            'schema': {'fields': _build_schema_resource(self._schema)},
         }
         if self.description is not None:
             resource['description'] = self.description
@@ -549,7 +527,7 @@ class Table(object):
                 partial['schema'] = None
             else:
                 partial['schema'] = {
-                    'fields': self._build_schema_resource(schema)}
+                    'fields': _build_schema_resource(schema)}
 
         api_response = client.connection.api_request(
             method='PATCH', path=self.path, data=partial)
@@ -713,6 +691,53 @@ class Table(object):
                            'errors': error['errors']})
 
         return errors
+
+
+def _parse_schema_resource(info):
+    """Parse a resource fragment into a schema field.
+
+    :type info: mapping
+    :param info: should contain a "fields" key to be parsed
+
+    :rtype: list of :class:`SchemaField`, or ``NoneType``
+    :returns: a list of parsed fields, or ``None`` if no "fields" key is
+                present in ``info``.
+    """
+    if 'fields' not in info:
+        return None
+
+    schema = []
+    for r_field in info['fields']:
+        name = r_field['name']
+        field_type = r_field['type']
+        mode = r_field['mode']
+        description = r_field.get('description')
+        sub_fields = _parse_schema_resource(r_field)
+        schema.append(
+            SchemaField(name, field_type, mode, description, sub_fields))
+    return schema
+
+
+def _build_schema_resource(fields):
+    """Generate a resource fragment for a schema.
+
+    :type fields: sequence of :class:`SchemaField`
+    :param fields: schema to be dumped
+
+    :rtype: mapping
+    :returns; a mapping describing the schema of the supplied fields.
+    """
+    infos = []
+    for field in fields:
+        info = {'name': field.name,
+                'type': field.field_type,
+                'mode': field.mode}
+        if field.description is not None:
+            info['description'] = field.description
+        if field.fields is not None:
+            info['fields'] = _build_schema_resource(field.fields)
+        infos.append(info)
+    return infos
 
 
 def _not_null(value, field):
