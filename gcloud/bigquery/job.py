@@ -849,7 +849,7 @@ class CopyJob(_BaseJob):
         del self._configuration._write_disposition
 
     def _populate_config_resource(self, configuration):
-
+        """Helper for _build_resource: copy config properties to resource"""
         if self.create_disposition is not None:
             configuration['createDisposition'] = self.create_disposition
         if self.write_disposition is not None:
