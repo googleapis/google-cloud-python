@@ -86,7 +86,7 @@ class _LoadConfiguration(object):
     _write_disposition = None
 
 
-class LoadFromStorageJob(object):
+class LoadTableFromStorageJob(object):
     """Asynchronous job for loading data into a BQ table from CloudStorage.
 
     :type name: string

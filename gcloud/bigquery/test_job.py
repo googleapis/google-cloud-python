@@ -15,7 +15,7 @@
 import unittest2
 
 
-class TestLoadFromStorageJob(unittest2.TestCase):
+class TestLoadTableFromStorageJob(unittest2.TestCase):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_NAME = 'datset_name'
@@ -23,8 +23,8 @@ class TestLoadFromStorageJob(unittest2.TestCase):
     JOB_NAME = 'job_name'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import LoadFromStorageJob
-        return LoadFromStorageJob
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        return LoadTableFromStorageJob
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -717,15 +717,15 @@ class _Table(object):
 
     @property
     def name(self):
-        return TestLoadFromStorageJob.TABLE_NAME
+        return TestLoadTableFromStorageJob.TABLE_NAME
 
     @property
     def project(self):
-        return TestLoadFromStorageJob.PROJECT
+        return TestLoadTableFromStorageJob.PROJECT
 
     @property
     def dataset_name(self):
-        return TestLoadFromStorageJob.DS_NAME
+        return TestLoadTableFromStorageJob.DS_NAME
 
 
 class _Connection(object):

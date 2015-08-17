@@ -18,7 +18,7 @@
 from gcloud.client import JSONClient
 from gcloud.bigquery.connection import Connection
 from gcloud.bigquery.dataset import Dataset
-from gcloud.bigquery.job import LoadFromStorageJob
+from gcloud.bigquery.job import LoadTableFromStorageJob
 
 
 class Client(JSONClient):
@@ -98,7 +98,7 @@ class Client(JSONClient):
         """
         return Dataset(name, client=self)
 
-    def load_from_storage(self, name, destination, *source_uris):
+    def load_table_from_storage(self, name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
 
         :type name: string
@@ -110,7 +110,8 @@ class Client(JSONClient):
         :type source_uris: sequence of string
         :param source_uris: URIs of data files to be loaded.
 
-        :rtype: :class:`gcloud.bigquery.job.LoadFromStorageJob`
-        :returns: a new ``LoadFromStorageJob`` instance
+        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
+        :returns: a new ``LoadTableFromStorageJob`` instance
         """
-        return LoadFromStorageJob(name, destination, source_uris, client=self)
+        return LoadTableFromStorageJob(name, destination, source_uris,
+                                       client=self)
