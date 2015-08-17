@@ -267,7 +267,7 @@ class _BaseJob(object):
         client = self._require_client(client)
 
         api_response = client.connection.api_request(
-            method='POST', path='%s/cancel' % self.path)
+            method='POST', path='%s/cancel' % (self.path,))
         self._set_properties(api_response)
 
 
