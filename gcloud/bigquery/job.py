@@ -23,69 +23,6 @@ from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
 
 
-class _Enum(object):
-    """Psedo-enumeration class.
-
-    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
-    be a sequence of strings.
-    """
-    @classmethod
-    def validate(cls, value):
-        """Check that ``value`` is one of the allowed values.
-
-        :raises: ValueError if value is not allowed.
-        """
-        if value not in cls.ALLOWED:
-            raise ValueError('Pass one of: %s' ', '.join(cls.ALLOWED))
-
-
-class CreateDisposition(_Enum):
-    """Pseudo-enum for allowed values for ``create_disposition`` properties.
-    """
-    CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
-    CREATE_NEVER = 'CREATE_NEVER'
-    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
-
-
-class Encoding(_Enum):
-    """Pseudo-enum for allowed values for ``encoding`` properties."""
-    UTF_8 = 'UTF-8'
-    ISO_8559_1 = 'ISO-8559-1'
-    ALLOWED = (UTF_8, ISO_8559_1)
-
-
-class SourceFormat(_Enum):
-    """Pseudo-enum for allowed values for ``source_format`` properties."""
-    CSV = 'CSV'
-    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
-    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
-    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
-
-
-class WriteDisposition(_Enum):
-    """Pseudo-enum for allowed values for ``write_disposition`` properties."""
-    WRITE_APPEND = 'WRITE_APPEND'
-    WRITE_TRUNCATE = 'WRITE_TRUNCATE'
-    WRITE_EMPTY = 'WRITE_EMPTY'
-    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
-
-
-class _LoadConfiguration(object):
-    """User-settable configuration options for load jobs."""
-    # None -> use server default.
-    _allow_jagged_rows = None
-    _allow_quoted_newlines = None
-    _create_disposition = None
-    _encoding = None
-    _field_delimiter = None
-    _ignore_unknown_values = None
-    _max_bad_records = None
-    _quote_character = None
-    _skip_leading_rows = None
-    _source_format = None
-    _write_disposition = None
-
-
 class _BaseJob(object):
     """Base class for asynchronous jobs.
 
@@ -332,6 +269,53 @@ class _BaseJob(object):
         api_response = client.connection.api_request(
             method='POST', path='%s/cancel' % self.path)
         self._set_properties(api_response)
+
+
+class _Enum(object):
+    """Psedo-enumeration class.
+
+    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
+    be a sequence of strings.
+    """
+    @classmethod
+    def validate(cls, value):
+        """Check that ``value`` is one of the allowed values.
+
+        :raises: ValueError if value is not allowed.
+        """
+        if value not in cls.ALLOWED:
+            raise ValueError('Pass one of: %s' ', '.join(cls.ALLOWED))
+
+
+class CreateDisposition(_Enum):
+    """Pseudo-enum for allowed values for ``create_disposition`` properties.
+    """
+    CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
+    CREATE_NEVER = 'CREATE_NEVER'
+    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
+
+
+class Encoding(_Enum):
+    """Pseudo-enum for allowed values for ``encoding`` properties."""
+    UTF_8 = 'UTF-8'
+    ISO_8559_1 = 'ISO-8559-1'
+    ALLOWED = (UTF_8, ISO_8559_1)
+
+
+class SourceFormat(_Enum):
+    """Pseudo-enum for allowed values for ``source_format`` properties."""
+    CSV = 'CSV'
+    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
+    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
+
+
+class WriteDisposition(_Enum):
+    """Pseudo-enum for allowed values for ``write_disposition`` properties."""
+    WRITE_APPEND = 'WRITE_APPEND'
+    WRITE_TRUNCATE = 'WRITE_TRUNCATE'
+    WRITE_EMPTY = 'WRITE_EMPTY'
+    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
 
 
 class _LoadConfiguration(object):
