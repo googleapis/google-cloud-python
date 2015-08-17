@@ -483,7 +483,7 @@ class LoadTableFromStorageJob(_BaseJob):
 
     @property
     def create_disposition(self):
-        """Handling for missing destination table.
+        """Define how the back-end handles a missing destination table.
 
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
