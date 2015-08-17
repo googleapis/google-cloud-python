@@ -23,6 +23,53 @@ from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
 
 
+class _Enum(object):
+    """Psedo-enumeration class.
+
+    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
+    be a sequence of strings.
+    """
+    @classmethod
+    def validate(cls, value):
+        """Check that ``value`` is one of the allowed values.
+
+        :raises: ValueError if value is not allowed.
+        """
+        if value not in cls.ALLOWED:
+            raise ValueError('Pass one of: %s' ', '.join(cls.ALLOWED))
+
+
+class CreateDisposition(_Enum):
+    """Pseudo-enum for allowed values for ``create_disposition`` properties.
+    """
+    CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
+    CREATE_NEVER = 'CREATE_NEVER'
+    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
+
+
+class Encoding(_Enum):
+    """Pseudo-enum for allowed values for ``encoding`` properties."""
+    UTF_8 = 'UTF-8'
+    ISO_8559_1 = 'ISO-8559-1'
+    ALLOWED = (UTF_8, ISO_8559_1)
+
+
+class SourceFormat(_Enum):
+    """Pseudo-enum for allowed values for ``source_format`` properties."""
+    CSV = 'CSV'
+    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
+    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
+
+
+class WriteDisposition(_Enum):
+    """Pseudo-enum for allowed values for ``write_disposition`` properties."""
+    WRITE_APPEND = 'WRITE_APPEND'
+    WRITE_TRUNCATE = 'WRITE_TRUNCATE'
+    WRITE_EMPTY = 'WRITE_EMPTY'
+    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
+
+
 class _LoadConfiguration(object):
     """User-settable configuration options for load jobs."""
     # None -> use server default.
@@ -327,14 +374,10 @@ class LoadFromStorageJob(object):
     def create_disposition(self, value):
         """Update create_disposition.
 
-        :type value: boolean
-        :param value: new create_disposition: one of "CREATE_IF_NEEDED" or
-                      "CREATE_NEVER"
-
-        :raises: ValueError for invalid value.
+        :type value: string
+        :param value: allowed values for :class:`CreateDisposition`.
         """
-        if value not in ('CREATE_IF_NEEDED', 'CREATE_NEVER'):
-            raise ValueError("Pass 'CREATE_IF_NEEDED' or 'CREATE_NEVER'")
+        CreateDisposition.validate(value)   # raises ValueError if invalid
         self._configuration._create_disposition = value
 
     @create_disposition.deleter
@@ -356,12 +399,9 @@ class LoadFromStorageJob(object):
         """Update encoding.
 
         :type value: string
-        :param value: new encoding: one of 'UTF-8' or 'ISO-8859-1'.
-
-        :raises: ValueError for invalid value.
+        :param value: allowed values for :class:`Encoding`.
         """
-        if value not in ('UTF-8', 'ISO-8559-1'):
-            raise ValueError("Pass 'UTF-8' or 'ISO-8559-1'")
+        Encoding.validate(value)    # raises ValueError if invalid
         self._configuration._encoding = value
 
     @encoding.deleter
@@ -518,14 +558,9 @@ class LoadFromStorageJob(object):
         """Update source_format.
 
         :type value: string
-        :param value: new source_format: one of "CSV", "DATASTORE_BACKUP",
-                      or "NEWLINE_DELIMITED_JSON"
-
-        :raises: ValueError for invalid values.
+        :param value: valid values for :class:`SourceFormat`.
         """
-        if value not in ('CSV', 'DATASTORE_BACKUP', 'NEWLINE_DELIMITED_JSON'):
-            raise ValueError(
-                "Pass 'CSV', 'DATASTORE_BACKUP' or 'NEWLINE_DELIMITED_JSON'")
+        SourceFormat.validate(value)    # raises ValueError if invalid
         self._configuration._source_format = value
 
     @source_format.deleter
@@ -547,14 +582,9 @@ class LoadFromStorageJob(object):
         """Update write_disposition.
 
         :type value: string
-        :param value: new write_disposition: one of "WRITE_APPEND",
-                      "WRITE_TRUNCATE", or "WRITE_EMPTY"
-
-        :raises: ValueError for invalid value types.
+        :param value: valid values for :class:`WriteDisposition`.
         """
-        if value not in ('WRITE_APPEND', 'WRITE_TRUNCATE', 'WRITE_EMPTY'):
-            raise ValueError(
-                "Pass 'WRITE_APPEND', 'WRITE_TRUNCATE' or 'WRITE_EMPTY'")
+        WriteDisposition.validate(value)  # raises ValueError if invalid
         self._configuration._write_disposition = value
 
     @write_disposition.deleter
