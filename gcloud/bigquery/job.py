@@ -994,6 +994,9 @@ class ExtractTableToStorageJob(_BaseJob):
     def compression(self):
         """Compression to apply to destination blobs.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.compression
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -1018,6 +1021,9 @@ class ExtractTableToStorageJob(_BaseJob):
     def destination_format(self):
         """Handling for missing destination table.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.destinationFormat
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -1041,6 +1047,9 @@ class ExtractTableToStorageJob(_BaseJob):
     @property
     def field_delimiter(self):
         """Allow rows with missing trailing commas for optional fields.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.fieldDelimiter
 
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -1068,6 +1077,9 @@ class ExtractTableToStorageJob(_BaseJob):
     @property
     def print_header(self):
         """Write a header row into destination blobs.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.printHeader
 
         :rtype: boolean, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
