@@ -1006,7 +1006,7 @@ class ExtractTableToStorageJob(_BaseJob):
     def compression(self, value):
         """Update compression.
 
-        :type value: boolean
+        :type value: string
         :param value: allowed value for :class:`Compression`.
         """
         Compression.validate(value)  # raises ValueError if invalie
@@ -1033,7 +1033,7 @@ class ExtractTableToStorageJob(_BaseJob):
     def destination_format(self, value):
         """Update destination_format.
 
-        :type value: boolean
+        :type value: string
         :param value: allowed value for :class:`DestinationFormat`.
         """
         DestinationFormat.validate(value)  # raises ValueError if invalid
