@@ -15,16 +15,12 @@
 import unittest2
 
 
-class TestLoadTableFromStorageJob(unittest2.TestCase):
+class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
     DS_NAME = 'datset_name'
     TABLE_NAME = 'table_name'
     JOB_NAME = 'job_name'
-
-    def _getTargetClass(self):
-        from gcloud.bigquery.job import LoadTableFromStorageJob
-        return LoadTableFromStorageJob
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -40,21 +36,17 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self.JOB_ID = '%s:%s' % (self.PROJECT, self.JOB_NAME)
         self.RESOURCE_URL = 'http://example.com/path/to/resource'
         self.USER_EMAIL = 'phred@example.com'
-        self.INPUT_FILES = 2
-        self.INPUT_BYTES = 12345
-        self.OUTPUT_BYTES = 23456
-        self.OUTPUT_ROWS = 345
 
     def _makeResource(self, started=False, ended=False):
         self._setUpConstants()
         resource = {
             'configuration': {
-                'load': {
+                self.JOB_TYPE: {
                 },
             },
             'statistics': {
                 'creationTime': self.WHEN_TS * 1000,
-                'load': {
+                self.JOB_TYPE: {
                 }
             },
             'etag': self.ETAG,
@@ -72,42 +64,89 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
 
         if ended:
             resource['statistics']['endTime'] = (self.WHEN_TS + 1000) * 1000
-            resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
-            resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
-            resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
-            resource['statistics']['load']['outputRows'] = self.OUTPUT_ROWS
 
         return resource
+
+    def _verifyInitialReadonlyProperties(self, job):
+        # root elements of resource
+        self.assertEqual(job.etag, None)
+        self.assertEqual(job.job_id, None)
+        self.assertEqual(job.self_link, None)
+        self.assertEqual(job.user_email, None)
+
+        # derived from resource['statistics']
+        self.assertEqual(job.created, None)
+        self.assertEqual(job.started, None)
+        self.assertEqual(job.ended, None)
+
+        # derived from resource['status']
+        self.assertEqual(job.error_result, None)
+        self.assertEqual(job.errors, None)
+        self.assertEqual(job.state, None)
 
     def _verifyReadonlyResourceProperties(self, job, resource):
         from datetime import timedelta
 
         self.assertEqual(job.job_id, self.JOB_ID)
 
-        if 'creationTime' in resource.get('statistics', {}):
+        statistics = resource.get('statistics', {})
+
+        if 'creationTime' in statistics:
             self.assertEqual(job.created, self.WHEN)
         else:
             self.assertEqual(job.created, None)
-        if 'startTime' in resource.get('statistics', {}):
+
+        if 'startTime' in statistics:
             self.assertEqual(job.started, self.WHEN)
         else:
             self.assertEqual(job.started, None)
-        if 'endTime' in resource.get('statistics', {}):
+
+        if 'endTime' in statistics:
             self.assertEqual(job.ended, self.WHEN + timedelta(seconds=1000))
         else:
             self.assertEqual(job.ended, None)
+
         if 'etag' in resource:
             self.assertEqual(job.etag, self.ETAG)
         else:
             self.assertEqual(job.etag, None)
+
         if 'selfLink' in resource:
             self.assertEqual(job.self_link, self.RESOURCE_URL)
         else:
             self.assertEqual(job.self_link, None)
+
         if 'user_email' in resource:
             self.assertEqual(job.user_email, self.USER_EMAIL)
         else:
             self.assertEqual(job.user_email, None)
+
+
+class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'load'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        return LoadTableFromStorageJob
+
+    def _setUpConstants(self):
+        super(TestLoadTableFromStorageJob, self)._setUpConstants()
+        self.INPUT_FILES = 2
+        self.INPUT_BYTES = 12345
+        self.OUTPUT_BYTES = 23456
+        self.OUTPUT_ROWS = 345
+
+    def _makeResource(self, started=False, ended=False):
+        resource = super(TestLoadTableFromStorageJob, self)._makeResource(
+            started, ended)
+
+        if ended:
+            resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
+            resource['statistics']['load']['inputFileBytes'] = self.INPUT_BYTES
+            resource['statistics']['load']['outputBytes'] = self.OUTPUT_BYTES
+            resource['statistics']['load']['outputRows'] = self.OUTPUT_ROWS
+
+        return resource
 
     def _verifyBooleanConfigProperties(self, job, config):
         if 'allowJaggedRows' in config:
@@ -188,6 +227,16 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
         self.assertEqual(job.schema, [])
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # derived from resource['statistics']['load']
+        self.assertEqual(job.input_file_bytes, None)
+        self.assertEqual(job.input_files, None)
+        self.assertEqual(job.output_bytes, None)
+        self.assertEqual(job.output_rows, None)
+
+        # set/read from resource['configuration']['load']
         self.assertTrue(job.allow_jagged_rows is None)
         self.assertTrue(job.allow_quoted_newlines is None)
         self.assertTrue(job.create_disposition is None)
@@ -199,28 +248,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self.assertTrue(job.skip_leading_rows is None)
         self.assertTrue(job.source_format is None)
         self.assertTrue(job.write_disposition is None)
-
-        # root elements of resource
-        self.assertEqual(job.etag, None)
-        self.assertEqual(job.job_id, None)
-        self.assertEqual(job.self_link, None)
-        self.assertEqual(job.user_email, None)
-
-        # derived from resource['statistics']
-        self.assertEqual(job.created, None)
-        self.assertEqual(job.started, None)
-        self.assertEqual(job.ended, None)
-
-        # derived from resource['statistics']['load']
-        self.assertEqual(job.input_file_bytes, None)
-        self.assertEqual(job.input_files, None)
-        self.assertEqual(job.output_bytes, None)
-        self.assertEqual(job.output_rows, None)
-
-        # derived from resource['status']
-        self.assertEqual(job.error_result, None)
-        self.assertEqual(job.errors, None)
-        self.assertEqual(job.state, None)
 
     def test_ctor_w_schema(self):
         from gcloud.bigquery.table import SchemaField
@@ -293,11 +320,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         load_stats['outputBytes'] = 23456
         load_stats['outputRows'] = 345
 
-        status = job._properties['status'] = {}
-        status['errorResult'] = ERROR_RESULT
-        status['errors'] = [ERROR_RESULT]
-        status['state'] = 'STATE'
-
         self.assertEqual(job.etag, 'ETAG')
         self.assertEqual(job.job_id, JOB_ID)
         self.assertEqual(job.self_link, URL)
@@ -311,6 +333,16 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self.assertEqual(job.input_files, 1)
         self.assertEqual(job.output_bytes, 23456)
         self.assertEqual(job.output_rows, 345)
+
+        status = job._properties['status'] = {}
+
+        self.assertEqual(job.error_result, None)
+        self.assertEqual(job.errors, None)
+        self.assertEqual(job.state, None)
+
+        status['errorResult'] = ERROR_RESULT
+        status['errors'] = [ERROR_RESULT]
+        status['state'] = 'STATE'
 
         self.assertEqual(job.error_result, ERROR_RESULT)
         self.assertEqual(job.errors, [ERROR_RESULT])
@@ -703,6 +735,250 @@ class TestLoadTableFromStorageJob(unittest2.TestCase):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestCopyJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'copy'
+    SOURCE_TABLE = 'source_table'
+    DESTINATION_TABLE = 'destination_table'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import CopyJob
+        return CopyJob
+
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('copy')
+
+        if 'createDisposition' in config:
+            self.assertEqual(job.create_disposition,
+                             config['createDisposition'])
+        else:
+            self.assertTrue(job.create_disposition is None)
+
+        if 'writeDisposition' in config:
+            self.assertEqual(job.write_disposition,
+                             config['writeDisposition'])
+        else:
+            self.assertTrue(job.write_disposition is None)
+
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        self.assertTrue(job.destination is destination)
+        self.assertEqual(job.sources, [source])
+        self.assertTrue(job._client is client)
+        self.assertEqual(
+            job.path,
+            '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # set/read from resource['configuration']['copy']
+        self.assertTrue(job.create_disposition is None)
+        self.assertTrue(job.write_disposition is None)
+
+    def test_create_disposition_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        with self.assertRaises(ValueError):
+            job.create_disposition = 'BOGUS'
+
+    def test_create_disposition_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job.create_disposition = 'CREATE_IF_NEEDED'
+        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
+        del job.create_disposition
+        self.assertTrue(job.create_disposition is None)
+
+    def test_write_disposition_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        with self.assertRaises(ValueError):
+            job.write_disposition = 'BOGUS'
+
+    def test_write_disposition_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+        job.write_disposition = 'WRITE_TRUNCATE'
+        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
+        del job.write_disposition
+        self.assertTrue(job.write_disposition is None)
+
+    def test_begin_w_bound_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [{
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE
+                    }],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_alternate_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource(ended=True)
+        COPY_CONFIGURATION = {
+            'sourceTables': [{
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.SOURCE_TABLE,
+            }],
+            'destinationTable': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.DESTINATION_TABLE,
+            },
+            'createDisposition': 'CREATE_NEVER',
+            'writeDisposition': 'WRITE_TRUNCATE',
+        }
+        RESOURCE['configuration']['copy'] = COPY_CONFIGURATION
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        job.create_disposition = 'CREATE_NEVER'
+        job.write_disposition = 'WRITE_TRUNCATE'
+
+        job.begin(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': COPY_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        self.assertFalse(job.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        self.assertTrue(job.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client)
+
+        job.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        destination = _Table(self.DESTINATION_TABLE)
+        job = self._makeOne(self.JOB_NAME, destination, [source], client1)
+
+        job.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+
 class _Client(object):
 
     def __init__(self, project='project', connection=None):
@@ -712,11 +988,13 @@ class _Client(object):
 
 class _Table(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, name=None):
+        self._name = name
 
     @property
     def name(self):
+        if self._name is not None:
+            return self._name
         return TestLoadTableFromStorageJob.TABLE_NAME
 
     @property

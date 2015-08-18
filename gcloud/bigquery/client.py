@@ -18,6 +18,7 @@
 from gcloud.client import JSONClient
 from gcloud.bigquery.connection import Connection
 from gcloud.bigquery.dataset import Dataset
+from gcloud.bigquery.job import CopyJob
 from gcloud.bigquery.job import LoadTableFromStorageJob
 
 
@@ -115,3 +116,20 @@ class Client(JSONClient):
         """
         return LoadTableFromStorageJob(name, destination, source_uris,
                                        client=self)
+
+    def copy_table(self, name, destination, *sources):
+        """Construct a job for copying one or more tables into another table.
+
+        :type name: string
+        :param name: Name of the job.
+
+        :type destination: :class:`gcloud.bigquery.table.Table`
+        :param destination: Table into which data is to be copied.
+
+        :type sources: sequence of :class:`gcloud.bigquery.table.Table`
+        :param sources: tables to be copied.
+
+        :rtype: :class:`gcloud.bigquery.job.CopyJob`
+        :returns: a new ``CopyJob`` instance
+        """
+        return CopyJob(name, destination, sources, client=self)
