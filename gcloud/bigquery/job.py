@@ -1105,7 +1105,7 @@ class ExtractTableToStorageJob(_BaseJob):
         del self._configuration._print_header
 
     def _populate_config_resource(self, configuration):
-
+        """Helper for _build_resource: copy config properties to resource"""
         if self.compression is not None:
             configuration['compression'] = self.compression
         if self.destination_format is not None:
