@@ -289,6 +289,10 @@ class _Enum(object):
 
 class CreateDisposition(_Enum):
     """Pseudo-enum for allowed values for ``create_disposition`` properties.
+
+    See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
     """
     CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
     CREATE_NEVER = 'CREATE_NEVER'
@@ -296,14 +300,22 @@ class CreateDisposition(_Enum):
 
 
 class Encoding(_Enum):
-    """Pseudo-enum for allowed values for ``encoding`` properties."""
+    """Pseudo-enum for allowed values for ``encoding`` properties.
+
+    See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
+    """
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
     ALLOWED = (UTF_8, ISO_8559_1)
 
 
 class SourceFormat(_Enum):
-    """Pseudo-enum for allowed values for ``source_format`` properties."""
+    """Pseudo-enum for allowed values for ``source_format`` properties.
+
+    See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
+    """
     CSV = 'CSV'
     DATASTORE_BACKUP = 'DATASTORE_BACKUP'
     NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
@@ -311,7 +323,12 @@ class SourceFormat(_Enum):
 
 
 class WriteDisposition(_Enum):
-    """Pseudo-enum for allowed values for ``write_disposition`` properties."""
+    """Pseudo-enum for allowed values for ``write_disposition`` properties.
+
+    See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
+    """
     WRITE_APPEND = 'WRITE_APPEND'
     WRITE_TRUNCATE = 'WRITE_TRUNCATE'
     WRITE_EMPTY = 'WRITE_EMPTY'
@@ -431,6 +448,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def allow_jagged_rows(self):
         """Allow rows with missing trailing commas for optional fields.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows
+
         :rtype: boolean, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -457,6 +477,9 @@ class LoadTableFromStorageJob(_BaseJob):
     @property
     def allow_quoted_newlines(self):
         """Allow rows with quoted newlines.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines
 
         :rtype: boolean, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -485,6 +508,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def create_disposition(self):
         """Define how the back-end handles a missing destination table.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -509,6 +535,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def encoding(self):
         """Encoding for source data.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -532,6 +561,9 @@ class LoadTableFromStorageJob(_BaseJob):
     @property
     def field_delimiter(self):
         """Allow rows with missing trailing commas for optional fields.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter
 
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -560,6 +592,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def ignore_unknown_values(self):
         """Ignore rows with extra columns beyond those specified by the schema.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues
+
         :rtype: boolean, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -586,6 +621,9 @@ class LoadTableFromStorageJob(_BaseJob):
     @property
     def max_bad_records(self):
         """Max number of bad records to be ignored.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords
 
         :rtype: integer, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -614,6 +652,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def quote_character(self):
         """Character used to quote values.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -640,6 +681,9 @@ class LoadTableFromStorageJob(_BaseJob):
     @property
     def skip_leading_rows(self):
         """Count of leading rows to be skipped.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows
 
         :rtype: integer, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -668,6 +712,9 @@ class LoadTableFromStorageJob(_BaseJob):
     def source_format(self):
         """Format of source data files.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -691,6 +738,9 @@ class LoadTableFromStorageJob(_BaseJob):
     @property
     def write_disposition(self):
         """Allow rows with missing trailing commas for optional fields.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
 
         :rtype: boolean, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
@@ -803,6 +853,9 @@ class CopyJob(_BaseJob):
     def create_disposition(self):
         """Handling for missing destination table.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
+
         :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
@@ -812,9 +865,8 @@ class CopyJob(_BaseJob):
     def create_disposition(self, value):
         """Update create_disposition.
 
-        :type value: boolean
-        :param value: new create_disposition: one of "CREATE_IF_NEEDED" or
-                      "CREATE_NEVER"
+        :type value: string
+        :param value: allowed values for :class:`CreateDisposition`
         """
         CreateDisposition.validate(value)   # raises ValueError if invalid
         self._configuration._create_disposition = value
@@ -828,7 +880,10 @@ class CopyJob(_BaseJob):
     def write_disposition(self):
         """Allow rows with missing trailing commas for optional fields.
 
-        :rtype: boolean, or ``NoneType``
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
+
+        :rtype: string, or ``NoneType``
         :returns: The value as set by the user, or None (the default).
         """
         return self._configuration._write_disposition
