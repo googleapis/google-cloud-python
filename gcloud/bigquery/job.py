@@ -788,7 +788,7 @@ class LoadTableFromStorageJob(_BaseJob):
             configuration['writeDisposition'] = self.write_disposition
 
     def _build_resource(self):
-        """Generate a resource for ``begin``."""
+        """Generate a resource for :meth:`begin`."""
         resource = {
             'jobReference': {
                 'projectId': self.project,
@@ -911,7 +911,7 @@ class CopyJob(_BaseJob):
             configuration['writeDisposition'] = self.write_disposition
 
     def _build_resource(self):
-        """Generate a resource for ``begin``."""
+        """Generate a resource for :meth:`begin`."""
 
         source_refs = [{
             'projectId': table.project,
@@ -1116,7 +1116,7 @@ class ExtractTableToStorageJob(_BaseJob):
             configuration['printHeader'] = self.print_header
 
     def _build_resource(self):
-        """Generate a resource for ``begin``."""
+        """Generate a resource for :meth:`begin`."""
 
         source_ref = {
             'projectId': self.source.project,
