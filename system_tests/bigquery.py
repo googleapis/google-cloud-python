@@ -283,7 +283,7 @@ class TestBigQuery(unittest2.TestCase):
         table.create()
         self.to_delete.insert(0, table)
 
-        job = CLIENT.load_from_storage(
+        job = CLIENT.load_table_from_storage(
             'bq_load_storage_test_%d' % (TIMESTAMP,), table, GS_URL)
         job.create_disposition = 'CREATE_NEVER'
         job.skip_leading_rows = 1
