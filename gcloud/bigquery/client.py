@@ -136,7 +136,7 @@ class Client(JSONClient):
         return CopyJob(name, destination, sources, client=self)
 
     def extract_table_to_storage(self, name, source, *destination_uris):
-        """Construct a job for copying one or more tables into another table.
+        """Construct a job for extracting a table into Cloud Storage files.
 
         :type name: string
         :param name: Name of the job.
