@@ -18,7 +18,9 @@ import six
 
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_from_microseconds
+from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.table import SchemaField
+from gcloud.bigquery.table import Table
 from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
 
@@ -120,6 +122,13 @@ class Encoding(_EnumProperty):
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
     ALLOWED = (UTF_8, ISO_8559_1)
+
+
+class QueryPriority(_EnumProperty):
+    """Pseudo-enum for ``RunQueryJob.priority`` property."""
+    INTERACTIVE = 'INTERACTIVE'
+    BATCH = 'BATCH'
+    ALLOWED = (INTERACTIVE, BATCH)
 
 
 class SourceFormat(_EnumProperty):
@@ -384,6 +393,8 @@ class _BaseJob(object):
         api_response = client.connection.api_request(
             method='POST', path='%s/cancel' % (self.path,))
         self._set_properties(api_response)
+
+
 
 
 class _LoadConfiguration(object):
@@ -770,6 +781,310 @@ class ExtractTableToStorageJob(_BaseJob):
             },
         }
         configuration = resource['configuration']['extract']
+        self._populate_config_resource(configuration)
+
+        return resource
+
+
+class _QueryConfiguration(object):
+    """User-settable configuration options for query jobs."""
+    # None -> use server default.
+    _allow_large_results = None
+    _create_disposition = None
+    _default_dataset = None
+    _destination_table = None
+    _flatten_results = None
+    _priority = None
+    _use_query_cache = None
+    _write_disposition = None
+
+
+class RunQueryJob(_BaseJob):
+    """Asynchronous job: query BQ tables.
+
+    :type name: string
+    :param name: the name of the job
+
+    :type query: string
+    :param query: BQ SQL query string
+
+    :type client: :class:`gcloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the dataset (which requires a project).
+    """
+    def __init__(self, name, query, client):
+        super(RunQueryJob, self).__init__(name, client)
+        self.query = query
+        self._configuration = _QueryConfiguration()
+
+    @property
+    def allow_large_results(self):
+        """Allow query to return arbitraily large result sets.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults
+
+        :rtype: boolean, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._allow_large_results
+
+    @allow_large_results.setter
+    def allow_large_results(self, value):
+        """Update allow_large_results.
+
+        :type value: boolean
+        :param value: new allow_large_results
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        self._configuration._allow_large_results = value
+
+    @allow_large_results.deleter
+    def allow_large_results(self):
+        """Delete allow_large_results."""
+        del self._configuration._allow_large_results
+
+    @property
+    def create_disposition(self):
+        """Handling for missing destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
+
+        :rtype: string, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._create_disposition
+
+    @create_disposition.setter
+    def create_disposition(self, value):
+        """Update create_disposition.
+
+        :type value: string
+        :param value: allowed values for :class:`CreateDisposition`
+        """
+        CreateDisposition.validate(value)   # raises ValueError if invalid
+        self._configuration._create_disposition = value
+
+    @create_disposition.deleter
+    def create_disposition(self):
+        """Delete create_disposition."""
+        del self._configuration._create_disposition
+
+    @property
+    def default_dataset(self):
+        """Default dataset for unprefixed table names in query.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
+
+        :rtype: :class:`gcloud.bigquery.dataset.Dataset`
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._default_dataset
+
+    @default_dataset.setter
+    def default_dataset(self, value):
+        """Update default_dataset.
+
+        :type value: :class:`gcloud.bigquery.dataset.Dataset`
+        :param value: new default dataset.
+        """
+        if not isinstance(value, Dataset):
+            raise ValueError('Pass a Table instance')
+        self._configuration._default_dataset = value
+
+    @default_dataset.deleter
+    def default_dataset(self):
+        """Delete default_dataset."""
+        del self._configuration._default_dataset
+
+    @property
+    def destination_table(self):
+        """Table into which query results are writen.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
+
+        :rtype: :class:`gcloud.bigquery.table.Table`
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._destination_table
+
+    @destination_table.setter
+    def destination_table(self, value):
+        """Update destination_table.
+
+        :type value: :class:`gcloud.bigquery.table.Table`
+        :param value: new default dataset.
+        """
+        if not isinstance(value, Table):
+            raise ValueError('Pass a Table instance')
+        self._configuration._destination_table = value
+
+    @destination_table.deleter
+    def destination_table(self):
+        """Delete destination_table."""
+        del self._configuration._destination_table
+
+    @property
+    def flatten_results(self):
+        """Flatten nested/repeated fields in results.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults
+
+        :rtype: boolean, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._flatten_results
+
+    @flatten_results.setter
+    def flatten_results(self, value):
+        """Update flatten_results.
+
+        :type value: boolean
+        :param value: new flatten_results
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        self._configuration._flatten_results = value
+
+    @flatten_results.deleter
+    def flatten_results(self):
+        """Delete flatten_results."""
+        del self._configuration._flatten_results
+
+    @property
+    def priority(self):
+        """Handling for missing destination table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
+
+        :rtype: string, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._priority
+
+    @priority.setter
+    def priority(self, value):
+        """Update priority.
+
+        :type value: string
+        :param value: allowed values for :class:`QueryPriority`
+        """
+        QueryPriority.validate(value)   # raises ValueError if invalid
+        self._configuration._priority = value
+
+    @priority.deleter
+    def priority(self):
+        """Delete priority."""
+        del self._configuration._priority
+
+    @property
+    def use_query_cache(self):
+        """Set whether the query will be loaded from cache, if available.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
+
+        :rtype: boolean, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._use_query_cache
+
+    @use_query_cache.setter
+    def use_query_cache(self, value):
+        """Update use_query_cache.
+
+        :type value: boolean
+        :param value: new use_query_cache
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, bool):
+            raise ValueError("Pass a boolean")
+        self._configuration._use_query_cache = value
+
+    @use_query_cache.deleter
+    def use_query_cache(self):
+        """Delete use_query_cache."""
+        del self._configuration._use_query_cache
+
+    @property
+    def write_disposition(self):
+        """Allow rows with missing trailing commas for optional fields.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
+
+        :rtype: string, or ``NoneType``
+        :returns: The value as set by the user, or None (the default).
+        """
+        return self._configuration._write_disposition
+
+    @write_disposition.setter
+    def write_disposition(self, value):
+        """Update write_disposition.
+
+        :type value: string
+        :param value: allowed values for :class:`WriteDisposition`.
+        """
+        WriteDisposition.validate(value)  # raises ValueError if invalid
+        self._configuration._write_disposition = value
+
+    @write_disposition.deleter
+    def write_disposition(self):
+        """Delete write_disposition."""
+        del self._configuration._write_disposition
+
+    def _populate_config_resource(self, configuration):
+        """Helper for _build_resource: copy config properties to resource"""
+        if self.allow_large_results is not None:
+            configuration['allowLargeResults'] = self.allow_large_results
+        if self.create_disposition is not None:
+            configuration['createDisposition'] = self.create_disposition
+        if self.default_dataset is not None:
+            configuration['defaultDataset'] = {
+                'projectId': self.default_dataset.project,
+                'datasetId': self.default_dataset.name,
+            }
+        if self.destination_table is not None:
+            configuration['destinationTable'] = {
+                'projectId': self.destination_table.project,
+                'datasetId': self.destination_table.dataset_name,
+                'tableId': self.destination_table.name,
+            }
+        if self.flatten_results is not None:
+            configuration['flattenResults'] = self.flatten_results
+        if self.priority is not None:
+            configuration['priority'] = self.priority
+        if self.use_query_cache is not None:
+            configuration['useQueryCache'] = self.use_query_cache
+        if self.write_disposition is not None:
+            configuration['writeDisposition'] = self.write_disposition
+
+    def _build_resource(self):
+        """Generate a resource for :meth:`begin`."""
+
+        resource = {
+            'jobReference': {
+                'projectId': self.project,
+                'jobId': self.name,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.query,
+                },
+            },
+        }
+        configuration = resource['configuration']['query']
         self._populate_config_resource(configuration)
 
         return resource
