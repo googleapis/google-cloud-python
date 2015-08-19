@@ -167,6 +167,25 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(list(job.sources), [source])
         self.assertTrue(job.destination is destination)
 
+    def test_extract_table_to_storage(self):
+        from gcloud.bigquery.job import ExtractTableToStorageJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        DATASET = 'dataset_name'
+        SOURCE = 'source_table'
+        DESTINATION = 'gs://bucket_name/object_name'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        dataset = client.dataset(DATASET)
+        source = dataset.table(SOURCE)
+        job = client.extract_table_to_storage(JOB, source, DESTINATION)
+        self.assertTrue(isinstance(job, ExtractTableToStorageJob))
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.source, source)
+        self.assertEqual(list(job.destination_uris), [DESTINATION])
+
 
 class _Credentials(object):
 

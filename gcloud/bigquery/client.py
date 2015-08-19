@@ -19,6 +19,7 @@ from gcloud.client import JSONClient
 from gcloud.bigquery.connection import Connection
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import CopyJob
+from gcloud.bigquery.job import ExtractTableToStorageJob
 from gcloud.bigquery.job import LoadTableFromStorageJob
 
 
@@ -133,3 +134,22 @@ class Client(JSONClient):
         :returns: a new ``CopyJob`` instance
         """
         return CopyJob(name, destination, sources, client=self)
+
+    def extract_table_to_storage(self, name, source, *destination_uris):
+        """Construct a job for extracting a table into Cloud Storage files.
+
+        :type name: string
+        :param name: Name of the job.
+
+        :type source: :class:`gcloud.bigquery.table.Table`
+        :param source: table to be extracted.
+
+        :type destination_uris: sequence of string
+        :param destination_uris: URIs of CloudStorage file(s) into which
+                                 table data is to be extracted.
+
+        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
+        :returns: a new ``ExtractTableToStorageJob`` instance
+        """
+        return ExtractTableToStorageJob(name, source, destination_uris,
+                                        client=self)

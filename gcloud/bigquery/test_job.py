@@ -979,6 +979,296 @@ class TestCopyJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'extract'
+    SOURCE_TABLE = 'source_table'
+    DESTINATION_URI = 'gs://bucket_name/object_name'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import ExtractTableToStorageJob
+        return ExtractTableToStorageJob
+
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('extract')
+
+        if 'compression' in config:
+            self.assertEqual(job.compression,
+                             config['compression'])
+        else:
+            self.assertTrue(job.compression is None)
+
+        if 'destinationFormat' in config:
+            self.assertEqual(job.destination_format,
+                             config['destinationFormat'])
+        else:
+            self.assertTrue(job.destination_format is None)
+
+        if 'fieldDelimiter' in config:
+            self.assertEqual(job.field_delimiter,
+                             config['fieldDelimiter'])
+        else:
+            self.assertTrue(job.field_delimiter is None)
+
+        if 'printHeader' in config:
+            self.assertEqual(job.print_header,
+                             config['printHeader'])
+        else:
+            self.assertTrue(job.print_header is None)
+
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        self.assertEqual(job.source, source)
+        self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
+        self.assertTrue(job._client is client)
+        self.assertEqual(
+            job.path,
+            '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # set/read from resource['configuration']['copy']
+        self.assertTrue(job.compression is None)
+        self.assertTrue(job.destination_format is None)
+        self.assertTrue(job.field_delimiter is None)
+        self.assertTrue(job.print_header is None)
+
+    def test_compression_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        with self.assertRaises(ValueError):
+            job.compression = 'BOGUS'
+
+    def test_compression_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        job.compression = 'GZIP'
+        self.assertEqual(job.compression, 'GZIP')
+        del job.compression
+        self.assertTrue(job.compression is None)
+
+    def test_destination_format_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        with self.assertRaises(ValueError):
+            job.destination_format = 'BOGUS'
+
+    def test_destination_format_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        job.destination_format = 'AVRO'
+        self.assertEqual(job.destination_format, 'AVRO')
+        del job.destination_format
+        self.assertTrue(job.destination_format is None)
+
+    def test_field_delimiter_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        with self.assertRaises(ValueError):
+            job.field_delimiter = object()
+
+    def test_field_delimiter_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        job.field_delimiter = '|'
+        self.assertEqual(job.field_delimiter, '|')
+        del job.field_delimiter
+        self.assertTrue(job.field_delimiter is None)
+
+    def test_print_header_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        with self.assertRaises(ValueError):
+            job.print_header = 'BOGUS'
+
+    def test_print_header_setter_deleter(self):
+        client = _Client(self.PROJECT)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+        job.print_header = False
+        self.assertEqual(job.print_header, False)
+        del job.print_header
+        self.assertTrue(job.print_header is None)
+
+    def test_begin_w_bound_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE
+                    },
+                    'destinationUris': [self.DESTINATION_URI],
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_alternate_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource(ended=True)
+        EXTRACT_CONFIGURATION = {
+            'sourceTable': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+                'tableId': self.SOURCE_TABLE,
+            },
+            'destinationUris': [self.DESTINATION_URI],
+            'compression': 'GZIP',
+            'destinationFormat': 'NEWLINE_DELIMITED_JSON',
+            'fieldDelimiter': '|',
+            'printHeader': False,
+        }
+        RESOURCE['configuration']['extract'] = EXTRACT_CONFIGURATION
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client1)
+
+        job.compression = 'GZIP'
+        job.destination_format = 'NEWLINE_DELIMITED_JSON'
+        job.field_delimiter = '|'
+        job.print_header = False
+
+        job.begin(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'extract': EXTRACT_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+
+        self.assertFalse(job.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client1)
+
+        self.assertTrue(job.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client)
+
+        job.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        source = _Table(self.SOURCE_TABLE)
+        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
+                            client1)
+
+        job.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+
 class _Client(object):
 
     def __init__(self, project='project', connection=None):
