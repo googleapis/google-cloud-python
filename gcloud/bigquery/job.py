@@ -414,7 +414,7 @@ class _LoadConfiguration(object):
 
 
 class LoadTableFromStorageJob(_BaseJob):
-    """Asynchronous job for loading data into a BQ table from CloudStorage.
+    """Asynchronous job for loading data into a table from CloudStorage.
 
     :type name: string
     :param name: the name of the job
@@ -627,7 +627,7 @@ class _CopyConfiguration(object):
 
 
 class CopyJob(_BaseJob):
-    """Asynchronous job: copy data into a BQ table from other tables.
+    """Asynchronous job: copy data into a table from other tables.
 
     :type name: string
     :param name: the name of the job
@@ -706,7 +706,7 @@ class _ExtractConfiguration(object):
 
 
 class ExtractTableToStorageJob(_BaseJob):
-    """Asynchronous job: extract data from a BQ table into Cloud Storage.
+    """Asynchronous job: extract data from a table into Cloud Storage.
 
     :type name: string
     :param name: the name of the job
@@ -800,13 +800,13 @@ class _QueryConfiguration(object):
 
 
 class RunQueryJob(_BaseJob):
-    """Asynchronous job: query BQ tables.
+    """Asynchronous job: query tables.
 
     :type name: string
     :param name: the name of the job
 
     :type query: string
-    :param query: BQ SQL query string
+    :param query: SQL query string
 
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration

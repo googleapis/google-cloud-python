@@ -156,13 +156,13 @@ class Client(JSONClient):
                                         client=self)
 
     def run_query(self, name, query):
-        """Construct a job for running a BG SQL query.
+        """Construct a job for running a SQL query.
 
         :type name: string
         :param name: Name of the job.
 
         :type query: string
-        :param query: BG SQL query to be executed
+        :param query: SQL query to be executed
 
         :rtype: :class:`gcloud.bigquery.job.RunQueryJob`
         :returns: a new ``RunQueryJob`` instance
