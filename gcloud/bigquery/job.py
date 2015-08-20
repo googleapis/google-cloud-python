@@ -894,7 +894,7 @@ class RunQueryJob(_BaseJob):
         :param value: new default dataset.
         """
         if not isinstance(value, Dataset):
-            raise ValueError('Pass a Table instance')
+            raise ValueError('Pass a Dataset instance')
         self._configuration._default_dataset = value
 
     @default_dataset.deleter
