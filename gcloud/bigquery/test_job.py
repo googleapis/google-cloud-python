@@ -1418,13 +1418,23 @@ class TestRunQueryJob(unittest2.TestCase, _Base):
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
     def test_reload_w_bound_client(self):
+        from gcloud.bigquery.dataset import Dataset
+        from gcloud.bigquery.dataset import Table
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        DS_NAME = 'DATASET'
+        DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
 
+        dataset = Dataset(DS_NAME, client)
+        table = Table(DEST_TABLE, dataset)
+        job.destination_table = table
+
         job.reload()
+
+        self.assertEqual(job.destination_table, None)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -1434,7 +1444,15 @@ class TestRunQueryJob(unittest2.TestCase, _Base):
 
     def test_reload_w_alternate_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        DS_NAME = 'DATASET'
+        DEST_TABLE = 'dest_table'
         RESOURCE = self._makeResource()
+        q_config = RESOURCE['configuration']['query']
+        q_config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': DS_NAME,
+            'tableId': DEST_TABLE,
+        }
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
@@ -1456,6 +1474,10 @@ class _Client(object):
     def __init__(self, project='project', connection=None):
         self.project = project
         self.connection = connection
+
+    def dataset(self, name):
+        from gcloud.bigquery.dataset import Dataset
+        return Dataset(name, client=self)
 
 
 class _Table(object):

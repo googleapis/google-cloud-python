@@ -1044,6 +1044,14 @@ class RunQueryJob(_BaseJob):
         """Delete write_disposition."""
         del self._configuration._write_disposition
 
+    def _destination_table_resource(self):
+        if self.destination_table is not None:
+            return {
+                'projectId': self.destination_table.project,
+                'datasetId': self.destination_table.dataset_name,
+                'tableId': self.destination_table.name,
+            }
+
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
         if self.allow_large_results is not None:
@@ -1056,11 +1064,8 @@ class RunQueryJob(_BaseJob):
                 'datasetId': self.default_dataset.name,
             }
         if self.destination_table is not None:
-            configuration['destinationTable'] = {
-                'projectId': self.destination_table.project,
-                'datasetId': self.destination_table.dataset_name,
-                'tableId': self.destination_table.name,
-            }
+            table_res = self._destination_table_resource()
+            configuration['destinationTable'] = table_res
         if self.flatten_results is not None:
             configuration['flattenResults'] = self.flatten_results
         if self.priority is not None:
@@ -1088,3 +1093,18 @@ class RunQueryJob(_BaseJob):
         self._populate_config_resource(configuration)
 
         return resource
+
+    def _scrub_local_properties(self, cleaned):
+        """Helper:  handle subclass properties in cleaned."""
+        configuration = cleaned['configuration']['query']
+        dest_remote = configuration.get('destinationTable')
+
+        if dest_remote is None:
+            if self.destination_table is not None:
+                del self.destination_table
+        else:
+            dest_local = self._destination_table_resource()
+            if dest_remote != dest_local:
+                assert dest_remote['projectId'] == self.project
+                dataset = self._client.dataset(dest_remote['datasetId'])
+                self.destination_table = dataset.table(dest_remote['tableId'])
