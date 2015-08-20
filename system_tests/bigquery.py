@@ -301,6 +301,8 @@ class TestBigQuery(unittest2.TestCase):
             if job.state not in ('DONE', 'done'):
                 time.sleep(10)
 
+        self.assertTrue(job.state in ('DONE', 'done'))
+
         rows, _, _ = table.fetch_data()
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
