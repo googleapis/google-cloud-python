@@ -15,6 +15,107 @@
 import unittest2
 
 
+class Test_ConfigurationProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import _ConfigurationProperty
+        return _ConfigurationProperty
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_it(self):
+
+        class Configuration(object):
+            _attr = None
+
+        class Wrapper(object):
+            attr = self._makeOne('attr')
+
+            def __init__(self):
+                self._configuration = Configuration()
+
+        self.assertEqual(Wrapper.attr.name, 'attr')
+
+        wrapper = Wrapper()
+        self.assertEqual(wrapper.attr, None)
+
+        value = object()
+        wrapper.attr = value
+        self.assertTrue(wrapper.attr is value)
+        self.assertTrue(wrapper._configuration._attr is value)
+
+        del wrapper.attr
+        self.assertEqual(wrapper.attr, None)
+        self.assertEqual(wrapper._configuration._attr, None)
+
+
+class Test_TypedProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import _TypedProperty
+        return _TypedProperty
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_it(self):
+
+        class Configuration(object):
+            _attr = None
+
+        class Wrapper(object):
+            attr = self._makeOne('attr', int)
+
+            def __init__(self):
+                self._configuration = Configuration()
+
+        wrapper = Wrapper()
+        with self.assertRaises(ValueError):
+            wrapper.attr = 'BOGUS'
+
+        wrapper.attr = 42
+        self.assertEqual(wrapper.attr, 42)
+        self.assertEqual(wrapper._configuration._attr, 42)
+
+        del wrapper.attr
+        self.assertEqual(wrapper.attr, None)
+        self.assertEqual(wrapper._configuration._attr, None)
+
+
+class Test_EnumProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import _EnumProperty
+        return _EnumProperty
+
+    def test_it(self):
+
+        class Sub(self._getTargetClass()):
+            ALLOWED = ('FOO', 'BAR', 'BAZ')
+
+        class Configuration(object):
+            _attr = None
+
+        class Wrapper(object):
+            attr = Sub('attr')
+
+            def __init__(self):
+                self._configuration = Configuration()
+
+        wrapper = Wrapper()
+        with self.assertRaises(ValueError):
+            wrapper.attr = 'BOGUS'
+
+        wrapper.attr = 'FOO'
+        self.assertEqual(wrapper.attr, 'FOO')
+        self.assertEqual(wrapper._configuration._attr, 'FOO')
+
+        del wrapper.attr
+        self.assertEqual(wrapper.attr, None)
+        self.assertEqual(wrapper._configuration._attr, None)
+
+
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
@@ -348,182 +449,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self.assertEqual(job.errors, [ERROR_RESULT])
         self.assertEqual(job.state, 'STATE')
 
-    def test_allow_jagged_rows_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.allow_jagged_rows = object()
-
-    def test_allow_jagged_rows_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.allow_jagged_rows = True
-        self.assertTrue(job.allow_jagged_rows)
-        del job.allow_jagged_rows
-        self.assertTrue(job.allow_jagged_rows is None)
-
-    def test_allow_quoted_newlines_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.allow_quoted_newlines = object()
-
-    def test_allow_quoted_newlines_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.allow_quoted_newlines = True
-        self.assertTrue(job.allow_quoted_newlines)
-        del job.allow_quoted_newlines
-        self.assertTrue(job.allow_quoted_newlines is None)
-
-    def test_create_disposition_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.create_disposition = 'BOGUS'
-
-    def test_create_disposition_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.create_disposition = 'CREATE_IF_NEEDED'
-        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
-        del job.create_disposition
-        self.assertTrue(job.create_disposition is None)
-
-    def test_encoding_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.encoding = 'BOGUS'
-
-    def test_encoding_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.encoding = 'ISO-8559-1'
-        self.assertEqual(job.encoding, 'ISO-8559-1')
-        del job.encoding
-        self.assertTrue(job.encoding is None)
-
-    def test_field_delimiter_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.field_delimiter = object()
-
-    def test_field_delimiter_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.field_delimiter = '|'
-        self.assertEqual(job.field_delimiter, '|')
-        del job.field_delimiter
-        self.assertTrue(job.field_delimiter is None)
-
-    def test_ignore_unknown_values_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.ignore_unknown_values = object()
-
-    def test_ignore_unknown_values_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.ignore_unknown_values = True
-        self.assertTrue(job.ignore_unknown_values)
-        del job.ignore_unknown_values
-        self.assertTrue(job.ignore_unknown_values is None)
-
-    def test_max_bad_records_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.max_bad_records = object()
-
-    def test_max_bad_records_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.max_bad_records = 100
-        self.assertEqual(job.max_bad_records, 100)
-        del job.max_bad_records
-        self.assertTrue(job.max_bad_records is None)
-
-    def test_quote_character_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.quote_character = object()
-
-    def test_quote_character_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.quote_character = "'"
-        self.assertEqual(job.quote_character, "'")
-        del job.quote_character
-        self.assertTrue(job.quote_character is None)
-
-    def test_skip_leading_rows_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.skip_leading_rows = object()
-
-    def test_skip_leading_rows_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.skip_leading_rows = 2
-        self.assertEqual(job.skip_leading_rows, 2)
-        del job.skip_leading_rows
-        self.assertTrue(job.skip_leading_rows is None)
-
-    def test_source_format_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.source_format = 'BOGUS'
-
-    def test_source_format_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.source_format = 'NEWLINE_DELIMITED_JSON'
-        self.assertEqual(job.source_format, 'NEWLINE_DELIMITED_JSON')
-        del job.source_format
-        self.assertTrue(job.source_format is None)
-
-    def test_write_disposition_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        with self.assertRaises(ValueError):
-            job.write_disposition = 'BOGUS'
-
-    def test_write_disposition_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        table = _Table()
-        job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
-        job.write_disposition = 'WRITE_TRUNCATE'
-        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
-        del job.write_disposition
-        self.assertTrue(job.write_disposition is None)
-
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
@@ -779,42 +704,6 @@ class TestCopyJob(unittest2.TestCase, _Base):
         self.assertTrue(job.create_disposition is None)
         self.assertTrue(job.write_disposition is None)
 
-    def test_create_disposition_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
-        with self.assertRaises(ValueError):
-            job.create_disposition = 'BOGUS'
-
-    def test_create_disposition_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
-        job.create_disposition = 'CREATE_IF_NEEDED'
-        self.assertEqual(job.create_disposition, 'CREATE_IF_NEEDED')
-        del job.create_disposition
-        self.assertTrue(job.create_disposition is None)
-
-    def test_write_disposition_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
-        with self.assertRaises(ValueError):
-            job.write_disposition = 'BOGUS'
-
-    def test_write_disposition_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        destination = _Table(self.DESTINATION_TABLE)
-        job = self._makeOne(self.JOB_NAME, destination, [source], client)
-        job.write_disposition = 'WRITE_TRUNCATE'
-        self.assertEqual(job.write_disposition, 'WRITE_TRUNCATE')
-        del job.write_disposition
-        self.assertTrue(job.write_disposition is None)
-
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
@@ -1035,78 +924,6 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self.assertTrue(job.compression is None)
         self.assertTrue(job.destination_format is None)
         self.assertTrue(job.field_delimiter is None)
-        self.assertTrue(job.print_header is None)
-
-    def test_compression_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        with self.assertRaises(ValueError):
-            job.compression = 'BOGUS'
-
-    def test_compression_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        job.compression = 'GZIP'
-        self.assertEqual(job.compression, 'GZIP')
-        del job.compression
-        self.assertTrue(job.compression is None)
-
-    def test_destination_format_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        with self.assertRaises(ValueError):
-            job.destination_format = 'BOGUS'
-
-    def test_destination_format_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        job.destination_format = 'AVRO'
-        self.assertEqual(job.destination_format, 'AVRO')
-        del job.destination_format
-        self.assertTrue(job.destination_format is None)
-
-    def test_field_delimiter_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        with self.assertRaises(ValueError):
-            job.field_delimiter = object()
-
-    def test_field_delimiter_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        job.field_delimiter = '|'
-        self.assertEqual(job.field_delimiter, '|')
-        del job.field_delimiter
-        self.assertTrue(job.field_delimiter is None)
-
-    def test_print_header_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        with self.assertRaises(ValueError):
-            job.print_header = 'BOGUS'
-
-    def test_print_header_setter_deleter(self):
-        client = _Client(self.PROJECT)
-        source = _Table(self.SOURCE_TABLE)
-        job = self._makeOne(self.JOB_NAME, source, [self.DESTINATION_URI],
-                            client)
-        job.print_header = False
-        self.assertEqual(job.print_header, False)
-        del job.print_header
         self.assertTrue(job.print_header is None)
 
     def test_begin_w_bound_client(self):

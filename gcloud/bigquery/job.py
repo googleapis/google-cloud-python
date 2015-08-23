@@ -23,6 +23,121 @@ from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
 
 
+class _ConfigurationProperty(object):
+    """Base property implementation.
+
+    Values will be stored on a `_configuration` helper attribute of the
+    property's job instance.
+
+    :type name: string
+    :param name:  name of the property
+    """
+
+    def __init__(self, name):
+        self.name = name
+        self._backing_name = '_%s' % (self.name,)
+
+    def __get__(self, instance, owner):
+        """Descriptor protocal:  accesstor"""
+        if instance is None:
+            return self
+        return getattr(instance._configuration, self._backing_name)
+
+    def _validate(self, value):
+        """Subclasses override to impose validation policy."""
+        pass
+
+    def __set__(self, instance, value):
+        """Descriptor protocal:  mutator"""
+        self._validate(value)
+        setattr(instance._configuration, self._backing_name, value)
+
+    def __delete__(self, instance):
+        """Descriptor protocal:  deleter"""
+        delattr(instance._configuration, self._backing_name)
+
+
+class _TypedProperty(_ConfigurationProperty):
+    """Property implementation:  validates based on value type.
+
+    :type name: string
+    :param name:  name of the property
+
+    :type property_type: type or sequence of types
+    :param property_type: type to be validated
+    """
+    def __init__(self, name, property_type):
+        super(_TypedProperty, self).__init__(name)
+        self.property_type = property_type
+
+    def _validate(self, value):
+        if not isinstance(value, self.property_type):
+            raise ValueError('Required type: %s' % (self.property_type,))
+
+
+class _EnumProperty(_ConfigurationProperty):
+    """Psedo-enumeration class.
+
+    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
+    be a sequence of strings.
+
+    :type name: string
+    :param name:  name of the property
+    """
+    def _validate(self, value):
+        """Check that ``value`` is one of the allowed values.
+
+        :raises: ValueError if value is not allowed.
+        """
+        if value not in self.ALLOWED:
+            raise ValueError('Pass one of: %s' ', '.join(self.ALLOWED))
+
+
+class Compression(_EnumProperty):
+    """Pseudo-enum for ``compression`` properties."""
+    GZIP = 'GZIP'
+    NONE = 'NONE'
+    ALLOWED = (GZIP, NONE)
+
+
+class CreateDisposition(_EnumProperty):
+    """Pseudo-enum for ``create_disposition`` properties."""
+    CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
+    CREATE_NEVER = 'CREATE_NEVER'
+    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
+
+
+class DestinationFormat(_EnumProperty):
+    """Pseudo-enum for ``destination_format`` properties."""
+    CSV = 'CSV'
+    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    AVRO = 'AVRO'
+    ALLOWED = (CSV, NEWLINE_DELIMITED_JSON, AVRO)
+
+
+class Encoding(_EnumProperty):
+    """Pseudo-enum for ``encoding`` properties."""
+    UTF_8 = 'UTF-8'
+    ISO_8559_1 = 'ISO-8559-1'
+    ALLOWED = (UTF_8, ISO_8559_1)
+
+
+class SourceFormat(_EnumProperty):
+    """Pseudo-enum for ``source_format`` properties."""
+    CSV = 'CSV'
+    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
+    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
+    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
+
+
+class WriteDisposition(_EnumProperty):
+    """Pseudo-enum for ``write_disposition`` properties."""
+    WRITE_APPEND = 'WRITE_APPEND'
+    WRITE_TRUNCATE = 'WRITE_TRUNCATE'
+    WRITE_EMPTY = 'WRITE_EMPTY'
+    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
+
+
 class _BaseJob(object):
     """Base class for asynchronous jobs.
 
@@ -271,70 +386,6 @@ class _BaseJob(object):
         self._set_properties(api_response)
 
 
-class _Enum(object):
-    """Psedo-enumeration class.
-
-    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
-    be a sequence of strings.
-    """
-    @classmethod
-    def validate(cls, value):
-        """Check that ``value`` is one of the allowed values.
-
-        :raises: ValueError if value is not allowed.
-        """
-        if value not in cls.ALLOWED:
-            raise ValueError('Pass one of: %s' ', '.join(cls.ALLOWED))
-
-
-class CreateDisposition(_Enum):
-    """Pseudo-enum for allowed values for ``create_disposition`` properties.
-
-    See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
-    """
-    CREATE_IF_NEEDED = 'CREATE_IF_NEEDED'
-    CREATE_NEVER = 'CREATE_NEVER'
-    ALLOWED = (CREATE_IF_NEEDED, CREATE_NEVER)
-
-
-class Encoding(_Enum):
-    """Pseudo-enum for allowed values for ``encoding`` properties.
-
-    See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
-    """
-    UTF_8 = 'UTF-8'
-    ISO_8559_1 = 'ISO-8559-1'
-    ALLOWED = (UTF_8, ISO_8559_1)
-
-
-class SourceFormat(_Enum):
-    """Pseudo-enum for allowed values for ``source_format`` properties.
-
-    See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
-    """
-    CSV = 'CSV'
-    DATASTORE_BACKUP = 'DATASTORE_BACKUP'
-    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
-    ALLOWED = (CSV, DATASTORE_BACKUP, NEWLINE_DELIMITED_JSON)
-
-
-class WriteDisposition(_Enum):
-    """Pseudo-enum for allowed values for ``write_disposition`` properties.
-
-    See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
-    """
-    WRITE_APPEND = 'WRITE_APPEND'
-    WRITE_TRUNCATE = 'WRITE_TRUNCATE'
-    WRITE_EMPTY = 'WRITE_EMPTY'
-    ALLOWED = (WRITE_APPEND, WRITE_TRUNCATE, WRITE_EMPTY)
-
-
 class _LoadConfiguration(object):
     """User-settable configuration options for load jobs."""
     # None -> use server default.
@@ -444,323 +495,60 @@ class LoadTableFromStorageJob(_BaseJob):
         if statistics is not None:
             return int(statistics['load']['outputRows'])
 
-    @property
-    def allow_jagged_rows(self):
-        """Allow rows with missing trailing commas for optional fields.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows
-
-        :rtype: boolean, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._allow_jagged_rows
-
-    @allow_jagged_rows.setter
-    def allow_jagged_rows(self, value):
-        """Update allow_jagged_rows.
-
-        :type value: boolean
-        :param value: new allow_jagged_rows
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, bool):
-            raise ValueError("Pass a boolean")
-        self._configuration._allow_jagged_rows = value
-
-    @allow_jagged_rows.deleter
-    def allow_jagged_rows(self):
-        """Delete allow_jagged_rows."""
-        del self._configuration._allow_jagged_rows
-
-    @property
-    def allow_quoted_newlines(self):
-        """Allow rows with quoted newlines.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines
-
-        :rtype: boolean, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._allow_quoted_newlines
-
-    @allow_quoted_newlines.setter
-    def allow_quoted_newlines(self, value):
-        """Update allow_quoted_newlines.
-
-        :type value: boolean
-        :param value: new allow_quoted_newlines
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, bool):
-            raise ValueError("Pass a boolean")
-        self._configuration._allow_quoted_newlines = value
-
-    @allow_quoted_newlines.deleter
-    def allow_quoted_newlines(self):
-        """Delete allow_quoted_newlines."""
-        del self._configuration._allow_quoted_newlines
-
-    @property
-    def create_disposition(self):
-        """Define how the back-end handles a missing destination table.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._create_disposition
-
-    @create_disposition.setter
-    def create_disposition(self, value):
-        """Update create_disposition.
-
-        :type value: string
-        :param value: allowed values for :class:`CreateDisposition`.
-        """
-        CreateDisposition.validate(value)   # raises ValueError if invalid
-        self._configuration._create_disposition = value
-
-    @create_disposition.deleter
-    def create_disposition(self):
-        """Delete create_disposition."""
-        del self._configuration._create_disposition
-
-    @property
-    def encoding(self):
-        """Encoding for source data.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._encoding
-
-    @encoding.setter
-    def encoding(self, value):
-        """Update encoding.
-
-        :type value: string
-        :param value: allowed values for :class:`Encoding`.
-        """
-        Encoding.validate(value)    # raises ValueError if invalid
-        self._configuration._encoding = value
-
-    @encoding.deleter
-    def encoding(self):
-        """Delete encoding."""
-        del self._configuration._encoding
-
-    @property
-    def field_delimiter(self):
-        """Allow rows with missing trailing commas for optional fields.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._field_delimiter
-
-    @field_delimiter.setter
-    def field_delimiter(self, value):
-        """Update field_delimiter.
-
-        :type value: string
-        :param value: new field delimiter
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.string_types):
-            raise ValueError("Pass a string")
-        self._configuration._field_delimiter = value
-
-    @field_delimiter.deleter
-    def field_delimiter(self):
-        """Delete field_delimiter."""
-        del self._configuration._field_delimiter
-
-    @property
-    def ignore_unknown_values(self):
-        """Ignore rows with extra columns beyond those specified by the schema.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues
-
-        :rtype: boolean, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._ignore_unknown_values
-
-    @ignore_unknown_values.setter
-    def ignore_unknown_values(self, value):
-        """Update ignore_unknown_values.
-
-        :type value: boolean
-        :param value: new ignore_unknown_values
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, bool):
-            raise ValueError("Pass a boolean")
-        self._configuration._ignore_unknown_values = value
-
-    @ignore_unknown_values.deleter
-    def ignore_unknown_values(self):
-        """Delete ignore_unknown_values."""
-        del self._configuration._ignore_unknown_values
-
-    @property
-    def max_bad_records(self):
-        """Max number of bad records to be ignored.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords
-
-        :rtype: integer, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._max_bad_records
-
-    @max_bad_records.setter
-    def max_bad_records(self, value):
-        """Update max_bad_records.
-
-        :type value: integer
-        :param value: new max_bad_records
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.integer_types):
-            raise ValueError("Pass an integer")
-        self._configuration._max_bad_records = value
-
-    @max_bad_records.deleter
-    def max_bad_records(self):
-        """Delete max_bad_records."""
-        del self._configuration._max_bad_records
-
-    @property
-    def quote_character(self):
-        """Character used to quote values.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._quote_character
-
-    @quote_character.setter
-    def quote_character(self, value):
-        """Update quote_character.
-
-        :type value: string
-        :param value: new quote_character
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.string_types):
-            raise ValueError("Pass a string")
-        self._configuration._quote_character = value
-
-    @quote_character.deleter
-    def quote_character(self):
-        """Delete quote_character."""
-        del self._configuration._quote_character
-
-    @property
-    def skip_leading_rows(self):
-        """Count of leading rows to be skipped.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows
-
-        :rtype: integer, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._skip_leading_rows
-
-    @skip_leading_rows.setter
-    def skip_leading_rows(self, value):
-        """Update skip_leading_rows.
-
-        :type value: integer
-        :param value: new skip_leading_rows
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.integer_types):
-            raise ValueError("Pass a boolean")
-        self._configuration._skip_leading_rows = value
-
-    @skip_leading_rows.deleter
-    def skip_leading_rows(self):
-        """Delete skip_leading_rows."""
-        del self._configuration._skip_leading_rows
-
-    @property
-    def source_format(self):
-        """Format of source data files.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._source_format
-
-    @source_format.setter
-    def source_format(self, value):
-        """Update source_format.
-
-        :type value: string
-        :param value: valid values for :class:`SourceFormat`.
-        """
-        SourceFormat.validate(value)    # raises ValueError if invalid
-        self._configuration._source_format = value
-
-    @source_format.deleter
-    def source_format(self):
-        """Delete source_format."""
-        del self._configuration._source_format
-
-    @property
-    def write_disposition(self):
-        """Allow rows with missing trailing commas for optional fields.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
-
-        :rtype: boolean, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._write_disposition
-
-    @write_disposition.setter
-    def write_disposition(self, value):
-        """Update write_disposition.
-
-        :type value: string
-        :param value: valid values for :class:`WriteDisposition`.
-        """
-        WriteDisposition.validate(value)  # raises ValueError if invalid
-        self._configuration._write_disposition = value
-
-    @write_disposition.deleter
-    def write_disposition(self):
-        """Delete write_disposition."""
-        del self._configuration._write_disposition
+    allow_jagged_rows = _TypedProperty('allow_jagged_rows', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows
+    """
+
+    allow_quoted_newlines = _TypedProperty('allow_quoted_newlines', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines
+    """
+
+    create_disposition = CreateDisposition('create_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition
+    """
+
+    encoding = Encoding('encoding')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding
+    """
+
+    field_delimiter = _TypedProperty('field_delimiter', six.string_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter
+    """
+
+    ignore_unknown_values = _TypedProperty('ignore_unknown_values', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues
+    """
+
+    max_bad_records = _TypedProperty('max_bad_records', six.integer_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords
+    """
+
+    quote_character = _TypedProperty('quote_character', six.string_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote
+    """
+
+    skip_leading_rows = _TypedProperty('skip_leading_rows', six.integer_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows
+    """
+
+    source_format = SourceFormat('source_format')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat
+    """
+
+    write_disposition = WriteDisposition('write_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition
+    """
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
@@ -849,59 +637,15 @@ class CopyJob(_BaseJob):
         self.sources = sources
         self._configuration = _CopyConfiguration()
 
-    @property
-    def create_disposition(self):
-        """Handling for missing destination table.
+    create_disposition = CreateDisposition('create_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
+    """
 
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._create_disposition
-
-    @create_disposition.setter
-    def create_disposition(self, value):
-        """Update create_disposition.
-
-        :type value: string
-        :param value: allowed values for :class:`CreateDisposition`
-        """
-        CreateDisposition.validate(value)   # raises ValueError if invalid
-        self._configuration._create_disposition = value
-
-    @create_disposition.deleter
-    def create_disposition(self):
-        """Delete create_disposition."""
-        del self._configuration._create_disposition
-
-    @property
-    def write_disposition(self):
-        """Allow rows with missing trailing commas for optional fields.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._write_disposition
-
-    @write_disposition.setter
-    def write_disposition(self, value):
-        """Update write_disposition.
-
-        :type value: string
-        :param value: allowed values for :class:`WriteDisposition`.
-        """
-        WriteDisposition.validate(value)  # raises ValueError if invalid
-        self._configuration._write_disposition = value
-
-    @write_disposition.deleter
-    def write_disposition(self):
-        """Delete write_disposition."""
-        del self._configuration._write_disposition
+    write_disposition = WriteDisposition('write_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition
+    """
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
@@ -950,23 +694,6 @@ class _ExtractConfiguration(object):
     _print_header = None
 
 
-class Compression(_Enum):
-    """Pseudo-enum for allowed values for ``compression`` properties.
-    """
-    GZIP = 'GZIP'
-    NONE = 'NONE'
-    ALLOWED = (GZIP, NONE)
-
-
-class DestinationFormat(_Enum):
-    """Pseudo-enum for allowed values for ``destination_format`` properties.
-    """
-    CSV = 'CSV'
-    NEWLINE_DELIMITED_JSON = 'NEWLINE_DELIMITED_JSON'
-    AVRO = 'AVRO'
-    ALLOWED = (CSV, NEWLINE_DELIMITED_JSON, AVRO)
-
-
 class ExtractTableToStorageJob(_BaseJob):
     """Asynchronous job: extract data from a BQ table into Cloud Storage.
 
@@ -990,119 +717,25 @@ class ExtractTableToStorageJob(_BaseJob):
         self.destination_uris = destination_uris
         self._configuration = _ExtractConfiguration()
 
-    @property
-    def compression(self):
-        """Compression to apply to destination blobs.
+    compression = Compression('compression')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.compression
+    """
 
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.compression
+    destination_format = DestinationFormat('destination_format')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat
+    """
 
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._compression
+    field_delimiter = _TypedProperty('field_delimiter', six.string_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter
+    """
 
-    @compression.setter
-    def compression(self, value):
-        """Update compression.
-
-        :type value: string
-        :param value: allowed value for :class:`Compression`.
-        """
-        Compression.validate(value)  # raises ValueError if invalie
-        self._configuration._compression = value
-
-    @compression.deleter
-    def compression(self):
-        """Delete compression."""
-        del self._configuration._compression
-
-    @property
-    def destination_format(self):
-        """Handling for missing destination table.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.destinationFormat
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._destination_format
-
-    @destination_format.setter
-    def destination_format(self, value):
-        """Update destination_format.
-
-        :type value: string
-        :param value: allowed value for :class:`DestinationFormat`.
-        """
-        DestinationFormat.validate(value)  # raises ValueError if invalid
-        self._configuration._destination_format = value
-
-    @destination_format.deleter
-    def destination_format(self):
-        """Delete destination_format."""
-        del self._configuration._destination_format
-
-    @property
-    def field_delimiter(self):
-        """Allow rows with missing trailing commas for optional fields.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.fieldDelimiter
-
-        :rtype: string, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._field_delimiter
-
-    @field_delimiter.setter
-    def field_delimiter(self, value):
-        """Update field_delimiter.
-
-        :type value: string
-        :param value: new field delimiter
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, six.string_types):
-            raise ValueError("Pass a string")
-        self._configuration._field_delimiter = value
-
-    @field_delimiter.deleter
-    def field_delimiter(self):
-        """Delete field_delimiter."""
-        del self._configuration._field_delimiter
-
-    @property
-    def print_header(self):
-        """Write a header row into destination blobs.
-
-        See:
-        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract.printHeader
-
-        :rtype: boolean, or ``NoneType``
-        :returns: The value as set by the user, or None (the default).
-        """
-        return self._configuration._print_header
-
-    @print_header.setter
-    def print_header(self, value):
-        """Update print_header.
-
-        :type value: boolean
-        :param value: new print_header
-
-        :raises: ValueError for invalid value types.
-        """
-        if not isinstance(value, bool):
-            raise ValueError("Pass a boolean")
-        self._configuration._print_header = value
-
-    @print_header.deleter
-    def print_header(self):
-        """Delete print_header."""
-        del self._configuration._print_header
+    print_header = _TypedProperty('print_header', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader
+    """
 
     def _populate_config_resource(self, configuration):
         """Helper for _build_resource: copy config properties to resource"""
