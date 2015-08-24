@@ -84,6 +84,35 @@ class TestProject(unittest2.TestCase):
         project = self._makeOne(PROJECT_ID, None)
         self.assertEqual('/projects/%s' % PROJECT_ID, project.path)
 
+    def test_create(self):
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 123
+        PROJECT_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'projectNumber': PROJECT_NUMBER,
+            'name': 'Project Name',
+            'labels': {},
+            'lifecycleState': 'ACTIVE',
+        }
+        connection = _Connection(PROJECT_RESOURCE)
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        self.assertEqual(project.number, None)
+        project.create()
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        request, = connection._requested
+
+        expected_request = {
+            'method': 'POST',
+            'data': {
+                'projectId': PROJECT_ID,
+                'labels': {},
+                'name': None,
+            },
+            'path': '/projects',
+        }
+        self.assertEqual(request, expected_request)
+
     def test_exists(self):
         PROJECT_ID = 'project-id'
         connection = _Connection({'projectId': PROJECT_ID})

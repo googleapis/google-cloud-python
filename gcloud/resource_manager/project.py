@@ -112,6 +112,28 @@ class Project(object):
             client = self._client
         return client
 
+    def create(self, client=None):
+        """API call:  create the project via a ``POST`` request.
+
+        See
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+        """
+        client = self._require_client(client)
+
+        data = {
+            'projectId': self.project_id,
+            'name': self.name,
+            'labels': self.labels,
+        }
+        resp = client.connection.api_request(method='POST', path='/projects',
+                                             data=data)
+        self.set_properties_from_api_repr(resource=resp)
+
     def exists(self, client=None):
         """API call:  test the existence of a project via a ``GET`` request.
 
