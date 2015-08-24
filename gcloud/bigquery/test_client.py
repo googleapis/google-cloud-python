@@ -186,6 +186,20 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(job.source, source)
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
+    def test_run_query(self):
+        from gcloud.bigquery.job import RunQueryJob
+        PROJECT = 'PROJECT'
+        JOB = 'job_name'
+        QUERY = 'select count(*) from persons'
+        creds = _Credentials()
+        http = object()
+        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        job = client.run_query(JOB, QUERY)
+        self.assertTrue(isinstance(job, RunQueryJob))
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, JOB)
+        self.assertEqual(job.query, QUERY)
+
 
 class _Credentials(object):
 

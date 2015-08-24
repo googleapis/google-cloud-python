@@ -1,3 +1,4 @@
+# pylint: disable=C0302
 # Copyright 2015 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -1086,11 +1087,281 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestRunQueryJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'query'
+    QUERY = 'select count(*) from persons'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import RunQueryJob
+        return RunQueryJob
+
+    def _verifyBooleanResourceProperties(self, job, config):
+
+        if 'allowLargeResults' in config:
+            self.assertEqual(job.allow_large_results,
+                             config['allowLargeResults'])
+        else:
+            self.assertTrue(job.allow_large_results is None)
+        if 'flattenResults' in config:
+            self.assertEqual(job.flatten_results,
+                             config['flattenResults'])
+        else:
+            self.assertTrue(job.flatten_results is None)
+        if 'useQueryCache' in config:
+            self.assertEqual(job.use_query_cache,
+                             config['useQueryCache'])
+        else:
+            self.assertTrue(job.use_query_cache is None)
+
+    def _verifyResourceProperties(self, job, resource):
+        self._verifyReadonlyResourceProperties(job, resource)
+
+        config = resource.get('configuration', {}).get('query')
+        self._verifyBooleanResourceProperties(job, config)
+
+        if 'createDisposition' in config:
+            self.assertEqual(job.create_disposition,
+                             config['createDisposition'])
+        else:
+            self.assertTrue(job.create_disposition is None)
+        if 'defaultDataset' in config:
+            dataset = job.default_dataset
+            ds_ref = {
+                'projectId': dataset.project,
+                'datasetId': dataset.name,
+            }
+            self.assertEqual(ds_ref, config['defaultDataset'])
+        else:
+            self.assertTrue(job.default_dataset is None)
+        if 'destinationTable' in config:
+            table = job.destination_table
+            tb_ref = {
+                'projectId': table.project,
+                'datasetId': table.dataset_name,
+                'tableId': table.name
+            }
+            self.assertEqual(tb_ref, config['destinationTable'])
+        else:
+            self.assertTrue(job.destination_table is None)
+        if 'priority' in config:
+            self.assertEqual(job.priority,
+                             config['priority'])
+        else:
+            self.assertTrue(job.priority is None)
+        if 'writeDisposition' in config:
+            self.assertEqual(job.write_disposition,
+                             config['writeDisposition'])
+        else:
+            self.assertTrue(job.write_disposition is None)
+
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        self.assertEqual(job.query, self.QUERY)
+        self.assertTrue(job._client is client)
+        self.assertEqual(
+            job.path,
+            '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
+
+        self._verifyInitialReadonlyProperties(job)
+
+        # set/read from resource['configuration']['copy']
+        self.assertTrue(job.allow_large_results is None)
+        self.assertTrue(job.create_disposition is None)
+        self.assertTrue(job.default_dataset is None)
+        self.assertTrue(job.destination_table is None)
+        self.assertTrue(job.flatten_results is None)
+        self.assertTrue(job.priority is None)
+        self.assertTrue(job.use_query_cache is None)
+        self.assertTrue(job.write_disposition is None)
+
+    def test_begin_w_bound_client(self):
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                },
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_alternate_client(self):
+        from gcloud.bigquery.dataset import Dataset
+        from gcloud.bigquery.dataset import Table
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        TABLE = 'TABLE'
+        DS_NAME = 'DATASET'
+        RESOURCE = self._makeResource(ended=True)
+        QUERY_CONFIGURATION = {
+            'query': self.QUERY,
+            'allowLargeResults': True,
+            'createDisposition': 'CREATE_NEVER',
+            'defaultDataset': {
+                'projectId': self.PROJECT,
+                'datasetId': DS_NAME,
+            },
+            'destinationTable': {
+                'projectId': self.PROJECT,
+                'datasetId': DS_NAME,
+                'tableId': TABLE,
+            },
+            'flattenResults': True,
+            'priority': 'INTERACTIVE',
+            'useQueryCache': True,
+            'writeDisposition': 'WRITE_TRUNCATE',
+        }
+        RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+
+        dataset = Dataset(DS_NAME, client1)
+        table = Table(TABLE, dataset)
+
+        job.allow_large_results = True
+        job.create_disposition = 'CREATE_NEVER'
+        job.default_dataset = dataset
+        job.destination_table = table
+        job.flatten_results = True
+        job.priority = 'INTERACTIVE'
+        job.use_query_cache = True
+        job.write_disposition = 'WRITE_TRUNCATE'
+
+        job.begin(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': QUERY_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+
+        self.assertFalse(job.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+
+        self.assertTrue(job.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_reload_w_bound_client(self):
+        from gcloud.bigquery.dataset import Dataset
+        from gcloud.bigquery.dataset import Table
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        DS_NAME = 'DATASET'
+        DEST_TABLE = 'dest_table'
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+
+        dataset = Dataset(DS_NAME, client)
+        table = Table(DEST_TABLE, dataset)
+        job.destination_table = table
+
+        job.reload()
+
+        self.assertEqual(job.destination_table, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
+        DS_NAME = 'DATASET'
+        DEST_TABLE = 'dest_table'
+        RESOURCE = self._makeResource()
+        q_config = RESOURCE['configuration']['query']
+        q_config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': DS_NAME,
+            'tableId': DEST_TABLE,
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client1)
+
+        job.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(job, RESOURCE)
+
+
 class _Client(object):
 
     def __init__(self, project='project', connection=None):
         self.project = project
         self.connection = connection
+
+    def dataset(self, name):
+        from gcloud.bigquery.dataset import Dataset
+        return Dataset(name, client=self)
 
 
 class _Table(object):

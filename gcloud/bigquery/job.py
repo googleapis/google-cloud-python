@@ -18,7 +18,9 @@ import six
 
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_from_microseconds
+from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.table import SchemaField
+from gcloud.bigquery.table import Table
 from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
 
@@ -120,6 +122,13 @@ class Encoding(_EnumProperty):
     UTF_8 = 'UTF-8'
     ISO_8559_1 = 'ISO-8559-1'
     ALLOWED = (UTF_8, ISO_8559_1)
+
+
+class QueryPriority(_EnumProperty):
+    """Pseudo-enum for ``RunQueryJob.priority`` property."""
+    INTERACTIVE = 'INTERACTIVE'
+    BATCH = 'BATCH'
+    ALLOWED = (INTERACTIVE, BATCH)
 
 
 class SourceFormat(_EnumProperty):
@@ -403,7 +412,7 @@ class _LoadConfiguration(object):
 
 
 class LoadTableFromStorageJob(_BaseJob):
-    """Asynchronous job for loading data into a BQ table from CloudStorage.
+    """Asynchronous job for loading data into a table from CloudStorage.
 
     :type name: string
     :param name: the name of the job
@@ -616,7 +625,7 @@ class _CopyConfiguration(object):
 
 
 class CopyJob(_BaseJob):
-    """Asynchronous job: copy data into a BQ table from other tables.
+    """Asynchronous job: copy data into a table from other tables.
 
     :type name: string
     :param name: the name of the job
@@ -695,7 +704,7 @@ class _ExtractConfiguration(object):
 
 
 class ExtractTableToStorageJob(_BaseJob):
-    """Asynchronous job: extract data from a BQ table into Cloud Storage.
+    """Asynchronous job: extract data from a table into Cloud Storage.
 
     :type name: string
     :param name: the name of the job
@@ -773,3 +782,140 @@ class ExtractTableToStorageJob(_BaseJob):
         self._populate_config_resource(configuration)
 
         return resource
+
+
+class _QueryConfiguration(object):
+    """User-settable configuration options for query jobs."""
+    # None -> use server default.
+    _allow_large_results = None
+    _create_disposition = None
+    _default_dataset = None
+    _destination_table = None
+    _flatten_results = None
+    _priority = None
+    _use_query_cache = None
+    _write_disposition = None
+
+
+class RunQueryJob(_BaseJob):
+    """Asynchronous job: query tables.
+
+    :type name: string
+    :param name: the name of the job
+
+    :type query: string
+    :param query: SQL query string
+
+    :type client: :class:`gcloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the dataset (which requires a project).
+    """
+    def __init__(self, name, query, client):
+        super(RunQueryJob, self).__init__(name, client)
+        self.query = query
+        self._configuration = _QueryConfiguration()
+
+    allow_large_results = _TypedProperty('allow_large_results', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults
+    """
+
+    create_disposition = CreateDisposition('create_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition
+    """
+
+    default_dataset = _TypedProperty('default_dataset', Dataset)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.default_dataset
+    """
+
+    destination_table = _TypedProperty('destination_table', Table)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
+    """
+
+    flatten_results = _TypedProperty('flatten_results', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults
+    """
+
+    priority = QueryPriority('priority')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority
+    """
+
+    use_query_cache = _TypedProperty('use_query_cache', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
+    """
+
+    write_disposition = WriteDisposition('write_disposition')
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
+    """
+
+    def _destination_table_resource(self):
+        if self.destination_table is not None:
+            return {
+                'projectId': self.destination_table.project,
+                'datasetId': self.destination_table.dataset_name,
+                'tableId': self.destination_table.name,
+            }
+
+    def _populate_config_resource(self, configuration):
+        """Helper for _build_resource: copy config properties to resource"""
+        if self.allow_large_results is not None:
+            configuration['allowLargeResults'] = self.allow_large_results
+        if self.create_disposition is not None:
+            configuration['createDisposition'] = self.create_disposition
+        if self.default_dataset is not None:
+            configuration['defaultDataset'] = {
+                'projectId': self.default_dataset.project,
+                'datasetId': self.default_dataset.name,
+            }
+        if self.destination_table is not None:
+            table_res = self._destination_table_resource()
+            configuration['destinationTable'] = table_res
+        if self.flatten_results is not None:
+            configuration['flattenResults'] = self.flatten_results
+        if self.priority is not None:
+            configuration['priority'] = self.priority
+        if self.use_query_cache is not None:
+            configuration['useQueryCache'] = self.use_query_cache
+        if self.write_disposition is not None:
+            configuration['writeDisposition'] = self.write_disposition
+
+    def _build_resource(self):
+        """Generate a resource for :meth:`begin`."""
+
+        resource = {
+            'jobReference': {
+                'projectId': self.project,
+                'jobId': self.name,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.query,
+                },
+            },
+        }
+        configuration = resource['configuration']['query']
+        self._populate_config_resource(configuration)
+
+        return resource
+
+    def _scrub_local_properties(self, cleaned):
+        """Helper:  handle subclass properties in cleaned."""
+        configuration = cleaned['configuration']['query']
+        dest_remote = configuration.get('destinationTable')
+
+        if dest_remote is None:
+            if self.destination_table is not None:
+                del self.destination_table
+        else:
+            dest_local = self._destination_table_resource()
+            if dest_remote != dest_local:
+                assert dest_remote['projectId'] == self.project
+                dataset = self._client.dataset(dest_remote['datasetId'])
+                self.destination_table = dataset.table(dest_remote['tableId'])
