@@ -52,6 +52,15 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Resource Manager
+
+  Overview <resource-manager-api>
+  resource-manager-client
+  resource-manager-project
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
