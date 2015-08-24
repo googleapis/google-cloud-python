@@ -15,6 +15,9 @@
 """Utility for managing projects via the Cloud Resource Manager API."""
 
 
+from gcloud.exceptions import NotFound
+
+
 class Project(object):
     """Projects are containers for your work on Google Cloud Platform.
 
@@ -93,3 +96,40 @@ class Project(object):
     def path(self):
         """URL for the project (ie, ``'/projects/purple-spaceship-123'``)."""
         return '/%s' % (self.full_name)
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current project.
+
+        :rtype: :class:`gcloud.resource_manager.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self._client
+        return client
+
+    def exists(self, client=None):
+        """API call:  test the existence of a project via a ``GET`` request.
+
+        See
+        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/projects/get
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+        """
+        client = self._require_client(client)
+
+        try:
+            # Note that we have to request the entire resource as the API
+            # doesn't provide a way tocheck for existence only.
+            client.connection.api_request(method='GET', path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True

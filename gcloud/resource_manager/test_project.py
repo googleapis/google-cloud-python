@@ -83,3 +83,54 @@ class TestProject(unittest2.TestCase):
         PROJECT_ID = 'project-id'
         project = self._makeOne(PROJECT_ID, None)
         self.assertEqual('/projects/%s' % PROJECT_ID, project.path)
+
+    def test_exists(self):
+        PROJECT_ID = 'project-id'
+        connection = _Connection({'projectId': PROJECT_ID})
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        self.assertTrue(project.exists())
+
+    def test_exists_with_explicitly_passed_client(self):
+        PROJECT_ID = 'project-id'
+        connection = _Connection({'projectId': PROJECT_ID})
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, None)
+        self.assertTrue(project.exists(client=client))
+
+    def test_exists_with_missing_client(self):
+        PROJECT_ID = 'project-id'
+        project = self._makeOne(PROJECT_ID, None)
+        with self.assertRaises(AttributeError):
+            project.exists()
+
+    def test_exists_not_found(self):
+        PROJECT_ID = 'project-id'
+        connection = _Connection()
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        self.assertFalse(project.exists())
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        from gcloud.exceptions import NotFound
+        self._requested.append(kw)
+
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:
+            raise NotFound('miss')
+        else:
+            return response
+
+
+class _Client(object):
+
+    def __init__(self, connection=None):
+        self.connection = connection
