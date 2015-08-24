@@ -17,9 +17,13 @@ This client supports the following Google Cloud Platform services:
 
 -  `Google Cloud Datastore`_
 -  `Google Cloud Storage`_
+-  `Google Cloud Pub/Sub`_
+-  `Google BigQuery`_
 
-.. _Google Cloud Datastore: #google-cloud-datastore
-.. _Google Cloud Storage: #google-cloud-storage
+.. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
+.. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
+.. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
+.. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -31,7 +35,7 @@ Quickstart
 
 ::
 
-    $ pip install gcloud
+    $ pip install --upgrade gcloud
 
 Example Applications
 --------------------
@@ -90,7 +94,7 @@ be used to distribute large data objects to users via direct download.
 See the ``gcloud-python`` API `storage documentation`_ to learn how to connect
 to Cloud Storage using this Client Library.
 
-.. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/stable/storage-api.html
+.. _storage documentation: https://googlecloudplatform.github.io/gcloud-python/stable/storage-client.html
 
 You need to create a Google Cloud Storage bucket to use this client library.
 Follow along with the `official Google Cloud Storage documentation`_ to learn
@@ -109,6 +113,55 @@ how to create a bucket.
     blob.upload_from_string('New contents!')
     blob2 = bucket.blob('/remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
+
+Google Cloud Pub/Sub
+--------------------
+
+Google `Cloud Pub/Sub`_ (`Pub/Sub API docs`_) is designed to provide reliable,
+many-to-many, asynchronous messaging between applications. Publisher
+applications can send messages to a ``topic`` and other applications can
+subscribe to that topic to receive the messages. By decoupling senders and
+receivers, Google Cloud Pub/Sub allows developers to communicate between
+independently written applications.
+
+.. _Cloud Pub/Sub: https://cloud.google.com/pubsub/docs
+.. _Pub/Sub API docs: https://cloud.google.com/pubsub/reference/rest/
+
+See the ``gcloud-python`` API `Pub/Sub documentation`_ to learn how to connect
+to Cloud Pub/Sub using this Client Library.
+
+.. _Pub/Sub documentation: https://googlecloudplatform.github.io/gcloud-python/stable/pubsub-usage.html
+
+To get started with this API, you'll need to create
+
+.. code:: python
+
+    from gcloud import pubsub
+
+    client = pubsub.Client()
+    topic = client.topic('topic_name')
+    topic.create()
+
+    topic.publish('this is the message_payload',
+                  attr1='value1', attr2='value2')
+
+Google BigQuery
+---------------
+
+Querying massive datasets can be time consuming and expensive without the
+right hardware and infrastructure. Google `BigQuery`_ (`BigQuery API docs`_)
+solves this problem by enabling super-fast, SQL-like queries against
+append-only tables, using the processing power of Google's infrastructure.
+
+.. _BigQuery: https://cloud.google.com/bigquery/what-is-bigquery
+.. _BigQuery API docs: https://cloud.google.com/bigquery/docs/reference/v2/
+
+This package is still being implemented, but it is almost complete!
+
+See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
+to BigQuery using this Client Library.
+
+.. _BigQuery documentation: https://googlecloudplatform.github.io/gcloud-python/stable/bigquery-usage.html
 
 Contributing
 ------------
