@@ -258,6 +258,25 @@ can build the docs via::
 
    $ tox -e docs
 
+In addition, to build a preview of the `readthedocs`_ theme, you can
+build via::
+
+   $ tox -e docs-rtd
+
+.. _readthedocs: http://gcloud-python.readthedocs.org/
+
+Note About ``README`` as it pertains to PyPI
+--------------------------------------------
+
+The `description on PyPI`_ for the project comes directly from the
+``README``. Due to the reStructuredText (``rst``) parser used by
+PyPI, relative links which will work on GitHub (e.g. ``CONTRIBUTING.rst``
+instead of
+``https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst``)
+may cause problems creating links or rendering the description.
+
+.. _description on PyPI: https://pypi.python.org/pypi/gcloud
+
 Travis Configuration and Build Optimizations
 --------------------------------------------
 
@@ -290,9 +309,6 @@ We support:
 
 -  `Python 2.6`_
 -  `Python 2.7`_
-
-We plan to support:
-
 -  `Python 3.3`_
 -  `Python 3.4`_
 
@@ -312,6 +328,9 @@ and lack of continuous integration `support`_.
 .. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
 .. _support: http://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
 
+We may `drop 2.6`_ as a supported version as well since Python 2.6 is no
+longer supported by the core development team.
+
 We also explicitly decided to support Python 3 beginning with version
 3.3. Reasons for this include:
 
@@ -322,6 +341,7 @@ We also explicitly decided to support Python 3 beginning with version
 
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
+.. _drop 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
 
 Contributor License Agreements
 ------------------------------
