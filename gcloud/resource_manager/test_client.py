@@ -12,13 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Tests for resouce_manager.client.Client."""
-
 import unittest2
 
 
 class TestClient(unittest2.TestCase):
-    """Main test case for resource_manager.client.Client."""
 
     def _getTargetClass(self):
         from gcloud.resource_manager.client import Client
@@ -34,6 +31,24 @@ class TestClient(unittest2.TestCase):
         credentials = _Credentials()
         client = self._makeOne(credentials=credentials, http=http)
         self.assertTrue(isinstance(client.connection, Connection))
+        self.assertEqual(client.connection._credentials, credentials)
+        self.assertEqual(client.connection._http, http)
+
+    def test_project_factory(self):
+        from gcloud.resource_manager.project import Project
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        project_id = 'project_id'
+        name = object()
+        labels = object()
+        project = client.project(project_id, name=name, labels=labels)
+
+        self.assertTrue(isinstance(project, Project))
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.project_id, project_id)
+        self.assertEqual(project.name, name)
+        self.assertEqual(project.labels, labels)
 
 
 class _Credentials(object):

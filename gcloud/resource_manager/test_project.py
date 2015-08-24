@@ -1,0 +1,85 @@
+# Copyright 2015 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import unittest2
+
+
+class TestProject(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.resource_manager.project import Project
+        return Project
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor_defaults(self):
+        client = object()
+        PROJECT_ID = 'project-id'
+        project = self._makeOne(PROJECT_ID, client)
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.name, None)
+        self.assertEqual(project.number, None)
+        self.assertEqual(project.labels, {})
+        self.assertEqual(project.status, None)
+
+    def test_constructor_explicit(self):
+        client = object()
+        PROJECT_ID = 'project-id'
+        DISPLAY_NAME = 'name'
+        LABELS = {'foo': 'bar'}
+        project = self._makeOne(PROJECT_ID, client,
+                                name=DISPLAY_NAME, labels=LABELS)
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.name, DISPLAY_NAME)
+        self.assertEqual(project.number, None)
+        self.assertEqual(project.labels, LABELS)
+        self.assertEqual(project.status, None)
+
+    def test_from_api_repr(self):
+        client = object()
+        PROJECT_ID = 'project-id'
+        PROJECT_NAME = 'My Project Name'
+        PROJECT_NUMBER = 12345678
+        PROJECT_LABELS = {'env': 'prod'}
+        PROJECT_LIFECYCLE_STATE = 'ACTIVE'
+        resource = {'projectId': PROJECT_ID,
+                    'name': PROJECT_NAME,
+                    'projectNumber': PROJECT_NUMBER,
+                    'labels': PROJECT_LABELS,
+                    'lifecycleState': PROJECT_LIFECYCLE_STATE}
+        project = self._getTargetClass().from_api_repr(resource, client)
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.name, PROJECT_NAME)
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        self.assertEqual(project.labels, PROJECT_LABELS)
+        self.assertEqual(project.status, PROJECT_LIFECYCLE_STATE)
+
+    def test_full_name(self):
+        PROJECT_ID = 'project-id'
+        project = self._makeOne(PROJECT_ID, None)
+        self.assertEqual('projects/%s' % PROJECT_ID, project.full_name)
+
+    def test_full_name_missing_id(self):
+        project = self._makeOne(None, None)
+        with self.assertRaises(ValueError):
+            self.assertIsNone(project.full_name)
+
+    def test_path(self):
+        PROJECT_ID = 'project-id'
+        project = self._makeOne(PROJECT_ID, None)
+        self.assertEqual('/projects/%s' % PROJECT_ID, project.path)

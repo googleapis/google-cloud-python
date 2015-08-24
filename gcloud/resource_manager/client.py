@@ -17,6 +17,7 @@
 
 from gcloud.client import Client as BaseClient
 from gcloud.resource_manager.connection import Connection
+from gcloud.resource_manager.project import Project
 
 
 class Client(BaseClient):
@@ -45,3 +46,26 @@ class Client(BaseClient):
     """
 
     _connection_class = Connection
+
+    def project(self, project_id, name=None, labels=None):
+        """Creates a :class:`.Project` bound to the current client.
+
+        .. note:
+
+            This does not make an API call.
+
+        :type project_id: str
+        :param project_id: The ID for this project.
+
+        :type name: string
+        :param name: The display name of the project.
+
+        :type labels: dict
+        :param labels: A list of labels associated with the project.
+
+        :rtype: :class:`.Project`
+        :returns: A new instance of a :class:`.Project` **without**
+                  any metadata loaded.
+        """
+        return Project(project_id=project_id,
+                       client=self, name=name, labels=labels)
