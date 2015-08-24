@@ -43,10 +43,6 @@
   :caption: BigQuery
 
   bigquery-usage
-  Client <bigquery-client>
-  bigquery-dataset
-  bigquery-job
-  bigquery-table
 
 .. toctree::
   :maxdepth: 0
