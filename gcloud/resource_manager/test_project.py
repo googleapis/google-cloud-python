@@ -171,6 +171,36 @@ class TestProject(unittest2.TestCase):
         project = self._makeOne(PROJECT_ID, client)
         self.assertFalse(project.exists())
 
+    def test_update(self):
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 123
+        PROJECT_NAME = 'Project Name'
+        LABELS = {'env': 'prod'}
+        PROJECT_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'projectNumber': PROJECT_NUMBER,
+            'name': PROJECT_NAME,
+            'labels': LABELS,
+            'lifecycleState': 'ACTIVE',
+        }
+        connection = _Connection(PROJECT_RESOURCE)
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        project.name = PROJECT_NAME
+        project.labels = LABELS
+        project.update()
+
+        request, = connection._requested
+        expected_request = {
+            'method': 'PUT',
+            'data': {
+                'name': PROJECT_NAME,
+                'labels': LABELS,
+            },
+            'path': project.path,
+        }
+        self.assertEqual(request, expected_request)
+
 
 class _Connection(object):
 

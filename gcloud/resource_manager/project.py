@@ -156,7 +156,7 @@ class Project(object):
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
         """
-        client = self._require_client(client=client)
+        client = self._require_client(client)
 
         # We assume the project exists. If it doesn't it will raise a NotFound
         # exception.
@@ -184,3 +184,21 @@ class Project(object):
             return False
         else:
             return True
+
+    def update(self, client=None):
+        """API call:  update the project via a ``PUT`` request.
+
+        See
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+        """
+        client = self._require_client(client)
+
+        data = {'name': self.name, 'labels': self.labels}
+        resp = client.connection.api_request(method='PUT', path=self.path,
+                                             data=data)
+        self.set_properties_from_api_repr(resp)
