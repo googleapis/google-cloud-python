@@ -88,6 +88,16 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.connection._credentials, credentials)
         self.assertEqual(client.connection._http, http)
 
+    def test_from_service_account_json_factory(self):
+        klass = self._getTargetClass()
+        with self.assertRaises(NotImplementedError):
+            klass.from_service_account_json()
+
+    def test_from_service_account_p12_factory(self):
+        klass = self._getTargetClass()
+        with self.assertRaises(NotImplementedError):
+            klass.from_service_account_p12()
+
     def test_project_factory(self):
         from gcloud.resource_manager.project import Project
 

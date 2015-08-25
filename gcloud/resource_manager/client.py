@@ -48,6 +48,36 @@ class Client(BaseClient):
 
     _connection_class = Connection
 
+    @classmethod
+    def from_service_account_json(cls, *args, **kwargs):
+        """Factory to retrieve JSON credentials while creating client.
+
+        The behavior from the parent class is disabled here since the Resource
+        Manager API can only use credentials from a user account, not a
+        service account.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always.
+        """
+        raise NotImplementedError('A service account cannot be used with the '
+                                  'Resource Manager API. Only user '
+                                  'credentials can be used.')
+
+    @classmethod
+    def from_service_account_p12(cls, *args, **kwargs):
+        """Factory to retrieve P12 credentials while creating client.
+
+        The behavior from the parent class is disabled here since the Resource
+        Manager API can only use credentials from a user account, not a
+        service account.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always.
+        """
+        raise NotImplementedError('A service account cannot be used with the '
+                                  'Resource Manager API. Only user '
+                                  'credentials can be used.')
+
     def project(self, project_id, name=None, labels=None):
         """Creates a :class:`.Project` bound to the current client.
 
