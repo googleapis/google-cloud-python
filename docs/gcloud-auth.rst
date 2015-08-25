@@ -1,8 +1,10 @@
 Authentication
 --------------
 
-Quick overview
-==============
+.. _Overview:
+
+Overview
+========
 
 *   **If you're running in Compute Engine or App Engine**,
     authentication should "just work".
@@ -24,3 +26,20 @@ Quick overview
     .. code-block:: bash
 
         $ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/keyfile.json"
+
+Client-Provided Authentication
+==============================
+
+Every package uses a :class:`Client <gcloud.client.Client>` as a base
+for interacting with an API. For example:
+
+.. code-block:: python
+
+    from gcloud import datastore
+    client = datastore.Client()
+
+Passing no arguments at all will "just work" if you've following the
+instructions in the :ref:`Overview`. The credentials are inferred from your
+local environment by using Google `Application Default Credentials`_.
+
+.. _Application Default Credentials: https://developers.google.com/identity/protocols/application-default-credentials
