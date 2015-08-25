@@ -104,6 +104,145 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(project.name, name)
         self.assertEqual(project.labels, labels)
 
+    def test_list_projects_return_type(self):
+        from gcloud.resource_manager.client import _ProjectIterator
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        # Patch the connection with one we can easily control.
+        client.connection = _Connection({})
+
+        results = client.list_projects()
+        self.assertIsInstance(results, _ProjectIterator)
+
+    def test_list_projects_no_paging(self):
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 1
+        STATUS = 'ACTIVE'
+        PROJECTS_RESOURCE = {
+            'projects': [
+                {
+                    'projectId': PROJECT_ID,
+                    'projectNumber': PROJECT_NUMBER,
+                    'lifecycleState': STATUS,
+                },
+            ],
+        }
+        # Patch the connection with one we can easily control.
+        client.connection = _Connection(PROJECTS_RESOURCE)
+        # Make sure there will be no paging.
+        self.assertFalse('nextPageToken' in PROJECTS_RESOURCE)
+
+        results = list(client.list_projects())
+
+        project, = results
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        self.assertEqual(project.status, STATUS)
+
+    def test_list_projects_with_paging(self):
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
+        PROJECT_ID1 = 'project-id'
+        PROJECT_NUMBER1 = 1
+        STATUS = 'ACTIVE'
+        TOKEN = 'next-page-token'
+        FIRST_PROJECTS_RESOURCE = {
+            'projects': [
+                {
+                    'projectId': PROJECT_ID1,
+                    'projectNumber': PROJECT_NUMBER1,
+                    'lifecycleState': STATUS,
+                },
+            ],
+            'nextPageToken': TOKEN,
+        }
+        PROJECT_ID2 = 'project-id-2'
+        PROJECT_NUMBER2 = 42
+        SECOND_PROJECTS_RESOURCE = {
+            'projects': [
+                {
+                    'projectId': PROJECT_ID2,
+                    'projectNumber': PROJECT_NUMBER2,
+                    'lifecycleState': STATUS,
+                },
+            ],
+        }
+        # Patch the connection with one we can easily control.
+        client.connection = _Connection(FIRST_PROJECTS_RESOURCE,
+                                        SECOND_PROJECTS_RESOURCE)
+
+        # Page size = 1 with two response means we'll have two requests.
+        results = list(client.list_projects(page_size=1))
+
+        # Check that the results are as expected.
+        project1, project2 = results
+        self.assertEqual(project1.project_id, PROJECT_ID1)
+        self.assertEqual(project1.number, PROJECT_NUMBER1)
+        self.assertEqual(project1.status, STATUS)
+        self.assertEqual(project2.project_id, PROJECT_ID2)
+        self.assertEqual(project2.number, PROJECT_NUMBER2)
+        self.assertEqual(project2.status, STATUS)
+
+        # Check that two requests were required since page_size=1.
+        request1, request2 = client.connection._requested
+        self.assertEqual(request1, {
+            'path': '/projects',
+            'method': 'GET',
+            'query_params': {
+                'pageSize': 1,
+            },
+        })
+        self.assertEqual(request2, {
+            'path': '/projects',
+            'method': 'GET',
+            'query_params': {
+                'pageSize': 1,
+                'pageToken': TOKEN,
+            },
+        })
+
+    def test_list_projects_with_filter(self):
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 1
+        STATUS = 'ACTIVE'
+        PROJECTS_RESOURCE = {
+            'projects': [
+                {
+                    'projectId': PROJECT_ID,
+                    'projectNumber': PROJECT_NUMBER,
+                    'lifecycleState': STATUS,
+                },
+            ],
+        }
+        # Patch the connection with one we can easily control.
+        client.connection = _Connection(PROJECTS_RESOURCE)
+
+        FILTER_PARAMS = {'id': 'project-id'}
+        results = list(client.list_projects(filter_params=FILTER_PARAMS))
+
+        project, = results
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        self.assertEqual(project.status, STATUS)
+
+        # Check that the filter made it in the request.
+        request, = client.connection._requested
+        self.assertEqual(request, {
+            'path': '/projects',
+            'method': 'GET',
+            'query_params': {
+                'filter': FILTER_PARAMS,
+            },
+        })
+
 
 class _Credentials(object):
 
@@ -116,3 +255,15 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

@@ -75,6 +75,67 @@ class Client(BaseClient):
         return Project(project_id=project_id,
                        client=self, name=name, labels=labels)
 
+    def list_projects(self, filter_params=None, page_size=None):
+        """List the projects visible to this client.
+
+        Example::
+
+            >>> from gcloud import resource_manager
+            >>> client = resource_manager.Client()
+            >>> for project in client.list_projects():
+            ...     print project.project_id
+
+        List all projects with label ``'environment'`` set to ``'prod'``
+        (filtering by labels)::
+
+            >>> from gcloud import resource_manager
+            >>> client = resource_manager.Client()
+            >>> env_filter = {'labels.environment': 'prod'}
+            >>> for project in client.list_projects(env_filter):
+            ...     print project.project_id
+
+        See:
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/list
+
+        Complete filtering example::
+
+            >>> project_filter = {  # Return projects with...
+            ...     'name': 'My Project',  # name set to 'My Project'.
+            ...     'id': 'my-project-id',  # id set to 'my-project-id'.
+            ...     'labels.stage': 'prod',  # the label 'stage' set to 'prod'
+            ...     'labels.color': '*'  # a label 'color' set to anything.
+            ... }
+            >>> client.list_projects(project_filter)
+
+        :type filter_params: dict
+        :param filter_params: (Optional) A dictionary of filter options where
+                              each key is a property to filter on, and each
+                              value is the (case-insensitive) value to check
+                              (or the glob ``*`` to check for existence of the
+                              property). See the example above for more
+                              details.
+
+        :type page_size: int
+        :param page_size: (Optional) Maximum number of projects to return in a
+                          single page. If not passed, defaults to a value set
+                          by the API.
+
+        :rtype: :class:`_ProjectIterator`
+        :returns: A project iterator. The iterator will make multiple API
+                  requests if you continue iterating and there are more
+                  pages of results. Each item returned will be a.
+                  :class:`.Project`.
+        """
+        extra_params = {}
+
+        if page_size is not None:
+            extra_params['pageSize'] = page_size
+
+        if filter_params is not None:
+            extra_params['filter'] = filter_params
+
+        return _ProjectIterator(self, extra_params=extra_params)
+
 
 class _ProjectIterator(Iterator):
     """An iterator over a list of Project resources.
@@ -86,8 +147,9 @@ class _ProjectIterator(Iterator):
     :type client: :class:`gcloud.resource_manager.client.Client`
     :param client: The client to use for making connections.
 
-    :type extra_params: dict or :data:`NoneType <types.NoneType>`
-    :param extra_params: Extra query string parameters for the API call.
+    :type extra_params: dict
+    :param extra_params: (Optional) Extra query string parameters for
+                         the API call.
     """
 
     def __init__(self, client, extra_params=None):
