@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Search &mdash; gcloud ac13419 documentation</title>
+    <title>Authentication &mdash; gcloud ac13419 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -23,13 +23,8 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud ac13419 documentation" href="index.html" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-   
-
+    <link rel="next" title="Datastore Client" href="datastore-client.html" />
+    <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -64,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+search%0ARelease%3A%20ac13419" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20ac13419" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -89,36 +84,40 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <h1 id="search-documentation">Search</h1>
-  <div id="fallback" class="admonition warning">
-  <script type="text/javascript">$('#fallback').hide();</script>
-  <p>
-    Please activate JavaScript to enable the search
-    functionality.
-  </p>
-  </div>
-  <p>
-    From here you can search these documents. Enter your search
-    words into the box below and click "search". Note that the search
-    function will automatically search for all of the words. Pages
-    containing fewer words won't appear in the result list.
-  </p>
-  <form action="" method="get">
-    <input type="text" name="q" value="" />
-    <input type="submit" value="search" />
-    <span id="search-progress" style="padding-left: 10px"></span>
-  </form>
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="authentication">
+<h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h1>
+<div class="section" id="quick-overview">
+<h2>Quick overview<a class="headerlink" href="#quick-overview" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p class="first"><strong>If you&#8217;re running in Compute Engine or App Engine</strong>,
+authentication should &#8220;just work&#8221;.</p>
+</li>
+<li><p class="first"><strong>If you&#8217;re developing locally</strong>,
+the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>gcloud auth login
+</pre></div>
+</div>
+</li>
+</ul>
+<ul>
+<li><p class="first"><strong>If you&#8217;re running your application elsewhere</strong>,
+you should download a service account JSON keyfile
+and point to it using an environment variable:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
 
       </section><!-- end of .content -->
       <nav class="side-nav">
         <p class="caption"><span class="caption-text">gcloud</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>
