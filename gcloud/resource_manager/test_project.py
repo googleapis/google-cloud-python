@@ -235,13 +235,13 @@ class TestProject(unittest2.TestCase):
             'lifecycleState': 'ACTIVE',
         }
         DELETING_PROJECT = PROJECT_RESOURCE.copy()
-        DELETING_PROJECT['lifecycleState'] = 'DELETE_REQUESTED'
+        DELETING_PROJECT['lifecycleState'] = NEW_STATE = 'DELETE_REQUESTED'
 
         connection = _Connection(PROJECT_RESOURCE, DELETING_PROJECT)
         client = _Client(connection=connection)
         project = self._makeOne(PROJECT_ID, client)
         project.delete(reload_data=True)
-        self.assertEqual(project.status, 'DELETE_REQUESTED')
+        self.assertEqual(project.status, NEW_STATE)
 
         delete_request, get_request = connection._requested
         # NOTE: data is not in the request since a DELETE request.
@@ -250,6 +250,63 @@ class TestProject(unittest2.TestCase):
             'path': project.path,
         }
         self.assertEqual(delete_request, expected_delete_request)
+
+        # NOTE: data is not in the request since a GET request.
+        expected_get_request = {
+            'method': 'GET',
+            'path': project.path,
+        }
+        self.assertEqual(get_request, expected_get_request)
+
+    def test_undelete_without_reload_data(self):
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 123
+        PROJECT_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'projectNumber': PROJECT_NUMBER,
+            'name': 'Project Name',
+            'labels': {'env': 'prod'},
+            'lifecycleState': 'DELETE_REQUESTED',
+        }
+        connection = _Connection(PROJECT_RESOURCE)
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        project.undelete(reload_data=False)
+
+        request, = connection._requested
+        # NOTE: data is not in the request, undelete doesn't need it.
+        expected_request = {
+            'method': 'POST',
+            'path': project.path + ':undelete',
+        }
+        self.assertEqual(request, expected_request)
+
+    def test_undelete_with_reload_data(self):
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 123
+        PROJECT_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'projectNumber': PROJECT_NUMBER,
+            'name': 'Project Name',
+            'labels': {'env': 'prod'},
+            'lifecycleState': 'DELETE_REQUESTED',
+        }
+        UNDELETED_PROJECT = PROJECT_RESOURCE.copy()
+        UNDELETED_PROJECT['lifecycleState'] = NEW_STATE = 'ACTIVE'
+
+        connection = _Connection(PROJECT_RESOURCE, UNDELETED_PROJECT)
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        project.undelete(reload_data=True)
+        self.assertEqual(project.status, NEW_STATE)
+
+        undelete_request, get_request = connection._requested
+        # NOTE: data is not in the request, undelete doesn't need it.
+        expected_undelete_request = {
+            'method': 'POST',
+            'path': project.path + ':undelete',
+        }
+        self.assertEqual(undelete_request, expected_undelete_request)
 
         # NOTE: data is not in the request since a GET request.
         expected_get_request = {

@@ -203,7 +203,7 @@ class Project(object):
                                              data=data)
         self.set_properties_from_api_repr(resp)
 
-    def delete(self, client=None, reload_data=True):
+    def delete(self, client=None, reload_data=False):
         """API call:  delete the project via a ``DELETE`` request.
 
         See:
@@ -225,10 +225,41 @@ class Project(object):
                             state. If you want to get the updated status,
                             you'll want this set to :data:`True` as the DELETE
                             method doesn't send back the updated project.
-                            Default: :data:`True`.
+                            Default: :data:`False`.
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
+
+        # If the reload flag is set, reload the project.
+        if reload_data:
+            self.reload()
+
+    def undelete(self, client=None, reload_data=False):
+        """API call:  undelete the project via a ``POST`` request.
+
+        See
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete
+
+        This actually changes the project status (``lifecycleState``) from
+        ``DELETE_REQUESTED`` to ``ACTIVE``.
+        If the project has already reached a status of ``DELETE_IN_PROGRESS``,
+        this request will fail and the project cannot be restored.
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+
+        :type reload_data: bool
+        :param reload_data: Whether to reload the project with the latest
+                            state. If you want to get the updated status,
+                            you'll want this set to :data:`True` as the DELETE
+                            method doesn't send back the updated project.
+                            Default: :data:`False`.
+        """
+        client = self._require_client(client)
+        client.connection.api_request(method='POST',
+                                      path=self.path + ':undelete')
 
         # If the reload flag is set, reload the project.
         if reload_data:
