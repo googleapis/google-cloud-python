@@ -15,6 +15,60 @@
 import unittest2
 
 
+class Test__ProjectIterator(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.resource_manager.client import _ProjectIterator
+        return _ProjectIterator
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_constructor(self):
+        client = object()
+        iterator = self._makeOne(client)
+        self.assertEqual(iterator.path, '/projects')
+        self.assertEqual(iterator.page_number, 0)
+        self.assertEqual(iterator.next_page_token, None)
+        self.assertTrue(iterator.client is client)
+        self.assertEqual(iterator.extra_params, {})
+
+    def test_get_items_from_response_empty(self):
+        client = object()
+        iterator = self._makeOne(client)
+        self.assertEqual(list(iterator.get_items_from_response({})), [])
+
+    def test_get_items_from_response_non_empty(self):
+        from gcloud.resource_manager.project import Project
+
+        PROJECT_ID = 'project-id'
+        PROJECT_NAME = 'My Project Name'
+        PROJECT_NUMBER = 12345678
+        PROJECT_LABELS = {'env': 'prod'}
+        PROJECT_LIFECYCLE_STATE = 'ACTIVE'
+        API_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'name': PROJECT_NAME,
+            'projectNumber': PROJECT_NUMBER,
+            'labels': PROJECT_LABELS,
+            'lifecycleState': PROJECT_LIFECYCLE_STATE,
+        }
+        RESPONSE = {'projects': [API_RESOURCE]}
+
+        client = object()
+        iterator = self._makeOne(client)
+        projects = list(iterator.get_items_from_response(RESPONSE))
+
+        project, = projects
+        self.assertTrue(isinstance(project, Project))
+        self.assertEqual(project.project_id, PROJECT_ID)
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.name, PROJECT_NAME)
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        self.assertEqual(project.labels, PROJECT_LABELS)
+        self.assertEqual(project.status, PROJECT_LIFECYCLE_STATE)
+
+
 class TestClient(unittest2.TestCase):
 
     def _getTargetClass(self):

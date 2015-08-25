@@ -16,6 +16,7 @@
 
 
 from gcloud.client import Client as BaseClient
+from gcloud.iterator import Iterator
 from gcloud.resource_manager.connection import Connection
 from gcloud.resource_manager.project import Project
 
@@ -73,3 +74,32 @@ class Client(BaseClient):
         """
         return Project(project_id=project_id,
                        client=self, name=name, labels=labels)
+
+
+class _ProjectIterator(Iterator):
+    """An iterator over a list of Project resources.
+
+    You shouldn't have to use this directly, but instead should use the
+    helper methods on :class:`gcloud.resource_manager.client.Client`
+    objects.
+
+    :type client: :class:`gcloud.resource_manager.client.Client`
+    :param client: The client to use for making connections.
+
+    :type extra_params: dict or :data:`NoneType <types.NoneType>`
+    :param extra_params: Extra query string parameters for the API call.
+    """
+
+    def __init__(self, client, extra_params=None):
+        super(_ProjectIterator, self).__init__(client=client, path='/projects',
+                                               extra_params=extra_params)
+
+    def get_items_from_response(self, response):
+        """Yield :class:`.Project` items from response.
+
+        :type response: dict
+        :param response: The JSON API response for a page of projects.
+        """
+        for resource in response.get('projects', []):
+            item = Project.from_api_repr(resource, client=self.client)
+            yield item
