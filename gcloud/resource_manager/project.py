@@ -202,3 +202,34 @@ class Project(object):
         resp = client.connection.api_request(method='PUT', path=self.path,
                                              data=data)
         self.set_properties_from_api_repr(resp)
+
+    def delete(self, client=None, reload_data=True):
+        """API call:  delete the project via a ``DELETE`` request.
+
+        See:
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete
+
+        This actually changes the status (``lifecycleState``) from ``ACTIVE``
+        to ``DELETE_REQUESTED``.
+        Later (it's not specified when), the project will move into the
+        ``DELETE_IN_PROGRESS`` state, which means the deleting has actually
+        begun.
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+
+        :type reload_data: bool
+        :param reload_data: Whether to reload the project with the latest
+                            state. If you want to get the updated status,
+                            you'll want this set to :data:`True` as the DELETE
+                            method doesn't send back the updated project.
+                            Default: :data:`True`.
+        """
+        client = self._require_client(client)
+        client.connection.api_request(method='DELETE', path=self.path)
+
+        # If the reload flag is set, reload the project.
+        if reload_data:
+            self.reload()
