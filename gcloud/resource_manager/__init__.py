@@ -16,3 +16,4 @@
 
 from gcloud.resource_manager.client import Client
 from gcloud.resource_manager.connection import SCOPE
+from gcloud.resource_manager.project import Project
