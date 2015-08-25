@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud ac13419 documentation</title>
+    <title>Authentication &mdash; gcloud ead33cc documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ac13419',
+        VERSION:     'ead33cc',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ac13419 documentation" href="index.html" />
+    <link rel="top" title="gcloud ead33cc documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -59,7 +59,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20ac13419" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20ead33cc" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ac13419)
+              Version History (ead33cc)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -86,8 +86,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         
   <div class="section" id="authentication">
 <h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h1>
-<div class="section" id="quick-overview">
-<h2>Quick overview<a class="headerlink" href="#quick-overview" title="Permalink to this headline">#</a></h2>
+<div class="section" id="overview">
+<span id="id1"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p class="first"><strong>If you&#8217;re running in Compute Engine or App Engine</strong>,
 authentication should &#8220;just work&#8221;.</p>
@@ -108,6 +108,18 @@ and point to it using an environment variable:</p>
 </div>
 </li>
 </ul>
+</div>
+<div class="section" id="client-provided-authentication">
+<h2>Client-Provided Authentication<a class="headerlink" href="#client-provided-authentication" title="Permalink to this headline">#</a></h2>
+<p>Every package uses a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> as a base
+for interacting with an API. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Passing no arguments at all will &#8220;just work&#8221; if you&#8217;ve following the
+instructions in the <a class="reference internal" href="#overview"><span>Overview</span></a>. The credentials are inferred from your
+local environment by using Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>.</p>
 </div>
 </div>
 
