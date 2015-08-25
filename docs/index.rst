@@ -4,6 +4,7 @@
   :caption: gcloud
 
   gcloud-api
+  gcloud-auth
 
 .. toctree::
   :maxdepth: 0
