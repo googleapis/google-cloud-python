@@ -50,6 +50,10 @@ class Client(BaseClient):
     def project(self, project_id, name=None, labels=None):
         """Creates a :class:`.Project` bound to the current client.
 
+        Use :meth:`Project.reload() \
+        <gcloud.resource_manager.project.Project.reload>` to retrieve
+        project metadata after creating a :class:`.Project` instance.
+
         .. note:
 
             This does not make an API call.

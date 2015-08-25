@@ -134,6 +134,35 @@ class Project(object):
                                              data=data)
         self.set_properties_from_api_repr(resource=resp)
 
+    def reload(self, client=None):
+        """API call:  reload the project via a ``GET`` request.
+
+        This method will reload the newest metadata for the project. If you've
+        created a new :class:`Project` instance via
+        :meth:`Client.project() \
+        <gcloud.resource_manager.client.Client.project>`, this method will
+        retrieve project metadata.
+
+        .. warning::
+
+            This will overwrite any local changes you've made and not saved
+            via :meth:`update`.
+
+        See
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
+
+        :type client: :class:`gcloud.resource_manager.client.Client` or
+                      :data:`NoneType <types.NoneType>`
+        :param client: the client to use.  If not passed, falls back to
+                       the client stored on the current project.
+        """
+        client = self._require_client(client=client)
+
+        # We assume the project exists. If it doesn't it will raise a NotFound
+        # exception.
+        resp = client.connection.api_request(method='GET', path=self.path)
+        self.set_properties_from_api_repr(resource=resp)
+
     def exists(self, client=None):
         """API call:  test the existence of a project via a ``GET`` request.
 

@@ -113,6 +113,37 @@ class TestProject(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
+    def test_reload(self):
+        PROJECT_ID = 'project-id'
+        PROJECT_NUMBER = 123
+        PROJECT_RESOURCE = {
+            'projectId': PROJECT_ID,
+            'projectNumber': PROJECT_NUMBER,
+            'name': 'Project Name',
+            'labels': {'env': 'prod'},
+            'lifecycleState': 'ACTIVE',
+        }
+        connection = _Connection(PROJECT_RESOURCE)
+        client = _Client(connection=connection)
+        project = self._makeOne(PROJECT_ID, client)
+        self.assertEqual(project.number, None)
+        self.assertEqual(project.name, None)
+        self.assertEqual(project.labels, {})
+        self.assertEqual(project.status, None)
+        project.reload()
+        self.assertEqual(project.name, PROJECT_RESOURCE['name'])
+        self.assertEqual(project.number, PROJECT_NUMBER)
+        self.assertEqual(project.labels, PROJECT_RESOURCE['labels'])
+        self.assertEqual(project.status, PROJECT_RESOURCE['lifecycleState'])
+
+        request, = connection._requested
+        # NOTE: data is not in the request since a GET request.
+        expected_request = {
+            'method': 'GET',
+            'path': project.path,
+        }
+        self.assertEqual(request, expected_request)
+
     def test_exists(self):
         PROJECT_ID = 'project-id'
         connection = _Connection({'projectId': PROJECT_ID})
