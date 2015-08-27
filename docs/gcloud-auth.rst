@@ -180,3 +180,75 @@ and stored in a file and then and deserialized with
 
 .. _client secrets: https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets
 .. _webserver flow: https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow
+
+Troubleshooting
+===============
+
+Setting up a Service Account
+----------------------------
+
+If your application is not running on Google Compute Engine,
+you need a `Google Developers Service Account`_.
+
+#. Visit the `Google Developers Console`_.
+
+#. Create a new project or click on an existing project.
+
+#. Navigate to **APIs & auth** > **APIs** and enable the APIs
+   that your application requires.
+
+   .. raw:: html
+
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/enable-apis.png"/>
+
+  .. note::
+
+      You may need to enable billing in order to use these services.
+
+      * **BigQuery**
+
+        * BigQuery API
+
+      * **Datastore**
+
+        * Google Cloud Datastore API
+
+      * **Pub/Sub**
+
+        * Google Cloud Pub/Sub
+
+      * **Search**
+
+        * Google Cloud Search API
+
+      * **Storage**
+
+        * Google Cloud Storage
+        * Google Cloud Storage JSON API
+
+#. Navigate to **APIs & auth** > **Credentials**.
+
+   You should see a screen like one of the following:
+
+   .. raw:: html
+
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/create-new-service-account.png">
+
+   .. raw:: html
+
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/create-new-service-account-existing-keys.png">
+
+  Find the "Add credentials" drop down and select "Service account" to be
+  guided through downloading a new JSON keyfile.
+
+  If you want to re-use an existing service account,
+  you can easily generate a new keyfile.
+  Just select the account you wish to re-use,
+  and click **Generate new JSON key**:
+
+   .. raw:: html
+
+     <img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/reuse-service-account.png">
+
+.. _Google Developers Console: https://console.developers.google.com/project
+.. _Google Developers Service Account: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
