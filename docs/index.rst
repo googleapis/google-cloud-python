@@ -106,10 +106,13 @@ Cloud Datastore
 
   from gcloud import datastore
 
-  entity = datastore.Entity(key=datastore.Key('Person'))
+  client = datastore.Client()
+  key = client.key('Person')
+
+  entity = datastore.Entity(key=key)
   entity['name'] = 'Your name'
   entity['age'] = 25
-  datastore.put(entity)
+  client.put(entity)
 
 Cloud Storage
 ~~~~~~~~~~~~~
@@ -121,6 +124,7 @@ Cloud Storage
 .. code-block:: python
 
   from gcloud import storage
+
   client = storage.Client()
   bucket = client.get_bucket('<your-bucket-name>')
   blob = bucket.blob('my-test-file.txt')
