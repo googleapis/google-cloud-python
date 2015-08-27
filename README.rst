@@ -59,7 +59,7 @@ consistency for all other queries.
 See the ``gcloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
 
-.. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/stable/datastore-api.html
+.. _datastore documentation: https://googlecloudplatform.github.io/gcloud-python/stable/datastore-client.html
 
 See the `official Google Cloud Datastore documentation`_ for more details on how
 to activate Cloud Datastore for your project.
