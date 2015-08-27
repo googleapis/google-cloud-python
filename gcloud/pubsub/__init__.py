@@ -24,6 +24,9 @@ The main concepts with this API are:
 """
 
 from gcloud.pubsub.client import Client
-from gcloud.pubsub.connection import SCOPE
+from gcloud.pubsub.connection import Connection
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
+
+
+SCOPE = Connection.SCOPE

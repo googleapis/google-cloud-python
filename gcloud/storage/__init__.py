@@ -43,5 +43,7 @@ from gcloud.storage.batch import Batch
 from gcloud.storage.blob import Blob
 from gcloud.storage.bucket import Bucket
 from gcloud.storage.client import Client
-from gcloud.storage.connection import SCOPE
 from gcloud.storage.connection import Connection
+
+
+SCOPE = Connection.SCOPE
