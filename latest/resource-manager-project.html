@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Projects &mdash; gcloud 0dfe5eb documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0dfe5eb',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0dfe5eb documentation" href="index.html" />
+    <link rel="prev" title="Client" href="resource-manager-client.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-java/site/latest/" title="gcloud-java page">
+              <img src="_static/images/icon-lang-java-duke.png" alt="Duke icon" class="menu-icon" />
+              Java
+            </a>
+          </li>
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+resource-manager-project%0ARelease%3A%200dfe5eb" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0dfe5eb)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.resource_manager.project">
+<span id="projects"></span><h1>Projects<a class="headerlink" href="#module-gcloud.resource_manager.project" title="Permalink to this headline">#</a></h1>
+<p>Utility for managing projects via the Cloud Resource Manager API.</p>
+<dl class="class">
+<dt id="gcloud.resource_manager.project.Project">
+<em class="property">class </em><code class="descclassname">gcloud.resource_manager.project.</code><code class="descname">Project</code><span class="sig-paren">(</span><em>project_id</em>, <em>client</em>, <em>name=None</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Projects are containers for your work on Google Cloud Platform.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A <a class="reference internal" href="#gcloud.resource_manager.project.Project" title="gcloud.resource_manager.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> can also be created via
+<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client.new_project" title="gcloud.resource_manager.client.Client.new_project"><code class="xref py py-meth docutils literal"><span class="pre">Client.new_project()</span></code></a></p>
+</div>
+<p>To manage labels on a <a class="reference internal" href="#gcloud.resource_manager.project.Project" title="gcloud.resource_manager.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s">&#39;purple-spaceship-123&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;color&#39;</span><span class="p">:</span> <span class="s">&#39;purple&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="s">&#39;environment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;production&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The globally unique ID of the project.</li>
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a>) &#8211; The Client used with this project.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The display name of the project.</li>
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A list of labels associated with the project.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.create" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  create the project via a <code class="docutils literal"><span class="pre">POST</span></code> request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/create</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em>, <em>reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  delete the project via a <code class="docutils literal"><span class="pre">DELETE</span></code> request.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/delete</a></p>
+<p>This actually changes the status (<code class="docutils literal"><span class="pre">lifecycleState</span></code>) from <code class="docutils literal"><span class="pre">ACTIVE</span></code>
+to <code class="docutils literal"><span class="pre">DELETE_REQUESTED</span></code>.
+Later (it&#8217;s not specified when), the project will move into the
+<code class="docutils literal"><span class="pre">DELETE_IN_PROGRESS</span></code> state, which means the deleting has actually
+begun.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</li>
+<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to reload the project with the latest
+state. If you want to get the updated status,
+you&#8217;ll want this set to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
+method doesn&#8217;t send back the updated project.
+Default: <a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  test the existence of a project via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/projects/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/projects/get</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gcloud.resource_manager.project.Project.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct a project given its API representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; project resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a>) &#8211; The Client used with this project.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#gcloud.resource_manager.project.Project" title="gcloud.resource_manager.project.Project"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.project.Project</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.resource_manager.project.Project.full_name">
+<code class="descname">full_name</code><a class="headerlink" href="#gcloud.resource_manager.project.Project.full_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Fully-qualified name (ie, <code class="docutils literal"><span class="pre">'projects/purple-spaceship-123'</span></code>).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.resource_manager.project.Project.path">
+<code class="descname">path</code><a class="headerlink" href="#gcloud.resource_manager.project.Project.path" title="Permalink to this definition">#</a></dt>
+<dd><p>URL for the project (ie, <code class="docutils literal"><span class="pre">'/projects/purple-spaceship-123'</span></code>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  reload the project via a <code class="docutils literal"><span class="pre">GET</span></code> request.</p>
+<p>This method will reload the newest metadata for the project. If you&#8217;ve
+created a new <a class="reference internal" href="#gcloud.resource_manager.project.Project" title="gcloud.resource_manager.project.Project"><code class="xref py py-class docutils literal"><span class="pre">Project</span></code></a> instance via
+<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client.new_project" title="gcloud.resource_manager.client.Client.new_project"><code class="xref py py-meth docutils literal"><span class="pre">Client.new_project()</span></code></a>,
+this method will retrieve project metadata.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This will overwrite any local changes you&#8217;ve made and not saved
+via <a class="reference internal" href="#gcloud.resource_manager.project.Project.update" title="gcloud.resource_manager.project.Project.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a>.</p>
+</div>
+<p>See
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.set_properties_from_api_repr">
+<code class="descname">set_properties_from_api_repr</code><span class="sig-paren">(</span><em>resource</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.set_properties_from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.set_properties_from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Update specific properties from its API representation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.undelete">
+<code class="descname">undelete</code><span class="sig-paren">(</span><em>client=None</em>, <em>reload_data=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.undelete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.undelete" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  undelete the project via a <code class="docutils literal"><span class="pre">POST</span></code> request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/undelete</a></p>
+<p>This actually changes the project status (<code class="docutils literal"><span class="pre">lifecycleState</span></code>) from
+<code class="docutils literal"><span class="pre">DELETE_REQUESTED</span></code> to <code class="docutils literal"><span class="pre">ACTIVE</span></code>.
+If the project has already reached a status of <code class="docutils literal"><span class="pre">DELETE_IN_PROGRESS</span></code>,
+this request will fail and the project cannot be restored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</li>
+<li><strong>reload_data</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Whether to reload the project with the latest
+state. If you want to get the updated status,
+you&#8217;ll want this set to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> as the DELETE
+method doesn&#8217;t send back the updated project.
+Default: <a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.resource_manager.project.Project.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/resource_manager/project.html#Project.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.resource_manager.project.Project.update" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  update the project via a <code class="docutils literal"><span class="pre">PUT</span></code> request.</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update">https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/update</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="resource-manager-client.html#gcloud.resource_manager.client.Client" title="gcloud.resource_manager.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.resource_manager.client.Client</span></code></a> or
+<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; the client to use.  If not passed, falls back to
+the client stored on the current project.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <p class="caption"><span class="caption-text">gcloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+</ul>
+
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>
