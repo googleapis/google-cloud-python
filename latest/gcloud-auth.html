@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud 36128ba documentation</title>
+    <title>Authentication &mdash; gcloud 739a742 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '36128ba',
+        VERSION:     '739a742',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 36128ba documentation" href="index.html" />
+    <link rel="top" title="gcloud 739a742 documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%2036128ba" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20739a742" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (36128ba)
+              Version History (739a742)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -118,19 +118,22 @@ and point to it using an environment variable:</p>
 </div>
 <div class="section" id="client-provided-authentication">
 <h2>Client-Provided Authentication<a class="headerlink" href="#client-provided-authentication" title="Permalink to this headline">#</a></h2>
-<p>Every package uses a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> as a base
-for interacting with an API. For example:</p>
+<p>Every package uses a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
+as a base for interacting with an API.
+For example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Passing no arguments at all will &#8220;just work&#8221; if you&#8217;ve following the
-instructions in the <a class="reference internal" href="#overview"><span>Overview</span></a>. The credentials are inferred from your
-local environment by using Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>.</p>
+<p>Passing no arguments at all will &#8220;just work&#8221; if you&#8217;ve followed the
+instructions in the <a class="reference internal" href="#overview"><span>Overview</span></a>.
+The credentials are inferred from your local environment by using
+Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>.</p>
 <div class="section" id="credential-discovery-precedence">
-<h3>Credential Discovery Precedence<a class="headerlink" href="#credential-discovery-precedence" title="Permalink to this headline">#</a></h3>
-<p>When loading the <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>, the library will check
-properties of your local environment in the following order</p>
+<span id="precedence"></span><h3>Credential Discovery Precedence<a class="headerlink" href="#credential-discovery-precedence" title="Permalink to this headline">#</a></h3>
+<p>When loading the <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>,
+the library will check properties of your local environment
+in the following order:</p>
 <ol class="arabic simple">
 <li>Application running in Google App Engine</li>
 <li>JSON or PKCS12/P12 keyfile pointed to by
@@ -139,27 +142,100 @@ properties of your local environment in the following order</p>
 <li>Application running in Google Compute Engine</li>
 </ol>
 </div>
-<div class="section" id="loading-credentials-explicitly">
-<h3>Loading Credentials Explicitly<a class="headerlink" href="#loading-credentials-explicitly" title="Permalink to this headline">#</a></h3>
-<p>In addition, the
+</div>
+<div class="section" id="explicit-credentials">
+<h2>Explicit Credentials<a class="headerlink" href="#explicit-credentials" title="Permalink to this headline">#</a></h2>
+<p>The Application Default Credentials discussed above can be useful
+if your code needs to run in many different environments or
+if you just don&#8217;t want authentication to be a focus in your code.</p>
+<p>However, you may want to be explicit because</p>
+<ul class="simple">
+<li>your code will only run in one place</li>
+<li>you may have code which needs to be run as a specific service account
+every time (rather than with the locally inferred credentials)</li>
+<li>you may want to use two separate accounts to simultaneously access data
+from different projects</li>
+</ul>
+<p>In these situations, you can create an explicit
+<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> object suited to your
+environment.
+After creation,
+you can pass it directly to a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="google-app-engine-environment">
+<h3>Google App Engine Environment<a class="headerlink" href="#google-app-engine-environment" title="Permalink to this headline">#</a></h3>
+<p>To create <code class="xref py py-class docutils literal"><span class="pre">credentials</span></code>
+just for Google App Engine:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.appengine</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="google-compute-engine-environment">
+<h3>Google Compute Engine Environment<a class="headerlink" href="#google-compute-engine-environment" title="Permalink to this headline">#</a></h3>
+<p>To create <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.gce.html#oauth2client.gce.AppAssertionCredentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
+just for Google Compute Engine:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.gce</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-accounts">
+<h3>Service Accounts<a class="headerlink" href="#service-accounts" title="Permalink to this headline">#</a></h3>
+<p>A <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> can be used with both a JSON keyfile and
+a PKCS12/P12 keyfile.</p>
+<p>Directly creating <code class="docutils literal"><span class="pre">credentials</span></code> in <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a> for a service
+account is a rather complex process,
+so as a convenience, the
 <a class="reference internal" href="gcloud-api.html#gcloud.client.Client.from_service_account_json" title="gcloud.client.Client.from_service_account_json"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_json()</span></code></a>
 and
 <a class="reference internal" href="gcloud-api.html#gcloud.client.Client.from_service_account_p12" title="gcloud.client.Client.from_service_account_p12"><code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12()</span></code></a>
-factories can be used if you know the specific type of credentials you&#8217;d
-like to use.</p>
+factories are provided to create a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
+service account credentials.</p>
+<p>For example, with a JSON keyfile:</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
-service account, we recommend using a JSON key.</p>
+<p class="last">Unless you have a specific reason to use a PKCS12/P12 key for your
+service account,
+we recommend using a JSON key.</p>
 </div>
-<p>Finally, if you are <strong>familiar</strong> with the <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a> library, you can
-create a <code class="docutils literal"><span class="pre">credentials</span></code> object and pass it directly:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</div>
+<div class="section" id="user-accounts-3-legged-oauth-2-0-with-a-refresh-token">
+<h3>User Accounts (3-legged OAuth 2.0) with a refresh token<a class="headerlink" href="#user-accounts-3-legged-oauth-2-0-with-a-refresh-token" title="Permalink to this headline">#</a></h3>
+<p>The majority of cases are intended to authenticate machines or
+workers rather than actual user accounts. However, it&#8217;s also
+possible to call Google Cloud APIs with a user account via
+<a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">OAuth 2.0</a>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">A production application should <strong>use a service account</strong>,
+but you may wish to use your own personal user account when first
+getting started with the <code class="docutils literal"><span class="pre">gcloud-python</span></code> library.</p>
+</div>
+<p>The simplest way to use credentials from a user account is via
+Application Default Credentials using <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
+(as mentioned above):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">GoogleCredentials</span>
+<span class="n">credentials</span> <span class="o">=</span> <span class="n">GoogleCredentials</span><span class="o">.</span><span class="n">get_application_default</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>This will still follow the <a class="reference internal" href="#precedence"><span>precedence</span></a>
+described above,
+so be sure none of the other possible environments conflict
+with your user provided credentials.</p>
+<p>Advanced users of <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/">oauth2client</a> can also use custom flows to
+create credentials using <a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#flow_from_clientsecrets">client secrets</a> or using a
+<a class="reference external" href="https://developers.google.com/api-client-library/python/guide/aaa_oauth#OAuth2WebServerFlow">webserver flow</a>.
+After creation, <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v1.4.12)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a>
+can be serialized with
+<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.to_json" title="(in oauth2client v1.4.12)"><code class="xref py py-meth docutils literal"><span class="pre">to_json()</span></code></a>
+and stored in a file and then and deserialized with
+<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.from_json" title="(in oauth2client v1.4.12)"><code class="xref py py-meth docutils literal"><span class="pre">from_json()</span></code></a>.</p>
 </div>
 </div>
 </div>
