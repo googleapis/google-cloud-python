@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud 0dfe5eb documentation</title>
+    <title>Authentication &mdash; gcloud 531bdc6 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0dfe5eb',
+        VERSION:     '531bdc6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0dfe5eb documentation" href="index.html" />
+    <link rel="top" title="gcloud 531bdc6 documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%200dfe5eb" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20531bdc6" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0dfe5eb)
+              Version History (531bdc6)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -236,6 +236,67 @@ can be serialized with
 <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.to_json" title="(in oauth2client v1.4.12)"><code class="xref py py-meth docutils literal"><span class="pre">to_json()</span></code></a>
 and stored in a file and then and deserialized with
 <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials.from_json" title="(in oauth2client v1.4.12)"><code class="xref py py-meth docutils literal"><span class="pre">from_json()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">#</a></h2>
+<div class="section" id="setting-up-a-service-account">
+<h3>Setting up a Service Account<a class="headerlink" href="#setting-up-a-service-account" title="Permalink to this headline">#</a></h3>
+<p>If your application is not running on Google Compute Engine,
+you need a <a class="reference external" href="https://developers.google.com/accounts/docs/OAuth2ServiceAccount">Google Developers Service Account</a>.</p>
+<ol class="arabic">
+<li><p class="first">Visit the <a class="reference external" href="https://console.developers.google.com/project">Google Developers Console</a>.</p>
+</li>
+<li><p class="first">Create a new project or click on an existing project.</p>
+</li>
+<li><p class="first">Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>APIs</strong> and enable the APIs
+that your application requires.</p>
+<img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/enable-apis.png"/></li>
+</ol>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You may need to enable billing in order to use these services.</p>
+<ul class="last simple">
+<li><strong>BigQuery</strong><ul>
+<li>BigQuery API</li>
+</ul>
+</li>
+<li><strong>Datastore</strong><ul>
+<li>Google Cloud Datastore API</li>
+</ul>
+</li>
+<li><strong>Pub/Sub</strong><ul>
+<li>Google Cloud Pub/Sub</li>
+</ul>
+</li>
+<li><strong>Search</strong><ul>
+<li>Google Cloud Search API</li>
+</ul>
+</li>
+<li><strong>Storage</strong><ul>
+<li>Google Cloud Storage</li>
+<li>Google Cloud Storage JSON API</li>
+</ul>
+</li>
+</ul>
+</div>
+</div></blockquote>
+<ol class="arabic">
+<li><p class="first">Navigate to <strong>APIs &amp; auth</strong> &gt; <strong>Credentials</strong>.</p>
+<p>You should see a screen like one of the following:</p>
+<img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/create-new-service-account.png"><img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/create-new-service-account-existing-keys.png"></li>
+</ol>
+<blockquote>
+<div><p>Find the &#8220;Add credentials&#8221; drop down and select &#8220;Service account&#8221; to be
+guided through downloading a new JSON keyfile.</p>
+<p>If you want to re-use an existing service account,
+you can easily generate a new keyfile.
+Just select the account you wish to re-use,
+and click <strong>Generate new JSON key</strong>:</p>
+<blockquote>
+<div><img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/reuse-service-account.png"></div></blockquote>
+</div></blockquote>
 </div>
 </div>
 </div>
