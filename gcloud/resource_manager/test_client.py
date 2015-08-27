@@ -98,7 +98,7 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(NotImplementedError):
             klass.from_service_account_p12()
 
-    def test_project_factory(self):
+    def test_new_project_factory(self):
         from gcloud.resource_manager.project import Project
 
         credentials = _Credentials()
@@ -106,12 +106,39 @@ class TestClient(unittest2.TestCase):
         project_id = 'project_id'
         name = object()
         labels = object()
-        project = client.project(project_id, name=name, labels=labels)
+        project = client.new_project(project_id, name=name, labels=labels)
 
         self.assertTrue(isinstance(project, Project))
         self.assertEqual(project._client, client)
         self.assertEqual(project.project_id, project_id)
         self.assertEqual(project.name, name)
+        self.assertEqual(project.labels, labels)
+
+    def test_fetch_project(self):
+        from gcloud.resource_manager.project import Project
+
+        project_id = 'project-id'
+        project_number = 123
+        project_name = 'Project Name'
+        labels = {'env': 'prod'}
+        project_resource = {
+            'projectId': project_id,
+            'projectNumber': project_number,
+            'name': project_name,
+            'labels': labels,
+            'lifecycleState': 'ACTIVE',
+        }
+
+        credentials = _Credentials()
+        client = self._makeOne(credentials=credentials)
+        # Patch the connection with one we can easily control.
+        client.connection = _Connection(project_resource)
+
+        project = client.fetch_project(project_id)
+        self.assertTrue(isinstance(project, Project))
+        self.assertEqual(project._client, client)
+        self.assertEqual(project.project_id, project_id)
+        self.assertEqual(project.name, project_name)
         self.assertEqual(project.labels, labels)
 
     def test_list_projects_return_type(self):

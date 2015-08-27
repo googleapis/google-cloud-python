@@ -24,14 +24,14 @@ class Project(object):
     .. note::
 
         A :class:`Project` can also be created via
-        :meth:`Client.project() \
-        <gcloud.resource_manager.client.Client.project>`
+        :meth:`Client.new_project() \
+        <gcloud.resource_manager.client.Client.new_project>`
 
     To manage labels on a :class:`Project`::
 
         >>> from gcloud import resource_manager
         >>> client = resource_manager.Client()
-        >>> project = client.project('purple-spaceship-123')
+        >>> project = client.new_project('purple-spaceship-123')
         >>> project.labels = {'color': 'purple'}
         >>> project.labels['environment'] = 'production'
         >>> project.update()
@@ -139,9 +139,9 @@ class Project(object):
 
         This method will reload the newest metadata for the project. If you've
         created a new :class:`Project` instance via
-        :meth:`Client.project() \
-        <gcloud.resource_manager.client.Client.project>`, this method will
-        retrieve project metadata.
+        :meth:`Client.new_project() \
+        <gcloud.resource_manager.client.Client.new_project>`,
+        this method will retrieve project metadata.
 
         .. warning::
 

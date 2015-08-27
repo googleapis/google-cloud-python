@@ -78,7 +78,7 @@ class Client(BaseClient):
                                   'Resource Manager API. Only user '
                                   'credentials can be used.')
 
-    def project(self, project_id, name=None, labels=None):
+    def new_project(self, project_id, name=None, labels=None):
         """Creates a :class:`.Project` bound to the current client.
 
         Use :meth:`Project.reload() \
@@ -104,6 +104,24 @@ class Client(BaseClient):
         """
         return Project(project_id=project_id,
                        client=self, name=name, labels=labels)
+
+    def fetch_project(self, project_id):
+        """Fetch an existing project and it's relevant metadata by ID.
+
+        .. note::
+
+            If the project does not exist, this will raise a
+            :class:`NotFound <gcloud.exceptions.NotFound>` error.
+
+        :type project_id: str
+        :param project_id: The ID for this project.
+
+        :rtype: :class:`.Project`
+        :returns: A :class:`.Project` with metadata fetched from the API.
+        """
+        project = self.new_project(project_id)
+        project.reload()
+        return project
 
     def list_projects(self, filter_params=None, page_size=None):
         """List the projects visible to this client.

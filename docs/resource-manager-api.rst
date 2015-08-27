@@ -28,12 +28,12 @@ Here's a quick example of the full life-cycle:
     ...     print(project)
 
     >>> # Create a new project
-    >>> new_project = client.project('your-project-id-here',
-    ...                              name='My new project)
+    >>> new_project = client.new_project('your-project-id-here',
+    ...                                  name='My new project)
     >>> new_project.create()
 
     >>> # Update an existing project
-    >>> project = client.get_project('my-existing-project')
+    >>> project = client.fetch_project('my-existing-project')
     >>> print(project)
     <Project: Existing Project (my-existing-project)>
     >>> project.name = 'Modified name'
@@ -42,11 +42,11 @@ Here's a quick example of the full life-cycle:
     <Project: Modified name (my-existing-project)>
 
     >>> # Delete a project
-    >>> project = client.get_project('my-existing-project')
+    >>> project = client.new_project('my-existing-project')
     >>> project.delete()
 
     >>> # Undelete a project
-    >>> project = client.get_project('my-existing-project')
+    >>> project = client.new_project('my-existing-project')
     >>> project.undelete()
 
 .. _Authentication:
