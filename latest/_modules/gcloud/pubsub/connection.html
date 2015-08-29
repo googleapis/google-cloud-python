@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.connection &mdash; gcloud 3687302 documentation</title>
+    <title>gcloud.pubsub.connection &mdash; gcloud 3a16149 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '3687302',
+        VERSION:     '3a16149',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3687302 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3a16149 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%203687302" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%203a16149" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3687302)
+              Version History (3a16149)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,16 +110,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
+<span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/pubsub&#39;</span><span class="p">,</span>
+         <span class="s">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Pub/Sub consumer.&quot;&quot;&quot;</span>
+
+
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Pubsub via the JSON REST API.</span>
-
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Pubsub via the JSON REST API.&quot;&quot;&quot;</span>
 
     <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s">&#39;https://pubsub.googleapis.com&#39;</span>
     <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
@@ -130,9 +127,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/{api_version}{path}&#39;</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/pubsub&#39;</span><span class="p">,</span>
-             <span class="s">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Pub/Sub consumer.&quot;&quot;&quot;</span></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">credentials</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_scoped_credentials</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">SCOPE</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
