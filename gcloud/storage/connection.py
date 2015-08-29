@@ -17,14 +17,16 @@
 from gcloud import connection as base_connection
 
 
-SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
-         'https://www.googleapis.com/auth/devstorage.read_only',
-         'https://www.googleapis.com/auth/devstorage.read_write')
-"""The scopes required for authenticating as a Cloud Storage consumer."""
-
-
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud Storage via the JSON REST API."""
+    """A connection to Google Cloud Storage via the JSON REST API.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        connection.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: (Optional) HTTP object to make requests.
+    """
 
     API_BASE_URL = base_connection.API_BASE_URL
     """The base of the API call URL."""
@@ -35,6 +37,7 @@ class Connection(base_connection.JSONConnection):
     API_URL_TEMPLATE = '{api_base_url}/storage/{api_version}{path}'
     """A template for the URL of a particular API call."""
 
-    def __init__(self, credentials=None, http=None):
-        credentials = self._create_scoped_credentials(credentials, SCOPE)
-        super(Connection, self).__init__(credentials=credentials, http=http)
+    SCOPE = ('https://www.googleapis.com/auth/devstorage.full_control',
+             'https://www.googleapis.com/auth/devstorage.read_only',
+             'https://www.googleapis.com/auth/devstorage.read_write')
+    """The scopes required for authenticating as a Cloud Storage consumer."""

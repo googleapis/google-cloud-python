@@ -29,9 +29,9 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.credentials, None)
 
     def test_ctor_explicit(self):
-        creds = object()
-        conn = self._makeOne(creds)
-        self.assertTrue(conn.credentials is creds)
+        credentials = _Credentials()
+        conn = self._makeOne(credentials)
+        self.assertTrue(conn.credentials is credentials)
         self.assertEqual(conn._http, None)
 
     def test_ctor_explicit_http(self):
@@ -54,15 +54,10 @@ class TestConnection(unittest2.TestCase):
         import httplib2
 
         authorized = object()
-
-        class Creds(object):
-            def authorize(self, http):
-                self._called_with = http
-                return authorized
-        creds = Creds()
-        conn = self._makeOne(creds)
+        credentials = _Credentials(authorized)
+        conn = self._makeOne(credentials)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
+        self.assertTrue(isinstance(credentials._called_with, httplib2.Http))
 
     def test_user_agent_format(self):
         from pkg_resources import get_distribution
@@ -76,18 +71,18 @@ class TestConnection(unittest2.TestCase):
         from gcloud import connection
 
         KLASS = self._getTargetClass()
-        CREDS = object()
+        CREDENTIALS = _Credentials()
         _CALLED = []
 
         def mock_creds(arg1):
             _CALLED.append((arg1,))
-            return CREDS
+            return CREDENTIALS
 
         FOO = object()
         with _Monkey(connection, get_for_service_account_json=mock_creds):
             conn = KLASS.from_service_account_json(FOO, **kwargs)
 
-        self.assertTrue(conn.credentials is CREDS)
+        self.assertTrue(conn.credentials is CREDENTIALS)
         self.assertEqual(_CALLED, [(FOO,)])
 
     def test_from_service_account_json(self):
@@ -102,19 +97,19 @@ class TestConnection(unittest2.TestCase):
         from gcloud import connection
 
         KLASS = self._getTargetClass()
-        CREDS = object()
+        CREDENTIALS = _Credentials()
         _CALLED = []
 
         def mock_creds(arg1, arg2):
             _CALLED.append((arg1, arg2))
-            return CREDS
+            return CREDENTIALS
 
         FOO = object()
         BAR = object()
         with _Monkey(connection, get_for_service_account_p12=mock_creds):
             conn = KLASS.from_service_account_p12(FOO, BAR, **kwargs)
 
-        self.assertTrue(conn.credentials is CREDS)
+        self.assertTrue(conn.credentials is CREDENTIALS)
         self.assertEqual(_CALLED, [(FOO, BAR)])
 
     def test_from_service_account_p12(self):
@@ -129,15 +124,15 @@ class TestConnection(unittest2.TestCase):
         from gcloud import connection
 
         KLASS = self._getTargetClass()
-        CREDS = object()
+        CREDENTIALS = _Credentials()
 
         def mock_creds():
-            return CREDS
+            return CREDENTIALS
 
         with _Monkey(connection, get_credentials=mock_creds):
             conn = KLASS.from_environment(**kwargs)
 
-        self.assertTrue(conn.credentials is CREDS)
+        self.assertTrue(conn.credentials is CREDENTIALS)
 
     def test_from_environment(self):
         self._from_environment_helper()
@@ -174,9 +169,9 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(conn.credentials, None)
 
     def test_ctor_explicit(self):
-        creds = object()
-        conn = self._makeOne(creds)
-        self.assertTrue(conn.credentials is creds)
+        credentials = _Credentials()
+        conn = self._makeOne(credentials)
+        self.assertTrue(conn.credentials is credentials)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
@@ -190,16 +185,12 @@ class TestJSONConnection(unittest2.TestCase):
 
     def test_http_w_creds(self):
         import httplib2
-        authorized = object()
 
-        class Creds(object):
-            def authorize(self, http):
-                self._called_with = http
-                return authorized
-        creds = Creds()
-        conn = self._makeOne(creds)
+        authorized = object()
+        credentials = _Credentials(authorized)
+        conn = self._makeOne(credentials)
         self.assertTrue(conn.http is authorized)
-        self.assertTrue(isinstance(creds._called_with, httplib2.Http))
+        self.assertTrue(isinstance(credentials._called_with, httplib2.Http))
 
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeMockOne()
@@ -447,3 +438,19 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
+
+
+class _Credentials(object):
+
+    _scopes = None
+
+    def __init__(self, authorized=None):
+        self._authorized = authorized
+
+    def authorize(self, http):
+        self._called_with = http
+        return self._authorized
+
+    @staticmethod
+    def create_scoped_required():
+        return False

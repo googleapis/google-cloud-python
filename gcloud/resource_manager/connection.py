@@ -20,12 +20,16 @@ from oauth2client.client import AssertionCredentials
 from gcloud import connection as base_connection
 
 
-SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
-"""The scopes required for authenticating as a Resouce Manager consumer."""
-
-
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud Resource Manager via the JSON REST API."""
+    """A connection to Google Cloud Resource Manager via the JSON REST API.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :param credentials: (Optional) The OAuth2 Credentials to use for this
+                        connection.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: (Optional) HTTP object to make requests.
+    """
 
     API_BASE_URL = 'https://cloudresourcemanager.googleapis.com'
     """The base of the API call URL."""
@@ -36,6 +40,9 @@ class Connection(base_connection.JSONConnection):
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
 
+    SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
+    """The scopes required for authenticating as a Resouce Manager consumer."""
+
     def __init__(self, credentials=None, http=None):
         if isinstance(credentials, AssertionCredentials):
             message = ('credentials (%r) inherits from '
@@ -43,5 +50,4 @@ class Connection(base_connection.JSONConnection):
                        'used with the Resource Manager API. ' % (credentials,))
             raise TypeError(message)
 
-        credentials = self._create_scoped_credentials(credentials, SCOPE)
         super(Connection, self).__init__(credentials=credentials, http=http)

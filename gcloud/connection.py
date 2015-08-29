@@ -69,9 +69,16 @@ class Connection(object):
     USER_AGENT = "gcloud-python/{0}".format(get_distribution('gcloud').version)
     """The user agent for gcloud-python requests."""
 
+    SCOPE = None
+    """The scopes required for authenticating with a service.
+
+    Needs to be set by subclasses.
+    """
+
     def __init__(self, credentials=None, http=None):
         self._http = http
-        self._credentials = credentials
+        self._credentials = self._create_scoped_credentials(
+            credentials, self.SCOPE)
 
     @property
     def credentials(self):

@@ -51,10 +51,12 @@ The main concepts with this API are:
 """
 
 from gcloud.datastore.batch import Batch
-from gcloud.datastore.connection import SCOPE
 from gcloud.datastore.connection import Connection
 from gcloud.datastore.client import Client
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
+
+
+SCOPE = Connection.SCOPE
