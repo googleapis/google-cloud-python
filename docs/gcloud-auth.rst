@@ -252,3 +252,42 @@ you need a `Google Developers Service Account`_.
 
 .. _Google Developers Console: https://console.developers.google.com/project
 .. _Google Developers Service Account: https://developers.google.com/accounts/docs/OAuth2ServiceAccount
+
+Using Google Compute Engine
+---------------------------
+
+If your code is running on Google Compute Engine,
+using the inferred Google `Application Default Credentials`_
+will be sufficient for retrieving credentials.
+
+However, by default your credentials may not grant you
+access to the services you intend to use.
+Be sure when you `set up the GCE instance`_,
+you add the correct scopes for the APIs you want to access:
+
+* **All APIs**
+
+    * ``https://www.googleapis.com/auth/cloud-platform``
+    * ``https://www.googleapis.com/auth/cloud-platform.read-only``
+
+* **BigQuery**
+
+    * ``https://www.googleapis.com/auth/bigquery``
+    * ``https://www.googleapis.com/auth/bigquery.insertdata``
+
+* **Datastore**
+
+    * ``https://www.googleapis.com/auth/datastore``
+    * ``https://www.googleapis.com/auth/userinfo.email``
+
+* **Pub/Sub**
+
+    * ``https://www.googleapis.com/auth/pubsub``
+
+* **Storage**
+
+    * ``https://www.googleapis.com/auth/devstorage.full_control``
+    * ``https://www.googleapis.com/auth/devstorage.read_only``
+    * ``https://www.googleapis.com/auth/devstorage.read_write``
+
+.. _set up the GCE instance: https://cloud.google.com/compute/docs/authentication#using
