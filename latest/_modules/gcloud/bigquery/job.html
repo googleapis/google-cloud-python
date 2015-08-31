@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.job &mdash; gcloud dd35f25 documentation</title>
+    <title>gcloud.bigquery.job &mdash; gcloud d8d58ad documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'dd35f25',
+        VERSION:     'd8d58ad',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud dd35f25 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d8d58ad documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%20dd35f25" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%20d8d58ad" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (dd35f25)
+              Version History (d8d58ad)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -218,7 +218,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 </div>
 <div class="viewcode-block" id="QueryPriority"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.QueryPriority">[docs]</a><span class="k">class</span> <span class="nc">QueryPriority</span><span class="p">(</span><span class="n">_EnumProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``RunQueryJob.priority`` property.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Pseudo-enum for ``RunAsyncQueryJob.priority`` property.&quot;&quot;&quot;</span>
     <span class="n">INTERACTIVE</span> <span class="o">=</span> <span class="s">&#39;INTERACTIVE&#39;</span>
     <span class="n">BATCH</span> <span class="o">=</span> <span class="s">&#39;BATCH&#39;</span>
     <span class="n">ALLOWED</span> <span class="o">=</span> <span class="p">(</span><span class="n">INTERACTIVE</span><span class="p">,</span> <span class="n">BATCH</span><span class="p">)</span>
@@ -890,7 +890,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">_write_disposition</span> <span class="o">=</span> <span class="bp">None</span>
 
 
-<div class="viewcode-block" id="RunQueryJob"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.RunQueryJob">[docs]</a><span class="k">class</span> <span class="nc">RunQueryJob</span><span class="p">(</span><span class="n">_BaseJob</span><span class="p">):</span>
+<div class="viewcode-block" id="RunAsyncQueryJob"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.RunAsyncQueryJob">[docs]</a><span class="k">class</span> <span class="nc">RunAsyncQueryJob</span><span class="p">(</span><span class="n">_BaseJob</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Asynchronous job: query tables.</span>
 
 <span class="sd">    :type name: string</span>
@@ -904,7 +904,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">RunQueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RunAsyncQueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_QueryConfiguration</span><span class="p">()</span>
 
