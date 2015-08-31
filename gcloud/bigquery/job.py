@@ -784,8 +784,8 @@ class ExtractTableToStorageJob(_BaseJob):
         return resource
 
 
-class _QueryConfiguration(object):
-    """User-settable configuration options for query jobs."""
+class _AsyncQueryConfiguration(object):
+    """User-settable configuration options for asynchronous query jobs."""
     # None -> use server default.
     _allow_large_results = None
     _create_disposition = None
@@ -813,7 +813,7 @@ class RunAsyncQueryJob(_BaseJob):
     def __init__(self, name, query, client):
         super(RunAsyncQueryJob, self).__init__(name, client)
         self.query = query
-        self._configuration = _QueryConfiguration()
+        self._configuration = _AsyncQueryConfiguration()
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See:
