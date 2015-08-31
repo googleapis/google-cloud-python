@@ -573,7 +573,8 @@ class _Connection(object):
         if content_type is not None:  # pragma: NO COVER
             headers['Content-Type'] = content_type
 
-        return self.http.request(method, uri=url, headers=headers, body=data)
+        return self.http.request(uri=url, method=method,
+                                 headers=headers, body=data)
 
     def api_request(self, method, path, query_params=None,
                     data=None, content_type=None,
@@ -595,7 +596,7 @@ class _HTTP(object):
         self._requests = []
         self._responses = list(responses)
 
-    def request(self, method, uri, headers, body):
+    def request(self, uri, method, headers, body):
         self._requests.append((method, uri, headers, body))
         response, self._responses = self._responses[0], self._responses[1:]
         return response
