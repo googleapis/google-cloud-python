@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud 71e4703 documentation</title>
+    <title>Authentication &mdash; gcloud 51640a5 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '71e4703',
+        VERSION:     '51640a5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 71e4703 documentation" href="index.html" />
+    <link rel="top" title="gcloud 51640a5 documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%2071e4703" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%2051640a5" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (71e4703)
+              Version History (51640a5)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -297,6 +297,58 @@ and click <strong>Generate new JSON key</strong>:</p>
 <blockquote>
 <div><img src="https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authorization/reuse-service-account.png"></div></blockquote>
 </div></blockquote>
+</div>
+<div class="section" id="using-google-compute-engine">
+<h3>Using Google Compute Engine<a class="headerlink" href="#using-google-compute-engine" title="Permalink to this headline">#</a></h3>
+<p>If your code is running on Google Compute Engine,
+using the inferred Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>
+will be sufficient for retrieving credentials.</p>
+<p>However, by default your credentials may not grant you
+access to the services you intend to use.
+Be sure when you <a class="reference external" href="https://cloud.google.com/compute/docs/authentication#using">set up the GCE instance</a>,
+you add the correct scopes for the APIs you want to access:</p>
+<ul>
+<li><p class="first"><strong>All APIs</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/cloud-platform</span></code></li>
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/cloud-platform.read-only</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>BigQuery</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/bigquery</span></code></li>
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/bigquery.insertdata</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Datastore</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/datastore</span></code></li>
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/userinfo.email</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Pub/Sub</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/pubsub</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Storage</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/devstorage.full_control</span></code></li>
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/devstorage.read_only</span></code></li>
+<li><code class="docutils literal"><span class="pre">https://www.googleapis.com/auth/devstorage.read_write</span></code></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 </div>
 </div>
 </div>
