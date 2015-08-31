@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Shared Core Modules &mdash; gcloud 51640a5 documentation</title>
+    <title>Shared Core Modules &mdash; gcloud dd35f25 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '51640a5',
+        VERSION:     'dd35f25',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 51640a5 documentation" href="index.html" />
+    <link rel="top" title="gcloud dd35f25 documentation" href="index.html" />
     <link rel="next" title="Authentication" href="gcloud-auth.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%2051640a5" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20dd35f25" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (51640a5)
+              Version History (dd35f25)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -468,106 +468,6 @@ requests and handle token refresh on 401 errors.</p>
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The credentials object associated with this connection.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="gcloud.connection.Connection.from_environment">
-<em class="property">classmethod </em><code class="descname">from_environment</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_environment" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory to retrieve implicit credentials while creating connection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
-<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved implicit
-credentials.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
-and the credentials created by the factory.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="gcloud.connection.Connection.from_service_account_json">
-<em class="property">classmethod </em><code class="descname">from_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_service_account_json" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory to retrieve JSON credentials while creating connection.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file
-was given to you when you created the
-service account). This file must contain
-a JSON object with a private key and
-other credentials information (downloaded
-from the Google APIs console).</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
-<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved JSON credentials.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
-and the credentials created by the factory.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="gcloud.connection.Connection.from_service_account_p12">
-<em class="property">classmethod </em><code class="descname">from_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/connection.html#Connection.from_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.connection.Connection.from_service_account_p12" title="Permalink to this definition">#</a></dt>
-<dd><p>Factory to retrieve P12 credentials while creating connection.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Unless you have an explicit reason to use a PKCS12 key for your
-service account, we recommend using a JSON key.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must be in P12 format.</li>
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Remaining positional arguments to pass to constructor.</li>
-<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Remaining keyword arguments to pass to constructor.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="#gcloud.connection.Connection" title="gcloud.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.Connection</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The connection created with the retrieved P12 credentials.</p>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">class:<cite>TypeError</cite> if there is a conflict with the kwargs
-and the credentials created by the factory.</p>
-</td>
 </tr>
 </tbody>
 </table>
