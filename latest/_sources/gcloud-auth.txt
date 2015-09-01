@@ -291,3 +291,44 @@ you add the correct scopes for the APIs you want to access:
     * ``https://www.googleapis.com/auth/devstorage.read_write``
 
 .. _set up the GCE instance: https://cloud.google.com/compute/docs/authentication#using
+
+Advanced Customization
+======================
+
+Though the ``gcloud-python`` library defaults to using `oauth2client`_
+to sign requests and ``httplib2`` for sending requests,
+it is not a strict requirement.
+
+The :class:`Client <gcloud.client.Client>` constructor accepts an optional
+``http`` argument in place of a ``credentials`` object.
+If passed, all HTTP requests made by the client will use your
+custom HTTP object.
+
+In order for this to be possible,
+the ``http`` object must do two things:
+
+* Handle authentication on its own
+* Define a method ``request()`` that can subsitute for
+  :meth:`httplib2.Http.request`.
+
+The entire signature from ``httplib2`` need not be implemented,
+we only use it as
+
+.. code-block:: python
+
+    http.request(uri, method=method_name, body=body, headers=headers)
+
+For an example of such an implementation,
+a ``gcloud-python`` user created a `custom HTTP class`_
+using the `requests`_ library.
+
+.. _custom HTTP class: https://github.com/GoogleCloudPlatform/gcloud-python/issues/908#issuecomment-110811556
+.. _requests: http://www.python-requests.org/en/latest/
+
+As for handling authentication on your own,
+it may be easiest just to re-use bits from ``oauth2client``.
+Unfortunately, these parts have a hard dependency on ``httplib2``.
+We hope to enable using `custom HTTP libraries`_ with ``oauth2client`` at
+some point.
+
+.. _custom HTTP libraries: https://github.com/google/oauth2client/issues/128
