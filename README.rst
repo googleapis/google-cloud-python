@@ -19,23 +19,41 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Storage`_
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
+-  `Google Cloud Resource Manager`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
+.. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
 
 .. _Google APIs Python Client library: https://github.com/google/google-api-python-client
 
-Quickstart
-----------
+Quick Start
+-----------
 
 ::
 
     $ pip install --upgrade gcloud
+
+We support:
+
+-  `Python 2.6`_
+-  `Python 2.7`_
+-  `Python 3.3`_
+-  `Python 3.4`_
+
+For more information, see `Supported Python Versions`_ in
+``CONTRIBUTING``.
+
+.. _Python 2.6: https://docs.python.org/2.6/
+.. _Python 2.7: https://docs.python.org/2.7/
+.. _Python 3.3: https://docs.python.org/3.3/
+.. _Python 3.4: https://docs.python.org/3.4/
+.. _Supported Python Versions: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst#supported-python-versions
 
 Example Applications
 --------------------
@@ -43,6 +61,17 @@ Example Applications
 -  `gcloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
 
 .. _gcloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/gcloud-python-expenses-demo
+
+Authentication
+--------------
+
+With ``gcloud-python`` we try to make authentication as painless as possible.
+Check out the `Authentication section`_ in our documentation to learn more.
+You may also find the `authorization document`_ shared by all the ``gcloud-*``
+libraries to be helpful.
+
+.. _Authentication section: http://gcloud-python.readthedocs.org/en/latest/gcloud-auth.html
+.. _authorization document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authorization
 
 Google Cloud Datastore
 ----------------------
@@ -163,6 +192,21 @@ to BigQuery using this Client Library.
 
 .. _BigQuery documentation: https://googlecloudplatform.github.io/gcloud-python/stable/bigquery-usage.html
 
+Google Cloud Resource Manager
+-----------------------------
+
+The Cloud `Resource Manager`_ API (`Resource Manager API docs`_) provides
+methods that you can use to programmatically manage your projects in the
+Google Cloud Platform.
+
+.. _Resource Manager: https://cloud.google.com/resource-manager/
+.. _Resource Manager API docs: https://cloud.google.com/resource-manager/reference/rest/
+
+See the ``gcloud-python`` API `Resource Manager documentation`_ to learn how to
+manage projects using this Client Library.
+
+.. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
+
 Contributing
 ------------
 
@@ -171,30 +215,6 @@ Contributions to this library are always welcome and highly encouraged.
 See `CONTRIBUTING`_ for more information on how to get started.
 
 .. _CONTRIBUTING: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst
-
-Python Versions
--------------------------
-
-We support `Python 2.6`_ and `Python 2.7`_ and plan to support `Python 3.3`_ and
-`Python 3.4`_. For more information, see `Supported Python Versions`_ in
-``CONTRIBUTING``.
-
-.. _Python 2.6: https://docs.python.org/2.6/
-.. _Python 2.7: https://docs.python.org/2.7/
-.. _Python 3.3: https://docs.python.org/3.3/
-.. _Python 3.4: https://docs.python.org/3.4/
-.. _Supported Python Versions: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst#supported-python-versions
-
-Versioning
-----------
-
-This library follows `Semantic Versioning`_.
-
-.. _Semantic Versioning: http://semver.org/
-
-It is currently in major version zero (``0.y.z``), which means that anything
-may change at any time and the public API should not be considered
-stable.
 
 License
 -------

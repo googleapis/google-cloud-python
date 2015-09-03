@@ -343,6 +343,17 @@ We also explicitly decided to support Python 3 beginning with version
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 .. _drop 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
 
+Versioning
+----------
+
+This library follows `Semantic Versioning`_.
+
+.. _Semantic Versioning: http://semver.org/
+
+It is currently in major version zero (``0.y.z``), which means that anything
+may change at any time and the public API should not be considered
+stable.
+
 Contributor License Agreements
 ------------------------------
 
