@@ -824,7 +824,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         import datetime
         from gcloud._helpers import UTC
         from gcloud.bigquery.table import SchemaField
-        from gcloud._helpers import _millis_from_datetime
 
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
@@ -835,6 +834,11 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         WHEN_2 = WHEN + datetime.timedelta(seconds=2)
         ROWS = 1234
         TOKEN = 'TOKEN'
+
+        def _bigquery_timestamp_float_repr(ts_float):
+            # Preserve microsecond precision for E+09 timestamps
+            return '%0.15E' % (ts_float,)
+
         DATA = {
             'totalRows': ROWS,
             'pageToken': TOKEN,
@@ -842,17 +846,17 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
                     {'v': '32'},
-                    {'v': _millis_from_datetime(WHEN)},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS)},
                 ]},
                 {'f': [
                     {'v': 'Bharney Rhubble'},
                     {'v': '33'},
-                    {'v': _millis_from_datetime(WHEN_1)},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS + 1)},
                 ]},
                 {'f': [
                     {'v': 'Wylma Phlyntstone'},
                     {'v': '29'},
-                    {'v': _millis_from_datetime(WHEN_2)},
+                    {'v': _bigquery_timestamp_float_repr(WHEN_TS + 2)},
                 ]},
                 {'f': [
                     {'v': 'Bhettye Rhubble'},
@@ -861,6 +865,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 ]},
             ]
         }
+
         conn = _Connection(DATA)
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = _Dataset(client)
