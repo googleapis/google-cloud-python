@@ -46,6 +46,7 @@ def _setup_appengine_import(test_case, app_identity):
     sys.modules['google.appengine.ext'] = GAE_EXT
     sys.modules['google.appengine.ext.webapp'] = GAE_EXT_WEBAPP
     sys.modules['google.appengine.ext.webapp.util'] = GAE_EXT_WEBAPP_UTIL
+    sys.modules['webapp2'] = GAE_EXT_WEBAPP
 
 
 def _teardown_appengine_import(test_case):
@@ -56,6 +57,7 @@ def _teardown_appengine_import(test_case):
     sys.modules.pop('google.appengine.ext')
     sys.modules.pop('google.appengine.ext.webapp')
     sys.modules.pop('google.appengine.ext.webapp.util')
+    sys.modules.pop('webapp2')
 
     sys.modules['google'] = test_case._PREV_GOOGLE_MODULE
 
