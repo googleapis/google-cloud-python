@@ -1353,6 +1353,27 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
+class TestRunSyncQueryJob(unittest2.TestCase, _Base):
+    JOB_TYPE = 'query'
+    QUERY = 'select count(*) from persons'
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import RunSyncQueryJob
+        return RunSyncQueryJob
+
+    def test_ctor(self):
+        client = _Client(self.PROJECT)
+        job = self._makeOne(self.QUERY, client)
+        self.assertEqual(job.query, self.QUERY)
+        self.assertTrue(job._client is client)
+
+        self.assertTrue(job.default_dataset is None)
+        self.assertTrue(job.max_results is None)
+        self.assertTrue(job.preserve_nulls is None)
+        self.assertTrue(job.timeout_ms is None)
+        self.assertTrue(job.use_query_cache is None)
+
+
 class _Client(object):
 
     def __init__(self, project='project', connection=None):

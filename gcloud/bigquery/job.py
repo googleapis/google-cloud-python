@@ -148,17 +148,13 @@ class WriteDisposition(_EnumProperty):
 
 
 class _BaseJob(object):
-    """Base class for asynchronous jobs.
-
-    :type name: string
-    :param name: the name of the job
+    """Base class for jobs.
 
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    def __init__(self, name, client):
-        self.name = name
+    def __init__(self, client):
         self._client = client
         self._properties = {}
 
@@ -170,6 +166,59 @@ class _BaseJob(object):
         :returns: the project (derived from the client).
         """
         return self._client.project
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: :class:`gcloud.bigquery.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self._client
+        return client
+
+    def _scrub_local_properties(self, cleaned):
+        """Helper:  handle subclass properties in cleaned."""
+        pass
+
+    def _set_properties(self, api_response):
+        """Update properties from resource in body of ``api_response``
+
+        :type api_response: httplib2.Response
+        :param api_response: response returned from an API call
+        """
+        cleaned = api_response.copy()
+        self._scrub_local_properties(cleaned)
+
+        statistics = cleaned.get('statistics', {})
+        if 'creationTime' in statistics:
+            statistics['creationTime'] = float(statistics['creationTime'])
+        if 'startTime' in statistics:
+            statistics['startTime'] = float(statistics['startTime'])
+        if 'endTime' in statistics:
+            statistics['endTime'] = float(statistics['endTime'])
+
+        self._properties.clear()
+        self._properties.update(cleaned)
+
+
+class _AsyncJob(_BaseJob):
+    """Base class for asynchronous jobs.
+
+    :type name: string
+    :param name: the name of the job
+
+    :type client: :class:`gcloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the dataset (which requires a project).
+    """
+    def __init__(self, name, client):
+        super(_AsyncJob, self).__init__(client)
+        self.name = name
 
     @property
     def path(self):
@@ -288,44 +337,6 @@ class _BaseJob(object):
         if status is not None:
             return status.get('state')
 
-    def _require_client(self, client):
-        """Check client or verify over-ride.
-
-        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current dataset.
-
-        :rtype: :class:`gcloud.bigquery.client.Client`
-        :returns: The client passed in or the currently bound client.
-        """
-        if client is None:
-            client = self._client
-        return client
-
-    def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned."""
-        pass
-
-    def _set_properties(self, api_response):
-        """Update properties from resource in body of ``api_response``
-
-        :type api_response: httplib2.Response
-        :param api_response: response returned from an API call
-        """
-        cleaned = api_response.copy()
-        self._scrub_local_properties(cleaned)
-
-        statistics = cleaned.get('statistics', {})
-        if 'creationTime' in statistics:
-            statistics['creationTime'] = float(statistics['creationTime'])
-        if 'startTime' in statistics:
-            statistics['startTime'] = float(statistics['startTime'])
-        if 'endTime' in statistics:
-            statistics['endTime'] = float(statistics['endTime'])
-
-        self._properties.clear()
-        self._properties.update(cleaned)
-
     def begin(self, client=None):
         """API call:  begin the job via a POST request
 
@@ -411,7 +422,7 @@ class _LoadConfiguration(object):
     _write_disposition = None
 
 
-class LoadTableFromStorageJob(_BaseJob):
+class LoadTableFromStorageJob(_AsyncJob):
     """Asynchronous job for loading data into a table from CloudStorage.
 
     :type name: string
@@ -624,7 +635,7 @@ class _CopyConfiguration(object):
     _write_disposition = None
 
 
-class CopyJob(_BaseJob):
+class CopyJob(_AsyncJob):
     """Asynchronous job: copy data into a table from other tables.
 
     :type name: string
@@ -703,7 +714,7 @@ class _ExtractConfiguration(object):
     _print_header = None
 
 
-class ExtractTableToStorageJob(_BaseJob):
+class ExtractTableToStorageJob(_AsyncJob):
     """Asynchronous job: extract data from a table into Cloud Storage.
 
     :type name: string
@@ -797,7 +808,7 @@ class _AsyncQueryConfiguration(object):
     _write_disposition = None
 
 
-class RunAsyncQueryJob(_BaseJob):
+class RunAsyncQueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
     :type name: string
@@ -827,7 +838,7 @@ class RunAsyncQueryJob(_BaseJob):
 
     default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.default_dataset
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
     """
 
     destination_table = _TypedProperty('destination_table', Table)
@@ -919,3 +930,54 @@ class RunAsyncQueryJob(_BaseJob):
                 assert dest_remote['projectId'] == self.project
                 dataset = self._client.dataset(dest_remote['datasetId'])
                 self.destination_table = dataset.table(dest_remote['tableId'])
+
+
+class _SyncQueryConfiguration(object):
+    """User-settable configuration options for synchronous query jobs."""
+    # None -> use server default.
+    _default_dataset = None
+    _max_results = None
+    _timeout_ms = None
+    _preserve_nulls = None
+    _use_query_cache = None
+
+
+class RunSyncQueryJob(_BaseJob):
+    """Synchronous job: query tables.
+
+    :type query: string
+    :param query: SQL query string
+
+    :type client: :class:`gcloud.bigquery.client.Client`
+    :param client: A client which holds credentials and project configuration
+                   for the dataset (which requires a project).
+    """
+    def __init__(self, query, client):
+        super(RunSyncQueryJob, self).__init__(client)
+        self.query = query
+        self._configuration = _SyncQueryConfiguration()
+
+    default_dataset = _TypedProperty('default_dataset', Dataset)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
+    """
+
+    max_results = _TypedProperty('max_results', six.integer_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults
+    """
+
+    preserve_nulls = _TypedProperty('preserve_nulls', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls
+    """
+
+    timeout_ms = _TypedProperty('timeout_ms', six.integer_types)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs
+    """
+
+    use_query_cache = _TypedProperty('use_query_cache', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache
+    """
