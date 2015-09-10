@@ -24,6 +24,7 @@ from gcloud import bigquery
 
 _helpers.PROJECT = TESTS_PROJECT
 CLIENT = bigquery.Client()
+DATASET_NAME = 'system_tests_%012d' % (1000 * time.time(),)
 
 
 class TestBigQuery(unittest2.TestCase):
@@ -36,7 +37,6 @@ class TestBigQuery(unittest2.TestCase):
             doomed.delete()
 
     def test_create_dataset(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -45,7 +45,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET_NAME)
 
     def test_reload_dataset(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
@@ -57,7 +56,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(other.description, 'Description')
 
     def test_patch_dataset(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -70,7 +68,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(dataset.description, 'Description')
 
     def test_update_dataset(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -106,7 +103,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -124,7 +120,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertTrue(table._dataset is dataset)
 
     def test_list_tables(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -151,7 +146,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(len(created), len(tables_to_create))
 
     def test_patch_table(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -172,7 +166,6 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(table.description, 'Description')
 
     def test_update_table(self):
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -205,7 +198,6 @@ class TestBigQuery(unittest2.TestCase):
             ('Bhettye Rhubble', 27),
         ]
         ROW_IDS = range(len(ROWS))
-        DATASET_NAME = 'system_tests'
         dataset = CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
@@ -252,7 +244,6 @@ class TestBigQuery(unittest2.TestCase):
             ('Wylma Phlyntstone', 29),
             ('Bhettye Rhubble', 27),
         ]
-        DATASET_NAME = 'system_tests'
         TABLE_NAME = 'test_table'
 
         s_client = StorageClient()
