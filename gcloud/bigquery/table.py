@@ -763,7 +763,7 @@ def _bool_from_json(value, field):
 def _datetime_from_json(value, field):
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
-        stamp = datetime.datetime.utcfromtimestamp(float(value))
+        stamp = _datetime_from_microseconds(1e6 * float(value))
         return stamp.replace(tzinfo=UTC)
 
 
