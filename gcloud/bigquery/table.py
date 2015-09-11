@@ -607,18 +607,7 @@ class Table(object):
                                                  query_params=params)
         total_rows = response.get('totalRows')
         page_token = response.get('pageToken')
-        rows_data = []
-
-        for row in response.get('rows', ()):
-            row_data = []
-            for field, cell in zip(self._schema, row['f']):
-                converter = _CELLDATA_FROM_JSON[field.field_type]
-                if field.mode == 'REPEATED':
-                    row_data.append([converter(item, field)
-                                     for item in cell['v']])
-                else:
-                    row_data.append(converter(cell['v'], field))
-            rows_data.append(tuple(row_data))
+        rows_data = _rows_from_json(response.get('rows', ()), self._schema)
 
         return rows_data, total_rows, page_token
 
@@ -781,7 +770,6 @@ def _record_from_json(value, field):
 def _string_from_json(value, _):
     return value
 
-
 _CELLDATA_FROM_JSON = {
     'INTEGER': _int_from_json,
     'FLOAT': _float_from_json,
@@ -790,3 +778,18 @@ _CELLDATA_FROM_JSON = {
     'RECORD': _record_from_json,
     'STRING': _string_from_json,
 }
+
+
+def _rows_from_json(rows, schema):
+    rows_data = []
+    for row in rows:
+        row_data = []
+        for field, cell in zip(schema, row['f']):
+            converter = _CELLDATA_FROM_JSON[field.field_type]
+            if field.mode == 'REPEATED':
+                row_data.append([converter(item, field)
+                                 for item in cell['v']])
+            else:
+                row_data.append(converter(cell['v'], field))
+        rows_data.append(tuple(row_data))
+    return rows_data
