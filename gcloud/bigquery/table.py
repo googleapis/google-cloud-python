@@ -411,7 +411,7 @@ class Table(object):
         """API call:  create the dataset via a PUT request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -552,7 +552,7 @@ class Table(object):
         """API call:  delete the table via a DELETE request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tables/delete
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -565,7 +565,7 @@ class Table(object):
         """API call:  fetch the table data via a GET request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tabledata/list
+        https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list
 
         .. note::
 
@@ -631,7 +631,7 @@ class Table(object):
         """API call:  insert table data via a POST request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tabledata/insertAll
+        https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll
 
         :type rows: list of tuples
         :param rows: row data to be inserted
@@ -761,8 +761,8 @@ def _bool_from_json(value, field):
 
 def _datetime_from_json(value, field):
     if _not_null(value, field):
-        # Field value will be in milliseconds.
-        return _datetime_from_microseconds(1000.0 * float(value))
+        # value will be a float in seconds, to microsecond precision, in UTC.
+        return _datetime_from_microseconds(1e6 * float(value))
 
 
 def _record_from_json(value, field):
