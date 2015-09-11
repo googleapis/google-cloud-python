@@ -1381,14 +1381,14 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
 
         if complete:
             resource['totalRows'] = 1000
-            rows = resource['rows'] = [
+            resource['rows'] = [
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
                     {'v': 32},
                 ]},
                 {'f': [
                     {'v': 'Bharney Rhubble'},
-                    {'v': 32},
+                    {'v': 33},
                 ]},
                 {'f': [
                     {'v': 'Wylma Phlyntstone'},
@@ -1490,7 +1490,6 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        table = _Table()
         job = self._makeOne(self.QUERY, client)
 
         job.run()
@@ -1539,6 +1538,78 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_fetch_data_query_not_yet_run(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.QUERY, client)
+        self.assertRaises(ValueError, job.fetch_data)
+
+    def test_fetch_data_w_bound_client(self):
+        PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
+        BEFORE = self._makeResource(complete=False)
+        AFTER = self._makeResource(complete=True)
+
+        conn = _Connection(AFTER)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.QUERY, client)
+        job._set_properties(BEFORE)
+
+        rows, total_rows, page_token = job.fetch_data()
+
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
+        self.assertEqual(total_rows, AFTER['totalRows'])
+        self.assertEqual(page_token, AFTER['pageToken'])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_fetch_data_w_alternate_client(self):
+        PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
+        MAX = 10
+        TOKEN = 'TOKEN'
+        START = 2257
+        TIMEOUT = 20000
+        BEFORE = self._makeResource(complete=False)
+        AFTER = self._makeResource(complete=True)
+
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(AFTER)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        job = self._makeOne(self.QUERY, client1)
+        job._set_properties(BEFORE)
+
+        rows, total_rows, page_token = job.fetch_data(client=client2,
+                                                      max_results=MAX,
+                                                      page_token=TOKEN,
+                                                      start_index=START,
+                                                      timeout_ms=TIMEOUT)
+
+        self.assertEqual(len(rows), 4)
+        self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
+        self.assertEqual(rows[1], ('Bharney Rhubble', 33))
+        self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
+        self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
+        self.assertEqual(total_rows, AFTER['totalRows'])
+        self.assertEqual(page_token, AFTER['pageToken'])
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': MAX,
+                          'pageToken': TOKEN,
+                          'startIndex': START,
+                          'timeoutMs': TIMEOUT})
 
 
 class _Client(object):

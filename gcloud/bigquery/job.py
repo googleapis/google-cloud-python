@@ -957,7 +957,6 @@ class RunSyncQueryJob(_BaseJob):
         super(RunSyncQueryJob, self).__init__(client)
         self.query = query
         self._configuration = _SyncQueryConfiguration()
-        self._schema = ()
 
     @property
     def cache_hit(self):
@@ -1144,3 +1143,64 @@ class RunSyncQueryJob(_BaseJob):
         api_response = client.connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
+
+    def fetch_data(self, max_results=None, page_token=None, start_index=None,
+                   timeout_ms=None, client=None):
+        """API call:  fetch a page of query result data via a GET request
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults
+
+        :type max_results: integer or ``NoneType``
+        :param max_results: maximum number of rows to return.
+
+        :type page_token: string or ``NoneType``
+        :param page_token: token representing a cursor into the table's rows.
+
+        :type start_index: integer or ``NoneType``
+        :param start_index: zero-based index of starting row
+
+        :type timeout_ms: integer or ``NoneType``
+        :param timeout_ms: timeout, in milliseconds, to wait for query to
+                           complete
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: tuple
+        :returns: ``(row_data, total_rows, page_token)``, where ``row_data``
+                  is a list of tuples, one per result row, containing only
+                  the values;  ``total_rows`` is a count of the total number
+                  of rows in the table;  and ``page_token`` is an opaque
+                  string which can be used to fetch the next batch of rows
+                  (``None`` if no further batches can be fetched).
+        :raises: ValueError if the query has not yet been executed.
+        """
+        if self.name is None:
+            raise ValueError("Query not yet executed:  call 'run()'")
+
+        client = self._require_client(client)
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        if start_index is not None:
+            params['startIndex'] = start_index
+
+        if timeout_ms is not None:
+            params['timeoutMs'] = timeout_ms
+
+        path = '/projects/%s/queries/%s' % (self.project, self.name)
+        response = client.connection.api_request(method='GET',
+                                                 path=path,
+                                                 query_params=params)
+        total_rows = response.get('totalRows')
+        page_token = response.get('pageToken')
+        rows_data = _rows_from_json(response.get('rows', ()), self.schema)
+
+        return rows_data, total_rows, page_token
