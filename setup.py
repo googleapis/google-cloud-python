@@ -12,6 +12,7 @@ with open(os.path.join(here, 'README.rst')) as f:
 
 
 REQUIREMENTS = [
+    'protorpc == 0.10.0',
     'google-apitools',
     'httplib2 >= 0.9.1',
     'oauth2client >= 1.4.6',
