@@ -18,7 +18,6 @@ import datetime
 
 import six
 
-from gcloud._helpers import UTC
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _millis_from_datetime
 from gcloud.exceptions import NotFound
@@ -763,8 +762,7 @@ def _bool_from_json(value, field):
 def _datetime_from_json(value, field):
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
-        stamp = _datetime_from_microseconds(1e6 * float(value))
-        return stamp.replace(tzinfo=UTC)
+        return _datetime_from_microseconds(1e6 * float(value))
 
 
 def _record_from_json(value, field):
