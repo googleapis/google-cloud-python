@@ -1199,6 +1199,8 @@ class RunSyncQueryJob(_BaseJob):
         response = client.connection.api_request(method='GET',
                                                  path=path,
                                                  query_params=params)
+        self._set_properties(response)
+
         total_rows = response.get('totalRows')
         page_token = response.get('pageToken')
         rows_data = _rows_from_json(response.get('rows', ()), self.schema)

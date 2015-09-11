@@ -1554,9 +1554,11 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._makeOne(self.QUERY, client)
         job._set_properties(BEFORE)
+        self.assertFalse(job.complete)
 
         rows, total_rows, page_token = job.fetch_data()
 
+        self.assertTrue(job.complete)
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
@@ -1585,6 +1587,7 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
         client2 = _Client(project=self.PROJECT, connection=conn2)
         job = self._makeOne(self.QUERY, client1)
         job._set_properties(BEFORE)
+        self.assertFalse(job.complete)
 
         rows, total_rows, page_token = job.fetch_data(client=client2,
                                                       max_results=MAX,
@@ -1592,6 +1595,7 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
                                                       start_index=START,
                                                       timeout_ms=TIMEOUT)
 
+        self.assertTrue(job.complete)
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
