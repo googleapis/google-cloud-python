@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tables &mdash; gcloud 219fe75 documentation</title>
+    <title>Tables &mdash; gcloud b427bed documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '219fe75',
+        VERSION:     'b427bed',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 219fe75 documentation" href="index.html" />
+    <link rel="top" title="gcloud b427bed documentation" href="index.html" />
     <link rel="next" title="Resource Manager Overview" href="resource-manager-api.html" />
     <link rel="prev" title="Jobs" href="bigquery-job.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-table%0ARelease%3A%20219fe75" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-table%0ARelease%3A%20b427bed" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (219fe75)
+              Version History (b427bed)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -143,7 +143,7 @@ or &#8216;REPEATED&#8217;)</li>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/table.html#Table.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.table.Table.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the dataset via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/reference/rest/v2/tables/insert</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/v2/tables/insert</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -192,7 +192,7 @@ or &#8216;REPEATED&#8217;)</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/table.html#Table.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.table.Table.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the table via a DELETE request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/tables/delete">https://cloud.google.com/bigquery/reference/rest/v2/tables/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/v2/tables/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -274,7 +274,7 @@ or &#8216;REPEATED&#8217;)</li>
 <code class="descname">fetch_data</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/table.html#Table.fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.table.Table.fetch_data" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  fetch the table data via a GET request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/tabledata/list">https://cloud.google.com/bigquery/reference/rest/v2/tabledata/list</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list">https://cloud.google.com/bigquery/docs/reference/v2/tabledata/list</a></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method assumes that its instance&#8217;s <code class="docutils literal"><span class="pre">schema</span></code> attribute is
@@ -355,7 +355,7 @@ string which can be used to fetch the next batch of rows
 <code class="descname">insert_data</code><span class="sig-paren">(</span><em>rows</em>, <em>row_ids=None</em>, <em>skip_invalid_rows=None</em>, <em>ignore_unknown_values=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/table.html#Table.insert_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.table.Table.insert_data" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  insert table data via a POST request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/tabledata/insertAll">https://cloud.google.com/bigquery/reference/rest/v2/tabledata/insertAll</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll">https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
