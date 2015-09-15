@@ -177,7 +177,7 @@ List changes made to the resource record set for a given zone:
 .. note::
 
    The ``page_token`` returned from ``zone.list_changes()`` will be
-   an opaque string if there are more hcanges than can be returned in a
+   an opaque string if there are more changes than can be returned in a
    single request.  To enumerate them all, repeat calling
-   ``zone.list_hcanges()``, passing the ``page_token``, until the token
+   ``zone.list_changes()``, passing the ``page_token``, until the token
    is None.
