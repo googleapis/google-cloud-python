@@ -180,4 +180,12 @@ List changes made to the resource record set for a given zone:
    an opaque string if there are more changes than can be returned in a
    single request.  To enumerate them all, repeat calling
    ``zone.list_changes()``, passing the ``page_token``, until the token
-   is None.
+   is ``None``.  E.g.:
+
+   .. doctest::
+
+      >>> changes, page_token = zone.list_changes()  # API request
+      >>> while page_token is not None:
+      ...     next_batch, page_token = zone.list_changes(
+      ...         page_token=page_token)  # API request
+      ...     changes.extend(next_batch)
