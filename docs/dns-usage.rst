@@ -109,7 +109,7 @@ List the zones for a given project:
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zones = client.list_zones()  # API request
      >>> [zone.name for zone in zones]
-     ['acme-co'>]
+     ['acme-co']
 
 
 Resource Record Sets
