@@ -21,6 +21,7 @@ The main concepts with this API are:
 
 from gcloud.dns.client import Client
 from gcloud.dns.connection import Connection
+from gcloud.dns.zone import ManagedZone
 
 
 SCOPE = Connection.SCOPE
