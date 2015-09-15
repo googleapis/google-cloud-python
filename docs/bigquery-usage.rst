@@ -8,7 +8,7 @@ Authorization / Configuration
   your applications.
 
 - :class:`Client <gcloud.bigquery.client.Client>` objects hold both a ``project``
-  and an authenticated connection to the PubSub service.
+  and an authenticated connection to the BigQuery service.
 
 - The authentication credentials can be implicitly determined from the
   environment or directly via
