@@ -93,3 +93,17 @@ class Client(JSONClient):
         zones = [ManagedZone.from_api_repr(resource, self)
                  for resource in resp['managedZones']]
         return zones, resp.get('nextPageToken')
+
+    def zone(self, name, dns_name):
+        """Construct a zone bound to this client.
+
+        :type name: string
+        :param name: Name of the zone.
+
+        :type dns_name: string
+        :param dns_name: DNS name of the zone.
+
+        :rtype: :class:`gcloud.dns.zone.ManagedZone`
+        :returns: a new ``ManagedZone`` instance
+        """
+        return ManagedZone(name, dns_name, client=self)

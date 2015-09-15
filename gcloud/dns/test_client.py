@@ -155,6 +155,19 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
+    def test_zone(self):
+        from gcloud.dns.zone import ManagedZone
+        PROJECT = 'PROJECT'
+        ZONE_NAME = 'zone-name'
+        DNS_NAME = 'test.example.com'
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        dataset = client.zone(ZONE_NAME, DNS_NAME)
+        self.assertTrue(isinstance(dataset, ManagedZone))
+        self.assertEqual(dataset.name, ZONE_NAME)
+        self.assertEqual(dataset.dns_name, DNS_NAME)
+        self.assertTrue(dataset._client is client)
+
 
 class _Credentials(object):
 
