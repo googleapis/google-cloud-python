@@ -73,10 +73,6 @@ Query the quotas for a given project:
      rrsetDeletionsPerChange: 100
      totalRrdataSizePerChange: 10000
 
-.. note::
-
-   See https://github.com/GoogleCloudPlatform/gcloud-python/issues/1136
-   for whether to expose quotas.
 
 Project ACLs
 ~~~~~~~~~~~~
