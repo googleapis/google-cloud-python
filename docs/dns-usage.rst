@@ -1,40 +1,34 @@
 Using the API
 =============
 
-Authorization / Configuration
------------------------------
+Client
+------
 
-- Use :class:`Client <gcloud.dns.client.Client>` objects to configure
-  your applications.
+:class:`Client <gcloud.dns.client.Client>` objects provide a means
+configure your DNS applications.  Eash instance holds both a ``project``
+and an authenticated connection to the DNS service.
 
-- :class:`Client <gcloud.dns.client.Client>` objects hold both a ``project``
-  and an authenticated connection to the PubSub service.
+For an overview of authentication in ``gcloud-python``, see:
+http://gcloud-python.readthedocs.org/en/latest/gcloud-auth.html
 
-- The authentication credentials can be implicitly determined from the
-  environment or directly via
-  :meth:`from_service_account_json <gcloud.dns.client.Client.from_service_account_json>`
-  and
-  :meth:`from_service_account_p12 <gcloud.dns.client.Client.from_service_account_p12>`.
-
-- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables, create an instance of
-  :class:`Client <gcloud.dns.client.Client>`.
+Assuming your environment is set up as described in that document,
+create an instance of :class:`Client <gcloud.dns.client.Client>`.
 
   .. doctest::
 
      >>> from gcloud import dns
      >>> client = dns.Client()
 
-- Override the credentials inferred from the environment by passing explicit
-  ``credentials`` to one of the alternative ``classmethod`` factories,
-  `:meth:gcloud.dns.client.Client.from_service_account_json`:
+Override the credentials inferred from the environment by passing explicit
+``credentials`` to one of the alternative ``classmethod`` factories,
+`:meth:gcloud.dns.client.Client.from_service_account_json`:
 
   .. doctest::
 
      >>> from gcloud import dns
      >>> client = dns.Client.from_service_account_json('/path/to/creds.json')
 
-  or `:meth:gcloud.dns.client.Client.from_service_account_p12`:
+or `:meth:gcloud.dns.client.Client.from_service_account_p12`:
 
   .. doctest::
 
