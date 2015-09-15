@@ -132,7 +132,16 @@ Each managed zone exposes a read-only set of resource records:
    an opaque string if there are more resources than can be returned in a
    single request.  To enumerate them all, repeat calling
    ``zone.list_resources()``, passing the ``page_token``, until the token
-   is None.
+   is ``None``.  E.g.
+
+   .. doctest::
+
+      >>> records, page_token = zone.list_resources()  # API request
+      >>> while page_token is not None:
+      ...     next_batch, page_token = zone.list_resources(
+      ...         page_token=page_token)  # API request
+      ...     records.extend(next_batch)
+
 
 Change requests
 ---------------
