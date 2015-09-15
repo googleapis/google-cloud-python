@@ -21,3 +21,6 @@ The main concepts with this API are:
 
 from gcloud.dns.client import Client
 from gcloud.dns.connection import Connection
+
+
+SCOPE = Connection.SCOPE
