@@ -160,7 +160,7 @@ bundling additions to or deletions from the set.
      >>> change.begin()  # API request
      >>> while change.status != 'done':
      ...     print('Waiting for change to complete')
-     ...     time.sleep(60)
+     ...     time.sleep(60)  # or whatever interval is appropriate
      ...     change.reload()  # API request
 
 
