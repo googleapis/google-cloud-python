@@ -43,7 +43,7 @@ A project is the top-level container in the ``DNS`` API:  it is tied
 closely to billing, and can provide default access control across all its
 datasets.  If no ``project`` is passed to the client container, the library
 attempts to infer a project using the environment (including explicit
-environment variables, GAE, and GCE).
+environment variables, GAE, or GCE).
 
 To override the project inferred from the environment, pass an explicit
 ``project`` to the constructor, or to either of the alternative
