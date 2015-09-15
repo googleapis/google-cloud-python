@@ -93,6 +93,35 @@ class TestManagedZone(unittest2.TestCase):
 
         self.assertEqual(zone.description, None)
 
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'name': self.ZONE_NAME,
+            'dnsName': self.DNS_NAME,
+        }
+        klass = self._getTargetClass()
+        zone = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(zone._client is client)
+        self._verifyResourceProperties(zone, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        zone = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(zone._client is client)
+        self._verifyResourceProperties(zone, RESOURCE)
+
     def test_description_setter_bad_value(self):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
@@ -139,8 +168,6 @@ class TestManagedZone(unittest2.TestCase):
 
     def test_create_w_alternate_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT
-        USER_EMAIL = 'phred@example.com'
-        GROUP_EMAIL = 'group-name@lists.example.com'
         DESCRIPTION = 'DESCRIPTION'
         NAME_SERVER_SET = 'NAME_SERVER_SET'
         RESOURCE = self._makeResource()

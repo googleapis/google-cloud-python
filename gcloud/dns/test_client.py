@@ -68,6 +68,93 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_zones_defaults(self):
+        from gcloud.dns.zone import ManagedZone
+        PROJECT = 'PROJECT'
+        ID_1 = '123'
+        ZONE_1 = 'zone_one'
+        DNS_1 = 'one.example.com'
+        ID_2 = '234'
+        ZONE_2 = 'zone_two'
+        DNS_2 = 'two.example.com'
+        PATH = 'projects/%s/managedZones' % PROJECT
+        TOKEN = 'TOKEN'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'managedZones': [
+                {'kind': 'dns#managedZone',
+                 'id': ID_1,
+                 'name': ZONE_1,
+                 'dnsName': DNS_1},
+                {'kind': 'dns#managedZone',
+                 'id': ID_2,
+                 'name': ZONE_2,
+                 'dnsName': DNS_2},
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        zones, token = client.list_zones()
+
+        self.assertEqual(len(zones), len(DATA['managedZones']))
+        for found, expected in zip(zones, DATA['managedZones']):
+            self.assertTrue(isinstance(found, ManagedZone))
+            self.assertEqual(found.zone_id, expected['id'])
+            self.assertEqual(found.name, expected['name'])
+            self.assertEqual(found.dns_name, expected['dnsName'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_zones_explicit(self):
+        from gcloud.dns.zone import ManagedZone
+        PROJECT = 'PROJECT'
+        ID_1 = '123'
+        ZONE_1 = 'zone_one'
+        DNS_1 = 'one.example.com'
+        ID_2 = '234'
+        ZONE_2 = 'zone_two'
+        DNS_2 = 'two.example.com'
+        PATH = 'projects/%s/managedZones' % PROJECT
+        TOKEN = 'TOKEN'
+        DATA = {
+            'managedZones': [
+                {'kind': 'dns#managedZone',
+                 'id': ID_1,
+                 'name': ZONE_1,
+                 'dnsName': DNS_1},
+                {'kind': 'dns#managedZone',
+                 'id': ID_2,
+                 'name': ZONE_2,
+                 'dnsName': DNS_2},
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        zones, token = client.list_zones(max_results=3, page_token=TOKEN)
+
+        self.assertEqual(len(zones), len(DATA['managedZones']))
+        for found, expected in zip(zones, DATA['managedZones']):
+            self.assertTrue(isinstance(found, ManagedZone))
+            self.assertEqual(found.zone_id, expected['id'])
+            self.assertEqual(found.name, expected['name'])
+            self.assertEqual(found.dns_name, expected['dnsName'])
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
 
 class _Credentials(object):
 

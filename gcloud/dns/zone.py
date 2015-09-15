@@ -42,6 +42,29 @@ class ManagedZone(object):
         self._client = client
         self._properties = {}
 
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a zone given its API representation
+
+        :type resource: dict
+        :param resource: zone resource representation returned from the API
+
+        :type client: :class:`gcloud.dns.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the zone.
+
+        :rtype: :class:`gcloud.dns.zone.ManagedZone`
+        :returns: Zone parsed from ``resource``.
+        """
+        name = resource.get('name')
+        dns_name = resource.get('dnsName')
+        if name is None or dns_name is None:
+            raise KeyError('Resource lacks required identity information:'
+                           '["name"]["dnsName"]')
+        zone = cls(name, dns_name, client=client)
+        zone._set_properties(resource)
+        return zone
+
     @property
     def project(self):
         """Project bound to the zone.
