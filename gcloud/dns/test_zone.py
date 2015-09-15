@@ -31,10 +31,9 @@ class TestManagedZone(unittest2.TestCase):
     def _setUpConstants(self):
         import datetime
         import os
-        import time
         from gcloud._helpers import UTC
 
-        self.WHEN_TS = time.time()
+        self.WHEN_TS = 1437767599.006
         self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
             tzinfo=UTC)
         self.ZONE_ID = os.getpid()
