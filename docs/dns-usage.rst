@@ -18,23 +18,6 @@ create an instance of :class:`Client <gcloud.dns.client.Client>`.
      >>> from gcloud import dns
      >>> client = dns.Client()
 
-Override the credentials inferred from the environment by passing explicit
-``credentials`` to one of the alternative ``classmethod`` factories,
-`:meth:gcloud.dns.client.Client.from_service_account_json`:
-
-  .. doctest::
-
-     >>> from gcloud import dns
-     >>> client = dns.Client.from_service_account_json('/path/to/creds.json')
-
-or `:meth:gcloud.dns.client.Client.from_service_account_p12`:
-
-  .. doctest::
-
-     >>> from gcloud import dns
-     >>> client = dns.Client.from_service_account_p12('/path/to/creds.p12', 'jrandom@example.com')
-
-
 Projects
 --------
 
