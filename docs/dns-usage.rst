@@ -8,8 +8,7 @@ Client
 configure your DNS applications.  Eash instance holds both a ``project``
 and an authenticated connection to the DNS service.
 
-For an overview of authentication in ``gcloud-python``, see:
-http://gcloud-python.readthedocs.org/en/latest/gcloud-auth.html
+For an overview of authentication in ``gcloud-python``, see :doc:`gcloud-auth`.
 
 Assuming your environment is set up as described in that document,
 create an instance of :class:`Client <gcloud.dns.client.Client>`.
