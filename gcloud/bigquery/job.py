@@ -23,7 +23,7 @@ from gcloud.bigquery.table import SchemaField
 from gcloud.bigquery.table import Table
 from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource
-from gcloud.bigquery.table import _rows_from_json
+from gcloud.bigquery._helpers import _rows_from_json
 
 
 class _ConfigurationProperty(object):
