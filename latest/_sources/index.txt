@@ -61,6 +61,13 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: DNS
+
+  dns-usage
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
