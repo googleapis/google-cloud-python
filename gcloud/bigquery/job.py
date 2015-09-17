@@ -408,8 +408,10 @@ class _AsyncJob(_BaseJob):
 
 
 class _LoadConfiguration(object):
-    """User-settable configuration options for load jobs."""
-    # None -> use server default.
+    """User-settable configuration options for load jobs.
+    
+    Values which are ``None`` -> server defaults.
+    """
     _allow_jagged_rows = None
     _allow_quoted_newlines = None
     _create_disposition = None
@@ -630,8 +632,10 @@ class LoadTableFromStorageJob(_AsyncJob):
 
 
 class _CopyConfiguration(object):
-    """User-settable configuration options for copy jobs."""
-    # None -> use server default.
+    """User-settable configuration options for copy jobs.
+    
+    Values which are ``None`` -> server defaults.
+    """
     _create_disposition = None
     _write_disposition = None
 
@@ -707,8 +711,10 @@ class CopyJob(_AsyncJob):
 
 
 class _ExtractConfiguration(object):
-    """User-settable configuration options for extract jobs."""
-    # None -> use server default.
+    """User-settable configuration options for extract jobs.
+    
+    Values which are ``None`` -> server defaults.
+    """
     _compression = None
     _destination_format = None
     _field_delimiter = None
@@ -797,8 +803,10 @@ class ExtractTableToStorageJob(_AsyncJob):
 
 
 class _AsyncQueryConfiguration(object):
-    """User-settable configuration options for asynchronous query jobs."""
-    # None -> use server default.
+    """User-settable configuration options for asynchronous query jobs.
+    
+    Values which are ``None`` -> server defaults.
+    """
     _allow_large_results = None
     _create_disposition = None
     _default_dataset = None
@@ -934,8 +942,10 @@ class RunAsyncQueryJob(_AsyncJob):
 
 
 class _SyncQueryConfiguration(object):
-    """User-settable configuration options for synchronous query jobs."""
-    # None -> use server default.
+    """User-settable configuration options for synchronous query jobs.
+    
+    Values which are ``None`` -> server defaults.
+    """
     _default_dataset = None
     _max_results = None
     _timeout_ms = None
