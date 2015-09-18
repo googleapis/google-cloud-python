@@ -20,7 +20,7 @@ from gcloud.exceptions import NotFound
 
 
 class ManagedZone(object):
-    """ManagedZone are containers for DNS resource records.
+    """ManagedZones are containers for DNS resource records.
 
     See:
     https://cloud.google.com/dns/api/v1/managedZones
