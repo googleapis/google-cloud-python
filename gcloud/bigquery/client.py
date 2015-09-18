@@ -22,6 +22,7 @@ from gcloud.bigquery.job import CopyJob
 from gcloud.bigquery.job import ExtractTableToStorageJob
 from gcloud.bigquery.job import LoadTableFromStorageJob
 from gcloud.bigquery.job import RunAsyncQueryJob
+from gcloud.bigquery.job import RunSyncQueryJob
 
 
 class Client(JSONClient):
@@ -168,3 +169,14 @@ class Client(JSONClient):
         :returns: a new ``RunAsyncQueryJob`` instance
         """
         return RunAsyncQueryJob(name, query, client=self)
+
+    def run_sync_query(self, query):
+        """Construct a job for running a SQL query synchronously.
+
+        :type query: string
+        :param query: SQL query to be executed
+
+        :rtype: :class:`gcloud.bigquery.job.RunSyncQueryJob`
+        :returns: a new ``RunSyncQueryJob`` instance
+        """
+        return RunSyncQueryJob(query, client=self)
