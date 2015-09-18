@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Jobs &mdash; gcloud 62e27ee documentation</title>
+    <title>Jobs &mdash; gcloud 5ec3d11 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '62e27ee',
+        VERSION:     '5ec3d11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 62e27ee documentation" href="index.html" />
+    <link rel="top" title="gcloud 5ec3d11 documentation" href="index.html" />
     <link rel="next" title="Tables" href="bigquery-table.html" />
     <link rel="prev" title="Datasets" href="bigquery-dataset.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-job%0ARelease%3A%2062e27ee" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-job%0ARelease%3A%205ec3d11" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (62e27ee)
+              Version History (5ec3d11)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -119,7 +119,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.bigquery.job.CopyJob">
 <em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">CopyJob</code><span class="sig-paren">(</span><em>name</em>, <em>destination</em>, <em>sources</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#CopyJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.CopyJob" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
 <p>Asynchronous job: copy data into a table from other tables.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -226,7 +226,7 @@ for the dataset (which requires a project).</li>
 <dl class="class">
 <dt id="gcloud.bigquery.job.ExtractTableToStorageJob">
 <em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">ExtractTableToStorageJob</code><span class="sig-paren">(</span><em>name</em>, <em>source</em>, <em>destination_uris</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#ExtractTableToStorageJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
 <p>Asynchronous job: extract data from a table into Cloud Storage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -277,7 +277,7 @@ for the dataset (which requires a project).</li>
 <dl class="class">
 <dt id="gcloud.bigquery.job.LoadTableFromStorageJob">
 <em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">LoadTableFromStorageJob</code><span class="sig-paren">(</span><em>name</em>, <em>destination</em>, <em>source_uris</em>, <em>client</em>, <em>schema=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#LoadTableFromStorageJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
 <p>Asynchronous job for loading data into a table from CloudStorage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -479,7 +479,7 @@ for the dataset (which requires a project).</li>
 <dl class="class">
 <dt id="gcloud.bigquery.job.RunAsyncQueryJob">
 <em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">RunAsyncQueryJob</code><span class="sig-paren">(</span><em>name</em>, <em>query</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunAsyncQueryJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
 <p>Asynchronous job: query tables.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -513,7 +513,7 @@ for the dataset (which requires a project).</li>
 <dt id="gcloud.bigquery.job.RunAsyncQueryJob.default_dataset">
 <code class="descname">default_dataset</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.default_dataset" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.default_dataset">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.default_dataset</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</a></p>
 </dd></dl>
 
 <dl class="attribute">
@@ -549,6 +549,283 @@ for the dataset (which requires a project).</li>
 <code class="descname">write_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.write_disposition" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">RunSyncQueryJob</code><span class="sig-paren">(</span><em>query</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<p>Synchronous job: query tables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query string</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.cache_hit">
+<code class="descname">cache_hit</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.cache_hit" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results served from cache.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query results were served from cache (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.complete">
+<code class="descname">complete</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.complete" title="Permalink to this definition">#</a></dt>
+<dd><p>Server completed query.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query completed on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.default_dataset">
+<code class="descname">default_dataset</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.default_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.errors">
+<code class="descname">errors</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Errors generated by the query.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#errors">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#errors</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of mapping, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mappings describing errors generated on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.fetch_data">
+<code class="descname">fetch_data</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>start_index=None</em>, <em>timeout_ms=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob.fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.fetch_data" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  fetch a page of query result data via a GET request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of rows to return.</li>
+<li><strong>page_token</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; token representing a cursor into the table&#8217;s rows.</li>
+<li><strong>start_index</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; zero-based index of starting row</li>
+<li><strong>timeout_ms</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; timeout, in milliseconds, to wait for query to
+complete</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">(row_data,</span> <span class="pre">total_rows,</span> <span class="pre">page_token)</span></code>, where <code class="docutils literal"><span class="pre">row_data</span></code>
+is a list of tuples, one per result row, containing only
+the values;  <code class="docutils literal"><span class="pre">total_rows</span></code> is a count of the total number
+of rows in the table;  and <code class="docutils literal"><span class="pre">page_token</span></code> is an opaque
+string which can be used to fetch the next batch of rows
+(<code class="docutils literal"><span class="pre">None</span></code> if no further batches can be fetched).</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if the query has not yet been executed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.max_results">
+<code class="descname">max_results</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.max_results" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.name">
+<code class="descname">name</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Job name, generated by the back-end.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobReference">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobReference</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of mapping, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mappings describing errors generated on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token for fetching next bach of results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Token generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.preserve_nulls">
+<code class="descname">preserve_nulls</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.preserve_nulls" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.rows">
+<code class="descname">rows</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#rows">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#rows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of tuples of row values, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.run" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  run the query via a POST request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.schema">
+<code class="descname">schema</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema for query results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#schema">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#schema</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.timeout_ms">
+<code class="descname">timeout_ms</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.timeout_ms" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.total_bytes_processed">
+<code class="descname">total_bytes_processed</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.total_bytes_processed" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of bytes processed by the query</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.total_rows">
+<code class="descname">total_rows</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.total_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of rows returned by the query</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.use_query_cache">
+<code class="descname">use_query_cache</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.use_query_cache" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache</a></p>
 </dd></dl>
 
 </dd></dl>

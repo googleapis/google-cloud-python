@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud 62e27ee documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud 5ec3d11 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '62e27ee',
+        VERSION:     '5ec3d11',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 62e27ee documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 5ec3d11 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%2062e27ee" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%205ec3d11" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (62e27ee)
+              Version History (5ec3d11)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -114,6 +114,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_millis_from_datetime</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigquery._helpers</span> <span class="kn">import</span> <span class="n">_rows_from_json</span>
 
 
 <span class="n">_MARKER</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
@@ -700,18 +701,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                                  <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;totalRows&#39;</span><span class="p">)</span>
         <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pageToken&#39;</span><span class="p">)</span>
-        <span class="n">rows_data</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="n">row_data</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]):</span>
-                <span class="n">converter</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s">&#39;REPEATED&#39;</span><span class="p">:</span>
-                    <span class="n">row_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">converter</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
-                                     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">[</span><span class="s">&#39;v&#39;</span><span class="p">]])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">row_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">converter</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="s">&#39;v&#39;</span><span class="p">],</span> <span class="n">field</span><span class="p">))</span>
-            <span class="n">rows_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">row_data</span><span class="p">))</span>
+        <span class="n">rows_data</span> <span class="o">=</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">rows_data</span><span class="p">,</span> <span class="n">total_rows</span><span class="p">,</span> <span class="n">page_token</span>
 </div>
@@ -831,58 +821,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">info</span><span class="p">[</span><span class="s">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
         <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span>
-
-
-<span class="k">def</span> <span class="nf">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s">&#39;NULLABLE&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">_int_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_float_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_bool_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="s">&#39;true&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">_datetime_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="c"># value will be a float in seconds, to microsecond precision, in UTC.</span>
-        <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1e6</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">_record_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
-        <span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">subfield</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s">&#39;f&#39;</span><span class="p">]):</span>
-            <span class="n">converter</span> <span class="o">=</span> <span class="n">_CELLDATA_FROM_JSON</span><span class="p">[</span><span class="n">subfield</span><span class="o">.</span><span class="n">field_type</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s">&#39;REPEATED&#39;</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">converter</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">[</span><span class="s">&#39;v&#39;</span><span class="p">]]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="s">&#39;v&#39;</span><span class="p">],</span> <span class="n">field</span><span class="p">)</span>
-            <span class="n">record</span><span class="p">[</span><span class="n">subfield</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">record</span>
-
-
-<span class="k">def</span> <span class="nf">_string_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">value</span>
-
-
-<span class="n">_CELLDATA_FROM_JSON</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;INTEGER&#39;</span><span class="p">:</span> <span class="n">_int_from_json</span><span class="p">,</span>
-    <span class="s">&#39;FLOAT&#39;</span><span class="p">:</span> <span class="n">_float_from_json</span><span class="p">,</span>
-    <span class="s">&#39;BOOLEAN&#39;</span><span class="p">:</span> <span class="n">_bool_from_json</span><span class="p">,</span>
-    <span class="s">&#39;TIMESTAMP&#39;</span><span class="p">:</span> <span class="n">_datetime_from_json</span><span class="p">,</span>
-    <span class="s">&#39;RECORD&#39;</span><span class="p">:</span> <span class="n">_record_from_json</span><span class="p">,</span>
-    <span class="s">&#39;STRING&#39;</span><span class="p">:</span> <span class="n">_string_from_json</span><span class="p">,</span>
-<span class="p">}</span>
 </pre></div>
 
       </section><!-- end of .content -->
