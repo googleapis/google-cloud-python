@@ -1020,6 +1020,22 @@ class RunSyncQueryJob(_BaseJob):
         """
         return self._properties.get('jobReference', {}).get('jobId')
 
+    @name.setter
+    def name(self, value):
+        """Update name of the query.
+
+        :type value: string, or ``NoneType``
+        :param value: new name
+
+        :raises: ValueError for invalid value types.
+        """
+        if not isinstance(value, six.string_types) and value is not None:
+            raise ValueError("Pass a string, or None")
+        self._properties['jobReference'] = {
+            'projectId': self.project,
+            'jobId': value,
+        }
+
     @property
     def page_token(self):
         """Token for fetching next bach of results.

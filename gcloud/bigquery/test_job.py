@@ -1470,6 +1470,18 @@ class TestRunSyncQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(job.preserve_nulls is None)
         self.assertTrue(job.use_query_cache is None)
 
+    def test_name_setter_bad_value(self):
+        client = _Client(self.PROJECT)
+        job = self._makeOne(self.QUERY, client)
+        with self.assertRaises(ValueError):
+            job.name = 12345
+
+    def test_name_setter(self):
+        client = _Client(self.PROJECT)
+        job = self._makeOne(self.QUERY, client)
+        job.name = 'NAME'
+        self.assertEqual(job.name, 'NAME')
+
     def test_schema(self):
         client = _Client(self.PROJECT)
         job = self._makeOne(self.QUERY, client)
