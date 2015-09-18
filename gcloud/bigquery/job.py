@@ -409,7 +409,7 @@ class _AsyncJob(_BaseJob):
 
 class _LoadConfiguration(object):
     """User-settable configuration options for load jobs.
-    
+
     Values which are ``None`` -> server defaults.
     """
     _allow_jagged_rows = None
@@ -633,7 +633,7 @@ class LoadTableFromStorageJob(_AsyncJob):
 
 class _CopyConfiguration(object):
     """User-settable configuration options for copy jobs.
-    
+
     Values which are ``None`` -> server defaults.
     """
     _create_disposition = None
@@ -712,7 +712,7 @@ class CopyJob(_AsyncJob):
 
 class _ExtractConfiguration(object):
     """User-settable configuration options for extract jobs.
-    
+
     Values which are ``None`` -> server defaults.
     """
     _compression = None
@@ -804,7 +804,7 @@ class ExtractTableToStorageJob(_AsyncJob):
 
 class _AsyncQueryConfiguration(object):
     """User-settable configuration options for asynchronous query jobs.
-    
+
     Values which are ``None`` -> server defaults.
     """
     _allow_large_results = None
@@ -943,7 +943,7 @@ class RunAsyncQueryJob(_AsyncJob):
 
 class _SyncQueryConfiguration(object):
     """User-settable configuration options for synchronous query jobs.
-    
+
     Values which are ``None`` -> server defaults.
     """
     _default_dataset = None
