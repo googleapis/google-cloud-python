@@ -187,14 +187,14 @@ class Changes(object):
 
     def _build_resource(self):
         """Generate a resource for ``create``."""
-        r_adds = [{
+        additions = [{
             'name': added.name,
             'type': added.record_type,
             'ttl': str(added.ttl),
             'rrdatas': added.rrdatas,
             } for added in self.additions]
 
-        r_dels = [{
+        deletions = [{
             'name': deleted.name,
             'type': deleted.record_type,
             'ttl': str(deleted.ttl),
@@ -202,8 +202,8 @@ class Changes(object):
             } for deleted in self.deletions]
 
         return {
-            'additions': r_adds,
-            'deletions': r_dels,
+            'additions': additions,
+            'deletions': deletions,
         }
 
     def create(self, client=None):
