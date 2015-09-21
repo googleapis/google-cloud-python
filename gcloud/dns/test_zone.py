@@ -415,6 +415,163 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
+    def test_list_changes_defaults(self):
+        from gcloud._helpers import _RFC3339_MICROS
+        from gcloud.dns.changes import Changes
+        from gcloud.dns.resource_record_set import ResourceRecordSet
+        self._setUpConstants()
+        PATH = 'projects/%s/managedZones/%s/changes' % (
+            self.PROJECT, self.ZONE_NAME)
+        TOKEN = 'TOKEN'
+        NAME_1 = 'www.example.com'
+        TYPE_1 = 'A'
+        TTL_1 = '86400'
+        RRDATAS_1 = ['123.45.67.89']
+        NAME_2 = 'alias.example.com'
+        TYPE_2 = 'CNAME'
+        TTL_2 = '3600'
+        RRDATAS_2 = ['www.example.com']
+        CHANGES_NAME = 'changeset_id'
+        DATA = {
+            'nextPageToken': TOKEN,
+            'changes': [{
+                'kind': 'dns#change',
+                'id': CHANGES_NAME,
+                'status': 'pending',
+                'startTime': self.WHEN.strftime(_RFC3339_MICROS),
+                'additions': [
+                    {'kind': 'dns#resourceRecordSet',
+                     'name': NAME_1,
+                     'type': TYPE_1,
+                     'ttl': TTL_1,
+                     'rrdatas': RRDATAS_1}],
+                'deletions': [
+                    {'kind': 'dns#change',
+                     'name': NAME_2,
+                     'type': TYPE_2,
+                     'ttl': TTL_2,
+                     'rrdatas': RRDATAS_2}],
+            }]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+
+        changes, token = zone.list_changes()
+
+        self.assertEqual(len(changes), len(DATA['changes']))
+        for found, expected in zip(changes, DATA['changes']):
+            self.assertTrue(isinstance(found, Changes))
+            self.assertEqual(found.name, CHANGES_NAME)
+            self.assertEqual(found.status, 'pending')
+            self.assertEqual(found.started, self.WHEN)
+
+            self.assertEqual(len(found.additions), len(expected['additions']))
+            for found_rr, expected_rr in zip(found.additions,
+                                             expected['additions']):
+                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertEqual(found_rr.name, expected_rr['name'])
+                self.assertEqual(found_rr.record_type, expected_rr['type'])
+                self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
+                self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
+
+            self.assertEqual(len(found.deletions), len(expected['deletions']))
+            for found_rr, expected_rr in zip(found.deletions,
+                                             expected['deletions']):
+                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertEqual(found_rr.name, expected_rr['name'])
+                self.assertEqual(found_rr.record_type, expected_rr['type'])
+                self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
+                self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
+
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_changes_explicit(self):
+        from gcloud._helpers import _RFC3339_MICROS
+        from gcloud.dns.changes import Changes
+        from gcloud.dns.resource_record_set import ResourceRecordSet
+        self._setUpConstants()
+        PATH = 'projects/%s/managedZones/%s/changes' % (
+            self.PROJECT, self.ZONE_NAME)
+        TOKEN = 'TOKEN'
+        NAME_1 = 'www.example.com'
+        TYPE_1 = 'A'
+        TTL_1 = '86400'
+        RRDATAS_1 = ['123.45.67.89']
+        NAME_2 = 'alias.example.com'
+        TYPE_2 = 'CNAME'
+        TTL_2 = '3600'
+        RRDATAS_2 = ['www.example.com']
+        CHANGES_NAME = 'changeset_id'
+        DATA = {
+            'changes': [{
+                'kind': 'dns#change',
+                'id': CHANGES_NAME,
+                'status': 'pending',
+                'startTime': self.WHEN.strftime(_RFC3339_MICROS),
+                'additions': [
+                    {'kind': 'dns#resourceRecordSet',
+                     'name': NAME_1,
+                     'type': TYPE_1,
+                     'ttl': TTL_1,
+                     'rrdatas': RRDATAS_1}],
+                'deletions': [
+                    {'kind': 'dns#change',
+                     'name': NAME_2,
+                     'type': TYPE_2,
+                     'ttl': TTL_2,
+                     'rrdatas': RRDATAS_2}],
+            }]
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(DATA)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+
+        changes, token = zone.list_changes(
+            max_results=3, page_token=TOKEN, client=client2)
+
+        self.assertEqual(len(changes), len(DATA['changes']))
+        for found, expected in zip(changes, DATA['changes']):
+            self.assertTrue(isinstance(found, Changes))
+            self.assertEqual(found.name, CHANGES_NAME)
+            self.assertEqual(found.status, 'pending')
+            self.assertEqual(found.started, self.WHEN)
+
+            self.assertEqual(len(found.additions), len(expected['additions']))
+            for found_rr, expected_rr in zip(found.additions,
+                                             expected['additions']):
+                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertEqual(found_rr.name, expected_rr['name'])
+                self.assertEqual(found_rr.record_type, expected_rr['type'])
+                self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
+                self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
+
+            self.assertEqual(len(found.deletions), len(expected['deletions']))
+            for found_rr, expected_rr in zip(found.deletions,
+                                             expected['deletions']):
+                self.assertTrue(isinstance(found_rr, ResourceRecordSet))
+                self.assertEqual(found_rr.name, expected_rr['name'])
+                self.assertEqual(found_rr.record_type, expected_rr['type'])
+                self.assertEqual(found_rr.ttl, int(expected_rr['ttl']))
+                self.assertEqual(found_rr.rrdatas, expected_rr['rrdatas'])
+
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
 
 class _Client(object):
 

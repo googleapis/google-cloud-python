@@ -17,6 +17,7 @@ import six
 
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud.exceptions import NotFound
+from gcloud.dns.changes import Changes
 from gcloud.dns.resource_record_set import ResourceRecordSet
 
 
@@ -311,4 +312,47 @@ class ManagedZone(object):
         resp = conn.api_request(method='GET', path=path, query_params=params)
         zones = [ResourceRecordSet.from_api_repr(resource, self)
                  for resource in resp['rrsets']]
+        return zones, resp.get('nextPageToken')
+
+    def list_changes(self, max_results=None, page_token=None, client=None):
+        """List change sets for this zone.
+
+        See:
+        https://cloud.google.com/dns/api/v1/resourceRecordSets/list
+
+        :type max_results: int
+        :param max_results: maximum number of zones to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of zones. If
+                           not passed, the API will return the first page of
+                           zones.
+
+        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current zone.
+
+        :rtype: tuple, (list, str)
+        :returns: list of
+                  :class:`gcloud.dns.resource_record_set.ResourceRecordSet`,
+                  plus a "next page token" string:  if the token is not None,
+                  indicates that more zones can be retrieved with another
+                  call (pass that value as ``page_token``).
+        """
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/managedZones/%s/changes' % (
+            self.project, self.name)
+        client = self._require_client(client)
+        conn = client.connection
+        resp = conn.api_request(method='GET', path=path, query_params=params)
+        zones = [Changes.from_api_repr(resource, self)
+                 for resource in resp['changes']]
         return zones, resp.get('nextPageToken')
