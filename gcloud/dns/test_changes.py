@@ -18,7 +18,7 @@ import unittest2
 class TestChanges(unittest2.TestCase):
     PROJECT = 'project'
     ZONE_NAME = 'example.com'
-    CHANGES_NAME = 'generated-by-server'
+    CHANGES_NAME = 'changeset_id'
 
     def _getTargetClass(self):
         from gcloud.dns.changes import Changes
@@ -115,6 +115,18 @@ class TestChanges(unittest2.TestCase):
         changes = klass.from_api_repr(RESOURCE, zone=zone)
 
         self._verifyResourceProperties(changes, RESOURCE, zone)
+
+    def test_name_setter_bad_value(self):
+        zone = _Zone()
+        changes = self._makeOne(zone)
+        with self.assertRaises(ValueError):
+            changes.name = 12345
+
+    def test_name_setter(self):
+        zone = _Zone()
+        changes = self._makeOne(zone)
+        changes.name = 'NAME'
+        self.assertEqual(changes.name, 'NAME')
 
     def test_add_record_set_invalid_value(self):
         zone = _Zone()
@@ -220,6 +232,44 @@ class TestChanges(unittest2.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(changes, RESOURCE, zone)
 
+    def test_exists_miss_w_bound_client(self):
+        PATH = 'projects/%s/managedZones/%s/changes/%s' % (
+            self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
+        self._setUpConstants()
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        zone = _Zone(client)
+        changes = self._makeOne(zone)
+        changes.name = self.CHANGES_NAME
+
+        self.assertFalse(changes.exists())
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
+    def test_exists_hit_w_alternate_client(self):
+        PATH = 'projects/%s/managedZones/%s/changes/%s' % (
+            self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        zone = _Zone(client1)
+        changes = self._makeOne(zone)
+        changes.name = self.CHANGES_NAME
+
+        self.assertTrue(changes.exists(client=client2))
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'fields': 'id'})
+
 
 class _Zone(object):
 
@@ -244,7 +294,12 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
+        from gcloud.exceptions import NotFound
         self._requested.append(kw)
 
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except:
+            raise NotFound('miss')
+        else:
+            return response

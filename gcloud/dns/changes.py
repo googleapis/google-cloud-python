@@ -16,8 +16,11 @@
 
 import datetime
 
+import six
+
 from gcloud._helpers import UTC
 from gcloud._helpers import _RFC3339_MICROS
+from gcloud.exceptions import NotFound
 from gcloud.dns.resource_record_set import ResourceRecordSet
 
 
@@ -79,6 +82,17 @@ class Changes(object):
         :returns: Name, as set by the back-end, or None.
         """
         return self._properties.get('id')
+
+    @name.setter
+    def name(self, value):
+        """Update name of the change set.
+
+        :type value: string
+        :param value: New name for the changeset.
+        """
+        if not isinstance(value, six.string_types):
+            raise ValueError("Pass a string")
+        self._properties['id'] = value
 
     @property
     def status(self):
@@ -200,3 +214,25 @@ class Changes(object):
         api_response = client.connection.api_request(
             method='POST', path=path, data=self._build_resource())
         self._set_properties(api_response)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the change set via a GET request
+
+        See
+        https://cloud.google.com/dns/api/v1/changes/get
+
+        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current zone.
+        """
+        client = self._require_client(client)
+        path = '/projects/%s/managedZones/%s/changes/%s' % (
+            self.zone.project, self.zone.name, self.name)
+
+        try:
+            client.connection.api_request(method='GET', path=path,
+                                          query_params={'fields': 'id'})
+        except NotFound:
+            return False
+        else:
+            return True
