@@ -53,14 +53,23 @@ class Changes(object):
         :returns: RRS parsed from ``resource``.
         """
         changes = cls(zone=zone)
-        changes._additions = tuple([
-            ResourceRecordSet.from_api_repr(added_res, zone)
-            for added_res in resource.pop('additions', ())])
-        changes._deletions = tuple([
-            ResourceRecordSet.from_api_repr(added_res, zone)
-            for added_res in resource.pop('deletions', ())])
-        changes._properties = resource
+        changes._set_properties(resource)
         return changes
+
+    def _set_properties(self, resource):
+        """Helper method for :meth:`from_api_repr`, :meth:`create`, etc.
+
+        :type resource: dict
+        :param resource: change set representation returned from the API
+        """
+        resource = resource.copy()
+        self._additions = tuple([
+            ResourceRecordSet.from_api_repr(added_res, self.zone)
+            for added_res in resource.pop('additions', ())])
+        self._deletions = tuple([
+            ResourceRecordSet.from_api_repr(added_res, self.zone)
+            for added_res in resource.pop('deletions', ())])
+        self._properties = resource
 
     @property
     def name(self):
@@ -137,3 +146,57 @@ class Changes(object):
         if not isinstance(record_set, ResourceRecordSet):
             raise ValueError("Pass a ResourceRecordSet")
         self._deletions += (record_set,)
+
+    def _require_client(self, client):
+        """Check client or verify over-ride.
+
+        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current zone.
+
+        :rtype: :class:`gcloud.dns.client.Client`
+        :returns: The client passed in or the currently bound client.
+        """
+        if client is None:
+            client = self.zone._client
+        return client
+
+    def _build_resource(self):
+        """Generate a resource for ``create``."""
+        r_adds = [{
+            'name': added.name,
+            'type': added.record_type,
+            'ttl': str(added.ttl),
+            'rrdatas': added.rrdatas,
+            } for added in self.additions]
+
+        r_dels = [{
+            'name': deleted.name,
+            'type': deleted.record_type,
+            'ttl': str(deleted.ttl),
+            'rrdatas': deleted.rrdatas,
+            } for deleted in self.deletions]
+
+        return {
+            'additions': r_adds,
+            'deletions': r_dels,
+        }
+
+    def create(self, client=None):
+        """API call:  create the change set via a POST request
+
+        See:
+        https://cloud.google.com/dns/api/v1/changes/create
+
+        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current zone.
+        """
+        if len(self.additions) == 0 and len(self.deletions) == 0:
+            raise ValueError("No record sets added or deleted")
+        client = self._require_client(client)
+        path = '/projects/%s/managedZones/%s/changes' % (
+            self.zone.project, self.zone.name)
+        api_response = client.connection.api_request(
+            method='POST', path=path, data=self._build_resource())
+        self._set_properties(api_response)
