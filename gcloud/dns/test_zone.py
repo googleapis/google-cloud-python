@@ -314,6 +314,107 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_resource_record_sets_defaults(self):
+        from gcloud.dns.resource_record_set import ResourceRecordSet
+        PATH = 'projects/%s/managedZones/%s/rrsets' % (
+            self.PROJECT, self.ZONE_NAME)
+        TOKEN = 'TOKEN'
+        NAME_1 = 'www.example.com'
+        TYPE_1 = 'A'
+        TTL_1 = '86400'
+        RRDATAS_1 = ['123.45.67.89']
+        NAME_2 = 'alias.example.com'
+        TYPE_2 = 'CNAME'
+        TTL_2 = '3600'
+        RRDATAS_2 = ['www.example.com']
+        DATA = {
+            'nextPageToken': TOKEN,
+            'rrsets': [
+                {'kind': 'dns#resourceRecordSet',
+                 'name': NAME_1,
+                 'type': TYPE_1,
+                 'ttl': TTL_1,
+                 'rrdatas': RRDATAS_1},
+                {'kind': 'dns#resourceRecordSet',
+                 'name': NAME_2,
+                 'type': TYPE_2,
+                 'ttl': TTL_2,
+                 'rrdatas': RRDATAS_2},
+            ]
+        }
+        conn = _Connection(DATA)
+        client = _Client(project=self.PROJECT, connection=conn)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+
+        rrsets, token = zone.list_resource_record_sets()
+
+        self.assertEqual(len(rrsets), len(DATA['rrsets']))
+        for found, expected in zip(rrsets, DATA['rrsets']):
+            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertEqual(found.name, expected['name'])
+            self.assertEqual(found.record_type, expected['type'])
+            self.assertEqual(found.ttl, int(expected['ttl']))
+            self.assertEqual(found.rrdatas, expected['rrdatas'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_list_resource_record_sets_explicit(self):
+        from gcloud.dns.resource_record_set import ResourceRecordSet
+        PATH = 'projects/%s/managedZones/%s/rrsets' % (
+            self.PROJECT, self.ZONE_NAME)
+        TOKEN = 'TOKEN'
+        NAME_1 = 'www.example.com'
+        TYPE_1 = 'A'
+        TTL_1 = '86400'
+        RRDATAS_1 = ['123.45.67.89']
+        NAME_2 = 'alias.example.com'
+        TYPE_2 = 'CNAME'
+        TTL_2 = '3600'
+        RRDATAS_2 = ['www.example.com']
+        DATA = {
+            'rrsets': [
+                {'kind': 'dns#resourceRecordSet',
+                 'name': NAME_1,
+                 'type': TYPE_1,
+                 'ttl': TTL_1,
+                 'rrdatas': RRDATAS_1},
+                {'kind': 'dns#resourceRecordSet',
+                 'name': NAME_2,
+                 'type': TYPE_2,
+                 'ttl': TTL_2,
+                 'rrdatas': RRDATAS_2},
+            ]
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(DATA)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client1)
+
+        rrsets, token = zone.list_resource_record_sets(
+            max_results=3, page_token=TOKEN, client=client2)
+
+        self.assertEqual(len(rrsets), len(DATA['rrsets']))
+        for found, expected in zip(rrsets, DATA['rrsets']):
+            self.assertTrue(isinstance(found, ResourceRecordSet))
+            self.assertEqual(found.name, expected['name'])
+            self.assertEqual(found.record_type, expected['type'])
+            self.assertEqual(found.ttl, int(expected['ttl']))
+            self.assertEqual(found.rrdatas, expected['rrdatas'])
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 3, 'pageToken': TOKEN})
+
 
 class _Client(object):
 

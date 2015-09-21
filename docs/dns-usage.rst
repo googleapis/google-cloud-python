@@ -104,23 +104,23 @@ Each managed zone exposes a read-only set of resource records:
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co')
-     >>> records, page_token = zone.list_resources()  # API request
+     >>> records, page_token = zone.list_resource_record_sets()  # API request
      >>> [(record.name, record.type, record.ttl, record.rrdatas) for record in records]
      [('example.com.', 'SOA', 21600, ['ns-cloud1.googlecomains.com dns-admin.google.com 1 21600 3600 1209600 300'])]
 
 .. note::
 
-   The ``page_token`` returned from ``zone.list_resources()`` will be
-   an opaque string if there are more resources than can be returned in a
+   The ``page_token`` returned from ``zone.list_resource_record_sets()`` will
+   be an opaque string if there are more resources than can be returned in a
    single request.  To enumerate them all, repeat calling
-   ``zone.list_resources()``, passing the ``page_token``, until the token
-   is ``None``.  E.g.
+   ``zone.list_resource_record_sets()``, passing the ``page_token``, until
+   the token is ``None``.  E.g.
 
    .. doctest::
 
-      >>> records, page_token = zone.list_resources()  # API request
+      >>> records, page_token = zone.list_resource_record_sets()  # API request
       >>> while page_token is not None:
-      ...     next_batch, page_token = zone.list_resources(
+      ...     next_batch, page_token = zone.list_resource_record_sets(
       ...         page_token=page_token)  # API request
       ...     records.extend(next_batch)
 
