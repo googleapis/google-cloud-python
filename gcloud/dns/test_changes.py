@@ -270,6 +270,47 @@ class TestChanges(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'fields': 'id'})
 
+    def test_reload_w_bound_client(self):
+        PATH = 'projects/%s/managedZones/%s/changes/%s' % (
+            self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
+        self._setUpConstants()
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        zone = _Zone(client)
+        changes = self._makeOne(zone)
+        changes.name = self.CHANGES_NAME
+
+        changes.reload()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(changes, RESOURCE, zone)
+
+    def test_reload_w_alternate_client(self):
+        PATH = 'projects/%s/managedZones/%s/changes/%s' % (
+            self.PROJECT, self.ZONE_NAME, self.CHANGES_NAME)
+        self._setUpConstants()
+        RESOURCE = self._makeResource()
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        zone = _Zone(client1)
+        changes = self._makeOne(zone)
+        changes.name = self.CHANGES_NAME
+
+        changes.reload(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self._verifyResourceProperties(changes, RESOURCE, zone)
+
 
 class _Zone(object):
 

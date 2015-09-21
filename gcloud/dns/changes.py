@@ -75,6 +75,16 @@ class Changes(object):
         self._properties = resource
 
     @property
+    def path(self):
+        """URL path for change set APIs.
+
+        :rtype: string
+        :returns: the path based on project, zone, and change set names.
+        """
+        return '/projects/%s/managedZones/%s/changes/%s' % (
+            self.zone.project, self.zone.name, self.name)
+
+    @property
     def name(self):
         """Name of the change set.
 
@@ -226,13 +236,26 @@ class Changes(object):
                        ``client`` stored on the current zone.
         """
         client = self._require_client(client)
-        path = '/projects/%s/managedZones/%s/changes/%s' % (
-            self.zone.project, self.zone.name, self.name)
-
         try:
-            client.connection.api_request(method='GET', path=path,
+            client.connection.api_request(method='GET', path=self.path,
                                           query_params={'fields': 'id'})
         except NotFound:
             return False
         else:
             return True
+
+    def reload(self, client=None):
+        """API call:  refresh zone properties via a GET request
+
+        See
+        https://cloud.google.com/dns/api/v1/changes/get
+
+        :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current zone.
+        """
+        client = self._require_client(client)
+
+        api_response = client.connection.api_request(
+            method='GET', path=self.path)
+        self._set_properties(api_response)
