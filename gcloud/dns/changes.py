@@ -27,8 +27,7 @@ from gcloud.dns.resource_record_set import ResourceRecordSet
 class Changes(object):
     """Changes are bundled additions / deletions of DNS resource records.
 
-    Changes are contained wihin a :class:`gcloud.dns.zone.ManagedZone`
-    instance.
+    Changes are owned by a :class:`gcloud.dns.zone.ManagedZone` instance.
 
     See:
     https://cloud.google.com/dns/api/v1/changes

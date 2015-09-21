@@ -18,7 +18,7 @@
 class ResourceRecordSet(object):
     """ResourceRecordSets are DNS resource records.
 
-    RRS are contained wihin a :class:`gcloud.dns.zone.ManagedZone` instance.
+    RRS are owned by a :class:`gcloud.dns.zone.ManagedZone` instance.
 
     See:
     https://cloud.google.com/dns/api/v1/resourceRecordSets
