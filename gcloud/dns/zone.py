@@ -184,6 +184,14 @@ class ManagedZone(object):
         """
         return ResourceRecordSet(name, record_type, ttl, rrdatas, zone=self)
 
+    def changes(self):
+        """Construct a change set bound to this zone.
+
+        :rtype: :class:`gcloud.dns.changes.Changes`
+        :returns: a new ``Changes`` instance
+        """
+        return Changes(zone=self)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 

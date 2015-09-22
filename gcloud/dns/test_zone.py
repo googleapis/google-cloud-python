@@ -160,6 +160,14 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(rrs.rrdatas, RRDATAS)
         self.assertTrue(rrs.zone is zone)
 
+    def test_changes(self):
+        from gcloud.dns.changes import Changes
+        client = _Client(self.PROJECT)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        changes = zone.changes()
+        self.assertTrue(isinstance(changes, Changes))
+        self.assertTrue(changes.zone is zone)
+
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT
         RESOURCE = self._makeResource()
