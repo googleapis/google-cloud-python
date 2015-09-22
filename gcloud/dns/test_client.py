@@ -162,11 +162,11 @@ class TestClient(unittest2.TestCase):
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
         client = self._makeOne(PROJECT, creds)
-        dataset = client.zone(ZONE_NAME, DNS_NAME)
-        self.assertTrue(isinstance(dataset, ManagedZone))
-        self.assertEqual(dataset.name, ZONE_NAME)
-        self.assertEqual(dataset.dns_name, DNS_NAME)
-        self.assertTrue(dataset._client is client)
+        zone = client.zone(ZONE_NAME, DNS_NAME)
+        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertEqual(zone.name, ZONE_NAME)
+        self.assertEqual(zone.dns_name, DNS_NAME)
+        self.assertTrue(zone._client is client)
 
 
 class _Credentials(object):
