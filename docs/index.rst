@@ -33,7 +33,6 @@
   :hidden:
   :caption: Pub/Sub
 
-  pubsub-usage
   Client <pubsub-client>
   pubsub-topic
   pubsub-subscription
