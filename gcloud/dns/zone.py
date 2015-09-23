@@ -164,6 +164,34 @@ class ManagedZone(object):
             raise ValueError("Pass a string, or None")
         self._properties['nameServerSet'] = value
 
+    def resource_record_set(self, name, record_type, ttl, rrdatas):
+        """Construct a resource record set bound to this zone.
+
+        :type name: string
+        :param name: Name of the record set.
+
+        :type record_type: string
+        :param record_type: RR type
+
+        :type ttl: integer
+        :param ttl: TTL for the RR, in seconds
+
+        :type rrdatas: list of string
+        :param rrdatas: resource data for the RR
+
+        :rtype: :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
+        :returns: a new ``ResourceRecordSet`` instance
+        """
+        return ResourceRecordSet(name, record_type, ttl, rrdatas, zone=self)
+
+    def changes(self):
+        """Construct a change set bound to this zone.
+
+        :rtype: :class:`gcloud.dns.changes.Changes`
+        :returns: a new ``Changes`` instance
+        """
+        return Changes(zone=self)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 

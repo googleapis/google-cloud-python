@@ -17,11 +17,17 @@
 The main concepts with this API are:
 
 - :class:`gcloud.DNS.zone.ManagedZone` represents an collection of tables.
+- :class:`gcloud.DNS.resource_record_set.ResourceRecordSet` represents a
+  single resource definition within a zone.
+- :class:`gcloud.DNS.changes.Changes` represents a set of changes (adding/
+  deleting resource record sets) to a zone.
 """
 
+from gcloud.dns.zone import Changes
 from gcloud.dns.client import Client
 from gcloud.dns.connection import Connection
 from gcloud.dns.zone import ManagedZone
+from gcloud.dns.resource_record_set import ResourceRecordSet
 
 
 SCOPE = Connection.SCOPE

@@ -144,6 +144,30 @@ class TestManagedZone(unittest2.TestCase):
         zone.name_server_set = 'NAME_SERVER_SET'
         self.assertEqual(zone.name_server_set, 'NAME_SERVER_SET')
 
+    def test_resource_record_set(self):
+        from gcloud.dns.resource_record_set import ResourceRecordSet
+        RRS_NAME = 'other.example.com'
+        RRS_TYPE = 'CNAME'
+        TTL = 3600
+        RRDATAS = ['www.example.com']
+        client = _Client(self.PROJECT)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        rrs = zone.resource_record_set(RRS_NAME, RRS_TYPE, TTL, RRDATAS)
+        self.assertTrue(isinstance(rrs, ResourceRecordSet))
+        self.assertEqual(rrs.name, RRS_NAME)
+        self.assertEqual(rrs.record_type, RRS_TYPE)
+        self.assertEqual(rrs.ttl, TTL)
+        self.assertEqual(rrs.rrdatas, RRDATAS)
+        self.assertTrue(rrs.zone is zone)
+
+    def test_changes(self):
+        from gcloud.dns.changes import Changes
+        client = _Client(self.PROJECT)
+        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        changes = zone.changes()
+        self.assertTrue(isinstance(changes, Changes))
+        self.assertTrue(changes.zone is zone)
+
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/managedZones' % self.PROJECT
         RESOURCE = self._makeResource()
