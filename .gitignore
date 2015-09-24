@@ -52,3 +52,7 @@ pylintrc_reduced
 
 # Travis build directories.
 gcloud-python-wheels/
+
+# Directories used for creating generated PB2 files
+generated_python/
+cloud-bigtable-client/
