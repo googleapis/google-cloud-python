@@ -46,6 +46,11 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.project, PROJECT)
         self.assertEqual(client.timeout_seconds, timeout_seconds)
         self.assertEqual(client.user_agent, user_agent)
+        # Check stubs are set (but null)
+        self.assertEqual(client._data_stub, None)
+        self.assertEqual(client._cluster_stub, None)
+        self.assertEqual(client._operations_stub, None)
+        self.assertEqual(client._table_stub, None)
 
     def test_constructor_default_scopes(self):
         from gcloud.bigtable import client as MUT
@@ -104,6 +109,99 @@ class TestClient(unittest2.TestCase):
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials)
         self.assertTrue(client.credentials is credentials)
+
+    def test_project_name_property(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        project_name = 'projects/' + project
+        self.assertEqual(client.project_name, project_name)
+
+    def test_data_stub_getter(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        client._data_stub = object()
+        self.assertTrue(client.data_stub is client._data_stub)
+
+    def test_data_stub_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        with self.assertRaises(ValueError):
+            getattr(client, 'data_stub')
+
+    def test_cluster_stub_getter(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        client._cluster_stub = object()
+        self.assertTrue(client.cluster_stub is client._cluster_stub)
+
+    def test_cluster_stub_non_admin_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=False)
+        with self.assertRaises(ValueError):
+            getattr(client, 'cluster_stub')
+
+    def test_cluster_stub_unset_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        with self.assertRaises(ValueError):
+            getattr(client, 'cluster_stub')
+
+    def test_operations_stub_getter(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        client._operations_stub = object()
+        self.assertTrue(client.operations_stub is client._operations_stub)
+
+    def test_operations_stub_non_admin_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=False)
+        with self.assertRaises(ValueError):
+            getattr(client, 'operations_stub')
+
+    def test_operations_stub_unset_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        with self.assertRaises(ValueError):
+            getattr(client, 'operations_stub')
+
+    def test_table_stub_getter(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        client._table_stub = object()
+        self.assertTrue(client.table_stub is client._table_stub)
+
+    def test_table_stub_non_admin_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=False)
+        with self.assertRaises(ValueError):
+            getattr(client, 'table_stub')
+
+    def test_table_stub_unset_failure(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True)
+        with self.assertRaises(ValueError):
+            getattr(client, 'table_stub')
 
 
 class _Credentials(object):

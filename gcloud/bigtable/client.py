@@ -130,6 +130,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self.user_agent = user_agent
         self.timeout_seconds = timeout_seconds
 
+        # These will be set in start().
+        self._data_stub = None
+        self._cluster_stub = None
+        self._operations_stub = None
+        self._table_stub = None
+
     @property
     def credentials(self):
         """Getter for client's credentials.
@@ -139,3 +145,83 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :returns: The credentials stored on the client.
         """
         return self._credentials
+
+    @property
+    def project_name(self):
+        """Project name to be used with Cluster Admin API.
+
+        .. note::
+
+            This property will not change if ``project`` does not, but the
+            return value is not cached.
+
+        The project name is of the form
+
+            ``"projects/{project_id}"``
+
+        :rtype: str
+        :returns: The project name to be used with the Cloud Bigtable Admin
+                  API RPC service.
+        """
+        return 'projects/' + self.project
+
+    @property
+    def data_stub(self):
+        """Getter for the gRPC stub used for the Data API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client has not been :meth:`start`-ed.
+        """
+        if self._data_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._data_stub
+
+    @property
+    def cluster_stub(self):
+        """Getter for the gRPC stub used for the Cluster Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._cluster_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._cluster_stub
+
+    @property
+    def operations_stub(self):
+        """Getter for the gRPC stub used for the Operations API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._operations_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._operations_stub
+
+    @property
+    def table_stub(self):
+        """Getter for the gRPC stub used for the Table Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._table_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._table_stub
