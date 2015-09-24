@@ -27,15 +27,25 @@ class TestClient(unittest2.TestCase):
 
     def _constructor_test_helper(self, expected_scopes, creds,
                                  read_only=False, admin=False,
+                                 user_agent=None, timeout_seconds=None,
                                  expected_creds=None):
+        from gcloud.bigtable import client as MUT
+
+        user_agent = user_agent or MUT.DEFAULT_USER_AGENT
+        timeout_seconds = timeout_seconds or MUT.DEFAULT_TIMEOUT_SECONDS
         PROJECT = 'PROJECT'
         client = self._makeOne(project=PROJECT, credentials=creds,
-                               read_only=read_only, admin=admin)
+                               read_only=read_only, admin=admin,
+                               user_agent=user_agent,
+                               timeout_seconds=timeout_seconds)
 
         expected_creds = expected_creds or creds
-        self.assertTrue(client.credentials is expected_creds)
+        self.assertTrue(client._credentials is expected_creds)
+        self.assertEqual(client._credentials._scopes, expected_scopes)
+
         self.assertEqual(client.project, PROJECT)
-        self.assertEqual(client.credentials._scopes, expected_scopes)
+        self.assertEqual(client.timeout_seconds, timeout_seconds)
+        self.assertEqual(client.user_agent, user_agent)
 
     def test_constructor_default_scopes(self):
         from gcloud.bigtable import client as MUT
@@ -43,6 +53,17 @@ class TestClient(unittest2.TestCase):
         expected_scopes = [MUT.DATA_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds)
+
+    def test_constructor_custom_user_agent_and_timeout(self):
+        from gcloud.bigtable import client as MUT
+
+        timeout_seconds = 1337
+        user_agent = 'custom-application'
+        expected_scopes = [MUT.DATA_SCOPE]
+        creds = _Credentials()
+        self._constructor_test_helper(expected_scopes, creds,
+                                      user_agent=user_agent,
+                                      timeout_seconds=timeout_seconds)
 
     def test_constructor_with_admin(self):
         from gcloud.bigtable import client as MUT
@@ -77,6 +98,12 @@ class TestClient(unittest2.TestCase):
         with _Monkey(MUT, get_credentials=mock_get_credentials):
             self._constructor_test_helper(expected_scopes, None,
                                           expected_creds=creds)
+
+    def test_credentials_getter(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        self.assertTrue(client.credentials is credentials)
 
 
 class _Credentials(object):
