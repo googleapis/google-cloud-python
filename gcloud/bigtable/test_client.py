@@ -203,6 +203,238 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             getattr(client, 'table_stub')
 
+    def test__make_data_stub(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import client as MUT
+        from gcloud.bigtable.client import DATA_API_HOST
+        from gcloud.bigtable.client import DATA_API_PORT
+        from gcloud.bigtable.client import DATA_STUB_FACTORY
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        fake_stub = object()
+        make_stub_args = []
+
+        def mock_make_stub(*args):
+            make_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            result = client._make_data_stub()
+
+        self.assertTrue(result is fake_stub)
+        self.assertEqual(make_stub_args, [
+            (
+                client,
+                DATA_STUB_FACTORY,
+                DATA_API_HOST,
+                DATA_API_PORT,
+            ),
+        ])
+
+    def test__make_cluster_stub(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import client as MUT
+        from gcloud.bigtable.client import CLUSTER_ADMIN_HOST
+        from gcloud.bigtable.client import CLUSTER_ADMIN_PORT
+        from gcloud.bigtable.client import CLUSTER_STUB_FACTORY
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        fake_stub = object()
+        make_stub_args = []
+
+        def mock_make_stub(*args):
+            make_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            result = client._make_cluster_stub()
+
+        self.assertTrue(result is fake_stub)
+        self.assertEqual(make_stub_args, [
+            (
+                client,
+                CLUSTER_STUB_FACTORY,
+                CLUSTER_ADMIN_HOST,
+                CLUSTER_ADMIN_PORT,
+            ),
+        ])
+
+    def test__make_operations_stub(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import client as MUT
+        from gcloud.bigtable.client import CLUSTER_ADMIN_HOST
+        from gcloud.bigtable.client import CLUSTER_ADMIN_PORT
+        from gcloud.bigtable.client import OPERATIONS_STUB_FACTORY
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        fake_stub = object()
+        make_stub_args = []
+
+        def mock_make_stub(*args):
+            make_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            result = client._make_operations_stub()
+
+        self.assertTrue(result is fake_stub)
+        self.assertEqual(make_stub_args, [
+            (
+                client,
+                OPERATIONS_STUB_FACTORY,
+                CLUSTER_ADMIN_HOST,
+                CLUSTER_ADMIN_PORT,
+            ),
+        ])
+
+    def test__make_table_stub(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import client as MUT
+        from gcloud.bigtable.client import TABLE_ADMIN_HOST
+        from gcloud.bigtable.client import TABLE_ADMIN_PORT
+        from gcloud.bigtable.client import TABLE_STUB_FACTORY
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        fake_stub = object()
+        make_stub_args = []
+
+        def mock_make_stub(*args):
+            make_stub_args.append(args)
+            return fake_stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            result = client._make_table_stub()
+
+        self.assertTrue(result is fake_stub)
+        self.assertEqual(make_stub_args, [
+            (
+                client,
+                TABLE_STUB_FACTORY,
+                TABLE_ADMIN_HOST,
+                TABLE_ADMIN_PORT,
+            ),
+        ])
+
+    def test_is_started(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        self.assertFalse(client.is_started())
+        client._data_stub = object()
+        self.assertTrue(client.is_started())
+        client._data_stub = None
+        self.assertFalse(client.is_started())
+
+    def _start_method_helper(self, admin):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import client as MUT
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=admin)
+
+        stub = _FakeStub()
+        make_stub_args = []
+
+        def mock_make_stub(*args):
+            make_stub_args.append(args)
+            return stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            client.start()
+
+        self.assertTrue(client._data_stub is stub)
+        if admin:
+            self.assertTrue(client._cluster_stub is stub)
+            self.assertTrue(client._operations_stub is stub)
+            self.assertTrue(client._table_stub is stub)
+            self.assertEqual(stub._entered, 4)
+            self.assertEqual(len(make_stub_args), 4)
+        else:
+            self.assertTrue(client._cluster_stub is None)
+            self.assertTrue(client._operations_stub is None)
+            self.assertTrue(client._table_stub is None)
+            self.assertEqual(stub._entered, 1)
+            self.assertEqual(len(make_stub_args), 1)
+        self.assertEqual(stub._exited, [])
+
+    def test_start_non_admin(self):
+        self._start_method_helper(admin=False)
+
+    def test_start_with_admin(self):
+        self._start_method_helper(admin=True)
+
+    def test_start_while_started(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        client._data_stub = data_stub = object()
+        self.assertTrue(client.is_started())
+        client.start()
+
+        # Make sure the stub did not change.
+        self.assertEqual(client._data_stub, data_stub)
+
+    def _stop_method_helper(self, admin):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=admin)
+
+        stub1 = _FakeStub()
+        stub2 = _FakeStub()
+        client._data_stub = stub1
+        client._cluster_stub = stub2
+        client._operations_stub = stub2
+        client._table_stub = stub2
+        client.stop()
+        self.assertTrue(client._data_stub is None)
+        self.assertTrue(client._cluster_stub is None)
+        self.assertTrue(client._operations_stub is None)
+        self.assertTrue(client._table_stub is None)
+        self.assertEqual(stub1._entered, 0)
+        self.assertEqual(stub2._entered, 0)
+        exc_none_triple = (None, None, None)
+        self.assertEqual(stub1._exited, [exc_none_triple])
+        if admin:
+            self.assertEqual(stub2._exited, [exc_none_triple] * 3)
+        else:
+            self.assertEqual(stub2._exited, [])
+
+    def test_stop_non_admin(self):
+        self._stop_method_helper(admin=False)
+
+    def test_stop_with_admin(self):
+        self._stop_method_helper(admin=True)
+
+    def test_stop_while_stopped(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+        self.assertFalse(client.is_started())
+
+        # This is a bit hacky. We set the cluster stub protected value
+        # since it isn't used in is_started() and make sure that stop
+        # doesn't reset this value to None.
+        client._cluster_stub = cluster_stub = object()
+        client.stop()
+        # Make sure the cluster stub did not change.
+        self.assertEqual(client._cluster_stub, cluster_stub)
+
 
 class _Credentials(object):
 
@@ -211,3 +443,18 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _FakeStub(object):
+
+    def __init__(self):
+        self._entered = 0
+        self._exited = []
+
+    def __enter__(self):
+        self._entered += 1
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._exited.append((exc_type, exc_val, exc_tb))
+        return True
