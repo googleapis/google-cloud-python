@@ -15,6 +15,19 @@
 import unittest2
 
 
+class Test_ClientFactoryMixin(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.client import _ClientFactoryMixin
+        return _ClientFactoryMixin
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_virtual(self):
+        self.assertRaises(NotImplementedError, self._makeOne)
+
+
 class TestClient(unittest2.TestCase):
 
     def setUp(self):
