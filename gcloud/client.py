@@ -23,32 +23,16 @@ from gcloud.credentials import get_for_service_account_json
 from gcloud.credentials import get_for_service_account_p12
 
 
-class Client(object):
-    """Client to bundle configuration needed for API requests.
+class _ClientFactoryMixin(object):
+    """Mixin to allow factories that create credentials.
 
-    Assumes that the associated ``_connection_class`` only accepts
-    ``http`` and ``credentials`` in its constructor.
+    .. note::
 
-    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                       :class:`NoneType`
-    :param credentials: The OAuth2 Credentials to use for the connection
-                        owned by this client. If not passed (and if no ``http``
-                        object is passed), falls back to the default inferred
-                        from the environment.
-
-    :type http: :class:`httplib2.Http` or class that defines ``request()``.
-    :param http: An optional HTTP object to make requests. If not passed, an
-                 ``http`` object is created that is bound to the
-                 ``credentials`` for the current object.
+        This class is virtual.
     """
 
-    _connection_class = Connection
-
-    def __init__(self, credentials=None, http=None):
-        if credentials is None and http is None:
-            credentials = get_credentials()
-        self.connection = self._connection_class(
-            credentials=credentials, http=http)
+    def __init__(self, *args, **kwargs):
+        raise NotImplementedError('_ClientFactoryMixin is a virtual class')
 
     @classmethod
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
@@ -115,10 +99,61 @@ class Client(object):
         return cls(*args, **kwargs)
 
 
-class JSONClient(Client):
+class Client(_ClientFactoryMixin):
+    """Client to bundle configuration needed for API requests.
+
+    Assumes that the associated ``_connection_class`` only accepts
+    ``http`` and ``credentials`` in its constructor.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                       :class:`NoneType`
+    :param credentials: The OAuth2 Credentials to use for the connection
+                        owned by this client. If not passed (and if no ``http``
+                        object is passed), falls back to the default inferred
+                        from the environment.
+
+    :type http: :class:`httplib2.Http` or class that defines ``request()``.
+    :param http: An optional HTTP object to make requests. If not passed, an
+                 ``http`` object is created that is bound to the
+                 ``credentials`` for the current object.
+    """
+
+    _connection_class = Connection
+
+    def __init__(self, credentials=None, http=None):
+        if credentials is None and http is None:
+            credentials = get_credentials()
+        self.connection = self._connection_class(
+            credentials=credentials, http=http)
+
+
+class _ClientProjectMixin(object):
+    """Mixin to allow setting the project on the client.
+
+    :type project: string
+    :param project: the project which the client acts on behalf of. If not
+                    passed falls back to the default inferred from the
+                    environment.
+
+    :raises: :class:`ValueError` if the project is neither passed in nor
+             set in the environment.
+    """
+
+    def __init__(self, project=None):
+        if project is None:
+            project = _get_production_project()
+        if project is None:
+            raise ValueError('Project was not passed and could not be '
+                             'determined from the environment.')
+        if not isinstance(project, six.string_types):
+            raise ValueError('Project must be a string.')
+        self.project = project
+
+
+class JSONClient(Client, _ClientProjectMixin):
     """Client to for Google JSON-based API.
 
-    Assumes such APIs use the `project` and the client needs to store this
+    Assumes such APIs use the ``project`` and the client needs to store this
     value.
 
     :type project: string
@@ -143,13 +178,5 @@ class JSONClient(Client):
     """
 
     def __init__(self, project=None, credentials=None, http=None):
-        if project is None:
-            project = _get_production_project()
-        if project is None:
-            raise ValueError('Project was not passed and could not be '
-                             'determined from the environment.')
-        if not isinstance(project, six.string_types):
-            raise ValueError('Project must be a string.')
-        self.project = project
-
-        super(JSONClient, self).__init__(credentials=credentials, http=http)
+        _ClientProjectMixin.__init__(self, project=project)
+        Client.__init__(self, credentials=credentials, http=http)
