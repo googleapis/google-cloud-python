@@ -62,7 +62,7 @@ Example Applications
 -  `gcloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
 
 .. _getting-started-python: https://github.com/GoogleCloudPlatform/getting-started-python
-.. _associated tutorial: https://cloud.google.com/python
+.. _tutorial: https://cloud.google.com/python
 .. _gcloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/gcloud-python-expenses-demo
 
 Authentication
