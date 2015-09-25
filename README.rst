@@ -58,8 +58,11 @@ For more information, see `Supported Python Versions`_ in
 Example Applications
 --------------------
 
+-  `getting-started-python`_ - A sample and `tutorial`_ that demonstrates how to build a complete web application using Cloud Datastore, Cloud Storage, and Cloud Pub/Sub and deploy it to Google App Engine or Google Compute Engine.
 -  `gcloud-python-expenses-demo`_ - A sample expenses demo using Cloud Datastore and Cloud Storage
 
+.. _getting-started-python: https://github.com/GoogleCloudPlatform/getting-started-python
+.. _tutorial: https://cloud.google.com/python
 .. _gcloud-python-expenses-demo: https://github.com/GoogleCloudPlatform/gcloud-python-expenses-demo
 
 Authentication
