@@ -29,6 +29,7 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
+    'gcloud/bigtable/_generated',
 ]
 IGNORED_FILES = [
     'gcloud/datastore/_datastore_v1_pb2.py',
