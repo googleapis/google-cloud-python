@@ -55,6 +55,12 @@ READ_ONLY_SCOPE = ('https://www.googleapis.com/auth/'
                    'cloud-bigtable.data.readonly')
 """Scope for reading table data."""
 
+DEFAULT_TIMEOUT_SECONDS = 10
+"""The default timeout to use for API requests."""
+
+DEFAULT_USER_AGENT = 'gcloud-bigtable-python'
+"""The default user agent for API requests."""
+
 
 class Client(_ClientFactoryMixin, _ClientProjectMixin):
     """Client for interacting with Google Cloud Bigtable API.
@@ -86,12 +92,22 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                   interact with the Cluster Admin or Table Admin APIs. This
                   requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.
 
+    :type user_agent: str
+    :param user_agent: (Optional) The user agent to be used with API request.
+                       Defaults to :const:`DEFAULT_USER_AGENT`.
+
+    :type timeout_seconds: int
+    :param timeout_seconds: Number of seconds for request time-out. If not
+                            passed, defaults to
+                            :const:`DEFAULT_TIMEOUT_SECONDS`.
+
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
     """
 
     def __init__(self, project=None, credentials=None,
-                 read_only=False, admin=False):
+                 read_only=False, admin=False, user_agent=DEFAULT_USER_AGENT,
+                 timeout_seconds=DEFAULT_TIMEOUT_SECONDS):
         _ClientProjectMixin.__init__(self, project=project)
         if credentials is None:
             credentials = get_credentials()
@@ -109,4 +125,17 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         if admin:
             scopes.append(ADMIN_SCOPE)
 
-        self.credentials = credentials.create_scoped(scopes)
+        self._admin = bool(admin)
+        self._credentials = credentials.create_scoped(scopes)
+        self.user_agent = user_agent
+        self.timeout_seconds = timeout_seconds
+
+    @property
+    def credentials(self):
+        """Getter for client's credentials.
+
+        :rtype:
+            :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>`
+        :returns: The credentials stored on the client.
+        """
+        return self._credentials
