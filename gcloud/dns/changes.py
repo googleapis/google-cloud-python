@@ -129,7 +129,7 @@ class Changes(object):
         """Resource record sets to be added to the zone.
 
         :rtype: sequence of
-                :class:`gcloud.dns.resource_record_set.ResourceRecordSet'.
+                :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
         :returns: record sets appended via :meth:`add_record_set`
         """
         return self._additions
@@ -139,7 +139,7 @@ class Changes(object):
         """Resource record sets to be deleted from the zone.
 
         :rtype: sequence of
-                :class:`gcloud.dns.resource_record_set.ResourceRecordSet'.
+                :class:`gcloud.dns.resource_record_set.ResourceRecordSet`.
         :returns: record sets appended via :meth:`delete_record_set`
         """
         return self._deletions
@@ -148,7 +148,7 @@ class Changes(object):
         """Append a record set to the 'additions' for the change set.
 
         :type record_set:
-            :class:`gcloud.dns.resource_record_set.ResourceRecordSet'
+            :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
         :param record_set: the record set to append
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
@@ -161,7 +161,7 @@ class Changes(object):
         """Append a record set to the 'deletions' for the change set.
 
         :type record_set:
-            :class:`gcloud.dns.resource_record_set.ResourceRecordSet'
+            :class:`gcloud.dns.resource_record_set.ResourceRecordSet`
         :param record_set: the record set to append
 
         :raises: ``ValueError`` if ``record_set`` is not of the required type.
