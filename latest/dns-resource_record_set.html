@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started &mdash; gcloud ee835e9 documentation</title>
+    <title>Resource Record Sets &mdash; gcloud ee835e9 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -22,8 +22,9 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ee835e9 documentation" href="#" />
-    <link rel="next" title="Shared Core Modules" href="gcloud-api.html" /> 
+    <link rel="top" title="gcloud ee835e9 documentation" href="index.html" />
+    <link rel="next" title="Change Sets" href="dns-changes.html" />
+    <link rel="prev" title="Managed Zones" href="dns-zone.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -65,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+index%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-resource_record_set%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,75 +91,58 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="toctree-wrapper compound" id="gcloud">
-</div>
-<div class="toctree-wrapper compound" id="datastore">
-</div>
-<div class="toctree-wrapper compound" id="storage">
-</div>
-<div class="toctree-wrapper compound" id="pub-sub">
-</div>
-<div class="toctree-wrapper compound" id="bigquery">
-</div>
-<div class="toctree-wrapper compound" id="resource-manager">
-</div>
-<div class="toctree-wrapper compound" id="dns">
-</div>
-<div class="toctree-wrapper compound" id="external-links">
-</div>
-<div class="section" id="getting-started">
-<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<p>The <code class="docutils literal"><span class="pre">gcloud</span></code> library is <code class="docutils literal"><span class="pre">pip</span></code> install-able:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> pip install gcloud
-</pre></div>
-</div>
-<p>If you have trouble installing
-<code class="docutils literal"><span class="pre">pycrypto</span></code> or <code class="docutils literal"><span class="pre">pyopenssl</span></code>
-(and you&#8217;re on Ubuntu),
-you can try install the precompiled packages:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-crypto python-openssl
-</pre></div>
-</div>
-<p>If you want to install everything with <code class="docutils literal"><span class="pre">pip</span></code>,
-try installing the <code class="docutils literal"><span class="pre">dev</span></code> packages beforehand:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-dev libssl-dev
-</pre></div>
-</div>
-<p>If you want to install <cite>gcloud-python</cite> from source,
-you can clone the repository from GitHub:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-<span class="gp">$</span> <span class="nb">cd </span>gcloud-python
-<span class="gp">$</span> python setup.py install
-</pre></div>
-</div>
-<hr class="docutils" />
-<div class="section" id="cloud-datastore">
-<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+  <div class="section" id="module-gcloud.dns.resource_record_set">
+<span id="resource-record-sets"></span><h1>Resource Record Sets<a class="headerlink" href="#module-gcloud.dns.resource_record_set" title="Permalink to this headline">#</a></h1>
+<p>Define API ResourceRecordSets.</p>
+<dl class="class">
+<dt id="gcloud.dns.resource_record_set.ResourceRecordSet">
+<em class="property">class </em><code class="descclassname">gcloud.dns.resource_record_set.</code><code class="descname">ResourceRecordSet</code><span class="sig-paren">(</span><em>name</em>, <em>record_type</em>, <em>ttl</em>, <em>rrdatas</em>, <em>zone</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/resource_record_set.html#ResourceRecordSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.resource_record_set.ResourceRecordSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>ResourceRecordSets are DNS resource records.</p>
+<p>RRS are owned by a <a class="reference internal" href="dns-zone.html#gcloud.dns.zone.ManagedZone" title="gcloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.zone.ManagedZone</span></code></a> instance.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/dns/api/v1/resourceRecordSets">https://cloud.google.com/dns/api/v1/resourceRecordSets</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the record set</li>
+<li><strong>record_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the RR type of the zone</li>
+<li><strong>ttl</strong> (<em>integer</em>) &#8211; TTL (in seconds) for caching the record sets</li>
+<li><strong>rrdatas</strong> (<em>list of string</em>) &#8211; one or more lines containing the resource data</li>
+<li><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#gcloud.dns.zone.ManagedZone" title="gcloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.zone.ManagedZone</span></code></a>) &#8211; A zone which holds one or more record sets.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="gcloud.dns.resource_record_set.ResourceRecordSet.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>zone</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/dns/resource_record_set.html#ResourceRecordSet.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.dns.resource_record_set.ResourceRecordSet.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct a record set given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; record sets representation returned from the API</li>
+<li><strong>zone</strong> (<a class="reference internal" href="dns-zone.html#gcloud.dns.zone.ManagedZone" title="gcloud.dns.zone.ManagedZone"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.zone.ManagedZone</span></code></a>) &#8211; A zone which holds one or more record sets.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.zone.ResourceRecordSet</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">RRS parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+</dd></dl>
 
-<span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-<span class="n">entity</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Your name&#39;</span>
-<span class="n">entity</span><span class="p">[</span><span class="s">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="cloud-storage">
-<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">)</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="s">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s">&#39;this is test content!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -207,11 +191,11 @@ you can clone the repository from GitHub:</p>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DNS</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-resource_record_set.html">Resource Record Sets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Resource Record Sets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>

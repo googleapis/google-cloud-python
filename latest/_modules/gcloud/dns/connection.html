@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.resource_manager.connection &mdash; gcloud ee835e9 documentation</title>
+    <title>gcloud.dns.connection &mdash; gcloud ee835e9 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/connection%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/dns/connection%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,7 +90,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <h1>Source code for gcloud.resource_manager.connection</h1><div class="highlight"><pre>
+  <h1>Source code for gcloud.dns.connection</h1><div class="highlight"><pre>
 <span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -105,45 +105,25 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with gcloud.resource_manager connections.&quot;&quot;&quot;</span>
-
-
-<span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">AssertionCredentials</span>
+<span class="sd">&quot;&quot;&quot;Create / interact with gcloud dns connections.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Resource Manager via the JSON REST API.</span>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../dns-client.html#gcloud.dns.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud DNS via the JSON REST API.&quot;&quot;&quot;</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s">&#39;https://cloudresourcemanager.googleapis.com&#39;</span>
+    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s">&#39;https://www.googleapis.com&#39;</span>
     <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta1&#39;</span>
+    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/{api_version}{path}&#39;</span>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/dns/{api_version}{path}&#39;</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Resouce Manager consumer.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">AssertionCredentials</span><span class="p">):</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;credentials (</span><span class="si">%r</span><span class="s">) inherits from &#39;</span>
-                       <span class="s">&#39;AppAssertionCredentials. Only user credentials can be &#39;</span>
-                       <span class="s">&#39;used with the Resource Manager API. &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">credentials</span><span class="p">,))</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span></div>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/ndev.clouddns.readwrite&#39;</span><span class="p">,)</span>
+    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud DNS consumer.&quot;&quot;&quot;</span></div>
 </pre></div>
 
       </section><!-- end of .content -->

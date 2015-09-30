@@ -64,6 +64,10 @@
   :caption: DNS
 
   dns-usage
+  Client <dns-client>
+  dns-zone
+  dns-resource_record_set
+  dns-changes
 
 .. toctree::
   :maxdepth: 0

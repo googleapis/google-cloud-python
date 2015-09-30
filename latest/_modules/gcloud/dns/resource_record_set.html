@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.resource_manager.connection &mdash; gcloud ee835e9 documentation</title>
+    <title>gcloud.dns.resource_record_set &mdash; gcloud ee835e9 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/connection%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/dns/resource_record_set%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,7 +90,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <h1>Source code for gcloud.resource_manager.connection</h1><div class="highlight"><pre>
+  <h1>Source code for gcloud.dns.resource_record_set</h1><div class="highlight"><pre>
 <span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -105,45 +105,58 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with gcloud.resource_manager connections.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Define API ResourceRecordSets.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">AssertionCredentials</span>
+<div class="viewcode-block" id="ResourceRecordSet"><a class="viewcode-back" href="../../../dns-resource_record_set.html#gcloud.dns.resource_record_set.ResourceRecordSet">[docs]</a><span class="k">class</span> <span class="nc">ResourceRecordSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;ResourceRecordSets are DNS resource records.</span>
 
-<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
+<span class="sd">    RRS are owned by a :class:`gcloud.dns.zone.ManagedZone` instance.</span>
 
+<span class="sd">    See:</span>
+<span class="sd">    https://cloud.google.com/dns/api/v1/resourceRecordSets</span>
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Resource Manager via the JSON REST API.</span>
+<span class="sd">    :type name: string</span>
+<span class="sd">    :param name: the name of the record set</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
+<span class="sd">    :type record_type: string</span>
+<span class="sd">    :param record_type: the RR type of the zone</span>
 
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
+<span class="sd">    :type ttl: integer</span>
+<span class="sd">    :param ttl: TTL (in seconds) for caching the record sets</span>
+
+<span class="sd">    :type rrdatas: list of string</span>
+<span class="sd">    :param rrdatas: one or more lines containing the resource data</span>
+
+<span class="sd">    :type zone: :class:`gcloud.dns.zone.ManagedZone`</span>
+<span class="sd">    :param zone: A zone which holds one or more record sets.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s">&#39;https://cloudresourcemanager.googleapis.com&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">record_type</span><span class="p">,</span> <span class="n">ttl</span><span class="p">,</span> <span class="n">rrdatas</span><span class="p">,</span> <span class="n">zone</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">record_type</span> <span class="o">=</span> <span class="n">record_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ttl</span> <span class="o">=</span> <span class="n">ttl</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rrdatas</span> <span class="o">=</span> <span class="n">rrdatas</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s">&#39;v1beta1&#39;</span>
-    <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ResourceRecordSet.from_api_repr"><a class="viewcode-back" href="../../../dns-resource_record_set.html#gcloud.dns.resource_record_set.ResourceRecordSet.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">zone</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a record set given its API representation</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s">&#39;{api_base_url}/{api_version}{path}&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: record sets representation returned from the API</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">,)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Resouce Manager consumer.&quot;&quot;&quot;</span>
+<span class="sd">        :type zone: :class:`gcloud.dns.zone.ManagedZone`</span>
+<span class="sd">        :param zone: A zone which holds one or more record sets.</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">AssertionCredentials</span><span class="p">):</span>
-            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;credentials (</span><span class="si">%r</span><span class="s">) inherits from &#39;</span>
-                       <span class="s">&#39;AppAssertionCredentials. Only user credentials can be &#39;</span>
-                       <span class="s">&#39;used with the Resource Manager API. &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">credentials</span><span class="p">,))</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
-
-        <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span></div>
+<span class="sd">        :rtype: :class:`gcloud.dns.zone.ResourceRecordSet`</span>
+<span class="sd">        :returns: RRS parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">record_type</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">ttl</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s">&#39;ttl&#39;</span><span class="p">])</span>
+        <span class="n">rrdatas</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;rrdatas&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">record_type</span><span class="p">,</span> <span class="n">ttl</span><span class="p">,</span> <span class="n">rrdatas</span><span class="p">,</span> <span class="n">zone</span><span class="o">=</span><span class="n">zone</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->

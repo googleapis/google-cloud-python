@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.client &mdash; gcloud ee835e9 documentation</title>
+    <title>gcloud.dns.client &mdash; gcloud ee835e9 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/dns/client%0ARelease%3A%20ee835e9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,7 +90,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <h1>Source code for gcloud.pubsub.client</h1><div class="highlight"><pre>
+  <h1>Source code for gcloud.dns.client</h1><div class="highlight"><pre>
 <span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
 <span class="c">#</span>
 <span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -105,21 +105,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;gcloud pubsub client for interacting with API.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;gcloud dns client for interacting with API.&quot;&quot;&quot;</span>
 
 
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">JSONClient</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
+<span class="kn">from</span> <span class="nn">gcloud.dns.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.dns.zone</span> <span class="kn">import</span> <span class="n">ManagedZone</span>
 
 
-<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
+<div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../dns-client.html#gcloud.dns.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
 <span class="sd">    :type project: string</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
-<span class="sd">                    passed when creating a topic.  If not passed,</span>
+<span class="sd">                    passed when creating a zone.  If not passed,</span>
 <span class="sd">                    falls back to the default inferred from the environment.</span>
 
 <span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
@@ -137,106 +136,70 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
-<div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
+<div class="viewcode-block" id="Client.quotas"><a class="viewcode-back" href="../../../dns-client.html#gcloud.dns.client.Client.quotas">[docs]</a>    <span class="k">def</span> <span class="nf">quotas</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return DNS quots for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list</span>
+<span class="sd">        https://cloud.google.com/dns/api/v1/projects/get</span>
 
-<span class="sd">        :type page_size: int</span>
-<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
-<span class="sd">                          defaults to a value set by the API.</span>
+<span class="sd">        :rtype: mapping</span>
+<span class="sd">        :returns: keys for the mapping correspond to those of the ``quota``</span>
+<span class="sd">                  sub-mapping of the project resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;quota&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+</div>
+<div class="viewcode-block" id="Client.list_zones"><a class="viewcode-back" href="../../../dns-client.html#gcloud.dns.client.Client.list_zones">[docs]</a>    <span class="k">def</span> <span class="nf">list_zones</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List zones for the project associated with this client.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/dns/api/v1/managedZones/list</span>
+
+<span class="sd">        :type max_results: int</span>
+<span class="sd">        :param max_results: maximum number of zones to return, If not</span>
+<span class="sd">                            passed, defaults to a value set by the API.</span>
 
 <span class="sd">        :type page_token: string</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
-<span class="sd">                           passed, the API will return the first page of</span>
-<span class="sd">                           topics.</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of zones. If</span>
+<span class="sd">                           not passed, the API will return the first page of</span>
+<span class="sd">                           zones.</span>
 
 <span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of :class:`gcloud.pubsub.topic.Topic`, plus a</span>
-<span class="sd">                  &quot;next page token&quot; string:  if not None, indicates that</span>
-<span class="sd">                  more topics can be retrieved with another call (pass that</span>
-<span class="sd">                  value as ``page_token``).</span>
+<span class="sd">        :returns: list of :class:`gcloud.dns.zone.ManagedZone`, plus a</span>
+<span class="sd">                  &quot;next page token&quot; string:  if the token is not None,</span>
+<span class="sd">                  indicates that more zones can be retrieved with another</span>
+<span class="sd">                  call (pass that value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
 
         <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/topics&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/managedZones&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
                                            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">topics</span> <span class="o">=</span> <span class="p">[</span><span class="n">Topic</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                  <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;topics&#39;</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="n">topics</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
+        <span class="n">zones</span> <span class="o">=</span> <span class="p">[</span><span class="n">ManagedZone</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;managedZones&#39;</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">zones</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Client.list_subscriptions"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                           <span class="n">topic_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List subscriptions for the project associated with this client.</span>
-
-<span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list</span>
-
-<span class="sd">        and (where ``topic_name`` is passed):</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/subscriptions/list</span>
-
-<span class="sd">        :type page_size: int</span>
-<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
-<span class="sd">                          defaults to a value set by the API.</span>
-
-<span class="sd">        :type page_token: string</span>
-<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
-<span class="sd">                           passed, the API will return the first page of</span>
-<span class="sd">                           topics.</span>
-
-<span class="sd">        :type topic_name: string</span>
-<span class="sd">        :param topic_name: limit results to subscriptions bound to the given</span>
-<span class="sd">                           topic.</span>
-
-<span class="sd">        :rtype: tuple, (list, str)</span>
-<span class="sd">        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,</span>
-<span class="sd">                  plus a &quot;next page token&quot; string:  if not None, indicates that</span>
-<span class="sd">                  more topics can be retrieved with another call (pass that</span>
-<span class="sd">                  value as ``page_token``).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
-
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
-
-        <span class="k">if</span> <span class="n">topic_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/topics/</span><span class="si">%s</span><span class="s">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                                                             <span class="n">topic_name</span><span class="p">)</span>
-
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                                           <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">subscriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Subscription</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
-                                                    <span class="n">topics</span><span class="o">=</span><span class="n">topics</span><span class="p">)</span>
-                         <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;subscriptions&#39;</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="n">subscriptions</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Client.topic"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.topic">[docs]</a>    <span class="k">def</span> <span class="nf">topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates a topic bound to the current client.</span>
+<div class="viewcode-block" id="Client.zone"><a class="viewcode-back" href="../../../dns-client.html#gcloud.dns.client.Client.zone">[docs]</a>    <span class="k">def</span> <span class="nf">zone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a zone bound to this client.</span>
 
 <span class="sd">        :type name: string</span>
-<span class="sd">        :param name: the name of the topic to be constructed.</span>
+<span class="sd">        :param name: Name of the zone.</span>
 
-<span class="sd">        :type timestamp_messages: boolean</span>
-<span class="sd">        :param timestamp_messages: To be passed to ``Topic`` constructor.</span>
+<span class="sd">        :type dns_name: string</span>
+<span class="sd">        :param dns_name: DNS name of the zone.</span>
 
-<span class="sd">        :rtype: :class:`gcloud.pubsub.topic.Topic`</span>
-<span class="sd">        :returns: Topic created with the current client.</span>
+<span class="sd">        :rtype: :class:`gcloud.dns.zone.ManagedZone`</span>
+<span class="sd">        :returns: a new ``ManagedZone`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Topic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp_messages</span><span class="o">=</span><span class="n">timestamp_messages</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">ManagedZone</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dns_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
