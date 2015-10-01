@@ -42,41 +42,25 @@ List all indexes in the client's project:
 .. doctest::
 
    >>> indexes = client.list_indexes()  # API call
-   >>> [(index.id, index.name) for index in indexes]
-   [('index-id', 'Index name'), ('another-index-id', 'Another Name')]
+   >>> for index in indexes:
+   ...     print index.name
+   ...     field_names = ', '.join([field.name for field in index.fields])
+   ...     print '-', field_names
+   index-name
+   - field-1, field-2
+   another-index-name
+   - field-3
 
 Create a new index:
 
 .. doctest::
 
-   >>> new_index = client.index('new-index-id')
-   >>> new_index.name = 'My new index'
-   >>> new_index.exists()  # API call
-   False
-   >>> new_index.create()  # API call
-   >>> new_index.exists()  # API call
-   True
+   >>> new_index = client.index('new-index-name')
 
-Update an existing index:
+.. note::
 
-.. doctest::
-
-   >>> index = client.index('index-id')
-   >>> index.exists()
-   True
-   >>> index.name = 'Modified name'
-   >>> index.update()
-   >>> index.name
-   Modified name
-
-Delete an index:
-
-.. doctest::
-
-   >>> index = client.index('-index-id')
-   >>> index.delete()  # API call
-   >>> index.exists()  # API call
-   False
+   Indexes cannot be created, updated, or deleted directly on the server:
+   they are derived from the documents which are created "within" them.
 
 Documents
 ~~~~~~~~~
