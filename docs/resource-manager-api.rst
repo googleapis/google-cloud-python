@@ -21,9 +21,9 @@ Here's a quick example of the full life-cycle:
 .. code-block:: python
 
     >>> from gcloud import resource_manager
+    >>> client = resource_manager.Client()
 
     >>> # List all projects you have access to
-    >>> client = resource_manager.Client()
     >>> for project in client.list_projects():
     ...     print(project)
 
