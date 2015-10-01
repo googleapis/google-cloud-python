@@ -70,11 +70,11 @@ Authentication
 
 With ``gcloud-python`` we try to make authentication as painless as possible.
 Check out the `Authentication section`_ in our documentation to learn more.
-You may also find the `authorization document`_ shared by all the ``gcloud-*``
+You may also find the `authentication document`_ shared by all the ``gcloud-*``
 libraries to be helpful.
 
 .. _Authentication section: http://gcloud-python.readthedocs.org/en/latest/gcloud-auth.html
-.. _authorization document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authorization
+.. _authentication document: https://github.com/GoogleCloudPlatform/gcloud-common/tree/master/authentication
 
 Google Cloud Datastore
 ----------------------
