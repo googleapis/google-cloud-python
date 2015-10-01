@@ -115,7 +115,7 @@ Delete a document from its index:
 
 .. note::
 
-   To update aocuments in place after manipulating its fields or rank, just
+   To update a document in place after manipulating its fields or rank, just
    recreate it:  E.g.:
 
    .. doctest::
