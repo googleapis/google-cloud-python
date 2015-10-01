@@ -138,7 +138,7 @@ Each field can have multiple values, which can be of the following types:
 - String (Python2 :class:`unicode`, Python3 :class:`str`)
 - Number (Python :class:`int` or :class:`float`)
 - Timestamp (Python :class:`datetime.datetime`)
-- Geovalue (Python tuple, (:class:`float`, :class:`float`)
+- Geovalue (Python tuple, (:class:`float`, :class:`float`))
 
 String values can be tokenized using one of three different types of
 tokenization, which can be passed when the value is added:
