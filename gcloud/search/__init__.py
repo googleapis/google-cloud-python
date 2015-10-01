@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Search API wrapper.
-"""
+"""Google Cloud Search API wrapper."""
 
 from gcloud.search.client import Client
 from gcloud.search.connection import Connection
