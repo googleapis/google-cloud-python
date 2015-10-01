@@ -159,13 +159,13 @@ tokenization, which can be passed when the value is added:
    >>> index = client.index('index-id')
    >>> document = index.document('document-id')
    >>> field = document.field('field-name')
-   >>> field.add_value('britney spearks', tokenization='atom')
+   >>> field.add_value('britney spears', tokenization='atom')
    >>> field.add_value(''<h1>Britney Spears</h1>', tokenization='html')
 
 Searching
 ~~~~~~~~~
 
-After populating an indexe with documents, search through them by
+After populating an index with documents, search through them by
 issuing a search query:
 
 .. doctest::
