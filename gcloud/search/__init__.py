@@ -15,6 +15,7 @@
 """Google Cloud Search API wrapper.
 """
 
+from gcloud.search.client import Client
 from gcloud.search.connection import Connection
 
 
