@@ -43,9 +43,9 @@ List all indexes in the client's project:
 
    >>> indexes = client.list_indexes()  # API call
    >>> for index in indexes:
-   ...     print index.name
+   ...     print(index.name)
    ...     field_names = ', '.join([field.name for field in index.fields])
-   ...     print '-', field_names
+   ...     print('- %s' % field_names)
    index-name
    - field-1, field-2
    another-index-name
@@ -176,7 +176,7 @@ issuing a search query:
    >>> query = client.query('britney spears')
    >>> matching_documents = index.search(query)  # API call
    >>> for document in matching_documents:
-   ...     print document.id
+   ...     print(document.id)
    ['document-id']
 
 By default, all queries are sorted by the ``rank`` value set when the
