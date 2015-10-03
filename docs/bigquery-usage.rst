@@ -2,7 +2,7 @@ Using the API
 =============
 
 Authentication / Configuration
------------------------------
+------------------------------
 
 - Use :class:`Client <gcloud.bigquery.client.Client>` objects to configure
   your applications.
