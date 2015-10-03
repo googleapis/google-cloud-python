@@ -1,7 +1,7 @@
 Using the API
 =============
 
-Authorization / Configuration
+Authentication / Configuration
 -----------------------------
 
 - Use :class:`Client <gcloud.pubsub.client.Client>` objects to configure
