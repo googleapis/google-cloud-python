@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""gcloud bigquery client for interacting with API."""
+"""Client for interacting with the Google Cloud BigQuery API."""
 
 
 from gcloud.client import JSONClient
