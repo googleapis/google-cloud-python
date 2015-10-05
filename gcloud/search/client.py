@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""gcloud dns client for interacting with API."""
+"""gcloud search client for interacting with API."""
 
 
 from gcloud.client import JSONClient
