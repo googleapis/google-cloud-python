@@ -72,6 +72,13 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Cloud Search
+
+  search-usage
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
