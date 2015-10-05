@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""gcloud client base class for interacting with API."""
+"""Base classes for client used to interact with Google Cloud APIs."""
 
 import six
 
