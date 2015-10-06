@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.search.connection import Connection
+from gcloud.search.index import Index
 
 
 class Client(JSONClient):
@@ -41,3 +42,64 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def list_indexes(self, max_results=None, page_token=None,
+                     view=None, prefix=None):
+        """List zones for the project associated with this client.
+
+        See:
+        https://cloud.google.com/search/reference/rest/v1/indexes/list
+
+        :type max_results: int
+        :param max_results: maximum number of zones to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of zones. If
+                           not passed, the API will return the first page of
+                           zones.
+
+        :type view: string
+        :param view: One of 'ID_ONLY' (return only the index ID; the default)
+                     or 'FULL' (return information on indexed fields).
+
+        :type prefix: string
+        :param prefix: return only indexes whose ID starts with ``prefix``.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.dns.index.Index`, plus a
+                  "next page token" string:  if the token is not None,
+                  indicates that more zones can be retrieved with another
+                  call (pass that value as ``page_token``).
+        """
+        params = {}
+
+        if max_results is not None:
+            params['pageSize'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        if view is not None:
+            params['view'] = view
+
+        if prefix is not None:
+            params['indexNamePrefix'] = prefix
+
+        path = '/projects/%s/indexes' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        zones = [Index.from_api_repr(resource, self)
+                 for resource in resp['indexes']]
+        return zones, resp.get('nextPageToken')
+
+    def index(self, name):
+        """Construct an index bound to this client.
+
+        :type name: string
+        :param name: Name of the zone.
+
+        :rtype: :class:`gcloud.search.index.Index`
+        :returns: a new ``Index`` instance
+        """
+        return Index(name, client=self)
