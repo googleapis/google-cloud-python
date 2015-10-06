@@ -49,7 +49,7 @@ class Index(object):
         :returns: Index parsed from ``resource``.
         """
         name = resource.get('indexId')
-        if name is None is None:
+        if name is None:
             raise KeyError(
                 'Resource lacks required identity information: ["indexId"]')
         index = cls(name, client=client)
