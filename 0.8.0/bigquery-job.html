@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Jobs &mdash; gcloud 0.8.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.8.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.8.0 documentation" href="index.html" />
+    <link rel="next" title="Tables" href="bigquery-table.html" />
+    <link rel="prev" title="Datasets" href="bigquery-dataset.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
+              <img src="_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
+              Java
+            </a>
+          </li>
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-job%0ARelease%3A%200.8.0" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0.8.0)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.bigquery.job">
+<span id="jobs"></span><h1>Jobs<a class="headerlink" href="#module-gcloud.bigquery.job" title="Permalink to this headline">#</a></h1>
+<p>Define API Jobs.</p>
+<dl class="class">
+<dt id="gcloud.bigquery.job.Compression">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">Compression</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#Compression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.Compression" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">compression</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Compression.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('GZIP', 'NONE')</em><a class="headerlink" href="#gcloud.bigquery.job.Compression.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Compression.GZIP">
+<code class="descname">GZIP</code><em class="property"> = 'GZIP'</em><a class="headerlink" href="#gcloud.bigquery.job.Compression.GZIP" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Compression.NONE">
+<code class="descname">NONE</code><em class="property"> = 'NONE'</em><a class="headerlink" href="#gcloud.bigquery.job.Compression.NONE" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.CopyJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">CopyJob</code><span class="sig-paren">(</span><em>name</em>, <em>destination</em>, <em>sources</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#CopyJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.CopyJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
+<p>Asynchronous job: copy data into a table from other tables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
+<li><strong>sources</strong> (list of <a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.CopyJob.create_disposition">
+<code class="descname">create_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.CopyJob.create_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.createDisposition</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.CopyJob.write_disposition">
+<code class="descname">write_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.CopyJob.write_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy.writeDisposition</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.CreateDisposition">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">CreateDisposition</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#CreateDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.CreateDisposition" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">create_disposition</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.CreateDisposition.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('CREATE_IF_NEEDED', 'CREATE_NEVER')</em><a class="headerlink" href="#gcloud.bigquery.job.CreateDisposition.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.CreateDisposition.CREATE_IF_NEEDED">
+<code class="descname">CREATE_IF_NEEDED</code><em class="property"> = 'CREATE_IF_NEEDED'</em><a class="headerlink" href="#gcloud.bigquery.job.CreateDisposition.CREATE_IF_NEEDED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.CreateDisposition.CREATE_NEVER">
+<code class="descname">CREATE_NEVER</code><em class="property"> = 'CREATE_NEVER'</em><a class="headerlink" href="#gcloud.bigquery.job.CreateDisposition.CREATE_NEVER" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.DestinationFormat">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">DestinationFormat</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#DestinationFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.DestinationFormat" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">destination_format</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.DestinationFormat.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('CSV', 'NEWLINE_DELIMITED_JSON', 'AVRO')</em><a class="headerlink" href="#gcloud.bigquery.job.DestinationFormat.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.DestinationFormat.AVRO">
+<code class="descname">AVRO</code><em class="property"> = 'AVRO'</em><a class="headerlink" href="#gcloud.bigquery.job.DestinationFormat.AVRO" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.DestinationFormat.CSV">
+<code class="descname">CSV</code><em class="property"> = 'CSV'</em><a class="headerlink" href="#gcloud.bigquery.job.DestinationFormat.CSV" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON">
+<code class="descname">NEWLINE_DELIMITED_JSON</code><em class="property"> = 'NEWLINE_DELIMITED_JSON'</em><a class="headerlink" href="#gcloud.bigquery.job.DestinationFormat.NEWLINE_DELIMITED_JSON" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.Encoding">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">Encoding</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#Encoding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.Encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">encoding</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Encoding.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('UTF-8', 'ISO-8559-1')</em><a class="headerlink" href="#gcloud.bigquery.job.Encoding.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Encoding.ISO_8559_1">
+<code class="descname">ISO_8559_1</code><em class="property"> = 'ISO-8559-1'</em><a class="headerlink" href="#gcloud.bigquery.job.Encoding.ISO_8559_1" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.Encoding.UTF_8">
+<code class="descname">UTF_8</code><em class="property"> = 'UTF-8'</em><a class="headerlink" href="#gcloud.bigquery.job.Encoding.UTF_8" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.ExtractTableToStorageJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">ExtractTableToStorageJob</code><span class="sig-paren">(</span><em>name</em>, <em>source</em>, <em>destination_uris</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#ExtractTableToStorageJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
+<p>Asynchronous job: extract data from a table into Cloud Storage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
+<li><strong>destination_uris</strong> (<em>list of string</em>) &#8211; URIs describing Cloud Storage blobs into which
+extracted data will be written.</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.ExtractTableToStorageJob.compression">
+<code class="descname">compression</code><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob.compression" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.compression">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.compression</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.ExtractTableToStorageJob.destination_format">
+<code class="descname">destination_format</code><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob.destination_format" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.destinationFormat</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.ExtractTableToStorageJob.field_delimiter">
+<code class="descname">field_delimiter</code><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob.field_delimiter" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.fieldDelimiter</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.ExtractTableToStorageJob.print_header">
+<code class="descname">print_header</code><a class="headerlink" href="#gcloud.bigquery.job.ExtractTableToStorageJob.print_header" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extracted.printHeader</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">LoadTableFromStorageJob</code><span class="sig-paren">(</span><em>name</em>, <em>destination</em>, <em>source_uris</em>, <em>client</em>, <em>schema=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#LoadTableFromStorageJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
+<p>Asynchronous job for loading data into a table from CloudStorage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
+<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded.</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+<li><strong>schema</strong> (list of <a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.SchemaField" title="gcloud.bigquery.table.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.SchemaField</span></code></a>) &#8211; The job&#8217;s schema</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.allow_jagged_rows">
+<code class="descname">allow_jagged_rows</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.allow_jagged_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowJaggedRows</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.allow_quoted_newlines">
+<code class="descname">allow_quoted_newlines</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.allow_quoted_newlines" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.allowQuotedNewlines</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.create_disposition">
+<code class="descname">create_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.create_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.createDisposition</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.encoding">
+<code class="descname">encoding</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.encoding" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.encoding</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.field_delimiter">
+<code class="descname">field_delimiter</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.field_delimiter" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.fieldDelimiter</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.ignore_unknown_values">
+<code class="descname">ignore_unknown_values</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.ignore_unknown_values" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.ignoreUnknownValues</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes">
+<code class="descname">input_file_bytes</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.input_file_bytes" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of bytes loaded from source files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the count (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.input_files">
+<code class="descname">input_files</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.input_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of source files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the count (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.max_bad_records">
+<code class="descname">max_bad_records</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.max_bad_records" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.maxBadRecords</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.output_bytes">
+<code class="descname">output_bytes</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.output_bytes" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of bytes saved to destination table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the count (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.output_rows">
+<code class="descname">output_rows</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.output_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Count of rows saved to destination table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the count (None until set from the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.quote_character">
+<code class="descname">quote_character</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.quote_character" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.quote</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.schema">
+<code class="descname">schema</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Table&#8217;s schema.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.skip_leading_rows">
+<code class="descname">skip_leading_rows</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.skip_leading_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.skipLeadingRows</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.source_format">
+<code class="descname">source_format</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.source_format" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.sourceFormat</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.LoadTableFromStorageJob.write_disposition">
+<code class="descname">write_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.LoadTableFromStorageJob.write_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load.writeDisposition</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.QueryPriority">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">QueryPriority</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#QueryPriority"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.QueryPriority" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">RunAsyncQueryJob.priority</span></code> property.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.QueryPriority.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('INTERACTIVE', 'BATCH')</em><a class="headerlink" href="#gcloud.bigquery.job.QueryPriority.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.QueryPriority.BATCH">
+<code class="descname">BATCH</code><em class="property"> = 'BATCH'</em><a class="headerlink" href="#gcloud.bigquery.job.QueryPriority.BATCH" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.QueryPriority.INTERACTIVE">
+<code class="descname">INTERACTIVE</code><em class="property"> = 'INTERACTIVE'</em><a class="headerlink" href="#gcloud.bigquery.job.QueryPriority.INTERACTIVE" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">RunAsyncQueryJob</code><span class="sig-paren">(</span><em>name</em>, <em>query</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunAsyncQueryJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._AsyncJob</span></code></p>
+<p>Asynchronous job: query tables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query string</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.allow_large_results">
+<code class="descname">allow_large_results</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.allow_large_results" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.allowLargeResults</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.create_disposition">
+<code class="descname">create_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.create_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.createDisposition</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.default_dataset">
+<code class="descname">default_dataset</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.default_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.destination_table">
+<code class="descname">destination_table</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.destination_table" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.flatten_results">
+<code class="descname">flatten_results</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.flatten_results" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.flattenResults</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.priority">
+<code class="descname">priority</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.priority" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.use_query_cache">
+<code class="descname">use_query_cache</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.use_query_cache" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunAsyncQueryJob.write_disposition">
+<code class="descname">write_disposition</code><a class="headerlink" href="#gcloud.bigquery.job.RunAsyncQueryJob.write_disposition" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">RunSyncQueryJob</code><span class="sig-paren">(</span><em>query</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._BaseJob</span></code></p>
+<p>Synchronous job: query tables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query string</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the dataset (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.cache_hit">
+<code class="descname">cache_hit</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.cache_hit" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results served from cache.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query results were served from cache (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.complete">
+<code class="descname">complete</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.complete" title="Permalink to this definition">#</a></dt>
+<dd><p>Server completed query.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the query completed on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.default_dataset">
+<code class="descname">default_dataset</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.default_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.errors">
+<code class="descname">errors</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.errors" title="Permalink to this definition">#</a></dt>
+<dd><p>Errors generated by the query.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#errors">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#errors</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of mapping, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mappings describing errors generated on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.fetch_data">
+<code class="descname">fetch_data</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>start_index=None</em>, <em>timeout_ms=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob.fetch_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.fetch_data" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  fetch a page of query result data via a GET request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; maximum number of rows to return.</li>
+<li><strong>page_token</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; token representing a cursor into the table&#8217;s rows.</li>
+<li><strong>start_index</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; zero-based index of starting row</li>
+<li><strong>timeout_ms</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; timeout, in milliseconds, to wait for query to
+complete</li>
+<li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><code class="docutils literal"><span class="pre">(row_data,</span> <span class="pre">total_rows,</span> <span class="pre">page_token)</span></code>, where <code class="docutils literal"><span class="pre">row_data</span></code>
+is a list of tuples, one per result row, containing only
+the values;  <code class="docutils literal"><span class="pre">total_rows</span></code> is a count of the total number
+of rows in the table;  and <code class="docutils literal"><span class="pre">page_token</span></code> is an opaque
+string which can be used to fetch the next batch of rows
+(<code class="docutils literal"><span class="pre">None</span></code> if no further batches can be fetched).</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last">ValueError if the query has not yet been executed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.max_results">
+<code class="descname">max_results</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.max_results" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.name">
+<code class="descname">name</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.name" title="Permalink to this definition">#</a></dt>
+<dd><p>Job name, generated by the back-end.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobReference">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobReference</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of mapping, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Mappings describing errors generated on the server (None
+until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.page_token">
+<code class="descname">page_token</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.page_token" title="Permalink to this definition">#</a></dt>
+<dd><p>Token for fetching next bach of results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Token generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.preserve_nulls">
+<code class="descname">preserve_nulls</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.preserve_nulls" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.rows">
+<code class="descname">rows</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Query results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#rows">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#rows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of tuples of row values, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#RunSyncQueryJob.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.run" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  run the query via a POST request</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.schema">
+<code class="descname">schema</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.schema" title="Permalink to this definition">#</a></dt>
+<dd><p>Schema for query results.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#schema">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#schema</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <code class="xref py py-class docutils literal"><span class="pre">SchemaField</span></code>, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">fields describing the schema (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.timeout_ms">
+<code class="descname">timeout_ms</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.timeout_ms" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.total_bytes_processed">
+<code class="descname">total_bytes_processed</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.total_bytes_processed" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of bytes processed by the query</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.total_rows">
+<code class="descname">total_rows</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.total_rows" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of rows returned by the query</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">integer, or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Count generated on the server (None until set by the server).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.RunSyncQueryJob.use_query_cache">
+<code class="descname">use_query_cache</code><a class="headerlink" href="#gcloud.bigquery.job.RunSyncQueryJob.use_query_cache" title="Permalink to this definition">#</a></dt>
+<dd><p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache">https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache</a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.SourceFormat">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">SourceFormat</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#SourceFormat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.SourceFormat" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">source_format</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.SourceFormat.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('CSV', 'DATASTORE_BACKUP', 'NEWLINE_DELIMITED_JSON')</em><a class="headerlink" href="#gcloud.bigquery.job.SourceFormat.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.SourceFormat.CSV">
+<code class="descname">CSV</code><em class="property"> = 'CSV'</em><a class="headerlink" href="#gcloud.bigquery.job.SourceFormat.CSV" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.SourceFormat.DATASTORE_BACKUP">
+<code class="descname">DATASTORE_BACKUP</code><em class="property"> = 'DATASTORE_BACKUP'</em><a class="headerlink" href="#gcloud.bigquery.job.SourceFormat.DATASTORE_BACKUP" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON">
+<code class="descname">NEWLINE_DELIMITED_JSON</code><em class="property"> = 'NEWLINE_DELIMITED_JSON'</em><a class="headerlink" href="#gcloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.bigquery.job.WriteDisposition">
+<em class="property">class </em><code class="descclassname">gcloud.bigquery.job.</code><code class="descname">WriteDisposition</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/job.html#WriteDisposition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.job.WriteDisposition" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job._EnumProperty</span></code></p>
+<p>Pseudo-enum for <code class="docutils literal"><span class="pre">write_disposition</span></code> properties.</p>
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.WriteDisposition.ALLOWED">
+<code class="descname">ALLOWED</code><em class="property"> = ('WRITE_APPEND', 'WRITE_TRUNCATE', 'WRITE_EMPTY')</em><a class="headerlink" href="#gcloud.bigquery.job.WriteDisposition.ALLOWED" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.WriteDisposition.WRITE_APPEND">
+<code class="descname">WRITE_APPEND</code><em class="property"> = 'WRITE_APPEND'</em><a class="headerlink" href="#gcloud.bigquery.job.WriteDisposition.WRITE_APPEND" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.WriteDisposition.WRITE_EMPTY">
+<code class="descname">WRITE_EMPTY</code><em class="property"> = 'WRITE_EMPTY'</em><a class="headerlink" href="#gcloud.bigquery.job.WriteDisposition.WRITE_EMPTY" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE">
+<code class="descname">WRITE_TRUNCATE</code><em class="property"> = 'WRITE_TRUNCATE'</em><a class="headerlink" href="#gcloud.bigquery.job.WriteDisposition.WRITE_TRUNCATE" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <p class="caption"><span class="caption-text">gcloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource_record_set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Search</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="search-usage.html">Using the API</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+</ul>
+
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>
