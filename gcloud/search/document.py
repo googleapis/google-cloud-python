@@ -18,7 +18,8 @@ import datetime
 
 import six
 
-from gcloud._helpers import UTC, _RFC3339_MICROS
+from gcloud._helpers import UTC
+from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
 
 
