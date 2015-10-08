@@ -90,7 +90,7 @@ class Field(object):
         elif isinstance(value, tuple):
             self.values.append(GeoValue(value, **kw))
         else:
-            raise ValueError("Couldn't determine value type: %s" % value)
+            raise ValueError("Couldn't determine value type: %s" % (value,))
 
 
 class Document(object):
