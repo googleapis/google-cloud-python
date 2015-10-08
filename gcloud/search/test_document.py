@@ -190,6 +190,12 @@ class TestDocument(unittest2.TestCase):
         self.assertEqual(document.rank, self.RANK)
         self.assertEqual(document.fields, {})
 
+    def test_from_api_repr_invalid(self):
+        klass = self._getTargetClass()
+        index = object()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr({}, index)
+
     def test_from_api_repr(self):
         import datetime
         from gcloud._helpers import UTC, _RFC3339_MICROS

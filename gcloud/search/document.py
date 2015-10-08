@@ -171,7 +171,10 @@ class Document(object):
         :rtype: :class:`gcloud.search.document.Document`
         :returns: Document parsed from ``resource``.
         """
-        name = resource['docId']
+        name = resource.get('docId')
+        if name is None:
+            raise KeyError(
+                'Resource lacks required identity information: ["docId"]')
         rank = resource.get('rank')
         instance = cls(name, index, rank)
         instance._parse_fields_resource(resource)
