@@ -24,7 +24,23 @@ from gcloud.exceptions import NotFound
 
 
 class StringValue(object):
-    """Values hold individual values for a given field"""
+    """StringValues hold individual text values for a given field
+
+    See:
+    https://cloud.google.com/search/reference/rest/google/cloudsearch/v1/FieldValue
+
+    :type string_value: string
+    :param string_value: the actual value.
+
+    :type string_format: string
+    :param string_format: how the value should be indexed:  one of
+                          'ATOM', 'TEXT', 'HTML' (leave as ``None`` to
+                          use the server-supplied default).
+
+    :type language: string
+    :param language: Human language of the text.  Should be an ISO 639-1
+                     language code.
+    """
 
     value_type = 'string'
 
@@ -35,7 +51,14 @@ class StringValue(object):
 
 
 class NumberValue(object):
-    """Values hold individual values for a given field"""
+    """NumberValues hold individual numeric values for a given field
+
+    See:
+    https://cloud.google.com/search/reference/rest/google/cloudsearch/v1/FieldValue
+
+    :type number_value: integer, float (long on Python2)
+    :param number_value: the actual value.
+    """
 
     value_type = 'number'
 
@@ -44,7 +67,13 @@ class NumberValue(object):
 
 
 class TimestampValue(object):
-    """Values hold individual values for a given field"""
+    """TimestampValues hold individual datetime values for a given field
+    See:
+    https://cloud.google.com/search/reference/rest/google/cloudsearch/v1/FieldValue
+
+    :type timestamp_value: class:``datetime.datetime``
+    :param timestamp_value: the actual value.
+    """
 
     value_type = 'timestamp'
 
@@ -53,7 +82,13 @@ class TimestampValue(object):
 
 
 class GeoValue(object):
-    """Values hold individual values for a given field"""
+    """GeoValues hold individual latitude/longitude values for a given field
+    See:
+    https://cloud.google.com/search/reference/rest/google/cloudsearch/v1/FieldValue
+
+    :type geo_value: tuple, (float, float)
+    :param geo_value: latitude, longitude
+    """
 
     value_type = 'geo'
 
@@ -62,7 +97,14 @@ class GeoValue(object):
 
 
 class Field(object):
-    """Fields hold values for a given document"""
+    """Fields hold values for a given document
+
+    See:
+    https://cloud.google.com/search/reference/rest/google/cloudsearch/v1/FieldValueList
+
+    :type name: string
+    :param name: field name
+    """
 
     def __init__(self, name):
         self.name = name
