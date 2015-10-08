@@ -176,9 +176,9 @@ class Document(object):
             raise KeyError(
                 'Resource lacks required identity information: ["docId"]')
         rank = resource.get('rank')
-        instance = cls(name, index, rank)
-        instance._parse_fields_resource(resource)
-        return instance
+        document = cls(name, index, rank)
+        document._parse_fields_resource(resource)
+        return document
 
     def _parse_value_resource(self, resource):
         """Helper for _parse_fields_resource"""
