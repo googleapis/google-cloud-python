@@ -147,8 +147,10 @@ class Document(object):
     :type index: :class:`gcloud.search.index.Index`
     :param index: the index to which the document belongs.
 
-    :type rank: int
-    :param rank: the default rank for ordering the document.
+    :type rank: positive integer
+    :param rank: the default rank for ordering the document in queries:  if
+                 not passed, assigned a timestamp-based value by the server.
+                 See the ``rank`` entry on the page above for details.
     """
     def __init__(self, name, index, rank=None):
         self.name = name
