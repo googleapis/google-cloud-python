@@ -129,7 +129,7 @@ Running Tests
   *Using a Development Checkout* above).
 
 - To run the full set of gcloud-python tests on all platforms, install ``tox``
-  (http://codespeak.net/~hpk/tox/) into a system Python.  The ``tox`` console
+  (https://testrun.org/tox/) into a system Python.  The ``tox`` console
   script will be installed into the scripts location for that Python.  While
   ``cd``'ed to the gcloud-python checkout root directory (it contains ``tox.ini``),
   invoke the ``tox`` console script.  This will read the ``tox.ini`` file and
