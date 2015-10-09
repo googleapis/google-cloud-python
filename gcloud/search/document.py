@@ -148,9 +148,10 @@ class Document(object):
     :param index: the index to which the document belongs.
 
     :type rank: positive integer
-    :param rank: the default rank for ordering the document in queries:  if
-                 not passed, assigned a timestamp-based value by the server.
-                 See the ``rank`` entry on the page above for details.
+    :param rank: override the server-generated rank for ordering the document
+                 within in queries.  If not passed, the server generates a
+                 timestamp-based value.  See the ``rank`` entry on the
+                 page above for details.
     """
     def __init__(self, name, index, rank=None):
         self.name = name
