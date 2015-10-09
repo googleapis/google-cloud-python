@@ -196,7 +196,7 @@ Running System Tests
    > --key-file=$P12_CREDENTIALS_FILE
 
    # Create the indexes
-   $ gcloud preview datastore create-indexes system_tests/data/ \
+   $ gcloud preview datastore create-indexes system_tests/data/index.yaml \
    > --project=$GCLOUD_TESTS_DATASET_ID
 
    # Restore your environment to its previous state.
