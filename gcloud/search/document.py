@@ -119,7 +119,8 @@ class Field(object):
         :param value: the field value to add.
 
         :param kw: extra keyword arguments to be passed to the value instance
-                   constructor.
+                   constructor.  Currently, only :class:`StringValue`
+                   expects / honors additional parameters.
 
         :raises: ValueError if unable to match the type of ``value``.
         """
