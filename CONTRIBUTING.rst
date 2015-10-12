@@ -190,10 +190,8 @@ Running System Tests
    $ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
    # Authenticate the gcloud tool with your account.
-   $ SERVICE_ACCOUNT_EMAIL="some-account@developer.gserviceaccount.com"
-   $ P12_CREDENTIALS_FILE="path/to/keyfile.p12"
-   $ gcloud auth activate-service-account $SERVICE_ACCOUNT_EMAIL \
-   > --key-file=$P12_CREDENTIALS_FILE
+   $ JSON_CREDENTIALS_FILE="path/to/app_credentials.json"
+   $ gcloud auth activate-service-account --key-file=$JSON_CREDENTIALS_FILE
 
    # Create the indexes
    $ gcloud preview datastore create-indexes system_tests/data/index.yaml \
