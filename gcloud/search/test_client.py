@@ -54,10 +54,10 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        zones, token = client.list_indexes()
+        indexes, token = client.list_indexes()
 
-        self.assertEqual(len(zones), len(DATA['indexes']))
-        for found, expected in zip(zones, DATA['indexes']):
+        self.assertEqual(len(indexes), len(DATA['indexes']))
+        for found, expected in zip(indexes, DATA['indexes']):
             self.assertTrue(isinstance(found, Index))
             self.assertEqual(found.name, expected['indexId'])
             self.assertEqual(found.text_fields, None)
@@ -72,6 +72,7 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {})
 
     def test_list_indexes_explicit(self):
         from gcloud.search.index import Index
@@ -93,11 +94,11 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
-        zones, token = client.list_indexes(
+        indexes, token = client.list_indexes(
             max_results=3, page_token=TOKEN, prefix='index', view='FULL')
 
-        self.assertEqual(len(zones), len(DATA['indexes']))
-        for found, expected in zip(zones, DATA['indexes']):
+        self.assertEqual(len(indexes), len(DATA['indexes']))
+        for found, expected in zip(indexes, DATA['indexes']):
             self.assertTrue(isinstance(found, Index))
             self.assertEqual(found.name, expected['indexId'])
             field_info = expected['indexedField']
