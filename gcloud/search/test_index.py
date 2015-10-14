@@ -79,8 +79,8 @@ class TestIndex(unittest2.TestCase):
     def _verifyDocumentResource(self, documents, resource):
         from gcloud.search.document import Document
         from gcloud.search.document import StringValue
-        self.assertEqual(len(documents), len(resource['documents']))
-        for found, expected in zip(documents, resource['documents']):
+        self.assertEqual(len(documents), len(resource))
+        for found, expected in zip(documents, resource):
             self.assertTrue(isinstance(found, Document))
             self.assertEqual(found.name, expected['docId'])
             self.assertEqual(found.rank, expected.get('rank'))
@@ -149,17 +149,17 @@ class TestIndex(unittest2.TestCase):
         TOKEN = 'TOKEN'
         DOC_1 = self._makeDocumentResource(DOCID_1)
         DOC_2 = self._makeDocumentResource(DOCID_2)
-        DATA = {
+        RESPONSE = {
             'nextPageToken': TOKEN,
             'documents': [DOC_1, DOC_2],
         }
         client = _Client(self.PROJECT)
-        conn = client.connection = _Connection(DATA)
+        conn = client.connection = _Connection(RESPONSE)
         index = self._makeOne(self.INDEX_ID, client)
 
         documents, token = index.list_documents()
 
-        self._verifyDocumentResource(documents, DATA)
+        self._verifyDocumentResource(documents, RESPONSE['documents'])
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
@@ -180,15 +180,15 @@ class TestIndex(unittest2.TestCase):
         TOKEN = 'TOKEN'
         DOC_1 = self._makeDocumentResource(DOCID_1, RANK_1, TITLE_1)
         DOC_2 = self._makeDocumentResource(DOCID_2, RANK_2, TITLE_2)
-        DATA = {'documents': [DOC_1, DOC_2]}
+        RESPONSE = {'documents': [DOC_1, DOC_2]}
         client = _Client(self.PROJECT)
-        conn = client.connection = _Connection(DATA)
+        conn = client.connection = _Connection(RESPONSE)
         index = self._makeOne(self.INDEX_ID, client)
 
         documents, token = index.list_documents(
             max_results=3, page_token=TOKEN, view='FULL')
 
-        self._verifyDocumentResource(documents, DATA)
+        self._verifyDocumentResource(documents, RESPONSE['documents'])
         self.assertEqual(token, None)
 
         self.assertEqual(len(conn._requested), 1)
@@ -226,6 +226,107 @@ class TestIndex(unittest2.TestCase):
         self.assertEqual(document.name, DOCUMENT_ID)
         self.assertEqual(document.rank, RANK)
         self.assertTrue(document.index is index)
+
+    def test_search_defaults(self):
+        DOCID_1 = 'docid-one'
+        TITLE_1 = 'Title One'
+        DOCID_2 = 'docid-two'
+        TITLE_2 = 'Title Two'
+        PATH = 'projects/%s/indexes/%s/search' % (
+            self.PROJECT, self.INDEX_ID)
+        TOKEN = 'TOKEN'
+        DOC_1 = self._makeDocumentResource(DOCID_1, title=TITLE_1)
+        DOC_2 = self._makeDocumentResource(DOCID_2, title=TITLE_2)
+        QUERY = 'query string'
+        RESPONSE = {
+            'nextPageToken': TOKEN,
+            'matchedCount': 2,
+            'results': [DOC_1, DOC_2],
+        }
+        client = _Client(self.PROJECT)
+        conn = client.connection = _Connection(RESPONSE)
+        index = self._makeOne(self.INDEX_ID, client)
+
+        documents, token, matched_count = index.search(QUERY)
+
+        self._verifyDocumentResource(documents, RESPONSE['results'])
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(matched_count, 2)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'query': QUERY})
+
+    def test_search_explicit(self):
+        DOCID_1 = 'docid-one'
+        TITLE_1 = 'Title One'
+        FUNKY_1 = 'this is a funky show'
+        RANK_1 = 2345
+        DOCID_2 = 'docid-two'
+        TITLE_2 = 'Title Two'
+        FUNKY_2 = 'delighfully funky ambiance'
+        RANK_2 = 1234
+        PATH = 'projects/%s/indexes/%s/search' % (
+            self.PROJECT, self.INDEX_ID)
+        TOKEN = 'TOKEN'
+
+        def _makeFunky(text):
+            return {
+                'values': [{
+                    'stringValue': text,
+                    'stringFormat': 'text',
+                    'lang': 'en',
+                }]
+            }
+
+        DOC_1 = self._makeDocumentResource(DOCID_1, RANK_1, TITLE_1)
+        DOC_1['fields']['funky'] = _makeFunky(FUNKY_1)
+        DOC_2 = self._makeDocumentResource(DOCID_2, RANK_2, TITLE_2)
+        DOC_2['fields']['funky'] = _makeFunky(FUNKY_2)
+        EXPRESSIONS = {'funky': 'snippet("funky", content)'}
+        QUERY = 'query string'
+        RESPONSE = {
+            'matchedCount': 2,
+            'results': [DOC_1, DOC_2],
+        }
+        client = _Client(self.PROJECT)
+        conn = client.connection = _Connection(RESPONSE)
+        index = self._makeOne(self.INDEX_ID, client)
+
+        documents, token, matched_count = index.search(
+            query=QUERY,
+            max_results=3,
+            page_token=TOKEN,
+            field_expressions=EXPRESSIONS,
+            order_by=['title'],
+            matched_count_accuracy=100,
+            scorer='generic',
+            scorer_size=20,
+            return_fields=['_rank', 'title', 'funky'],
+            )
+
+        self._verifyDocumentResource(documents, RESPONSE['results'])
+        self.assertEqual(token, None)
+        self.assertEqual(matched_count, 2)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        expected_params = {
+            'query': QUERY,
+            'pageSize': 3,
+            'pageToken': TOKEN,
+            'fieldExpressions': EXPRESSIONS,
+            'orderBy': ['title'],
+            'matchedCountAccuracy': 100,
+            'scorer': 'generic',
+            'scorerSize': 20,
+            'returnFields': ['_rank', 'title', 'funky'],
+        }
+        self.assertEqual(req['query_params'], expected_params)
 
 
 class _Client(object):
