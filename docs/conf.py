@@ -38,6 +38,7 @@ sys.path.insert(0, os.path.abspath('..'))
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.coverage',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
@@ -294,3 +295,15 @@ intersphinx_mapping = {
     'oauth2client': ('http://oauth2client.readthedocs.org/en/latest/', None),
     'python': ('https://docs.python.org/', None),
 }
+
+# Configuration for coverage:
+# See:  http://sphinx-doc.org/ext/coverage.html
+
+coverage_ignore_modules = ['test_.*.py', '.*_pb2.py']
+#coverage_ignore_functions = ()
+#coverage_ignore_classes = ()
+coverage_c_path = ['../gcloud/*.py', '../gcloud/*/*.py']
+#coverage_c_regexes
+#coverage_ignore_c_items
+#coverage_write_headline
+coverage_skip_undoc_in_source = True
