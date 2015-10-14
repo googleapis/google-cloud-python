@@ -97,7 +97,7 @@ class Client(JSONClient):
         """Construct an index bound to this client.
 
         :type name: string
-        :param name: Name of the zone.
+        :param name: Name of the index.
 
         :rtype: :class:`gcloud.search.index.Index`
         :returns: a new ``Index`` instance
