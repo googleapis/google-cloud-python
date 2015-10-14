@@ -212,3 +212,93 @@ class Index(object):
         :returns: a new ``Document`` instance
         """
         return Document(name, index=self, rank=rank)
+
+    def search(self,
+               query,
+               max_results=None,
+               page_token=None,
+               field_expressions=None,
+               order_by=None,
+               matched_count_accuracy=None,
+               scorer=None,
+               scorer_size=None,
+               return_fields=None):
+        """Search documents created within this index.
+
+        See:
+        https://cloud.google.com/search/reference/rest/v1/projects/indexes/search
+
+        :type query: string
+        :param query: query string (see https://cloud.google.com/search/query).
+
+        :type max_results: int
+        :param max_results: maximum number of zones to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of zones. If
+                           not passed, the API will return the first page of
+                           zones.
+
+        :type field_expressions: dict, or ``NoneType``
+        :param field_expressions: mapping of field name -> expression
+                                  for use in 'order_by' or 'return_fields'
+
+        :type order_by: sequence of string, or ``NoneType``
+        :param order_by: list of field names (plus optional ' desc' suffix)
+                         specifying ordering of results.
+
+        :type matched_count_accuracy: integer or ``NoneType``
+        :param matched_count_accuracy: minimum accuracy for matched count
+                                       returned
+
+        :type return_fields: sequence of string, or ``NoneType``
+        :param return_fields: list of field names to be returned.
+
+        :type scorer: string or ``NoneType``
+        :param scorer: name of scorer function (e.g., "generic").
+
+        :type scorer_size: integer or ``NoneType``
+        :param scorer_size: max number of top results pass to scorer function.
+
+        :rtype: tuple, (list, str, int)
+        :returns: list of :class:`gcloud.dns.document.Document`, plus a
+                  "next page token" string, and a "matched count".  If the
+                  token is not None, indicates that more zones can be
+                  retrieved with another call (pass that value as
+                  ``page_token``).  The "matched count" indicates the total
+                  number of documents matching the query string.
+        """
+        params = {'query': query}
+
+        if max_results is not None:
+            params['pageSize'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        if field_expressions is not None:
+            params['fieldExpressions'] = field_expressions
+
+        if order_by is not None:
+            params['orderBy'] = order_by
+
+        if matched_count_accuracy is not None:
+            params['matchedCountAccuracy'] = matched_count_accuracy
+
+        if scorer is not None:
+            params['scorer'] = scorer
+
+        if scorer_size is not None:
+            params['scorerSize'] = scorer_size
+
+        if return_fields is not None:
+            params['returnFields'] = return_fields
+
+        path = '%s/search' % (self.path,)
+        connection = self._client.connection
+        resp = connection.api_request(method='GET', path=path,
+                                      query_params=params)
+        zones = [Document.from_api_repr(resource, self)
+                 for resource in resp['results']]
+        return zones, resp.get('nextPageToken'), resp.get('matchedCount')
