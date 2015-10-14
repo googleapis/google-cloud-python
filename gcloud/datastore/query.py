@@ -388,11 +388,11 @@ class Iterator(object):
 
         start_cursor = self._start_cursor
         if start_cursor is not None:
-            pb.start_cursor = base64.b64decode(start_cursor)
+            pb.start_cursor = base64.urlsafe_b64decode(start_cursor)
 
         end_cursor = self._end_cursor
         if end_cursor is not None:
-            pb.end_cursor = base64.b64decode(end_cursor)
+            pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
 
         if self._limit is not None:
             pb.limit = self._limit
@@ -421,7 +421,7 @@ class Iterator(object):
         if cursor_as_bytes == b'':
             self._start_cursor = None
         else:
-            self._start_cursor = base64.b64encode(cursor_as_bytes)
+            self._start_cursor = base64.urlsafe_b64encode(cursor_as_bytes)
         self._end_cursor = None
 
         if more_results_enum == self._NOT_FINISHED:
