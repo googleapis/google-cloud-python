@@ -50,6 +50,20 @@ class TestIndex(unittest2.TestCase):
             }
         }
 
+    def _makeDocumentResource(self, doc_id, rank, title):
+        return {
+            'docId': doc_id,
+            'rank': rank,
+            'fields': {
+                'title': {
+                    'values': [{
+                        'stringValue': title,
+                        'stringFormat': 'text',
+                        'lang': 'en'}]
+                }
+            }
+        }
+
     def _verifyResourceProperties(self, index, resource):
 
         self.assertEqual(index.name, resource.get('indexId'))
@@ -60,6 +74,26 @@ class TestIndex(unittest2.TestCase):
         self.assertEqual(index.date_fields, field_info.get('dateFields'))
         self.assertEqual(index.number_fields, field_info.get('numberFields'))
         self.assertEqual(index.geo_fields, field_info.get('geoFields'))
+
+    def _verifyDocumentResource(self, documents, resource):
+        from gcloud.search.document import Document
+        from gcloud.search.document import StringValue
+        self.assertEqual(len(documents), len(resource['documents']))
+        for found, expected in zip(documents, resource['documents']):
+            self.assertTrue(isinstance(found, Document))
+            self.assertEqual(found.name, expected['docId'])
+            self.assertEqual(found.rank, expected['rank'])
+            self.assertEqual(sorted(found.fields), sorted(expected['fields']))
+            for field, f_field in found.fields.items():
+                e_field = expected['fields'][field]
+                for f_value, e_value in zip(f_field.values, e_field['values']):
+                    self.assertTrue(isinstance(f_value, StringValue))
+                    self.assertEqual(f_value.string_value,
+                                     e_value['stringValue'])
+                    self.assertEqual(f_value.string_format,
+                                     e_value['stringFormat'])
+                    self.assertEqual(f_value.language,
+                                     e_value['lang'])
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
@@ -106,8 +140,6 @@ class TestIndex(unittest2.TestCase):
         self._verifyResourceProperties(index, RESOURCE)
 
     def test_list_documents_defaults(self):
-        from gcloud.search.document import Document
-        from gcloud.search.document import StringValue
         DOCID_1 = 'docid-one'
         RANK_1 = 2345
         TITLE_1 = 'Title One'
@@ -117,30 +149,8 @@ class TestIndex(unittest2.TestCase):
         PATH = 'projects/%s/indexes/%s/documents' % (
             self.PROJECT, self.INDEX_ID)
         TOKEN = 'TOKEN'
-        DOC_1 = {
-            'docId': DOCID_1,
-            'rank': RANK_1,
-            'fields': {
-                'title': {
-                    'values': [{
-                        'stringValue': TITLE_1,
-                        'stringFormat': 'text',
-                        'lang': 'en'}]
-                }
-            }
-        }
-        DOC_2 = {
-            'docId': DOCID_2,
-            'rank': RANK_2,
-            'fields': {
-                'title': {
-                    'values': [{
-                        'stringValue': TITLE_2,
-                        'stringFormat': 'text',
-                        'lang': 'en'}],
-                }
-            }
-        }
+        DOC_1 = self._makeDocumentResource(DOCID_1, RANK_1, TITLE_1)
+        DOC_2 = self._makeDocumentResource(DOCID_2, RANK_2, TITLE_2)
         DATA = {
             'nextPageToken': TOKEN,
             'documents': [DOC_1, DOC_2],
@@ -151,22 +161,7 @@ class TestIndex(unittest2.TestCase):
 
         documents, token = index.list_documents()
 
-        self.assertEqual(len(documents), len(DATA['documents']))
-        for found, expected in zip(documents, DATA['documents']):
-            self.assertTrue(isinstance(found, Document))
-            self.assertEqual(found.name, expected['docId'])
-            self.assertEqual(found.rank, expected['rank'])
-            self.assertEqual(sorted(found.fields), sorted(expected['fields']))
-            for field, f_field in found.fields.items():
-                e_field = expected['fields'][field]
-                for f_value, e_value in zip(f_field.values, e_field['values']):
-                    self.assertTrue(isinstance(f_value, StringValue))
-                    self.assertEqual(f_value.string_value,
-                                     e_value['stringValue'])
-                    self.assertEqual(f_value.string_format,
-                                     e_value['stringFormat'])
-                    self.assertEqual(f_value.language,
-                                     e_value['lang'])
+        self._verifyDocumentResource(documents, DATA)
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
@@ -176,8 +171,6 @@ class TestIndex(unittest2.TestCase):
         self.assertEqual(req['query_params'], {})
 
     def test_list_documents_explicit(self):
-        from gcloud.search.document import Document
-        from gcloud.search.document import StringValue
         DOCID_1 = 'docid-one'
         RANK_1 = 2345
         TITLE_1 = 'Title One'
@@ -187,30 +180,8 @@ class TestIndex(unittest2.TestCase):
         PATH = 'projects/%s/indexes/%s/documents' % (
             self.PROJECT, self.INDEX_ID)
         TOKEN = 'TOKEN'
-        DOC_1 = {
-            'docId': DOCID_1,
-            'rank': RANK_1,
-            'fields': {
-                'title': {
-                    'values': [{
-                        'stringValue': TITLE_1,
-                        'stringFormat': 'text',
-                        'lang': 'en'}]
-                }
-            }
-        }
-        DOC_2 = {
-            'docId': DOCID_2,
-            'rank': RANK_2,
-            'fields': {
-                'title': {
-                    'values': [{
-                        'stringValue': TITLE_2,
-                        'stringFormat': 'text',
-                        'lang': 'en'}],
-                }
-            }
-        }
+        DOC_1 = self._makeDocumentResource(DOCID_1, RANK_1, TITLE_1)
+        DOC_2 = self._makeDocumentResource(DOCID_2, RANK_2, TITLE_2)
         DATA = {'documents': [DOC_1, DOC_2]}
         client = _Client(self.PROJECT)
         conn = client.connection = _Connection(DATA)
@@ -219,22 +190,7 @@ class TestIndex(unittest2.TestCase):
         documents, token = index.list_documents(
             max_results=3, page_token=TOKEN, view='FULL')
 
-        self.assertEqual(len(documents), len(DATA['documents']))
-        for found, expected in zip(documents, DATA['documents']):
-            self.assertTrue(isinstance(found, Document))
-            self.assertEqual(found.name, expected['docId'])
-            self.assertEqual(found.rank, expected['rank'])
-            self.assertEqual(sorted(found.fields), sorted(expected['fields']))
-            for field, f_field in found.fields.items():
-                e_field = expected['fields'][field]
-                for f_value, e_value in zip(f_field.values, e_field['values']):
-                    self.assertTrue(isinstance(f_value, StringValue))
-                    self.assertEqual(f_value.string_value,
-                                     e_value['stringValue'])
-                    self.assertEqual(f_value.string_format,
-                                     e_value['stringFormat'])
-                    self.assertEqual(f_value.language,
-                                     e_value['lang'])
+        self._verifyDocumentResource(documents, DATA)
         self.assertEqual(token, None)
 
         self.assertEqual(len(conn._requested), 1)
