@@ -143,7 +143,7 @@ class TestSubscription(unittest2.TestCase):
         DEADLINE = 42
         ENDPOINT = 'https://api.example.com/push'
         BODY = {'topic': TOPIC_PATH,
-                'ackDeadline': DEADLINE,
+                'ackDeadlineSeconds': DEADLINE,
                 'pushConfig': {'pushEndpoint': ENDPOINT}}
         conn1 = _Connection({'name': SUB_PATH})
         CLIENT1 = _Client(project=PROJECT, connection=conn1)
@@ -205,7 +205,7 @@ class TestSubscription(unittest2.TestCase):
         ENDPOINT = 'https://api.example.com/push'
         conn = _Connection({'name': SUB_PATH,
                             'topic': TOPIC_PATH,
-                            'ackDeadline': DEADLINE,
+                            'ackDeadlineSeconds': DEADLINE,
                             'pushConfig': {'pushEndpoint': ENDPOINT}})
         CLIENT = _Client(project=PROJECT, connection=conn)
         topic = _Topic(TOPIC_NAME, client=CLIENT)
@@ -230,7 +230,7 @@ class TestSubscription(unittest2.TestCase):
         CLIENT1 = _Client(project=PROJECT, connection=conn1)
         conn2 = _Connection({'name': SUB_PATH,
                              'topic': TOPIC_PATH,
-                             'ackDeadline': DEADLINE,
+                             'ackDeadlineSeconds': DEADLINE,
                              'pushConfig': {'pushEndpoint': ENDPOINT}})
         CLIENT2 = _Client(project=PROJECT, connection=conn2)
         topic = _Topic(TOPIC_NAME, client=CLIENT1)

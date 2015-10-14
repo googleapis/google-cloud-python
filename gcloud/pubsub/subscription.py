@@ -112,7 +112,7 @@ class Subscription(object):
         data = {'topic': self.topic.full_name}
 
         if self.ack_deadline is not None:
-            data['ackDeadline'] = self.ack_deadline
+            data['ackDeadlineSeconds'] = self.ack_deadline
 
         if self.push_endpoint is not None:
             data['pushConfig'] = {'pushEndpoint': self.push_endpoint}
@@ -150,7 +150,7 @@ class Subscription(object):
         """
         client = self._require_client(client)
         data = client.connection.api_request(method='GET', path=self.path)
-        self.ack_deadline = data.get('ackDeadline')
+        self.ack_deadline = data.get('ackDeadlineSeconds')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
 
