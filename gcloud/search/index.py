@@ -197,3 +197,18 @@ class Index(object):
         zones = [Document.from_api_repr(resource, self)
                  for resource in resp['documents']]
         return zones, resp.get('nextPageToken')
+
+    def document(self, name, rank=None):
+        """Construct a document bound to this index.
+
+        :type name: string
+        :param name: Name of the document.
+
+        :type rank: integer
+        :param rank: Rank of the document (defaults to a server-assigned
+                     value based on timestamp).
+
+        :rtype: :class:`gcloud.search.document.Document`
+        :returns: a new ``Document`` instance
+        """
+        return Document(name, index=self, rank=rank)
