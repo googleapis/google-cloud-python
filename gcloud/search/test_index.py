@@ -200,6 +200,33 @@ class TestIndex(unittest2.TestCase):
                           'pageToken': TOKEN,
                           'view': 'FULL'})
 
+    def test_document_defaults(self):
+        from gcloud.search.document import Document
+        DOCUMENT_ID = 'document-id'
+        client = _Client(self.PROJECT)
+        index = self._makeOne(self.INDEX_ID, client)
+
+        document = index.document(DOCUMENT_ID)
+
+        self.assertTrue(isinstance(document, Document))
+        self.assertEqual(document.name, DOCUMENT_ID)
+        self.assertEqual(document.rank, None)
+        self.assertTrue(document.index is index)
+
+    def test_document_explicit(self):
+        from gcloud.search.document import Document
+        DOCUMENT_ID = 'document-id'
+        RANK = 1234
+        client = _Client(self.PROJECT)
+        index = self._makeOne(self.INDEX_ID, client)
+
+        document = index.document(DOCUMENT_ID, rank=RANK)
+
+        self.assertTrue(isinstance(document, Document))
+        self.assertEqual(document.name, DOCUMENT_ID)
+        self.assertEqual(document.rank, RANK)
+        self.assertTrue(document.index is index)
+
 
 class _Client(object):
 
