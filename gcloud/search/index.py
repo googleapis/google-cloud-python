@@ -195,7 +195,7 @@ class Index(object):
         resp = connection.api_request(method='GET', path=path,
                                       query_params=params)
         indexes = [Document.from_api_repr(resource, self)
-                 for resource in resp['documents']]
+                   for resource in resp['documents']]
         return indexes, resp.get('nextPageToken')
 
     def document(self, name, rank=None):
@@ -300,5 +300,5 @@ class Index(object):
         resp = connection.api_request(method='GET', path=path,
                                       query_params=params)
         indexes = [Document.from_api_repr(resource, self)
-                 for resource in resp['results']]
+                   for resource in resp['results']]
         return indexes, resp.get('nextPageToken'), resp.get('matchedCount')

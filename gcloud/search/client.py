@@ -90,7 +90,7 @@ class Client(JSONClient):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         indexes = [Index.from_api_repr(resource, self)
-                 for resource in resp['indexes']]
+                   for resource in resp['indexes']]
         return indexes, resp.get('nextPageToken')
 
     def index(self, name):
