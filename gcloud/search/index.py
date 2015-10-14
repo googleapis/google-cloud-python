@@ -159,13 +159,13 @@ class Index(object):
         https://cloud.google.com/search/reference/rest/v1/projects/indexes/documents/list
 
         :type max_results: int
-        :param max_results: maximum number of zones to return, If not
+        :param max_results: maximum number of indexes to return, If not
                             passed, defaults to a value set by the API.
 
         :type page_token: string
-        :param page_token: opaque marker for the next "page" of zones. If
+        :param page_token: opaque marker for the next "page" of indexes. If
                            not passed, the API will return the first page of
-                           zones.
+                           indexes.
 
         :type view: string
         :param view: One of 'ID_ONLY' (return only the document ID; the
@@ -176,7 +176,7 @@ class Index(object):
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.dns.document.Document`, plus a
                   "next page token" string:  if the token is not None,
-                  indicates that more zones can be retrieved with another
+                  indicates that more indexes can be retrieved with another
                   call (pass that value as ``page_token``).
         """
         params = {}
@@ -194,9 +194,9 @@ class Index(object):
         connection = self._client.connection
         resp = connection.api_request(method='GET', path=path,
                                       query_params=params)
-        zones = [Document.from_api_repr(resource, self)
+        indexes = [Document.from_api_repr(resource, self)
                  for resource in resp['documents']]
-        return zones, resp.get('nextPageToken')
+        return indexes, resp.get('nextPageToken')
 
     def document(self, name, rank=None):
         """Construct a document bound to this index.
@@ -232,13 +232,13 @@ class Index(object):
         :param query: query string (see https://cloud.google.com/search/query).
 
         :type max_results: int
-        :param max_results: maximum number of zones to return, If not
+        :param max_results: maximum number of indexes to return, If not
                             passed, defaults to a value set by the API.
 
         :type page_token: string
-        :param page_token: opaque marker for the next "page" of zones. If
+        :param page_token: opaque marker for the next "page" of indexes. If
                            not passed, the API will return the first page of
-                           zones.
+                           indexes.
 
         :type field_expressions: dict, or ``NoneType``
         :param field_expressions: mapping of field name -> expression
@@ -264,7 +264,7 @@ class Index(object):
         :rtype: tuple, (list, str, int)
         :returns: list of :class:`gcloud.dns.document.Document`, plus a
                   "next page token" string, and a "matched count".  If the
-                  token is not None, indicates that more zones can be
+                  token is not None, indicates that more indexes can be
                   retrieved with another call (pass that value as
                   ``page_token``).  The "matched count" indicates the total
                   number of documents matching the query string.
@@ -299,6 +299,6 @@ class Index(object):
         connection = self._client.connection
         resp = connection.api_request(method='GET', path=path,
                                       query_params=params)
-        zones = [Document.from_api_repr(resource, self)
+        indexes = [Document.from_api_repr(resource, self)
                  for resource in resp['results']]
-        return zones, resp.get('nextPageToken'), resp.get('matchedCount')
+        return indexes, resp.get('nextPageToken'), resp.get('matchedCount')
