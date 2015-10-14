@@ -61,7 +61,7 @@ class TestPubsub(unittest2.TestCase):
                    topic.project == CLIENT.project]
         self.assertEqual(len(created), len(topics_to_create))
 
-    def test_create_subscription(self):
+    def test_create_subscription_defaults(self):
         TOPIC_NAME = 'subscribe-me'
         topic = CLIENT.topic(TOPIC_NAME)
         self.assertFalse(topic.exists())
@@ -74,6 +74,22 @@ class TestPubsub(unittest2.TestCase):
         self.to_delete.append(subscription)
         self.assertTrue(subscription.exists())
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertTrue(subscription.topic is topic)
+
+    def test_create_subscription_w_ack_deadline(self):
+        TOPIC_NAME = 'subscribe-me'
+        topic = CLIENT.topic(TOPIC_NAME)
+        self.assertFalse(topic.exists())
+        topic.create()
+        self.to_delete.append(topic)
+        SUBSCRIPTION_NAME = 'subscribing-now'
+        subscription = topic.subscription(SUBSCRIPTION_NAME, ack_deadline=120)
+        self.assertFalse(subscription.exists())
+        subscription.create()
+        self.to_delete.append(subscription)
+        self.assertTrue(subscription.exists())
+        self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
+        self.assertEqual(subscription.ack_deadline, 120)
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions(self):
