@@ -50,11 +50,12 @@ class TestIndex(unittest2.TestCase):
             }
         }
 
-    def _makeDocumentResource(self, doc_id, rank, title):
-        return {
-            'docId': doc_id,
-            'rank': rank,
-            'fields': {
+    def _makeDocumentResource(self, doc_id, rank=None, title=None):
+        resource = {'docId': doc_id}
+        if rank is not None:
+            resource['rank'] = rank
+        if title is not None:
+            resource['fields'] = {
                 'title': {
                     'values': [{
                         'stringValue': title,
@@ -62,7 +63,7 @@ class TestIndex(unittest2.TestCase):
                         'lang': 'en'}]
                 }
             }
-        }
+        return resource
 
     def _verifyResourceProperties(self, index, resource):
 
@@ -82,10 +83,11 @@ class TestIndex(unittest2.TestCase):
         for found, expected in zip(documents, resource['documents']):
             self.assertTrue(isinstance(found, Document))
             self.assertEqual(found.name, expected['docId'])
-            self.assertEqual(found.rank, expected['rank'])
-            self.assertEqual(sorted(found.fields), sorted(expected['fields']))
+            self.assertEqual(found.rank, expected.get('rank'))
+            e_fields = expected.get('fields', ())
+            self.assertEqual(sorted(found.fields), sorted(e_fields))
             for field, f_field in found.fields.items():
-                e_field = expected['fields'][field]
+                e_field = e_fields[field]
                 for f_value, e_value in zip(f_field.values, e_field['values']):
                     self.assertTrue(isinstance(f_value, StringValue))
                     self.assertEqual(f_value.string_value,
@@ -141,16 +143,12 @@ class TestIndex(unittest2.TestCase):
 
     def test_list_documents_defaults(self):
         DOCID_1 = 'docid-one'
-        RANK_1 = 2345
-        TITLE_1 = 'Title One'
         DOCID_2 = 'docid-two'
-        RANK_2 = 1234
-        TITLE_2 = 'Title Two'
         PATH = 'projects/%s/indexes/%s/documents' % (
             self.PROJECT, self.INDEX_ID)
         TOKEN = 'TOKEN'
-        DOC_1 = self._makeDocumentResource(DOCID_1, RANK_1, TITLE_1)
-        DOC_2 = self._makeDocumentResource(DOCID_2, RANK_2, TITLE_2)
+        DOC_1 = self._makeDocumentResource(DOCID_1)
+        DOC_2 = self._makeDocumentResource(DOCID_2)
         DATA = {
             'nextPageToken': TOKEN,
             'documents': [DOC_1, DOC_2],
