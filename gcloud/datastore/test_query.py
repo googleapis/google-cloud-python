@@ -416,8 +416,8 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(connection._called_with, [EXPECTED])
 
     def test_next_page_w_cursors_w_more(self):
-        from base64 import b64decode
-        from base64 import b64encode
+        from base64 import urlsafe_b64decode
+        from base64 import urlsafe_b64encode
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
@@ -428,19 +428,19 @@ class TestIterator(unittest2.TestCase):
         iterator._end_cursor = self._END
         entities, more_results, cursor = iterator.next_page()
 
-        self.assertEqual(cursor, b64encode(self._END))
+        self.assertEqual(cursor, urlsafe_b64encode(self._END))
         self.assertTrue(more_results)
         self.assertTrue(iterator._more_results)
         self.assertEqual(iterator._end_cursor, None)
-        self.assertEqual(b64decode(iterator._start_cursor), self._END)
+        self.assertEqual(urlsafe_b64decode(iterator._start_cursor), self._END)
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key.path,
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
         qpb.offset = 0
-        qpb.start_cursor = b64decode(self._START)
-        qpb.end_cursor = b64decode(self._END)
+        qpb.start_cursor = urlsafe_b64decode(self._START)
+        qpb.end_cursor = urlsafe_b64decode(self._END)
         EXPECTED = {
             'dataset_id': self._DATASET,
             'query_pb': qpb,
