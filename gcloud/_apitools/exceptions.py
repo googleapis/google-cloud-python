@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """Exceptions for generated client libraries."""
 
 

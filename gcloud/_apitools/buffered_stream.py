@@ -1,10 +1,9 @@
-#!/usr/bin/env python
 """Small helper class to provide a small slice of a stream.
 
 This class reads ahead to detect if we are at the end of the stream.
 """
 
-from apitools.base.py import exceptions
+from gcloud._apitools import exceptions
 
 
 # TODO(user): Consider replacing this with a StringIO.

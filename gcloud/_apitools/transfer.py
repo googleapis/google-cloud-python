@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """Upload and download support for apitools."""
 from __future__ import print_function
 
@@ -14,11 +13,11 @@ import threading
 import six
 from six.moves import http_client
 
-from apitools.base.py import buffered_stream
-from apitools.base.py import exceptions
-from apitools.base.py import http_wrapper
-from apitools.base.py import stream_slice
-from apitools.base.py import util
+from gcloud._apitools import buffered_stream
+from gcloud._apitools import exceptions
+from gcloud._apitools import http_wrapper
+from gcloud._apitools import stream_slice
+from gcloud._apitools import util
 
 __all__ = [
     'Download',

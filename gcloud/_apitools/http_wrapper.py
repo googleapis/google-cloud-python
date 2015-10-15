@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """HTTP wrapper for apitools.
 
 This library wraps the underlying http library we use, which is
@@ -16,8 +15,8 @@ import six
 from six.moves import http_client
 from six.moves.urllib import parse
 
-from apitools.base.py import exceptions
-from apitools.base.py import util
+from gcloud._apitools import exceptions
+from gcloud._apitools import util
 
 __all__ = [
     'CheckResponse',

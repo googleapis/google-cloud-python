@@ -1,69 +1,20 @@
-#!/usr/bin/env python
-"""Assorted utilities shared between parts of apitools."""
+"""Assorted utilities shared between parts of apitools.
 
-import collections
-import os
+Pruned to include only helpers used by other vendored-in modules:
+
+``gcloud._apidools.transfer`` uses:
+
+- Typecheck
+- AcceptableMimeType
+
+``gcloud._apitools.http_wrapper`` uses:
+
+- CalculateWaitForRetry
+"""
+
 import random
 
-import six
-from six.moves import http_client
-import six.moves.urllib.error as urllib_error
-import six.moves.urllib.parse as urllib_parse
-import six.moves.urllib.request as urllib_request
-
-from apitools.base.protorpclite import messages
-from apitools.base.py import encoding
-from apitools.base.py import exceptions
-
-__all__ = [
-    'DetectGae',
-    'DetectGce',
-]
-
-_RESERVED_URI_CHARS = r":/?#[]@!$&'()*+,;="
-
-
-def DetectGae():
-    """Determine whether or not we're running on GAE.
-
-    This is based on:
-      https://developers.google.com/appengine/docs/python/#The_Environment
-
-    Returns:
-      True iff we're running on GAE.
-    """
-    server_software = os.environ.get('SERVER_SOFTWARE', '')
-    return (server_software.startswith('Development/') or
-            server_software.startswith('Google App Engine/'))
-
-
-def DetectGce():
-    """Determine whether or not we're running on GCE.
-
-    This is based on:
-      https://cloud.google.com/compute/docs/metadata#runninggce
-
-    Returns:
-      True iff we're running on a GCE instance.
-    """
-    try:
-        o = urllib_request.build_opener(urllib_request.ProxyHandler({})).open(
-            urllib_request.Request('http://metadata.google.internal'))
-    except urllib_error.URLError:
-        return False
-    return (o.getcode() == http_client.OK and
-            o.headers.get('metadata-flavor') == 'Google')
-
-
-def NormalizeScopes(scope_spec):
-    """Normalize scope_spec to a set of strings."""
-    if isinstance(scope_spec, six.string_types):
-        return set(scope_spec.split(' '))
-    elif isinstance(scope_spec, collections.Iterable):
-        return set(scope_spec)
-    raise exceptions.TypecheckError(
-        'NormalizeScopes expected string or iterable, found %s' % (
-            type(scope_spec),))
+from gcloud._apitools import exceptions
 
 
 def Typecheck(arg, arg_type, msg=None):
@@ -76,45 +27,6 @@ def Typecheck(arg, arg_type, msg=None):
                 msg = 'Type of arg is "%s", not "%s"' % (type(arg), arg_type)
         raise exceptions.TypecheckError(msg)
     return arg
-
-
-def ExpandRelativePath(method_config, params, relative_path=None):
-    """Determine the relative path for request."""
-    path = relative_path or method_config.relative_path or ''
-
-    for param in method_config.path_params:
-        param_template = '{%s}' % param
-        # For more details about "reserved word expansion", see:
-        #   http://tools.ietf.org/html/rfc6570#section-3.2.2
-        reserved_chars = ''
-        reserved_template = '{+%s}' % param
-        if reserved_template in path:
-            reserved_chars = _RESERVED_URI_CHARS
-            path = path.replace(reserved_template, param_template)
-        if param_template not in path:
-            raise exceptions.InvalidUserInputError(
-                'Missing path parameter %s' % param)
-        try:
-            # TODO(craigcitro): Do we want to support some sophisticated
-            # mapping here?
-            value = params[param]
-        except KeyError:
-            raise exceptions.InvalidUserInputError(
-                'Request missing required parameter %s' % param)
-        if value is None:
-            raise exceptions.InvalidUserInputError(
-                'Request missing required parameter %s' % param)
-        try:
-            if not isinstance(value, six.string_types):
-                value = str(value)
-            path = path.replace(param_template,
-                                urllib_parse.quote(value.encode('utf_8'),
-                                                   reserved_chars))
-        except TypeError as e:
-            raise exceptions.InvalidUserInputError(
-                'Error setting required parameter %s to value %s: %s' % (
-                    param, value, e))
-    return path
 
 
 def CalculateWaitForRetry(retry_attempt, max_wait=60):
@@ -173,40 +85,3 @@ def AcceptableMimeType(accept_patterns, mime_type):
 
     return any(MimeTypeMatches(pattern, mime_type)
                for pattern in accept_patterns)
-
-
-def MapParamNames(params, request_type):
-    """Reverse parameter remappings for URL construction."""
-    return [encoding.GetCustomJsonFieldMapping(request_type, json_name=p) or p
-            for p in params]
-
-
-def MapRequestParams(params, request_type):
-    """Perform any renames/remappings needed for URL construction.
-
-    Currently, we have several ways to customize JSON encoding, in
-    particular of field names and enums. This works fine for JSON
-    bodies, but also needs to be applied for path and query parameters
-    in the URL.
-
-    This function takes a dictionary from param names to values, and
-    performs any registered mappings. We also need the request type (to
-    look up the mappings).
-
-    Args:
-      params: (dict) Map from param names to values
-      request_type: (protorpc.messages.Message) request type for this API call
-
-    Returns:
-      A new dict of the same size, with all registered mappings applied.
-    """
-    new_params = dict(params)
-    for param_name, value in params.items():
-        field_remapping = encoding.GetCustomJsonFieldMapping(
-            request_type, python_name=param_name)
-        if field_remapping is not None:
-            new_params[field_remapping] = new_params.pop(param_name)
-        if isinstance(value, messages.Enum):
-            new_params[param_name] = encoding.GetCustomJsonEnumMapping(
-                type(value), python_name=str(value)) or str(value)
-    return new_params

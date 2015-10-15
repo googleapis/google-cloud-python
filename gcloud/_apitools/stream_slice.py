@@ -1,7 +1,6 @@
-#!/usr/bin/env python
 """Small helper class to provide a small slice of a stream."""
 
-from apitools.base.py import exceptions
+from gcloud._apitools import exceptions
 
 
 class StreamSlice(object):
