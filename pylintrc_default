@@ -29,8 +29,10 @@
 #       os.walk in astroid.modutils.get_module_files.
 # RATIONALE:
 #   _datastore_v1_pb2.py:   protobuf-generated code.
+#   gcloud/_apitools:       vendored-in code (remove when cleaned up)
 ignore =
     _datastore_v1_pb2.py
+    gcloud/_apitools
 
 # Pickle collected data for later comparisons.
 # DEFAULT:  persistent=yes
