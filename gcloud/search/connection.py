@@ -29,5 +29,5 @@ class Connection(base_connection.JSONConnection):
     API_URL_TEMPLATE = '{api_base_url}/{api_version}{path}'
     """A template for the URL of a particular API call."""
 
-    SCOPE = ('https://www.googleapis.com/auth/ndev.cloudsearch',)
+    SCOPE = ('https://www.googleapis.com/auth/cloudsearch',)
     """The scopes required for authenticating as a Cloud Search consumer."""
