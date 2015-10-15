@@ -75,6 +75,9 @@
   :caption: Cloud Search
 
   search-usage
+  Client <search-client>
+  search-index
+  search-document
 
 .. toctree::
   :maxdepth: 0
