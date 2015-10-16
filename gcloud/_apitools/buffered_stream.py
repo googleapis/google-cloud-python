@@ -13,32 +13,32 @@ class BufferedStream(object):
     """Buffers a stream, reading ahead to determine if we're at the end."""
 
     def __init__(self, stream, start, size):
-        self.__stream = stream
-        self.__start_pos = start
-        self.__buffer_pos = 0
-        self.__buffered_data = self.__stream.read(size)
-        self.__stream_at_end = len(self.__buffered_data) < size
-        self.__end_pos = self.__start_pos + len(self.__buffered_data)
+        self._stream = stream
+        self._start_pos = start
+        self._buffer_pos = 0
+        self._buffered_data = self._stream.read(size)
+        self._stream_at_end = len(self._buffered_data) < size
+        self._end_pos = self._start_pos + len(self._buffered_data)
 
-    def __str__(self):
+    def __str__(self):  # pragma: NO COVER
         return ('Buffered stream %s from position %s-%s with %s '
-                'bytes remaining' % (self.__stream, self.__start_pos,
-                                     self.__end_pos, self._bytes_remaining))
+                'bytes remaining' % (self._stream, self._start_pos,
+                                     self._end_pos, self._bytes_remaining))
 
     def __len__(self):
-        return len(self.__buffered_data)
+        return len(self._buffered_data)
 
     @property
     def stream_exhausted(self):
-        return self.__stream_at_end
+        return self._stream_at_end
 
     @property
     def stream_end_position(self):
-        return self.__end_pos
+        return self._end_pos
 
     @property
     def _bytes_remaining(self):
-        return len(self.__buffered_data) - self.__buffer_pos
+        return len(self._buffered_data) - self._buffer_pos
 
     def read(self, size=None):  # pylint: disable=invalid-name
         """Reads from the buffer."""
@@ -47,13 +47,13 @@ class BufferedStream(object):
                 'Illegal read of size %s requested on BufferedStream. '
                 'Wrapped stream %s is at position %s-%s, '
                 '%s bytes remaining.' %
-                (size, self.__stream, self.__start_pos, self.__end_pos,
+                (size, self._stream, self._start_pos, self._end_pos,
                  self._bytes_remaining))
 
-        data = ''
+        data = b''
         if self._bytes_remaining:
             size = min(size, self._bytes_remaining)
-            data = self.__buffered_data[
-                self.__buffer_pos:self.__buffer_pos + size]
-            self.__buffer_pos += size
+            data = self._buffered_data[
+                self._buffer_pos:self._buffer_pos + size]
+            self._buffer_pos += size
         return data
