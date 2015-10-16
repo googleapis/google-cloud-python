@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Assorted utilities shared between parts of apitools.
 
 Pruned to include only helpers used by other vendored-in modules:

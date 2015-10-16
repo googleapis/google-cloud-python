@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Exceptions for generated client libraries."""
 
 

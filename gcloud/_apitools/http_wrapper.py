@@ -1,3 +1,4 @@
+# pylint: skip-file
 """HTTP wrapper for apitools.
 
 This library wraps the underlying http library we use, which is

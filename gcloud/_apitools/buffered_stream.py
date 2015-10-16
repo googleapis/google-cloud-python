@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Small helper class to provide a small slice of a stream.
 
 This class reads ahead to detect if we are at the end of the stream.

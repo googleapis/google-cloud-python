@@ -1,3 +1,4 @@
+# pylint: skip-file
 """Upload and download support for apitools."""
 from __future__ import print_function
 
