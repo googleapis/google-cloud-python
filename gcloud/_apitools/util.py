@@ -78,9 +78,6 @@ def AcceptableMimeType(accept_patterns, mime_type):
 
     def MimeTypeMatches(pattern, mime_type):
         """Return True iff mime_type is acceptable for pattern."""
-        # Some systems use a single '*' instead of '*/*'.
-        if pattern == '*':
-            pattern = '*/*'
         return all(accept in ('*', provided) for accept, provided
                    in zip(pattern.split('/'), mime_type.split('/')))
 
