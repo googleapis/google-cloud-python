@@ -91,8 +91,7 @@ def _Httplib2Debuglevel(http_request, level, http=None):
     httplib2.debuglevel = old_level
     if http is not None:
         for connection_key, old_level in http_levels.items():
-            if connection_key in http.connections:
-                http.connections[connection_key].set_debuglevel(old_level)
+            http.connections[connection_key].set_debuglevel(old_level)
 
 
 class Request(object):
