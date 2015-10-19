@@ -274,50 +274,6 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
             retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
-def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
-                redirections=5,
-                retry_func=HandleExceptionsAndRebuildHttpConnections,
-                check_response_func=CheckResponse):
-    """Send http_request via the given http, performing error/retry handling.
-
-    Args:
-      http: An httplib2.Http instance, or a http multiplexer that delegates to
-          an underlying http, for example, HTTPMultiplexer.
-      http_request: A Request to send.
-      retries: (int, default 7) Number of retries to attempt on retryable
-          replies (such as 429 or 5XX).
-      max_retry_wait: (int, default 60) Maximum number of seconds to wait
-          when retrying.
-      redirections: (int, default 5) Number of redirects to follow.
-      retry_func: Function to handle retries on exceptions. Arguments are
-          (Httplib2.Http, Request, Exception, int num_retries).
-      check_response_func: Function to validate the HTTP response.
-          Arguments are (Response, response content, url).
-
-    Raises:
-      InvalidDataFromServerError: if there is no response after retries.
-
-    Returns:
-      A Response object.
-
-    """
-    retry = 0
-    while True:
-        try:
-            return _MakeRequestNoRetry(
-                http, http_request, redirections=redirections,
-                check_response_func=check_response_func)
-        # retry_func will consume the exception types it handles and raise.
-        # pylint: disable=broad-except
-        except Exception as e:
-            retry += 1
-            if retry >= retries:
-                raise
-            else:
-                retry_func(ExceptionRetryArgs(
-                    http, http_request, e, retry, max_retry_wait))
-
-
 def _MakeRequestNoRetry(http, http_request, redirections=5,
                         check_response_func=CheckResponse):
     """Send http_request via the given http.
@@ -363,6 +319,53 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
     response = Response(info, content, http_request.url)
     check_response_func(response)
     return response
+
+
+def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
+                redirections=5,
+                retry_func=HandleExceptionsAndRebuildHttpConnections,
+                check_response_func=CheckResponse,
+                wo_retry_func=_MakeRequestNoRetry):
+    """Send http_request via the given http, performing error/retry handling.
+
+    Args:
+      http: An httplib2.Http instance, or a http multiplexer that delegates to
+          an underlying http, for example, HTTPMultiplexer.
+      http_request: A Request to send.
+      retries: (int, default 7) Number of retries to attempt on retryable
+          replies (such as 429 or 5XX).
+      max_retry_wait: (int, default 60) Maximum number of seconds to wait
+          when retrying.
+      redirections: (int, default 5) Number of redirects to follow.
+      retry_func: Function to handle retries on exceptions. Arguments are
+          (Httplib2.Http, Request, Exception, int num_retries).
+      check_response_func: Function to validate the HTTP response.
+          Arguments are (Response, response content, url).
+      wo_retry_func: Function to make HTTP request without retries.  Arguments
+          are: (http, http_request, redirections, check_response_func)
+
+    Raises:
+      InvalidDataFromServerError: if there is no response after retries.
+
+    Returns:
+      A Response object.
+
+    """
+    retry = 0
+    while True:
+        try:
+            return wo_retry_func(
+                http, http_request, redirections=redirections,
+                check_response_func=check_response_func)
+        # retry_func will consume the exception types it handles and raise.
+        # pylint: disable=broad-except
+        except Exception as e:
+            retry += 1
+            if retry >= retries:
+                raise
+            else:
+                retry_func(ExceptionRetryArgs(
+                    http, http_request, e, retry, max_retry_wait))
 
 
 _HTTP_FACTORIES = []
