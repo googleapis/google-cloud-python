@@ -27,7 +27,6 @@ __all__ = [
     'RebuildHttpConnections',
     'Request',
     'Response',
-    'RethrowExceptionHandler',
 ]
 
 
@@ -219,10 +218,6 @@ def RebuildHttpConnections(http):
         for conn_key in list(http.connections.keys()):
             if ':' in conn_key:
                 del http.connections[conn_key]
-
-
-def RethrowExceptionHandler(*unused_args):
-    raise
 
 
 def HandleExceptionsAndRebuildHttpConnections(retry_args):
