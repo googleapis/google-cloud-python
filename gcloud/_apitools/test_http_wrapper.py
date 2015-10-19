@@ -248,6 +248,24 @@ class Test_CheckResponse(unittest2.TestCase):
         self._callFUT(_Response(200))
 
 
+class Test_RebuildHttpConnections(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import RebuildHttpConnections
+        return RebuildHttpConnections(*args, **kw)
+
+    def test_wo_connections(self):
+        http = object()
+        self._callFUT(http)
+
+    def test_w_connections(self):
+        connections = {'delete:me': object(), 'skip_me': object()}
+        http = _Dummy(connections=connections)
+        self._callFUT(http)
+        self.assertFalse('delete:me' in connections)
+        self.assertTrue('skip_me' in connections)
+
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
