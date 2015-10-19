@@ -194,8 +194,7 @@ def CheckResponse(response):
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.
         raise exceptions.RequestError(
-            'Request to url %s did not return a response.' %
-            response.request_url)
+            'Request did not return a response.')
     elif (response.status_code >= 500 or
           response.status_code == TOO_MANY_REQUESTS):
         raise exceptions.BadStatusCodeError.FromResponse(response)

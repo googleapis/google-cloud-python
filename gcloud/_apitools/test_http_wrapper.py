@@ -211,6 +211,53 @@ class Test_Response(unittest2.TestCase):
         self.assertTrue(response.is_redirect)
 
 
+class Test_CheckResponse(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import CheckResponse
+        return CheckResponse(*args, **kw)
+
+    def test_w_none(self):
+        from gcloud._apitools.exceptions import RequestError
+        with self.assertRaises(RequestError):
+            self._callFUT(None)
+
+    def test_w_TOO_MANY_REQUESTS(self):
+        from gcloud._apitools.exceptions import BadStatusCodeError
+        from gcloud._apitools.http_wrapper import TOO_MANY_REQUESTS
+
+        with self.assertRaises(BadStatusCodeError):
+            self._callFUT(_Response(TOO_MANY_REQUESTS))
+
+    def test_w_50x(self):
+        from gcloud._apitools.exceptions import BadStatusCodeError
+
+        with self.assertRaises(BadStatusCodeError):
+            self._callFUT(_Response(500))
+
+        with self.assertRaises(BadStatusCodeError):
+            self._callFUT(_Response(503))
+
+    def test_w_retry_after(self):
+        from gcloud._apitools.exceptions import RetryAfterError
+
+        with self.assertRaises(RetryAfterError):
+            self._callFUT(_Response(200, 20))
+
+    def test_pass(self):
+        self._callFUT(_Response(200))
+
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
+
+
+class _Response(object):
+    content = ''
+    request_url = 'http://example.com/api'
+
+    def __init__(self, status_code, retry_after=None):
+        self.info = {}
+        self.status_code = status_code
+        self.retry_after = retry_after
