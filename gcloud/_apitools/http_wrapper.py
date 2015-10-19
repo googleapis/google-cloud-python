@@ -164,7 +164,7 @@ class Response(collections.namedtuple(
             start, _, end = byte_range.partition('-')
             return int(end) - int(start) + 1
 
-        if '-content-encoding' in self.info and 'content-range' in self.info:
+        if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
             # transfer; we can't trust the content-length header in that
             # case, but we *can* trust content-range, if it's present.

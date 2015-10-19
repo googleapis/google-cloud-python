@@ -112,6 +112,105 @@ class Test_Request(unittest2.TestCase):
         self.assertEqual(request.loggable_body, '<media body>')
 
 
+class Test_Response(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud._apitools.http_wrapper import Response
+        return Response
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        info = {'status': '200'}
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(len(response), len(CONTENT))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.retry_after, None)
+        self.assertFalse(response.is_redirect)
+
+    def test_length_w_content_encoding_w_content_range(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-122/5678'
+        info = {
+            'status': '200',
+            'content-length': len(CONTENT),
+            'content-encoding': 'testing',
+            'content-range': RANGE,
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(len(response), 123)
+
+    def test_length_w_content_encoding_wo_content_range(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        info = {
+            'status': '200',
+            'content-length': len(CONTENT),
+            'content-encoding': 'testing',
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(len(response), len(CONTENT))
+
+    def test_length_w_content_length_w_content_range(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-12/5678'
+        info = {
+            'status': '200',
+            'content-length': len(CONTENT) * 2,
+            'content-range': RANGE,
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(len(response), len(CONTENT) * 2)
+
+    def test_length_wo_content_length_w_content_range(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-122/5678'
+        info = {
+            'status': '200',
+            'content-range': RANGE,
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(len(response), 123)
+
+    def test_retry_after_w_header(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-122/5678'
+        info = {
+            'status': '200',
+            'retry-after': '123',
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertEqual(response.retry_after, 123)
+
+    def test_is_redirect_w_code_wo_location(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-122/5678'
+        info = {
+            'status': '301',
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertFalse(response.is_redirect)
+
+    def test_is_redirect_w_code_w_location(self):
+        CONTENT = 'CONTENT'
+        URL = 'http://example.com/api'
+        RANGE = 'bytes 0-122/5678'
+        info = {
+            'status': '301',
+            'location': 'http://example.com/other',
+        }
+        response = self._makeOne(info, CONTENT, URL)
+        self.assertTrue(response.is_redirect)
+
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
