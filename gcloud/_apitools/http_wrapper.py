@@ -238,14 +238,14 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
                                    http_client.ResponseNotReady)):
         logging.debug('Caught HTTP error %s, retrying: %s',
                       type(retry_args.exc).__name__, retry_args.exc)
-    elif isinstance(retry_args.exc, socket.error):
-        logging.debug('Caught socket error, retrying: %s', retry_args.exc)
     elif isinstance(retry_args.exc, socket.gaierror):
         logging.debug(
             'Caught socket address error, retrying: %s', retry_args.exc)
     elif isinstance(retry_args.exc, socket.timeout):
         logging.debug(
             'Caught socket timeout error, retrying: %s', retry_args.exc)
+    elif isinstance(retry_args.exc, socket.error):
+        logging.debug('Caught socket error, retrying: %s', retry_args.exc)
     elif isinstance(retry_args.exc, httplib2.ServerNotFoundError):
         logging.debug(
             'Caught server not found error, retrying: %s', retry_args.exc)
