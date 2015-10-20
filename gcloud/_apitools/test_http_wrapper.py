@@ -15,10 +15,6 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud._apitools import http_wrapper as MUT
 
-        class _Request(object):
-            __slots__ = ('loggable_body',)  # no other attrs
-            loggable_body = None
-
         request = _Request()
         LEVEL = 1
         _httplib2 = _Dummy(debuglevel=0)
@@ -30,11 +26,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud._apitools import http_wrapper as MUT
 
-        class _Request(object):
-            __slots__ = ('loggable_body',)  # no other attrs
-            loggable_body = object()
-
-        request = _Request()
+        request = _Request(loggable_body=object())
         LEVEL = 1
         _httplib2 = _Dummy(debuglevel=0)
         with _Monkey(MUT, httplib2=_httplib2):
@@ -46,16 +38,12 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud._apitools import http_wrapper as MUT
 
-        class _Request(object):
-            __slots__ = ('loggable_body',)  # no other attrs
-            loggable_body = object()
-
         class _Connection(object):
             debuglevel = 0
             def set_debuglevel(self, value):
                 self.debuglevel = value
 
-        request = _Request()
+        request = _Request(loggable_body=object())
         LEVEL = 1
         _httplib2 = _Dummy(debuglevel=0)
         update_me = _Connection()
@@ -510,16 +498,161 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
                     self._callFUT(retry_args)
 
 
+class Test__MakeRequestNoRetry(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import _MakeRequestNoRetry
+        return _MakeRequestNoRetry(*args, **kw)
+
+    def _verify_requested(self, http, request,
+                          redirections=5, connection_type=None):
+        self.assertEqual(len(http._requested), 1)
+        url, kw = http._requested[0]
+        self.assertEqual(url, request.url)
+        self.assertEqual(kw['method'], request.http_method)
+        self.assertEqual(kw['body'], request.body)
+        self.assertEqual(kw['headers'], request.headers)
+        self.assertEqual(kw['redirections'], redirections)
+        self.assertEqual(kw['connection_type'], connection_type)
+
+    def test_defaults_wo_connections(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        INFO = {'status': '200'}
+        CONTENT = 'CONTENT'
+        _http = _Http((INFO, CONTENT))
+        _httplib2 = _Dummy(debuglevel=1)
+        _request = _Request()
+        _checked = []
+        with _Monkey(MUT, httplib2=_httplib2):
+            response = self._callFUT(_http, _request,
+                                     check_response_func=_checked.append)
+        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertEqual(response.info, INFO)
+        self.assertEqual(response.content, CONTENT)
+        self.assertEqual(response.request_url, _request.url)
+        self.assertEqual(_checked, [response])
+        self._verify_requested(_http, _request)
+
+    def test_w_explicit_redirections(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        INFO = {'status': '200'}
+        CONTENT = 'CONTENT'
+        _http = _Http((INFO, CONTENT))
+        _httplib2 = _Dummy(debuglevel=1)
+        _request = _Request()
+        _checked = []
+        with _Monkey(MUT, httplib2=_httplib2):
+            response = self._callFUT(_http, _request,
+                                     redirections=10,
+                                     check_response_func=_checked.append)
+        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertEqual(response.info, INFO)
+        self.assertEqual(response.content, CONTENT)
+        self.assertEqual(response.request_url, _request.url)
+        self.assertEqual(_checked, [response])
+        self._verify_requested(_http, _request, redirections=10)
+
+    def test_w_http_connections_miss(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        INFO = {'status': '200'}
+        CONTENT = 'CONTENT'
+        CONN_TYPE = object()
+        _http = _Http((INFO, CONTENT))
+        _http.connections = {'https': CONN_TYPE}
+        _httplib2 = _Dummy(debuglevel=1)
+        _request = _Request()
+        _checked = []
+        with _Monkey(MUT, httplib2=_httplib2):
+            response = self._callFUT(_http, _request,
+                                     check_response_func=_checked.append)
+        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertEqual(response.info, INFO)
+        self.assertEqual(response.content, CONTENT)
+        self.assertEqual(response.request_url, _request.url)
+        self.assertEqual(_checked, [response])
+        self._verify_requested(_http, _request)
+
+    def test_w_http_connections_hit(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        INFO = {'status': '200'}
+        CONTENT = 'CONTENT'
+        CONN_TYPE = object()
+        _http = _Http((INFO, CONTENT))
+        _http.connections = {'http': CONN_TYPE}
+        _httplib2 = _Dummy(debuglevel=1)
+        _request = _Request()
+        _checked = []
+        with _Monkey(MUT, httplib2=_httplib2):
+            response = self._callFUT(_http, _request,
+                                     check_response_func=_checked.append)
+        self.assertTrue(isinstance(response, MUT.Response))
+        self.assertEqual(response.info, INFO)
+        self.assertEqual(response.content, CONTENT)
+        self.assertEqual(response.request_url, _request.url)
+        self.assertEqual(_checked, [response])
+        self._verify_requested(_http, _request, connection_type=CONN_TYPE)
+
+    def test_w_request_returning_None(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        from gcloud._apitools.exceptions import RequestError
+        INFO = None
+        CONTENT = None
+        CONN_TYPE = object()
+        _http = _Http((INFO, CONTENT))
+        _http.connections = {'http': CONN_TYPE}
+        _httplib2 = _Dummy(debuglevel=1)
+        _request = _Request()
+        with _Monkey(MUT, httplib2=_httplib2):
+            with self.assertRaises(RequestError):
+                self._callFUT(_http, _request)
+        self._verify_requested(_http, _request, connection_type=CONN_TYPE)
+
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
 
+class _Request(object):
+    __slots__ = ('url', 'http_method', 'body', 'headers', 'loggable_body',)
+    URL = 'http://example.com/api'
+
+    def __init__(self, url=URL, http_method='GET', body='', headers=None,
+                 loggable_body=None):
+        self.url = url
+        self.http_method = http_method
+        self.body = body
+        if headers is None:
+            headers = {}
+        self.headers = headers
+        self.loggable_body = loggable_body
+
+
 class _Response(object):
     content = ''
-    request_url = 'http://example.com/api'
+    request_url = _Request.URL
 
     def __init__(self, status_code, retry_after=None):
         self.info = {'status': status_code}
         self.status_code = status_code
         self.retry_after = retry_after
+
+
+class _Http(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def request(self, url, **kw):
+        from gcloud._apitools.exceptions import NotFoundError
+        self._requested.append((url, kw))
+        if len(self._responses) == 0:
+            raise NotFoundError(url)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
