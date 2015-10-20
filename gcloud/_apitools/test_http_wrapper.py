@@ -40,6 +40,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
 
         class _Connection(object):
             debuglevel = 0
+
             def set_debuglevel(self, value):
                 self.debuglevel = value
 
@@ -461,8 +462,6 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
             logged, slept, 'Response returned status %s, retrying', (500,))
 
     def test_w_RetryAfterError(self):
-        import random
-        from gcloud._testing import _Monkey
         from gcloud._apitools.exceptions import RetryAfterError
         from gcloud._apitools.http_wrapper import TOO_MANY_REQUESTS
         RETRY_AFTER = 25
@@ -471,13 +470,13 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
 
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
+        with monkey:
+            self._callFUT(retry_args)
 
         self._verify_logged_slept(
             logged, slept,
-            'Response returned a retry-after header, retrying', (), RETRY_AFTER)
+            'Response returned a retry-after header, retrying', (),
+            RETRY_AFTER)
 
     def test_wo_matching_type(self):
 
@@ -669,10 +668,10 @@ class Test_MakeRequest(unittest2.TestCase):
         self.assertEqual(len(_created), 5)
         for attempt in _created:
             self.assertEqual(attempt,
-                            ((HTTP, REQUEST), {
+                             ((HTTP, REQUEST), {
                                 'redirections': 5,
                                 'check_response_func': _checked.append,
-                            }))
+                             }))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
         self.assertEqual(len(_retried), 4)
         for index, retry in enumerate(_retried):
@@ -686,17 +685,13 @@ class Test_MakeRequest(unittest2.TestCase):
         HTTP, REQUEST, RESPONSE = object(), object(), object()
         WAIT = 10,
         _created, _checked, _retried = [], [], []
-        _counter = [None] * 4
 
         class _Retry(Exception):
             pass
 
         def _wo_exception(*args, **kw):
             _created.append((args, kw))
-            if _counter:
-                _counter.pop()
-                raise _Retry()
-            return RESPONSE
+            raise _Retry()
 
         def _retry(args):
             _retried.append(args)
@@ -712,10 +707,10 @@ class Test_MakeRequest(unittest2.TestCase):
         self.assertEqual(len(_created), 3)
         for attempt in _created:
             self.assertEqual(attempt,
-                            ((HTTP, REQUEST), {
+                             ((HTTP, REQUEST), {
                                 'redirections': 5,
                                 'check_response_func': _checked.append,
-                            }))
+                             }))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
         self.assertEqual(len(_retried), 2)
         for index, retry in enumerate(_retried):
@@ -737,12 +732,11 @@ class Test__RegisterHttpFactory(unittest2.TestCase):
         from gcloud._apitools import http_wrapper as MUT
         _factories = []
 
-        def _factory(**kw):
-            pass
+        FACTORY = object()
 
         with _Monkey(MUT, _HTTP_FACTORIES=_factories):
-            self._callFUT(_factory)
-            self.assertEqual(_factories, [_factory])
+            self._callFUT(FACTORY)
+            self.assertEqual(_factories, [FACTORY])
 
 
 class Test_GetHttp(unittest2.TestCase):
@@ -789,6 +783,7 @@ class Test_GetHttp(unittest2.TestCase):
         self.assertEqual(_misses, [{'foo': 'bar'}])
         self.assertEqual(_hits, [{'foo': 'bar'}])
 
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
@@ -798,14 +793,12 @@ class _Request(object):
     __slots__ = ('url', 'http_method', 'body', 'headers', 'loggable_body',)
     URL = 'http://example.com/api'
 
-    def __init__(self, url=URL, http_method='GET', body='', headers=None,
+    def __init__(self, url=URL, http_method='GET', body='',
                  loggable_body=None):
         self.url = url
         self.http_method = http_method
         self.body = body
-        if headers is None:
-            headers = {}
-        self.headers = headers
+        self.headers = {}
         self.loggable_body = loggable_body
 
 
@@ -826,9 +819,6 @@ class _Http(object):
         self._requested = []
 
     def request(self, url, **kw):
-        from gcloud._apitools.exceptions import NotFoundError
         self._requested.append((url, kw))
-        if len(self._responses) == 0:
-            raise NotFoundError(url)
         response, self._responses = self._responses[0], self._responses[1:]
         return response
