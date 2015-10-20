@@ -726,6 +726,22 @@ class Test_MakeRequest(unittest2.TestCase):
             self.assertEqual(retry.max_retry_wait, WAIT)
 
 
+class Test_MakeRequest(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import _RegisterHttpFactory
+        return _RegisterHttpFactory(*args, **kw)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        _factories = []
+        def _factory(**kw):
+            pass
+        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
+            self._callFUT(_factory)
+            self.assertEqual(_factories, [_factory])
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
