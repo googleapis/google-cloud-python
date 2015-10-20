@@ -36,29 +36,6 @@ SIMPLE_UPLOAD = 'simple'
 RESUMABLE_UPLOAD = 'resumable'
 
 
-def DownloadProgressPrinter(response, unused_download):
-    """Print download progress based on response."""
-    if 'content-range' in response.info:
-        print('Received %s' % response.info['content-range'])
-    else:
-        print('Received %d bytes' % response.length)
-
-
-def DownloadCompletePrinter(unused_response, unused_download):
-    """Print information about a completed download."""
-    print('Download complete')
-
-
-def UploadProgressPrinter(response, unused_upload):
-    """Print upload progress based on response."""
-    print('Sent %s' % response.info['range'])
-
-
-def UploadCompletePrinter(unused_response, unused_upload):
-    """Print information about a completed upload."""
-    print('Upload complete')
-
-
 class _Transfer(object):
 
     """Generic bits common to Uploads and Downloads."""
@@ -160,11 +137,6 @@ class _Transfer(object):
         if self.__close_stream:
             self.__stream.close()
 
-    def _ExecuteCallback(self, callback, response):
-        # TODO(craigcitro): Push these into a queue.
-        if callback is not None:
-            threading.Thread(target=callback, args=(response, self)).start()
-
 
 class Download(_Transfer):
 
@@ -182,17 +154,13 @@ class Download(_Transfer):
     _REQUIRED_SERIALIZATION_KEYS = set((
         'auto_transfer', 'progress', 'total_size', 'url'))
 
-    def __init__(self, stream, progress_callback=None, finish_callback=None,
-                 **kwds):
+    def __init__(self, stream, **kwds):
         total_size = kwds.pop('total_size', None)
         super(Download, self).__init__(stream, **kwds)
         self.__initial_response = None
         self.__progress = 0
         self.__total_size = total_size
         self.__encoding = None
-
-        self.progress_callback = progress_callback
-        self.finish_callback = finish_callback
 
     @property
     def progress(self):
@@ -467,22 +435,15 @@ class Download(_Transfer):
                 raise exceptions.TransferRetryError(
                     'Zero bytes unexpectedly returned in download response')
 
-    def StreamInChunks(self, callback=None, finish_callback=None,
-                       additional_headers=None):
+    def StreamInChunks(self, additional_headers=None):
         """Stream the entire download in chunks."""
-        self.StreamMedia(callback=callback, finish_callback=finish_callback,
-                         additional_headers=additional_headers,
+        self.StreamMedia(additional_headers=additional_headers,
                          use_chunks=True)
 
-    def StreamMedia(self, callback=None, finish_callback=None,
-                    additional_headers=None, use_chunks=True):
+    def StreamMedia(self, additional_headers=None, use_chunks=True):
         """Stream the entire download.
 
         Args:
-          callback: (default: None) Callback to call as each chunk is
-              completed.
-          finish_callback: (default: None) Callback to call when the
-              download is complete.
           additional_headers: (default: None) Additional headers to
               include in fetching bytes.
           use_chunks: (bool, default: True) If False, ignore self.chunksize
@@ -491,9 +452,6 @@ class Download(_Transfer):
         Returns:
             None. Streams bytes into self.stream.
         """
-        callback = callback or self.progress_callback
-        finish_callback = finish_callback or self.finish_callback
-
         self.EnsureInitialized()
         while True:
             if self.__initial_response is not None:
@@ -508,11 +466,9 @@ class Download(_Transfer):
             if self.total_size is None:
                 self.__SetTotal(response.info)
             response = self.__ProcessResponse(response)
-            self._ExecuteCallback(callback, response)
             if (response.status_code == http_client.OK or
                     self.progress >= self.total_size):
                 break
-        self._ExecuteCallback(finish_callback, response)
 
 
 class Upload(_Transfer):
@@ -533,7 +489,6 @@ class Upload(_Transfer):
 
     def __init__(self, stream, mime_type, total_size=None, http=None,
                  close_stream=False, chunksize=None, auto_transfer=True,
-                 progress_callback=None, finish_callback=None,
                  **kwds):
         super(Upload, self).__init__(
             stream, close_stream=close_stream, chunksize=chunksize,
@@ -546,8 +501,6 @@ class Upload(_Transfer):
         self.__strategy = None
         self.__total_size = None
 
-        self.progress_callback = progress_callback
-        self.finish_callback = finish_callback
         self.total_size = total_size
 
     @property
@@ -848,14 +801,11 @@ class Upload(_Transfer):
                 'Server requires chunksize to be a multiple of %d',
                 self.__server_chunk_granularity)
 
-    def __StreamMedia(self, callback=None, finish_callback=None,
-                      additional_headers=None, use_chunks=True):
+    def __StreamMedia(self, additional_headers=None, use_chunks=True):
         """Helper function for StreamMedia / StreamInChunks."""
         if self.strategy != RESUMABLE_UPLOAD:
             raise exceptions.InvalidUserInputError(
                 'Cannot stream non-resumable upload')
-        callback = callback or self.progress_callback
-        finish_callback = finish_callback or self.finish_callback
         # final_response is set if we resumed an already-completed upload.
         response = self.__final_response
         send_func = self.__SendChunk if use_chunks else self.__SendMediaBody
@@ -874,7 +824,6 @@ class Upload(_Transfer):
                 raise exceptions.CommunicationError(
                     'Failed to transfer all bytes in chunk, upload paused at '
                     'byte %d' % self.progress)
-            self._ExecuteCallback(callback, response)
         if self.__complete and hasattr(self.stream, 'seek'):
             current_pos = self.stream.tell()
             self.stream.seek(0, os.SEEK_END)
@@ -884,34 +833,24 @@ class Upload(_Transfer):
                 raise exceptions.TransferInvalidError(
                     'Upload complete with %s additional bytes left in stream' %
                     (int(end_pos) - int(current_pos)))
-        self._ExecuteCallback(finish_callback, response)
         return response
 
-    def StreamMedia(self, callback=None, finish_callback=None,
-                    additional_headers=None):
+    def StreamMedia(self, additional_headers=None):
         """Send this resumable upload in a single request.
 
         Args:
-          callback: Progress callback function with inputs
-              (http_wrapper.Response, transfer.Upload)
-          finish_callback: Final callback function with inputs
-              (http_wrapper.Response, transfer.Upload)
           additional_headers: Dict of headers to include with the upload
               http_wrapper.Request.
 
         Returns:
           http_wrapper.Response of final response.
         """
-        return self.__StreamMedia(
-            callback=callback, finish_callback=finish_callback,
-            additional_headers=additional_headers, use_chunks=False)
+        return self.__StreamMedia(additional_headers=additional_headers,
+                                  use_chunks=False)
 
-    def StreamInChunks(self, callback=None, finish_callback=None,
-                       additional_headers=None):
+    def StreamInChunks(self, additional_headers=None):
         """Send this (resumable) upload in chunks."""
-        return self.__StreamMedia(
-            callback=callback, finish_callback=finish_callback,
-            additional_headers=additional_headers)
+        return self.__StreamMedia(additional_headers=additional_headers)
 
     def __SendMediaRequest(self, request, end):
         """Request helper function for SendMediaBody & SendChunk."""
