@@ -229,7 +229,7 @@ Fetch pending messages for a pull subscription:
    ...                   attr1='value1', attr2='value2')
    >>> received = subscription.pull()  # API request
    >>> messages = [recv[1] for recv in received]
-   >>> [message.id for message in messages]
+   >>> [message.message_id for message in messages]
    [<message_id1>, <message_id2>]
    >>> [message.data for message in messages]
    ['this is the first message_payload', 'this is the second message_payload']
@@ -258,7 +258,7 @@ Fetch a limited number of pending messages for a pull subscription:
    ...                   attr1='value1', attr2='value2')
    >>> received = subscription.pull(max_messages=1)  # API request
    >>> messages = [recv[1] for recv in received]
-   >>> [message.id for message in messages]
+   >>> [message.message_id for message in messages]
 
 Fetch messages for a pull subscription without blocking (none pending):
 
@@ -270,5 +270,5 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> subscription = topic.subscription('subscription_name')
    >>> received = subscription.pull(return_immediately=True)  # API request
    >>> messages = [recv[1] for recv in received]
-   >>> [message.id for message in messages]
+   >>> [message.message_id for message in messages]
    []
