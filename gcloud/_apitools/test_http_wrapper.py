@@ -726,7 +726,7 @@ class Test_MakeRequest(unittest2.TestCase):
             self.assertEqual(retry.max_retry_wait, WAIT)
 
 
-class Test_MakeRequest(unittest2.TestCase):
+class Test__RegisterHttpFactory(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud._apitools.http_wrapper import _RegisterHttpFactory
@@ -736,11 +736,58 @@ class Test_MakeRequest(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud._apitools import http_wrapper as MUT
         _factories = []
+
         def _factory(**kw):
             pass
+
         with _Monkey(MUT, _HTTP_FACTORIES=_factories):
             self._callFUT(_factory)
             self.assertEqual(_factories, [_factory])
+
+
+class Test_GetHttp(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import GetHttp
+        return GetHttp(*args, **kw)
+
+    def test_wo_registered_factories(self):
+        from httplib2 import Http
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+        _factories = []
+
+        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
+            http = self._callFUT()
+
+        self.assertTrue(isinstance(http, Http))
+
+    def test_w_registered_factories(self):
+        from gcloud._testing import _Monkey
+        from gcloud._apitools import http_wrapper as MUT
+
+        FOUND = object()
+
+        _misses = []
+
+        def _miss(**kw):
+            _misses.append(kw)
+            return None
+
+        _hits = []
+
+        def _hit(**kw):
+            _hits.append(kw)
+            return FOUND
+
+        _factories = [_miss, _hit]
+
+        with _Monkey(MUT, _HTTP_FACTORIES=_factories):
+            http = self._callFUT(foo='bar')
+
+        self.assertTrue(http is FOUND)
+        self.assertEqual(_misses, [{'foo': 'bar'}])
+        self.assertEqual(_hits, [{'foo': 'bar'}])
 
 class _Dummy(object):
     def __init__(self, **kw):
