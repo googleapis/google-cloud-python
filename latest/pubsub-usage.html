@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud eb3d390 documentation</title>
+    <title>Using the API &mdash; gcloud 95ec916 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'eb3d390',
+        VERSION:     '95ec916',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud eb3d390 documentation" href="index.html" />
+    <link rel="top" title="gcloud 95ec916 documentation" href="index.html" />
     <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
     <link rel="prev" title="ACL" href="storage-acl.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20eb3d390" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%2095ec916" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (eb3d390)
+              Version History (95ec916)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -282,7 +282,7 @@ used as a context manager.</p>
 <span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
 <span class="go">[&lt;message_id1&gt;, &lt;message_id2&gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
 <span class="go">[&#39;this is the first message_payload&#39;, &#39;this is the second message_payload&#39;]</span>
@@ -307,7 +307,7 @@ will re-send them later:</p>
 <span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s">&#39;value2&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Fetch messages for a pull subscription without blocking (none pending):</p>
@@ -317,7 +317,7 @@ will re-send them later:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s">&#39;subscription_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">return_immediately</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
 <span class="go">[]</span>
 </pre></div>
 </div>
