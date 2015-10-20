@@ -613,6 +613,119 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
         self._verify_requested(_http, _request, connection_type=CONN_TYPE)
 
 
+class Test_MakeRequest(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kw):
+        from gcloud._apitools.http_wrapper import MakeRequest
+        return MakeRequest(*args, **kw)
+
+    def test_wo_exception(self):
+        HTTP, REQUEST, RESPONSE = object(), object(), object()
+        _created, _checked = [], []
+
+        def _wo_exception(*args, **kw):
+            _created.append((args, kw))
+            return RESPONSE
+
+        response = self._callFUT(HTTP, REQUEST,
+                                 wo_retry_func=_wo_exception,
+                                 check_response_func=_checked.append)
+
+        self.assertTrue(response is RESPONSE)
+        self.assertEqual(_created,
+                         [((HTTP, REQUEST), {
+                            'redirections': 5,
+                            'check_response_func': _checked.append,
+                         })])
+        self.assertEqual(_checked, [])  # not called by '_wo_exception'
+
+    def test_w_exceptions_lt_max_retries(self):
+        HTTP, REQUEST, RESPONSE = object(), object(), object()
+        WAIT = 10,
+        _created, _checked, _retried = [], [], []
+        _counter = [None] * 4
+
+        class _Retry(Exception):
+            pass
+
+        def _wo_exception(*args, **kw):
+            _created.append((args, kw))
+            if _counter:
+                _counter.pop()
+                raise _Retry()
+            return RESPONSE
+
+        def _retry(args):
+            _retried.append(args)
+
+        response = self._callFUT(HTTP, REQUEST,
+                                 retries=5,
+                                 max_retry_wait=WAIT,
+                                 retry_func=_retry,
+                                 wo_retry_func=_wo_exception,
+                                 check_response_func=_checked.append)
+
+        self.assertTrue(response is RESPONSE)
+        self.assertEqual(len(_created), 5)
+        for attempt in _created:
+            self.assertEqual(attempt,
+                            ((HTTP, REQUEST), {
+                                'redirections': 5,
+                                'check_response_func': _checked.append,
+                            }))
+        self.assertEqual(_checked, [])  # not called by '_wo_exception'
+        self.assertEqual(len(_retried), 4)
+        for index, retry in enumerate(_retried):
+            self.assertTrue(retry.http is HTTP)
+            self.assertTrue(retry.http_request is REQUEST)
+            self.assertTrue(isinstance(retry.exc, _Retry))
+            self.assertEqual(retry.num_retries, index + 1)
+            self.assertEqual(retry.max_retry_wait, WAIT)
+
+    def test_w_exceptions_gt_max_retries(self):
+        HTTP, REQUEST, RESPONSE = object(), object(), object()
+        WAIT = 10,
+        _created, _checked, _retried = [], [], []
+        _counter = [None] * 4
+
+        class _Retry(Exception):
+            pass
+
+        def _wo_exception(*args, **kw):
+            _created.append((args, kw))
+            if _counter:
+                _counter.pop()
+                raise _Retry()
+            return RESPONSE
+
+        def _retry(args):
+            _retried.append(args)
+
+        with self.assertRaises(_Retry):
+            self._callFUT(HTTP, REQUEST,
+                          retries=3,
+                          max_retry_wait=WAIT,
+                          retry_func=_retry,
+                          wo_retry_func=_wo_exception,
+                          check_response_func=_checked.append)
+
+        self.assertEqual(len(_created), 3)
+        for attempt in _created:
+            self.assertEqual(attempt,
+                            ((HTTP, REQUEST), {
+                                'redirections': 5,
+                                'check_response_func': _checked.append,
+                            }))
+        self.assertEqual(_checked, [])  # not called by '_wo_exception'
+        self.assertEqual(len(_retried), 2)
+        for index, retry in enumerate(_retried):
+            self.assertTrue(retry.http is HTTP)
+            self.assertTrue(retry.http_request is REQUEST)
+            self.assertTrue(isinstance(retry.exc, _Retry))
+            self.assertEqual(retry.num_retries, index + 1)
+            self.assertEqual(retry.max_retry_wait, WAIT)
+
+
 class _Dummy(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
