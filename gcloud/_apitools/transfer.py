@@ -151,24 +151,14 @@ class Download(_Transfer):
         http_client.PARTIAL_CONTENT,
         http_client.REQUESTED_RANGE_NOT_SATISFIABLE,
     ))
-    _REQUIRED_SERIALIZATION_KEYS = set((
-        'auto_transfer', 'progress', 'total_size', 'url'))
 
     def __init__(self, stream, **kwds):
         total_size = kwds.pop('total_size', None)
         super(Download, self).__init__(stream, **kwds)
-        self.__initial_response = None
+        self._initial_response = None
         self.__progress = 0
         self.__total_size = total_size
         self.__encoding = None
-
-    @property
-    def progress(self):
-        return self.__progress
-
-    @property
-    def encoding(self):
-        return self.__encoding
 
     @classmethod
     def FromFile(cls, filename, overwrite=False, auto_transfer=True, **kwds):
@@ -186,42 +176,19 @@ class Download(_Transfer):
         return cls(stream, auto_transfer=auto_transfer, total_size=total_size,
                    **kwds)
 
-    @classmethod
-    def FromData(cls, stream, json_data, http=None, auto_transfer=None,
-                 **kwds):
-        """Create a new Download object from a stream and serialized data."""
-        info = json.loads(json_data)
-        missing_keys = cls._REQUIRED_SERIALIZATION_KEYS - set(info.keys())
-        if missing_keys:
-            raise exceptions.InvalidDataError(
-                'Invalid serialization data, missing keys: %s' % (
-                    ', '.join(missing_keys)))
-        download = cls.FromStream(stream, **kwds)
-        if auto_transfer is not None:
-            download.auto_transfer = auto_transfer
-        else:
-            download.auto_transfer = info['auto_transfer']
-        setattr(download, '_Download__progress', info['progress'])
-        setattr(download, '_Download__total_size', info['total_size'])
-        download._Initialize(  # pylint: disable=protected-access
-            http, info['url'])
-        return download
-
     @property
-    def serialization_data(self):
-        self.EnsureInitialized()
-        return {
-            'auto_transfer': self.auto_transfer,
-            'progress': self.progress,
-            'total_size': self.total_size,
-            'url': self.url,
-        }
+    def progress(self):
+        return self.__progress
 
     @property
     def total_size(self):
         return self.__total_size
 
-    def __str__(self):
+    @property
+    def encoding(self):
+        return self.__encoding
+
+    def __repr__(self):
         if not self.initialized:
             return 'Download (uninitialized)'
         else:
@@ -236,7 +203,7 @@ class Download(_Transfer):
         # necessary.
         http_request.headers['Range'] = 'bytes=0-%d' % (self.chunksize - 1,)
 
-    def __SetTotal(self, info):
+    def _SetTotal(self, info):
         if 'content-range' in info:
             _, _, total = info['content-range'].rpartition('/')
             if total != '*':
@@ -266,14 +233,14 @@ class Download(_Transfer):
             http_request.url = client.FinalizeTransferUrl(http_request.url)
         url = http_request.url
         if self.auto_transfer:
-            end_byte = self.__ComputeEndByte(0)
-            self.__SetRangeHeader(http_request, 0, end_byte)
+            end_byte = self._ComputeEndByte(0)
+            self._SetRangeHeader(http_request, 0, end_byte)
             response = http_wrapper.MakeRequest(
                 self.bytes_http or http, http_request)
             if response.status_code not in self._ACCEPTABLE_STATUSES:
                 raise exceptions.HttpError.FromResponse(response)
-            self.__initial_response = response
-            self.__SetTotal(response.info)
+            self._initial_response = response
+            self._SetTotal(response.info)
             url = response.info.get('content-location', response.request_url)
         if client is not None:
             url = client.FinalizeTransferUrl(url)
@@ -283,7 +250,7 @@ class Download(_Transfer):
         if self.auto_transfer:
             self.StreamInChunks()
 
-    def __NormalizeStartEnd(self, start, end=None):
+    def _NormalizeStartEnd(self, start, end=None):
         if end is not None:
             if start < 0:
                 raise exceptions.TransferInvalidError(
@@ -301,7 +268,7 @@ class Download(_Transfer):
                 start = max(0, start + self.total_size)
             return start, self.total_size - 1
 
-    def __SetRangeHeader(self, request, start, end=None):
+    def _SetRangeHeader(self, request, start, end=None):
         if start < 0:
             request.headers['range'] = 'bytes=%d' % start
         elif end is None:
@@ -309,7 +276,7 @@ class Download(_Transfer):
         else:
             request.headers['range'] = 'bytes=%d-%d' % (start, end)
 
-    def __ComputeEndByte(self, start, end=None, use_chunks=True):
+    def _ComputeEndByte(self, start, end=None, use_chunks=True):
         """Compute the last byte to fetch for this request.
 
         This is all based on the HTTP spec for Range and
@@ -352,18 +319,18 @@ class Download(_Transfer):
 
         return end_byte
 
-    def __GetChunk(self, start, end, additional_headers=None):
+    def _GetChunk(self, start, end, additional_headers=None):
         """Retrieve a chunk, and return the full response."""
         self.EnsureInitialized()
         request = http_wrapper.Request(url=self.url)
-        self.__SetRangeHeader(request, start, end=end)
+        self._SetRangeHeader(request, start, end=end)
         if additional_headers is not None:
             request.headers.update(additional_headers)
         return http_wrapper.MakeRequest(
             self.bytes_http, request, retry_func=self.retry_func,
             retries=self.num_retries)
 
-    def __ProcessResponse(self, response):
+    def _ProcessResponse(self, response):
         """Process response (by updating self and writing to self.stream)."""
         if response.status_code not in self._ACCEPTABLE_STATUSES:
             # We distinguish errors that mean we made a mistake in setting
@@ -414,22 +381,22 @@ class Download(_Transfer):
         self.EnsureInitialized()
         progress_end_normalized = False
         if self.total_size is not None:
-            progress, end_byte = self.__NormalizeStartEnd(start, end)
+            progress, end_byte = self._NormalizeStartEnd(start, end)
             progress_end_normalized = True
         else:
             progress = start
             end_byte = end
         while (not progress_end_normalized or end_byte is None or
                progress <= end_byte):
-            end_byte = self.__ComputeEndByte(progress, end=end_byte,
+            end_byte = self._ComputeEndByte(progress, end=end_byte,
                                              use_chunks=use_chunks)
-            response = self.__GetChunk(progress, end_byte,
+            response = self._GetChunk(progress, end_byte,
                                        additional_headers=additional_headers)
             if not progress_end_normalized:
-                self.__SetTotal(response.info)
-                progress, end_byte = self.__NormalizeStartEnd(start, end)
+                self._SetTotal(response.info)
+                progress, end_byte = self._NormalizeStartEnd(start, end)
                 progress_end_normalized = True
-            response = self.__ProcessResponse(response)
+            response = self._ProcessResponse(response)
             progress += response.length
             if response.length == 0:
                 raise exceptions.TransferRetryError(
@@ -437,6 +404,7 @@ class Download(_Transfer):
 
     def StreamInChunks(self, additional_headers=None):
         """Stream the entire download in chunks."""
+        # XXX:  this function should just go away during cleanup
         self.StreamMedia(additional_headers=additional_headers,
                          use_chunks=True)
 
@@ -454,18 +422,18 @@ class Download(_Transfer):
         """
         self.EnsureInitialized()
         while True:
-            if self.__initial_response is not None:
-                response = self.__initial_response
-                self.__initial_response = None
+            if self._initial_response is not None:
+                response = self._initial_response
+                self._initial_response = None
             else:
-                end_byte = self.__ComputeEndByte(self.progress,
+                end_byte = self._ComputeEndByte(self.progress,
                                                  use_chunks=use_chunks)
-                response = self.__GetChunk(
+                response = self._GetChunk(
                     self.progress, end_byte,
                     additional_headers=additional_headers)
             if self.total_size is None:
-                self.__SetTotal(response.info)
-            response = self.__ProcessResponse(response)
+                self._SetTotal(response.info)
+            response = self._ProcessResponse(response)
             if (response.status_code == http_client.OK or
                     self.progress >= self.total_size):
                 break
