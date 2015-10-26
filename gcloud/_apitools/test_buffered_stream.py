@@ -25,7 +25,6 @@ class Test_BufferedStream(unittest2.TestCase):
         self.assertEqual(len(bufstream), BUFSIZE)
         self.assertFalse(bufstream.stream_exhausted)
         self.assertEqual(bufstream.stream_end_position, BUFSIZE)
-        self.assertEqual(bufstream._bytes_remaining, BUFSIZE)
 
     def test_ctor_start_nonzero_shorter_than_buffer(self):
         from io import BytesIO
@@ -42,6 +41,24 @@ class Test_BufferedStream(unittest2.TestCase):
         self.assertEqual(len(bufstream), len(CONTENT) - START)
         self.assertTrue(bufstream.stream_exhausted)
         self.assertEqual(bufstream.stream_end_position, len(CONTENT))
+
+    def test__bytes_remaining_start_zero_longer_than_buffer(self):
+        from io import BytesIO
+        CONTENT = b'CONTENT GOES HERE'
+        START = 0
+        BUFSIZE = 4
+        stream = BytesIO(CONTENT)
+        bufstream = self._makeOne(stream, START, BUFSIZE)
+        self.assertEqual(bufstream._bytes_remaining, BUFSIZE)
+
+    def test__bytes_remaining_start_zero_shorter_than_buffer(self):
+        from io import BytesIO
+        CONTENT = b'CONTENT GOES HERE'
+        START = 8
+        BUFSIZE = 10
+        stream = BytesIO(CONTENT)
+        stream.read(START)  # already consumed
+        bufstream = self._makeOne(stream, START, BUFSIZE)
         self.assertEqual(bufstream._bytes_remaining, len(CONTENT) - START)
 
     def test_read_w_none(self):
