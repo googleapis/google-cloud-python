@@ -461,19 +461,13 @@ class Upload(_Transfer):
         super(Upload, self).__init__(
             stream, close_stream=close_stream, chunksize=chunksize,
             auto_transfer=auto_transfer, http=http, **kwds)
-        self.__complete = False
-        self.__final_response = None
+        self._final_response = None
+        self._server_chunk_granularity = None
+        self._complete = False
         self.__mime_type = mime_type
         self.__progress = 0
-        self.__server_chunk_granularity = None
         self.__strategy = None
-        self.__total_size = None
-
-        self.total_size = total_size
-
-    @property
-    def progress(self):
-        return self.__progress
+        self.__total_size = total_size
 
     @classmethod
     def FromFile(cls, filename, mime_type=None, auto_transfer=True, **kwds):
@@ -500,63 +494,17 @@ class Upload(_Transfer):
         return cls(stream, mime_type, total_size=total_size,
                    close_stream=False, auto_transfer=auto_transfer, **kwds)
 
-    @classmethod
-    def FromData(cls, stream, json_data, http, auto_transfer=None, **kwds):
-        """Create a new Upload of stream from serialized json_data and http."""
-        info = json.loads(json_data)
-        missing_keys = cls._REQUIRED_SERIALIZATION_KEYS - set(info.keys())
-        if missing_keys:
-            raise exceptions.InvalidDataError(
-                'Invalid serialization data, missing keys: %s' % (
-                    ', '.join(missing_keys)))
-        if 'total_size' in kwds:
-            raise exceptions.InvalidUserInputError(
-                'Cannot override total_size on serialized Upload')
-        upload = cls.FromStream(stream, info['mime_type'],
-                                total_size=info.get('total_size'), **kwds)
-        if isinstance(stream, io.IOBase) and not stream.seekable():
-            raise exceptions.InvalidUserInputError(
-                'Cannot restart resumable upload on non-seekable stream')
-        if auto_transfer is not None:
-            upload.auto_transfer = auto_transfer
-        else:
-            upload.auto_transfer = info['auto_transfer']
-        upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(  # pylint: disable=protected-access
-            http, info['url'])
-        upload.RefreshResumableUploadState()
-        upload.EnsureInitialized()
-        if upload.auto_transfer:
-            upload.StreamInChunks()
-        return upload
-
-    @property
-    def serialization_data(self):
-        self.EnsureInitialized()
-        if self.strategy != RESUMABLE_UPLOAD:
-            raise exceptions.InvalidDataError(
-                'Serialization only supported for resumable uploads')
-        return {
-            'auto_transfer': self.auto_transfer,
-            'mime_type': self.mime_type,
-            'total_size': self.total_size,
-            'url': self.url,
-        }
-
     @property
     def complete(self):
-        return self.__complete
+        return self._complete
 
     @property
     def mime_type(self):
         return self.__mime_type
 
-    def __str__(self):
-        if not self.initialized:
-            return 'Upload (uninitialized)'
-        else:
-            return 'Upload with %d/%s bytes transferred for url %s' % (
-                self.progress, self.total_size or '???', self.url)
+    @property
+    def progress(self):
+        return self.__progress
 
     @property
     def strategy(self):
@@ -579,7 +527,14 @@ class Upload(_Transfer):
         self.EnsureUninitialized()
         self.__total_size = value
 
-    def __SetDefaultUploadStrategy(self, upload_config, http_request):
+    def __repr__(self):
+        if not self.initialized:
+            return 'Upload (uninitialized)'
+        else:
+            return 'Upload with %d/%s bytes transferred for url %s' % (
+                self.progress, self.total_size or '???', self.url)
+
+    def _SetDefaultUploadStrategy(self, upload_config, http_request):
         """Determine and set the default upload strategy for this upload.
 
         We generally prefer simple or multipart, unless we're forced to
@@ -622,27 +577,27 @@ class Upload(_Transfer):
                 'MIME type %s does not match any accepted MIME ranges %s' % (
                     self.mime_type, upload_config.accept))
 
-        self.__SetDefaultUploadStrategy(upload_config, http_request)
+        self._SetDefaultUploadStrategy(upload_config, http_request)
         if self.strategy == SIMPLE_UPLOAD:
             url_builder.relative_path = upload_config.simple_path
             if http_request.body:
                 url_builder.query_params['uploadType'] = 'multipart'
-                self.__ConfigureMultipartRequest(http_request)
+                self._ConfigureMultipartRequest(http_request)
             else:
                 url_builder.query_params['uploadType'] = 'media'
-                self.__ConfigureMediaRequest(http_request)
+                self._ConfigureMediaRequest(http_request)
         else:
             url_builder.relative_path = upload_config.resumable_path
             url_builder.query_params['uploadType'] = 'resumable'
-            self.__ConfigureResumableRequest(http_request)
+            self._ConfigureResumableRequest(http_request)
 
-    def __ConfigureMediaRequest(self, http_request):
+    def _ConfigureMediaRequest(self, http_request):
         """Configure http_request as a simple request for this upload."""
         http_request.headers['content-type'] = self.mime_type
         http_request.body = self.stream.read()
         http_request.loggable_body = '<media body>'
 
-    def __ConfigureMultipartRequest(self, http_request):
+    def _ConfigureMultipartRequest(self, http_request):
         """Configure http_request as a multipart request for this upload."""
         # This is a multipart/related upload.
         msg_root = mime_multipart.MIMEMultipart('related')
@@ -673,14 +628,14 @@ class Upload(_Transfer):
 
         multipart_boundary = msg_root.get_boundary()
         http_request.headers['content-type'] = (
-            'multipart/related; boundary=%r' % multipart_boundary)
+            'multipart/related; boundary="%s"' % multipart_boundary)
 
         body_components = http_request.body.split(multipart_boundary)
         headers, _, _ = body_components[-2].partition('\n\n')
         body_components[-2] = '\n\n'.join([headers, '<media body>\n\n--'])
         http_request.loggable_body = multipart_boundary.join(body_components)
 
-    def __ConfigureResumableRequest(self, http_request):
+    def _ConfigureResumableRequest(self, http_request):
         http_request.headers['X-Upload-Content-Type'] = self.mime_type
         if self.total_size is not None:
             http_request.headers[
@@ -713,18 +668,18 @@ class Upload(_Transfer):
         range_header = self._GetRangeHeaderFromResponse(refresh_response)
         if refresh_response.status_code in (http_client.OK,
                                             http_client.CREATED):
-            self.__complete = True
+            self._complete = True
             self.__progress = self.total_size
             self.stream.seek(self.progress)
             # If we're finished, the refresh response will contain the metadata
             # originally requested. Cache it so it can be returned in
             # StreamInChunks.
-            self.__final_response = refresh_response
+            self._final_response = refresh_response
         elif refresh_response.status_code == http_wrapper.RESUME_INCOMPLETE:
             if range_header is None:
                 self.__progress = 0
             else:
-                self.__progress = self.__GetLastByte(range_header) + 1
+                self.__progress = self._GetLastByte(range_header) + 1
             self.stream.seek(self.progress)
         else:
             raise exceptions.HttpError.FromResponse(refresh_response)
@@ -759,8 +714,11 @@ class Upload(_Transfer):
         if http_response.status_code != http_client.OK:
             raise exceptions.HttpError.FromResponse(http_response)
 
-        self.__server_chunk_granularity = http_response.info.get(
-            'X-Goog-Upload-Chunk-Granularity')
+        # XXX when is this getting converted to an integer?
+        granularity = http_response.info.get('X-Goog-Upload-Chunk-Granularity')
+        if granularity is not None:
+            granularity = int(granularity)
+        self._server_chunk_granularity = granularity
         url = http_response.info['location']
         if client is not None:
             url = client.FinalizeTransferUrl(url)
@@ -773,44 +731,44 @@ class Upload(_Transfer):
         else:
             return http_response
 
-    def __GetLastByte(self, range_header):
+    def _GetLastByte(self, range_header):
         _, _, end = range_header.partition('-')
         # TODO(craigcitro): Validate start == 0?
         return int(end)
 
-    def __ValidateChunksize(self, chunksize=None):
-        if self.__server_chunk_granularity is None:
+    def _ValidateChunksize(self, chunksize=None):
+        if self._server_chunk_granularity is None:
             return
         chunksize = chunksize or self.chunksize
-        if chunksize % self.__server_chunk_granularity:
+        if chunksize % self._server_chunk_granularity:
             raise exceptions.ConfigurationValueError(
                 'Server requires chunksize to be a multiple of %d',
-                self.__server_chunk_granularity)
+                self._server_chunk_granularity)
 
-    def __StreamMedia(self, additional_headers=None, use_chunks=True):
+    def _StreamMedia(self, additional_headers=None, use_chunks=True):
         """Helper function for StreamMedia / StreamInChunks."""
         if self.strategy != RESUMABLE_UPLOAD:
             raise exceptions.InvalidUserInputError(
                 'Cannot stream non-resumable upload')
         # final_response is set if we resumed an already-completed upload.
-        response = self.__final_response
-        send_func = self.__SendChunk if use_chunks else self.__SendMediaBody
+        response = self._final_response
+        send_func = self._SendChunk if use_chunks else self._SendMediaBody
         if use_chunks:
-            self.__ValidateChunksize(self.chunksize)
+            self._ValidateChunksize(self.chunksize)
         self.EnsureInitialized()
         while not self.complete:
             response = send_func(self.stream.tell(),
                                  additional_headers=additional_headers)
             if response.status_code in (http_client.OK, http_client.CREATED):
-                self.__complete = True
+                self._complete = True
                 break
-            self.__progress = self.__GetLastByte(response.info['range'])
+            self.__progress = self._GetLastByte(response.info['range'])
             if self.progress + 1 != self.stream.tell():
                 # TODO(craigcitro): Add a better way to recover here.
                 raise exceptions.CommunicationError(
                     'Failed to transfer all bytes in chunk, upload paused at '
                     'byte %d' % self.progress)
-        if self.__complete and hasattr(self.stream, 'seek'):
+        if self.complete and hasattr(self.stream, 'seek'):
             current_pos = self.stream.tell()
             self.stream.seek(0, os.SEEK_END)
             end_pos = self.stream.tell()
@@ -831,14 +789,14 @@ class Upload(_Transfer):
         Returns:
           http_wrapper.Response of final response.
         """
-        return self.__StreamMedia(additional_headers=additional_headers,
+        return self._StreamMedia(additional_headers=additional_headers,
                                   use_chunks=False)
 
     def StreamInChunks(self, additional_headers=None):
         """Send this (resumable) upload in chunks."""
-        return self.__StreamMedia(additional_headers=additional_headers)
+        return self._StreamMedia(additional_headers=additional_headers)
 
-    def __SendMediaRequest(self, request, end):
+    def _SendMediaRequest(self, request, end):
         """Request helper function for SendMediaBody & SendChunk."""
         response = http_wrapper.MakeRequest(
             self.bytes_http, request, retry_func=self.retry_func,
@@ -850,13 +808,13 @@ class Upload(_Transfer):
             self.RefreshResumableUploadState()
             raise exceptions.HttpError.FromResponse(response)
         if response.status_code == http_wrapper.RESUME_INCOMPLETE:
-            last_byte = self.__GetLastByte(
+            last_byte = self._GetLastByte(
                 self._GetRangeHeaderFromResponse(response))
             if last_byte + 1 != end:
                 self.stream.seek(last_byte)
         return response
 
-    def __SendMediaBody(self, start, additional_headers=None):
+    def _SendMediaBody(self, start, additional_headers=None):
         """Send the entire media stream in a single request."""
         self.EnsureInitialized()
         if self.total_size is None:
@@ -879,9 +837,9 @@ class Upload(_Transfer):
         if additional_headers:
             request.headers.update(additional_headers)
 
-        return self.__SendMediaRequest(request, self.total_size)
+        return self._SendMediaRequest(request, self.total_size)
 
-    def __SendChunk(self, start, additional_headers=None):
+    def _SendChunk(self, start, additional_headers=None):
         """Send the specified chunk."""
         self.EnsureInitialized()
         no_log_body = self.total_size is None
@@ -926,4 +884,4 @@ class Upload(_Transfer):
         if additional_headers:
             request.headers.update(additional_headers)
 
-        return self.__SendMediaRequest(request, end)
+        return self._SendMediaRequest(request, end)
