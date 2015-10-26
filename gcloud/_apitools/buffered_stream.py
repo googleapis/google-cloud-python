@@ -20,7 +20,7 @@ class BufferedStream(object):
         self._stream_at_end = len(self._buffered_data) < size
         self._end_pos = self._start_pos + len(self._buffered_data)
 
-    def __str__(self):  # pragma: NO COVER
+    def __repr__(self):
         return ('Buffered stream %s from position %s-%s with %s '
                 'bytes remaining' % (self._stream, self._start_pos,
                                      self._end_pos, self._bytes_remaining))
