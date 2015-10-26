@@ -9,26 +9,26 @@ class StreamSlice(object):
     """Provides a slice-like object for streams."""
 
     def __init__(self, stream, max_bytes):
-        self.__stream = stream
-        self.__remaining_bytes = max_bytes
-        self.__max_bytes = max_bytes
+        self._stream = stream
+        self._remaining_bytes = max_bytes
+        self._max_bytes = max_bytes
 
-    def __str__(self):
+    def __repr__(self):
         return 'Slice of stream %s with %s/%s bytes not yet read' % (
-            self.__stream, self.__remaining_bytes, self.__max_bytes)
+            self._stream, self._remaining_bytes, self._max_bytes)
 
     def __len__(self):
-        return self.__max_bytes
+        return self._max_bytes
 
     def __nonzero__(self):
         # For 32-bit python2.x, len() cannot exceed a 32-bit number; avoid
         # accidental len() calls from httplib in the form of "if this_object:".
-        return bool(self.__max_bytes)
+        return bool(self._max_bytes)
 
     @property
     def length(self):
         # For 32-bit python2.x, len() cannot exceed a 32-bit number.
-        return self.__max_bytes
+        return self._max_bytes
 
     def read(self, size=None):  # pylint: disable=missing-docstring
         """Read at most size bytes from this slice.
@@ -50,15 +50,15 @@ class StreamSlice(object):
 
         """
         if size is not None:
-            read_size = min(size, self.__remaining_bytes)
+            read_size = min(size, self._remaining_bytes)
         else:
-            read_size = self.__remaining_bytes
-        data = self.__stream.read(read_size)
+            read_size = self._remaining_bytes
+        data = self._stream.read(read_size)
         if read_size > 0 and not data:
             raise exceptions.StreamExhausted(
                 'Not enough bytes in stream; expected %d, exhausted '
                 'after %d' % (
-                    self.__max_bytes,
-                    self.__max_bytes - self.__remaining_bytes))
-        self.__remaining_bytes -= len(data)
+                    self._max_bytes,
+                    self._max_bytes - self._remaining_bytes))
+        self._remaining_bytes -= len(data)
         return data
