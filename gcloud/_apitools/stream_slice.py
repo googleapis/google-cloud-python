@@ -13,7 +13,7 @@ class StreamSlice(object):
         self._remaining_bytes = max_bytes
         self._max_bytes = max_bytes
 
-    def __str__(self):  # pragma: NO COVER
+    def __repr__(self):
         return 'Slice of stream %s with %s/%s bytes not yet read' % (
             self._stream, self._remaining_bytes, self._max_bytes)
 
