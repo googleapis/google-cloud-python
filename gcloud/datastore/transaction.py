@@ -85,7 +85,12 @@ class Transaction(Batch):
       ...     transaction.commit()
 
     :type client: :class:`gcloud.datastore.client.Client`
-    :param client: The client used to connect to datastore.
+    :param client: the client used to connect to datastore.
+
+    :type serializable: boolean
+    :param serializable: if true, perform this transaction at
+                        ``serializable`` isolation level;  otherwise, perform
+                        it at ``snapshot`` level.
     """
 
     _INITIAL = 0
@@ -100,10 +105,11 @@ class Transaction(Batch):
     _FINISHED = 3
     """Enum value for _FINISHED status of transaction."""
 
-    def __init__(self, client):
+    def __init__(self, client, serializable=False):
         super(Transaction, self).__init__(client)
         self._id = None
         self._status = self._INITIAL
+        self._serializable = serializable
 
     @property
     def id(self):
@@ -113,6 +119,17 @@ class Transaction(Batch):
         :returns: The ID of the current transaction.
         """
         return self._id
+
+    @property
+    def serializable(self):
+        """Should this transaction be run at ``serializable`` isolation
+
+        :rtype: boolean
+        :returns: if true, perform this transaction at
+                  ``serializable`` isolation level;  otherwise, perform
+                  it at ``snapshot`` level.
+        """
+        return self._serializable
 
     def current(self):
         """Return the topmost transaction.
@@ -138,7 +155,8 @@ class Transaction(Batch):
         if self._status != self._INITIAL:
             raise ValueError('Transaction already started previously.')
         self._status = self._IN_PROGRESS
-        self._id = self.connection.begin_transaction(self.dataset_id)
+        self._id = self.connection.begin_transaction(
+            self.dataset_id, serializable=self.serializable)
 
     def rollback(self):
         """Rolls back the current transaction.
