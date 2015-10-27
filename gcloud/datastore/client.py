@@ -440,12 +440,17 @@ class Client(_BaseClient):
         """
         return Batch(self)
 
-    def transaction(self):
+    def transaction(self, serializable=False):
         """Proxy to :class:`gcloud.datastore.transaction.Transaction`.
 
         Passes our ``dataset_id``.
+
+        :type serializable: boolean
+        :param serializable: if true, perform this transaction at
+                             ``serializable`` isolation level;  otherwise,
+                             perform it at ``snapshot`` level.
         """
-        return Transaction(self)
+        return Transaction(self, serializable=serializable)
 
     def query(self, **kwargs):
         """Proxy to :class:`gcloud.datastore.query.Query`.
