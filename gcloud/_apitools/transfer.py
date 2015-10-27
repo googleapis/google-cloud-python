@@ -695,6 +695,15 @@ class Upload(_Transfer):
         if self.strategy != RESUMABLE_UPLOAD:
             return
         self.EnsureInitialized()
+        # XXX Per RFC 2616/7231, a 'PUT' request is absolutely inappropriate
+        # here: # it is intended to be used to replace the entire resource,
+        # not to # query for a status.
+        # If the back-end doesn't provide a way to query for this state
+        # via a 'GET' request, somebody should be spanked.
+        # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+        # http://tools.ietf.org/html/rfc7231#section-4.3.4
+        # The violation is documented:
+        # https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resume-upload
         refresh_request = http_wrapper.Request(
             url=self.url, http_method='PUT',
             headers={'Content-Range': 'bytes */*'})
@@ -721,6 +730,15 @@ class Upload(_Transfer):
             raise exceptions.HttpError.FromResponse(refresh_response)
 
     def _GetRangeHeaderFromResponse(self, response):
+        # XXX Per RFC 2616/7233, 'Range' is a request header, not a response
+        # header: # If the back-end is actually setting 'Range' on responses,
+        # somebody should be spanked:  it should be sending 'Content-Range'
+        # (including the # '/<length>' trailer).
+        # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+        # http://tools.ietf.org/html/rfc7233#section-3.1
+        # http://tools.ietf.org/html/rfc7233#section-4.2
+        # The violation is documented:
+        # https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#chunking
         return response.info.get('Range', response.info.get('range'))
 
     def InitializeUpload(self, http_request, http=None, client=None):
