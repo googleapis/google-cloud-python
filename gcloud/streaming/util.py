@@ -3,14 +3,14 @@
 
 Pruned to include only helpers used by other vendored-in modules:
 
-``gcloud._apidools.transfer`` uses:
+:mod:`gcloud.streaming.http_wrapper` uses:
 
-- Typecheck
-- AcceptableMimeType
+- :function:`CalculateWaitForRetry`
 
-``gcloud.streaming.http_wrapper`` uses:
+:mod:`gcloud._apidools.transfer` uses:
 
-- CalculateWaitForRetry
+- :function:`Typecheck`
+- :function:`AcceptableMimeType`
 """
 
 import random

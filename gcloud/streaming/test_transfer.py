@@ -307,7 +307,7 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(MakeRequest=requester)):
+                     MakeRequest=requester):
             with self.assertRaises(HttpError):
                 download.InitializeDownload(request, http)
 
@@ -327,7 +327,7 @@ class Test_Download(unittest2.TestCase):
         response = _makeResponse(http_client.NO_CONTENT, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, http_wrapper=_Dummy(MakeRequest=requester)):
+        with _Monkey(MUT, MakeRequest=requester):
             download.InitializeDownload(request, http)
 
         self.assertTrue(download._initial_response is None)
@@ -450,9 +450,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             found = download._GetChunk(0, 10)
 
         self.assertTrue(found is response)
@@ -473,9 +472,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             found = download._GetChunk(0, 10, additional_headers=headers)
 
         self.assertTrue(found is response)
@@ -580,9 +578,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.GetRange(0, LEN)
 
         self.assertTrue(len(requester._requested), 1)
@@ -611,9 +608,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.GetRange(START)
 
         self.assertTrue(len(requester._requested), 1)
@@ -644,9 +640,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.GetRange(0, PARTIAL_LEN, additional_headers=headers)
 
         self.assertTrue(len(requester._requested), 1)
@@ -676,9 +671,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             with self.assertRaises(TransferRetryError):
                 download.GetRange(START)
 
@@ -707,9 +701,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.GetRange(0, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
@@ -744,9 +737,8 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: _requests.pop(0),
-                        MakeRequest=requester)):
+                     Request=lambda url: _requests.pop(0),
+                     MakeRequest=requester):
             download.GetRange(0)
 
         self.assertTrue(len(requester._requested), 2)
@@ -785,19 +777,14 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(_called_with, [(headers, True)])
 
     def test_StreamMedia_not_initialized(self):
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import TransferInvalidError
         download = self._makeOne(_Stream())
 
-        with _Monkey(MUT, http_wrapper=_Dummy()):
-            with self.assertRaises(TransferInvalidError):
-                found = download.StreamMedia()
+        with self.assertRaises(TransferInvalidError):
+            found = download.StreamMedia()
 
     def test_StreamMedia_w_initial_response_complete(self):
         from six.moves import http_client
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
@@ -809,9 +796,7 @@ class Test_Download(unittest2.TestCase):
         http = object()
         download._Initialize(http, _Request.URL)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy()):
-            download.StreamMedia()
+        download.StreamMedia()
 
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
@@ -842,9 +827,8 @@ class Test_Download(unittest2.TestCase):
         request = _Request()
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.StreamMedia()
 
         self.assertTrue(len(requester._requested), 1)
@@ -874,9 +858,8 @@ class Test_Download(unittest2.TestCase):
         request = _Request()
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.StreamMedia()
 
         self.assertTrue(len(requester._requested), 1)
@@ -906,9 +889,8 @@ class Test_Download(unittest2.TestCase):
         request = _Request()
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     MakeRequest=requester):
             download.StreamMedia(additional_headers=headers, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
@@ -1283,9 +1265,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             upload.RefreshResumableUploadState()
 
         self.assertTrue(upload.complete)
@@ -1311,9 +1292,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             upload.RefreshResumableUploadState()
 
         self.assertTrue(upload.complete)
@@ -1339,10 +1319,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             upload.RefreshResumableUploadState()
 
         self.assertFalse(upload.complete)
@@ -1367,10 +1345,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             upload.RefreshResumableUploadState()
 
         self.assertFalse(upload.complete)
@@ -1383,7 +1359,6 @@ class Test_Upload(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import HttpError
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1396,10 +1371,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             with self.assertRaises(HttpError):
                 upload.RefreshResumableUploadState()
 
@@ -1456,7 +1429,6 @@ class Test_Upload(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import HttpError
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1466,10 +1438,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.FORBIDDEN)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
+        with _Monkey(MUT, MakeRequest=requester):
             with self.assertRaises(HttpError):
                 upload.InitializeUpload(request, http=object())
 
@@ -1477,7 +1446,6 @@ class Test_Upload(unittest2.TestCase):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1488,10 +1456,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.OK, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
+        with _Monkey(MUT, MakeRequest=requester):
             upload.InitializeUpload(request, http=object())
 
         self.assertEqual(upload._server_chunk_granularity, None)
@@ -1504,7 +1469,6 @@ class Test_Upload(unittest2.TestCase):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1521,11 +1485,9 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response, chunk_response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
+                     Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                        MakeRequest=requester)):
+                     MakeRequest=requester):
             upload.InitializeUpload(request, client=client)
 
         self.assertEqual(upload._server_chunk_granularity, 100)
@@ -1651,11 +1613,9 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
+                     Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                        MakeRequest=requester)):
+                     MakeRequest=requester):
             response = upload._StreamMedia()
 
         self.assertEqual(len(requester._responses), 0)
@@ -1699,11 +1659,9 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
+                     Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                        MakeRequest=requester)):
+                     MakeRequest=requester):
             with self.assertRaises(CommunicationError):
                 upload._StreamMedia(additional_headers=headers)
 
@@ -1766,10 +1724,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(RESUME_INCOMPLETE, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
+        with _Monkey(MUT, MakeRequest=requester):
             upload._SendMediaRequest(request, 9)
 
         self.assertEqual(len(requester._responses), 0)
@@ -1805,10 +1760,8 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     MakeRequest=requester):
             with self.assertRaises(HttpError):
                 upload._SendMediaRequest(request, 9)
 

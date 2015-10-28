@@ -25,7 +25,6 @@ import time
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from gcloud.streaming import http_wrapper
 from gcloud.streaming import transfer
 
 from gcloud._helpers import _RFC3339_MICROS
@@ -35,6 +34,8 @@ from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
+from gcloud.streaming.http_wrapper import Request
+from gcloud.streaming.http_wrapper import MakeRequest
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -263,7 +264,7 @@ class Blob(_PropertyMixin):
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
-        request = http_wrapper.Request(download_url, 'GET', headers)
+        request = Request(download_url, 'GET', headers)
 
         # Use the private ``_connection`` rather than the public
         # ``.connection``, since the public connection may be a batch. A
@@ -397,7 +398,7 @@ class Blob(_PropertyMixin):
                                               path=self.bucket.path + '/o')
 
         # Use apitools 'Upload' facility.
-        request = http_wrapper.Request(upload_url, 'POST', headers)
+        request = Request(upload_url, 'POST', headers)
 
         upload.ConfigureRequest(upload_config, request, url_builder)
         query_params = url_builder.query_params
@@ -410,7 +411,7 @@ class Blob(_PropertyMixin):
         if upload.strategy == transfer.RESUMABLE_UPLOAD:
             http_response = upload.StreamInChunks()
         else:
-            http_response = http_wrapper.MakeRequest(connection.http, request,
+            http_response = MakeRequest(connection.http, request,
                                                      retries=num_retries)
         response_content = http_response.content
         if not isinstance(response_content,

@@ -3,6 +3,20 @@
 
 This library wraps the underlying http library we use, which is
 currently httplib2.
+
+
+:mod:`gcloud.storage.blob` uses:
+
+- :class:`Request`
+- :function:`MakeRequest`
+
+:mod:`gcloud._apidools.transfer` uses:
+
+- :function:`GetHttp`
+- :function:`HandleExceptionsAndRebuildHttpConnections`
+- :function:`MakeRequest`
+- :class:`Request`
+- :const:`RESUME_INCOMPLETE`
 """
 
 import collections
@@ -16,8 +30,10 @@ import six
 from six.moves import http_client
 from six.moves.urllib import parse
 
-from gcloud.streaming import exceptions
-from gcloud.streaming import util
+from gcloud.streaming.exceptions import BadStatusCodeError
+from gcloud.streaming.exceptions import RequestError
+from gcloud.streaming.exceptions import RetryAfterError
+from gcloud.streaming.util import CalculateWaitForRetry
 
 __all__ = [
     'CheckResponse',
@@ -112,7 +128,7 @@ class Request(object):
     @loggable_body.setter
     def loggable_body(self, value):
         if self.body is None:
-            raise exceptions.RequestError(
+            raise RequestError(
                 'Cannot set loggable body on request with no body')
         self.__loggable_body = value
 
@@ -192,13 +208,13 @@ class Response(collections.namedtuple(
 def CheckResponse(response):
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.
-        raise exceptions.RequestError(
+        raise RequestError(
             'Request did not return a response.')
     elif (response.status_code >= 500 or
           response.status_code == TOO_MANY_REQUESTS):
-        raise exceptions.BadStatusCodeError.FromResponse(response)
+        raise BadStatusCodeError.FromResponse(response)
     elif response.retry_after:
-        raise exceptions.RetryAfterError.FromResponse(response)
+        raise RetryAfterError.FromResponse(response)
 
 
 def RebuildHttpConnections(http):
@@ -255,13 +271,13 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
         # oauth2client, need to handle it here.
         logging.debug('Response content was invalid (%s), retrying',
                       retry_args.exc)
-    elif isinstance(retry_args.exc, exceptions.RequestError):
+    elif isinstance(retry_args.exc, RequestError):
         logging.debug('Request returned no response, retrying')
     # API-level failures
-    elif isinstance(retry_args.exc, exceptions.BadStatusCodeError):
+    elif isinstance(retry_args.exc, BadStatusCodeError):
         logging.debug('Response returned status %s, retrying',
                       retry_args.exc.status_code)
-    elif isinstance(retry_args.exc, exceptions.RetryAfterError):
+    elif isinstance(retry_args.exc, RetryAfterError):
         logging.debug('Response returned a retry-after header, retrying')
         retry_after = retry_args.exc.retry_after
     else:
@@ -270,7 +286,7 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
     logging.debug('Retrying request to url %s after exception %s',
                   retry_args.http_request.url, retry_args.exc)
     time.sleep(
-        retry_after or util.CalculateWaitForRetry(
+        retry_after or CalculateWaitForRetry(
             retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
@@ -314,7 +330,7 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
             redirections=redirections, connection_type=connection_type)
 
     if info is None:
-        raise exceptions.RequestError()
+        raise RequestError()
 
     response = Response(info, content, http_request.url)
     check_response_func(response)

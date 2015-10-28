@@ -1,5 +1,30 @@
 # pylint: skip-file
-"""Exceptions for generated client libraries."""
+"""Exceptions for generated client libraries.
+
+:mod:`gcloud.streaming.http_wrapper` uses:
+
+- :exc:`BadStatusCodeError`
+- :exc:`RequestError`
+- :exc:`RetryAfterError`
+
+:mod:`gcloud._apidools.transfer` uses:
+
+- :exc:`CommunicationError`
+- :exc:`ConfigurationValueError`
+- :exc:`HttpError`
+- :exc:`InvalidDataError`
+- :exc:`InvalidUserInputError`
+- :exc:`NotFoundError`
+- :exc:`TransferInvalidError`
+- :exc:`TransferRetryError`
+- :exc:`UserError`
+
+:mod:`gcloud._apidools.util` uses:
+
+- :exc:`GeneratedClientError`
+- :exc:`InvalidUserInputError`
+- :exc:`TypecheckError`
+"""
 
 
 class Error(Exception):
