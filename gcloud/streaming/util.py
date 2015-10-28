@@ -15,7 +15,7 @@ Pruned to include only helpers used by other vendored-in modules:
 
 import random
 
-from gcloud.streaming.exceptions import GeneratedClientError
+from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import InvalidUserInputError
 from gcloud.streaming.exceptions import TypecheckError
 
@@ -74,7 +74,7 @@ def acceptable_mime_type(accept_patterns, mime_type):
             'Invalid MIME type: "%s"' % mime_type)
     unsupported_patterns = [p for p in accept_patterns if ';' in p]
     if unsupported_patterns:
-        raise GeneratedClientError(
+        raise ConfigurationValueError(
             'MIME patterns with parameter unsupported: "%s"' % ', '.join(
                 unsupported_patterns))
 

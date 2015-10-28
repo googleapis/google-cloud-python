@@ -360,9 +360,6 @@ def make_api_request(http, http_request, retries=7, max_retry_wait=60,
       wo_retry_func: Function to make HTTP request without retries.  Arguments
           are: (http, http_request, redirections, check_response_func)
 
-    Raises:
-      InvalidDataFromServerError: if there is no response after retries.
-
     Returns:
       A Response object.
 

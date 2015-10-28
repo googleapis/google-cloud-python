@@ -62,8 +62,8 @@ class Test_acceptable_mime_type(unittest2.TestCase):
             ('Invalid MIME type: "BOGUS"',))
 
     def test_accept_pattern_w_semicolon(self):
-        from gcloud.streaming.exceptions import GeneratedClientError
-        with self.assertRaises(GeneratedClientError) as err:
+        from gcloud.streaming.exceptions import ConfigurationValueError
+        with self.assertRaises(ConfigurationValueError) as err:
             self._callFUT(['text/*;charset=utf-8'], 'text/plain')
         self.assertEqual(
             err.exception.args,
