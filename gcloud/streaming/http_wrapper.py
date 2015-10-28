@@ -36,13 +36,13 @@ from gcloud.streaming.exceptions import RetryAfterError
 from gcloud.streaming.util import calculate_wait_for_retry
 
 __all__ = [
-    'CheckResponse',
     'get_http',
     'handle_http_exceptions',
     'make_api_request',
-    'RebuildHttpConnections',
     'Request',
     'Response',
+    'RESUME_INCOMPLETE',
+    'TOO_MANY_REQUESTS',
 ]
 
 
@@ -61,9 +61,9 @@ _REDIRECT_STATUS_CODES = (
 # http_request: A http_wrapper.Request.
 # exc: Exception being raised.
 # num_retries: Number of retries consumed; used for exponential backoff.
-ExceptionRetryArgs = collections.namedtuple(
-    'ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
-                           'max_retry_wait'])
+_ExceptionRetryArgs = collections.namedtuple(
+    '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
+                            'max_retry_wait'])
 
 
 @contextlib.contextmanager
@@ -173,7 +173,7 @@ class Response(collections.namedtuple(
         Returns:
           Response length (as int or long)
         """
-        def ProcessContentRange(content_range):
+        def _process_content_range(content_range):
             _, _, range_spec = content_range.partition(' ')
             byte_range, _, _ = range_spec.partition('/')
             start, _, end = byte_range.partition('-')
@@ -183,11 +183,11 @@ class Response(collections.namedtuple(
             # httplib2 rewrites content-length in the case of a compressed
             # transfer; we can't trust the content-length header in that
             # case, but we *can* trust content-range, if it's present.
-            return ProcessContentRange(self.info['content-range'])
+            return _process_content_range(self.info['content-range'])
         elif 'content-length' in self.info:
             return int(self.info.get('content-length'))
         elif 'content-range' in self.info:
-            return ProcessContentRange(self.info['content-range'])
+            return _process_content_range(self.info['content-range'])
         return len(self.content)
 
     @property
@@ -205,7 +205,7 @@ class Response(collections.namedtuple(
                 'location' in self.info)
 
 
-def CheckResponse(response):
+def _check_response(response):
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.
         raise RequestError(
@@ -217,7 +217,7 @@ def CheckResponse(response):
         raise RetryAfterError.FromResponse(response)
 
 
-def RebuildHttpConnections(http):
+def _rebuild_http_connections(http):
     """Rebuilds all http connections in the httplib2.Http instance.
 
     httplib2 overloads the map in http.connections to contain two different
@@ -242,7 +242,7 @@ def handle_http_exceptions(retry_args):
     This catches known failures and rebuilds the underlying HTTP connections.
 
     Args:
-      retry_args: An ExceptionRetryArgs tuple.
+      retry_args: An _ExceptionRetryArgs tuple.
     """
     # If the server indicates how long to wait, use that value.  Otherwise,
     # calculate the wait time on our own.
@@ -282,7 +282,7 @@ def handle_http_exceptions(retry_args):
         retry_after = retry_args.exc.retry_after
     else:
         raise
-    RebuildHttpConnections(retry_args.http)
+    _rebuild_http_connections(retry_args.http)
     logging.debug('Retrying request to url %s after exception %s',
                   retry_args.http_request.url, retry_args.exc)
     time.sleep(
@@ -290,8 +290,8 @@ def handle_http_exceptions(retry_args):
             retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
-def _MakeRequestNoRetry(http, http_request, redirections=5,
-                        check_response_func=CheckResponse):
+def _make_api_request_no_retry(http, http_request, redirections=5,
+                               check_response_func=_check_response):
     """Send http_request via the given http.
 
     This wrapper exists to handle translation between the plain httplib2
@@ -340,8 +340,8 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
 def make_api_request(http, http_request, retries=7, max_retry_wait=60,
                 redirections=5,
                 retry_func=handle_http_exceptions,
-                check_response_func=CheckResponse,
-                wo_retry_func=_MakeRequestNoRetry):
+                check_response_func=_check_response,
+                wo_retry_func=_make_api_request_no_retry):
     """Send http_request via the given http, performing error/retry handling.
 
     Args:
@@ -380,14 +380,14 @@ def make_api_request(http, http_request, retries=7, max_retry_wait=60,
             if retry >= retries:
                 raise
             else:
-                retry_func(ExceptionRetryArgs(
+                retry_func(_ExceptionRetryArgs(
                     http, http_request, e, retry, max_retry_wait))
 
 
 _HTTP_FACTORIES = []
 
 
-def _RegisterHttpFactory(factory):
+def _register_http_factory(factory):
     _HTTP_FACTORIES.append(factory)
 
 

@@ -200,11 +200,11 @@ class Test_Response(unittest2.TestCase):
         self.assertTrue(response.is_redirect)
 
 
-class Test_CheckResponse(unittest2.TestCase):
+class Test__check_response(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import CheckResponse
-        return CheckResponse(*args, **kw)
+        from gcloud.streaming.http_wrapper import _check_response
+        return _check_response(*args, **kw)
 
     def test_w_none(self):
         from gcloud.streaming.exceptions import RequestError
@@ -237,11 +237,11 @@ class Test_CheckResponse(unittest2.TestCase):
         self._callFUT(_Response(200))
 
 
-class Test_RebuildHttpConnections(unittest2.TestCase):
+class Test__rebuild_http_connections(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import RebuildHttpConnections
-        return RebuildHttpConnections(*args, **kw)
+        from gcloud.streaming.http_wrapper import _rebuild_http_connections
+        return _rebuild_http_connections(*args, **kw)
 
     def test_wo_connections(self):
         http = object()
@@ -497,11 +497,11 @@ class Test_handle_http_exceptions(unittest2.TestCase):
                     self._callFUT(retry_args)
 
 
-class Test__MakeRequestNoRetry(unittest2.TestCase):
+class Test___make_api_request_no_retry(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _MakeRequestNoRetry
-        return _MakeRequestNoRetry(*args, **kw)
+        from gcloud.streaming.http_wrapper import _make_api_request_no_retry
+        return _make_api_request_no_retry(*args, **kw)
 
     def _verify_requested(self, http, request,
                           redirections=5, connection_type=None):
@@ -721,11 +721,11 @@ class Test_make_api_request(unittest2.TestCase):
             self.assertEqual(retry.max_retry_wait, WAIT)
 
 
-class Test__RegisterHttpFactory(unittest2.TestCase):
+class Test__register_http_factory(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _RegisterHttpFactory
-        return _RegisterHttpFactory(*args, **kw)
+        from gcloud.streaming.http_wrapper import _register_http_factory
+        return _register_http_factory(*args, **kw)
 
     def test_it(self):
         from gcloud._testing import _Monkey
