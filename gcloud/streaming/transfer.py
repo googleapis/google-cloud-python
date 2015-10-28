@@ -1,15 +1,11 @@
 # pylint: skip-file
 """Upload and download support for apitools."""
-from __future__ import print_function
 
 import email.generator as email_generator
 import email.mime.multipart as mime_multipart
 import email.mime.nonmultipart as mime_nonmultipart
-import io
-import json
 import mimetypes
 import os
-import threading
 
 import six
 from six.moves import http_client
