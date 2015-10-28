@@ -45,10 +45,6 @@ __all__ = [
     'Upload',
     'RESUMABLE_UPLOAD',
     'SIMPLE_UPLOAD',
-    'DownloadProgressPrinter',
-    'DownloadCompletePrinter',
-    'UploadProgressPrinter',
-    'UploadCompletePrinter',
 ]
 
 _RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
