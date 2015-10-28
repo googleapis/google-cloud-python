@@ -27,8 +27,8 @@ from gcloud.streaming.http_wrapper import MakeRequest
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
 from gcloud.streaming.stream_slice import StreamSlice
-from gcloud.streaming.util import AcceptableMimeType
-from gcloud.streaming.util import Typecheck
+from gcloud.streaming.util import acceptable_mime_type
+from gcloud.streaming.util import type_check
 
 __all__ = [
     'Download',
@@ -92,7 +92,7 @@ class _Transfer(object):
 
     @num_retries.setter
     def num_retries(self, value):
-        Typecheck(value, six.integer_types)
+        type_check(value, six.integer_types)
         if value < 0:
             raise InvalidDataError(
                 'Cannot have negative value for num_retries')
@@ -582,7 +582,7 @@ class Upload(_Transfer):
                 'Upload too big: %s larger than max size %s' % (
                     self.total_size, upload_config.max_size))
         # Validate mime type
-        if not AcceptableMimeType(upload_config.accept, self.mime_type):
+        if not acceptable_mime_type(upload_config.accept, self.mime_type):
             raise InvalidUserInputError(
                 'MIME type %s does not match any accepted MIME ranges %s' % (
                     self.mime_type, upload_config.accept))

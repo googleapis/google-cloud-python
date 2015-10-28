@@ -2,11 +2,11 @@
 import unittest2
 
 
-class Test_TypeCheck(unittest2.TestCase):
+class Test_type_check(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import Typecheck
-        return Typecheck(*args, **kw)
+        from gcloud.streaming.util import type_check
+        return type_check(*args, **kw)
 
     def test_pass(self):
         self.assertEqual(self._callFUT(123, int), 123)
@@ -28,11 +28,11 @@ class Test_TypeCheck(unittest2.TestCase):
             self._callFUT(123, (list, tuple))
 
 
-class Test_CalculateWaitForRetry(unittest2.TestCase):
+class Test_calculate_wait_for_retry(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import CalculateWaitForRetry
-        return CalculateWaitForRetry(*args, **kw)
+        from gcloud.streaming.util import calculate_wait_for_retry
+        return calculate_wait_for_retry(*args, **kw)
 
     def test_w_negative_jitter_lt_max_wait(self):
         import random
@@ -47,11 +47,11 @@ class Test_CalculateWaitForRetry(unittest2.TestCase):
             self.assertEqual(self._callFUT(4, 10), 10)
 
 
-class Test_AcceptableMimeType(unittest2.TestCase):
+class Test_acceptable_mime_type(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import AcceptableMimeType
-        return AcceptableMimeType(*args, **kw)
+        from gcloud.streaming.util import acceptable_mime_type
+        return acceptable_mime_type(*args, **kw)
 
     def test_pattern_wo_slash(self):
         from gcloud.streaming.exceptions import InvalidUserInputError

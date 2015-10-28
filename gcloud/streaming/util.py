@@ -5,20 +5,22 @@ Pruned to include only helpers used by other vendored-in modules:
 
 :mod:`gcloud.streaming.http_wrapper` uses:
 
-- :function:`CalculateWaitForRetry`
+- :function:`calculate_wait_for_retry`
 
 :mod:`gcloud._apidools.transfer` uses:
 
-- :function:`Typecheck`
-- :function:`AcceptableMimeType`
+- :function:`type_check`
+- :function:`acceptable_mime_type`
 """
 
 import random
 
-from gcloud.streaming import exceptions
+from gcloud.streaming.exceptions import GeneratedClientError
+from gcloud.streaming.exceptions import InvalidUserInputError
+from gcloud.streaming.exceptions import TypecheckError
 
 
-def Typecheck(arg, arg_type, msg=None):
+def type_check(arg, arg_type, msg=None):
     if not isinstance(arg, arg_type):
         if msg is None:
             if isinstance(arg_type, tuple):
@@ -26,11 +28,11 @@ def Typecheck(arg, arg_type, msg=None):
                     type(arg), arg_type)
             else:
                 msg = 'Type of arg is "%s", not "%s"' % (type(arg), arg_type)
-        raise exceptions.TypecheckError(msg)
+        raise TypecheckError(msg)
     return arg
 
 
-def CalculateWaitForRetry(retry_attempt, max_wait=60):
+def calculate_wait_for_retry(retry_attempt, max_wait=60):
     """Calculates amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts. A
@@ -52,7 +54,7 @@ def CalculateWaitForRetry(retry_attempt, max_wait=60):
     return max(1, min(wait_time, max_wait))
 
 
-def AcceptableMimeType(accept_patterns, mime_type):
+def acceptable_mime_type(accept_patterns, mime_type):
     """Return True iff mime_type is acceptable for one of accept_patterns.
 
     Note that this function assumes that all patterns in accept_patterns
@@ -68,11 +70,11 @@ def AcceptableMimeType(accept_patterns, mime_type):
       Whether or not mime_type matches (at least) one of these patterns.
     """
     if '/' not in mime_type:
-        raise exceptions.InvalidUserInputError(
+        raise InvalidUserInputError(
             'Invalid MIME type: "%s"' % mime_type)
     unsupported_patterns = [p for p in accept_patterns if ';' in p]
     if unsupported_patterns:
-        raise exceptions.GeneratedClientError(
+        raise GeneratedClientError(
             'MIME patterns with parameter unsupported: "%s"' % ', '.join(
                 unsupported_patterns))
 

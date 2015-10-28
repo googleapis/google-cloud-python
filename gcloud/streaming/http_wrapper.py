@@ -33,7 +33,7 @@ from six.moves.urllib import parse
 from gcloud.streaming.exceptions import BadStatusCodeError
 from gcloud.streaming.exceptions import RequestError
 from gcloud.streaming.exceptions import RetryAfterError
-from gcloud.streaming.util import CalculateWaitForRetry
+from gcloud.streaming.util import calculate_wait_for_retry
 
 __all__ = [
     'CheckResponse',
@@ -286,7 +286,7 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
     logging.debug('Retrying request to url %s after exception %s',
                   retry_args.http_request.url, retry_args.exc)
     time.sleep(
-        retry_after or CalculateWaitForRetry(
+        retry_after or calculate_wait_for_retry(
             retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
