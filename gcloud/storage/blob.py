@@ -260,7 +260,7 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = Download.FromStream(file_obj, auto_transfer=False)
+        download = Download.from_stream(file_obj, auto_transfer=False)
         headers = {}
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
@@ -273,9 +273,9 @@ class Blob(_PropertyMixin):
         # object. The rest (API_BASE_URL and build_api_url) are also defined
         # on the Batch class, but we just use the wrapped connection since
         # it has all three (http, API_BASE_URL and build_api_url).
-        download.InitializeDownload(request, client._connection.http)
+        download.initialize_download(request, client._connection.http)
 
-        download.StreamInChunks()
+        download.stream_file(use_chunks=True)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -400,16 +400,16 @@ class Blob(_PropertyMixin):
         # Use apitools 'Upload' facility.
         request = Request(upload_url, 'POST', headers)
 
-        upload.ConfigureRequest(upload_config, request, url_builder)
+        upload.configure_request(upload_config, request, url_builder)
         query_params = url_builder.query_params
         base_url = connection.API_BASE_URL + '/upload'
         request.url = connection.build_api_url(api_base_url=base_url,
                                                path=self.bucket.path + '/o',
                                                query_params=query_params)
-        upload.InitializeUpload(request, connection.http)
+        upload.initialize_upload(request, connection.http)
 
         if upload.strategy == RESUMABLE_UPLOAD:
-            http_response = upload.StreamInChunks()
+            http_response = upload.stream_file(use_chunks=True)
         else:
             http_response = make_api_request(connection.http, request,
                                              retries=num_retries)
@@ -766,7 +766,7 @@ class Blob(_PropertyMixin):
 
 
 class _UploadConfig(object):
-    """Faux message FBO apitools' 'ConfigureRequest'.
+    """Faux message FBO apitools' 'configure_request'.
 
     Values extracted from apitools
     'samples/storage_sample/storage/storage_v1_client.py'
@@ -780,7 +780,7 @@ class _UploadConfig(object):
 
 
 class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'ConfigureRequest'"""
+    """Faux builder FBO apitools' 'configure_request'"""
     def __init__(self, bucket_name, object_name):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
