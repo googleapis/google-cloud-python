@@ -9,7 +9,7 @@
 
 :mod:`gcloud.storage.test_blob` patches:
 
-- :const:`_RESUMABLE_UPLOAD_THRESHOLD`
+- :const:`RESUMABLE_UPLOAD_THRESHOLD`
 """
 
 import email.generator as email_generator
@@ -44,10 +44,11 @@ __all__ = [
     'Download',
     'Upload',
     'RESUMABLE_UPLOAD',
+    'RESUMABLE_UPLOAD_THRESHOLD',
     'SIMPLE_UPLOAD',
 ]
 
-_RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
+RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
 SIMPLE_UPLOAD = 'simple'
 RESUMABLE_UPLOAD = 'resumable'
 
@@ -570,7 +571,7 @@ class Upload(_Transfer):
             return
         strategy = SIMPLE_UPLOAD
         if (self.total_size is not None and
-                self.total_size > _RESUMABLE_UPLOAD_THRESHOLD):
+                self.total_size > RESUMABLE_UPLOAD_THRESHOLD):
             strategy = RESUMABLE_UPLOAD
         if http_request.body and not upload_config.simple_multipart:
             strategy = RESUMABLE_UPLOAD

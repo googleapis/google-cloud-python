@@ -1076,12 +1076,12 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
     def test__SetDefaultUploadStrategy_w_total_size_gt_threshhold(self):
-        from gcloud.streaming.transfer import _RESUMABLE_UPLOAD_THRESHOLD
+        from gcloud.streaming.transfer import RESUMABLE_UPLOAD_THRESHOLD
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         config = _UploadConfig()
         request = _Request()
         upload = self._makeOne(
-            _Stream(), total_size=_RESUMABLE_UPLOAD_THRESHOLD + 1)
+            _Stream(), total_size=RESUMABLE_UPLOAD_THRESHOLD + 1)
         upload._SetDefaultUploadStrategy(config, request)
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
