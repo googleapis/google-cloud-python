@@ -25,8 +25,8 @@ import time
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from gcloud._apitools import http_wrapper
-from gcloud._apitools import transfer
+from gcloud.streaming import http_wrapper
+from gcloud.streaming import transfer
 
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud._helpers import UTC

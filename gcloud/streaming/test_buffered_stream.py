@@ -5,7 +5,7 @@ import unittest2
 class Test_BufferedStream(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._apitools.buffered_stream import BufferedStream
+        from gcloud.streaming.buffered_stream import BufferedStream
         return BufferedStream
 
     def _makeOne(self, *args, **kw):
@@ -63,7 +63,7 @@ class Test_BufferedStream(unittest2.TestCase):
 
     def test_read_w_none(self):
         from io import BytesIO
-        from gcloud._apitools.exceptions import NotYetImplementedError
+        from gcloud.streaming.exceptions import NotYetImplementedError
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
@@ -74,7 +74,7 @@ class Test_BufferedStream(unittest2.TestCase):
 
     def test_read_w_negative_size(self):
         from io import BytesIO
-        from gcloud._apitools.exceptions import NotYetImplementedError
+        from gcloud.streaming.exceptions import NotYetImplementedError
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4

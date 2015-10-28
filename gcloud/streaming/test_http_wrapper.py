@@ -5,7 +5,7 @@ import unittest2
 class Test__Httplib2Debuglevel(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._apitools.http_wrapper import _Httplib2Debuglevel
+        from gcloud.streaming.http_wrapper import _Httplib2Debuglevel
         return _Httplib2Debuglevel
 
     def _makeOne(self, *args, **kw):
@@ -13,7 +13,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
 
     def test_wo_loggable_body_wo_http(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
 
         request = _Request()
         LEVEL = 1
@@ -24,7 +24,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
 
     def test_w_loggable_body_wo_http(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
 
         request = _Request(loggable_body=object())
         LEVEL = 1
@@ -36,7 +36,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
 
     def test_w_loggable_body_w_http(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
 
         class _Connection(object):
             debuglevel = 0
@@ -64,7 +64,7 @@ class Test__Httplib2Debuglevel(unittest2.TestCase):
 class Test_Request(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._apitools.http_wrapper import Request
+        from gcloud.streaming.http_wrapper import Request
         return Request
 
     def _makeOne(self, *args, **kw):
@@ -79,7 +79,7 @@ class Test_Request(unittest2.TestCase):
         self.assertEqual(request.loggable_body, None)
 
     def test_loggable_body_setter_w_body_None(self):
-        from gcloud._apitools.exceptions import RequestError
+        from gcloud.streaming.exceptions import RequestError
         request = self._makeOne(body=None)
         with self.assertRaises(RequestError):
             request.loggable_body = 'abc'
@@ -104,7 +104,7 @@ class Test_Request(unittest2.TestCase):
 class Test_Response(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._apitools.http_wrapper import Response
+        from gcloud.streaming.http_wrapper import Response
         return Response
 
     def _makeOne(self, *args, **kw):
@@ -203,23 +203,23 @@ class Test_Response(unittest2.TestCase):
 class Test_CheckResponse(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import CheckResponse
+        from gcloud.streaming.http_wrapper import CheckResponse
         return CheckResponse(*args, **kw)
 
     def test_w_none(self):
-        from gcloud._apitools.exceptions import RequestError
+        from gcloud.streaming.exceptions import RequestError
         with self.assertRaises(RequestError):
             self._callFUT(None)
 
     def test_w_TOO_MANY_REQUESTS(self):
-        from gcloud._apitools.exceptions import BadStatusCodeError
-        from gcloud._apitools.http_wrapper import TOO_MANY_REQUESTS
+        from gcloud.streaming.exceptions import BadStatusCodeError
+        from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
 
         with self.assertRaises(BadStatusCodeError):
             self._callFUT(_Response(TOO_MANY_REQUESTS))
 
     def test_w_50x(self):
-        from gcloud._apitools.exceptions import BadStatusCodeError
+        from gcloud.streaming.exceptions import BadStatusCodeError
 
         with self.assertRaises(BadStatusCodeError):
             self._callFUT(_Response(500))
@@ -228,7 +228,7 @@ class Test_CheckResponse(unittest2.TestCase):
             self._callFUT(_Response(503))
 
     def test_w_retry_after(self):
-        from gcloud._apitools.exceptions import RetryAfterError
+        from gcloud.streaming.exceptions import RetryAfterError
 
         with self.assertRaises(RetryAfterError):
             self._callFUT(_Response(200, 20))
@@ -240,7 +240,7 @@ class Test_CheckResponse(unittest2.TestCase):
 class Test_RebuildHttpConnections(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import RebuildHttpConnections
+        from gcloud.streaming.http_wrapper import RebuildHttpConnections
         return RebuildHttpConnections(*args, **kw)
 
     def test_wo_connections(self):
@@ -259,13 +259,13 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
     URL = 'http://example.com/api'
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import (
+        from gcloud.streaming.http_wrapper import (
             HandleExceptionsAndRebuildHttpConnections)
         return HandleExceptionsAndRebuildHttpConnections(*args, **kw)
 
     def _monkeyMUT(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         _logged = []
 
         def _debug(msg, *args):
@@ -433,7 +433,7 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
     def test_w_RequestError(self):
         import random
         from gcloud._testing import _Monkey
-        from gcloud._apitools.exceptions import RequestError
+        from gcloud.streaming.exceptions import RequestError
         exc = RequestError('uh oh')
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
@@ -448,7 +448,7 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
     def test_w_BadStatusCodeError(self):
         import random
         from gcloud._testing import _Monkey
-        from gcloud._apitools.exceptions import BadStatusCodeError
+        from gcloud.streaming.exceptions import BadStatusCodeError
         response = _Response(500)
         exc = BadStatusCodeError.FromResponse(response)
         retry_args = self._build_retry_args(exc)
@@ -462,8 +462,8 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
             logged, slept, 'Response returned status %s, retrying', (500,))
 
     def test_w_RetryAfterError(self):
-        from gcloud._apitools.exceptions import RetryAfterError
-        from gcloud._apitools.http_wrapper import TOO_MANY_REQUESTS
+        from gcloud.streaming.exceptions import RetryAfterError
+        from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
         RETRY_AFTER = 25
         response = _Response(TOO_MANY_REQUESTS, RETRY_AFTER)
         exc = RetryAfterError.FromResponse(response)
@@ -500,7 +500,7 @@ class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
 class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import _MakeRequestNoRetry
+        from gcloud.streaming.http_wrapper import _MakeRequestNoRetry
         return _MakeRequestNoRetry(*args, **kw)
 
     def _verify_requested(self, http, request,
@@ -516,7 +516,7 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def test_defaults_wo_connections(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         _http = _Http((INFO, CONTENT))
@@ -535,7 +535,7 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def test_w_explicit_redirections(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         _http = _Http((INFO, CONTENT))
@@ -555,7 +555,7 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def test_w_http_connections_miss(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -576,7 +576,7 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def test_w_http_connections_hit(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         INFO = {'status': '200'}
         CONTENT = 'CONTENT'
         CONN_TYPE = object()
@@ -597,8 +597,8 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 
     def test_w_request_returning_None(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
-        from gcloud._apitools.exceptions import RequestError
+        from gcloud.streaming import http_wrapper as MUT
+        from gcloud.streaming.exceptions import RequestError
         INFO = None
         CONTENT = None
         CONN_TYPE = object()
@@ -615,7 +615,7 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
 class Test_MakeRequest(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import MakeRequest
+        from gcloud.streaming.http_wrapper import MakeRequest
         return MakeRequest(*args, **kw)
 
     def test_wo_exception(self):
@@ -724,12 +724,12 @@ class Test_MakeRequest(unittest2.TestCase):
 class Test__RegisterHttpFactory(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import _RegisterHttpFactory
+        from gcloud.streaming.http_wrapper import _RegisterHttpFactory
         return _RegisterHttpFactory(*args, **kw)
 
     def test_it(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         _factories = []
 
         FACTORY = object()
@@ -742,13 +742,13 @@ class Test__RegisterHttpFactory(unittest2.TestCase):
 class Test_GetHttp(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.http_wrapper import GetHttp
+        from gcloud.streaming.http_wrapper import GetHttp
         return GetHttp(*args, **kw)
 
     def test_wo_registered_factories(self):
         from httplib2 import Http
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
         _factories = []
 
         with _Monkey(MUT, _HTTP_FACTORIES=_factories):
@@ -758,7 +758,7 @@ class Test_GetHttp(unittest2.TestCase):
 
     def test_w_registered_factories(self):
         from gcloud._testing import _Monkey
-        from gcloud._apitools import http_wrapper as MUT
+        from gcloud.streaming import http_wrapper as MUT
 
         FOUND = object()
 

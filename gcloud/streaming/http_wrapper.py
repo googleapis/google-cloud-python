@@ -16,8 +16,8 @@ import six
 from six.moves import http_client
 from six.moves.urllib import parse
 
-from gcloud._apitools import exceptions
-from gcloud._apitools import util
+from gcloud.streaming import exceptions
+from gcloud.streaming import util
 
 __all__ = [
     'CheckResponse',

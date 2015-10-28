@@ -8,14 +8,14 @@ Pruned to include only helpers used by other vendored-in modules:
 - Typecheck
 - AcceptableMimeType
 
-``gcloud._apitools.http_wrapper`` uses:
+``gcloud.streaming.http_wrapper`` uses:
 
 - CalculateWaitForRetry
 """
 
 import random
 
-from gcloud._apitools import exceptions
+from gcloud.streaming import exceptions
 
 
 def Typecheck(arg, arg_type, msg=None):

@@ -1,7 +1,7 @@
 # pylint: skip-file
 """Small helper class to provide a small slice of a stream."""
 
-from gcloud._apitools import exceptions
+from gcloud.streaming import exceptions
 
 
 class StreamSlice(object):

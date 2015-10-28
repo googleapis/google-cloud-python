@@ -14,11 +14,11 @@ import threading
 import six
 from six.moves import http_client
 
-from gcloud._apitools import buffered_stream
-from gcloud._apitools import exceptions
-from gcloud._apitools import http_wrapper
-from gcloud._apitools import stream_slice
-from gcloud._apitools import util
+from gcloud.streaming import buffered_stream
+from gcloud.streaming import exceptions
+from gcloud.streaming import http_wrapper
+from gcloud.streaming import stream_slice
+from gcloud.streaming import util
 
 __all__ = [
     'Download',

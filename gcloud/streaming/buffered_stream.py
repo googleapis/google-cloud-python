@@ -4,7 +4,7 @@
 This class reads ahead to detect if we are at the end of the stream.
 """
 
-from gcloud._apitools import exceptions
+from gcloud.streaming import exceptions
 
 
 # TODO(user): Consider replacing this with a StringIO.

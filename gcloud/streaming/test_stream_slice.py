@@ -5,7 +5,7 @@ import unittest2
 class Test_StreamSlice(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud._apitools.stream_slice import StreamSlice
+        from gcloud.streaming.stream_slice import StreamSlice
         return StreamSlice
 
     def _makeOne(self, *args, **kw):
@@ -41,7 +41,7 @@ class Test_StreamSlice(unittest2.TestCase):
 
     def test_read_exhausted(self):
         from io import BytesIO
-        from gcloud._apitools.exceptions import StreamExhausted
+        from gcloud.streaming.exceptions import StreamExhausted
         CONTENT = b''
         MAXSIZE = 4
         stream = BytesIO(CONTENT)

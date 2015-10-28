@@ -5,25 +5,25 @@ import unittest2
 class Test_TypeCheck(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.util import Typecheck
+        from gcloud.streaming.util import Typecheck
         return Typecheck(*args, **kw)
 
     def test_pass(self):
         self.assertEqual(self._callFUT(123, int), 123)
 
     def test_fail_w_explicit_msg(self):
-        from gcloud._apitools.exceptions import TypecheckError
+        from gcloud.streaming.exceptions import TypecheckError
         with self.assertRaises(TypecheckError) as err:
             self._callFUT(123, str, 'foo')
         self.assertEqual(err.exception.args, ('foo',))
 
     def test_fail_w_single_type_no_msg(self):
-        from gcloud._apitools.exceptions import TypecheckError
+        from gcloud.streaming.exceptions import TypecheckError
         with self.assertRaises(TypecheckError) as err:
             self._callFUT(123, str)
 
     def test_fail_w_tuple_no_msg(self):
-        from gcloud._apitools.exceptions import TypecheckError
+        from gcloud.streaming.exceptions import TypecheckError
         with self.assertRaises(TypecheckError) as err:
             self._callFUT(123, (list, tuple))
 
@@ -31,7 +31,7 @@ class Test_TypeCheck(unittest2.TestCase):
 class Test_CalculateWaitForRetry(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.util import CalculateWaitForRetry
+        from gcloud.streaming.util import CalculateWaitForRetry
         return CalculateWaitForRetry(*args, **kw)
 
     def test_w_negative_jitter_lt_max_wait(self):
@@ -50,11 +50,11 @@ class Test_CalculateWaitForRetry(unittest2.TestCase):
 class Test_AcceptableMimeType(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud._apitools.util import AcceptableMimeType
+        from gcloud.streaming.util import AcceptableMimeType
         return AcceptableMimeType(*args, **kw)
 
     def test_pattern_wo_slash(self):
-        from gcloud._apitools.exceptions import InvalidUserInputError
+        from gcloud.streaming.exceptions import InvalidUserInputError
         with self.assertRaises(InvalidUserInputError) as err:
             self._callFUT(['text/*'], 'BOGUS')
         self.assertEqual(
@@ -62,7 +62,7 @@ class Test_AcceptableMimeType(unittest2.TestCase):
             ('Invalid MIME type: "BOGUS"',))
 
     def test_accept_pattern_w_semicolon(self):
-        from gcloud._apitools.exceptions import GeneratedClientError
+        from gcloud.streaming.exceptions import GeneratedClientError
         with self.assertRaises(GeneratedClientError) as err:
             self._callFUT(['text/*;charset=utf-8'], 'text/plain')
         self.assertEqual(
