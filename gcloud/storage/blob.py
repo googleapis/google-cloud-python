@@ -35,7 +35,7 @@ from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
 from gcloud.streaming.http_wrapper import Request
-from gcloud.streaming.http_wrapper import MakeRequest
+from gcloud.streaming.http_wrapper import make_api_request
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -411,8 +411,8 @@ class Blob(_PropertyMixin):
         if upload.strategy == transfer.RESUMABLE_UPLOAD:
             http_response = upload.StreamInChunks()
         else:
-            http_response = MakeRequest(connection.http, request,
-                                                     retries=num_retries)
+            http_response = make_api_request(connection.http, request,
+                                             retries=num_retries)
         response_content = http_response.content
         if not isinstance(response_content,
                           six.string_types):  # pragma: NO COVER  Python3

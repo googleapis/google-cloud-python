@@ -20,10 +20,9 @@ from gcloud.streaming.exceptions import NotFoundError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
 from gcloud.streaming.exceptions import UserError
-from gcloud.streaming.http_wrapper import GetHttp
-from gcloud.streaming.http_wrapper import (
-    HandleExceptionsAndRebuildHttpConnections)
-from gcloud.streaming.http_wrapper import MakeRequest
+from gcloud.streaming.http_wrapper import get_http
+from gcloud.streaming.http_wrapper import handle_http_exceptions
+from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
 from gcloud.streaming.stream_slice import StreamSlice
@@ -62,8 +61,7 @@ class _Transfer(object):
         # Let the @property do validation
         self.num_retries = num_retries
 
-        self.retry_func = (
-            HandleExceptionsAndRebuildHttpConnections)
+        self.retry_func = handle_http_exceptions
         self.auto_transfer = auto_transfer
         self.chunksize = chunksize or 1048576
 
@@ -122,7 +120,7 @@ class _Transfer(object):
         """
         self.EnsureUninitialized()
         if self.http is None:
-            self.__http = http or GetHttp()
+            self.__http = http or get_http()
         self.__url = url
 
     @property
@@ -245,7 +243,7 @@ class Download(_Transfer):
         if self.auto_transfer:
             end_byte = self._ComputeEndByte(0)
             self._SetRangeHeader(http_request, 0, end_byte)
-            response = MakeRequest(
+            response = make_api_request(
                 self.bytes_http or http, http_request)
             if response.status_code not in self._ACCEPTABLE_STATUSES:
                 raise HttpError.FromResponse(response)
@@ -336,7 +334,7 @@ class Download(_Transfer):
         self._SetRangeHeader(request, start, end=end)
         if additional_headers is not None:
             request.headers.update(additional_headers)
-        return MakeRequest(
+        return make_api_request(
             self.bytes_http, request, retry_func=self.retry_func,
             retries=self.num_retries)
 
@@ -672,7 +670,7 @@ class Upload(_Transfer):
         refresh_request = Request(
             url=self.url, http_method='PUT',
             headers={'Content-Range': 'bytes */*'})
-        refresh_response = MakeRequest(
+        refresh_response = make_api_request(
             self.http, refresh_request, redirections=0,
             retries=self.num_retries)
         range_header = self._GetRangeHeaderFromResponse(refresh_response)
@@ -719,7 +717,7 @@ class Upload(_Transfer):
         if client is not None:
             http_request.url = client.FinalizeTransferUrl(http_request.url)
         self.EnsureUninitialized()
-        http_response = MakeRequest(http, http_request,
+        http_response = make_api_request(http, http_request,
                                                  retries=self.num_retries)
         if http_response.status_code != http_client.OK:
             raise HttpError.FromResponse(http_response)
@@ -808,7 +806,7 @@ class Upload(_Transfer):
 
     def _SendMediaRequest(self, request, end):
         """Request helper function for SendMediaBody & SendChunk."""
-        response = MakeRequest(
+        response = make_api_request(
             self.bytes_http, request, retry_func=self.retry_func,
             retries=self.num_retries)
         if response.status_code not in (http_client.OK, http_client.CREATED,

@@ -8,13 +8,13 @@ currently httplib2.
 :mod:`gcloud.storage.blob` uses:
 
 - :class:`Request`
-- :function:`MakeRequest`
+- :function:`make_api_request`
 
 :mod:`gcloud._apidools.transfer` uses:
 
-- :function:`GetHttp`
-- :function:`HandleExceptionsAndRebuildHttpConnections`
-- :function:`MakeRequest`
+- :function:`get_http`
+- :function:`handle_http_exceptions`
+- :function:`make_api_request`
 - :class:`Request`
 - :const:`RESUME_INCOMPLETE`
 """
@@ -37,9 +37,9 @@ from gcloud.streaming.util import calculate_wait_for_retry
 
 __all__ = [
     'CheckResponse',
-    'GetHttp',
-    'HandleExceptionsAndRebuildHttpConnections',
-    'MakeRequest',
+    'get_http',
+    'handle_http_exceptions',
+    'make_api_request',
     'RebuildHttpConnections',
     'Request',
     'Response',
@@ -236,7 +236,7 @@ def RebuildHttpConnections(http):
                 del http.connections[conn_key]
 
 
-def HandleExceptionsAndRebuildHttpConnections(retry_args):
+def handle_http_exceptions(retry_args):
     """Exception handler for http failures.
 
     This catches known failures and rebuilds the underlying HTTP connections.
@@ -337,9 +337,9 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
     return response
 
 
-def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
+def make_api_request(http, http_request, retries=7, max_retry_wait=60,
                 redirections=5,
-                retry_func=HandleExceptionsAndRebuildHttpConnections,
+                retry_func=handle_http_exceptions,
                 check_response_func=CheckResponse,
                 wo_retry_func=_MakeRequestNoRetry):
     """Send http_request via the given http, performing error/retry handling.
@@ -391,7 +391,7 @@ def _RegisterHttpFactory(factory):
     _HTTP_FACTORIES.append(factory)
 
 
-def GetHttp(**kwds):
+def get_http(**kwds):
     for factory in _HTTP_FACTORIES:
         http = factory(**kwds)
         if http is not None:

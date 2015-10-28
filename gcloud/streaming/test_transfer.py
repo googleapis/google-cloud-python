@@ -307,7 +307,7 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
                 download.InitializeDownload(request, http)
 
@@ -327,7 +327,7 @@ class Test_Download(unittest2.TestCase):
         response = _makeResponse(http_client.NO_CONTENT, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, MakeRequest=requester):
+        with _Monkey(MUT, make_api_request=requester):
             download.InitializeDownload(request, http)
 
         self.assertTrue(download._initial_response is None)
@@ -451,7 +451,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             found = download._GetChunk(0, 10)
 
         self.assertTrue(found is response)
@@ -473,7 +473,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             found = download._GetChunk(0, 10, additional_headers=headers)
 
         self.assertTrue(found is response)
@@ -579,7 +579,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.GetRange(0, LEN)
 
         self.assertTrue(len(requester._requested), 1)
@@ -609,7 +609,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.GetRange(START)
 
         self.assertTrue(len(requester._requested), 1)
@@ -641,7 +641,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.GetRange(0, PARTIAL_LEN, additional_headers=headers)
 
         self.assertTrue(len(requester._requested), 1)
@@ -672,7 +672,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             with self.assertRaises(TransferRetryError):
                 download.GetRange(START)
 
@@ -702,7 +702,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.GetRange(0, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
@@ -738,7 +738,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: _requests.pop(0),
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.GetRange(0)
 
         self.assertTrue(len(requester._requested), 2)
@@ -828,7 +828,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.StreamMedia()
 
         self.assertTrue(len(requester._requested), 1)
@@ -859,7 +859,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.StreamMedia()
 
         self.assertTrue(len(requester._requested), 1)
@@ -890,7 +890,7 @@ class Test_Download(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=lambda url: request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             download.StreamMedia(additional_headers=headers, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
@@ -1266,7 +1266,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             upload.RefreshResumableUploadState()
 
         self.assertTrue(upload.complete)
@@ -1293,7 +1293,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             upload.RefreshResumableUploadState()
 
         self.assertTrue(upload.complete)
@@ -1320,7 +1320,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             upload.RefreshResumableUploadState()
 
         self.assertFalse(upload.complete)
@@ -1346,7 +1346,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             upload.RefreshResumableUploadState()
 
         self.assertFalse(upload.complete)
@@ -1372,7 +1372,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
                 upload.RefreshResumableUploadState()
 
@@ -1438,7 +1438,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.FORBIDDEN)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, MakeRequest=requester):
+        with _Monkey(MUT, make_api_request=requester):
             with self.assertRaises(HttpError):
                 upload.InitializeUpload(request, http=object())
 
@@ -1456,7 +1456,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.OK, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, MakeRequest=requester):
+        with _Monkey(MUT, make_api_request=requester):
             upload.InitializeUpload(request, http=object())
 
         self.assertEqual(upload._server_chunk_granularity, None)
@@ -1487,7 +1487,7 @@ class Test_Upload(unittest2.TestCase):
         with _Monkey(MUT,
                      Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                     MakeRequest=requester):
+                     make_api_request=requester):
             upload.InitializeUpload(request, client=client)
 
         self.assertEqual(upload._server_chunk_granularity, 100)
@@ -1615,7 +1615,7 @@ class Test_Upload(unittest2.TestCase):
         with _Monkey(MUT,
                      Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                     MakeRequest=requester):
+                     make_api_request=requester):
             response = upload._StreamMedia()
 
         self.assertEqual(len(requester._responses), 0)
@@ -1661,7 +1661,7 @@ class Test_Upload(unittest2.TestCase):
         with _Monkey(MUT,
                      Request=lambda url, http_method, body:
                             _Request(url, http_method, body),
-                     MakeRequest=requester):
+                     make_api_request=requester):
             with self.assertRaises(CommunicationError):
                 upload._StreamMedia(additional_headers=headers)
 
@@ -1724,7 +1724,7 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(RESUME_INCOMPLETE, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, MakeRequest=requester):
+        with _Monkey(MUT, make_api_request=requester):
             upload._SendMediaRequest(request, 9)
 
         self.assertEqual(len(requester._responses), 0)
@@ -1761,7 +1761,7 @@ class Test_Upload(unittest2.TestCase):
 
         with _Monkey(MUT,
                      Request=_Request,
-                     MakeRequest=requester):
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
                 upload._SendMediaRequest(request, 9)
 

@@ -255,13 +255,13 @@ class Test_RebuildHttpConnections(unittest2.TestCase):
         self.assertTrue('skip_me' in connections)
 
 
-class Test_HandleExceptionsAndRebuildHttpConnections(unittest2.TestCase):
+class Test_handle_http_exceptions(unittest2.TestCase):
     URL = 'http://example.com/api'
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import (
-            HandleExceptionsAndRebuildHttpConnections)
-        return HandleExceptionsAndRebuildHttpConnections(*args, **kw)
+            handle_http_exceptions)
+        return handle_http_exceptions(*args, **kw)
 
     def _monkeyMUT(self):
         from gcloud._testing import _Monkey
@@ -612,11 +612,11 @@ class Test__MakeRequestNoRetry(unittest2.TestCase):
         self._verify_requested(_http, _request, connection_type=CONN_TYPE)
 
 
-class Test_MakeRequest(unittest2.TestCase):
+class Test_make_api_request(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import MakeRequest
-        return MakeRequest(*args, **kw)
+        from gcloud.streaming.http_wrapper import make_api_request
+        return make_api_request(*args, **kw)
 
     def test_wo_exception(self):
         HTTP, REQUEST, RESPONSE = object(), object(), object()
@@ -739,11 +739,11 @@ class Test__RegisterHttpFactory(unittest2.TestCase):
             self.assertEqual(_factories, [FACTORY])
 
 
-class Test_GetHttp(unittest2.TestCase):
+class Test_get_http(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import GetHttp
-        return GetHttp(*args, **kw)
+        from gcloud.streaming.http_wrapper import get_http
+        return get_http(*args, **kw)
 
     def test_wo_registered_factories(self):
         from httplib2 import Http
