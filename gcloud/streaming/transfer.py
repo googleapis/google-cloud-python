@@ -378,7 +378,7 @@ class Download(_Transfer):
         while (not progress_end_normalized or end_byte is None or
                progress <= end_byte):
             end_byte = self._compute_end_byte(progress, end=end_byte,
-                                             use_chunks=use_chunks)
+                                              use_chunks=use_chunks)
             response = self._get_chunk(progress, end_byte)
             if not progress_end_normalized:
                 self._set_total(response.info)
@@ -407,7 +407,7 @@ class Download(_Transfer):
                 self._initial_response = None
             else:
                 end_byte = self._compute_end_byte(self.progress,
-                                                 use_chunks=use_chunks)
+                                                  use_chunks=use_chunks)
                 response = self._get_chunk(self.progress, end_byte)
             if self.total_size is None:
                 self._set_total(response.info)
@@ -463,8 +463,8 @@ class Upload(_Transfer):
                    close_stream=True, auto_transfer=auto_transfer, **kwds)
 
     @classmethod
-    def from_stream(cls, stream, mime_type, total_size=None, auto_transfer=True,
-                   **kwds):
+    def from_stream(cls, stream, mime_type,
+                    total_size=None, auto_transfer=True, **kwds):
         """Create a new Upload object from a stream."""
         if mime_type is None:
             raise InvalidUserInputError(
@@ -688,7 +688,7 @@ class Upload(_Transfer):
             http_request.url = client.FinalizeTransferUrl(http_request.url)
         self._ensure_uninitialized()
         http_response = make_api_request(http, http_request,
-                                                 retries=self.num_retries)
+                                         retries=self.num_retries)
         if http_response.status_code != http_client.OK:
             raise HttpError.FromResponse(http_response)
 
@@ -725,7 +725,7 @@ class Upload(_Transfer):
 
     def stream_file(self, use_chunks=True):
         """Send this resumable upload
-        
+
         If 'use_chunks' is False, send it in a single request. Otherwise,
         send it in chunks.
         """
@@ -786,8 +786,7 @@ class Upload(_Transfer):
                 'Total size must be known for SendMediaBody')
         body_stream = StreamSlice(self.stream, self.total_size - start)
 
-        request = Request(url=self.url, http_method='PUT',
-                                       body=body_stream)
+        request = Request(url=self.url, http_method='PUT', body=body_stream)
         request.headers['Content-Type'] = self.mime_type
         if start == self.total_size:
             # End of an upload with 0 bytes left to send; just finalize.
@@ -823,8 +822,7 @@ class Upload(_Transfer):
             body_stream = StreamSlice(self.stream, end - start)
         # TODO(craigcitro): Think about clearer errors on "no data in
         # stream".
-        request = Request(url=self.url, http_method='PUT',
-                                       body=body_stream)
+        request = Request(url=self.url, http_method='PUT', body=body_stream)
         request.headers['Content-Type'] = self.mime_type
         if no_log_body:
             # Disable logging of streaming body.

@@ -33,6 +33,7 @@ _REDIRECT_STATUS_CODES = (
     RESUME_INCOMPLETE,
 )
 
+
 class _ExceptionRetryArgs(collections.namedtuple(
     '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
                             'max_retry_wait'])):
@@ -335,11 +336,13 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
     return response
 
 
-def make_api_request(http, http_request, retries=7, max_retry_wait=60,
-                redirections=5,
-                retry_func=handle_http_exceptions,
-                check_response_func=_check_response,
-                wo_retry_func=_make_api_request_no_retry):
+def make_api_request(http, http_request,
+                     retries=7,
+                     max_retry_wait=60,
+                     redirections=5,
+                     retry_func=handle_http_exceptions,
+                     check_response_func=_check_response,
+                     wo_retry_func=_make_api_request_no_retry):
     """Send http_request via the given http, performing error/retry handling.
 
     Args:

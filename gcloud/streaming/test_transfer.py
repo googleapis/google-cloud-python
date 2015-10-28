@@ -199,7 +199,7 @@ class Test_Download(unittest2.TestCase):
             with open(filename, 'w') as fileobj:
                 fileobj.write('EXISTING FILE')
             download = klass.from_file(filename, overwrite=True,
-                                      auto_transfer=False)
+                                       auto_transfer=False)
             self.assertFalse(download.auto_transfer)
             del download  # closes stream
             with open(filename, 'rb') as fileobj:
@@ -219,7 +219,7 @@ class Test_Download(unittest2.TestCase):
         stream = _Stream()
         klass = self._getTargetClass()
         download = klass.from_stream(stream, auto_transfer=False,
-                                    total_size=SIZE, chunksize=CHUNK_SIZE)
+                                     total_size=SIZE, chunksize=CHUNK_SIZE)
         self.assertTrue(download.stream is stream)
         self.assertFalse(download.auto_transfer)
         self.assertEqual(download.total_size, SIZE)
@@ -305,8 +305,7 @@ class Test_Download(unittest2.TestCase):
         response = _makeResponse(http_client.BAD_REQUEST)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     make_api_request=requester):
+        with _Monkey(MUT, make_api_request=requester):
             with self.assertRaises(HttpError):
                 download.initialize_download(request, http)
 
@@ -419,7 +418,8 @@ class Test_Download(unittest2.TestCase):
         CHUNK_SIZE = 50
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
         download._set_total({'content-range': 'bytes 0-1/10'})
-        self.assertEqual(download._compute_end_byte(0, 100, use_chunks=False), 9)
+        self.assertEqual(download._compute_end_byte(0, 100, use_chunks=False),
+                         9)
         self.assertEqual(download._compute_end_byte(0, 8, use_chunks=False), 8)
 
     def test__compute_end_byte_w_start_ge_0_wo_end_w_total_size(self):
@@ -441,21 +441,20 @@ class Test_Download(unittest2.TestCase):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
-        request = _Request()
         http = object()
         download = self._makeOne(_Stream())
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         response = _makeResponse(http_client.OK)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             found = download._get_chunk(0, 10)
 
         self.assertTrue(found is response)
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers['range'], 'bytes=0-10')
 
     def test__process_response_w_FORBIDDEN(self):
@@ -544,22 +543,21 @@ class Test_Download(unittest2.TestCase):
         LEN = len(CONTENT)
         REQ_RANGE = 'bytes=0-%d' % (LEN,)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN)
-        request = _Request()
         http = object()
         stream = _Stream()
         download = self._makeOne(stream)
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.get_range(0, LEN)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
@@ -574,22 +572,21 @@ class Test_Download(unittest2.TestCase):
         CHUNK_SIZE = 123
         REQ_RANGE = 'bytes=%d-%d' % (START, START + CHUNK_SIZE - 1,)
         RESP_RANGE = 'bytes %d-%d/%d' % (START, LEN - 1, LEN)
-        request = _Request()
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT[START:])
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.get_range(START)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT[START:]])
         self.assertEqual(download.total_size, LEN)
@@ -603,24 +600,22 @@ class Test_Download(unittest2.TestCase):
         PARTIAL_LEN = 5
         REQ_RANGE = 'bytes=0-%d' % (PARTIAL_LEN,)
         RESP_RANGE = 'bytes 0-%d/%d' % (PARTIAL_LEN, LEN,)
-        request = _Request()
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, total_size=LEN)
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         info = {'content-range': RESP_RANGE}
-        response = _makeResponse(http_client.OK, info,
-                                      CONTENT[:PARTIAL_LEN])
+        response = _makeResponse(http_client.OK, info, CONTENT[:PARTIAL_LEN])
         response.length = LEN
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.get_range(0, PARTIAL_LEN)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT[:PARTIAL_LEN]])
         self.assertEqual(download.total_size, LEN)
@@ -636,23 +631,22 @@ class Test_Download(unittest2.TestCase):
         CHUNK_SIZE = 123
         REQ_RANGE = 'bytes=%d-%d' % (START, START + CHUNK_SIZE - 1,)
         RESP_RANGE = 'bytes %d-%d/%d' % (START, LEN - 1, LEN)
-        request = _Request()
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             with self.assertRaises(TransferRetryError):
                 download.get_range(START)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [''])
         self.assertEqual(download.total_size, LEN)
@@ -666,22 +660,21 @@ class Test_Download(unittest2.TestCase):
         CHUNK_SIZE = 3
         REQ_RANGE = 'bytes=0-%d' % (LEN - 1,)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
-        request = _Request()
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, total_size=LEN, chunksize=CHUNK_SIZE)
-        download._initialize(http, request.URL)
+        download._initialize(http, self.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.get_range(0, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
@@ -697,29 +690,27 @@ class Test_Download(unittest2.TestCase):
         RESP_RANGE_1 = 'bytes 0-%d/%d' % (CHUNK_SIZE - 1, LEN)
         REQ_RANGE_2 = 'bytes=%d-%d' % (CHUNK_SIZE, LEN - 1)
         RESP_RANGE_2 = 'bytes %d-%d/%d' % (CHUNK_SIZE, LEN - 1, LEN)
-        request_1, request_2 = _Request(), _Request()
-        _requests = [request_1, request_2]
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._initialize(http, request_1.URL)
+        download._initialize(http, self.URL)
         info_1 = {'content-range': RESP_RANGE_1}
         response_1 = _makeResponse(http_client.PARTIAL_CONTENT, info_1,
-                                        CONTENT[:CHUNK_SIZE])
+                                   CONTENT[:CHUNK_SIZE])
         info_2 = {'content-range': RESP_RANGE_2}
         response_2 = _makeResponse(http_client.OK, info_2,
-                                        CONTENT[CHUNK_SIZE:])
+                                   CONTENT[CHUNK_SIZE:])
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     Request=lambda url: _requests.pop(0),
+                     Request=_Request,
                      make_api_request=requester):
             download.get_range(0)
 
         self.assertTrue(len(requester._requested), 2)
-        self.assertTrue(requester._requested[0][0] is request_1)
+        request_1 = requester._requested[0][0]
         self.assertEqual(request_1.headers, {'range': REQ_RANGE_1})
-        self.assertTrue(requester._requested[1][0] is request_2)
+        request_2 = requester._requested[1][0]
         self.assertEqual(request_2.headers, {'range': REQ_RANGE_2})
         self.assertEqual(stream._written, [b'ABC', b'DE'])
         self.assertEqual(download.total_size, LEN)
@@ -775,12 +766,12 @@ class Test_Download(unittest2.TestCase):
         request = _Request()
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.stream_file()
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE_2})
         self.assertEqual(stream._written,
                          [CONTENT[:CHUNK_SIZE], CONTENT[CHUNK_SIZE:]])
@@ -806,12 +797,12 @@ class Test_Download(unittest2.TestCase):
         request = _Request()
 
         with _Monkey(MUT,
-                     Request=lambda url: request,
+                     Request=_Request,
                      make_api_request=requester):
             download.stream_file()
 
         self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
+        request = requester._requested[0][0]
         self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
@@ -1063,7 +1054,7 @@ class Test_Upload(unittest2.TestCase):
 
         upload.configure_request(config, request, url_builder)
 
-        self.assertEqual(url_builder.query_params, {'uploadType': 'media'}) 
+        self.assertEqual(url_builder.query_params, {'uploadType': 'media'})
         self.assertEqual(url_builder.relative_path, config.simple_path)
 
         self.assertEqual(request.headers, {'content-type': self.MIME_TYPE})
@@ -1084,7 +1075,7 @@ class Test_Upload(unittest2.TestCase):
 
         upload.configure_request(config, request, url_builder)
 
-        self.assertEqual(url_builder.query_params, {'uploadType': 'multipart'}) 
+        self.assertEqual(url_builder.query_params, {'uploadType': 'multipart'})
         self.assertEqual(url_builder.relative_path, config.simple_path)
 
         parser = Parser()
@@ -1124,7 +1115,7 @@ class Test_Upload(unittest2.TestCase):
 
         upload.configure_request(config, request, url_builder)
 
-        self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'}) 
+        self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'})
         self.assertEqual(url_builder.relative_path, config.resumable_path)
 
         self.assertEqual(request.headers,
@@ -1143,7 +1134,7 @@ class Test_Upload(unittest2.TestCase):
 
         upload.configure_request(config, request, url_builder)
 
-        self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'}) 
+        self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'})
         self.assertEqual(url_builder.relative_path, config.resumable_path)
 
         self.assertEqual(request.headers,
@@ -1566,9 +1557,10 @@ class Test_Upload(unittest2.TestCase):
         upload._server_chunk_granularity = 6
         upload._initialize(http, self.UPLOAD_URL)
 
-        info = {'content-length': '0',
-                'range': 'bytes=0-4',  # simulate error, s.b. '0-5'
-               }
+        info = {
+            'content-length': '0',
+            'range': 'bytes=0-4',  # simulate error, s.b. '0-5'
+        }
         response = _makeResponse(RESUME_INCOMPLETE, info)
         requester = _MakeRequest(response)
 
@@ -1641,9 +1633,7 @@ class Test_Upload(unittest2.TestCase):
         response_2 = _makeResponse(RESUME_INCOMPLETE, info_2)
         requester = _MakeRequest(response_1, response_2)
 
-        with _Monkey(MUT,
-                     Request=_Request,
-                     make_api_request=requester):
+        with _Monkey(MUT, Request=_Request, make_api_request=requester):
             with self.assertRaises(HttpError):
                 upload._send_media_request(request, 9)
 
@@ -1781,7 +1771,8 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.headers,
                          {'content-length': '%d' % CHUNK_SIZE,  # speling!
                           'Content-Type': self.MIME_TYPE,
-                          'Content-Range': 'bytes 0-%d/*' % (CHUNK_SIZE- 1,)})
+                          'Content-Range': 'bytes 0-%d/*' % (
+                            CHUNK_SIZE - 1,)})
         self.assertEqual(end, CHUNK_SIZE)
 
     def test__send_chunk_w_total_size_stream_not_exhausted(self):
@@ -1810,8 +1801,8 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.headers,
                          {'content-length': '%d' % CHUNK_SIZE,  # speling!
                           'Content-Type': self.MIME_TYPE,
-                          'Content-Range': 'bytes 0-%d/%d'
-                            % (CHUNK_SIZE- 1, SIZE)})
+                          'Content-Range': 'bytes 0-%d/%d' % (
+                            CHUNK_SIZE - 1, SIZE)})
         self.assertEqual(end, CHUNK_SIZE)
 
     def test__send_chunk_w_total_size_stream_exhausted(self):
@@ -1855,7 +1846,7 @@ class _UploadConfig(object):
     resumable_path = '/resumable/endpoint'
     simple_multipart = True
     simple_path = '/upload/endpoint'
-    
+
 
 class _Stream(object):
     _closed = False
