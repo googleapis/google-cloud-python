@@ -25,8 +25,6 @@ import time
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from gcloud.streaming import transfer
-
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud._helpers import UTC
 from gcloud.credentials import generate_signed_url
@@ -36,6 +34,9 @@ from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import make_api_request
+from gcloud.streaming.transfer import Download
+from gcloud.streaming.transfer import RESUMABLE_UPLOAD
+from gcloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -259,7 +260,7 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download = Download.FromStream(file_obj, auto_transfer=False)
         headers = {}
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
@@ -384,9 +385,8 @@ class Blob(_PropertyMixin):
             'User-Agent': connection.USER_AGENT,
         }
 
-        upload = transfer.Upload(file_obj, content_type, total_bytes,
-                                 auto_transfer=False,
-                                 chunksize=self.chunk_size)
+        upload = Upload(file_obj, content_type, total_bytes,
+                        auto_transfer=False, chunksize=self.chunk_size)
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)
@@ -408,7 +408,7 @@ class Blob(_PropertyMixin):
                                                query_params=query_params)
         upload.InitializeUpload(request, connection.http)
 
-        if upload.strategy == transfer.RESUMABLE_UPLOAD:
+        if upload.strategy == RESUMABLE_UPLOAD:
             http_response = upload.StreamInChunks()
         else:
             http_response = make_api_request(connection.http, request,

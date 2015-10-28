@@ -1,5 +1,16 @@
 # pylint: skip-file
-"""Upload and download support for apitools."""
+"""Upload and download support for apitools.
+
+:mod:`gcloud.storage.blob` uses:
+
+- :class:`Download`
+- :class:`Upload`
+- :const:`RESUMABLE_UPLOAD`
+
+:mod:`gcloud.storage.test_blob` patches:
+
+- :const:`_RESUMABLE_UPLOAD_THRESHOLD`
+"""
 
 import email.generator as email_generator
 import email.mime.multipart as mime_multipart
