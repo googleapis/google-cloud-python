@@ -211,9 +211,9 @@ def _check_response(response):
             'Request did not return a response.')
     elif (response.status_code >= 500 or
           response.status_code == TOO_MANY_REQUESTS):
-        raise BadStatusCodeError.FromResponse(response)
+        raise BadStatusCodeError.from_response(response)
     elif response.retry_after:
-        raise RetryAfterError.FromResponse(response)
+        raise RetryAfterError.from_response(response)
 
 
 def _rebuild_http_connections(http):

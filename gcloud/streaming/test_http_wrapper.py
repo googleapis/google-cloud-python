@@ -450,7 +450,7 @@ class Test_handle_http_exceptions(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.streaming.exceptions import BadStatusCodeError
         response = _Response(500)
-        exc = BadStatusCodeError.FromResponse(response)
+        exc = BadStatusCodeError.from_response(response)
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
 
@@ -466,7 +466,7 @@ class Test_handle_http_exceptions(unittest2.TestCase):
         from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
         RETRY_AFTER = 25
         response = _Response(TOO_MANY_REQUESTS, RETRY_AFTER)
-        exc = RetryAfterError.FromResponse(response)
+        exc = RetryAfterError.from_response(response)
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
 

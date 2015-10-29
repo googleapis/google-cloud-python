@@ -232,7 +232,7 @@ class Download(_Transfer):
             response = make_api_request(
                 self.bytes_http or http, http_request)
             if response.status_code not in self._ACCEPTABLE_STATUSES:
-                raise HttpError.FromResponse(response)
+                raise HttpError.from_response(response)
             self._initial_response = response
             self._set_total(response.info)
             url = response.info.get('content-location', response.request_url)
@@ -329,7 +329,7 @@ class Download(_Transfer):
             # up the transfer versus something we should attempt again.
             if response.status_code in (http_client.FORBIDDEN,
                                         http_client.NOT_FOUND):
-                raise HttpError.FromResponse(response)
+                raise HttpError.from_response(response)
             else:
                 raise TransferRetryError(response.content)
         if response.status_code in (http_client.OK,
@@ -660,7 +660,7 @@ class Upload(_Transfer):
                 self.__progress = self._last_byte(range_header) + 1
             self.stream.seek(self.progress)
         else:
-            raise HttpError.FromResponse(refresh_response)
+            raise HttpError.from_response(refresh_response)
 
     def _get_range_header(self, response):
         # XXX Per RFC 2616/7233, 'Range' is a request header, not a response
@@ -690,7 +690,7 @@ class Upload(_Transfer):
         http_response = make_api_request(http, http_request,
                                          retries=self.num_retries)
         if http_response.status_code != http_client.OK:
-            raise HttpError.FromResponse(http_response)
+            raise HttpError.from_response(http_response)
 
         # XXX when is this getting converted to an integer?
         granularity = http_response.info.get('X-Goog-Upload-Chunk-Granularity')
@@ -770,7 +770,7 @@ class Upload(_Transfer):
             # We want to reset our state to wherever the server left us
             # before this failed request, and then raise.
             self.refresh_upload_state()
-            raise HttpError.FromResponse(response)
+            raise HttpError.from_response(response)
         if response.status_code == RESUME_INCOMPLETE:
             last_byte = self._last_byte(
                 self._get_range_header(response))
