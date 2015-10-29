@@ -1683,20 +1683,14 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=SIZE)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
         found = upload._send_media_body(0)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1716,20 +1710,14 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=SIZE)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
         found = upload._send_media_body(SIZE)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1754,22 +1742,16 @@ class Test_Upload(unittest2.TestCase):
         http = object()
         upload = self._makeOne(_Stream(CONTENT), chunksize=1000)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
         self.assertEqual(upload.total_size, None)
 
         found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
         self.assertEqual(upload.total_size, SIZE)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         self.assertEqual(request.body, CONTENT)
@@ -1786,22 +1768,16 @@ class Test_Upload(unittest2.TestCase):
         http = object()
         upload = self._makeOne(_Stream(CONTENT), chunksize=CHUNK_SIZE)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
         self.assertEqual(upload.total_size, None)
 
         found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
         self.assertEqual(upload.total_size, None)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         self.assertEqual(request.body, CONTENT[:CHUNK_SIZE])
@@ -1820,18 +1796,14 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream(CONTENT)
         upload = self._makeOne(stream, total_size=SIZE, chunksize=CHUNK_SIZE)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
         found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1854,20 +1826,14 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream(CONTENT)
         upload = self._makeOne(stream, total_size=SIZE, chunksize=CHUNK_SIZE)
         upload._initialize(http, self.UPLOAD_URL)
-        _called_with = []
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._send_media_request = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
         found = upload._send_chunk(SIZE)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1972,9 +1938,9 @@ class _MediaStreamer(object):
     def __init__(self, response):
         self._response = response
 
-    def __call__(self, use_chunks=True):
+    def __call__(self, request, end):
         assert self._called_with is None
-        self._called_with = use_chunks
+        self._called_with = (request, end)
         return self._response
 
 
