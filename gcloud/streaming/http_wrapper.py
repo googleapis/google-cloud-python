@@ -33,9 +33,10 @@ _REDIRECT_STATUS_CODES = (
 )
 
 
-class _ExceptionRetryArgs(collections.namedtuple(
-    '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
-                            'max_retry_wait'])):
+class _ExceptionRetryArgs(
+        collections.namedtuple(
+            '_ExceptionRetryArgs',
+            ['http', 'http_request', 'exc', 'num_retries', 'max_retry_wait'])):
     """Bundle of information for retriable exceptions.
 
     :type http: :class:`httplib2.Http` (or conforming alternative)
