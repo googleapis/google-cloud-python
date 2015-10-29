@@ -1,13 +1,17 @@
-# pylint: skip-file
 """Small helper class to provide a small slice of a stream."""
 
-from gcloud.streaming import exceptions
+from gcloud.streaming.exceptions import StreamExhausted
 
 
 class StreamSlice(object):
+    """Provides a slice-like object for streams.
 
-    """Provides a slice-like object for streams."""
+    :type stream:  readable file-like object
+    :param stream:  the stream to be buffered
 
+    :type max_bytes: integer
+    :param max_bytes: maximum number of bytes to return in the slice
+    """
     def __init__(self, stream, max_bytes):
         self._stream = stream
         self._remaining_bytes = max_bytes
@@ -27,27 +31,30 @@ class StreamSlice(object):
 
     @property
     def length(self):
-        # For 32-bit python2.x, len() cannot exceed a 32-bit number.
+        """Maximum number of bytes to return in the slice.
+
+        For 32-bit python2.x, len() cannot exceed a 32-bit number.
+
+        :rtype: integer
+        """
         return self._max_bytes
 
-    def read(self, size=None):  # pylint: disable=missing-docstring
-        """Read at most size bytes from this slice.
+    def read(self, size=None):
+        """Read bytes from the slice.
 
         Compared to other streams, there is one case where we may
         unexpectedly raise an exception on read: if the underlying stream
         is exhausted (i.e. returns no bytes on read), and the size of this
         slice indicates we should still be able to read more bytes, we
-        raise exceptions.StreamExhausted.
+        raise :exc:`StreamExhausted`.
 
-        Args:
-          size: If provided, read no more than size bytes from the stream.
+        :type size: integer or None
+        :param size: If provided, read no more than size bytes from the stream.
 
-        Returns:
-          The bytes read from this slice.
+        :rtype: bytes
+        :returns: bytes read from this slice.
 
-        Raises:
-          exceptions.StreamExhausted
-
+        :raises: :exc:`gcloud.streaming.exceptions.StreamExhausted`
         """
         if size is not None:
             read_size = min(size, self._remaining_bytes)
@@ -55,7 +62,7 @@ class StreamSlice(object):
             read_size = self._remaining_bytes
         data = self._stream.read(read_size)
         if read_size > 0 and not data:
-            raise exceptions.StreamExhausted(
+            raise StreamExhausted(
                 'Not enough bytes in stream; expected %d, exhausted '
                 'after %d' % (
                     self._max_bytes,
