@@ -1,4 +1,3 @@
-# pylint: skip-file
 import unittest2
 
 
@@ -19,12 +18,12 @@ class Test_type_check(unittest2.TestCase):
 
     def test_fail_w_single_type_no_msg(self):
         from gcloud.streaming.exceptions import TypecheckError
-        with self.assertRaises(TypecheckError) as err:
+        with self.assertRaises(TypecheckError):
             self._callFUT(123, str)
 
     def test_fail_w_tuple_no_msg(self):
         from gcloud.streaming.exceptions import TypecheckError
-        with self.assertRaises(TypecheckError) as err:
+        with self.assertRaises(TypecheckError):
             self._callFUT(123, (list, tuple))
 
 
