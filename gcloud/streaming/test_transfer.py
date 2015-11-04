@@ -13,11 +13,12 @@ class Test__Transfer(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
+        from gcloud.streaming.transfer import _DEFAULT_CHUNKSIZE
         stream = _Stream()
         xfer = self._makeOne(stream)
         self.assertTrue(xfer.stream is stream)
         self.assertFalse(xfer.close_stream)
-        self.assertEqual(xfer.chunksize, 1 << 20)
+        self.assertEqual(xfer.chunksize, _DEFAULT_CHUNKSIZE)
         self.assertTrue(xfer.auto_transfer)
         self.assertTrue(xfer.bytes_http is None)
         self.assertTrue(xfer.http is None)
@@ -811,6 +812,7 @@ class Test_Upload(unittest2.TestCase):
         return self._getTargetClass()(stream, mime_type, *args, **kw)
 
     def test_ctor_defaults(self):
+        from gcloud.streaming.transfer import _DEFAULT_CHUNKSIZE
         stream = _Stream()
         upload = self._makeOne(stream)
         self.assertTrue(upload.stream is stream)
@@ -821,6 +823,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.progress, 0)
         self.assertTrue(upload.strategy is None)
         self.assertTrue(upload.total_size is None)
+        self.assertEqual(upload.chunksize, _DEFAULT_CHUNKSIZE)
 
     def test_ctor_w_kwds(self):
         stream = _Stream()

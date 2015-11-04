@@ -618,9 +618,6 @@ class Upload(_Transfer):
     :type close_stream: boolean
     :param close_stream: should this instance close the stream when deleted
 
-    :type chunksize: integer
-    :param chunksize: the size of chunks used to download/upload a file.
-
     :type auto_transfer: boolean
     :param auto_transfer: should this instance automatically begin transfering
                           data when initialized
@@ -633,11 +630,11 @@ class Upload(_Transfer):
         'auto_transfer', 'mime_type', 'total_size', 'url'))
 
     def __init__(self, stream, mime_type, total_size=None, http=None,
-                 close_stream=False, chunksize=None, auto_transfer=True,
+                 close_stream=False, auto_transfer=True,
                  **kwds):
         super(Upload, self).__init__(
-            stream, close_stream=close_stream, chunksize=chunksize,
-            auto_transfer=auto_transfer, http=http, **kwds)
+            stream, close_stream=close_stream, auto_transfer=auto_transfer,
+            http=http, **kwds)
         self._final_response = None
         self._server_chunk_granularity = None
         self._complete = False
