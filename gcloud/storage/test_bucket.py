@@ -569,6 +569,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(bucket.location, None)
         bucket.location = 'AS'
         self.assertEqual(bucket.location, 'AS')
+        self.assertTrue('location' in bucket._changes)
 
     def test_lifecycle_rules_getter(self):
         NAME = 'name'
@@ -588,6 +589,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(bucket.lifecycle_rules, [])
         bucket.lifecycle_rules = rules
         self.assertEqual(bucket.lifecycle_rules, rules)
+        self.assertTrue('lifecycle' in bucket._changes)
 
     def test_cors_getter(self):
         NAME = 'name'
@@ -619,6 +621,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(bucket.cors, [])
         bucket.cors = [CORS_ENTRY]
         self.assertEqual(bucket.cors, [CORS_ENTRY])
+        self.assertTrue('cors' in bucket._changes)
 
     def test_get_logging_w_prefix(self):
         NAME = 'name'
@@ -712,11 +715,39 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.self_link, SELF_LINK)
 
-    def test_storage_class(self):
+    def test_storage_class_getter(self):
         STORAGE_CLASS = 'http://example.com/self/'
         properties = {'storageClass': STORAGE_CLASS}
         bucket = self._makeOne(properties=properties)
         self.assertEqual(bucket.storage_class, STORAGE_CLASS)
+
+    def test_storage_class_setter_invalid(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        with self.assertRaises(ValueError):
+            bucket.storage_class = 'BOGUS'
+        self.assertFalse('storageClass' in bucket._changes)
+
+    def test_storage_class_setter_STANDARD(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'STANDARD'
+        self.assertEqual(bucket.storage_class, 'STANDARD')
+        self.assertTrue('storageClass' in bucket._changes)
+
+    def test_storage_class_setter_NEARLINE(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'NEARLINE'
+        self.assertEqual(bucket.storage_class, 'NEARLINE')
+        self.assertTrue('storageClass' in bucket._changes)
+
+    def test_storage_class_setter_DURABLE_REDUCED_AVAILABILITY(self):
+        NAME = 'name'
+        bucket = self._makeOne(name=NAME)
+        bucket.storage_class = 'DURABLE_REDUCED_AVAILABILITY'
+        self.assertEqual(bucket.storage_class, 'DURABLE_REDUCED_AVAILABILITY')
+        self.assertTrue('storageClass' in bucket._changes)
 
     def test_time_created(self):
         import datetime
