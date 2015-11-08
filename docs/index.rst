@@ -37,6 +37,7 @@
   Client <pubsub-client>
   pubsub-topic
   pubsub-subscription
+  pubsub-message
 
 .. toctree::
   :maxdepth: 0
