@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Resource Manager Overview &mdash; gcloud 3f03252 documentation</title>
+    <title>Message &mdash; gcloud 3f03252 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 3f03252 documentation" href="index.html" />
-    <link rel="next" title="Client" href="resource-manager-client.html" />
-    <link rel="prev" title="Tables" href="bigquery-table.html" /> 
+    <link rel="next" title="Using the API" href="bigquery-usage.html" />
+    <link rel="prev" title="Subscriptions" href="pubsub-subscription.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+resource-manager-api%0ARelease%3A%203f03252" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-message%0ARelease%3A%203f03252" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -91,78 +91,73 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="section" id="resource-manager-overview">
-<h1>Resource Manager Overview<a class="headerlink" href="#resource-manager-overview" title="Permalink to this headline">#</a></h1>
-<p>The Cloud Resource Manager API provides methods that you can use
-to programmatically manage your projects in the Google Cloud Platform.
-With this API, you can do the following:</p>
-<ul class="simple">
-<li>Get a list of all projects associated with an account</li>
-<li>Create new projects</li>
-<li>Update existing projects</li>
-<li>Delete projects</li>
-<li>Undelete, or recover, projects that you don&#8217;t want to delete</li>
+  <div class="section" id="module-gcloud.pubsub.message">
+<span id="message"></span><h1>Message<a class="headerlink" href="#module-gcloud.pubsub.message" title="Permalink to this headline">#</a></h1>
+<p>Define API Topics.</p>
+<dl class="class">
+<dt id="gcloud.pubsub.message.Message">
+<em class="property">class </em><code class="descclassname">gcloud.pubsub.message.</code><code class="descname">Message</code><span class="sig-paren">(</span><em>data</em>, <em>message_id</em>, <em>attributes=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/message.html#Message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.message.Message" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Messages can be published to a topic and received by subscribers.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/google/pubsub/v1beta2/PubsubMessage">https://cloud.google.com/pubsub/reference/rest/google/pubsub/v1beta2/PubsubMessage</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>bytes</em>) &#8211; the payload of the message</li>
+<li><strong>message_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An ID assigned to the message by the API.</li>
+<li><strong>attributes</strong> (<em>dict or None</em>) &#8211; Extra metadata associated by the publisher with the
+message.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Don&#8217;t forget to look at the <a class="reference internal" href="#authentication"><span>Authentication</span></a> section below.
-It&#8217;s slightly different from the rest of this library.</p>
-</div>
-<p>Here&#8217;s a quick example of the full life-cycle:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.pubsub.message.Message.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#gcloud.pubsub.message.Message.attributes" title="Permalink to this definition">#</a></dt>
+<dd><p>Lazily-constructed attribute dictionary</p>
+</dd></dl>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># List all projects you have access to</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">():</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+<dl class="classmethod">
+<dt id="gcloud.pubsub.message.Message.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>api_repr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/message.html#Message.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.message.Message.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct message from API representation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>api_repr</strong> (<em>dict or None</em>) &#8211; The API representation of the message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Create a new project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s">&#39;your-project-id-here&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                 <span class="n">name</span><span class="o">=</span><span class="s">&#39;My new project)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_project</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<dl class="attribute">
+<dt id="gcloud.pubsub.message.Message.timestamp">
+<code class="descname">timestamp</code><a class="headerlink" href="#gcloud.pubsub.message.Message.timestamp" title="Permalink to this definition">#</a></dt>
+<dd><p>Return sortable timestamp from attributes, if passed.</p>
+<p>Allows sorting messages in publication order (assuming consistent
+clocks across all publishers).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/datetime.html#module-datetime" title="(in Python v2.7)">datetime</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">timestamp (in UTC timezone) parsed from RFC 3339 timestamp</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body">ValueError if timestamp not in <code class="docutils literal"><span class="pre">attributes</span></code>, or if it does
+not match the RFC 3339 format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Update an existing project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">fetch_project</span><span class="p">(</span><span class="s">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="go">&lt;Project: Existing Project (my-existing-project)&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Modified name&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-<span class="go">&lt;Project: Modified name (my-existing-project)&gt;</span>
+</dd></dl>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Delete a project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Undelete a project</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="s">&#39;my-existing-project&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">project</span><span class="o">.</span><span class="n">undelete</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="section" id="authentication">
-<span id="id1"></span><h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">#</a></h2>
-<p>Unlike the other APIs, the Resource Manager API is focused on managing your
-various projects inside Google Cloud Platform. What this means (currently, as
-of August 2015) is that you can&#8217;t use a Service Account to work with some
-parts of this API (for example, creating projects).</p>
-<p>The reason is actually pretty simple: if your API call is trying to do
-something like create a project, what project&#8217;s Service Account can you use?
-Currently none.</p>
-<p>This means that for this API you should always use the credentials
-provided by the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>, which you can get by running
-<code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>.</p>
-<p>Once you run that command, <code class="docutils literal"><span class="pre">gcloud-python</span></code> will automatically pick up the
-credentials, and you can use the &#8220;automatic discovery&#8221; feature of the library.</p>
-<p>Start by authenticating:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>gcloud auth login
-</pre></div>
-</div>
-<p>And then simply create a client:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">resource_manager</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">resource_manager</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -190,12 +185,12 @@ credentials, and you can use the &#8220;automatic discovery&#8221; feature of th
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Message</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
@@ -206,8 +201,8 @@ credentials, and you can use the &#8220;automatic discovery&#8221; feature of th
 <li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Resource Manager</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
 </ul>
