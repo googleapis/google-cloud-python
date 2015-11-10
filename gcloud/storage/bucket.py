@@ -89,6 +89,8 @@ class Bucket(_PropertyMixin):
     This is used in Bucket.delete() and Bucket.make_public().
     """
 
+    _STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'DURABLE_REDUCED_AVAILABILITY')
+
     def __init__(self, client, name=None):
         super(Bucket, self).__init__(name=name)
         self._client = client
@@ -674,6 +676,22 @@ class Bucket(_PropertyMixin):
                   "DURABLE_REDUCED_AVAILABILITY", else ``None``.
         """
         return self._properties.get('storageClass')
+
+    @storage_class.setter
+    def storage_class(self, value):
+        """Set the storage class for the bucket.
+
+        See: https://cloud.google.com/storage/docs/storage-classes
+        https://cloud.google.com/storage/docs/nearline-storage
+        https://cloud.google.com/storage/docs/durable-reduced-availability
+
+        :type value: string
+        :param value: one of "STANDARD", "NEARLINE", or
+                      "DURABLE_REDUCED_AVAILABILITY"
+        """
+        if value not in self._STORAGE_CLASSES:
+            raise ValueError('Invalid storage class: %s' % (value,))
+        self._patch_property('storageClass', value)
 
     @property
     def time_created(self):
