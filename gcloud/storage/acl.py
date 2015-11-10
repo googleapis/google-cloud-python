@@ -169,13 +169,13 @@ class ACL(object):
     _PREDEFINED_QUERY_PARAM = 'predefinedAcl'
 
     _PREDEFINED_ACLS = frozenset([
-        "private",
-        "project-private",
-        "public-read",
-        "public-read-write",
-        "authenticated-read",
-        "bucket-owner-read",
-        "bucket-owner-full-control",
+        'private',
+        'project-private',
+        'public-read',
+        'public-read-write',
+        'authenticated-read',
+        'bucket-owner-read',
+        'bucket-owner-full-control',
     ])
     """See:
     https://cloud.google.com/storage/docs/access-control#predefined-acl
