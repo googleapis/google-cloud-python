@@ -700,7 +700,7 @@ def _parse_schema_resource(info):
     for r_field in info['fields']:
         name = r_field['name']
         field_type = r_field['type']
-        mode = r_field['mode']
+        mode = r_field.get('mode', 'NULLABLE')
         description = r_field.get('description')
         sub_fields = _parse_schema_resource(r_field)
         schema.append(
