@@ -67,7 +67,7 @@ class _SchemaBase(object):
     def _verify_field(self, field, r_field):
         self.assertEqual(field.name, r_field['name'])
         self.assertEqual(field.field_type, r_field['type'])
-        self.assertEqual(field.mode, r_field['mode'])
+        self.assertEqual(field.mode, r_field.get('mode', 'NULLABLE'))
 
     def _verifySchema(self, schema, resource):
         r_fields = resource['schema']['fields']
@@ -1271,6 +1271,15 @@ class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
                         {'name': 'number',
                          'type': 'STRING',
                          'mode': 'REQUIRED'}]})
+        schema = self._callFUT(RESOURCE['schema'])
+        self._verifySchema(schema, RESOURCE)
+
+    def test__parse_schema_resource_fields_without_mode(self):
+        RESOURCE = self._makeResource()
+        RESOURCE['schema']['fields'].append(
+            {'name': 'phone',
+             'type': 'STRING'})
+
         schema = self._callFUT(RESOURCE['schema'])
         self._verifySchema(schema, RESOURCE)
 
