@@ -1,0 +1,12 @@
+version: 1.0.{build}.{branch}
+
+before_build:
+  - cmd: ECHO before build this is batch
+
+install:
+  - cinst python2
+  - cinst pip
+  - cmd: pip install --upgrade oauth2client
+
+on_success:
+  - cmd: ECHO on success this is batch
