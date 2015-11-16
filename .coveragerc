@@ -3,8 +3,6 @@ omit =
     */demo/*
     */demo.py
     */_generated/*.py
-    # Exclude the forked code until tests are complete.
-    */_apitools/*.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
