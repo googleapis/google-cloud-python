@@ -273,11 +273,7 @@ class Blob(_PropertyMixin):
         # it has all three (http, API_BASE_URL and build_api_url).
         download.InitializeDownload(request, client._connection.http)
 
-        # Should we be passing callbacks through from caller?  We can't
-        # pass them as None, because apitools wants to print to the console
-        # by default.
-        download.StreamInChunks(callback=lambda *args: None,
-                                finish_callback=lambda *args: None)
+        download.StreamInChunks()
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -411,13 +407,8 @@ class Blob(_PropertyMixin):
                                                query_params=query_params)
         upload.InitializeUpload(request, connection.http)
 
-        # Should we be passing callbacks through from caller?  We can't
-        # pass them as None, because apitools wants to print to the console
-        # by default.
         if upload.strategy == transfer.RESUMABLE_UPLOAD:
-            http_response = upload.StreamInChunks(
-                callback=lambda *args: None,
-                finish_callback=lambda *args: None)
+            http_response = upload.StreamInChunks()
         else:
             http_response = http_wrapper.MakeRequest(connection.http, request,
                                                      retries=num_retries)
