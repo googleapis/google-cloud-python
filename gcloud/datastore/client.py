@@ -63,19 +63,15 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
-        # None
         project = _get_production_project()
 
     if project is None:
-        # None
         project = _get_gcd_project()
 
     if project is None:
-        # None
         project = _app_engine_id()
 
     if project is None:
-        # 'appveyor-ci'
         project = _compute_engine_id()
 
     return project
