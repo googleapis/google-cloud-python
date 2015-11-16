@@ -1,4 +1,0 @@
-nose
-wheel
-unittest2
-protobuf>=3.0.0a3
