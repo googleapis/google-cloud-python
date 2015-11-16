@@ -46,5 +46,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Topic :: Internet',
-    ]
+    ],
+    test_suite='unittest2.collector',
 )
