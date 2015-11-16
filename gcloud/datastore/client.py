@@ -183,7 +183,12 @@ class Client(_BaseClient):
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
         project = _determine_default_project(project)
-        raise FooError(project)
+        if project == 'appveyor-ci':
+            d1 = _get_production_project()
+            d2 = _get_gcd_project()
+            d3 = _app_engine_id()
+            d4 = _compute_engine_id()
+            raise FooError(d1, d2, d3, d4)
         if project is None:
             raise EnvironmentError('Project could not be inferred.')
         self.project = project
