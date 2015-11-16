@@ -154,6 +154,8 @@ def _extended_lookup(connection, project, key_pbs,
 
     return results
 
+class FooError(Exception):
+    pass
 
 class Client(_BaseClient):
     """Convenience wrapper for invoking APIs/factories w/ a project.
@@ -181,6 +183,7 @@ class Client(_BaseClient):
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
         project = _determine_default_project(project)
+        raise FooError(project)
         if project is None:
             raise EnvironmentError('Project could not be inferred.')
         self.project = project

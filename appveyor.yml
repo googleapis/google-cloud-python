@@ -57,5 +57,6 @@ build_script:
   - "%CMD_IN_ENV% python setup.py build"
 
 test_script:
+  - "set PYTHONPATH=_testing"
   # Run the project tests
   - "%CMD_IN_ENV% python setup.py nosetests"
