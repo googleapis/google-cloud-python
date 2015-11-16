@@ -63,15 +63,19 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
+        # None
         project = _get_production_project()
 
     if project is None:
+        # None
         project = _get_gcd_project()
 
     if project is None:
+        # None
         project = _app_engine_id()
 
     if project is None:
+        # 'appveyor-ci'
         project = _compute_engine_id()
 
     return project
@@ -154,8 +158,6 @@ def _extended_lookup(connection, project, key_pbs,
 
     return results
 
-class FooError(Exception):
-    pass
 
 class Client(_BaseClient):
     """Convenience wrapper for invoking APIs/factories w/ a project.
@@ -183,12 +185,6 @@ class Client(_BaseClient):
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
         project = _determine_default_project(project)
-        if project == 'appveyor-ci':
-            d1 = _get_production_project()
-            d2 = _get_gcd_project()
-            d3 = _app_engine_id()
-            d4 = _compute_engine_id()
-            raise FooError(d1, d2, d3, d4)
         if project is None:
             raise EnvironmentError('Project could not be inferred.')
         self.project = project

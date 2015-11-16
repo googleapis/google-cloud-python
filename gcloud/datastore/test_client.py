@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import platform
 import unittest2
 
 
@@ -189,6 +190,8 @@ class TestClient(unittest2.TestCase):
                                       credentials=credentials,
                                       http=http)
 
+    @unittest2.skipIf(platform.system() == 'Windows',
+                      'AppVeyor runs on GCE, so will give a false negative')
     def test_ctor_w_project_no_environ(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client as _MUT
