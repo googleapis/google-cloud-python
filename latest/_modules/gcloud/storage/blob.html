@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud f88d59e documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud e2fad76 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'f88d59e',
+        VERSION:     'e2fad76',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud f88d59e documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud e2fad76 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20f88d59e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20e2fad76" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f88d59e)
+              Version History (e2fad76)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -366,11 +366,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c"># it has all three (http, API_BASE_URL and build_api_url).</span>
         <span class="n">download</span><span class="o">.</span><span class="n">InitializeDownload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
-        <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
-        <span class="c"># pass them as None, because apitools wants to print to the console</span>
-        <span class="c"># by default.</span>
-        <span class="n">download</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">(</span><span class="n">callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-                                <span class="n">finish_callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">download</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
@@ -504,13 +500,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                                <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
         <span class="n">upload</span><span class="o">.</span><span class="n">InitializeUpload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
-        <span class="c"># Should we be passing callbacks through from caller?  We can&#39;t</span>
-        <span class="c"># pass them as None, because apitools wants to print to the console</span>
-        <span class="c"># by default.</span>
         <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">transfer</span><span class="o">.</span><span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
-            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">(</span>
-                <span class="n">callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-                <span class="n">finish_callback</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">StreamInChunks</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">http_wrapper</span><span class="o">.</span><span class="n">MakeRequest</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                                                      <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
