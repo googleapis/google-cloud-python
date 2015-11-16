@@ -295,6 +295,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         if self.is_started():
             return
 
+        # NOTE: We __enter__ the stubs more-or-less permanently. This is
+        #       because only after entering the context managers is the
+        #       connection created. We don't want to immediately close
+        #       those connections since the client will make many
+        #       requests with it over HTTP/2.
         self._data_stub = self._make_data_stub()
         self._data_stub.__enter__()
         if self._admin:
