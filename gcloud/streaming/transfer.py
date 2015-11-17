@@ -726,7 +726,7 @@ class Upload(_Transfer):
     def stream_file(self, use_chunks=True):
         """Send this resumable upload
         
-        If 'use_chunks' is False, send it in a single reques. Otherwise,
+        If 'use_chunks' is False, send it in a single request. Otherwise,
         send it in chunks.
         """
         if self.strategy != RESUMABLE_UPLOAD:
