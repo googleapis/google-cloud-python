@@ -144,10 +144,10 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self.timeout_seconds = timeout_seconds
 
         # These will be set in start().
-        self._data_stub = None
-        self._cluster_stub = None
-        self._operations_stub = None
-        self._table_stub = None
+        self._data_stub_internal = None
+        self._cluster_stub_internal = None
+        self._operations_stub_internal = None
+        self._table_stub_internal = None
 
     @property
     def credentials(self):
@@ -179,7 +179,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         return 'projects/' + self.project
 
     @property
-    def data_stub(self):
+    def _data_stub(self):
         """Getter for the gRPC stub used for the Data API.
 
         :rtype: :class:`grpc.early_adopter.implementations._Stub`
@@ -187,12 +187,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client has not been :meth:`start`-ed.
         """
-        if self._data_stub is None:
+        if self._data_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._data_stub
+        return self._data_stub_internal
 
     @property
-    def cluster_stub(self):
+    def _cluster_stub(self):
         """Getter for the gRPC stub used for the Cluster Admin API.
 
         :rtype: :class:`grpc.early_adopter.implementations._Stub`
@@ -203,12 +203,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        if self._cluster_stub is None:
+        if self._cluster_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._cluster_stub
+        return self._cluster_stub_internal
 
     @property
-    def operations_stub(self):
+    def _operations_stub(self):
         """Getter for the gRPC stub used for the Operations API.
 
         :rtype: :class:`grpc.early_adopter.implementations._Stub`
@@ -219,12 +219,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        if self._operations_stub is None:
+        if self._operations_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._operations_stub
+        return self._operations_stub_internal
 
     @property
-    def table_stub(self):
+    def _table_stub(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
         :rtype: :class:`grpc.early_adopter.implementations._Stub`
@@ -235,9 +235,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        if self._table_stub is None:
+        if self._table_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._table_stub
+        return self._table_stub_internal
 
     def _make_data_stub(self):
         """Creates gRPC stub to make requests to the Data API.
@@ -284,7 +284,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: bool
         :returns: Boolean indicating if the client has been started.
         """
-        return self._data_stub is not None
+        return self._data_stub_internal is not None
 
     def start(self):
         """Prepare the client to make requests.
@@ -300,16 +300,16 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         #       connection created. We don't want to immediately close
         #       those connections since the client will make many
         #       requests with it over HTTP/2.
-        self._data_stub = self._make_data_stub()
-        self._data_stub.__enter__()
+        self._data_stub_internal = self._make_data_stub()
+        self._data_stub_internal.__enter__()
         if self._admin:
-            self._cluster_stub = self._make_cluster_stub()
-            self._operations_stub = self._make_operations_stub()
-            self._table_stub = self._make_table_stub()
+            self._cluster_stub_internal = self._make_cluster_stub()
+            self._operations_stub_internal = self._make_operations_stub()
+            self._table_stub_internal = self._make_table_stub()
 
-            self._cluster_stub.__enter__()
-            self._operations_stub.__enter__()
-            self._table_stub.__enter__()
+            self._cluster_stub_internal.__enter__()
+            self._operations_stub_internal.__enter__()
+            self._table_stub_internal.__enter__()
 
     def stop(self):
         """Closes all the open gRPC clients."""
@@ -318,13 +318,13 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         # When exit-ing, we pass None as the exception type, value and
         # traceback to __exit__.
-        self._data_stub.__exit__(None, None, None)
+        self._data_stub_internal.__exit__(None, None, None)
         if self._admin:
-            self._cluster_stub.__exit__(None, None, None)
-            self._operations_stub.__exit__(None, None, None)
-            self._table_stub.__exit__(None, None, None)
+            self._cluster_stub_internal.__exit__(None, None, None)
+            self._operations_stub_internal.__exit__(None, None, None)
+            self._table_stub_internal.__exit__(None, None, None)
 
-        self._data_stub = None
-        self._cluster_stub = None
-        self._operations_stub = None
-        self._table_stub = None
+        self._data_stub_internal = None
+        self._cluster_stub_internal = None
+        self._operations_stub_internal = None
+        self._table_stub_internal = None
