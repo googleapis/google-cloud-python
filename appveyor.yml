@@ -60,6 +60,7 @@ install:
   # target Python version and architecture
   - "%CMD_IN_ENV% pip install wheel"
   - "%CMD_IN_ENV% pip install nose"
+  - "%CMD_IN_ENV% pip install unittest2"
 
 build_script:
   # Build the compiled extension
