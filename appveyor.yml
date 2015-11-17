@@ -22,6 +22,14 @@ environment:
       PYTHON_ARCH: "64"
       WINDOWS_SDK_VERSION: "v7.0"
 
+    - PYTHON: "C:\\Python34"
+      PYTHON_VERSION: "3.4.x"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python34-x64"
+      PYTHON_VERSION: "3.4.x"
+      PYTHON_ARCH: "64"
+
 install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
