@@ -27,25 +27,38 @@ In the hierarchy of API concepts
 """
 
 
+from gcloud.bigtable._generated import bigtable_cluster_service_pb2
+from gcloud.bigtable._generated import bigtable_service_pb2
+from gcloud.bigtable._generated import bigtable_table_service_pb2
+from gcloud.bigtable._generated import operations_pb2
+from gcloud.bigtable._helpers import make_stub
 from gcloud.client import _ClientFactoryMixin
 from gcloud.client import _ClientProjectMixin
 from gcloud.credentials import get_credentials
 
 
+TABLE_STUB_FACTORY = (bigtable_table_service_pb2.
+                      early_adopter_create_BigtableTableService_stub)
 TABLE_ADMIN_HOST = 'bigtabletableadmin.googleapis.com'
 """Table Admin API request host."""
 TABLE_ADMIN_PORT = 443
 """Table Admin API request port."""
 
+CLUSTER_STUB_FACTORY = (bigtable_cluster_service_pb2.
+                        early_adopter_create_BigtableClusterService_stub)
 CLUSTER_ADMIN_HOST = 'bigtableclusteradmin.googleapis.com'
 """Cluster Admin API request host."""
 CLUSTER_ADMIN_PORT = 443
 """Cluster Admin API request port."""
 
+DATA_STUB_FACTORY = (bigtable_service_pb2.
+                     early_adopter_create_BigtableService_stub)
 DATA_API_HOST = 'bigtable.googleapis.com'
 """Data API request host."""
 DATA_API_PORT = 443
 """Data API request port."""
+
+OPERATIONS_STUB_FACTORY = operations_pb2.early_adopter_create_Operations_stub
 
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/cloud-bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
@@ -130,6 +143,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self.user_agent = user_agent
         self.timeout_seconds = timeout_seconds
 
+        # These will be set in start().
+        self._data_stub = None
+        self._cluster_stub = None
+        self._operations_stub = None
+        self._table_stub = None
+
     @property
     def credentials(self):
         """Getter for client's credentials.
@@ -139,3 +158,173 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :returns: The credentials stored on the client.
         """
         return self._credentials
+
+    @property
+    def project_name(self):
+        """Project name to be used with Cluster Admin API.
+
+        .. note::
+
+            This property will not change if ``project`` does not, but the
+            return value is not cached.
+
+        The project name is of the form
+
+            ``"projects/{project_id}"``
+
+        :rtype: str
+        :returns: The project name to be used with the Cloud Bigtable Admin
+                  API RPC service.
+        """
+        return 'projects/' + self.project
+
+    @property
+    def data_stub(self):
+        """Getter for the gRPC stub used for the Data API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client has not been :meth:`start`-ed.
+        """
+        if self._data_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._data_stub
+
+    @property
+    def cluster_stub(self):
+        """Getter for the gRPC stub used for the Cluster Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._cluster_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._cluster_stub
+
+    @property
+    def operations_stub(self):
+        """Getter for the gRPC stub used for the Operations API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._operations_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._operations_stub
+
+    @property
+    def table_stub(self):
+        """Getter for the gRPC stub used for the Table Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 client is not an admin client or if it has not been
+                 :meth:`start`-ed.
+        """
+        if not self._admin:
+            raise ValueError('Client is not an admin client.')
+        if self._table_stub is None:
+            raise ValueError('Client has not been started.')
+        return self._table_stub
+
+    def _make_data_stub(self):
+        """Creates gRPC stub to make requests to the Data API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        """
+        return make_stub(self, DATA_STUB_FACTORY,
+                         DATA_API_HOST, DATA_API_PORT)
+
+    def _make_cluster_stub(self):
+        """Creates gRPC stub to make requests to the Cluster Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        """
+        return make_stub(self, CLUSTER_STUB_FACTORY,
+                         CLUSTER_ADMIN_HOST, CLUSTER_ADMIN_PORT)
+
+    def _make_operations_stub(self):
+        """Creates gRPC stub to make requests to the Operations API.
+
+        These are for long-running operations of the Cluster Admin API,
+        hence the host and port matching.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        """
+        return make_stub(self, OPERATIONS_STUB_FACTORY,
+                         CLUSTER_ADMIN_HOST, CLUSTER_ADMIN_PORT)
+
+    def _make_table_stub(self):
+        """Creates gRPC stub to make requests to the Table Admin API.
+
+        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :returns: A gRPC stub object.
+        """
+        return make_stub(self, TABLE_STUB_FACTORY,
+                         TABLE_ADMIN_HOST, TABLE_ADMIN_PORT)
+
+    def is_started(self):
+        """Check if the client has been started.
+
+        :rtype: bool
+        :returns: Boolean indicating if the client has been started.
+        """
+        return self._data_stub is not None
+
+    def start(self):
+        """Prepare the client to make requests.
+
+        Activates gRPC contexts for making requests to the Bigtable
+        Service(s).
+        """
+        if self.is_started():
+            return
+
+        # NOTE: We __enter__ the stubs more-or-less permanently. This is
+        #       because only after entering the context managers is the
+        #       connection created. We don't want to immediately close
+        #       those connections since the client will make many
+        #       requests with it over HTTP/2.
+        self._data_stub = self._make_data_stub()
+        self._data_stub.__enter__()
+        if self._admin:
+            self._cluster_stub = self._make_cluster_stub()
+            self._operations_stub = self._make_operations_stub()
+            self._table_stub = self._make_table_stub()
+
+            self._cluster_stub.__enter__()
+            self._operations_stub.__enter__()
+            self._table_stub.__enter__()
+
+    def stop(self):
+        """Closes all the open gRPC clients."""
+        if not self.is_started():
+            return
+
+        # When exit-ing, we pass None as the exception type, value and
+        # traceback to __exit__.
+        self._data_stub.__exit__(None, None, None)
+        if self._admin:
+            self._cluster_stub.__exit__(None, None, None)
+            self._operations_stub.__exit__(None, None, None)
+            self._table_stub.__exit__(None, None, None)
+
+        self._data_stub = None
+        self._cluster_stub = None
+        self._operations_stub = None
+        self._table_stub = None
