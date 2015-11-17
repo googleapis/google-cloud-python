@@ -29,13 +29,6 @@ from gcloud.streaming.stream_slice import StreamSlice
 from gcloud.streaming.util import acceptable_mime_type
 from gcloud.streaming.util import type_check
 
-__all__ = [
-    'Download',
-    'Upload',
-    'RESUMABLE_UPLOAD',
-    'RESUMABLE_UPLOAD_THRESHOLD',
-    'SIMPLE_UPLOAD',
-]
 
 RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
 SIMPLE_UPLOAD = 'simple'

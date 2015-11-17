@@ -21,16 +21,6 @@ from gcloud.streaming.exceptions import RequestError
 from gcloud.streaming.exceptions import RetryAfterError
 from gcloud.streaming.util import calculate_wait_for_retry
 
-__all__ = [
-    'get_http',
-    'handle_http_exceptions',
-    'make_api_request',
-    'Request',
-    'Response',
-    'RESUME_INCOMPLETE',
-    'TOO_MANY_REQUESTS',
-]
-
 
 # 308 and 429 don't have names in httplib.
 RESUME_INCOMPLETE = 308
