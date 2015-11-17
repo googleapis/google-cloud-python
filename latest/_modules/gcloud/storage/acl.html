@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.acl &mdash; gcloud 5d589a1 documentation</title>
+    <title>gcloud.storage.acl &mdash; gcloud 35730b4 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '5d589a1',
+        VERSION:     '35730b4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 5d589a1 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 35730b4 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%205d589a1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%2035730b4" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (5d589a1)
+              Version History (35730b4)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -259,6 +259,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
 
     <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;acl&#39;</span>
+    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s">&#39;predefinedAcl&#39;</span>
+
+    <span class="n">_PREDEFINED_ACLS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
+        <span class="s">&#39;private&#39;</span><span class="p">,</span>
+        <span class="s">&#39;project-private&#39;</span><span class="p">,</span>
+        <span class="s">&#39;public-read&#39;</span><span class="p">,</span>
+        <span class="s">&#39;public-read-write&#39;</span><span class="p">,</span>
+        <span class="s">&#39;authenticated-read&#39;</span><span class="p">,</span>
+        <span class="s">&#39;bucket-owner-read&#39;</span><span class="p">,</span>
+        <span class="s">&#39;bucket-owner-full-control&#39;</span><span class="p">,</span>
+    <span class="p">])</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/storage/docs/access-control#predefined-acl</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
 
     <span class="c"># Subclasses must override to provide these attributes (typically,</span>
@@ -478,6 +493,39 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
 </div>
+    <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for :meth:`save` and :meth:`save_predefined`.</span>
+
+<span class="sd">        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.</span>
+<span class="sd">        :param acl: The ACL object to save.  If left blank, this will save</span>
+<span class="sd">                    current entries.</span>
+
+<span class="sd">        :type predefined: string or None</span>
+<span class="sd">        :param predefined: An identifier for a predefined ACL.  Must be one</span>
+<span class="sd">                           of the keys in :attr:`_PREDEFINED_ACLS`</span>
+<span class="sd">                           If passed, `acl` must be None.</span>
+
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the ACL&#39;s parent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">predefined</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">acl</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">query_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_PREDEFINED_QUERY_PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="n">predefined</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
+
 <div class="viewcode-block" id="ACL.save"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket.</span>
 
@@ -496,17 +544,24 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">save_to_backend</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="k">if</span> <span class="n">save_to_backend</span><span class="p">:</span>
-            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-            <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-                <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
-                <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">})</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">,</span> <span class="p">()):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">(</span><span class="n">acl</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ACL.save_predefined"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.save_predefined">[docs]</a>    <span class="k">def</span> <span class="nf">save_predefined</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save this ACL for the current bucket using a predefined ACL.</span>
+
+<span class="sd">        :type predefined: string</span>
+<span class="sd">        :param predefined: An identifier for a predefined ACL.  Must be one</span>
+<span class="sd">                           of the keys in :attr:`_PREDEFINED_ACLS`</span>
+<span class="sd">                           If passed, `acl` must be None.</span>
+
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the ACL&#39;s parent.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">predefined</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PREDEFINED_ACLS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid predefined ACL: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">predefined</span><span class="p">,))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="ACL.clear"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all ACL entries.</span>
@@ -554,6 +609,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="sd">&quot;&quot;&quot;A class representing the default object ACL for a bucket.&quot;&quot;&quot;</span>
 
     <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;defaultObjectAcl&#39;</span>
+    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s">&#39;predefinedDefaultObjectAcl&#39;</span>
 
 </div>
 <div class="viewcode-block" id="ObjectACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL">[docs]</a><span class="k">class</span> <span class="nc">ObjectACL</span><span class="p">(</span><span class="n">ACL</span><span class="p">):</span>
