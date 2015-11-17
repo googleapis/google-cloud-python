@@ -47,10 +47,10 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.timeout_seconds, timeout_seconds)
         self.assertEqual(client.user_agent, user_agent)
         # Check stubs are set (but null)
-        self.assertEqual(client._data_stub, None)
-        self.assertEqual(client._cluster_stub, None)
-        self.assertEqual(client._operations_stub, None)
-        self.assertEqual(client._table_stub, None)
+        self.assertEqual(client._data_stub_internal, None)
+        self.assertEqual(client._cluster_stub_internal, None)
+        self.assertEqual(client._operations_stub_internal, None)
+        self.assertEqual(client._table_stub_internal, None)
 
     def test_constructor_default_scopes(self):
         from gcloud.bigtable import client as MUT
@@ -121,23 +121,23 @@ class TestClient(unittest2.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials)
-        client._data_stub = object()
-        self.assertTrue(client.data_stub is client._data_stub)
+        client._data_stub_internal = object()
+        self.assertTrue(client._data_stub is client._data_stub_internal)
 
     def test_data_stub_failure(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials)
         with self.assertRaises(ValueError):
-            getattr(client, 'data_stub')
+            getattr(client, '_data_stub')
 
     def test_cluster_stub_getter(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
-        client._cluster_stub = object()
-        self.assertTrue(client.cluster_stub is client._cluster_stub)
+        client._cluster_stub_internal = object()
+        self.assertTrue(client._cluster_stub is client._cluster_stub_internal)
 
     def test_cluster_stub_non_admin_failure(self):
         credentials = _Credentials()
@@ -145,7 +145,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=False)
         with self.assertRaises(ValueError):
-            getattr(client, 'cluster_stub')
+            getattr(client, '_cluster_stub')
 
     def test_cluster_stub_unset_failure(self):
         credentials = _Credentials()
@@ -153,15 +153,16 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
         with self.assertRaises(ValueError):
-            getattr(client, 'cluster_stub')
+            getattr(client, '_cluster_stub')
 
     def test_operations_stub_getter(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
-        client._operations_stub = object()
-        self.assertTrue(client.operations_stub is client._operations_stub)
+        client._operations_stub_internal = object()
+        self.assertTrue(client._operations_stub is
+                        client._operations_stub_internal)
 
     def test_operations_stub_non_admin_failure(self):
         credentials = _Credentials()
@@ -169,7 +170,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=False)
         with self.assertRaises(ValueError):
-            getattr(client, 'operations_stub')
+            getattr(client, '_operations_stub')
 
     def test_operations_stub_unset_failure(self):
         credentials = _Credentials()
@@ -177,15 +178,15 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
         with self.assertRaises(ValueError):
-            getattr(client, 'operations_stub')
+            getattr(client, '_operations_stub')
 
     def test_table_stub_getter(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
-        client._table_stub = object()
-        self.assertTrue(client.table_stub is client._table_stub)
+        client._table_stub_internal = object()
+        self.assertTrue(client._table_stub is client._table_stub_internal)
 
     def test_table_stub_non_admin_failure(self):
         credentials = _Credentials()
@@ -193,7 +194,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=False)
         with self.assertRaises(ValueError):
-            getattr(client, 'table_stub')
+            getattr(client, '_table_stub')
 
     def test_table_stub_unset_failure(self):
         credentials = _Credentials()
@@ -201,7 +202,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
         with self.assertRaises(ValueError):
-            getattr(client, 'table_stub')
+            getattr(client, '_table_stub')
 
     def test__make_data_stub(self):
         from gcloud._testing import _Monkey
@@ -333,9 +334,9 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials)
 
         self.assertFalse(client.is_started())
-        client._data_stub = object()
+        client._data_stub_internal = object()
         self.assertTrue(client.is_started())
-        client._data_stub = None
+        client._data_stub_internal = None
         self.assertFalse(client.is_started())
 
     def _start_method_helper(self, admin):
@@ -357,17 +358,17 @@ class TestClient(unittest2.TestCase):
         with _Monkey(MUT, make_stub=mock_make_stub):
             client.start()
 
-        self.assertTrue(client._data_stub is stub)
+        self.assertTrue(client._data_stub_internal is stub)
         if admin:
-            self.assertTrue(client._cluster_stub is stub)
-            self.assertTrue(client._operations_stub is stub)
-            self.assertTrue(client._table_stub is stub)
+            self.assertTrue(client._cluster_stub_internal is stub)
+            self.assertTrue(client._operations_stub_internal is stub)
+            self.assertTrue(client._table_stub_internal is stub)
             self.assertEqual(stub._entered, 4)
             self.assertEqual(len(make_stub_args), 4)
         else:
-            self.assertTrue(client._cluster_stub is None)
-            self.assertTrue(client._operations_stub is None)
-            self.assertTrue(client._table_stub is None)
+            self.assertTrue(client._cluster_stub_internal is None)
+            self.assertTrue(client._operations_stub_internal is None)
+            self.assertTrue(client._table_stub_internal is None)
             self.assertEqual(stub._entered, 1)
             self.assertEqual(len(make_stub_args), 1)
         self.assertEqual(stub._exited, [])
@@ -382,12 +383,12 @@ class TestClient(unittest2.TestCase):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials)
-        client._data_stub = data_stub = object()
+        client._data_stub_internal = data_stub = object()
         self.assertTrue(client.is_started())
         client.start()
 
         # Make sure the stub did not change.
-        self.assertEqual(client._data_stub, data_stub)
+        self.assertEqual(client._data_stub_internal, data_stub)
 
     def _stop_method_helper(self, admin):
         credentials = _Credentials()
@@ -397,15 +398,15 @@ class TestClient(unittest2.TestCase):
 
         stub1 = _FakeStub()
         stub2 = _FakeStub()
-        client._data_stub = stub1
-        client._cluster_stub = stub2
-        client._operations_stub = stub2
-        client._table_stub = stub2
+        client._data_stub_internal = stub1
+        client._cluster_stub_internal = stub2
+        client._operations_stub_internal = stub2
+        client._table_stub_internal = stub2
         client.stop()
-        self.assertTrue(client._data_stub is None)
-        self.assertTrue(client._cluster_stub is None)
-        self.assertTrue(client._operations_stub is None)
-        self.assertTrue(client._table_stub is None)
+        self.assertTrue(client._data_stub_internal is None)
+        self.assertTrue(client._cluster_stub_internal is None)
+        self.assertTrue(client._operations_stub_internal is None)
+        self.assertTrue(client._table_stub_internal is None)
         self.assertEqual(stub1._entered, 0)
         self.assertEqual(stub2._entered, 0)
         exc_none_triple = (None, None, None)
@@ -430,10 +431,10 @@ class TestClient(unittest2.TestCase):
         # This is a bit hacky. We set the cluster stub protected value
         # since it isn't used in is_started() and make sure that stop
         # doesn't reset this value to None.
-        client._cluster_stub = cluster_stub = object()
+        client._cluster_stub_internal = cluster_stub = object()
         client.stop()
         # Make sure the cluster stub did not change.
-        self.assertEqual(client._cluster_stub, cluster_stub)
+        self.assertEqual(client._cluster_stub_internal, cluster_stub)
 
 
 class _Credentials(object):
