@@ -581,7 +581,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': []})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_no_arg(self):
+    def test_save_no_acl(self):
         ROLE = 'role'
         AFTER = [{'entity': 'allUsers', 'role': ROLE}]
         connection = _Connection({'acl': AFTER})
@@ -599,7 +599,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['data'], {'acl': AFTER})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
-    def test_save_w_arg(self):
+    def test_save_w_acl(self):
         ROLE1 = 'role1'
         ROLE2 = 'role2'
         STICKY = {'entity': 'allUsers', 'role': ROLE2}
@@ -620,6 +620,53 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['path'], '/testing')
         self.assertEqual(kw[0]['data'], {'acl': new_acl})
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
+
+    def test_save_prefefined_invalid(self):
+        connection = _Connection()
+        client = _Client(connection)
+        acl = self._makeOne()
+        acl.save_path = '/testing'
+        acl.loaded = True
+        with self.assertRaises(ValueError):
+            acl.save_predefined('bogus', client=client)
+
+    def test_save_predefined_valid(self):
+        PREDEFINED = 'private'
+        connection = _Connection({'acl': []})
+        client = _Client(connection)
+        acl = self._makeOne()
+        acl.save_path = '/testing'
+        acl.loaded = True
+        acl.save_predefined(PREDEFINED, client=client)
+        entries = list(acl)
+        self.assertEqual(len(entries), 0)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/testing')
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'],
+                         {'projection': 'full', 'predefinedAcl': PREDEFINED})
+
+    def test_save_predefined_valid_w_alternate_query_param(self):
+        # Cover case where subclass overrides _PREDEFINED_QUERY_PARAM
+        PREDEFINED = 'private'
+        connection = _Connection({'acl': []})
+        client = _Client(connection)
+        acl = self._makeOne()
+        acl.save_path = '/testing'
+        acl.loaded = True
+        acl._PREDEFINED_QUERY_PARAM = 'alternate'
+        acl.save_predefined(PREDEFINED, client=client)
+        entries = list(acl)
+        self.assertEqual(len(entries), 0)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/testing')
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'],
+                         {'projection': 'full', 'alternate': PREDEFINED})
 
     def test_clear(self):
         ROLE1 = 'role1'

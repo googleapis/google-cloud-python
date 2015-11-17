@@ -166,6 +166,21 @@ class ACL(object):
     """Container class representing a list of access controls."""
 
     _URL_PATH_ELEM = 'acl'
+    _PREDEFINED_QUERY_PARAM = 'predefinedAcl'
+
+    _PREDEFINED_ACLS = frozenset([
+        'private',
+        'project-private',
+        'public-read',
+        'public-read-write',
+        'authenticated-read',
+        'bucket-owner-read',
+        'bucket-owner-full-control',
+    ])
+    """See:
+    https://cloud.google.com/storage/docs/access-control#predefined-acl
+    """
+
     loaded = False
 
     # Subclasses must override to provide these attributes (typically,
@@ -385,6 +400,39 @@ class ACL(object):
         for entry in found.get('items', ()):
             self.add_entity(self.entity_from_dict(entry))
 
+    def _save(self, acl, predefined, client):
+        """Helper for :meth:`save` and :meth:`save_predefined`.
+
+        :type acl: :class:`gcloud.storage.acl.ACL`, or a compatible list.
+        :param acl: The ACL object to save.  If left blank, this will save
+                    current entries.
+
+        :type predefined: string or None
+        :param predefined: An identifier for a predefined ACL.  Must be one
+                           of the keys in :attr:`_PREDEFINED_ACLS`
+                           If passed, `acl` must be None.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the ACL's parent.
+        """
+        query_params = {'projection': 'full'}
+        if predefined is not None:
+            acl = []
+            query_params[self._PREDEFINED_QUERY_PARAM] = predefined
+
+        path = self.save_path
+        client = self._require_client(client)
+        result = client.connection.api_request(
+            method='PATCH',
+            path=path,
+            data={self._URL_PATH_ELEM: list(acl)},
+            query_params=query_params)
+        self.entities.clear()
+        for entry in result.get(self._URL_PATH_ELEM, ()):
+            self.add_entity(self.entity_from_dict(entry))
+        self.loaded = True
+
     def save(self, acl=None, client=None):
         """Save this ACL for the current bucket.
 
@@ -403,17 +451,24 @@ class ACL(object):
             save_to_backend = True
 
         if save_to_backend:
-            path = self.save_path
-            client = self._require_client(client)
-            result = client.connection.api_request(
-                method='PATCH',
-                path=path,
-                data={self._URL_PATH_ELEM: list(acl)},
-                query_params={'projection': 'full'})
-            self.entities.clear()
-            for entry in result.get(self._URL_PATH_ELEM, ()):
-                self.add_entity(self.entity_from_dict(entry))
-            self.loaded = True
+            self._save(acl, None, client)
+
+    def save_predefined(self, predefined, client=None):
+        """Save this ACL for the current bucket using a predefined ACL.
+
+        :type predefined: string
+        :param predefined: An identifier for a predefined ACL.  Must be one
+                           of the keys in :attr:`_PREDEFINED_ACLS`
+                           If passed, `acl` must be None.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the ACL's parent.
+        """
+        if predefined not in self._PREDEFINED_ACLS:
+            raise ValueError("Invalid predefined ACL: %s" % (predefined,))
+
+        self._save(None, predefined, client)
 
     def clear(self, client=None):
         """Remove all ACL entries.
@@ -461,6 +516,7 @@ class DefaultObjectACL(BucketACL):
     """A class representing the default object ACL for a bucket."""
 
     _URL_PATH_ELEM = 'defaultObjectAcl'
+    _PREDEFINED_QUERY_PARAM = 'predefinedDefaultObjectAcl'
 
 
 class ObjectACL(ACL):
