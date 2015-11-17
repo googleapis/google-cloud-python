@@ -3,20 +3,6 @@
 
 This library wraps the underlying http library we use, which is
 currently httplib2.
-
-
-:mod:`gcloud.storage.blob` uses:
-
-- :class:`Request`
-- :function:`make_api_request`
-
-:mod:`gcloud._apidools.transfer` uses:
-
-- :function:`get_http`
-- :function:`handle_http_exceptions`
-- :function:`make_api_request`
-- :class:`Request`
-- :const:`RESUME_INCOMPLETE`
 """
 
 import collections

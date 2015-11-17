@@ -1,17 +1,5 @@
 # pylint: skip-file
-"""Assorted utilities shared between parts of apitools.
-
-Pruned to include only helpers used by other vendored-in modules:
-
-:mod:`gcloud.streaming.http_wrapper` uses:
-
-- :function:`calculate_wait_for_retry`
-
-:mod:`gcloud._apidools.transfer` uses:
-
-- :function:`type_check`
-- :function:`acceptable_mime_type`
-"""
+"""Assorted utilities shared between parts of apitools."""
 
 import random
 

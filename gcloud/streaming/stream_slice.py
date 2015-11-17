@@ -1,10 +1,5 @@
 # pylint: skip-file
-"""Small helper class to provide a small slice of a stream.
-
-:mod:`gcloud._apidools.transfer` uses:
-
-- :class:`StreamSlice`
-"""
+"""Small helper class to provide a small slice of a stream."""
 
 from gcloud.streaming import exceptions
 
