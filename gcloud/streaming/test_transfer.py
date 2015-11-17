@@ -1402,8 +1402,7 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response, chunk_response)
 
         with _Monkey(MUT,
-                     Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
+                     Request=_Request,
                      make_api_request=requester):
             upload.initialize_upload(request, client=client)
 
@@ -1530,8 +1529,7 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
+                     Request=_Request,
                      make_api_request=requester):
             response = upload.stream_file()
 
@@ -1575,8 +1573,7 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
+                     Request=_Request,
                      make_api_request=requester):
             with self.assertRaises(CommunicationError):
                 upload.stream_file()
