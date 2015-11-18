@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud 6692df2 documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 6fdb5b1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '6692df2',
+        VERSION:     '6fdb5b1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 6692df2 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 6fdb5b1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%206692df2" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%206fdb5b1" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (6692df2)
+              Version History (6fdb5b1)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -117,6 +117,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_dataset_ids_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 <span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">DATASET</span>
@@ -381,9 +382,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]))</span>
-        <span class="k">if</span> <span class="n">ids</span> <span class="o">!=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match dataset ID&#39;</span><span class="p">)</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">current_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="n">current_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match dataset ID&#39;</span><span class="p">)</span>
 
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transaction</span>
 
