@@ -139,6 +139,23 @@ class Request(object):
             self.loggable_body = '<media body>'
 
 
+def _process_content_range(content_range):
+    """Convert a 'Content-Range' header into a length for the response.
+
+    Helper for :meth:`Response.length`.
+
+    :type content_range: string
+    :param content_range: the header value being parsed.
+
+    :rtype: integer
+    :returns: the length of the response chunk.
+    """
+    _, _, range_spec = content_range.partition(' ')
+    byte_range, _, _ = range_spec.partition('/')
+    start, _, end = byte_range.partition('-')
+    return int(end) - int(start) + 1
+
+
 # Note: currently the order of fields here is important, since we want
 # to be able to pass in the result from httplib2.request.
 class Response(collections.namedtuple(
@@ -160,12 +177,6 @@ class Response(collections.namedtuple(
         Returns:
           Response length (as int or long)
         """
-        def _process_content_range(content_range):
-            _, _, range_spec = content_range.partition(' ')
-            byte_range, _, _ = range_spec.partition('/')
-            start, _, end = byte_range.partition('-')
-            return int(end) - int(start) + 1
-
         if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
             # transfer; we can't trust the content-length header in that
