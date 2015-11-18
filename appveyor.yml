@@ -13,50 +13,48 @@ environment:
     # a later point release.
     # See: http://www.appveyor.com/docs/installed-software#python
 
+    # Python 2.6.6 is the latest Python 2.6 with a Windows installer
+    # Python 2.6.9 is the overall latest
+    # https://www.python.org/ftp/python/2.6.6/
     - PYTHON: "C:\\Python26"
-      PYTHON_VERSION: "2.6.x"
+      PYTHON_VERSION: "2.6.6"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python26-x64"
-      PYTHON_VERSION: "2.6.x"
+      PYTHON_VERSION: "2.6.6"
       PYTHON_ARCH: "64"
 
+    # Python 2.7.10 is the latest Python 2.7 with a Windows installer
+    # Python 2.7.10 is the overall latest
+    # https://www.python.org/ftp/python/2.7.10/
     - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x"
+      PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.x"
+      PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.0"
 
+    # Python 3.3.5 is the latest Python 3.3 with a Windows installer
+    # Python 3.3.6 is the overall latest
+    # https://www.python.org/ftp/python/3.3.5/
     - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.x"
+      PYTHON_VERSION: "3.3.5"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.x"
+      PYTHON_VERSION: "3.3.5"
       PYTHON_ARCH: "64"
 
+    # Python 3.4.3 is the latest Python 3.4 with a Windows installer
+    # Python 3.4.3 is the overall latest
+    # https://www.python.org/ftp/python/3.4.3/
     - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x"
+      PYTHON_VERSION: "3.4.3"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x"
-      PYTHON_ARCH: "64"
-
-    # Python versions not pre-installed
-
-    # Python 2.6.6 is the latest Python 2.6 with a Windows installer
-    # See: https://github.com/ogrisel/python-appveyor-demo/issues/10
-
-    - PYTHON: "C:\\Python266"
-      PYTHON_VERSION: "2.6.6"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python266-x64"
-      PYTHON_VERSION: "2.6.6"
+      PYTHON_VERSION: "3.4.3"
       PYTHON_ARCH: "64"
 
 install:
