@@ -61,7 +61,7 @@ install:
   - "%CMD_IN_ENV% pip install wheel"
   - "%CMD_IN_ENV% pip install nose"
   - "%CMD_IN_ENV% pip install unittest2"
-  - "%CMD_IN_ENV% pip install --upgrade pycrypto"
+  - "%CMD_IN_ENV% pip install https://dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-2.7a1.tar.gz"
 
 build_script:
   # Build the compiled extension
