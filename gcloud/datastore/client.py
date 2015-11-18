@@ -290,8 +290,8 @@ class Client(_BaseClient):
             return []
 
         ids = set(key.dataset_id for key in keys)
-        for ds_id in ids:
-            if not _dataset_ids_equal(ds_id, self.dataset_id):
+        for current_id in ids:
+            if not _dataset_ids_equal(current_id, self.dataset_id):
                 raise ValueError('Keys do not match dataset ID')
 
         transaction = self.current_transaction
