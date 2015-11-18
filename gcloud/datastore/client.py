@@ -24,6 +24,7 @@ from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
+from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
 from gcloud.environment_vars import DATASET
@@ -288,9 +289,10 @@ class Client(_BaseClient):
         if not keys:
             return []
 
-        ids = list(set([key.dataset_id for key in keys]))
-        if ids != [self.dataset_id]:
-            raise ValueError('Keys do not match dataset ID')
+        ids = set(key.dataset_id for key in keys)
+        for ds_id in ids:
+            if not _dataset_ids_equal(ds_id, self.dataset_id):
+                raise ValueError('Keys do not match dataset ID')
 
         transaction = self.current_transaction
 
