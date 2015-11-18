@@ -27,6 +27,8 @@ In the hierarchy of API concepts
 """
 
 
+import copy
+
 from gcloud.bigtable._generated import bigtable_cluster_service_pb2
 from gcloud.bigtable._generated import bigtable_service_pb2
 from gcloud.bigtable._generated import bigtable_table_service_pb2
@@ -148,6 +150,25 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self._cluster_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
+
+    def copy(self):
+        """Make a copy of this client.
+
+        Copies the local data stored as simple types but does not copy the
+        current state of any open connections with the Cloud Bigtable API.
+
+        :rtype: :class:`.Client`
+        :returns: A copy of the current client.
+        """
+        copied_creds = copy.deepcopy(self._credentials)
+        return self.__class__(
+            self.project,
+            copied_creds,
+            READ_ONLY_SCOPE in copied_creds.scopes,
+            self._admin,
+            self.user_agent,
+            self.timeout_seconds,
+        )
 
     @property
     def credentials(self):

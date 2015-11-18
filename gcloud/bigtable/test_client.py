@@ -41,7 +41,7 @@ class TestClient(unittest2.TestCase):
 
         expected_creds = expected_creds or creds
         self.assertTrue(client._credentials is expected_creds)
-        self.assertEqual(client._credentials._scopes, expected_scopes)
+        self.assertEqual(client._credentials.scopes, expected_scopes)
 
         self.assertEqual(client.project, PROJECT)
         self.assertEqual(client.timeout_seconds, timeout_seconds)
@@ -103,6 +103,44 @@ class TestClient(unittest2.TestCase):
         with _Monkey(MUT, get_credentials=mock_get_credentials):
             self._constructor_test_helper(expected_scopes, None,
                                           expected_creds=creds)
+
+    def _copy_test_helper(self, read_only=False, admin=False):
+        credentials = _Credentials('value')
+        project = 'PROJECT'
+        timeout_seconds = 123
+        user_agent = 'you-sir-age-int'
+        client = self._makeOne(project=project, credentials=credentials,
+                               read_only=read_only, admin=admin,
+                               timeout_seconds=timeout_seconds,
+                               user_agent=user_agent)
+        # Put some fake stubs in place so that we can verify they
+        # don't get copied.
+        client._data_stub_internal = object()
+        client._cluster_stub_internal = object()
+        client._operations_stub_internal = object()
+        client._table_stub_internal = object()
+
+        new_client = client.copy()
+        self.assertEqual(new_client._admin, client._admin)
+        self.assertEqual(new_client._credentials, client._credentials)
+        self.assertFalse(new_client._credentials is client._credentials)
+        self.assertEqual(new_client.project, client.project)
+        self.assertEqual(new_client.user_agent, client.user_agent)
+        self.assertEqual(new_client.timeout_seconds, client.timeout_seconds)
+        # Make sure stubs are not preserved.
+        self.assertEqual(new_client._data_stub_internal, None)
+        self.assertEqual(new_client._cluster_stub_internal, None)
+        self.assertEqual(new_client._operations_stub_internal, None)
+        self.assertEqual(new_client._table_stub_internal, None)
+
+    def test_copy(self):
+        self._copy_test_helper()
+
+    def test_copy_admin(self):
+        self._copy_test_helper(admin=True)
+
+    def test_copy_read_only(self):
+        self._copy_test_helper(read_only=True)
 
     def test_credentials_getter(self):
         credentials = _Credentials()
@@ -439,11 +477,17 @@ class TestClient(unittest2.TestCase):
 
 class _Credentials(object):
 
-    _scopes = None
+    scopes = None
+
+    def __init__(self, value=None):
+        self.value = value
 
     def create_scoped(self, scope):
-        self._scopes = scope
+        self.scopes = scope
         return self
+
+    def __eq__(self, other):
+        return self.value == other.value
 
 
 class _FakeStub(object):
