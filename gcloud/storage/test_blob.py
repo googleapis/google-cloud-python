@@ -281,7 +281,8 @@ class Test_Blob(unittest2.TestCase):
         import time
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
-        from tempfile import NamedTemporaryFile
+        from gcloud._testing import _NamedTemporaryFile
+
         BLOB_NAME = 'blob-name'
         chunk1_response = {'status': PARTIAL_CONTENT,
                            'content-range': 'bytes 0-2/6'}
@@ -299,13 +300,14 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 3
-        with NamedTemporaryFile() as f:
-            blob.download_to_filename(f.name)
-            f.flush()
-            with open(f.name, 'rb') as g:
-                wrote = g.read()
-                mtime = os.path.getmtime(f.name)
+
+        with _NamedTemporaryFile() as temp:
+            blob.download_to_filename(temp.name)
+            with open(temp.name, 'rb') as file_obj:
+                wrote = file_obj.read()
+                mtime = os.path.getmtime(temp.name)
                 updatedTime = time.mktime(blob.updated.timetuple())
+
         self.assertEqual(wrote, b'abcdef')
         self.assertEqual(mtime, updatedTime)
 
@@ -347,7 +349,8 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from tempfile import NamedTemporaryFile
+        from gcloud._testing import _NamedTemporaryFile
+
         BLOB_NAME = 'blob-name'
         DATA = b'ABCDEF'
         response = {'status': OK}
@@ -359,11 +362,15 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        with NamedTemporaryFile() as fh:
-            fh.write(DATA)
-            fh.flush()
-            blob.upload_from_file(fh, rewind=True,
-                                  content_type=content_type_arg)
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'wb') as file_obj:
+                file_obj.write(DATA)
+
+            with open(temp.name, 'rb') as file_obj:
+                blob.upload_from_file(file_obj, rewind=True,
+                                      content_type=content_type_arg)
+
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')
@@ -407,10 +414,11 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from tempfile import NamedTemporaryFile
         from gcloud._testing import _Monkey
+        from gcloud._testing import _NamedTemporaryFile
         from gcloud.streaming import http_wrapper
         from gcloud.streaming import transfer
+
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -429,48 +437,70 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
+
         # Set the threshhold low enough that we force a resumable uploada.
         with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
-            with NamedTemporaryFile() as fh:
-                fh.write(DATA)
-                fh.flush()
-                blob.upload_from_file(fh, rewind=True)
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'wb') as file_obj:
+                    file_obj.write(DATA)
+                with open(temp.name, 'rb') as file_obj:
+                    blob.upload_from_file(file_obj, rewind=True)
+
         rq = connection.http._requested
         self.assertEqual(len(rq), 3)
-        self.assertEqual(rq[0]['method'], 'POST')
-        uri = rq[0]['uri']
+
+        # Requested[0]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        self.assertEqual(headers['X-Upload-Content-Length'], '6')
+        self.assertEqual(headers['X-Upload-Content-Type'],
+                         'application/octet-stream')
+
+        uri = rq[0].pop('uri')
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'example.com')
         self.assertEqual(path, '/b/name/o')
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'resumable', 'name': BLOB_NAME})
+        self.assertEqual(rq[0], {
+            'method': 'POST',
+            'body': '',
+            'connection_type': None,
+            'redirections': 5,
+        })
+
+        # Requested[1]
         headers = dict(
-            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
-        self.assertEqual(headers['X-Upload-Content-Length'], '6')
-        self.assertEqual(headers['X-Upload-Content-Type'],
-                         'application/octet-stream')
-        self.assertEqual(rq[1]['method'], 'PUT')
-        self.assertEqual(rq[1]['uri'], UPLOAD_URL)
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
-        self.assertEqual(rq[1]['body'], DATA[:5])
-        headers = dict(
-            [(x.title(), str(y)) for x, y in rq[1]['headers'].items()])
+            [(x.title(), str(y)) for x, y in rq[1].pop('headers').items()])
         self.assertEqual(headers['Content-Range'], 'bytes 0-4/6')
-        self.assertEqual(rq[2]['method'], 'PUT')
-        self.assertEqual(rq[2]['uri'], UPLOAD_URL)
-        self.assertEqual(rq[2]['body'], DATA[5:])
+        self.assertEqual(rq[1], {
+            'method': 'PUT',
+            'uri': UPLOAD_URL,
+            'body': DATA[:5],
+            'connection_type': None,
+            'redirections': 5,
+        })
+
+        # Requested[2]
         headers = dict(
-            [(x.title(), str(y)) for x, y in rq[2]['headers'].items()])
+            [(x.title(), str(y)) for x, y in rq[2].pop('headers').items()])
         self.assertEqual(headers['Content-Range'], 'bytes 5-5/6')
+        self.assertEqual(rq[2], {
+            'method': 'PUT',
+            'uri': UPLOAD_URL,
+            'body': DATA[5:],
+            'connection_type': None,
+            'redirections': 5,
+        })
 
     def test_upload_from_file_w_slash_in_name(self):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from tempfile import NamedTemporaryFile
+        from gcloud._testing import _NamedTemporaryFile
         from gcloud.streaming import http_wrapper
+
         BLOB_NAME = 'parent/child'
         UPLOAD_URL = 'http://example.com/upload/name/parent%2Fchild'
         DATA = b'ABCDEF'
@@ -488,11 +518,14 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        with NamedTemporaryFile() as fh:
-            fh.write(DATA)
-            fh.flush()
-            blob.upload_from_file(fh, rewind=True)
-            self.assertEqual(fh.tell(), len(DATA))
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'wb') as file_obj:
+                file_obj.write(DATA)
+            with open(temp.name, 'rb') as file_obj:
+                blob.upload_from_file(file_obj, rewind=True)
+                self.assertEqual(file_obj.tell(), len(DATA))
+
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['redirections'], 5)
@@ -517,8 +550,9 @@ class Test_Blob(unittest2.TestCase):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
-        from tempfile import NamedTemporaryFile
+        from gcloud._testing import _NamedTemporaryFile
         from gcloud.streaming import http_wrapper
+
         BLOB_NAME = 'blob-name'
         UPLOAD_URL = 'http://example.com/upload/name/key'
         DATA = b'ABCDEF'
@@ -537,10 +571,13 @@ class Test_Blob(unittest2.TestCase):
                              properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        with NamedTemporaryFile(suffix='.jpeg') as fh:
-            fh.write(DATA)
-            fh.flush()
-            blob.upload_from_filename(fh.name, content_type=content_type_arg)
+
+        with _NamedTemporaryFile(suffix='.jpeg') as temp:
+            with open(temp.name, 'wb') as file_obj:
+                file_obj.write(DATA)
+            blob.upload_from_filename(temp.name,
+                                      content_type=content_type_arg)
+
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')

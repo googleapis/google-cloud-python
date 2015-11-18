@@ -30,3 +30,19 @@ class _Monkey(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         for key, value in self.to_restore.items():
             setattr(self.module, key, value)
+
+
+class _NamedTemporaryFile(object):
+
+    def __init__(self, suffix=''):
+        import os
+        import tempfile
+        filehandle, self.name = tempfile.mkstemp(suffix=suffix)
+        os.close(filehandle)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import os
+        os.remove(self.name)

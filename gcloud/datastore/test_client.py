@@ -190,7 +190,13 @@ class TestClient(unittest2.TestCase):
                                       http=http)
 
     def test_ctor_w_dataset_id_no_environ(self):
-        self.assertRaises(EnvironmentError, self._makeOne, None)
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import client as _MUT
+
+        # Some environments (e.g. AppVeyor CI) run in GCE, so
+        # this test would fail artificially.
+        with _Monkey(_MUT, _compute_engine_id=lambda: None):
+            self.assertRaises(EnvironmentError, self._makeOne, None)
 
     def test_ctor_w_implicit_inputs(self):
         from gcloud._testing import _Monkey
