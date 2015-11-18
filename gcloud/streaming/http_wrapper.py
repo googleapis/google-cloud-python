@@ -33,13 +33,24 @@ _REDIRECT_STATUS_CODES = (
     RESUME_INCOMPLETE,
 )
 
-# http: An httplib2.Http instance.
-# http_request: A http_wrapper.Request.
-# exc: Exception being raised.
-# num_retries: Number of retries consumed; used for exponential backoff.
-_ExceptionRetryArgs = collections.namedtuple(
+class _ExceptionRetryArgs(collections.namedtuple(
     '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
-                            'max_retry_wait'])
+                            'max_retry_wait'])):
+    """Bundle of information for retriable exceptions.
+
+    :type http: :class:`httplib2.Http` (or conforming alternative)
+    :param http: instance used to perform requests.
+
+    :type http_request: :class:`Request`
+    :param http_request: the request whose response was a retriable error
+
+    :type exc: :class:`Exception` subclass
+    :param exc: the exception being raised.
+
+    :type num_retries: integer
+    :param num_retries: Number of retries consumed; used for exponential
+                        backoff.
+    """
 
 
 @contextlib.contextmanager
