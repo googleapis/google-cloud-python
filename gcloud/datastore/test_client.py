@@ -494,7 +494,7 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             client.get_multi([key1, key2])
 
-    def test_get_multi_hit_multiple_keys_different_dataset_prefixes(self):
+    def test_get_multi_diff_prefixes(self):
         from gcloud.datastore.key import Key
 
         DATASET_ID1 = 'DATASET'
@@ -505,11 +505,6 @@ class TestClient(unittest2.TestCase):
         ID2 = 2345
         ID3 = 3456
 
-        # Make sure our IDs are actually different.
-        self.assertNotEqual(DATASET_ID1, DATASET_ID2)
-        self.assertNotEqual(DATASET_ID1, DATASET_ID3)
-        self.assertNotEqual(DATASET_ID2, DATASET_ID3)
-
         # Make found entity pbs to be returned from mock backend.
         entity_pb1 = _make_entity_pb(DATASET_ID1, KIND, ID1)
         entity_pb2 = _make_entity_pb(DATASET_ID2, KIND, ID2)
@@ -518,8 +513,8 @@ class TestClient(unittest2.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb1,
-                                            entity_pb2,
-                                            entity_pb3])
+                                              entity_pb2,
+                                              entity_pb3])
 
         key1 = Key(KIND, ID1, dataset_id=DATASET_ID1)
         key2 = Key(KIND, ID2, dataset_id=DATASET_ID2)
@@ -530,11 +525,23 @@ class TestClient(unittest2.TestCase):
 
         # Check values & keys match.
         self.assertEqual(retrieved1.key.path, key1.path)
-        self.assertEqual(dict(retrieved1), {})
         self.assertEqual(retrieved2.key.path, key2.path)
-        self.assertEqual(dict(retrieved2), {})
         self.assertEqual(retrieved3.key.path, key3.path)
-        self.assertEqual(dict(retrieved3), {})
+
+    def test_get_multi_diff_datasets_w_prefix(self):
+        from gcloud.datastore.key import Key
+
+        DATASET_ID1 = 'e~DATASET'
+        DATASET_ID2 = 's~DATASET-ALT'
+
+        key1 = Key('KIND', 1234, dataset_id=DATASET_ID1)
+        key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
+
+        creds = object()
+        client = self._makeOne(credentials=creds)
+
+        with self.assertRaises(ValueError):
+            client.get_multi([key1, key2])
 
     def test_get_multi_max_loops(self):
         from gcloud._testing import _Monkey
