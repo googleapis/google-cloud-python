@@ -88,17 +88,19 @@ class Test_get_for_service_account_p12(unittest2.TestCase):
                                            scope=scope)
 
     def test_it(self):
-        from tempfile import NamedTemporaryFile
         from gcloud import credentials as MUT
         from gcloud._testing import _Monkey
+        from gcloud._testing import _NamedTemporaryFile
+
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = b'SEEkR1t'
         client = _Client()
         with _Monkey(MUT, client=client):
-            with NamedTemporaryFile() as file_obj:
-                file_obj.write(PRIVATE_KEY)
-                file_obj.flush()
-                found = self._callFUT(CLIENT_EMAIL, file_obj.name)
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'wb') as file_obj:
+                    file_obj.write(PRIVATE_KEY)
+                found = self._callFUT(CLIENT_EMAIL, temp.name)
+
         self.assertTrue(found is client._signed)
         expected_called_with = {
             'service_account_name': CLIENT_EMAIL,
@@ -108,18 +110,20 @@ class Test_get_for_service_account_p12(unittest2.TestCase):
         self.assertEqual(client._called_with, expected_called_with)
 
     def test_it_with_scope(self):
-        from tempfile import NamedTemporaryFile
         from gcloud import credentials as MUT
         from gcloud._testing import _Monkey
+        from gcloud._testing import _NamedTemporaryFile
+
         CLIENT_EMAIL = 'phred@example.com'
         PRIVATE_KEY = b'SEEkR1t'
         SCOPE = 'SCOPE'
         client = _Client()
         with _Monkey(MUT, client=client):
-            with NamedTemporaryFile() as file_obj:
-                file_obj.write(PRIVATE_KEY)
-                file_obj.flush()
-                found = self._callFUT(CLIENT_EMAIL, file_obj.name, SCOPE)
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'wb') as file_obj:
+                    file_obj.write(PRIVATE_KEY)
+                found = self._callFUT(CLIENT_EMAIL, temp.name, SCOPE)
+
         self.assertTrue(found is client._signed)
         expected_called_with = {
             'service_account_name': CLIENT_EMAIL,

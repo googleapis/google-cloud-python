@@ -293,6 +293,7 @@ class Test__millis_from_datetime(unittest2.TestCase):
 
     def test_w_utc_datetime(self):
         import datetime
+        import six
         from gcloud._helpers import UTC
         from gcloud._helpers import _microseconds_from_datetime
 
@@ -300,11 +301,12 @@ class Test__millis_from_datetime(unittest2.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, int))
+        self.assertTrue(isinstance(result, six.integer_types))
         self.assertEqual(result, MILLIS)
 
     def test_w_non_utc_datetime(self):
         import datetime
+        import six
         from gcloud._helpers import _UTC
         from gcloud._helpers import _microseconds_from_datetime
 
@@ -317,11 +319,12 @@ class Test__millis_from_datetime(unittest2.TestCase):
         NOW_MICROS = _microseconds_from_datetime(NOW)
         MILLIS = NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, int))
+        self.assertTrue(isinstance(result, six.integer_types))
         self.assertEqual(result, MILLIS)
 
     def test_w_naive_datetime(self):
         import datetime
+        import six
         from gcloud._helpers import UTC
         from gcloud._helpers import _microseconds_from_datetime
 
@@ -330,7 +333,7 @@ class Test__millis_from_datetime(unittest2.TestCase):
         UTC_NOW_MICROS = _microseconds_from_datetime(UTC_NOW)
         MILLIS = UTC_NOW_MICROS // 1000
         result = self._callFUT(NOW)
-        self.assertTrue(isinstance(result, int))
+        self.assertTrue(isinstance(result, six.integer_types))
         self.assertEqual(result, MILLIS)
 
 
