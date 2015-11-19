@@ -34,6 +34,7 @@ from gcloud.bigtable._generated import bigtable_service_pb2
 from gcloud.bigtable._generated import bigtable_table_service_pb2
 from gcloud.bigtable._generated import operations_pb2
 from gcloud.bigtable._helpers import make_stub
+from gcloud.bigtable.cluster import Cluster
 from gcloud.client import _ClientFactoryMixin
 from gcloud.client import _ClientProjectMixin
 from gcloud.credentials import get_credentials
@@ -349,3 +350,28 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self._cluster_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
+
+    def cluster(self, zone, cluster_id, display_name=None, serve_nodes=3):
+        """Factory to create a cluster associated with this client.
+
+        :type zone: str
+        :param zone: The name of the zone where the cluster resides.
+
+        :type cluster_id: str
+        :param cluster_id: The ID of the cluster.
+
+        :type display_name: str
+        :param display_name: (Optional) The display name for the cluster in the
+                             Cloud Console UI. (Must be between 4 and 30
+                             characters.) If this value is not set in the
+                             constructor, will fall back to the cluster ID.
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the cluster.
+                            Defaults to 3.
+
+        :rtype: :class:`.Cluster`
+        :returns: The cluster owned by this client.
+        """
+        return Cluster(zone, cluster_id, self,
+                       display_name=display_name, serve_nodes=serve_nodes)

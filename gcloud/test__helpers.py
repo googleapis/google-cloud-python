@@ -354,6 +354,33 @@ class Test__datetime_from_microseconds(unittest2.TestCase):
         self.assertEqual(self._callFUT(NOW_MICROS), NOW)
 
 
+class Test__to_bytes(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import _to_bytes
+        return _to_bytes(*args, **kwargs)
+
+    def test_with_bytes(self):
+        value = b'bytes-val'
+        self.assertEqual(self._callFUT(value), value)
+
+    def test_with_unicode(self):
+        value = u'string-val'
+        encoded_value = b'string-val'
+        self.assertEqual(self._callFUT(value), encoded_value)
+
+    def test_unicode_non_ascii(self):
+        value = u'\u2013'  # Long hyphen
+        encoded_value = b'\xe2\x80\x93'
+        self.assertRaises(UnicodeEncodeError, self._callFUT, value)
+        self.assertEqual(self._callFUT(value, encoding='utf-8'),
+                         encoded_value)
+
+    def test_with_nonstring_type(self):
+        value = object()
+        self.assertRaises(TypeError, self._callFUT, value)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

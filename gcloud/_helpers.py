@@ -19,6 +19,7 @@ This module is not part of the public API surface of `gcloud`.
 import calendar
 import datetime
 import os
+import six
 import socket
 
 try:
@@ -262,6 +263,37 @@ def _millis_from_datetime(value):
     """
     if value is not None:
         return _millis(value)
+
+
+def _to_bytes(value, encoding='ascii'):
+    """Converts a string value to bytes, if necessary.
+
+    Unfortunately, ``six.b`` is insufficient for this task since in
+    Python2 it does not modify ``unicode`` objects.
+
+    :type value: str / bytes or unicode
+    :param value: The string/bytes value to be converted.
+
+    :type encoding: str
+    :param encoding: The encoding to use to convert unicode to bytes. Defaults
+                     to "ascii", which will not allow any characters from
+                     ordinals larger than 127. Other useful values are
+                     "latin-1", which which will only allows byte ordinals
+                     (up to 255) and "utf-8", which will encode any unicode
+                     that needs to be.
+
+    :rtype: str / bytes
+    :returns: The original value converted to bytes (if unicode) or as passed
+              in if it started out as bytes.
+    :raises: :class:`TypeError <exceptions.TypeError>` if the value
+             could not be converted to bytes.
+    """
+    result = (value.encode(encoding)
+              if isinstance(value, six.text_type) else value)
+    if isinstance(result, six.binary_type):
+        return result
+    else:
+        raise TypeError('%r could not be converted to bytes' % (value,))
 
 
 try:

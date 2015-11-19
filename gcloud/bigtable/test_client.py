@@ -474,6 +474,26 @@ class TestClient(unittest2.TestCase):
         # Make sure the cluster stub did not change.
         self.assertEqual(client._cluster_stub_internal, cluster_stub)
 
+    def test_cluster_factory(self):
+        from gcloud.bigtable.cluster import Cluster
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        display_name = 'display-name'
+        serve_nodes = 42
+        cluster = client.cluster(zone, cluster_id, display_name=display_name,
+                                 serve_nodes=serve_nodes)
+        self.assertTrue(isinstance(cluster, Cluster))
+        self.assertEqual(cluster.zone, zone)
+        self.assertEqual(cluster.cluster_id, cluster_id)
+        self.assertEqual(cluster.display_name, display_name)
+        self.assertEqual(cluster.serve_nodes, serve_nodes)
+        self.assertTrue(cluster._client is client)
+
 
 class _Credentials(object):
 
