@@ -60,11 +60,11 @@ class _Transfer(object):
     def __init__(self, stream, close_stream=False,
                  chunksize=_DEFAULT_CHUNKSIZE, auto_transfer=True,
                  http=None, num_retries=5):
-        self.__bytes_http = None
-        self.__close_stream = close_stream
-        self.__http = http
-        self.__stream = stream
-        self.__url = None
+        self._bytes_http = None
+        self._close_stream = close_stream
+        self._http = http
+        self._stream = stream
+        self._url = None
 
         # Let the @property do validation
         self.num_retries = num_retries
@@ -82,7 +82,7 @@ class _Transfer(object):
 
         :rtype: boolean
         """
-        return self.__close_stream
+        return self._close_stream
 
     @property
     def http(self):
@@ -90,7 +90,7 @@ class _Transfer(object):
 
         :rtype: :class:`httplib2.Http` (or workalike)
         """
-        return self.__http
+        return self._http
 
     @property
     def bytes_http(self):
@@ -100,7 +100,7 @@ class _Transfer(object):
 
         :rtype: :class:`httplib2.Http` (or workalike)
         """
-        return self.__bytes_http or self.http
+        return self._bytes_http or self.http
 
     @bytes_http.setter
     def bytes_http(self, value):
@@ -109,7 +109,7 @@ class _Transfer(object):
         :type value: :class:`httplib2.Http` (or workalike)
         :param value: new instance
         """
-        self.__bytes_http = value
+        self._bytes_http = value
 
     @property
     def num_retries(self):
@@ -117,7 +117,7 @@ class _Transfer(object):
 
         :rtype: integer
         """
-        return self.__num_retries
+        return self._num_retries
 
     @num_retries.setter
     def num_retries(self, value):
@@ -131,7 +131,7 @@ class _Transfer(object):
         if value < 0:
             raise ValueError(
                 'Cannot have negative value for num_retries')
-        self.__num_retries = value
+        self._num_retries = value
 
     @property
     def stream(self):
@@ -139,7 +139,7 @@ class _Transfer(object):
 
         :rtype: file-like object
         """
-        return self.__stream
+        return self._stream
 
     @property
     def url(self):
@@ -147,7 +147,7 @@ class _Transfer(object):
 
         :rtype: string
         """
-        return self.__url
+        return self._url
 
     def _initialize(self, http, url):
         """Initialize this download by setting :attr:`http` and :attr`url`.
@@ -164,8 +164,8 @@ class _Transfer(object):
         """
         self._ensure_uninitialized()
         if self.http is None:
-            self.__http = http or get_http()
-        self.__url = url
+            self._http = http or get_http()
+        self._url = url
 
     @property
     def initialized(self):
@@ -196,8 +196,8 @@ class _Transfer(object):
                 'Cannot re-initialize %s', type(self).__name__)
 
     def __del__(self):
-        if self.__close_stream:
-            self.__stream.close()
+        if self._close_stream:
+            self._stream.close()
 
 
 class Download(_Transfer):
@@ -221,9 +221,9 @@ class Download(_Transfer):
         total_size = kwds.pop('total_size', None)
         super(Download, self).__init__(stream, **kwds)
         self._initial_response = None
-        self.__progress = 0
-        self.__total_size = total_size
-        self.__encoding = None
+        self._progress = 0
+        self._total_size = total_size
+        self._encoding = None
 
     @classmethod
     def from_file(cls, filename, overwrite=False, auto_transfer=True, **kwds):
@@ -275,7 +275,7 @@ class Download(_Transfer):
 
         :rtype: integer >= 0
         """
-        return self.__progress
+        return self._progress
 
     @property
     def total_size(self):
@@ -283,7 +283,7 @@ class Download(_Transfer):
 
         :rtype: integer or None
         """
-        return self.__total_size
+        return self._total_size
 
     @property
     def encoding(self):
@@ -291,7 +291,7 @@ class Download(_Transfer):
 
         :rtype: string or None
         """
-        return self.__encoding
+        return self._encoding
 
     def __repr__(self):
         if not self.initialized:
@@ -324,13 +324,13 @@ class Download(_Transfer):
         if 'content-range' in info:
             _, _, total = info['content-range'].rpartition('/')
             if total != '*':
-                self.__total_size = int(total)
+                self._total_size = int(total)
         # Note "total_size is None" means we don't know it; if no size
         # info was returned on our initial range request, that means we
         # have a 0-byte file. (That last statement has been verified
         # empirically, but is not clearly documented anywhere.)
         if self.total_size is None:
-            self.__total_size = 0
+            self._total_size = 0
 
     def initialize_download(self, http_request, http=None, client=None):
         """Initialize this download.
@@ -513,9 +513,9 @@ class Download(_Transfer):
         if response.status_code in (http_client.OK,
                                     http_client.PARTIAL_CONTENT):
             self.stream.write(response.content)
-            self.__progress += response.length
+            self._progress += response.length
             if response.info and 'content-encoding' in response.info:
-                self.__encoding = response.info['content-encoding']
+                self._encoding = response.info['content-encoding']
         elif response.status_code == http_client.NO_CONTENT:
             # It's important to write something to the stream for the case
             # of a 0-byte download to a file, as otherwise python won't
@@ -638,10 +638,10 @@ class Upload(_Transfer):
         self._final_response = None
         self._server_chunk_granularity = None
         self._complete = False
-        self.__mime_type = mime_type
-        self.__progress = 0
-        self.__strategy = None
-        self.__total_size = total_size
+        self._mime_type = mime_type
+        self._progress = 0
+        self._strategy = None
+        self._total_size = total_size
 
     @classmethod
     def from_file(cls, filename, mime_type=None, auto_transfer=True, **kwds):
@@ -713,7 +713,7 @@ class Upload(_Transfer):
 
         :rtype: string
         """
-        return self.__mime_type
+        return self._mime_type
 
     @property
     def progress(self):
@@ -721,7 +721,7 @@ class Upload(_Transfer):
 
         :rtype: integer
         """
-        return self.__progress
+        return self._progress
 
     @property
     def strategy(self):
@@ -729,7 +729,7 @@ class Upload(_Transfer):
 
         :rtype: string or None
         """
-        return self.__strategy
+        return self._strategy
 
     @strategy.setter
     def strategy(self, value):
@@ -745,7 +745,7 @@ class Upload(_Transfer):
             raise UserError((
                 'Invalid value "%s" for upload strategy, must be one of '
                 '"simple" or "resumable".') % value)
-        self.__strategy = value
+        self._strategy = value
 
     @property
     def total_size(self):
@@ -753,7 +753,7 @@ class Upload(_Transfer):
 
         :rtype: integer or None
         """
-        return self.__total_size
+        return self._total_size
 
     @total_size.setter
     def total_size(self, value):
@@ -763,7 +763,7 @@ class Upload(_Transfer):
         :param value: the size
         """
         self._ensure_uninitialized()
-        self.__total_size = value
+        self._total_size = value
 
     def __repr__(self):
         if not self.initialized:
@@ -925,7 +925,7 @@ class Upload(_Transfer):
         if refresh_response.status_code in (http_client.OK,
                                             http_client.CREATED):
             self._complete = True
-            self.__progress = self.total_size
+            self._progress = self.total_size
             self.stream.seek(self.progress)
             # If we're finished, the refresh response will contain the metadata
             # originally requested. Cache it so it can be returned in
@@ -933,9 +933,9 @@ class Upload(_Transfer):
             self._final_response = refresh_response
         elif refresh_response.status_code == RESUME_INCOMPLETE:
             if range_header is None:
-                self.__progress = 0
+                self._progress = 0
             else:
-                self.__progress = self._last_byte(range_header) + 1
+                self._progress = self._last_byte(range_header) + 1
             self.stream.seek(self.progress)
         else:
             raise HttpError.from_response(refresh_response)
@@ -1062,7 +1062,7 @@ class Upload(_Transfer):
             if response.status_code in (http_client.OK, http_client.CREATED):
                 self._complete = True
                 break
-            self.__progress = self._last_byte(response.info['range'])
+            self._progress = self._last_byte(response.info['range'])
             if self.progress + 1 != self.stream.tell():
                 raise CommunicationError(
                     'Failed to transfer all bytes in chunk, upload paused at '
@@ -1154,7 +1154,7 @@ class Upload(_Transfer):
                 self.stream, start, self.chunksize)
             end = body_stream.stream_end_position
             if body_stream.stream_exhausted:
-                self.__total_size = end
+                self._total_size = end
             # Here, change body_stream from a stream to a string object,
             # which means reading a chunk into memory.  This works around
             # https://code.google.com/p/httplib2/issues/detail?id=176 which can
