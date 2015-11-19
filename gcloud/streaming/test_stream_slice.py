@@ -40,12 +40,12 @@ class Test_StreamSlice(unittest2.TestCase):
 
     def test_read_exhausted(self):
         from io import BytesIO
-        from gcloud.streaming.exceptions import StreamExhausted
+        from six.moves import http_client
         CONTENT = b''
         MAXSIZE = 4
         stream = BytesIO(CONTENT)
         stream_slice = self._makeOne(stream, MAXSIZE)
-        with self.assertRaises(StreamExhausted):
+        with self.assertRaises(http_client.IncompleteRead):
             stream_slice.read()
 
     def test_read_implicit_size(self):
