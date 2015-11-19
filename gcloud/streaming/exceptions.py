@@ -26,8 +26,17 @@ class CommunicationError(Error):
 
 
 class HttpError(CommunicationError):
-    """Error making a request. Soon to be HttpError."""
+    """Error making a request. Soon to be HttpError.
 
+    :type response: dict
+    :param response: headers from the response which returned the error
+
+    :type content: bytes
+    :param content: payload of the response which returned the error
+
+    :type url: string
+    :param url: URL of the response which returned the error
+    """
     def __init__(self, response, content, url):
         super(HttpError, self).__init__()
         self.response = response
@@ -50,7 +59,13 @@ class HttpError(CommunicationError):
 
     @classmethod
     def from_response(cls, http_response):
-        """Factory:  construct an exception from a resopnse."""
+        """Factory:  construct an exception from a response.
+
+        :type http_response: :class:`gcloud.streaming.http_wrapper.Response`
+        :param http_response: the response which returned the error
+
+        :rtype: :class:`HttpError`
+        """
         return cls(http_response.info, http_response.content,
                    http_response.request_url)
 
@@ -80,15 +95,33 @@ class RequestError(CommunicationError):
 
 
 class RetryAfterError(HttpError):
-    """The response contained a retry-after header."""
+    """The response contained a retry-after header.
 
+    :type response: dict
+    :param response: headers from the response which returned the error
+
+    :type content: bytes
+    :param content: payload of the response which returned the error
+
+    :type url: string
+    :param url: URL of the response which returned the error
+
+    :type retry_after: integer
+    :param retry_after: seconds to wait before retrying
+    """
     def __init__(self, response, content, url, retry_after):
         super(RetryAfterError, self).__init__(response, content, url)
         self.retry_after = int(retry_after)
 
     @classmethod
     def from_response(cls, http_response):
-        """Factory:  construct an exception from a resopnse."""
+        """Factory:  construct an exception from a response.
+
+        :type http_response: :class:`gcloud.streaming.http_wrapper.Response`
+        :param http_response: the response which returned the error
+
+        :rtype: :class:`RetryAfterError`
+        """
         return cls(http_response.info, http_response.content,
                    http_response.request_url, http_response.retry_after)
 
