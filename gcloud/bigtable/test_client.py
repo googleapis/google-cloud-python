@@ -494,6 +494,59 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(cluster.serve_nodes, serve_nodes)
         self.assertTrue(cluster._client is client)
 
+    def _list_zones_helper(self, zone_status):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        timeout_seconds = 281330
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True, timeout_seconds=timeout_seconds)
+
+        # Create request_pb
+        request_pb = messages_pb2.ListZonesRequest(
+            name='projects/' + project,
+        )
+
+        # Create response_pb
+        zone1 = 'foo'
+        zone2 = 'bar'
+        response_pb = messages_pb2.ListZonesResponse(
+            zones=[
+                data_pb2.Zone(display_name=zone1, status=zone_status),
+                data_pb2.Zone(display_name=zone2, status=zone_status),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._cluster_stub_internal = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = [zone1, zone2]
+
+        # Perform the method and check the result.
+        result = client.list_zones()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListZones',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+    def test_list_zones(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        self._list_zones_helper(data_pb2.Zone.OK)
+
+    def test_list_zones_failure(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        with self.assertRaises(ValueError):
+            self._list_zones_helper(data_pb2.Zone.EMERGENCY_MAINENANCE)
+
 
 class _Credentials(object):
 
@@ -511,8 +564,11 @@ class _Credentials(object):
 
 
 class _FakeStub(object):
+    """Acts as a gPRC stub."""
 
-    def __init__(self):
+    def __init__(self, *results):
+        self.results = results
+        self.method_calls = []
         self._entered = 0
         self._exited = []
 
@@ -523,3 +579,38 @@ class _FakeStub(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._exited.append((exc_type, exc_val, exc_tb))
         return True
+
+    def __getattr__(self, name):
+        # We need not worry about attributes set in constructor
+        # since __getattribute__ will handle them.
+        return _MethodMock(name, self)
+
+
+class _MethodMock(object):
+    """Mock for :class:`grpc.framework.alpha._reexport._UnaryUnarySyncAsync`.
+
+    May need to be callable and needs to (in our use) have an
+    ``async`` method.
+    """
+
+    def __init__(self, name, factory):
+        self._name = name
+        self._factory = factory
+
+    def async(self, *args, **kwargs):
+        """Async method meant to mock a gRPC stub request."""
+        self._factory.method_calls.append((self._name, args, kwargs))
+        curr_result, self._factory.results = (self._factory.results[0],
+                                              self._factory.results[1:])
+        return _AsyncResult(curr_result)
+
+
+class _AsyncResult(object):
+    """Result returned from a ``_MethodMock.async`` call."""
+
+    def __init__(self, result):
+        self._result = result
+
+    def result(self):
+        """Result method on an asyc object."""
+        return self._result
