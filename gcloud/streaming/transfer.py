@@ -1132,7 +1132,6 @@ class Upload(_Transfer):
             # which means reading a chunk into memory.  This works around
             # https://code.google.com/p/httplib2/issues/detail?id=176 which can
             # cause httplib2 to skip bytes on 401's for file objects.
-            # Rework this solution to be more general.
             body_stream = body_stream.read(self.chunksize)
         else:
             end = min(start + self.chunksize, self.total_size)
