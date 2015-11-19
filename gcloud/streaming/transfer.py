@@ -948,19 +948,14 @@ class Upload(_Transfer):
         # https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#chunking
         return response.info.get('Range', response.info.get('range'))
 
-    def initialize_upload(self, http_request, http=None, client=None):
+    def initialize_upload(self, http_request, http):
         """Initialize this upload from the given http_request.
 
         :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
         :param http_request: the request to be used
 
-        :type http: :class:`httplib2.Http` (or workalike) or None
+        :type http: :class:`httplib2.Http` (or workalike)
         :param http: Http instance for this request.
-
-        :type client:  unknown (XXX remove this argument after lint complete)
-        :param client: If provided, let this client process the final URL
-                       before sending any additional requests. If ``client``
-                       is provided and ``http`` is not, use ``client.http``.
 
         :raises: :exc:`gcloud.streaming.exceptions.UserError` if the instance
                  has not been configured with a strategy.
@@ -968,13 +963,8 @@ class Upload(_Transfer):
         if self.strategy is None:
             raise UserError(
                 'No upload strategy set; did you call configure_request?')
-        if http is None and client is None:
-            raise UserError('Must provide client or http.')
         if self.strategy != RESUMABLE_UPLOAD:
             return
-        http = http or client.http
-        if client is not None:
-            http_request.url = client.FinalizeTransferUrl(http_request.url)
         self._ensure_uninitialized()
         http_response = make_api_request(http, http_request,
                                          retries=self.num_retries)
@@ -986,8 +976,6 @@ class Upload(_Transfer):
             granularity = int(granularity)
         self._server_chunk_granularity = granularity
         url = http_response.info['location']
-        if client is not None:
-            url = client.FinalizeTransferUrl(url)
         self._initialize(http, url)
 
         # Unless the user has requested otherwise, we want to just

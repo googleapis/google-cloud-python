@@ -1278,15 +1278,6 @@ class Test_Upload(unittest2.TestCase):
         with self.assertRaises(UserError):
             upload.initialize_upload(request, http=object())
 
-    def test_initialize_upload_wo_client_wo_http(self):
-        from gcloud.streaming.exceptions import UserError
-        from gcloud.streaming.transfer import SIMPLE_UPLOAD
-        request = _Request()
-        upload = self._makeOne(_Stream())
-        upload.strategy = SIMPLE_UPLOAD
-        with self.assertRaises(UserError):
-            upload.initialize_upload(request)
-
     def test_initialize_upload_simple_w_http(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         request = _Request()
@@ -1341,15 +1332,13 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
 
-    def test_initialize_upload_w_client_w_auto_transfer_w_OK(self):
+    def test_initialize_upload_w_granularity_w_auto_transfer_w_OK(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
-        FINALIZED_URL = 'http://example.com/upload?id=foobar&final'
         http = object()
-        client = _Client(http, FINALIZED_URL)
         request = _Request()
         upload = self._makeOne(_Stream(CONTENT), chunksize=1000)
         upload.strategy = RESUMABLE_UPLOAD
@@ -1362,16 +1351,16 @@ class Test_Upload(unittest2.TestCase):
         with _Monkey(MUT,
                      Request=_Request,
                      make_api_request=requester):
-            upload.initialize_upload(request, client=client)
+            upload.initialize_upload(request, http)
 
         self.assertEqual(upload._server_chunk_granularity, 100)
-        self.assertEqual(upload.url, FINALIZED_URL)
+        self.assertEqual(upload.url, self.UPLOAD_URL)
         self.assertEqual(requester._responses, [])
         self.assertEqual(len(requester._requested), 2)
         self.assertTrue(requester._requested[0][0] is request)
         chunk_request = requester._requested[1][0]
         self.assertTrue(isinstance(chunk_request, _Request))
-        self.assertEqual(chunk_request.url, FINALIZED_URL)
+        self.assertEqual(chunk_request.url, self.UPLOAD_URL)
         self.assertEqual(chunk_request.http_method, 'PUT')
         self.assertEqual(chunk_request.body, CONTENT)
 
@@ -1855,17 +1844,6 @@ class _Request(object):
         if headers is None:
             headers = {}
         self.headers = headers
-
-
-class _Client(object):
-
-    def __init__(self, http, finalized_url):
-        self.http = http
-        self._finalized_url = finalized_url
-
-    # pylint: disable=unused-argument
-    def FinalizeTransferUrl(self, existing_url):
-        return self._finalized_url
 
 
 class _MakeRequest(object):
