@@ -439,7 +439,7 @@ class Test_Blob(unittest2.TestCase):
         blob.chunk_size = 5
 
         # Set the threshhold low enough that we force a resumable uploada.
-        with _Monkey(transfer, _RESUMABLE_UPLOAD_THRESHOLD=5):
+        with _Monkey(transfer, RESUMABLE_UPLOAD_THRESHOLD=5):
             with _NamedTemporaryFile() as temp:
                 with open(temp.name, 'wb') as file_obj:
                     file_obj.write(DATA)

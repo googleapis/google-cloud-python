@@ -64,39 +64,9 @@ class InvalidUserInputError(InvalidDataError):
     """User-provided input is invalid."""
 
 
-class InvalidDataFromServerError(InvalidDataError, CommunicationError):
-
-    """Data received from the server is malformed."""
-
-
-class BatchError(Error):
-
-    """Error generated while constructing a batch request."""
-
-
-class ConfigurationError(Error):
-
-    """Base class for configuration errors."""
-
-
-class GeneratedClientError(Error):
-
-    """The generated client configuration is invalid."""
-
-
 class ConfigurationValueError(UserError):
 
     """Some part of the user-specified client configuration is invalid."""
-
-
-class ResourceUnavailableError(Error):
-
-    """User requested an unavailable resource."""
-
-
-class CredentialsError(Error):
-
-    """Errors related to invalid credentials."""
 
 
 class TransferError(CommunicationError):
@@ -138,7 +108,7 @@ class BadStatusCodeError(HttpError):
     """The request completed but returned a bad status code."""
 
 
-class NotYetImplementedError(GeneratedClientError):
+class NotYetImplementedError(Error):
 
     """This functionality is not yet implemented."""
 

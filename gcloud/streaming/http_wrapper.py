@@ -16,18 +16,10 @@ import six
 from six.moves import http_client
 from six.moves.urllib import parse
 
-from gcloud.streaming import exceptions
-from gcloud.streaming import util
-
-__all__ = [
-    'CheckResponse',
-    'GetHttp',
-    'HandleExceptionsAndRebuildHttpConnections',
-    'MakeRequest',
-    'RebuildHttpConnections',
-    'Request',
-    'Response',
-]
+from gcloud.streaming.exceptions import BadStatusCodeError
+from gcloud.streaming.exceptions import RequestError
+from gcloud.streaming.exceptions import RetryAfterError
+from gcloud.streaming.util import calculate_wait_for_retry
 
 
 # 308 and 429 don't have names in httplib.
@@ -41,13 +33,24 @@ _REDIRECT_STATUS_CODES = (
     RESUME_INCOMPLETE,
 )
 
-# http: An httplib2.Http instance.
-# http_request: A http_wrapper.Request.
-# exc: Exception being raised.
-# num_retries: Number of retries consumed; used for exponential backoff.
-ExceptionRetryArgs = collections.namedtuple(
-    'ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
-                           'max_retry_wait'])
+class _ExceptionRetryArgs(collections.namedtuple(
+    '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
+                            'max_retry_wait'])):
+    """Bundle of information for retriable exceptions.
+
+    :type http: :class:`httplib2.Http` (or conforming alternative)
+    :param http: instance used to perform requests.
+
+    :type http_request: :class:`Request`
+    :param http_request: the request whose response was a retriable error
+
+    :type exc: :class:`Exception` subclass
+    :param exc: the exception being raised.
+
+    :type num_retries: integer
+    :param num_retries: Number of retries consumed; used for exponential
+                        backoff.
+    """
 
 
 @contextlib.contextmanager
@@ -112,7 +115,7 @@ class Request(object):
     @loggable_body.setter
     def loggable_body(self, value):
         if self.body is None:
-            raise exceptions.RequestError(
+            raise RequestError(
                 'Cannot set loggable body on request with no body')
         self.__loggable_body = value
 
@@ -136,6 +139,23 @@ class Request(object):
             self.loggable_body = '<media body>'
 
 
+def _process_content_range(content_range):
+    """Convert a 'Content-Range' header into a length for the response.
+
+    Helper for :meth:`Response.length`.
+
+    :type content_range: string
+    :param content_range: the header value being parsed.
+
+    :rtype: integer
+    :returns: the length of the response chunk.
+    """
+    _, _, range_spec = content_range.partition(' ')
+    byte_range, _, _ = range_spec.partition('/')
+    start, _, end = byte_range.partition('-')
+    return int(end) - int(start) + 1
+
+
 # Note: currently the order of fields here is important, since we want
 # to be able to pass in the result from httplib2.request.
 class Response(collections.namedtuple(
@@ -157,21 +177,15 @@ class Response(collections.namedtuple(
         Returns:
           Response length (as int or long)
         """
-        def ProcessContentRange(content_range):
-            _, _, range_spec = content_range.partition(' ')
-            byte_range, _, _ = range_spec.partition('/')
-            start, _, end = byte_range.partition('-')
-            return int(end) - int(start) + 1
-
         if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
             # transfer; we can't trust the content-length header in that
             # case, but we *can* trust content-range, if it's present.
-            return ProcessContentRange(self.info['content-range'])
+            return _process_content_range(self.info['content-range'])
         elif 'content-length' in self.info:
             return int(self.info.get('content-length'))
         elif 'content-range' in self.info:
-            return ProcessContentRange(self.info['content-range'])
+            return _process_content_range(self.info['content-range'])
         return len(self.content)
 
     @property
@@ -189,19 +203,19 @@ class Response(collections.namedtuple(
                 'location' in self.info)
 
 
-def CheckResponse(response):
+def _check_response(response):
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.
-        raise exceptions.RequestError(
+        raise RequestError(
             'Request did not return a response.')
     elif (response.status_code >= 500 or
           response.status_code == TOO_MANY_REQUESTS):
-        raise exceptions.BadStatusCodeError.FromResponse(response)
+        raise BadStatusCodeError.FromResponse(response)
     elif response.retry_after:
-        raise exceptions.RetryAfterError.FromResponse(response)
+        raise RetryAfterError.FromResponse(response)
 
 
-def RebuildHttpConnections(http):
+def _rebuild_http_connections(http):
     """Rebuilds all http connections in the httplib2.Http instance.
 
     httplib2 overloads the map in http.connections to contain two different
@@ -220,13 +234,13 @@ def RebuildHttpConnections(http):
                 del http.connections[conn_key]
 
 
-def HandleExceptionsAndRebuildHttpConnections(retry_args):
+def handle_http_exceptions(retry_args):
     """Exception handler for http failures.
 
     This catches known failures and rebuilds the underlying HTTP connections.
 
     Args:
-      retry_args: An ExceptionRetryArgs tuple.
+      retry_args: An _ExceptionRetryArgs tuple.
     """
     # If the server indicates how long to wait, use that value.  Otherwise,
     # calculate the wait time on our own.
@@ -255,27 +269,27 @@ def HandleExceptionsAndRebuildHttpConnections(retry_args):
         # oauth2client, need to handle it here.
         logging.debug('Response content was invalid (%s), retrying',
                       retry_args.exc)
-    elif isinstance(retry_args.exc, exceptions.RequestError):
+    elif isinstance(retry_args.exc, RequestError):
         logging.debug('Request returned no response, retrying')
     # API-level failures
-    elif isinstance(retry_args.exc, exceptions.BadStatusCodeError):
+    elif isinstance(retry_args.exc, BadStatusCodeError):
         logging.debug('Response returned status %s, retrying',
                       retry_args.exc.status_code)
-    elif isinstance(retry_args.exc, exceptions.RetryAfterError):
+    elif isinstance(retry_args.exc, RetryAfterError):
         logging.debug('Response returned a retry-after header, retrying')
         retry_after = retry_args.exc.retry_after
     else:
         raise
-    RebuildHttpConnections(retry_args.http)
+    _rebuild_http_connections(retry_args.http)
     logging.debug('Retrying request to url %s after exception %s',
                   retry_args.http_request.url, retry_args.exc)
     time.sleep(
-        retry_after or util.CalculateWaitForRetry(
+        retry_after or calculate_wait_for_retry(
             retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
-def _MakeRequestNoRetry(http, http_request, redirections=5,
-                        check_response_func=CheckResponse):
+def _make_api_request_no_retry(http, http_request, redirections=5,
+                               check_response_func=_check_response):
     """Send http_request via the given http.
 
     This wrapper exists to handle translation between the plain httplib2
@@ -314,18 +328,18 @@ def _MakeRequestNoRetry(http, http_request, redirections=5,
             redirections=redirections, connection_type=connection_type)
 
     if info is None:
-        raise exceptions.RequestError()
+        raise RequestError()
 
     response = Response(info, content, http_request.url)
     check_response_func(response)
     return response
 
 
-def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
+def make_api_request(http, http_request, retries=7, max_retry_wait=60,
                 redirections=5,
-                retry_func=HandleExceptionsAndRebuildHttpConnections,
-                check_response_func=CheckResponse,
-                wo_retry_func=_MakeRequestNoRetry):
+                retry_func=handle_http_exceptions,
+                check_response_func=_check_response,
+                wo_retry_func=_make_api_request_no_retry):
     """Send http_request via the given http, performing error/retry handling.
 
     Args:
@@ -344,9 +358,6 @@ def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
       wo_retry_func: Function to make HTTP request without retries.  Arguments
           are: (http, http_request, redirections, check_response_func)
 
-    Raises:
-      InvalidDataFromServerError: if there is no response after retries.
-
     Returns:
       A Response object.
 
@@ -364,18 +375,18 @@ def MakeRequest(http, http_request, retries=7, max_retry_wait=60,
             if retry >= retries:
                 raise
             else:
-                retry_func(ExceptionRetryArgs(
+                retry_func(_ExceptionRetryArgs(
                     http, http_request, e, retry, max_retry_wait))
 
 
 _HTTP_FACTORIES = []
 
 
-def _RegisterHttpFactory(factory):
+def _register_http_factory(factory):
     _HTTP_FACTORIES.append(factory)
 
 
-def GetHttp(**kwds):
+def get_http(**kwds):
     for factory in _HTTP_FACTORIES:
         http = factory(**kwds)
         if http is not None:

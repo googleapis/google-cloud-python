@@ -25,9 +25,6 @@ import time
 import six
 from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
-from gcloud.streaming import http_wrapper
-from gcloud.streaming import transfer
-
 from gcloud._helpers import _RFC3339_MICROS
 from gcloud._helpers import UTC
 from gcloud.credentials import generate_signed_url
@@ -35,6 +32,11 @@ from gcloud.exceptions import NotFound
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
+from gcloud.streaming.http_wrapper import Request
+from gcloud.streaming.http_wrapper import make_api_request
+from gcloud.streaming.transfer import Download
+from gcloud.streaming.transfer import RESUMABLE_UPLOAD
+from gcloud.streaming.transfer import Upload
 
 
 _API_ACCESS_ENDPOINT = 'https://storage.googleapis.com'
@@ -258,12 +260,12 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = transfer.Download.FromStream(file_obj, auto_transfer=False)
+        download = Download.from_stream(file_obj, auto_transfer=False)
         headers = {}
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
             headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
-        request = http_wrapper.Request(download_url, 'GET', headers)
+        request = Request(download_url, 'GET', headers)
 
         # Use the private ``_connection`` rather than the public
         # ``.connection``, since the public connection may be a batch. A
@@ -271,9 +273,9 @@ class Blob(_PropertyMixin):
         # object. The rest (API_BASE_URL and build_api_url) are also defined
         # on the Batch class, but we just use the wrapped connection since
         # it has all three (http, API_BASE_URL and build_api_url).
-        download.InitializeDownload(request, client._connection.http)
+        download.initialize_download(request, client._connection.http)
 
-        download.StreamInChunks()
+        download.stream_file(use_chunks=True)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -383,9 +385,8 @@ class Blob(_PropertyMixin):
             'User-Agent': connection.USER_AGENT,
         }
 
-        upload = transfer.Upload(file_obj, content_type, total_bytes,
-                                 auto_transfer=False,
-                                 chunksize=self.chunk_size)
+        upload = Upload(file_obj, content_type, total_bytes,
+                        auto_transfer=False, chunksize=self.chunk_size)
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)
@@ -397,21 +398,21 @@ class Blob(_PropertyMixin):
                                               path=self.bucket.path + '/o')
 
         # Use apitools 'Upload' facility.
-        request = http_wrapper.Request(upload_url, 'POST', headers)
+        request = Request(upload_url, 'POST', headers)
 
-        upload.ConfigureRequest(upload_config, request, url_builder)
+        upload.configure_request(upload_config, request, url_builder)
         query_params = url_builder.query_params
         base_url = connection.API_BASE_URL + '/upload'
         request.url = connection.build_api_url(api_base_url=base_url,
                                                path=self.bucket.path + '/o',
                                                query_params=query_params)
-        upload.InitializeUpload(request, connection.http)
+        upload.initialize_upload(request, connection.http)
 
-        if upload.strategy == transfer.RESUMABLE_UPLOAD:
-            http_response = upload.StreamInChunks()
+        if upload.strategy == RESUMABLE_UPLOAD:
+            http_response = upload.stream_file(use_chunks=True)
         else:
-            http_response = http_wrapper.MakeRequest(connection.http, request,
-                                                     retries=num_retries)
+            http_response = make_api_request(connection.http, request,
+                                             retries=num_retries)
         response_content = http_response.content
         if not isinstance(response_content,
                           six.string_types):  # pragma: NO COVER  Python3
@@ -765,7 +766,7 @@ class Blob(_PropertyMixin):
 
 
 class _UploadConfig(object):
-    """Faux message FBO apitools' 'ConfigureRequest'.
+    """Faux message FBO apitools' 'configure_request'.
 
     Values extracted from apitools
     'samples/storage_sample/storage/storage_v1_client.py'
@@ -779,7 +780,7 @@ class _UploadConfig(object):
 
 
 class _UrlBuilder(object):
-    """Faux builder FBO apitools' 'ConfigureRequest'"""
+    """Faux builder FBO apitools' 'configure_request'"""
     def __init__(self, bucket_name, object_name):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name

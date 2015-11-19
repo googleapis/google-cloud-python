@@ -24,7 +24,6 @@ class Test__Transfer(unittest2.TestCase):
         self.assertEqual(xfer.num_retries, 5)
         self.assertTrue(xfer.url is None)
         self.assertFalse(xfer.initialized)
-        self.assertEqual(xfer._type_name, '_Transfer')
 
     def test_ctor_explicit(self):
         stream = _Stream()
@@ -73,70 +72,70 @@ class Test__Transfer(unittest2.TestCase):
         with self.assertRaises(InvalidDataError):
             xfer.num_retries = -1
 
-    def test__Initialize_not_already_initialized_w_http(self):
+    def test__initialize_not_already_initialized_w_http(self):
         HTTP = object()
         stream = _Stream()
         xfer = self._makeOne(stream)
-        xfer._Initialize(HTTP, self.URL)
+        xfer._initialize(HTTP, self.URL)
         self.assertTrue(xfer.initialized)
         self.assertTrue(xfer.http is HTTP)
         self.assertTrue(xfer.url is self.URL)
 
-    def test__Initialize_not_already_initialized_wo_http(self):
+    def test__initialize_not_already_initialized_wo_http(self):
         from httplib2 import Http
         stream = _Stream()
         xfer = self._makeOne(stream)
-        xfer._Initialize(None, self.URL)
+        xfer._initialize(None, self.URL)
         self.assertTrue(xfer.initialized)
         self.assertTrue(isinstance(xfer.http, Http))
         self.assertTrue(xfer.url is self.URL)
 
-    def test__Initialize_w_existing_http(self):
+    def test__initialize_w_existing_http(self):
         HTTP_1, HTTP_2 = object(), object()
         stream = _Stream()
         xfer = self._makeOne(stream, http=HTTP_1)
-        xfer._Initialize(HTTP_2, self.URL)
+        xfer._initialize(HTTP_2, self.URL)
         self.assertTrue(xfer.initialized)
         self.assertTrue(xfer.http is HTTP_1)
         self.assertTrue(xfer.url is self.URL)
 
-    def test__Initialize_already_initialized(self):
+    def test__initialize_already_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         URL_2 = 'http://example.com/other'
         HTTP_1, HTTP_2 = object(), object()
         stream = _Stream()
         xfer = self._makeOne(stream)
-        xfer._Initialize(HTTP_1, self.URL)
+        xfer._initialize(HTTP_1, self.URL)
         with self.assertRaises(TransferInvalidError):
-            xfer._Initialize(HTTP_2, URL_2)
+            xfer._initialize(HTTP_2, URL_2)
 
-    def test_EnsureInitialized_hit(self):
+    def test__ensure_initialized_hit(self):
         HTTP = object()
         stream = _Stream()
         xfer = self._makeOne(stream)
-        xfer._Initialize(HTTP, self.URL)
-        xfer.EnsureInitialized()  # no raise
+        xfer._initialize(HTTP, self.URL)
+        xfer._ensure_initialized()  # no raise
 
-    def test_EnsureInitialized_miss(self):
+    def test__ensure_initialized_miss(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         stream = _Stream()
         xfer = self._makeOne(stream)
         with self.assertRaises(TransferInvalidError):
-            xfer.EnsureInitialized()
+            xfer._ensure_initialized()
 
-    def test_EnsureUninitialized_hit(self):
+    def test__ensure_uninitialized_hit(self):
         stream = _Stream()
         xfer = self._makeOne(stream)
-        xfer.EnsureUninitialized()  # no raise
+        xfer._ensure_uninitialized()  # no raise
 
-    def test_EnsureUninitialized_miss(self):
+    def test__ensure_uninitialized_miss(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         stream = _Stream()
         HTTP = object()
         xfer = self._makeOne(stream)
-        xfer._Initialize(HTTP, self.URL)
+        xfer._initialize(HTTP, self.URL)
         with self.assertRaises(TransferInvalidError):
-            xfer.EnsureUninitialized()
+            xfer._ensure_uninitialized()
 
     def test___del___closes_stream(self):
 
@@ -181,7 +180,7 @@ class Test_Download(unittest2.TestCase):
         self.assertTrue(download.stream is stream)
         self.assertEqual(download.total_size, SIZE)
 
-    def test_FromFile_w_existing_file_no_override(self):
+    def test_from_file_w_existing_file_no_override(self):
         import os
         from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
@@ -190,111 +189,111 @@ class Test_Download(unittest2.TestCase):
             with open(filename, 'w') as fileobj:
                 fileobj.write('EXISTING FILE')
             with self.assertRaises(InvalidUserInputError):
-                klass.FromFile(filename)
+                klass.from_file(filename)
 
-    def test_FromFile_w_existing_file_w_override_wo_auto_transfer(self):
+    def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
         import os
         klass = self._getTargetClass()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
             with open(filename, 'w') as fileobj:
                 fileobj.write('EXISTING FILE')
-            download = klass.FromFile(filename, overwrite=True,
+            download = klass.from_file(filename, overwrite=True,
                                       auto_transfer=False)
             self.assertFalse(download.auto_transfer)
             del download  # closes stream
             with open(filename, 'rb') as fileobj:
                 self.assertEqual(fileobj.read(), b'')
 
-    def test_FromStream_defaults(self):
+    def test_from_stream_defaults(self):
         stream = _Stream()
         klass = self._getTargetClass()
-        download = klass.FromStream(stream)
+        download = klass.from_stream(stream)
         self.assertTrue(download.stream is stream)
         self.assertTrue(download.auto_transfer)
         self.assertTrue(download.total_size is None)
 
-    def test_FromStream_explicit(self):
+    def test_from_stream_explicit(self):
         CHUNK_SIZE = 1 << 18
         SIZE = 123
         stream = _Stream()
         klass = self._getTargetClass()
-        download = klass.FromStream(stream, auto_transfer=False,
+        download = klass.from_stream(stream, auto_transfer=False,
                                     total_size=SIZE, chunksize=CHUNK_SIZE)
         self.assertTrue(download.stream is stream)
         self.assertFalse(download.auto_transfer)
         self.assertEqual(download.total_size, SIZE)
         self.assertEqual(download.chunksize, CHUNK_SIZE)
 
-    def test_ConfigureRequest(self):
+    def test_configure_request(self):
         CHUNK_SIZE = 100
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
         request = _Dummy(headers={})
         url_builder = _Dummy(query_params={})
-        download.ConfigureRequest(request, url_builder)
+        download.configure_request(request, url_builder)
         self.assertEqual(request.headers, {'Range': 'bytes=0-99'})
         self.assertEqual(url_builder.query_params, {'alt': 'media'})
 
-    def test__SetTotal_wo_content_range_wo_existing_total(self):
+    def test__set_total_wo_content_range_wo_existing_total(self):
         info = {}
         download = self._makeOne(_Stream())
-        download._SetTotal(info)
+        download._set_total(info)
         self.assertEqual(download.total_size, 0)
 
-    def test__SetTotal_wo_content_range_w_existing_total(self):
+    def test__set_total_wo_content_range_w_existing_total(self):
         SIZE = 123
         info = {}
         download = self._makeOne(_Stream(), total_size=SIZE)
-        download._SetTotal(info)
+        download._set_total(info)
         self.assertEqual(download.total_size, SIZE)
 
-    def test__SetTotal_w_content_range_w_existing_total(self):
+    def test__set_total_w_content_range_w_existing_total(self):
         SIZE = 123
         info = {'content-range': 'bytes 123-234/4567'}
         download = self._makeOne(_Stream(), total_size=SIZE)
-        download._SetTotal(info)
+        download._set_total(info)
         self.assertEqual(download.total_size, 4567)
 
-    def test__SetTotal_w_content_range_w_asterisk_total(self):
+    def test__set_total_w_content_range_w_asterisk_total(self):
         info = {'content-range': 'bytes 123-234/*'}
         download = self._makeOne(_Stream())
-        download._SetTotal(info)
+        download._set_total(info)
         self.assertEqual(download.total_size, 0)
 
-    def test_InitializeDownload_already_initialized(self):
+    def test_initialize_download_already_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         download = self._makeOne(_Stream())
-        download._Initialize(None, self.URL)
+        download._initialize(None, self.URL)
         with self.assertRaises(TransferInvalidError):
-            download.InitializeDownload(request, http=object())
+            download.initialize_download(request, http=object())
 
-    def test_InitializeDownload_wo_http_or_client(self):
+    def test_initialize_download_wo_http_or_client(self):
         from gcloud.streaming.exceptions import UserError
         request = _Request()
         download = self._makeOne(_Stream())
         with self.assertRaises(UserError):
-            download.InitializeDownload(request)
+            download.initialize_download(request)
 
-    def test_InitializeDownload_wo_client_wo_autotransfer(self):
+    def test_initialize_download_wo_client_wo_autotransfer(self):
         request = _Request()
         http = object()
         download = self._makeOne(_Stream(), auto_transfer=False)
-        download.InitializeDownload(request, http)
+        download.initialize_download(request, http)
         self.assertTrue(download.http is http)
         self.assertEqual(download.url, request.url)
 
-    def test_InitializeDownload_w_client_wo_autotransfer(self):
+    def test_initialize_download_w_client_wo_autotransfer(self):
         FINALIZED_URL = 'http://example.com/other'
         request = _Request()
         http = object()
         client = _Client(http, FINALIZED_URL)
         download = self._makeOne(_Stream(), auto_transfer=False)
-        download.InitializeDownload(request, client=client)
+        download.initialize_download(request, client=client)
         self.assertTrue(download.http is http)
         self.assertEqual(download.url, FINALIZED_URL)
 
-    def test_InitializeDownload_w_autotransfer_failing(self):
+    def test_initialize_download_w_autotransfer_failing(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -307,14 +306,14 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(MakeRequest=requester)):
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
-                download.InitializeDownload(request, http)
+                download.initialize_download(request, http)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
 
-    def test_InitializeDownload_w_autotransfer_w_content_location(self):
+    def test_initialize_download_w_autotransfer_w_content_location(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -327,8 +326,8 @@ class Test_Download(unittest2.TestCase):
         response = _makeResponse(http_client.NO_CONTENT, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT, http_wrapper=_Dummy(MakeRequest=requester)):
-            download.InitializeDownload(request, http)
+        with _Monkey(MUT, make_api_request=requester):
+            download.initialize_download(request, http)
 
         self.assertTrue(download._initial_response is None)
         self.assertEqual(download.total_size, 0)
@@ -337,232 +336,207 @@ class Test_Download(unittest2.TestCase):
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
 
-    def test__NormalizeStartEnd_w_end_w_start_lt_0(self):
+    def test__normalize_start_end_w_end_w_start_lt_0(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         download = self._makeOne(_Stream())
 
         with self.assertRaises(TransferInvalidError):
-            download._NormalizeStartEnd(-1, 0)
+            download._normalize_start_end(-1, 0)
 
-    def test__NormalizeStartEnd_w_end_w_start_gt_total(self):
+    def test__normalize_start_end_w_end_w_start_gt_total(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetTotal({'content-range': 'bytes 0-1/2'})
+        download._set_total({'content-range': 'bytes 0-1/2'})
 
         with self.assertRaises(TransferInvalidError):
-            download._NormalizeStartEnd(3, 0)
+            download._normalize_start_end(3, 0)
 
-    def test__NormalizeStartEnd_w_end_lt_start(self):
+    def test__normalize_start_end_w_end_lt_start(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetTotal({'content-range': 'bytes 0-1/2'})
+        download._set_total({'content-range': 'bytes 0-1/2'})
 
         with self.assertRaises(TransferInvalidError):
-            download._NormalizeStartEnd(1, 0)
+            download._normalize_start_end(1, 0)
 
-    def test__NormalizeStartEnd_w_end_gt_start(self):
+    def test__normalize_start_end_w_end_gt_start(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetTotal({'content-range': 'bytes 0-1/2'})
-        self.assertEqual(download._NormalizeStartEnd(1, 2), (1, 1))
+        download._set_total({'content-range': 'bytes 0-1/2'})
+        self.assertEqual(download._normalize_start_end(1, 2), (1, 1))
 
-    def test__NormalizeStartEnd_wo_end_w_start_lt_0(self):
+    def test__normalize_start_end_wo_end_w_start_lt_0(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetTotal({'content-range': 'bytes 0-1/2'})
-        self.assertEqual(download._NormalizeStartEnd(-2), (0, 1))
-        self.assertEqual(download._NormalizeStartEnd(-1), (1, 1))
+        download._set_total({'content-range': 'bytes 0-1/2'})
+        self.assertEqual(download._normalize_start_end(-2), (0, 1))
+        self.assertEqual(download._normalize_start_end(-1), (1, 1))
 
-    def test__NormalizeStartEnd_wo_end_w_start_ge_0(self):
+    def test__normalize_start_end_wo_end_w_start_ge_0(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetTotal({'content-range': 'bytes 0-1/100'})
-        self.assertEqual(download._NormalizeStartEnd(0), (0, 99))
-        self.assertEqual(download._NormalizeStartEnd(1), (1, 99))
+        download._set_total({'content-range': 'bytes 0-1/100'})
+        self.assertEqual(download._normalize_start_end(0), (0, 99))
+        self.assertEqual(download._normalize_start_end(1), (1, 99))
 
-    def test__SetRangeHeader_w_start_lt_0(self):
+    def test__set_range_header_w_start_lt_0(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetRangeHeader(request, -1)
+        download._set_range_header(request, -1)
         self.assertEqual(request.headers['range'], 'bytes=-1')
 
-    def test__SetRangeHeader_w_start_ge_0_wo_end(self):
+    def test__set_range_header_w_start_ge_0_wo_end(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetRangeHeader(request, 0)
+        download._set_range_header(request, 0)
         self.assertEqual(request.headers['range'], 'bytes=0-')
 
-    def test__SetRangeHeader_w_start_ge_0_w_end(self):
+    def test__set_range_header_w_start_ge_0_w_end(self):
         request = _Request()
         download = self._makeOne(_Stream())
-        download._SetRangeHeader(request, 0, 1)
+        download._set_range_header(request, 0, 1)
         self.assertEqual(request.headers['range'], 'bytes=0-1')
 
-    def test__ComputeEndByte_w_start_lt_0_w_end(self):
+    def test__compute_end_byte_w_start_lt_0_w_end(self):
         download = self._makeOne(_Stream())
-        self.assertEqual(download._ComputeEndByte(-1, 1), 1)
+        self.assertEqual(download._compute_end_byte(-1, 1), 1)
 
-    def test__ComputeEndByte_w_start_ge_0_wo_end_w_use_chunks(self):
+    def test__compute_end_byte_w_start_ge_0_wo_end_w_use_chunks(self):
         CHUNK_SIZE = 5
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
-        self.assertEqual(download._ComputeEndByte(0, use_chunks=True), 4)
+        self.assertEqual(download._compute_end_byte(0, use_chunks=True), 4)
 
-    def test__ComputeEndByte_w_start_ge_0_w_end_w_use_chunks(self):
+    def test__compute_end_byte_w_start_ge_0_w_end_w_use_chunks(self):
         CHUNK_SIZE = 5
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
-        self.assertEqual(download._ComputeEndByte(0, 3, use_chunks=True), 3)
-        self.assertEqual(download._ComputeEndByte(0, 5, use_chunks=True), 4)
+        self.assertEqual(download._compute_end_byte(0, 3, use_chunks=True), 3)
+        self.assertEqual(download._compute_end_byte(0, 5, use_chunks=True), 4)
 
-    def test__ComputeEndByte_w_start_ge_0_w_end_w_total_size(self):
+    def test__compute_end_byte_w_start_ge_0_w_end_w_total_size(self):
         CHUNK_SIZE = 50
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
-        download._SetTotal({'content-range': 'bytes 0-1/10'})
-        self.assertEqual(download._ComputeEndByte(0, 100, use_chunks=False), 9)
-        self.assertEqual(download._ComputeEndByte(0, 8, use_chunks=False), 8)
+        download._set_total({'content-range': 'bytes 0-1/10'})
+        self.assertEqual(download._compute_end_byte(0, 100, use_chunks=False), 9)
+        self.assertEqual(download._compute_end_byte(0, 8, use_chunks=False), 8)
 
-    def test__ComputeEndByte_w_start_ge_0_wo_end_w_total_size(self):
+    def test__compute_end_byte_w_start_ge_0_wo_end_w_total_size(self):
         CHUNK_SIZE = 50
         download = self._makeOne(_Stream(), chunksize=CHUNK_SIZE)
-        download._SetTotal({'content-range': 'bytes 0-1/10'})
-        self.assertEqual(download._ComputeEndByte(0, use_chunks=False), 9)
+        download._set_total({'content-range': 'bytes 0-1/10'})
+        self.assertEqual(download._compute_end_byte(0, use_chunks=False), 9)
 
-    def test__GetChunk_not_initialized(self):
+    def test__get_chunk_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         http = object()
         download = self._makeOne(_Stream())
 
         with self.assertRaises(TransferInvalidError):
-            found = download._GetChunk(0, 10)
+            found = download._get_chunk(0, 10)
 
-    def test__GetChunk_wo_additional_headers(self):
+    def test__get_chunk(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         request = _Request()
         http = object()
         download = self._makeOne(_Stream())
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         response = _makeResponse(http_client.OK)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            found = download._GetChunk(0, 10)
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            found = download._get_chunk(0, 10)
 
         self.assertTrue(found is response)
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
         self.assertEqual(request.headers['range'], 'bytes=0-10')
 
-    def test__GetChunk_w_additional_headers(self):
-        from six.moves import http_client
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
-        request = _Request()
-        http = object()
-        headers = {'foo': 'bar'}
-        download = self._makeOne(_Stream())
-        download._Initialize(http, request.URL)
-        response = _makeResponse(http_client.OK)
-        requester = _MakeRequest(response)
-
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            found = download._GetChunk(0, 10, additional_headers=headers)
-
-        self.assertTrue(found is response)
-        self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
-        self.assertEqual(request.headers['range'], 'bytes=0-10')
-        self.assertEqual(request.headers['foo'], 'bar')
-
-    def test__ProcessResponse_w_FORBIDDEN(self):
+    def test__process_response_w_FORBIDDEN(self):
         from gcloud.streaming.exceptions import HttpError
         from six.moves import http_client
         download = self._makeOne(_Stream())
         response = _makeResponse(http_client.FORBIDDEN)
         with self.assertRaises(HttpError):
-            download._ProcessResponse(response)
+            download._process_response(response)
 
-    def test__ProcessResponse_w_NOT_FOUND(self):
+    def test__process_response_w_NOT_FOUND(self):
         from gcloud.streaming.exceptions import HttpError
         from six.moves import http_client
         download = self._makeOne(_Stream())
         response = _makeResponse(http_client.NOT_FOUND)
         with self.assertRaises(HttpError):
-            download._ProcessResponse(response)
+            download._process_response(response)
 
-    def test__ProcessResponse_w_other_error(self):
+    def test__process_response_w_other_error(self):
         from gcloud.streaming.exceptions import TransferRetryError
         from six.moves import http_client
         download = self._makeOne(_Stream())
         response = _makeResponse(http_client.BAD_REQUEST)
         with self.assertRaises(TransferRetryError):
-            download._ProcessResponse(response)
+            download._process_response(response)
 
-    def test__ProcessResponse_w_OK_wo_encoding(self):
+    def test__process_response_w_OK_wo_encoding(self):
         from six.moves import http_client
         stream = _Stream()
         download = self._makeOne(stream)
         response = _makeResponse(http_client.OK, content='OK')
-        found = download._ProcessResponse(response)
+        found = download._process_response(response)
         self.assertTrue(found is response)
         self.assertEqual(stream._written, ['OK'])
         self.assertEqual(download.progress, 2)
         self.assertEqual(download.encoding, None)
 
-    def test__ProcessResponse_w_PARTIAL_CONTENT_w_encoding(self):
+    def test__process_response_w_PARTIAL_CONTENT_w_encoding(self):
         from six.moves import http_client
         stream = _Stream()
         download = self._makeOne(stream)
         info = {'content-encoding': 'blah'}
         response = _makeResponse(http_client.OK, info, 'PARTIAL')
-        found = download._ProcessResponse(response)
+        found = download._process_response(response)
         self.assertTrue(found is response)
         self.assertEqual(stream._written, ['PARTIAL'])
         self.assertEqual(download.progress, 7)
         self.assertEqual(download.encoding, 'blah')
 
-    def test__ProcessResponse_w_REQUESTED_RANGE_NOT_SATISFIABLE(self):
+    def test__process_response_w_REQUESTED_RANGE_NOT_SATISFIABLE(self):
         from six.moves import http_client
         stream = _Stream()
         download = self._makeOne(stream)
         response = _makeResponse(
             http_client.REQUESTED_RANGE_NOT_SATISFIABLE)
-        found = download._ProcessResponse(response)
+        found = download._process_response(response)
         self.assertTrue(found is response)
         self.assertEqual(stream._written, [])
         self.assertEqual(download.progress, 0)
         self.assertEqual(download.encoding, None)
 
-    def test__ProcessResponse_w_NO_CONTENT(self):
+    def test__process_response_w_NO_CONTENT(self):
         from six.moves import http_client
         stream = _Stream()
         download = self._makeOne(stream)
         response = _makeResponse(status_code=http_client.NO_CONTENT)
-        found = download._ProcessResponse(response)
+        found = download._process_response(response)
         self.assertTrue(found is response)
         self.assertEqual(stream._written, [''])
         self.assertEqual(download.progress, 0)
         self.assertEqual(download.encoding, None)
 
-    def test_GetRange_not_initialized(self):
+    def test_get_range_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         request = _Request()
         http = object()
         download = self._makeOne(_Stream())
         with self.assertRaises(TransferInvalidError):
-            found = download.GetRange(0, 10)
+            found = download.get_range(0, 10)
 
-    def test_GetRange_wo_total_size_complete(self):
+    def test_get_range_wo_total_size_complete(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -574,16 +548,15 @@ class Test_Download(unittest2.TestCase):
         http = object()
         stream = _Stream()
         download = self._makeOne(stream)
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.GetRange(0, LEN)
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.get_range(0, LEN)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
@@ -591,7 +564,7 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
 
-    def test_GetRange_wo_total_size_wo_end(self):
+    def test_get_range_wo_total_size_wo_end(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -605,16 +578,15 @@ class Test_Download(unittest2.TestCase):
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT[START:])
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.GetRange(START)
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.get_range(START)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
@@ -622,7 +594,7 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(stream._written, [CONTENT[START:]])
         self.assertEqual(download.total_size, LEN)
 
-    def test_GetRange_w_total_size_partial_w_additional_headers(self):
+    def test_get_range_w_total_size_partial(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -632,11 +604,10 @@ class Test_Download(unittest2.TestCase):
         REQ_RANGE = 'bytes=0-%d' % (PARTIAL_LEN,)
         RESP_RANGE = 'bytes 0-%d/%d' % (PARTIAL_LEN, LEN,)
         request = _Request()
-        headers = {'foo': 'bar'}
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, total_size=LEN)
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info,
                                       CONTENT[:PARTIAL_LEN])
@@ -644,18 +615,17 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.GetRange(0, PARTIAL_LEN, additional_headers=headers)
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.get_range(0, PARTIAL_LEN)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
-        self.assertEqual(request.headers, {'foo': 'bar', 'range': REQ_RANGE})
+        self.assertEqual(request.headers, {'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT[:PARTIAL_LEN]])
         self.assertEqual(download.total_size, LEN)
 
-    def test_GetRange_w_empty_chunk(self):
+    def test_get_range_w_empty_chunk(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -670,17 +640,16 @@ class Test_Download(unittest2.TestCase):
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
+                     Request=lambda url: request,
+                     make_api_request=requester):
             with self.assertRaises(TransferRetryError):
-                download.GetRange(START)
+                download.get_range(START)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
@@ -688,7 +657,7 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(stream._written, [''])
         self.assertEqual(download.total_size, LEN)
 
-    def test_GetRange_w_total_size_wo_use_chunks(self):
+    def test_get_range_w_total_size_wo_use_chunks(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -701,16 +670,15 @@ class Test_Download(unittest2.TestCase):
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, total_size=LEN, chunksize=CHUNK_SIZE)
-        download._Initialize(http, request.URL)
+        download._initialize(http, request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.GetRange(0, use_chunks=False)
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.get_range(0, use_chunks=False)
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
@@ -718,7 +686,7 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
 
-    def test_GetRange_w_multiple_chunks(self):
+    def test_get_range_w_multiple_chunks(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -734,7 +702,7 @@ class Test_Download(unittest2.TestCase):
         http = object()
         stream = _Stream()
         download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        download._Initialize(http, request_1.URL)
+        download._initialize(http, request_1.URL)
         info_1 = {'content-range': RESP_RANGE_1}
         response_1 = _makeResponse(http_client.PARTIAL_CONTENT, info_1,
                                         CONTENT[:CHUNK_SIZE])
@@ -744,10 +712,9 @@ class Test_Download(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: _requests.pop(0),
-                        MakeRequest=requester)):
-            download.GetRange(0)
+                     Request=lambda url: _requests.pop(0),
+                     make_api_request=requester):
+            download.get_range(0)
 
         self.assertTrue(len(requester._requested), 2)
         self.assertTrue(requester._requested[0][0] is request_1)
@@ -757,47 +724,15 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(stream._written, [b'ABC', b'DE'])
         self.assertEqual(download.total_size, LEN)
 
-    def test_StreamInChunks_wo_additional_headers(self):
-        download = self._makeOne(_Stream())
-        _called_with = []
-
-        def _stream_media(additional_headers=None, use_chunks=False):
-            _called_with.append((additional_headers, use_chunks))
-
-        download.StreamMedia = _stream_media
-
-        download.StreamInChunks()
-
-        self.assertEqual(_called_with, [(None, True)])
-
-    def test_StreamInChunks_w_additional_headers(self):
-        download = self._makeOne(_Stream())
-        _called_with = []
-
-        def _stream_media(additional_headers=None, use_chunks=False):
-            _called_with.append((additional_headers, use_chunks))
-
-        download.StreamMedia = _stream_media
-
-        headers = {'foo': 'bar'}
-        download.StreamInChunks(headers)
-
-        self.assertEqual(_called_with, [(headers, True)])
-
-    def test_StreamMedia_not_initialized(self):
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
+    def test_stream_file_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         download = self._makeOne(_Stream())
 
-        with _Monkey(MUT, http_wrapper=_Dummy()):
-            with self.assertRaises(TransferInvalidError):
-                found = download.StreamMedia()
+        with self.assertRaises(TransferInvalidError):
+            found = download.stream_file()
 
-    def test_StreamMedia_w_initial_response_complete(self):
+    def test_stream_file_w_initial_response_complete(self):
         from six.moves import http_client
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
         RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
@@ -807,16 +742,14 @@ class Test_Download(unittest2.TestCase):
         download._initial_response = _makeResponse(
             http_client.OK, info, CONTENT)
         http = object()
-        download._Initialize(http, _Request.URL)
+        download._initialize(http, _Request.URL)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy()):
-            download.StreamMedia()
+        download.stream_file()
 
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
 
-    def test_StreamMedia_w_initial_response_incomplete(self):
+    def test_stream_file_w_initial_response_incomplete(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -837,15 +770,14 @@ class Test_Download(unittest2.TestCase):
             http_client.OK, info_2, CONTENT[CHUNK_SIZE:])
         requester = _MakeRequest(response_2)
 
-        download._Initialize(http, _Request.URL)
+        download._initialize(http, _Request.URL)
 
         request = _Request()
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.StreamMedia()
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.stream_file()
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
@@ -854,7 +786,7 @@ class Test_Download(unittest2.TestCase):
                          [CONTENT[:CHUNK_SIZE], CONTENT[CHUNK_SIZE:]])
         self.assertEqual(download.total_size, LEN)
 
-    def test_StreamMedia_wo_initial_response_wo_total_size(self):
+    def test_stream_file_wo_initial_response_wo_total_size(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -869,51 +801,18 @@ class Test_Download(unittest2.TestCase):
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
-        download._Initialize(http, _Request.URL)
+        download._initialize(http, _Request.URL)
 
         request = _Request()
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.StreamMedia()
+                     Request=lambda url: request,
+                     make_api_request=requester):
+            download.stream_file()
 
         self.assertTrue(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
         self.assertEqual(request.headers, {'range': REQ_RANGE})
-        self.assertEqual(stream._written, [CONTENT])
-        self.assertEqual(download.total_size, LEN)
-
-    def test_StreamMedia_wo_initial_response_w_addl_headers_wo_chunks(self):
-        from six.moves import http_client
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import transfer as MUT
-        CONTENT = b'ABCDEFGHIJ'
-        LEN = len(CONTENT)
-        CHUNK_SIZE = 123
-        REQ_RANGE = 'bytes=0-'
-        RESP_RANGE = 'bytes 0-%d/%d' % (LEN - 1, LEN,)
-        stream = _Stream()
-        http = object()
-        download = self._makeOne(stream, chunksize=CHUNK_SIZE)
-        info = {'content-range': RESP_RANGE}
-        response = _makeResponse(http_client.OK, info, CONTENT)
-        requester = _MakeRequest(response)
-        download._Initialize(http, _Request.URL)
-
-        headers = {'foo': 'bar'}
-        request = _Request()
-
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=lambda url: request,
-                        MakeRequest=requester)):
-            download.StreamMedia(additional_headers=headers, use_chunks=False)
-
-        self.assertTrue(len(requester._requested), 1)
-        self.assertTrue(requester._requested[0][0] is request)
-        self.assertEqual(request.headers, {'foo': 'bar', 'range': REQ_RANGE})
         self.assertEqual(stream._written, [CONTENT])
         self.assertEqual(download.total_size, LEN)
 
@@ -950,14 +849,14 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
-    def test_FromFile_w_nonesuch_file(self):
+    def test_from_file_w_nonesuch_file(self):
         from gcloud.streaming.exceptions import NotFoundError
         klass = self._getTargetClass()
         filename = '~nosuchuser/file.txt'
         with self.assertRaises(NotFoundError):
-            klass.FromFile(filename)
+            klass.from_file(filename)
 
-    def test_FromFile_wo_mimetype_w_unguessable_filename(self):
+    def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
         from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
@@ -967,9 +866,9 @@ class Test_Upload(unittest2.TestCase):
             with open(filename, 'wb') as fileobj:
                 fileobj.write(CONTENT)
             with self.assertRaises(InvalidUserInputError):
-                klass.FromFile(filename)
+                klass.from_file(filename)
 
-    def test_FromFile_wo_mimetype_w_guessable_filename(self):
+    def test_from_file_wo_mimetype_w_guessable_filename(self):
         import os
         klass = self._getTargetClass()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
@@ -977,12 +876,12 @@ class Test_Upload(unittest2.TestCase):
             filename = os.path.join(tempdir, 'file.txt')
             with open(filename, 'wb') as fileobj:
                 fileobj.write(CONTENT)
-            upload = klass.FromFile(filename)
+            upload = klass.from_file(filename)
             self.assertEqual(upload.mime_type, 'text/plain')
             self.assertTrue(upload.auto_transfer)
             self.assertEqual(upload.total_size, len(CONTENT))
 
-    def test_FromFile_w_mimetype_w_auto_transfer_w_kwds(self):
+    def test_from_file_w_mimetype_w_auto_transfer_w_kwds(self):
         import os
         klass = self._getTargetClass()
         CONTENT = b'EXISTING FILE W/ GUESSABLE MIMETYPE'
@@ -991,7 +890,7 @@ class Test_Upload(unittest2.TestCase):
             filename = os.path.join(tempdir, 'file.unguessable')
             with open(filename, 'wb') as fileobj:
                 fileobj.write(CONTENT)
-            upload = klass.FromFile(
+            upload = klass.from_file(
                 filename,
                 mime_type=self.MIME_TYPE,
                 auto_transfer=False,
@@ -1001,27 +900,27 @@ class Test_Upload(unittest2.TestCase):
             self.assertEqual(upload.total_size, len(CONTENT))
             self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
-    def test_FromStream_wo_mimetype(self):
+    def test_from_stream_wo_mimetype(self):
         from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         stream = _Stream()
         with self.assertRaises(InvalidUserInputError):
-            klass.FromStream(stream, mime_type=None)
+            klass.from_stream(stream, mime_type=None)
 
-    def test_FromStream_defaults(self):
+    def test_from_stream_defaults(self):
         klass = self._getTargetClass()
         stream = _Stream()
-        upload = klass.FromStream(stream, mime_type=self.MIME_TYPE)
+        upload = klass.from_stream(stream, mime_type=self.MIME_TYPE)
         self.assertEqual(upload.mime_type, self.MIME_TYPE)
         self.assertTrue(upload.auto_transfer)
         self.assertEqual(upload.total_size, None)
 
-    def test_FromStream_explicit(self):
+    def test_from_stream_explicit(self):
         klass = self._getTargetClass()
         stream = _Stream()
         SIZE = 10
         CHUNK_SIZE = 3
-        upload = klass.FromStream(
+        upload = klass.from_stream(
             stream,
             mime_type=self.MIME_TYPE,
             auto_transfer=False,
@@ -1057,7 +956,7 @@ class Test_Upload(unittest2.TestCase):
         SIZE = 123
         upload = self._makeOne(_Stream)
         http = object()
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         with self.assertRaises(TransferInvalidError):
             upload.total_size = SIZE
 
@@ -1068,7 +967,7 @@ class Test_Upload(unittest2.TestCase):
         upload.total_size = SIZE
         self.assertEqual(upload.total_size, SIZE)
 
-    def test__SetDefaultUploadStrategy_w_existing_strategy(self):
+    def test__set_default_strategy_w_existing_strategy(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         config = _Dummy(
             resumable_path='/resumable/endpoint',
@@ -1078,10 +977,10 @@ class Test_Upload(unittest2.TestCase):
         request = _Request()
         upload = self._makeOne(_Stream)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._SetDefaultUploadStrategy(config, request)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
-    def test__SetDefaultUploadStrategy_wo_resumable_path(self):
+    def test__set_default_strategy_wo_resumable_path(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         config = _Dummy(
             resumable_path=None,
@@ -1090,49 +989,49 @@ class Test_Upload(unittest2.TestCase):
         )
         request = _Request()
         upload = self._makeOne(_Stream())
-        upload._SetDefaultUploadStrategy(config, request)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
-    def test__SetDefaultUploadStrategy_w_total_size_gt_threshhold(self):
-        from gcloud.streaming.transfer import _RESUMABLE_UPLOAD_THRESHOLD
+    def test__set_default_strategy_w_total_size_gt_threshhold(self):
+        from gcloud.streaming.transfer import RESUMABLE_UPLOAD_THRESHOLD
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         config = _UploadConfig()
         request = _Request()
         upload = self._makeOne(
-            _Stream(), total_size=_RESUMABLE_UPLOAD_THRESHOLD + 1)
-        upload._SetDefaultUploadStrategy(config, request)
+            _Stream(), total_size=RESUMABLE_UPLOAD_THRESHOLD + 1)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
-    def test__SetDefaultUploadStrategy_w_body_wo_multipart(self):
+    def test__set_default_strategy_w_body_wo_multipart(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         config.simple_multipart = False
         request = _Request(body=CONTENT)
         upload = self._makeOne(_Stream(), total_size=len(CONTENT))
-        upload._SetDefaultUploadStrategy(config, request)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
-    def test__SetDefaultUploadStrategy_w_body_w_multipart_wo_simple_path(self):
+    def test__set_default_strategy_w_body_w_multipart_wo_simple_path(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         config.simple_path = None
         request = _Request(body=CONTENT)
         upload = self._makeOne(_Stream(), total_size=len(CONTENT))
-        upload._SetDefaultUploadStrategy(config, request)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, RESUMABLE_UPLOAD)
 
-    def test__SetDefaultUploadStrategy_w_body_w_multipart_w_simple_path(self):
+    def test__set_default_strategy_w_body_w_multipart_w_simple_path(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         config = _UploadConfig()
         request = _Request(body=CONTENT)
         upload = self._makeOne(_Stream(), total_size=len(CONTENT))
-        upload._SetDefaultUploadStrategy(config, request)
+        upload._set_default_strategy(config, request)
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
-    def test_ConfigureRequest_w_total_size_gt_max_size(self):
+    def test_configure_request_w_total_size_gt_max_size(self):
         from gcloud.streaming.exceptions import InvalidUserInputError
         MAX_SIZE = 1000
         config = _UploadConfig()
@@ -1141,9 +1040,9 @@ class Test_Upload(unittest2.TestCase):
         url_builder = _Dummy()
         upload = self._makeOne(_Stream(), total_size=MAX_SIZE + 1)
         with self.assertRaises(InvalidUserInputError):
-            upload.ConfigureRequest(config, request, url_builder)
+            upload.configure_request(config, request, url_builder)
 
-    def test_ConfigureRequest_w_invalid_mimetype(self):
+    def test_configure_request_w_invalid_mimetype(self):
         from gcloud.streaming.exceptions import InvalidUserInputError
         config = _UploadConfig()
         config.accept = ('text/*',)
@@ -1151,9 +1050,9 @@ class Test_Upload(unittest2.TestCase):
         url_builder = _Dummy()
         upload = self._makeOne(_Stream())
         with self.assertRaises(InvalidUserInputError):
-            upload.ConfigureRequest(config, request, url_builder)
+            upload.configure_request(config, request, url_builder)
 
-    def test_ConfigureRequest_w_simple_wo_body(self):
+    def test_configure_request_w_simple_wo_body(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         CONTENT = b'CONTENT'
         config = _UploadConfig()
@@ -1162,7 +1061,7 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(_Stream(CONTENT))
         upload.strategy = SIMPLE_UPLOAD
 
-        upload.ConfigureRequest(config, request, url_builder)
+        upload.configure_request(config, request, url_builder)
 
         self.assertEqual(url_builder.query_params, {'uploadType': 'media'}) 
         self.assertEqual(url_builder.relative_path, config.simple_path)
@@ -1171,7 +1070,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.body, CONTENT)
         self.assertEqual(request.loggable_body, '<media body>')
 
-    def test_ConfigureRequest_w_simple_w_body(self):
+    def test_configure_request_w_simple_w_body(self):
         from email.parser import Parser
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         CONTENT = b'CONTENT'
@@ -1183,7 +1082,7 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(_Stream(CONTENT))
         upload.strategy = SIMPLE_UPLOAD
 
-        upload.ConfigureRequest(config, request, url_builder)
+        upload.configure_request(config, request, url_builder)
 
         self.assertEqual(url_builder.query_params, {'uploadType': 'multipart'}) 
         self.assertEqual(url_builder.relative_path, config.simple_path)
@@ -1214,7 +1113,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(app_msg._payload, CONTENT.decode('ascii'))
         self.assertTrue('<media body>' in request.loggable_body)
 
-    def test_ConfigureRequest_w_resumable_wo_total_size(self):
+    def test_configure_request_w_resumable_wo_total_size(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'CONTENT'
         config = _UploadConfig()
@@ -1223,7 +1122,7 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(_Stream(CONTENT))
         upload.strategy = RESUMABLE_UPLOAD
 
-        upload.ConfigureRequest(config, request, url_builder)
+        upload.configure_request(config, request, url_builder)
 
         self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'}) 
         self.assertEqual(url_builder.relative_path, config.resumable_path)
@@ -1231,7 +1130,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.headers,
                          {'X-Upload-Content-Type': self.MIME_TYPE})
 
-    def test_ConfigureRequest_w_resumable_w_total_size(self):
+    def test_configure_request_w_resumable_w_total_size(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'CONTENT'
         LEN = len(CONTENT)
@@ -1242,7 +1141,7 @@ class Test_Upload(unittest2.TestCase):
         upload.total_size = LEN
         upload.strategy = RESUMABLE_UPLOAD
 
-        upload.ConfigureRequest(config, request, url_builder)
+        upload.configure_request(config, request, url_builder)
 
         self.assertEqual(url_builder.query_params, {'uploadType': 'resumable'}) 
         self.assertEqual(url_builder.relative_path, config.resumable_path)
@@ -1251,21 +1150,21 @@ class Test_Upload(unittest2.TestCase):
                          {'X-Upload-Content-Type': self.MIME_TYPE,
                           'X-Upload-Content-Length': '%d' % (LEN,)})
 
-    def test_RefreshResumableUploadState_w_simple_strategy(self):
+    def test_refresh_upload_state_w_simple_strategy(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
-        upload.RefreshResumableUploadState()  # no-op
+        upload.refresh_upload_state()  # no-op
 
-    def test_RefreshResumableUploadState_not_initialized(self):
+    def test_refresh_upload_state_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         upload = self._makeOne(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
         with self.assertRaises(TransferInvalidError):
-            upload.RefreshResumableUploadState()
+            upload.refresh_upload_state()
 
-    def test_RefreshResumableUploadState_w_OK(self):
+    def test_refresh_upload_state_w_OK(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -1277,23 +1176,22 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=LEN)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.OK, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=_Request,
-                        MakeRequest=requester)):
-            upload.RefreshResumableUploadState()
+                     Request=_Request,
+                     make_api_request=requester):
+            upload.refresh_upload_state()
 
         self.assertTrue(upload.complete)
         self.assertEqual(upload.progress, LEN)
         self.assertEqual(stream.tell(), LEN)
         self.assertTrue(upload._final_response is response)
 
-    def test_RefreshResumableUploadState_w_CREATED(self):
+    def test_refresh_upload_state_w_CREATED(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -1305,23 +1203,22 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=LEN)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         info = {'content-range': RESP_RANGE}
         response = _makeResponse(http_client.CREATED, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        Request=_Request,
-                        MakeRequest=requester)):
-            upload.RefreshResumableUploadState()
+                     Request=_Request,
+                     make_api_request=requester):
+            upload.refresh_upload_state()
 
         self.assertTrue(upload.complete)
         self.assertEqual(upload.progress, LEN)
         self.assertEqual(stream.tell(), LEN)
         self.assertTrue(upload._final_response is response)
 
-    def test_RefreshResumableUploadState_w_RESUME_INCOMPLETE_w_range(self):
+    def test_refresh_upload_state_w_RESUME_INCOMPLETE_w_range(self):
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud._testing import _Monkey
@@ -1333,24 +1230,22 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=LEN)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         info = {'range': '0-%d' % (LAST - 1,)}
         response = _makeResponse(RESUME_INCOMPLETE, info, CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
-            upload.RefreshResumableUploadState()
+                     Request=_Request,
+                     make_api_request=requester):
+            upload.refresh_upload_state()
 
         self.assertFalse(upload.complete)
         self.assertEqual(upload.progress, LAST)
         self.assertEqual(stream.tell(), LAST)
         self.assertFalse(upload._final_response is response)
 
-    def test_RefreshResumableUploadState_w_RESUME_INCOMPLETE_wo_range(self):
+    def test_refresh_upload_state_w_RESUME_INCOMPLETE_wo_range(self):
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud._testing import _Monkey
@@ -1362,28 +1257,25 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=LEN)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         response = _makeResponse(RESUME_INCOMPLETE, content=CONTENT)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
-            upload.RefreshResumableUploadState()
+                     Request=_Request,
+                     make_api_request=requester):
+            upload.refresh_upload_state()
 
         self.assertFalse(upload.complete)
         self.assertEqual(upload.progress, 0)
         self.assertEqual(stream.tell(), 0)
         self.assertFalse(upload._final_response is response)
 
-    def test_RefreshResumableUploadState_w_error(self):
+    def test_refresh_upload_state_w_error(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import HttpError
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1391,72 +1283,69 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream()
         upload = self._makeOne(stream, total_size=LEN)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         response = _makeResponse(http_client.FORBIDDEN)
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
-                upload.RefreshResumableUploadState()
+                upload.refresh_upload_state()
 
-    def test__GetRangeHeaderFromResponse_miss(self):
+    def test__get_range_header_miss(self):
         upload = self._makeOne(_Stream())
         response = _makeResponse(None)
-        self.assertTrue(upload._GetRangeHeaderFromResponse(response) is None)
+        self.assertTrue(upload._get_range_header(response) is None)
 
-    def test__GetRangeHeaderFromResponse_w_Range(self):
+    def test__get_range_header_w_Range(self):
         upload = self._makeOne(_Stream())
         response = _makeResponse(None, {'Range': '123'})
-        self.assertEqual(upload._GetRangeHeaderFromResponse(response), '123')
+        self.assertEqual(upload._get_range_header(response), '123')
 
-    def test__GetRangeHeaderFromResponse_w_range(self):
+    def test__get_range_header_w_range(self):
         upload = self._makeOne(_Stream())
         response = _makeResponse(None, {'range': '123'})
-        self.assertEqual(upload._GetRangeHeaderFromResponse(response), '123')
+        self.assertEqual(upload._get_range_header(response), '123')
 
-    def test_InitializeUpload_no_strategy(self):
+    def test_initialize_upload_no_strategy(self):
         from gcloud.streaming.exceptions import UserError
         request = _Request()
         upload = self._makeOne(_Stream())
         with self.assertRaises(UserError):
-            upload.InitializeUpload(request, http=object())
+            upload.initialize_upload(request, http=object())
 
-    def test_InitializeUpload_wo_client_wo_http(self):
+    def test_initialize_upload_wo_client_wo_http(self):
         from gcloud.streaming.exceptions import UserError
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         request = _Request()
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
         with self.assertRaises(UserError):
-            upload.InitializeUpload(request)
+            upload.initialize_upload(request)
 
-    def test_InitializeUpload_simple_w_http(self):
+    def test_initialize_upload_simple_w_http(self):
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         request = _Request()
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
-        upload.InitializeUpload(request, http=object())  # no-op
+        upload.initialize_upload(request, http=object())  # no-op
 
-    def test_InitializeUpload_resumable_already_initialized(self):
+    def test_initialize_upload_resumable_already_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         request = _Request()
         upload = self._makeOne(_Stream())
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(None, self.URL)
+        upload._initialize(None, self.URL)
         with self.assertRaises(TransferInvalidError):
-            upload.InitializeUpload(request, http=object())
+            upload.initialize_upload(request, http=object())
 
-    def test_InitializeUpload_w_http_resumable_not_initialized_w_error(self):
+    def test_initialize_upload_w_http_resumable_not_initialized_w_error(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import HttpError
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1466,18 +1355,14 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.FORBIDDEN)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
+        with _Monkey(MUT, make_api_request=requester):
             with self.assertRaises(HttpError):
-                upload.InitializeUpload(request, http=object())
+                upload.initialize_upload(request, http=object())
 
-    def test_InitializeUpload_w_http_wo_auto_transfer_w_OK(self):
+    def test_initialize_upload_w_http_wo_auto_transfer_w_OK(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1488,11 +1373,8 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(http_client.OK, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
-            upload.InitializeUpload(request, http=object())
+        with _Monkey(MUT, make_api_request=requester):
+            upload.initialize_upload(request, http=object())
 
         self.assertEqual(upload._server_chunk_granularity, None)
         self.assertEqual(upload.url, self.UPLOAD_URL)
@@ -1500,11 +1382,10 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(len(requester._requested), 1)
         self.assertTrue(requester._requested[0][0] is request)
 
-    def test_InitializeUpload_w_client_w_auto_transfer_w_OK(self):
+    def test_initialize_upload_w_client_w_auto_transfer_w_OK(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
-        from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         LEN = len(CONTENT)
@@ -1521,12 +1402,9 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response, chunk_response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
-                        MakeRequest=requester)):
-            upload.InitializeUpload(request, client=client)
+                     Request=_Request,
+                     make_api_request=requester):
+            upload.initialize_upload(request, client=client)
 
         self.assertEqual(upload._server_chunk_granularity, 100)
         self.assertEqual(upload.url, FINALIZED_URL)
@@ -1539,53 +1417,53 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(chunk_request.http_method, 'PUT')
         self.assertEqual(chunk_request.body, CONTENT)
 
-    def test__GetLastByte(self):
+    def test__last_byte(self):
         upload = self._makeOne(_Stream())
-        self.assertEqual(upload._GetLastByte('123-456'), 456)
+        self.assertEqual(upload._last_byte('123-456'), 456)
 
-    def test__ValidateChunkSize_wo__server_chunk_granularity(self):
+    def test__validate_chunksize_wo__server_chunk_granularity(self):
         upload = self._makeOne(_Stream())
-        upload._ValidateChunksize(123)  # no-op
+        upload._validate_chunksize(123)  # no-op
 
-    def test__ValidateChunkSize_w__server_chunk_granularity_miss(self):
+    def test__validate_chunksize_w__server_chunk_granularity_miss(self):
         from gcloud.streaming.exceptions import ConfigurationValueError
         upload = self._makeOne(_Stream())
         upload._server_chunk_granularity = 100
         with self.assertRaises(ConfigurationValueError):
-            upload._ValidateChunksize(123)
+            upload._validate_chunksize(123)
 
-    def test__ValidateChunkSize_w__server_chunk_granularity_hit(self):
+    def test__validate_chunksize_w__server_chunk_granularity_hit(self):
         upload = self._makeOne(_Stream())
         upload._server_chunk_granularity = 100
-        upload._ValidateChunksize(400)
+        upload._validate_chunksize(400)
 
-    def test__StreamMedia_w_simple_strategy(self):
+    def test_stream_file_w_simple_strategy(self):
         from gcloud.streaming.exceptions import InvalidUserInputError
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
         with self.assertRaises(InvalidUserInputError):
-            upload._StreamMedia()
+            upload.stream_file()
 
-    def test__StreamMedia_w_use_chunks_invalid_chunk_size(self):
+    def test_stream_file_w_use_chunks_invalid_chunk_size(self):
         from gcloud.streaming.exceptions import ConfigurationValueError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         upload = self._makeOne(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 100
         with self.assertRaises(ConfigurationValueError):
-            upload._StreamMedia(use_chunks=True)
+            upload.stream_file(use_chunks=True)
 
-    def test__StreamMedia_not_initialized(self):
+    def test_stream_file_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         upload = self._makeOne(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 128
         with self.assertRaises(TransferInvalidError):
-            upload._StreamMedia()
+            upload.stream_file()
 
-    def test__StreamMedia_already_complete_w_unseekable_stream(self):
+    def test_stream_file_already_complete_w_unseekable_stream(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         http = object()
         stream = object()
@@ -1593,12 +1471,12 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(stream, chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 128
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload._StreamMedia() is response)
+        self.assertTrue(upload.stream_file() is response)
 
-    def test__StreamMedia_already_complete_w_seekable_stream_unsynced(self):
+    def test_stream_file_already_complete_w_seekable_stream_unsynced(self):
         from gcloud.streaming.exceptions import CommunicationError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
@@ -1608,13 +1486,13 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(stream, chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 128
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
         with self.assertRaises(CommunicationError):
-            upload._StreamMedia()
+            upload.stream_file()
 
-    def test__StreamMedia_already_complete_w_seekable_stream_synced(self):
+    def test_stream_file_already_complete_w_seekable_stream_synced(self):
         import os
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
@@ -1625,12 +1503,12 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(stream, chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 128
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         upload._final_response = response
         upload._complete = True
-        self.assertTrue(upload._StreamMedia(use_chunks=False) is response)
+        self.assertTrue(upload.stream_file(use_chunks=False) is response)
 
-    def test__StreamMedia_incomplete(self):
+    def test_stream_file_incomplete(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -1642,7 +1520,7 @@ class Test_Upload(unittest2.TestCase):
         upload = self._makeOne(stream, chunksize=6)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 6
-        upload._Initialize(http, self.UPLOAD_URL)
+        upload._initialize(http, self.UPLOAD_URL)
 
         info_1 = {'content-length': '0', 'range': 'bytes=0-5'}
         response_1 = _makeResponse(RESUME_INCOMPLETE, info_1)
@@ -1651,12 +1529,9 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
-                        MakeRequest=requester)):
-            response = upload._StreamMedia()
+                     Request=_Request,
+                     make_api_request=requester):
+            response = upload.stream_file()
 
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 2)
@@ -1677,7 +1552,7 @@ class Test_Upload(unittest2.TestCase):
                           'Content-Type': self.MIME_TYPE})
         self.assertEqual(request_2.body, CONTENT[6:])
 
-    def test__StreamMedia_incomplete_w_transfer_error_w_addl_headers(self):
+    def test_stream_file_incomplete_w_transfer_error(self):
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.exceptions import CommunicationError
@@ -1686,11 +1561,10 @@ class Test_Upload(unittest2.TestCase):
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
-        headers = {'foo': 'bar'}
         upload = self._makeOne(stream, chunksize=6)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 6
-        upload._Initialize(http, self.UPLOAD_URL)
+        upload._initialize(http, self.UPLOAD_URL)
 
         info = {'content-length': '0',
                 'range': 'bytes=0-4',  # simulate error, s.b. '0-5'
@@ -1699,13 +1573,10 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=lambda url, http_method, body:
-                            _Request(url, http_method, body),
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     make_api_request=requester):
             with self.assertRaises(CommunicationError):
-                upload._StreamMedia(additional_headers=headers)
+                upload.stream_file()
 
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 1)
@@ -1715,41 +1586,10 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.http_method, 'PUT')
         self.assertEqual(request.headers,
                          {'Content-Range': 'bytes 0-5/*',
-                          'Content-Type': self.MIME_TYPE,
-                          'foo': 'bar'})
+                          'Content-Type': self.MIME_TYPE})
         self.assertEqual(request.body, CONTENT[:6])
 
-    def test_StreamMedia_defaults(self):
-        upload = self._makeOne(_Stream())
-        response = object()
-        upload._StreamMedia = streamer = _MediaStreamer(response)
-        self.assertTrue(upload.StreamMedia() is response)
-        self.assertEqual(streamer._called_with, (None, False))
-
-    def test_StreamMedia_explicit(self):
-        upload = self._makeOne(_Stream())
-        response = object()
-        headers = {'foo': 'bar'}
-        upload._StreamMedia = streamer = _MediaStreamer(response)
-        self.assertTrue(upload.StreamMedia(headers) is response)
-        self.assertEqual(streamer._called_with, (headers, False))
-
-    def test_StreamInChunks_defaults(self):
-        upload = self._makeOne(_Stream())
-        response = object()
-        upload._StreamMedia = streamer = _MediaStreamer(response)
-        self.assertTrue(upload.StreamInChunks() is response)
-        self.assertEqual(streamer._called_with, (None, True))
-
-    def test_StreamInChunks_explicit(self):
-        upload = self._makeOne(_Stream())
-        response = object()
-        headers = {'foo': 'bar'}
-        upload._StreamMedia = streamer = _MediaStreamer(response)
-        self.assertTrue(upload.StreamInChunks(headers) is response)
-        self.assertEqual(streamer._called_with, (headers, True))
-
-    def test__SendMediaRequest_wo_error(self):
+    def test__send_media_request_wo_error(self):
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
         from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
@@ -1766,11 +1606,8 @@ class Test_Upload(unittest2.TestCase):
         response = _makeResponse(RESUME_INCOMPLETE, info)
         requester = _MakeRequest(response)
 
-        with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        MakeRequest=requester)):
-            upload._SendMediaRequest(request, 9)
+        with _Monkey(MUT, make_api_request=requester):
+            upload._send_media_request(request, 9)
 
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 1)
@@ -1779,7 +1616,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertTrue(used_http is bytes_http)
         self.assertEqual(stream.tell(), 4)
 
-    def test__SendMediaRequest_w_error(self):
+    def test__send_media_request_w_error(self):
         from six.moves import http_client
         from gcloud._testing import _Monkey
         from gcloud.streaming import transfer as MUT
@@ -1792,7 +1629,7 @@ class Test_Upload(unittest2.TestCase):
         stream = _Stream(CONTENT)
         upload = self._makeOne(stream)
         upload.strategy = RESUMABLE_UPLOAD
-        upload._Initialize(http, self.UPLOAD_URL)
+        upload._initialize(http, self.UPLOAD_URL)
         upload.bytes_http = bytes_http
 
         headers = {'Content-Range': 'bytes 0-9/10',
@@ -1805,12 +1642,10 @@ class Test_Upload(unittest2.TestCase):
         requester = _MakeRequest(response_1, response_2)
 
         with _Monkey(MUT,
-                     http_wrapper=_Dummy(
-                        RESUME_INCOMPLETE=RESUME_INCOMPLETE,
-                        Request=_Request,
-                        MakeRequest=requester)):
+                     Request=_Request,
+                     make_api_request=requester):
             with self.assertRaises(HttpError):
-                upload._SendMediaRequest(request, 9)
+                upload._send_media_request(request, 9)
 
         self.assertEqual(len(requester._responses), 0)
         self.assertEqual(len(requester._requested), 2)
@@ -1824,42 +1659,35 @@ class Test_Upload(unittest2.TestCase):
                          {'Content-Range': 'bytes */*'})
         self.assertTrue(second_http is http)
 
-    def test__SendMediaBody_not_initialized(self):
+    def test__send_media_body_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         upload = self._makeOne(_Stream())
         with self.assertRaises(TransferInvalidError):
-            upload._SendMediaBody(0)
+            upload._send_media_body(0)
 
-    def test__SendMediaBody_wo_total_size(self):
+    def test__send_media_body_wo_total_size(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         http = object()
         upload = self._makeOne(_Stream())
-        upload._Initialize(http, _Request.URL)
+        upload._initialize(http, _Request.URL)
         with self.assertRaises(TransferInvalidError):
-            upload._SendMediaBody(0)
+            upload._send_media_body(0)
 
-    def test__SendMediaBody_wo_additional_headers_start_lt_total_size(self):
+    def test__send_media_body_start_lt_total_size(self):
         from gcloud.streaming.stream_slice import StreamSlice
         SIZE = 1234
         http = object()
         stream = _Stream()
         upload = self._makeOne(stream, total_size=SIZE)
-        upload._Initialize(http, self.UPLOAD_URL)
-        headers = {'foo': 'bar'}
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
-
-        found = upload._SendMediaBody(0)
+        found = upload._send_media_body(0)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1872,28 +1700,21 @@ class Test_Upload(unittest2.TestCase):
                           'Content-Range': 'bytes 0-%d/%d' % (SIZE - 1, SIZE)})
         self.assertEqual(end, SIZE)
 
-    def test__SendMediaBody_w_additional_headers_start_eq_total_size(self):
+    def test__send_media_body_start_eq_total_size(self):
         from gcloud.streaming.stream_slice import StreamSlice
         SIZE = 1234
         http = object()
         stream = _Stream()
         upload = self._makeOne(stream, total_size=SIZE)
-        upload._Initialize(http, self.UPLOAD_URL)
-        headers = {'foo': 'bar'}
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
-
-        found = upload._SendMediaBody(SIZE, additional_headers=headers)
+        found = upload._send_media_body(SIZE)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -1902,39 +1723,32 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,
                          {'content-length': '0',  # speling!
-                          'foo': 'bar',
                           'Content-Type': self.MIME_TYPE,
                           'Content-Range': 'bytes */%d' % (SIZE,)})
         self.assertEqual(end, SIZE)
 
-    def test__SendChunk_not_initialized(self):
+    def test__send_chunk_not_initialized(self):
         from gcloud.streaming.exceptions import TransferInvalidError
         upload = self._makeOne(_Stream())
         with self.assertRaises(TransferInvalidError):
-            upload._SendChunk(0)
+            upload._send_chunk(0)
 
-    def test__SendChunk_wo_total_size_stream_exhausted(self):
+    def test__send_chunk_wo_total_size_stream_exhausted(self):
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
         http = object()
         upload = self._makeOne(_Stream(CONTENT), chunksize=1000)
-        upload._Initialize(http, self.UPLOAD_URL)
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
         self.assertEqual(upload.total_size, None)
 
-        found = upload._SendChunk(0)
+        found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
         self.assertEqual(upload.total_size, SIZE)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         self.assertEqual(request.body, CONTENT)
@@ -1944,29 +1758,23 @@ class Test_Upload(unittest2.TestCase):
                           'Content-Range': 'bytes 0-%d/%d' % (SIZE - 1, SIZE)})
         self.assertEqual(end, SIZE)
 
-    def test__SendChunk_wo_total_size_stream_not_exhausted(self):
+    def test__send_chunk_wo_total_size_stream_not_exhausted(self):
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
         CHUNK_SIZE = SIZE - 5
         http = object()
         upload = self._makeOne(_Stream(CONTENT), chunksize=CHUNK_SIZE)
-        upload._Initialize(http, self.UPLOAD_URL)
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
-
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
         self.assertEqual(upload.total_size, None)
 
-        found = upload._SendChunk(0)
+        found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
         self.assertEqual(upload.total_size, None)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         self.assertEqual(request.body, CONTENT[:CHUNK_SIZE])
@@ -1976,7 +1784,7 @@ class Test_Upload(unittest2.TestCase):
                           'Content-Range': 'bytes 0-%d/*' % (CHUNK_SIZE- 1,)})
         self.assertEqual(end, CHUNK_SIZE)
 
-    def test__SendChunk_w_total_size_stream_not_exhausted(self):
+    def test__send_chunk_w_total_size_stream_not_exhausted(self):
         from gcloud.streaming.stream_slice import StreamSlice
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
@@ -1984,19 +1792,15 @@ class Test_Upload(unittest2.TestCase):
         http = object()
         stream = _Stream(CONTENT)
         upload = self._makeOne(stream, total_size=SIZE, chunksize=CHUNK_SIZE)
-        upload._Initialize(http, self.UPLOAD_URL)
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
-        found = upload._SendChunk(0)
+        found = upload._send_chunk(0)
 
         self.assertTrue(found is response)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -2010,30 +1814,23 @@ class Test_Upload(unittest2.TestCase):
                             % (CHUNK_SIZE- 1, SIZE)})
         self.assertEqual(end, CHUNK_SIZE)
 
-    def test__SendChunk_w_total_size_stream_exhausted_w_addl_headers(self):
+    def test__send_chunk_w_total_size_stream_exhausted(self):
         from gcloud.streaming.stream_slice import StreamSlice
         CONTENT = b'ABCDEFGHIJ'
         SIZE = len(CONTENT)
         CHUNK_SIZE = 1000
         http = object()
-        headers = {'foo': 'bar'}
         stream = _Stream(CONTENT)
         upload = self._makeOne(stream, total_size=SIZE, chunksize=CHUNK_SIZE)
-        upload._Initialize(http, self.UPLOAD_URL)
-        _called_with = []
+        upload._initialize(http, self.UPLOAD_URL)
         response = object()
+        streamer = _MediaStreamer(response)
+        upload._send_media_request = streamer
 
-        def _send_media_request(request, end):
-            _called_with.append((request, end))
-            return response
-
-        upload._SendMediaRequest = _send_media_request
-
-        found = upload._SendChunk(SIZE, additional_headers=headers)
+        found = upload._send_chunk(SIZE)
 
         self.assertTrue(found is response)
-        self.assertEqual(len(_called_with), 1)
-        request, end = _called_with[0]
+        request, end = streamer._called_with
         self.assertEqual(request.url, self.UPLOAD_URL)
         self.assertEqual(request.http_method, 'PUT')
         body_stream = request.body
@@ -2042,7 +1839,6 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(len(body_stream), 0)
         self.assertEqual(request.headers,
                          {'content-length': '0',  # speling!
-                          'foo': 'bar',
                           'Content-Type': self.MIME_TYPE,
                           'Content-Range': 'bytes */%d' % (SIZE,)})
         self.assertEqual(end, SIZE)
@@ -2139,9 +1935,9 @@ class _MediaStreamer(object):
     def __init__(self, response):
         self._response = response
 
-    def __call__(self, additional_headers=None, use_chunks=True):
+    def __call__(self, request, end):
         assert self._called_with is None
-        self._called_with = (additional_headers, use_chunks)
+        self._called_with = (request, end)
         return self._response
 
 
