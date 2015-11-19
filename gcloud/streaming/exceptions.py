@@ -5,18 +5,6 @@ class Error(Exception):
     """Base class for all exceptions."""
 
 
-class NotFoundError(Error):
-    """A specified resource could not be found."""
-
-
-class UserError(Error):
-    """Base class for errors related to user input."""
-
-
-class InvalidDataError(Error):
-    """Base class for any invalid data error."""
-
-
 class CommunicationError(Error):
     """Any communication error talking to an API server."""
 
@@ -64,14 +52,6 @@ class HttpError(CommunicationError):
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url)
-
-
-class InvalidUserInputError(InvalidDataError):
-    """User-provided input is invalid."""
-
-
-class ConfigurationValueError(UserError):
-    """Some part of the user-specified client configuration is invalid."""
 
 
 class TransferError(CommunicationError):
@@ -124,11 +104,3 @@ class RetryAfterError(HttpError):
 
 class BadStatusCodeError(HttpError):
     """The request completed but returned a bad status code."""
-
-
-class NotYetImplementedError(Error):
-    """This functionality is not yet implemented."""
-
-
-class StreamExhausted(Error):
-    """Attempted to read more bytes from a stream than were available."""

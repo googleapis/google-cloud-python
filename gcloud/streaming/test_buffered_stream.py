@@ -62,24 +62,22 @@ class Test_BufferedStream(unittest2.TestCase):
 
     def test_read_w_none(self):
         from io import BytesIO
-        from gcloud.streaming.exceptions import NotYetImplementedError
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
         bufstream = self._makeOne(stream, START, BUFSIZE)
-        with self.assertRaises(NotYetImplementedError):
+        with self.assertRaises(ValueError):
             bufstream.read(None)
 
     def test_read_w_negative_size(self):
         from io import BytesIO
-        from gcloud.streaming.exceptions import NotYetImplementedError
         CONTENT = b'CONTENT GOES HERE'
         START = 0
         BUFSIZE = 4
         stream = BytesIO(CONTENT)
         bufstream = self._makeOne(stream, START, BUFSIZE)
-        with self.assertRaises(NotYetImplementedError):
+        with self.assertRaises(ValueError):
             bufstream.read(-2)
 
     def test_read_from_start(self):

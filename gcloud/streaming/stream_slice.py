@@ -1,6 +1,6 @@
 """Small helper class to provide a small slice of a stream."""
 
-from gcloud.streaming.exceptions import StreamExhausted
+from six.moves import http_client
 
 
 class StreamSlice(object):
@@ -48,7 +48,7 @@ class StreamSlice(object):
         unexpectedly raise an exception on read: if the underlying stream
         is exhausted (i.e. returns no bytes on read), and the size of this
         slice indicates we should still be able to read more bytes, we
-        raise :exc:`StreamExhausted`.
+        raise :exc:`IncompleteRead`.
 
         :type size: integer or None
         :param size: If provided, read no more than size bytes from the stream.
@@ -56,7 +56,7 @@ class StreamSlice(object):
         :rtype: bytes
         :returns: bytes read from this slice.
 
-        :raises: :exc:`gcloud.streaming.exceptions.StreamExhausted`
+        :raises: :exc:`IncompleteRead`
         """
         if size is not None:
             read_size = min(size, self._remaining_bytes)
@@ -64,10 +64,7 @@ class StreamSlice(object):
             read_size = self._remaining_bytes
         data = self._stream.read(read_size)
         if read_size > 0 and not data:
-            raise StreamExhausted(
-                'Not enough bytes in stream; expected %d, exhausted '
-                'after %d' % (
-                    self._max_bytes,
-                    self._max_bytes - self._remaining_bytes))
+            raise http_client.IncompleteRead(
+                self._max_bytes - self._remaining_bytes, self._max_bytes)
         self._remaining_bytes -= len(data)
         return data

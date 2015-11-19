@@ -27,16 +27,14 @@ class Test_acceptable_mime_type(unittest2.TestCase):
         return acceptable_mime_type(*args, **kw)
 
     def test_pattern_wo_slash(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
-        with self.assertRaises(InvalidUserInputError) as err:
+        with self.assertRaises(ValueError) as err:
             self._callFUT(['text/*'], 'BOGUS')
         self.assertEqual(
             err.exception.args,
             ('Invalid MIME type: "BOGUS"',))
 
     def test_accept_pattern_w_semicolon(self):
-        from gcloud.streaming.exceptions import ConfigurationValueError
-        with self.assertRaises(ConfigurationValueError) as err:
+        with self.assertRaises(ValueError) as err:
             self._callFUT(['text/*;charset=utf-8'], 'text/plain')
         self.assertEqual(
             err.exception.args,

@@ -3,8 +3,6 @@
 This class reads ahead to detect if we are at the end of the stream.
 """
 
-from gcloud.streaming.exceptions import NotYetImplementedError
-
 
 class BufferedStream(object):
     """Buffers a stream, reading ahead to determine if we're at the end.
@@ -65,7 +63,7 @@ class BufferedStream(object):
         :param size: How many bytes to read (defaults to all remaining bytes).
         """
         if size is None or size < 0:
-            raise NotYetImplementedError(
+            raise ValueError(
                 'Illegal read of size %s requested on BufferedStream. '
                 'Wrapped stream %s is at position %s-%s, '
                 '%s bytes remaining.' %

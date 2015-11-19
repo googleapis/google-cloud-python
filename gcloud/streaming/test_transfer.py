@@ -181,13 +181,12 @@ class Test_Download(unittest2.TestCase):
 
     def test_from_file_w_existing_file_no_override(self):
         import os
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
             with open(filename, 'w') as fileobj:
                 fileobj.write('EXISTING FILE')
-            with self.assertRaises(InvalidUserInputError):
+            with self.assertRaises(ValueError):
                 klass.from_file(filename)
 
     def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
@@ -815,22 +814,20 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_from_file_w_nonesuch_file(self):
-        from gcloud.streaming.exceptions import NotFoundError
         klass = self._getTargetClass()
         filename = '~nosuchuser/file.txt'
-        with self.assertRaises(NotFoundError):
+        with self.assertRaises(OSError):
             klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         CONTENT = b'EXISTING FILE W/ UNGUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.unguessable')
             with open(filename, 'wb') as fileobj:
                 fileobj.write(CONTENT)
-            with self.assertRaises(InvalidUserInputError):
+            with self.assertRaises(ValueError):
                 klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_guessable_filename(self):
@@ -868,10 +865,9 @@ class Test_Upload(unittest2.TestCase):
             upload._stream.close()
 
     def test_from_stream_wo_mimetype(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         stream = _Stream()
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             klass.from_stream(stream, mime_type=None)
 
     def test_from_stream_defaults(self):
@@ -899,11 +895,10 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_strategy_setter_invalid(self):
-        from gcloud.streaming.exceptions import UserError
         upload = self._makeOne(_Stream())
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.strategy = object()
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.strategy = 'unknown'
 
     def test_strategy_setter_SIMPLE_UPLOAD(self):
@@ -998,24 +993,22 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
     def test_configure_request_w_total_size_gt_max_size(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         MAX_SIZE = 1000
         config = _UploadConfig()
         config.max_size = MAX_SIZE
         request = _Request()
         url_builder = _Dummy()
         upload = self._makeOne(_Stream(), total_size=MAX_SIZE + 1)
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.configure_request(config, request, url_builder)
 
     def test_configure_request_w_invalid_mimetype(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         config = _UploadConfig()
         config.accept = ('text/*',)
         request = _Request()
         url_builder = _Dummy()
         upload = self._makeOne(_Stream())
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.configure_request(config, request, url_builder)
 
     def test_configure_request_w_simple_wo_body(self):
@@ -1274,10 +1267,9 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload._get_range_header(response), '123')
 
     def test_initialize_upload_no_strategy(self):
-        from gcloud.streaming.exceptions import UserError
         request = _Request()
         upload = self._makeOne(_Stream())
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.initialize_upload(request, http=object())
 
     def test_initialize_upload_simple_w_http(self):
@@ -1375,10 +1367,9 @@ class Test_Upload(unittest2.TestCase):
         upload._validate_chunksize(123)  # no-op
 
     def test__validate_chunksize_w__server_chunk_granularity_miss(self):
-        from gcloud.streaming.exceptions import ConfigurationValueError
         upload = self._makeOne(_Stream())
         upload._server_chunk_granularity = 100
-        with self.assertRaises(ConfigurationValueError):
+        with self.assertRaises(ValueError):
             upload._validate_chunksize(123)
 
     def test__validate_chunksize_w__server_chunk_granularity_hit(self):
@@ -1387,20 +1378,18 @@ class Test_Upload(unittest2.TestCase):
         upload._validate_chunksize(400)
 
     def test_stream_file_w_simple_strategy(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.stream_file()
 
     def test_stream_file_w_use_chunks_invalid_chunk_size(self):
-        from gcloud.streaming.exceptions import ConfigurationValueError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         upload = self._makeOne(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 100
-        with self.assertRaises(ConfigurationValueError):
+        with self.assertRaises(ValueError):
             upload.stream_file(use_chunks=True)
 
     def test_stream_file_not_initialized(self):
