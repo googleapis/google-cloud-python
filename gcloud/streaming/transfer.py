@@ -13,7 +13,6 @@ from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import HttpError
-from gcloud.streaming.exceptions import InvalidUserInputError
 from gcloud.streaming.exceptions import NotFoundError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
@@ -244,7 +243,7 @@ class Download(_Transfer):
         """
         path = os.path.expanduser(filename)
         if os.path.exists(path) and not overwrite:
-            raise InvalidUserInputError(
+            raise ValueError(
                 'File %s exists and overwrite not specified' % path)
         return cls(open(path, 'wb'), close_stream=True,
                    auto_transfer=auto_transfer, **kwds)
@@ -651,7 +650,7 @@ class Upload(_Transfer):
         if not mime_type:
             mime_type, _ = mimetypes.guess_type(path)
             if mime_type is None:
-                raise InvalidUserInputError(
+                raise ValueError(
                     'Could not guess mime type for %s' % path)
         size = os.stat(path).st_size
         return cls(open(path, 'rb'), mime_type, total_size=size,
@@ -679,7 +678,7 @@ class Upload(_Transfer):
                       through to :meth:`_Transfer.__init__()`.
         """
         if mime_type is None:
-            raise InvalidUserInputError(
+            raise ValueError(
                 'No mime_type specified for stream')
         return cls(stream, mime_type, total_size=total_size,
                    close_stream=False, auto_transfer=auto_transfer, **kwds)
@@ -800,19 +799,18 @@ class Upload(_Transfer):
                            'query_params' attributes.
         :param url_builder: transfer policy object to be updated
 
-        :raises: :exc:`gcloud.streaming.exceptions.InvalidUserInputError`
-                 if the requested upload is too big, or does not have an
-                 acceptable MIME type.
+        :raises: :exc:`ValueError` if the requested upload is too big,
+                  or does not have an acceptable MIME type.
         """
         # Validate total_size vs. max_size
         if (self.total_size and upload_config.max_size and
                 self.total_size > upload_config.max_size):
-            raise InvalidUserInputError(
+            raise ValueError(
                 'Upload too big: %s larger than max size %s' % (
                     self.total_size, upload_config.max_size))
         # Validate mime type
         if not acceptable_mime_type(upload_config.accept, self.mime_type):
-            raise InvalidUserInputError(
+            raise ValueError(
                 'MIME type %s does not match any accepted MIME ranges %s' % (
                     self.mime_type, upload_config.accept))
 
@@ -1022,7 +1020,7 @@ class Upload(_Transfer):
                           Otherwise, send it in chunks.
         """
         if self.strategy != RESUMABLE_UPLOAD:
-            raise InvalidUserInputError(
+            raise ValueError(
                 'Cannot stream non-resumable upload')
         # final_response is set if we resumed an already-completed upload.
         response = self._final_response

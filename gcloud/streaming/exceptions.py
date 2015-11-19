@@ -13,10 +13,6 @@ class UserError(Error):
     """Base class for errors related to user input."""
 
 
-class InvalidDataError(Error):
-    """Base class for any invalid data error."""
-
-
 class CommunicationError(Error):
     """Any communication error talking to an API server."""
 
@@ -64,10 +60,6 @@ class HttpError(CommunicationError):
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url)
-
-
-class InvalidUserInputError(InvalidDataError):
-    """User-provided input is invalid."""
 
 
 class ConfigurationValueError(UserError):

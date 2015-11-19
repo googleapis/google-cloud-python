@@ -181,13 +181,12 @@ class Test_Download(unittest2.TestCase):
 
     def test_from_file_w_existing_file_no_override(self):
         import os
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.out')
             with open(filename, 'w') as fileobj:
                 fileobj.write('EXISTING FILE')
-            with self.assertRaises(InvalidUserInputError):
+            with self.assertRaises(ValueError):
                 klass.from_file(filename)
 
     def test_from_file_w_existing_file_w_override_wo_auto_transfer(self):
@@ -823,14 +822,13 @@ class Test_Upload(unittest2.TestCase):
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
         import os
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         CONTENT = b'EXISTING FILE W/ UNGUESSABLE MIMETYPE'
         with _tempdir() as tempdir:
             filename = os.path.join(tempdir, 'file.unguessable')
             with open(filename, 'wb') as fileobj:
                 fileobj.write(CONTENT)
-            with self.assertRaises(InvalidUserInputError):
+            with self.assertRaises(ValueError):
                 klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_guessable_filename(self):
@@ -866,10 +864,9 @@ class Test_Upload(unittest2.TestCase):
             self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_from_stream_wo_mimetype(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         klass = self._getTargetClass()
         stream = _Stream()
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             klass.from_stream(stream, mime_type=None)
 
     def test_from_stream_defaults(self):
@@ -996,24 +993,22 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.strategy, SIMPLE_UPLOAD)
 
     def test_configure_request_w_total_size_gt_max_size(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         MAX_SIZE = 1000
         config = _UploadConfig()
         config.max_size = MAX_SIZE
         request = _Request()
         url_builder = _Dummy()
         upload = self._makeOne(_Stream(), total_size=MAX_SIZE + 1)
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.configure_request(config, request, url_builder)
 
     def test_configure_request_w_invalid_mimetype(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         config = _UploadConfig()
         config.accept = ('text/*',)
         request = _Request()
         url_builder = _Dummy()
         upload = self._makeOne(_Stream())
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.configure_request(config, request, url_builder)
 
     def test_configure_request_w_simple_wo_body(self):
@@ -1385,11 +1380,10 @@ class Test_Upload(unittest2.TestCase):
         upload._validate_chunksize(400)
 
     def test_stream_file_w_simple_strategy(self):
-        from gcloud.streaming.exceptions import InvalidUserInputError
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         upload = self._makeOne(_Stream())
         upload.strategy = SIMPLE_UPLOAD
-        with self.assertRaises(InvalidUserInputError):
+        with self.assertRaises(ValueError):
             upload.stream_file()
 
     def test_stream_file_w_use_chunks_invalid_chunk_size(self):

@@ -3,7 +3,6 @@
 import random
 
 from gcloud.streaming.exceptions import ConfigurationValueError
-from gcloud.streaming.exceptions import InvalidUserInputError
 
 
 def calculate_wait_for_retry(retry_attempt, max_wait=60):
@@ -48,7 +47,7 @@ def acceptable_mime_type(accept_patterns, mime_type):
               patterns, else False.
     """
     if '/' not in mime_type:
-        raise InvalidUserInputError(
+        raise ValueError(
             'Invalid MIME type: "%s"' % mime_type)
     unsupported_patterns = [p for p in accept_patterns if ';' in p]
     if unsupported_patterns:
