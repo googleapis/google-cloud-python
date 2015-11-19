@@ -260,12 +260,12 @@ class Blob(_PropertyMixin):
         download_url = self.media_link
 
         # Use apitools 'Download' facility.
-        download = Download.from_stream(file_obj, auto_transfer=False)
-        headers = {}
+        download = Download.from_stream(file_obj)
+
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
-            headers['Range'] = 'bytes=0-%d' % (self.chunk_size - 1,)
-        request = Request(download_url, 'GET', headers)
+
+        request = Request(download_url, 'GET')
 
         # Use the private ``_connection`` rather than the public
         # ``.connection``, since the public connection may be a batch. A
@@ -274,8 +274,6 @@ class Blob(_PropertyMixin):
         # on the Batch class, but we just use the wrapped connection since
         # it has all three (http, API_BASE_URL and build_api_url).
         download.initialize_download(request, client._connection.http)
-
-        download.stream_file(use_chunks=True)
 
     def download_to_filename(self, filename, client=None):
         """Download the contents of this blob into a named file.
@@ -386,7 +384,10 @@ class Blob(_PropertyMixin):
         }
 
         upload = Upload(file_obj, content_type, total_bytes,
-                        auto_transfer=False, chunksize=self.chunk_size)
+                        auto_transfer=False)
+
+        if self.chunk_size is not None:
+            upload.chunksize = self.chunk_size
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)

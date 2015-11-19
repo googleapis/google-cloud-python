@@ -1,4 +1,3 @@
-# pylint: skip-file
 import unittest2
 
 
@@ -25,7 +24,7 @@ class Test_HttpError(unittest2.TestCase):
             "HttpError accessing <http://www.example.com>: "
             "response: <{'status': '404'}>, content <CONTENT>")
 
-    def test_FromResponse(self):
+    def test_from_response(self):
         RESPONSE = {'status': '404'}
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
@@ -36,7 +35,7 @@ class Test_HttpError(unittest2.TestCase):
             request_url = URL
 
         klass = self._getTargetClass()
-        exception = klass.FromResponse(_Response())
+        exception = klass.from_response(_Response())
         self.assertTrue(isinstance(exception, klass))
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)
@@ -67,7 +66,7 @@ class Test_RetryAfterError(unittest2.TestCase):
             "HttpError accessing <http://www.example.com>: "
             "response: <{'status': '404'}>, content <CONTENT>")
 
-    def test_FromResponse(self):
+    def test_from_response(self):
         RESPONSE = {'status': '404'}
         CONTENT = b'CONTENT'
         URL = 'http://www.example.com'
@@ -80,7 +79,7 @@ class Test_RetryAfterError(unittest2.TestCase):
             retry_after = RETRY_AFTER
 
         klass = self._getTargetClass()
-        exception = klass.FromResponse(_Response())
+        exception = klass.from_response(_Response())
         self.assertTrue(isinstance(exception, klass))
         self.assertEqual(exception.response, RESPONSE)
         self.assertEqual(exception.content, CONTENT)

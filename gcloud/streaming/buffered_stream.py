@@ -1,17 +1,23 @@
-# pylint: skip-file
 """Small helper class to provide a small slice of a stream.
 
 This class reads ahead to detect if we are at the end of the stream.
 """
 
-from gcloud.streaming import exceptions
+from gcloud.streaming.exceptions import NotYetImplementedError
 
 
-# TODO(user): Consider replacing this with a StringIO.
 class BufferedStream(object):
+    """Buffers a stream, reading ahead to determine if we're at the end.
 
-    """Buffers a stream, reading ahead to determine if we're at the end."""
+    :type stream:  readable file-like object
+    :param stream:  the stream to be buffered
 
+    :type start: integer
+    :param start: the starting point in the stream
+
+    :type size: integer
+    :param size:  the size of the buffer
+    """
     def __init__(self, stream, start, size):
         self._stream = stream
         self._start_pos = start
@@ -30,30 +36,46 @@ class BufferedStream(object):
 
     @property
     def stream_exhausted(self):
+        """Does the stream have bytes remaining beyond the buffer
+
+        :rtype: boolean
+        """
         return self._stream_at_end
 
     @property
     def stream_end_position(self):
+        """Point to which stream was read into the buffer
+
+        :rtype: integer
+        """
         return self._end_pos
 
     @property
     def _bytes_remaining(self):
+        """Bytes remaining to be read from the buffer
+
+        :rtype: integer
+        """
         return len(self._buffered_data) - self._buffer_pos
 
-    def read(self, size=None):  # pylint: disable=invalid-name
-        """Reads from the buffer."""
+    def read(self, size=None):
+        """Read bytes from the buffer.
+
+        :type size: integer or None
+        :param size: How many bytes to read (defaults to all remaining bytes).
+        """
         if size is None or size < 0:
-            raise exceptions.NotYetImplementedError(
+            raise NotYetImplementedError(
                 'Illegal read of size %s requested on BufferedStream. '
                 'Wrapped stream %s is at position %s-%s, '
                 '%s bytes remaining.' %
                 (size, self._stream, self._start_pos, self._end_pos,
                  self._bytes_remaining))
 
-        data = b''
-        if self._bytes_remaining:
-            size = min(size, self._bytes_remaining)
-            data = self._buffered_data[
-                self._buffer_pos:self._buffer_pos + size]
-            self._buffer_pos += size
+        if not self._bytes_remaining:
+            return b''
+
+        size = min(size, self._bytes_remaining)
+        data = self._buffered_data[self._buffer_pos:self._buffer_pos + size]
+        self._buffer_pos += size
         return data

@@ -1,4 +1,3 @@
-# pylint: skip-file
 """Upload and download support for apitools."""
 
 import email.generator as email_generator
@@ -14,7 +13,6 @@ from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import HttpError
-from gcloud.streaming.exceptions import InvalidDataError
 from gcloud.streaming.exceptions import InvalidUserInputError
 from gcloud.streaming.exceptions import NotFoundError
 from gcloud.streaming.exceptions import TransferInvalidError
@@ -27,7 +25,6 @@ from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
 from gcloud.streaming.stream_slice import StreamSlice
 from gcloud.streaming.util import acceptable_mime_type
-from gcloud.streaming.util import type_check
 
 
 RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
@@ -35,109 +32,183 @@ SIMPLE_UPLOAD = 'simple'
 RESUMABLE_UPLOAD = 'resumable'
 
 
+_DEFAULT_CHUNKSIZE = 1 << 20
+
+
 class _Transfer(object):
+    """Generic bits common to Uploads and Downloads.
 
-    """Generic bits common to Uploads and Downloads."""
+    :type stream: file-like object
+    :param stream: stream to/from which data is downloaded/uploaded.
 
-    def __init__(self, stream, close_stream=False, chunksize=None,
-                 auto_transfer=True, http=None, num_retries=5):
-        self.__bytes_http = None
-        self.__close_stream = close_stream
-        self.__http = http
-        self.__stream = stream
-        self.__url = None
+    :type close_stream: boolean
+    :param close_stream: should this instance close the stream when deleted
 
-        self.__num_retries = 5
+    :type chunksize: integer
+    :param chunksize: the size of chunks used to download/upload a file.
+
+    :type auto_transfer: boolean
+    :param auto_transfer: should this instance automatically begin transfering
+                          data when initialized
+
+    :type http: :class:`httplib2.Http` (or workalike)
+    :param http: Http instance used to perform requests.
+
+    :type num_retries: integer
+    :param num_retries: how many retries should the transfer attempt
+    """
+    def __init__(self, stream, close_stream=False,
+                 chunksize=_DEFAULT_CHUNKSIZE, auto_transfer=True,
+                 http=None, num_retries=5):
+        self._bytes_http = None
+        self._close_stream = close_stream
+        self._http = http
+        self._stream = stream
+        self._url = None
+
         # Let the @property do validation
         self.num_retries = num_retries
 
         self.retry_func = handle_http_exceptions
         self.auto_transfer = auto_transfer
-        self.chunksize = chunksize or 1048576
+        self.chunksize = chunksize
 
     def __repr__(self):
         return str(self)
 
     @property
     def close_stream(self):
-        return self.__close_stream
+        """Should this instance close the stream when deleted
+
+        :rtype: boolean
+        """
+        return self._close_stream
 
     @property
     def http(self):
-        return self.__http
+        """Http instance used to perform requests.
+
+        :rtype: :class:`httplib2.Http` (or workalike)
+        """
+        return self._http
 
     @property
     def bytes_http(self):
-        return self.__bytes_http or self.http
+        """Http instance used to perform binary requests.
+
+        Defaults to :attr:`http`.
+
+        :rtype: :class:`httplib2.Http` (or workalike)
+        """
+        return self._bytes_http or self.http
 
     @bytes_http.setter
     def bytes_http(self, value):
-        self.__bytes_http = value
+        """Update Http instance used to perform binary requests.
+
+        :type value: :class:`httplib2.Http` (or workalike)
+        :param value: new instance
+        """
+        self._bytes_http = value
 
     @property
     def num_retries(self):
-        return self.__num_retries
+        """How many retries should the transfer attempt
+
+        :rtype: integer
+        """
+        return self._num_retries
 
     @num_retries.setter
     def num_retries(self, value):
-        type_check(value, six.integer_types)
+        """Update how many retries should the transfer attempt
+
+        :type value: integer
+        """
+        if not isinstance(value, six.integer_types):
+            raise ValueError("num_retries: pass an integer")
+
         if value < 0:
-            raise InvalidDataError(
+            raise ValueError(
                 'Cannot have negative value for num_retries')
-        self.__num_retries = value
+        self._num_retries = value
 
     @property
     def stream(self):
-        return self.__stream
+        """Stream to/from which data is downloaded/uploaded.
+
+        :rtype: file-like object
+        """
+        return self._stream
 
     @property
     def url(self):
-        return self.__url
+        """URL to / from which data is downloaded/uploaded.
+
+        :rtype: string
+        """
+        return self._url
 
     def _initialize(self, http, url):
-        """Initialize this download by setting self.http and self.url.
+        """Initialize this download by setting :attr:`http` and :attr`url`.
 
-        We want the user to be able to override self.http by having set
+        Allow the user to be able to pre-initialize :attr:`http` by setting
         the value in the constructor; in that case, we ignore the provided
         http.
 
-        Args:
-          http: An httplib2.Http instance or None.
-          url: The url for this transfer.
+        :type http: :class:`httplib2.Http` (or a worklike) or None.
+        :param http: the Http instance to use to make requests.
 
-        Returns:
-          None. Initializes self.
+        :type url: string
+        :param url: The url for this transfer.
         """
         self._ensure_uninitialized()
         if self.http is None:
-            self.__http = http or get_http()
-        self.__url = url
+            self._http = http or get_http()
+        self._url = url
 
     @property
     def initialized(self):
+        """Has the instance been initialized
+
+        :rtype: boolean
+        """
         return self.url is not None and self.http is not None
 
     def _ensure_initialized(self):
+        """Helper:  assert that the instance is initialized.
+
+        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+                 if the instance is not initialized.
+        """
         if not self.initialized:
             raise TransferInvalidError(
                 'Cannot use uninitialized %s', type(self).__name__)
 
     def _ensure_uninitialized(self):
+        """Helper:  assert that the instance is not initialized.
+
+        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+                 if the instance is already initialized.
+        """
         if self.initialized:
             raise TransferInvalidError(
                 'Cannot re-initialize %s', type(self).__name__)
 
     def __del__(self):
-        if self.__close_stream:
-            self.__stream.close()
+        if self._close_stream:
+            self._stream.close()
 
 
 class Download(_Transfer):
+    """Represent a single download.
 
-    """Data for a single download.
+    :type stream: file-like object
+    :param stream: stream to/from which data is downloaded/uploaded.
 
-    Public attributes:
-      chunksize: default chunksize to use for transfers.
+    :type kwds: dict
+    :param kwds:  keyword arguments:  all except ``total_size`` are passed
+                  through to :meth:`_Transfer.__init__()`.
     """
     _ACCEPTABLE_STATUSES = set((
         http_client.OK,
@@ -150,13 +221,27 @@ class Download(_Transfer):
         total_size = kwds.pop('total_size', None)
         super(Download, self).__init__(stream, **kwds)
         self._initial_response = None
-        self.__progress = 0
-        self.__total_size = total_size
-        self.__encoding = None
+        self._progress = 0
+        self._total_size = total_size
+        self._encoding = None
 
     @classmethod
     def from_file(cls, filename, overwrite=False, auto_transfer=True, **kwds):
-        """Create a new download object from a filename."""
+        """Create a new download object from a filename.
+
+        :type filename: string
+        :param filename: path/filename for the target file
+
+        :type overwrite: boolean
+        :param overwrite: should an existing file be overwritten
+
+        :type auto_transfer: boolean
+        :param auto_transfer: should the transfer be started immediately
+
+        :type kwds: dict
+        :param kwds:  keyword arguments:  passed
+                      through to :meth:`_Transfer.__init__()`.
+        """
         path = os.path.expanduser(filename)
         if os.path.exists(path) and not overwrite:
             raise InvalidUserInputError(
@@ -166,21 +251,47 @@ class Download(_Transfer):
 
     @classmethod
     def from_stream(cls, stream, auto_transfer=True, total_size=None, **kwds):
-        """Create a new Download object from a stream."""
+        """Create a new Download object from a stream.
+
+        :type stream: writable file-like object
+        :param stream: the target file
+
+        :type total_size: integer or None
+        :param total_size: total size of the file to be downloaded
+
+        :type auto_transfer: boolean
+        :param auto_transfer: should the transfer be started immediately
+
+        :type kwds: dict
+        :param kwds:  keyword arguments:  passed
+                      through to :meth:`_Transfer.__init__()`.
+        """
         return cls(stream, auto_transfer=auto_transfer, total_size=total_size,
                    **kwds)
 
     @property
     def progress(self):
-        return self.__progress
+        """Number of bytes have been downloaded.
+
+        :rtype: integer >= 0
+        """
+        return self._progress
 
     @property
     def total_size(self):
-        return self.__total_size
+        """Total number of bytes to be downloaded.
+
+        :rtype: integer or None
+        """
+        return self._total_size
 
     @property
     def encoding(self):
-        return self.__encoding
+        """'Content-Encoding' used to transfer the file
+
+        :rtype: string or None
+        """
+        return self._encoding
 
     def __repr__(self):
         if not self.initialized:
@@ -190,41 +301,47 @@ class Download(_Transfer):
                 self.progress, self.total_size, self.url)
 
     def configure_request(self, http_request, url_builder):
+        """Update http_request/url_builder with download-appropriate values.
+
+        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param http_request: the request to be updated
+
+        :type url_builder: instance with settable 'query_params' attribute.
+        :param url_builder: transfer policy object to be updated
+        """
         url_builder.query_params['alt'] = 'media'
-        # TODO(craigcitro): We need to send range requests because by
-        # default httplib2 stores entire reponses in memory. Override
-        # httplib2's download method (as gsutil does) so that this is not
-        # necessary.
         http_request.headers['Range'] = 'bytes=0-%d' % (self.chunksize - 1,)
 
     def _set_total(self, info):
+        """Update 'total_size' based on data from a response.
+
+        :type info: mapping
+        :param info: response headers
+        """
         if 'content-range' in info:
             _, _, total = info['content-range'].rpartition('/')
             if total != '*':
-                self.__total_size = int(total)
+                self._total_size = int(total)
         # Note "total_size is None" means we don't know it; if no size
         # info was returned on our initial range request, that means we
         # have a 0-byte file. (That last statement has been verified
         # empirically, but is not clearly documented anywhere.)
         if self.total_size is None:
-            self.__total_size = 0
+            self._total_size = 0
 
-    def initialize_download(self, http_request, http=None, client=None):
-        """Initialize this download by making a request.
+    def initialize_download(self, http_request, http):
+        """Initialize this download.
 
-        Args:
-          http_request: The HttpRequest to use to initialize this download.
-          http: The httplib2.Http instance for this request.
-          client: If provided, let this client process the final URL before
-              sending any additional requests. If client is provided and
-              http is not, client.http will be used instead.
+        If the instance has :attr:`auto_transfer` enabled, begins the
+        download immediately.
+
+        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param http_request: the request to use to initialize this download.
+
+        :type http: :class:`httplib2.Http` (or workalike)
+        :param http: Http instance for this request.
         """
         self._ensure_uninitialized()
-        if http is None and client is None:
-            raise UserError('Must provide client or http.')
-        http = http or client.http
-        if client is not None:
-            http_request.url = client.FinalizeTransferUrl(http_request.url)
         url = http_request.url
         if self.auto_transfer:
             end_byte = self._compute_end_byte(0)
@@ -232,12 +349,10 @@ class Download(_Transfer):
             response = make_api_request(
                 self.bytes_http or http, http_request)
             if response.status_code not in self._ACCEPTABLE_STATUSES:
-                raise HttpError.FromResponse(response)
+                raise HttpError.from_response(response)
             self._initial_response = response
             self._set_total(response.info)
             url = response.info.get('content-location', response.request_url)
-        if client is not None:
-            url = client.FinalizeTransferUrl(url)
         self._initialize(http, url)
         # Unless the user has requested otherwise, we want to just
         # go ahead and pump the bytes now.
@@ -245,6 +360,20 @@ class Download(_Transfer):
             self.stream_file(use_chunks=True)
 
     def _normalize_start_end(self, start, end=None):
+        """Validate / fix up byte range.
+
+        :type start: integer
+        :param start: start byte of the range:  if negative, used as an
+                      offset from the end.
+
+        :type end: integer
+        :param end: end byte of the range.
+
+        :rtype: tuple, (start, end)
+        :returns:  the normalized start, end pair.
+        :raises: :exc:`gcloud.streaming.exceptions.TransferInvalidError`
+                 for invalid combinations of start, end.
+        """
         if end is not None:
             if start < 0:
                 raise TransferInvalidError(
@@ -263,6 +392,18 @@ class Download(_Transfer):
             return start, self.total_size - 1
 
     def _set_range_header(self, request, start, end=None):
+        """Update the 'Range' header in a request to match a byte range.
+
+        :type request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param request: the request to update
+
+        :type start: integer
+        :param start: start byte of the range:  if negative, used as an
+                      offset from the end.
+
+        :type end: integer
+        :param end: end byte of the range.
+        """
         if start < 0:
             request.headers['range'] = 'bytes=%d' % start
         elif end is None:
@@ -273,24 +414,25 @@ class Download(_Transfer):
     def _compute_end_byte(self, start, end=None, use_chunks=True):
         """Compute the last byte to fetch for this request.
 
-        This is all based on the HTTP spec for Range and
-        Content-Range.
+        Based on the HTTP spec for Range and Content-Range.
 
-        Note that this is potentially confusing in several ways:
-          * the value for the last byte is 0-based, eg "fetch 10 bytes
-            from the beginning" would return 9 here.
-          * if we have no information about size, and don't want to
-            use the chunksize, we'll return None.
-        See the tests for more examples.
+        .. note::
+           This is potentially confusing in several ways:
+           - the value for the last byte is 0-based, eg "fetch 10 bytes
+             from the beginning" would return 9 here.
+           - if we have no information about size, and don't want to
+             use the chunksize, we'll return None.
 
-        Args:
-          start: byte to start at.
-          end: (int or None, default: None) Suggested last byte.
-          use_chunks: (bool, default: True) If False, ignore self.chunksize.
+        :type start: integer
+        :param start: start byte of the range.
 
-        Returns:
-          Last byte to use in a Range header, or None.
+        :type end: integer or None
+        :param end: suggested last byte of the range.
 
+        :type use_chunks: boolean
+        :param use_chunks: If False, ignore :attr:`chunksize`.
+
+        :returns: Last byte to use in a 'Range' header, or None.
         """
         end_byte = end
 
@@ -314,7 +456,17 @@ class Download(_Transfer):
         return end_byte
 
     def _get_chunk(self, start, end):
-        """Retrieve a chunk, and return the full response."""
+        """Retrieve a chunk of the file.
+
+        :type start: integer
+        :param start: start byte of the range.
+
+        :type end: integer or None
+        :param end: end byte of the range.
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: response from the chunk request.
+        """
         self._ensure_initialized()
         request = Request(url=self.url)
         self._set_range_header(request, start, end=end)
@@ -323,23 +475,32 @@ class Download(_Transfer):
             retries=self.num_retries)
 
     def _process_response(self, response):
-        """Process response (by updating self and writing to self.stream)."""
+        """Update attribtes and writing stream, based on response.
+
+        :type response: :class:`gcloud.streaming.http_wrapper.Response`
+        :param response: response from a download request.
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: the response
+        :raises: :exc:`gcloud.streaming.exceptions.HttpError` for
+                 missing / unauthorized responses;
+                 :exc:`gcloud.streaming.exceptions.TransferRetryError`
+                 for other error responses.
+        """
         if response.status_code not in self._ACCEPTABLE_STATUSES:
             # We distinguish errors that mean we made a mistake in setting
             # up the transfer versus something we should attempt again.
             if response.status_code in (http_client.FORBIDDEN,
                                         http_client.NOT_FOUND):
-                raise HttpError.FromResponse(response)
+                raise HttpError.from_response(response)
             else:
                 raise TransferRetryError(response.content)
         if response.status_code in (http_client.OK,
                                     http_client.PARTIAL_CONTENT):
             self.stream.write(response.content)
-            self.__progress += response.length
+            self._progress += response.length
             if response.info and 'content-encoding' in response.info:
-                # TODO(craigcitro): Handle the case where this changes over a
-                # download.
-                self.__encoding = response.info['content-encoding']
+                self._encoding = response.info['content-encoding']
         elif response.status_code == http_client.NO_CONTENT:
             # It's important to write something to the stream for the case
             # of a 0-byte download to a file, as otherwise python won't
@@ -350,6 +511,8 @@ class Download(_Transfer):
     def get_range(self, start, end=None, use_chunks=True):
         """Retrieve a given byte range from this download, inclusive.
 
+        Writes retrieved bytes into :attr:`stream`.
+
         Range must be of one of these three forms:
         * 0 <= start, end = None: Fetch from start to the end of the file.
         * 0 <= start <= end: Fetch the bytes from start to end.
@@ -358,14 +521,19 @@ class Download(_Transfer):
         (These variations correspond to those described in the HTTP 1.1
         protocol for range headers in RFC 2616, sec. 14.35.1.)
 
-        Args:
-          start: (int) Where to start fetching bytes. (See above.)
-          end: (int, optional) Where to stop fetching bytes. (See above.)
-          use_chunks: (bool, default: True) If False, ignore self.chunksize
-              and fetch this range in a single request.
+        :type start: integer
+        :param start: Where to start fetching bytes. (See above.)
 
-        Returns:
-          None. Streams bytes into self.stream.
+        :type end: integer or ``None``
+        :param end: Where to stop fetching bytes. (See above.)
+
+        :type use_chunks: boolean
+        :param use_chunks: If False, ignore :attr:`chunksize`
+                           and fetch this range in a single request.
+                           If True, streams via chunks.
+
+        :raises: :exc:`gcloud.streaming.exceptions.TransferRetryError`
+                 if a request returns an empty response.
         """
         self._ensure_initialized()
         progress_end_normalized = False
@@ -378,7 +546,7 @@ class Download(_Transfer):
         while (not progress_end_normalized or end_byte is None or
                progress <= end_byte):
             end_byte = self._compute_end_byte(progress, end=end_byte,
-                                             use_chunks=use_chunks)
+                                              use_chunks=use_chunks)
             response = self._get_chunk(progress, end_byte)
             if not progress_end_normalized:
                 self._set_total(response.info)
@@ -393,12 +561,12 @@ class Download(_Transfer):
     def stream_file(self, use_chunks=True):
         """Stream the entire download.
 
-        Args:
-          use_chunks: (bool, default: True) If False, ignore self.chunksize
-              and stream this download in a single request.
+        Writes retrieved bytes into :attr:`stream`.
 
-        Returns:
-            None. Streams bytes into self.stream.
+        :type use_chunks: boolean
+        :param use_chunks: If False, ignore :attr:`chunksize`
+                           and stream this download in a single request.
+                           If True, streams via chunks.
         """
         self._ensure_initialized()
         while True:
@@ -407,7 +575,7 @@ class Download(_Transfer):
                 self._initial_response = None
             else:
                 end_byte = self._compute_end_byte(self.progress,
-                                                 use_chunks=use_chunks)
+                                                  use_chunks=use_chunks)
                 response = self._get_chunk(self.progress, end_byte)
             if self.total_size is None:
                 self._set_total(response.info)
@@ -418,38 +586,65 @@ class Download(_Transfer):
 
 
 class Upload(_Transfer):
+    """Represent a single Upload.
 
-    """Data for a single Upload.
+    :type stream: file-like object
+    :param stream: stream to/from which data is downloaded/uploaded.
 
-    Fields:
-      stream: The stream to upload.
-      mime_type: MIME type of the upload.
-      total_size: (optional) Total upload size for the stream.
-      close_stream: (default: False) Whether or not we should close the
-          stream when finished with the upload.
-      auto_transfer: (default: True) If True, stream all bytes as soon as
-          the upload is created.
+    :type mime_type: string:
+    :param mime_type: MIME type of the upload.
+
+    :type total_size: integer or None
+    :param total_size: Total upload size for the stream.
+
+    :type http: :class:`httplib2.Http` (or workalike)
+    :param http: Http instance used to perform requests.
+
+    :type close_stream: boolean
+    :param close_stream: should this instance close the stream when deleted
+
+    :type auto_transfer: boolean
+    :param auto_transfer: should this instance automatically begin transfering
+                          data when initialized
+
+    :type kwds: dict
+    :param kwds:  keyword arguments:  all except ``total_size`` are passed
+                  through to :meth:`_Transfer.__init__()`.
     """
     _REQUIRED_SERIALIZATION_KEYS = set((
         'auto_transfer', 'mime_type', 'total_size', 'url'))
 
     def __init__(self, stream, mime_type, total_size=None, http=None,
-                 close_stream=False, chunksize=None, auto_transfer=True,
+                 close_stream=False, auto_transfer=True,
                  **kwds):
         super(Upload, self).__init__(
-            stream, close_stream=close_stream, chunksize=chunksize,
-            auto_transfer=auto_transfer, http=http, **kwds)
+            stream, close_stream=close_stream, auto_transfer=auto_transfer,
+            http=http, **kwds)
         self._final_response = None
         self._server_chunk_granularity = None
         self._complete = False
-        self.__mime_type = mime_type
-        self.__progress = 0
-        self.__strategy = None
-        self.__total_size = total_size
+        self._mime_type = mime_type
+        self._progress = 0
+        self._strategy = None
+        self._total_size = total_size
 
     @classmethod
     def from_file(cls, filename, mime_type=None, auto_transfer=True, **kwds):
-        """Create a new Upload object from a filename."""
+        """Create a new Upload object from a filename.
+
+        :type filename: string
+        :param filename: path/filename to the file being uploaded
+
+        :type mime_type: string
+        :param mime_type:  MIMEtype of the file being uploaded
+
+        :type auto_transfer: boolean or None
+        :param auto_transfer: should the transfer be started immediately
+
+        :type kwds: dict
+        :param kwds:  keyword arguments:  passed
+                      through to :meth:`_Transfer.__init__()`.
+        """
         path = os.path.expanduser(filename)
         if not os.path.exists(path):
             raise NotFoundError('Could not find file %s' % path)
@@ -463,9 +658,26 @@ class Upload(_Transfer):
                    close_stream=True, auto_transfer=auto_transfer, **kwds)
 
     @classmethod
-    def from_stream(cls, stream, mime_type, total_size=None, auto_transfer=True,
-                   **kwds):
-        """Create a new Upload object from a stream."""
+    def from_stream(cls, stream, mime_type,
+                    total_size=None, auto_transfer=True, **kwds):
+        """Create a new Upload object from a stream.
+
+        :type stream: writable file-like object
+        :param stream: the target file
+
+        :type mime_type: string
+        :param mime_type:  MIMEtype of the file being uploaded
+
+        :type total_size: integer or None
+        :param total_size:  Size of the file being uploaded
+
+        :type auto_transfer: boolean or None
+        :param auto_transfer: should the transfer be started immediately
+
+        :type kwds: dict
+        :param kwds:  keyword arguments:  passed
+                      through to :meth:`_Transfer.__init__()`.
+        """
         if mime_type is None:
             raise InvalidUserInputError(
                 'No mime_type specified for stream')
@@ -474,36 +686,69 @@ class Upload(_Transfer):
 
     @property
     def complete(self):
+        """Has the entire stream been uploaded.
+
+        :rtype: boolean
+        """
         return self._complete
 
     @property
     def mime_type(self):
-        return self.__mime_type
+        """MIMEtype of the file being uploaded.
+
+        :rtype: string
+        """
+        return self._mime_type
 
     @property
     def progress(self):
-        return self.__progress
+        """Bytes uploaded so far
+
+        :rtype: integer
+        """
+        return self._progress
 
     @property
     def strategy(self):
-        return self.__strategy
+        """Upload strategy to use
+
+        :rtype: string or None
+        """
+        return self._strategy
 
     @strategy.setter
     def strategy(self, value):
+        """Update upload strategy to use
+
+        :type value: string (one of :data:`SIMPLE_UPLOAD` or
+                :data:`RESUMABLE_UPLOAD`)
+
+        :raises: :exc:`gcloud.streaming.exceptions.UserError`
+                 if value is not one of the two allowed strings.
+        """
         if value not in (SIMPLE_UPLOAD, RESUMABLE_UPLOAD):
             raise UserError((
                 'Invalid value "%s" for upload strategy, must be one of '
                 '"simple" or "resumable".') % value)
-        self.__strategy = value
+        self._strategy = value
 
     @property
     def total_size(self):
-        return self.__total_size
+        """Total size of the stream to be uploaded.
+
+        :rtype: integer or None
+        """
+        return self._total_size
 
     @total_size.setter
     def total_size(self, value):
+        """Update total size of the stream to be uploaded.
+
+        :type value: integer or None
+        :param value: the size
+        """
         self._ensure_uninitialized()
-        self.__total_size = value
+        self._total_size = value
 
     def __repr__(self):
         if not self.initialized:
@@ -520,12 +765,12 @@ class Upload(_Transfer):
         large, (2) the simple endpoint doesn't support multipart requests
         and we have metadata, or (3) there is no simple upload endpoint.
 
-        Args:
-          upload_config: Configuration for the upload endpoint.
-          http_request: The associated http request.
+        :type upload_config: instance w/ ``max_size`` and ``accept``
+                             attributes
+        :param upload_config: Configuration for the upload endpoint.
 
-        Returns:
-          None.
+        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param http_request: The associated http request.
         """
         if upload_config.resumable_path is None:
             self.strategy = SIMPLE_UPLOAD
@@ -542,7 +787,23 @@ class Upload(_Transfer):
         self.strategy = strategy
 
     def configure_request(self, upload_config, http_request, url_builder):
-        """Configure the request and url for this upload."""
+        """Configure the request and url for this upload.
+
+        :type upload_config: instance w/ ``max_size`` and ``accept``
+                             attributes
+        :param upload_config: transfer policy object to be queried
+
+        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param http_request: the request to be updated
+
+        :type url_builder: instance with settable 'relative_path' and
+                           'query_params' attributes.
+        :param url_builder: transfer policy object to be updated
+
+        :raises: :exc:`gcloud.streaming.exceptions.InvalidUserInputError`
+                 if the requested upload is too big, or does not have an
+                 acceptable MIME type.
+        """
         # Validate total_size vs. max_size
         if (self.total_size and upload_config.max_size and
                 self.total_size > upload_config.max_size):
@@ -570,13 +831,13 @@ class Upload(_Transfer):
             self._configure_resumable_request(http_request)
 
     def _configure_media_request(self, http_request):
-        """Configure http_request as a simple request for this upload."""
+        """Helper for 'configure_request': set up simple request."""
         http_request.headers['content-type'] = self.mime_type
         http_request.body = self.stream.read()
         http_request.loggable_body = '<media body>'
 
     def _configure_multipart_request(self, http_request):
-        """Configure http_request as a multipart request for this upload."""
+        """Helper for 'configure_request': set up multipart request."""
         # This is a multipart/related upload.
         msg_root = mime_multipart.MIMEMultipart('related')
         # msg_root should not write out its own headers
@@ -599,10 +860,10 @@ class Upload(_Transfer):
         #       `> ` to `From ` lines.
         # NOTE: We must use six.StringIO() instead of io.StringIO() since the
         #       `email` library uses cStringIO in Py2 and io.StringIO in Py3.
-        fp = six.StringIO()
-        g = email_generator.Generator(fp, mangle_from_=False)
-        g.flatten(msg_root, unixfrom=False)
-        http_request.body = fp.getvalue()
+        stream = six.StringIO()
+        generator = email_generator.Generator(stream, mangle_from_=False)
+        generator.flatten(msg_root, unixfrom=False)
+        http_request.body = stream.getvalue()
 
         multipart_boundary = msg_root.get_boundary()
         http_request.headers['content-type'] = (
@@ -614,28 +875,30 @@ class Upload(_Transfer):
         http_request.loggable_body = multipart_boundary.join(body_components)
 
     def _configure_resumable_request(self, http_request):
+        """Helper for 'configure_request': set up resumable request."""
         http_request.headers['X-Upload-Content-Type'] = self.mime_type
         if self.total_size is not None:
             http_request.headers[
                 'X-Upload-Content-Length'] = str(self.total_size)
 
     def refresh_upload_state(self):
-        """Talk to the server and refresh the state of this resumable upload.
-
-        Returns:
-          Response if the upload is complete.
+        """Refresh the state of a resumable upload via query to the back-end.
         """
         if self.strategy != RESUMABLE_UPLOAD:
             return
         self._ensure_initialized()
-        # XXX Per RFC 2616/7231, a 'PUT' request is absolutely inappropriate
-        # here: # it is intended to be used to replace the entire resource,
-        # not to # query for a status.
-        # If the back-end doesn't provide a way to query for this state
-        # via a 'GET' request, somebody should be spanked.
-        # http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
-        # http://tools.ietf.org/html/rfc7231#section-4.3.4
-        # The violation is documented:
+        # NOTE: Per RFC 2616[1]/7231[2], a 'PUT' request is inappropriate
+        #       here:  it is intended to be used to replace the entire
+        #       resource, not to  query for a status.
+        #
+        #       If the back-end doesn't provide a way to query for this state
+        #       via a 'GET' request, somebody should be spanked.
+        #
+        #       The violation is documented[3].
+        #
+        # [1] http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.6
+        # [2] http://tools.ietf.org/html/rfc7231#section-4.3.4
+        # [3]
         # https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#resume-upload
         refresh_request = Request(
             url=self.url, http_method='PUT',
@@ -647,7 +910,7 @@ class Upload(_Transfer):
         if refresh_response.status_code in (http_client.OK,
                                             http_client.CREATED):
             self._complete = True
-            self.__progress = self.total_size
+            self._progress = self.total_size
             self.stream.seek(self.progress)
             # If we're finished, the refresh response will contain the metadata
             # originally requested. Cache it so it can be returned in
@@ -655,51 +918,64 @@ class Upload(_Transfer):
             self._final_response = refresh_response
         elif refresh_response.status_code == RESUME_INCOMPLETE:
             if range_header is None:
-                self.__progress = 0
+                self._progress = 0
             else:
-                self.__progress = self._last_byte(range_header) + 1
+                self._progress = self._last_byte(range_header) + 1
             self.stream.seek(self.progress)
         else:
-            raise HttpError.FromResponse(refresh_response)
+            raise HttpError.from_response(refresh_response)
 
     def _get_range_header(self, response):
-        # XXX Per RFC 2616/7233, 'Range' is a request header, not a response
-        # header: # If the back-end is actually setting 'Range' on responses,
-        # somebody should be spanked:  it should be sending 'Content-Range'
-        # (including the # '/<length>' trailer).
-        # http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-        # http://tools.ietf.org/html/rfc7233#section-3.1
-        # http://tools.ietf.org/html/rfc7233#section-4.2
-        # The violation is documented:
+        """Return a 'Range' header from a response.
+
+        :type response: :class:`gcloud.streaming.http_wrapper.Response`
+        :param response: response to be queried
+
+        :rtype: string
+        """
+        # NOTE: Per RFC 2616[1]/7233[2][3], 'Range' is a request header,
+        #       not a response header.  If the back-end is actually setting
+        #       'Range' on responses, somebody should be spanked:  it should
+        #       be sending 'Content-Range' (including the # '/<length>'
+        #       trailer).
+        #
+        #       The violation is documented[4].
+        #
+        # [1] http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
+        # [2] http://tools.ietf.org/html/rfc7233#section-3.1
+        # [3] http://tools.ietf.org/html/rfc7233#section-4.2
+        # [4]
         # https://cloud.google.com/storage/docs/json_api/v1/how-tos/upload#chunking
         return response.info.get('Range', response.info.get('range'))
 
-    def initialize_upload(self, http_request, http=None, client=None):
-        """Initialize this upload from the given http_request."""
+    def initialize_upload(self, http_request, http):
+        """Initialize this upload from the given http_request.
+
+        :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param http_request: the request to be used
+
+        :type http: :class:`httplib2.Http` (or workalike)
+        :param http: Http instance for this request.
+
+        :raises: :exc:`gcloud.streaming.exceptions.UserError` if the instance
+                 has not been configured with a strategy.
+        """
         if self.strategy is None:
             raise UserError(
                 'No upload strategy set; did you call configure_request?')
-        if http is None and client is None:
-            raise UserError('Must provide client or http.')
         if self.strategy != RESUMABLE_UPLOAD:
             return
-        http = http or client.http
-        if client is not None:
-            http_request.url = client.FinalizeTransferUrl(http_request.url)
         self._ensure_uninitialized()
         http_response = make_api_request(http, http_request,
-                                                 retries=self.num_retries)
+                                         retries=self.num_retries)
         if http_response.status_code != http_client.OK:
-            raise HttpError.FromResponse(http_response)
+            raise HttpError.from_response(http_response)
 
-        # XXX when is this getting converted to an integer?
         granularity = http_response.info.get('X-Goog-Upload-Chunk-Granularity')
         if granularity is not None:
             granularity = int(granularity)
         self._server_chunk_granularity = granularity
         url = http_response.info['location']
-        if client is not None:
-            url = client.FinalizeTransferUrl(url)
         self._initialize(http, url)
 
         # Unless the user has requested otherwise, we want to just
@@ -710,11 +986,26 @@ class Upload(_Transfer):
             return http_response
 
     def _last_byte(self, range_header):
+        """Parse the last byte from a 'Range' header.
+
+        :type range_header: string
+        :param range_header: 'Range' header value per RFC 2616/7233
+        """
         _, _, end = range_header.partition('-')
-        # TODO(craigcitro): Validate start == 0?
         return int(end)
 
     def _validate_chunksize(self, chunksize=None):
+        """Validate chunksize against server-specified granularity.
+
+        Helper for :meth:`stream_file`.
+
+        :type chunksize: integer or None
+        :param chunksize: the chunk size to be tested.
+
+        :raises: :exc:`gcloud.streaming.exceptions.ConfigurationValueError`
+                 if ``chunksize`` is not a multiple of the server-specified
+                 granulariy.
+        """
         if self._server_chunk_granularity is None:
             return
         chunksize = chunksize or self.chunksize
@@ -724,10 +1015,11 @@ class Upload(_Transfer):
                 self._server_chunk_granularity)
 
     def stream_file(self, use_chunks=True):
-        """Send this resumable upload
-        
-        If 'use_chunks' is False, send it in a single request. Otherwise,
-        send it in chunks.
+        """Upload the stream.
+
+        :type use_chunks: boolean
+        :param use_chunks: If False, send the stream in a single request.
+                          Otherwise, send it in chunks.
         """
         if self.strategy != RESUMABLE_UPLOAD:
             raise InvalidUserInputError(
@@ -743,9 +1035,8 @@ class Upload(_Transfer):
             if response.status_code in (http_client.OK, http_client.CREATED):
                 self._complete = True
                 break
-            self.__progress = self._last_byte(response.info['range'])
+            self._progress = self._last_byte(response.info['range'])
             if self.progress + 1 != self.stream.tell():
-                # TODO(craigcitro): Add a better way to recover here.
                 raise CommunicationError(
                     'Failed to transfer all bytes in chunk, upload paused at '
                     'byte %d' % self.progress)
@@ -761,7 +1052,21 @@ class Upload(_Transfer):
         return response
 
     def _send_media_request(self, request, end):
-        """Request helper function for SendMediaBody & SendChunk."""
+        """Peform API upload request.
+
+        Helper for _send_media_body & _send_chunk:
+
+        :type request: :class:`gcloud.streaming.http_wrapper.Request`
+        :param request: the request to upload
+
+        :type end: integer
+        :param end: end byte of the to be uploaded
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: the response
+        :raises: :exc:`gcloud.streaming.exceptions.HttpError` if the status
+                 code from the response indicates an error.
+        """
         response = make_api_request(
             self.bytes_http, request, retry_func=self.retry_func,
             retries=self.num_retries)
@@ -770,7 +1075,7 @@ class Upload(_Transfer):
             # We want to reset our state to wherever the server left us
             # before this failed request, and then raise.
             self.refresh_upload_state()
-            raise HttpError.FromResponse(response)
+            raise HttpError.from_response(response)
         if response.status_code == RESUME_INCOMPLETE:
             last_byte = self._last_byte(
                 self._get_range_header(response))
@@ -779,15 +1084,20 @@ class Upload(_Transfer):
         return response
 
     def _send_media_body(self, start):
-        """Send the entire media stream in a single request."""
+        """ Send the entire stream in a single request.
+
+        Helper for :meth:`stream_file`:
+
+        :type start: integer
+        :param start: start byte of the range.
+        """
         self._ensure_initialized()
         if self.total_size is None:
             raise TransferInvalidError(
                 'Total size must be known for SendMediaBody')
         body_stream = StreamSlice(self.stream, self.total_size - start)
 
-        request = Request(url=self.url, http_method='PUT',
-                                       body=body_stream)
+        request = Request(url=self.url, http_method='PUT', body=body_stream)
         request.headers['Content-Type'] = self.mime_type
         if start == self.total_size:
             # End of an upload with 0 bytes left to send; just finalize.
@@ -801,7 +1111,13 @@ class Upload(_Transfer):
         return self._send_media_request(request, self.total_size)
 
     def _send_chunk(self, start):
-        """Send the specified chunk."""
+        """Send a chunk of the stream.
+
+        Helper for :meth:`stream_file`:
+
+        :type start: integer
+        :param start: start byte of the range.
+        """
         self._ensure_initialized()
         no_log_body = self.total_size is None
         if self.total_size is None:
@@ -811,25 +1127,19 @@ class Upload(_Transfer):
                 self.stream, start, self.chunksize)
             end = body_stream.stream_end_position
             if body_stream.stream_exhausted:
-                self.__total_size = end
-            # TODO: Here, change body_stream from a stream to a string object,
+                self._total_size = end
+            # Here, change body_stream from a stream to a string object,
             # which means reading a chunk into memory.  This works around
             # https://code.google.com/p/httplib2/issues/detail?id=176 which can
             # cause httplib2 to skip bytes on 401's for file objects.
-            # Rework this solution to be more general.
             body_stream = body_stream.read(self.chunksize)
         else:
             end = min(start + self.chunksize, self.total_size)
             body_stream = StreamSlice(self.stream, end - start)
-        # TODO(craigcitro): Think about clearer errors on "no data in
-        # stream".
-        request = Request(url=self.url, http_method='PUT',
-                                       body=body_stream)
+        request = Request(url=self.url, http_method='PUT', body=body_stream)
         request.headers['Content-Type'] = self.mime_type
         if no_log_body:
             # Disable logging of streaming body.
-            # TODO: Remove no_log_body and rework as part of a larger logs
-            # refactor.
             request.loggable_body = '<media body>'
         if self.total_size is None:
             # Streaming resumable upload case, unknown total size.

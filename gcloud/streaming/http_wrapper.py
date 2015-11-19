@@ -1,8 +1,7 @@
-# pylint: skip-file
 """HTTP wrapper for apitools.
 
 This library wraps the underlying http library we use, which is
-currently httplib2.
+currently :mod:`httplib2`.
 """
 
 import collections
@@ -13,8 +12,8 @@ import time
 
 import httplib2
 import six
-from six.moves import http_client
-from six.moves.urllib import parse
+from six.moves import http_client   # pylint: disable=F0401
+from six.moves.urllib import parse  # pylint: disable=F0401
 
 from gcloud.streaming.exceptions import BadStatusCodeError
 from gcloud.streaming.exceptions import RequestError
@@ -33,9 +32,11 @@ _REDIRECT_STATUS_CODES = (
     RESUME_INCOMPLETE,
 )
 
-class _ExceptionRetryArgs(collections.namedtuple(
-    '_ExceptionRetryArgs', ['http', 'http_request', 'exc', 'num_retries',
-                            'max_retry_wait'])):
+
+class _ExceptionRetryArgs(
+        collections.namedtuple(
+            '_ExceptionRetryArgs',
+            ['http', 'http_request', 'exc', 'num_retries', 'max_retry_wait'])):
     """Bundle of information for retriable exceptions.
 
     :type http: :class:`httplib2.Http` (or conforming alternative)
@@ -54,7 +55,7 @@ class _ExceptionRetryArgs(collections.namedtuple(
 
 
 @contextlib.contextmanager
-def _Httplib2Debuglevel(http_request, level, http=None):
+def _httplib2_debug_level(http_request, level, http=None):
     """Temporarily change the value of httplib2.debuglevel, if necessary.
 
     If http_request has a `loggable_body` distinct from `body`, then we
@@ -64,14 +65,14 @@ def _Httplib2Debuglevel(http_request, level, http=None):
     an httplib2.Http object is provided, we'll also change the level on
     any cached connections attached to it.
 
-    Args:
-      http_request: a Request we're logging.
-      level: (int) the debuglevel for logging.
-      http: (optional) an httplib2.Http whose connections we should
-        set the debuglevel on.
+    :type http_request: :class:`Request`
+    :param http_request: the request to be logged.
 
-    Yields:
-      None.
+    :type level: integer
+    :param level: the debuglevel for logging.
+
+    :type http: :class:`httplib2.Http`, or ``None``
+    :param http: the instance on whose connections to set the debuglevel.
     """
     if http_request.loggable_body is None:
         yield
@@ -97,9 +98,20 @@ def _Httplib2Debuglevel(http_request, level, http=None):
 
 
 class Request(object):
+    """Encapsulates the data for an HTTP request.
 
-    """Class encapsulating the data for an HTTP request."""
+    :type url: string
+    :param url: the URL for the request
 
+    :type http_method: string
+    :param http_method: the HTTP method to use for the request
+
+    :type headers: mapping or None
+    :param headers: headers to be sent with the request
+
+    :type body: string
+    :param body: body to be sent with the request
+    """
     def __init__(self, url='', http_method='GET', headers=None, body=''):
         self.url = url
         self.http_method = http_method
@@ -110,10 +122,21 @@ class Request(object):
 
     @property
     def loggable_body(self):
+        """Request body for logging purposes
+
+        :rtype: string
+        """
         return self.__loggable_body
 
     @loggable_body.setter
     def loggable_body(self, value):
+        """Update request body for logging purposes
+
+        :type value: string
+        :param value: updated body
+
+        :raises: :exc:`RequestError` if the request does not have a body.
+        """
         if self.body is None:
             raise RequestError(
                 'Cannot set loggable body on request with no body')
@@ -121,11 +144,21 @@ class Request(object):
 
     @property
     def body(self):
+        """Request body
+
+        :rtype: string
+        """
         return self.__body
 
     @body.setter
     def body(self, value):
-        """Sets the request body; handles logging and length measurement."""
+        """Update the request body
+
+        Handles logging and length measurement.
+
+        :type value: string
+        :param value: updated body
+        """
         self.__body = value
         if value is not None:
             # Avoid calling len() which cannot exceed 4GiB in 32-bit python.
@@ -158,10 +191,13 @@ def _process_content_range(content_range):
 
 # Note: currently the order of fields here is important, since we want
 # to be able to pass in the result from httplib2.request.
-class Response(collections.namedtuple(
-        'HttpResponse', ['info', 'content', 'request_url'])):
+_ResponseTuple = collections.namedtuple(
+    'HttpResponse', ['info', 'content', 'request_url'])
 
-    """Class encapsulating data for an HTTP response."""
+
+class Response(_ResponseTuple):
+    """Encapsulates data for an HTTP response.
+    """
     __slots__ = ()
 
     def __len__(self):
@@ -169,13 +205,12 @@ class Response(collections.namedtuple(
 
     @property
     def length(self):
-        """Return the length of this response.
+        """Length of this response.
 
-        We expose this as an attribute since using len() directly can fail
-        for responses larger than sys.maxint.
+        Exposed as an attribute since using ``len()`` directly can fail
+        for responses larger than ``sys.maxint``.
 
-        Returns:
-          Response length (as int or long)
+        :rtype: integer or long
         """
         if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
@@ -190,33 +225,59 @@ class Response(collections.namedtuple(
 
     @property
     def status_code(self):
+        """HTTP status code
+
+        :rtype: integer
+        """
         return int(self.info['status'])
 
     @property
     def retry_after(self):
+        """Retry interval (if set).
+
+        :rtype: integer
+        :returns: interval in seconds
+        """
         if 'retry-after' in self.info:
             return int(self.info['retry-after'])
 
     @property
     def is_redirect(self):
+        """Does this response contain a redirect
+
+        :rtype: boolean
+        :returns: True if the status code indicates a redirect and the
+                  'location' header is present.
+        """
         return (self.status_code in _REDIRECT_STATUS_CODES and
                 'location' in self.info)
 
 
 def _check_response(response):
+    """Validate a response
+
+    :type response: :class:`Response`
+    :param response: the response to validate
+
+    :raises: :exc:`gcloud.streaming.exceptions.RequestError` if response is
+             None, :exc:`gcloud.streaming.exceptions.BadStatusCodeError` if
+             response status code indicates an error, or
+             :exc:`gcloud.streaming.exceptions.RetryAfterError` if response
+             indicates a retry interval.
+    """
     if response is None:
         # Caller shouldn't call us if the response is None, but handle anyway.
         raise RequestError(
             'Request did not return a response.')
     elif (response.status_code >= 500 or
           response.status_code == TOO_MANY_REQUESTS):
-        raise BadStatusCodeError.FromResponse(response)
+        raise BadStatusCodeError.from_response(response)
     elif response.retry_after:
-        raise RetryAfterError.FromResponse(response)
+        raise RetryAfterError.from_response(response)
 
 
 def _rebuild_http_connections(http):
-    """Rebuilds all http connections in the httplib2.Http instance.
+    """Rebuild all http connections in the httplib2.Http instance.
 
     httplib2 overloads the map in http.connections to contain two different
     types of values:
@@ -225,8 +286,8 @@ def _rebuild_http_connections(http):
     Here we remove all of the entries for actual connections so that on the
     next request httplib2 will rebuild them from the connection types.
 
-    Args:
-      http: An httplib2.Http instance.
+    :type http: :class:`httplib2.Http`
+    :param http: the instance whose connections are to be rebuilt
     """
     if getattr(http, 'connections', None):
         for conn_key in list(http.connections.keys()):
@@ -237,10 +298,10 @@ def _rebuild_http_connections(http):
 def handle_http_exceptions(retry_args):
     """Exception handler for http failures.
 
-    This catches known failures and rebuilds the underlying HTTP connections.
+    Catches known failures and rebuild the underlying HTTP connections.
 
-    Args:
-      retry_args: An _ExceptionRetryArgs tuple.
+    :type retry_args: :class:`_ExceptionRetryArgs`
+    :param retry_args: the exception information to be evaluated.
     """
     # If the server indicates how long to wait, use that value.  Otherwise,
     # calculate the wait time on our own.
@@ -290,25 +351,28 @@ def handle_http_exceptions(retry_args):
 
 def _make_api_request_no_retry(http, http_request, redirections=5,
                                check_response_func=_check_response):
-    """Send http_request via the given http.
+    """Send an HTTP request via the given http instance.
 
     This wrapper exists to handle translation between the plain httplib2
     request/response types and the Request and Response types above.
 
-    Args:
-      http: An httplib2.Http instance, or a http multiplexer that delegates to
-          an underlying http, for example, HTTPMultiplexer.
-      http_request: A Request to send.
-      redirections: (int, default 5) Number of redirects to follow.
-      check_response_func: Function to validate the HTTP response.
-          Arguments are (Response, response content, url).
+    :type http: :class:`httplib2.Http`
+    :param http: an instance which impelements the `Http` API.
 
-    Returns:
-      A Response object.
+    :type http_request: :class:`Request`
+    :param http_request: the request to send.
 
-    Raises:
-      RequestError if no response could be parsed.
+    :type redirections: integer
+    :param redirections: Number of redirects to follow.
 
+    :type check_response_func: function taking (response, content, url).
+    :param check_response_func: Function to validate the HTTP response.
+
+    :rtype: :class:`Response`
+    :returns: an object representing the server's response
+
+    :raises: :exc:`gcloud.streaming.exceptions.RequestError` if no response
+             could be parsed.
     """
     connection_type = None
     # Handle overrides for connection types.  This is used if the caller
@@ -321,7 +385,7 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
 
     # Custom printing only at debuglevel 4
     new_debuglevel = 4 if httplib2.debuglevel == 4 else 0
-    with _Httplib2Debuglevel(http_request, new_debuglevel, http=http):
+    with _httplib2_debug_level(http_request, new_debuglevel, http=http):
         info, content = http.request(
             str(http_request.url), method=str(http_request.http_method),
             body=http_request.body, headers=http_request.headers,
@@ -335,32 +399,46 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
     return response
 
 
-def make_api_request(http, http_request, retries=7, max_retry_wait=60,
-                redirections=5,
-                retry_func=handle_http_exceptions,
-                check_response_func=_check_response,
-                wo_retry_func=_make_api_request_no_retry):
-    """Send http_request via the given http, performing error/retry handling.
+def make_api_request(http, http_request,
+                     retries=7,
+                     max_retry_wait=60,
+                     redirections=5,
+                     retry_func=handle_http_exceptions,
+                     check_response_func=_check_response,
+                     wo_retry_func=_make_api_request_no_retry):
+    """Send an HTTP request via the given http, performing error/retry handling.
 
-    Args:
-      http: An httplib2.Http instance, or a http multiplexer that delegates to
-          an underlying http, for example, HTTPMultiplexer.
-      http_request: A Request to send.
-      retries: (int, default 7) Number of retries to attempt on retryable
-          replies (such as 429 or 5XX).
-      max_retry_wait: (int, default 60) Maximum number of seconds to wait
-          when retrying.
-      redirections: (int, default 5) Number of redirects to follow.
-      retry_func: Function to handle retries on exceptions. Arguments are
-          (Httplib2.Http, Request, Exception, int num_retries).
-      check_response_func: Function to validate the HTTP response.
-          Arguments are (Response, response content, url).
-      wo_retry_func: Function to make HTTP request without retries.  Arguments
-          are: (http, http_request, redirections, check_response_func)
+    :type http: :class:`httplib2.Http`
+    :param http: an instance which impelements the `Http` API.
 
-    Returns:
-      A Response object.
+    :type http_request: :class:`Request`
+    :param http_request: the request to send.
 
+    :type retries: integer
+    :param retries: Number of retries to attempt on retryable
+                    responses (such as 429 or 5XX).
+
+    :type max_retry_wait: integer
+    :param max_retry_wait: Maximum number of seconds to wait when retrying.
+
+    :type redirections: integer
+    :param redirections: Number of redirects to follow.
+
+    :type retry_func: function taking (http, request, exception, num_retries).
+    :param retry_func: Function to handle retries on exceptions.
+
+    :type check_response_func: function taking (response, content, url).
+    :param check_response_func: Function to validate the HTTP response.
+
+    :type wo_retry_func: function taking
+                         (http, request, redirections, check_response_func)
+    :param wo_retry_func: Function to make HTTP request without retries.
+
+    :rtype: :class:`Response`
+    :returns: an object representing the server's response
+
+    :raises: :exc:`gcloud.streaming.exceptions.RequestError` if no response
+             could be parsed.
     """
     retry = 0
     while True:
@@ -369,24 +447,36 @@ def make_api_request(http, http_request, retries=7, max_retry_wait=60,
                 http, http_request, redirections=redirections,
                 check_response_func=check_response_func)
         # retry_func will consume the exception types it handles and raise.
-        # pylint: disable=broad-except
-        except Exception as e:
+        except Exception as exc:  # pylint: disable=broad-except
             retry += 1
             if retry >= retries:
                 raise
             else:
                 retry_func(_ExceptionRetryArgs(
-                    http, http_request, e, retry, max_retry_wait))
+                    http, http_request, exc, retry, max_retry_wait))
 
 
 _HTTP_FACTORIES = []
 
 
 def _register_http_factory(factory):
+    """Register a custom HTTP factory.
+
+    :type factory: callable taking keyword arguments, returning an Http
+                   instance (or an instance implementing the same API);
+    :param factory: the new factory (it may return ``None`` to defer to
+                    a later factory or the default).
+    """
     _HTTP_FACTORIES.append(factory)
 
 
 def get_http(**kwds):
+    """Construct an Http instance.
+
+    :param kwds:  keyword arguments to pass to factories.
+
+    :rtype: :class:`httplib2.Http` (or a workalike)
+    """
     for factory in _HTTP_FACTORIES:
         http = factory(**kwds)
         if http is not None:

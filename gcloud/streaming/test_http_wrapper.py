@@ -1,12 +1,11 @@
-# pylint: skip-file
 import unittest2
 
 
-class Test__Httplib2Debuglevel(unittest2.TestCase):
+class Test__httplib2_debug_level(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.streaming.http_wrapper import _Httplib2Debuglevel
-        return _Httplib2Debuglevel
+        from gcloud.streaming.http_wrapper import _httplib2_debug_level
+        return _httplib2_debug_level
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -170,7 +169,6 @@ class Test_Response(unittest2.TestCase):
     def test_retry_after_w_header(self):
         CONTENT = 'CONTENT'
         URL = 'http://example.com/api'
-        RANGE = 'bytes 0-122/5678'
         info = {
             'status': '200',
             'retry-after': '123',
@@ -181,7 +179,6 @@ class Test_Response(unittest2.TestCase):
     def test_is_redirect_w_code_wo_location(self):
         CONTENT = 'CONTENT'
         URL = 'http://example.com/api'
-        RANGE = 'bytes 0-122/5678'
         info = {
             'status': '301',
         }
@@ -191,7 +188,6 @@ class Test_Response(unittest2.TestCase):
     def test_is_redirect_w_code_w_location(self):
         CONTENT = 'CONTENT'
         URL = 'http://example.com/api'
-        RANGE = 'bytes 0-122/5678'
         info = {
             'status': '301',
             'location': 'http://example.com/other',
@@ -450,7 +446,7 @@ class Test_handle_http_exceptions(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.streaming.exceptions import BadStatusCodeError
         response = _Response(500)
-        exc = BadStatusCodeError.FromResponse(response)
+        exc = BadStatusCodeError.from_response(response)
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
 
@@ -466,7 +462,7 @@ class Test_handle_http_exceptions(unittest2.TestCase):
         from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
         RETRY_AFTER = 25
         response = _Response(TOO_MANY_REQUESTS, RETRY_AFTER)
-        exc = RetryAfterError.FromResponse(response)
+        exc = RetryAfterError.from_response(response)
         retry_args = self._build_retry_args(exc)
         monkey, logged, slept = self._monkeyMUT()
 
@@ -486,13 +482,13 @@ class Test_handle_http_exceptions(unittest2.TestCase):
         def _raises():
             raise _Nonesuch
 
-        monkey, logged, slept = self._monkeyMUT()
+        monkey, _, _ = self._monkeyMUT()
 
         with monkey:
             with self.assertRaises(_Nonesuch):
                 try:
                     _raises()
-                except Exception as exc:
+                except _Nonesuch as exc:
                     retry_args = _Dummy(exc=exc)
                     self._callFUT(retry_args)
 
@@ -631,11 +627,11 @@ class Test_make_api_request(unittest2.TestCase):
                                  check_response_func=_checked.append)
 
         self.assertTrue(response is RESPONSE)
-        self.assertEqual(_created,
-                         [((HTTP, REQUEST), {
-                            'redirections': 5,
-                            'check_response_func': _checked.append,
-                         })])
+        expected_kw = {
+            'redirections': 5,
+            'check_response_func': _checked.append,
+        }
+        self.assertEqual(_created, [((HTTP, REQUEST), expected_kw)])
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
     def test_w_exceptions_lt_max_retries(self):
@@ -666,12 +662,12 @@ class Test_make_api_request(unittest2.TestCase):
 
         self.assertTrue(response is RESPONSE)
         self.assertEqual(len(_created), 5)
+        expected_kw = {
+            'redirections': 5,
+            'check_response_func': _checked.append,
+        }
         for attempt in _created:
-            self.assertEqual(attempt,
-                             ((HTTP, REQUEST), {
-                                'redirections': 5,
-                                'check_response_func': _checked.append,
-                             }))
+            self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
         self.assertEqual(len(_retried), 4)
         for index, retry in enumerate(_retried):
@@ -682,7 +678,7 @@ class Test_make_api_request(unittest2.TestCase):
             self.assertEqual(retry.max_retry_wait, WAIT)
 
     def test_w_exceptions_gt_max_retries(self):
-        HTTP, REQUEST, RESPONSE = object(), object(), object()
+        HTTP, REQUEST = object(), object()
         WAIT = 10,
         _created, _checked, _retried = [], [], []
 
@@ -705,12 +701,12 @@ class Test_make_api_request(unittest2.TestCase):
                           check_response_func=_checked.append)
 
         self.assertEqual(len(_created), 3)
+        expected_kw = {
+            'redirections': 5,
+            'check_response_func': _checked.append,
+        }
         for attempt in _created:
-            self.assertEqual(attempt,
-                             ((HTTP, REQUEST), {
-                                'redirections': 5,
-                                'check_response_func': _checked.append,
-                             }))
+            self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
         self.assertEqual(len(_retried), 2)
         for index, retry in enumerate(_retried):

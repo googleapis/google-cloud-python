@@ -345,7 +345,8 @@ class Test_Blob(unittest2.TestCase):
 
     def _upload_from_file_simple_test_helper(self, properties=None,
                                              content_type_arg=None,
-                                             expected_content_type=None):
+                                             expected_content_type=None,
+                                             chunk_size=5):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -361,7 +362,7 @@ class Test_Blob(unittest2.TestCase):
         bucket = _Bucket(client)
         blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
         blob._CHUNK_SIZE_MULTIPLE = 1
-        blob.chunk_size = 5
+        blob.chunk_size = chunk_size
 
         with _NamedTemporaryFile() as temp:
             with open(temp.name, 'wb') as file_obj:
@@ -389,6 +390,11 @@ class Test_Blob(unittest2.TestCase):
     def test_upload_from_file_simple(self):
         self._upload_from_file_simple_test_helper(
             expected_content_type='application/octet-stream')
+
+    def test_upload_from_file_simple_w_chunk_size_None(self):
+        self._upload_from_file_simple_test_helper(
+            expected_content_type='application/octet-stream',
+            chunk_size=None)
 
     def test_upload_from_file_simple_with_content_type(self):
         EXPECTED_CONTENT_TYPE = 'foo/bar'
