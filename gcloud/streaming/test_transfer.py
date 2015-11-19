@@ -267,30 +267,13 @@ class Test_Download(unittest2.TestCase):
         with self.assertRaises(TransferInvalidError):
             download.initialize_download(request, http=object())
 
-    def test_initialize_download_wo_http_or_client(self):
-        from gcloud.streaming.exceptions import UserError
-        request = _Request()
-        download = self._makeOne(_Stream())
-        with self.assertRaises(UserError):
-            download.initialize_download(request)
-
-    def test_initialize_download_wo_client_wo_autotransfer(self):
+    def test_initialize_download_wo_autotransfer(self):
         request = _Request()
         http = object()
         download = self._makeOne(_Stream(), auto_transfer=False)
         download.initialize_download(request, http)
         self.assertTrue(download.http is http)
         self.assertEqual(download.url, request.url)
-
-    def test_initialize_download_w_client_wo_autotransfer(self):
-        FINALIZED_URL = 'http://example.com/other'
-        request = _Request()
-        http = object()
-        client = _Client(http, FINALIZED_URL)
-        download = self._makeOne(_Stream(), auto_transfer=False)
-        download.initialize_download(request, client=client)
-        self.assertTrue(download.http is http)
-        self.assertEqual(download.url, FINALIZED_URL)
 
     def test_initialize_download_w_autotransfer_failing(self):
         from six.moves import http_client

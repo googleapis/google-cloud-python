@@ -329,7 +329,7 @@ class Download(_Transfer):
         if self.total_size is None:
             self._total_size = 0
 
-    def initialize_download(self, http_request, http=None, client=None):
+    def initialize_download(self, http_request, http):
         """Initialize this download.
 
         If the instance has :attr:`auto_transfer` enabled, begins the
@@ -338,20 +338,10 @@ class Download(_Transfer):
         :type http_request: :class:`gcloud.streaming.http_wrapper.Request`
         :param http_request: the request to use to initialize this download.
 
-        :type http: :class:`httplib2.Http` (or workalike) or None
+        :type http: :class:`httplib2.Http` (or workalike)
         :param http: Http instance for this request.
-
-        :type client:  unknown (XXX remove this argument after lint complete)
-        :param client: If provided, let this client process the final URL
-                       before sending any additional requests. If ``client``
-                       is provided and ``http`` is not, use ``client.http``.
         """
         self._ensure_uninitialized()
-        if http is None and client is None:
-            raise UserError('Must provide client or http.')
-        http = http or client.http
-        if client is not None:
-            http_request.url = client.FinalizeTransferUrl(http_request.url)
         url = http_request.url
         if self.auto_transfer:
             end_byte = self._compute_end_byte(0)
@@ -363,8 +353,6 @@ class Download(_Transfer):
             self._initial_response = response
             self._set_total(response.info)
             url = response.info.get('content-location', response.request_url)
-        if client is not None:
-            url = client.FinalizeTransferUrl(url)
         self._initialize(http, url)
         # Unless the user has requested otherwise, we want to just
         # go ahead and pump the bytes now.
