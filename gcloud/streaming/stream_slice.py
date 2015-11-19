@@ -33,7 +33,9 @@ class StreamSlice(object):
     def length(self):
         """Maximum number of bytes to return in the slice.
 
-        For 32-bit python2.x, len() cannot exceed a 32-bit number.
+        .. note::
+
+           For 32-bit python2.x, len() cannot exceed a 32-bit number.
 
         :rtype: integer
         """
