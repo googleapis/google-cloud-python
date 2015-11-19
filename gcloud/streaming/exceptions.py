@@ -106,9 +106,5 @@ class BadStatusCodeError(HttpError):
     """The request completed but returned a bad status code."""
 
 
-class NotYetImplementedError(Error):
-    """This functionality is not yet implemented."""
-
-
 class StreamExhausted(Error):
     """Attempted to read more bytes from a stream than were available."""
