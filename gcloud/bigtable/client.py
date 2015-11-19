@@ -19,17 +19,20 @@ This is the base from which all interactions with the API occur.
 In the hierarchy of API concepts
 
 * a :class:`Client` owns a :class:`.Cluster`
-* a :class:`.Cluster` owns a :class:`Table <gcloud_bigtable.table.Table>`
-* a :class:`Table <gcloud_bigtable.table.Table>` owns a
+* a :class:`.Cluster` owns a :class:`Table <gcloud.bigtable.table.Table>`
+* a :class:`Table <gcloud.bigtable.table.Table>` owns a
   :class:`ColumnFamily <.column_family.ColumnFamily>`
-* a :class:`Table <gcloud_bigtable.table.Table>` owns a :class:`Row <.row.Row>`
+* a :class:`Table <gcloud.bigtable.table.Table>` owns a :class:`Row <.row.Row>`
   (and all the cells in the row)
 """
 
 
 import copy
 
+from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import bigtable_cluster_service_pb2
+from gcloud.bigtable._generated import (
+    bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import bigtable_service_pb2
 from gcloud.bigtable._generated import bigtable_table_service_pb2
 from gcloud.bigtable._generated import operations_pb2
@@ -192,7 +195,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         The project name is of the form
 
-            ``"projects/{project_id}"``
+            ``"projects/{project}"``
 
         :rtype: str
         :returns: The project name to be used with the Cloud Bigtable Admin
@@ -375,3 +378,25 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         return Cluster(zone, cluster_id, self,
                        display_name=display_name, serve_nodes=serve_nodes)
+
+    def list_zones(self):
+        """Lists zones associated with project.
+
+        :rtype: list
+        :returns: The names (as :class:`str`) of the zones
+        :raises: :class:`ValueError <exceptions.ValueError>` if one of the
+                 zones is not in ``OK`` state.
+        """
+        request_pb = messages_pb2.ListZonesRequest(name=self.project_name)
+        response = self._cluster_stub.ListZones.async(request_pb,
+                                                      self.timeout_seconds)
+        # We expect a `.messages_pb2.ListZonesResponse`
+        list_zones_response = response.result()
+
+        result = []
+        for zone in list_zones_response.zones:
+            if zone.status != data_pb2.Zone.OK:
+                raise ValueError('Zone %s not in OK state' % (
+                    zone.display_name,))
+            result.append(zone.display_name)
+        return result

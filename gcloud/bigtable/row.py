@@ -24,7 +24,7 @@ class Row(object):
     :type row_key: bytes
     :param row_key: The key for the current row.
 
-    :type table: :class:`Table <gcloud_bigtable.table.Table>`
+    :type table: :class:`Table <gcloud.bigtable.table.Table>`
     :param table: The table that owns the row.
     """
 
