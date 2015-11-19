@@ -816,7 +816,7 @@ class Test_Upload(unittest2.TestCase):
     def test_from_file_w_nonesuch_file(self):
         klass = self._getTargetClass()
         filename = '~nosuchuser/file.txt'
-        with self.assertRaises(ValueError):
+        with self.assertRaises(OSError):
             klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):

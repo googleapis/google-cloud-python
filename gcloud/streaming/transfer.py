@@ -642,8 +642,6 @@ class Upload(_Transfer):
                       through to :meth:`_Transfer.__init__()`.
         """
         path = os.path.expanduser(filename)
-        if not os.path.exists(path):
-            raise ValueError('Could not find file %s' % path)
         if not mime_type:
             mime_type, _ = mimetypes.guess_type(path)
             if mime_type is None:
