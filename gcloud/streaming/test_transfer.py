@@ -893,11 +893,10 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_strategy_setter_invalid(self):
-        from gcloud.streaming.exceptions import UserError
         upload = self._makeOne(_Stream())
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.strategy = object()
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.strategy = 'unknown'
 
     def test_strategy_setter_SIMPLE_UPLOAD(self):
@@ -1266,10 +1265,9 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload._get_range_header(response), '123')
 
     def test_initialize_upload_no_strategy(self):
-        from gcloud.streaming.exceptions import UserError
         request = _Request()
         upload = self._makeOne(_Stream())
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValueError):
             upload.initialize_upload(request, http=object())
 
     def test_initialize_upload_simple_w_http(self):

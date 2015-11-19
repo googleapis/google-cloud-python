@@ -14,7 +14,6 @@ from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import HttpError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
-from gcloud.streaming.exceptions import UserError
 from gcloud.streaming.http_wrapper import get_http
 from gcloud.streaming.http_wrapper import handle_http_exceptions
 from gcloud.streaming.http_wrapper import make_api_request
@@ -720,11 +719,11 @@ class Upload(_Transfer):
         :type value: string (one of :data:`SIMPLE_UPLOAD` or
                 :data:`RESUMABLE_UPLOAD`)
 
-        :raises: :exc:`gcloud.streaming.exceptions.UserError`
-                 if value is not one of the two allowed strings.
+        :raises: :exc:`ValueError` if value is not one of the two allowed
+                 strings.
         """
         if value not in (SIMPLE_UPLOAD, RESUMABLE_UPLOAD):
-            raise UserError((
+            raise ValueError((
                 'Invalid value "%s" for upload strategy, must be one of '
                 '"simple" or "resumable".') % value)
         self._strategy = value
@@ -953,11 +952,11 @@ class Upload(_Transfer):
         :type http: :class:`httplib2.Http` (or workalike)
         :param http: Http instance for this request.
 
-        :raises: :exc:`gcloud.streaming.exceptions.UserError` if the instance
-                 has not been configured with a strategy.
+        :raises: :exc:`ValueError` if the instance has not been configured
+                 with a strategy.
         """
         if self.strategy is None:
-            raise UserError(
+            raise ValueError(
                 'No upload strategy set; did you call configure_request?')
         if self.strategy != RESUMABLE_UPLOAD:
             return

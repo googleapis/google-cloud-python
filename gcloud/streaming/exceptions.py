@@ -5,10 +5,6 @@ class Error(Exception):
     """Base class for all exceptions."""
 
 
-class UserError(Error):
-    """Base class for errors related to user input."""
-
-
 class CommunicationError(Error):
     """Any communication error talking to an API server."""
 
