@@ -13,7 +13,6 @@ from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import HttpError
-from gcloud.streaming.exceptions import InvalidDataError
 from gcloud.streaming.exceptions import InvalidUserInputError
 from gcloud.streaming.exceptions import NotFoundError
 from gcloud.streaming.exceptions import TransferInvalidError
@@ -26,7 +25,6 @@ from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
 from gcloud.streaming.stream_slice import StreamSlice
 from gcloud.streaming.util import acceptable_mime_type
-from gcloud.streaming.util import type_check
 
 
 RESUMABLE_UPLOAD_THRESHOLD = 5 << 20
@@ -127,9 +125,11 @@ class _Transfer(object):
 
         :type value: integer
         """
-        type_check(value, six.integer_types)
+        if not isinstance(value, six.integer_types):
+            raise ValueError("num_retries: pass an integer")
+
         if value < 0:
-            raise InvalidDataError(
+            raise ValueError(
                 'Cannot have negative value for num_retries')
         self.__num_retries = value
 

@@ -60,17 +60,15 @@ class Test__Transfer(unittest2.TestCase):
         self.assertTrue(xfer.bytes_http is BYTES_HTTP)
 
     def test_num_retries_setter_invalid(self):
-        from gcloud.streaming.exceptions import TypecheckError
         stream = _Stream()
         xfer = self._makeOne(stream)
-        with self.assertRaises(TypecheckError):
+        with self.assertRaises(ValueError):
             xfer.num_retries = object()
 
     def test_num_retries_setter_negative(self):
-        from gcloud.streaming.exceptions import InvalidDataError
         stream = _Stream()
         xfer = self._makeOne(stream)
-        with self.assertRaises(InvalidDataError):
+        with self.assertRaises(ValueError):
             xfer.num_retries = -1
 
     def test__initialize_not_already_initialized_w_http(self):

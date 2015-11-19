@@ -4,34 +4,6 @@ import random
 
 from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import InvalidUserInputError
-from gcloud.streaming.exceptions import TypecheckError
-
-
-def type_check(arg, arg_type, msg=None):
-    """Assert that arg is of the expected type.
-
-    :type arg: any
-    :param arg: value to be checked
-
-    :type arg_type: type
-    :param arg_type: the expected type
-
-    :type msg: string or None
-    :param msg: custom error message
-
-    :raises: :exc:`gcloud.streaming.exceptions.TypecheckError` if ``arg``
-             is not of the expected type.
-    :returns: ``arg``
-    """
-    if not isinstance(arg, arg_type):
-        if msg is None:
-            if isinstance(arg_type, tuple):
-                msg = 'Type of arg is "%s", not one of %r' % (
-                    type(arg), arg_type)
-            else:
-                msg = 'Type of arg is "%s", not "%s"' % (type(arg), arg_type)
-        raise TypecheckError(msg)
-    return arg
 
 
 def calculate_wait_for_retry(retry_attempt, max_wait=60):

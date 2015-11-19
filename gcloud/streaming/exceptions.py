@@ -5,10 +5,6 @@ class Error(Exception):
     """Base class for all exceptions."""
 
 
-class TypecheckError(Error, TypeError):
-    """An object of an incorrect type is provided."""
-
-
 class NotFoundError(Error):
     """A specified resource could not be found."""
 

@@ -1,32 +1,6 @@
 import unittest2
 
 
-class Test_type_check(unittest2.TestCase):
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.streaming.util import type_check
-        return type_check(*args, **kw)
-
-    def test_pass(self):
-        self.assertEqual(self._callFUT(123, int), 123)
-
-    def test_fail_w_explicit_msg(self):
-        from gcloud.streaming.exceptions import TypecheckError
-        with self.assertRaises(TypecheckError) as err:
-            self._callFUT(123, str, 'foo')
-        self.assertEqual(err.exception.args, ('foo',))
-
-    def test_fail_w_single_type_no_msg(self):
-        from gcloud.streaming.exceptions import TypecheckError
-        with self.assertRaises(TypecheckError):
-            self._callFUT(123, str)
-
-    def test_fail_w_tuple_no_msg(self):
-        from gcloud.streaming.exceptions import TypecheckError
-        with self.assertRaises(TypecheckError):
-            self._callFUT(123, (list, tuple))
-
-
 class Test_calculate_wait_for_retry(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
