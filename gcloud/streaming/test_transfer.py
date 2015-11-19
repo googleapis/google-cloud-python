@@ -845,6 +845,7 @@ class Test_Upload(unittest2.TestCase):
             self.assertEqual(upload.mime_type, 'text/plain')
             self.assertTrue(upload.auto_transfer)
             self.assertEqual(upload.total_size, len(CONTENT))
+            upload._stream.close()
 
     def test_from_file_w_mimetype_w_auto_transfer_w_kwds(self):
         import os
@@ -864,6 +865,7 @@ class Test_Upload(unittest2.TestCase):
             self.assertFalse(upload.auto_transfer)
             self.assertEqual(upload.total_size, len(CONTENT))
             self.assertEqual(upload.chunksize, CHUNK_SIZE)
+            upload._stream.close()
 
     def test_from_stream_wo_mimetype(self):
         from gcloud.streaming.exceptions import InvalidUserInputError
