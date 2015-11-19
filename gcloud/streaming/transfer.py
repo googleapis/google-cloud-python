@@ -310,9 +310,6 @@ class Download(_Transfer):
         :param url_builder: transfer policy object to be updated
         """
         url_builder.query_params['alt'] = 'media'
-        # We send range requests because by default httplib2 stores entire
-        # reponses in memory. Consider overriding # httplib2's download method
-        # (as gsutil does) so that this is not # necessary.
         http_request.headers['Range'] = 'bytes=0-%d' % (self.chunksize - 1,)
 
     def _set_total(self, info):
