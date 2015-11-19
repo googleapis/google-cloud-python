@@ -11,7 +11,6 @@ from six.moves import http_client
 
 from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
-from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import HttpError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
@@ -999,15 +998,14 @@ class Upload(_Transfer):
         :type chunksize: integer or None
         :param chunksize: the chunk size to be tested.
 
-        :raises: :exc:`gcloud.streaming.exceptions.ConfigurationValueError`
-                 if ``chunksize`` is not a multiple of the server-specified
-                 granulariy.
+        :raises: :exc:`ValueError` if ``chunksize`` is not a multiple
+                 of the server-specified granulariy.
         """
         if self._server_chunk_granularity is None:
             return
         chunksize = chunksize or self.chunksize
         if chunksize % self._server_chunk_granularity:
-            raise ConfigurationValueError(
+            raise ValueError(
                 'Server requires chunksize to be a multiple of %d',
                 self._server_chunk_granularity)
 

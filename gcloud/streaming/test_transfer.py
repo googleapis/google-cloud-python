@@ -1367,10 +1367,9 @@ class Test_Upload(unittest2.TestCase):
         upload._validate_chunksize(123)  # no-op
 
     def test__validate_chunksize_w__server_chunk_granularity_miss(self):
-        from gcloud.streaming.exceptions import ConfigurationValueError
         upload = self._makeOne(_Stream())
         upload._server_chunk_granularity = 100
-        with self.assertRaises(ConfigurationValueError):
+        with self.assertRaises(ValueError):
             upload._validate_chunksize(123)
 
     def test__validate_chunksize_w__server_chunk_granularity_hit(self):
@@ -1386,12 +1385,11 @@ class Test_Upload(unittest2.TestCase):
             upload.stream_file()
 
     def test_stream_file_w_use_chunks_invalid_chunk_size(self):
-        from gcloud.streaming.exceptions import ConfigurationValueError
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         upload = self._makeOne(_Stream(), chunksize=1024)
         upload.strategy = RESUMABLE_UPLOAD
         upload._server_chunk_granularity = 100
-        with self.assertRaises(ConfigurationValueError):
+        with self.assertRaises(ValueError):
             upload.stream_file(use_chunks=True)
 
     def test_stream_file_not_initialized(self):

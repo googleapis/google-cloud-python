@@ -58,10 +58,6 @@ class HttpError(CommunicationError):
                    http_response.request_url)
 
 
-class ConfigurationValueError(UserError):
-    """Some part of the user-specified client configuration is invalid."""
-
-
 class TransferError(CommunicationError):
     """Errors related to transfers."""
 
