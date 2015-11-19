@@ -432,8 +432,7 @@ def _get_pb_property_value(message_pb, property_name):
 
 
 try:
-    # from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
-    raise ImportError('Faking absence')
+    from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
 
