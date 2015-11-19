@@ -13,7 +13,6 @@ from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import ConfigurationValueError
 from gcloud.streaming.exceptions import HttpError
-from gcloud.streaming.exceptions import NotFoundError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
 from gcloud.streaming.exceptions import UserError
@@ -646,7 +645,7 @@ class Upload(_Transfer):
         """
         path = os.path.expanduser(filename)
         if not os.path.exists(path):
-            raise NotFoundError('Could not find file %s' % path)
+            raise ValueError('Could not find file %s' % path)
         if not mime_type:
             mime_type, _ = mimetypes.guess_type(path)
             if mime_type is None:

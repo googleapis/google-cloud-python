@@ -5,10 +5,6 @@ class Error(Exception):
     """Base class for all exceptions."""
 
 
-class NotFoundError(Error):
-    """A specified resource could not be found."""
-
-
 class UserError(Error):
     """Base class for errors related to user input."""
 

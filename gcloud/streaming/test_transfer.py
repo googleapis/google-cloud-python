@@ -814,10 +814,9 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(upload.chunksize, CHUNK_SIZE)
 
     def test_from_file_w_nonesuch_file(self):
-        from gcloud.streaming.exceptions import NotFoundError
         klass = self._getTargetClass()
         filename = '~nosuchuser/file.txt'
-        with self.assertRaises(NotFoundError):
+        with self.assertRaises(ValueError):
             klass.from_file(filename)
 
     def test_from_file_wo_mimetype_w_unguessable_filename(self):
