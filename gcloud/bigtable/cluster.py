@@ -123,3 +123,19 @@ class Cluster(object):
         result = cls(match.group('zone'), match.group('cluster_id'), client)
         result._update_from_pb(cluster_pb)
         return result
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        # NOTE: This does not compare the configuration values, such as
+        #       the serve_nodes or display_name. Instead, it only compares
+        #       identifying values zone, cluster ID and client. This is
+        #       intentional, since the same cluster can be in different states
+        #       if not synchronized. Clusters with similar zone/cluster
+        #       settings but different clients can't be used in the same way.
+        return (other.zone == self.zone and
+                other.cluster_id == self.cluster_id and
+                other._client == self._client)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
