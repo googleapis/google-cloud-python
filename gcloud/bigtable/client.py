@@ -207,7 +207,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _data_stub(self):
         """Getter for the gRPC stub used for the Data API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client has not been :meth:`start`-ed.
@@ -220,7 +220,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _cluster_stub(self):
         """Getter for the gRPC stub used for the Cluster Admin API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
@@ -236,7 +236,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _operations_stub(self):
         """Getter for the gRPC stub used for the Operations API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
@@ -252,7 +252,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _table_stub(self):
         """Getter for the gRPC stub used for the Table Admin API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         :raises: :class:`ValueError <exceptions.ValueError>` if the current
                  client is not an admin client or if it has not been
@@ -267,7 +267,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _make_data_stub(self):
         """Creates gRPC stub to make requests to the Data API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
         return make_stub(self, DATA_STUB_FACTORY,
@@ -276,7 +276,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _make_cluster_stub(self):
         """Creates gRPC stub to make requests to the Cluster Admin API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
         return make_stub(self, CLUSTER_STUB_FACTORY,
@@ -288,7 +288,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         These are for long-running operations of the Cluster Admin API,
         hence the host and port matching.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
         return make_stub(self, OPERATIONS_STUB_FACTORY,
@@ -297,7 +297,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def _make_table_stub(self):
         """Creates gRPC stub to make requests to the Table Admin API.
 
-        :rtype: :class:`grpc.early_adopter.implementations._Stub`
+        :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
         return make_stub(self, TABLE_STUB_FACTORY,
@@ -388,10 +388,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                  zones is not in ``OK`` state.
         """
         request_pb = messages_pb2.ListZonesRequest(name=self.project_name)
-        response = self._cluster_stub.ListZones.async(request_pb,
-                                                      self.timeout_seconds)
         # We expect a `.messages_pb2.ListZonesResponse`
-        list_zones_response = response.result()
+        list_zones_response = self._cluster_stub.ListZones(
+            request_pb, self.timeout_seconds)
 
         result = []
         for zone in list_zones_response.zones:
@@ -410,10 +409,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                   zones in the request).
         """
         request_pb = messages_pb2.ListClustersRequest(name=self.project_name)
-        response = self._cluster_stub.ListClusters.async(request_pb,
-                                                         self.timeout_seconds)
         # We expect a `.messages_pb2.ListClustersResponse`
-        list_clusters_response = response.result()
+        list_clusters_response = self._cluster_stub.ListClusters(
+            request_pb, self.timeout_seconds)
 
         failed_zones = [zone.display_name
                         for zone in list_clusters_response.failed_zones]
