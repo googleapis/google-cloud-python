@@ -547,6 +547,70 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._list_zones_helper(data_pb2.Zone.EMERGENCY_MAINENANCE)
 
+    def test_list_clusters(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+
+        credentials = _Credentials()
+        project = 'PROJECT'
+        timeout_seconds = 8004
+        client = self._makeOne(project=project, credentials=credentials,
+                               admin=True, timeout_seconds=timeout_seconds)
+
+        # Create request_pb
+        request_pb = messages_pb2.ListClustersRequest(
+            name='projects/' + project,
+        )
+
+        # Create response_pb
+        zone = 'foo'
+        failed_zone = 'bar'
+        cluster_id1 = 'cluster-id1'
+        cluster_id2 = 'cluster-id2'
+        cluster_name1 = ('projects/' + project + '/zones/' + zone +
+                         '/clusters/' + cluster_id1)
+        cluster_name2 = ('projects/' + project + '/zones/' + zone +
+                         '/clusters/' + cluster_id2)
+        response_pb = messages_pb2.ListClustersResponse(
+            failed_zones=[
+                data_pb2.Zone(display_name=failed_zone),
+            ],
+            clusters=[
+                data_pb2.Cluster(
+                    name=cluster_name1,
+                    display_name=cluster_name1,
+                    serve_nodes=3,
+                ),
+                data_pb2.Cluster(
+                    name=cluster_name2,
+                    display_name=cluster_name2,
+                    serve_nodes=3,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._cluster_stub_internal = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        failed_zones = [failed_zone]
+        clusters = [
+            client.cluster(zone, cluster_id1),
+            client.cluster(zone, cluster_id2),
+        ]
+        expected_result = (clusters, failed_zones)
+
+        # Perform the method and check the result.
+        result = client.list_clusters()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListClusters',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
 
 class _Credentials(object):
 

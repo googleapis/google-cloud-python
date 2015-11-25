@@ -400,3 +400,23 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                     zone.display_name,))
             result.append(zone.display_name)
         return result
+
+    def list_clusters(self):
+        """Lists clusters owned by the project.
+
+        :rtype: tuple
+        :returns: A pair of results, the first is a list of :class:`.Cluster` s
+                  returned and the second is a list of strings (the failed
+                  zones in the request).
+        """
+        request_pb = messages_pb2.ListClustersRequest(name=self.project_name)
+        response = self._cluster_stub.ListClusters.async(request_pb,
+                                                         self.timeout_seconds)
+        # We expect a `.messages_pb2.ListClustersResponse`
+        list_clusters_response = response.result()
+
+        failed_zones = [zone.display_name
+                        for zone in list_clusters_response.failed_zones]
+        clusters = [Cluster.from_pb(cluster_pb, self)
+                    for cluster_pb in list_clusters_response.clusters]
+        return clusters, failed_zones
