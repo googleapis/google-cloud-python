@@ -82,7 +82,7 @@ def make_stub(client, stub_factory, host, port):
     :type port: int
     :param port: The port for the service.
 
-    :rtype: :class:`grpc.early_adopter.implementations._Stub`
+    :rtype: :class:`grpc.beta._stub._AutoIntermediary`
     :returns: The stub object used to make gRPC requests to a given API.
     """
     custom_metadata_transformer = MetadataTransformer(client)

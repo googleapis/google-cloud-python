@@ -651,30 +651,19 @@ class _FakeStub(object):
 
 
 class _MethodMock(object):
-    """Mock for :class:`grpc.framework.alpha._reexport._UnaryUnarySyncAsync`.
+    """Mock for API method attached to a gRPC stub.
 
-    May need to be callable and needs to (in our use) have an
-    ``async`` method.
+    In the beta implementation, these are of type.
+    :class:`grpc.framework.crust.implementations._UnaryUnaryMultiCallable`
     """
 
     def __init__(self, name, factory):
         self._name = name
         self._factory = factory
 
-    def async(self, *args, **kwargs):
-        """Async method meant to mock a gRPC stub request."""
+    def __call__(self, *args, **kwargs):
+        """Sync method meant to mock a gRPC stub request."""
         self._factory.method_calls.append((self._name, args, kwargs))
         curr_result, self._factory.results = (self._factory.results[0],
                                               self._factory.results[1:])
-        return _AsyncResult(curr_result)
-
-
-class _AsyncResult(object):
-    """Result returned from a ``_MethodMock.async`` call."""
-
-    def __init__(self, result):
-        self._result = result
-
-    def result(self):
-        """Result method on an asyc object."""
-        return self._result
+        return curr_result

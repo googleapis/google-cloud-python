@@ -1,8 +1,6 @@
 GENERATED_DIR=$(shell pwd)/generated_python
 FINAL_DIR=gcloud/bigtable/_generated
-BREW_PREFIX=$(shell brew --prefix)
-LD_LIBRARY_PATH=$(BREW_PREFIX)/lib
-GRPC_PLUGIN=$(BREW_PREFIX)/bin/grpc_python_plugin
+GRPC_PLUGIN=grpc_python_plugin
 
 help:
 	@echo 'Makefile for gcloud-python Bigtable protos                      '
