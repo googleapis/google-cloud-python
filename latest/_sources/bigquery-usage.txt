@@ -282,7 +282,7 @@ Run a query which can be expected to complete within bounded time:
    >>> query = """\
    SELECT count(*) AS age_count FROM dataset_name.person_ages
    """
-   >>> results = client.query(query, timeout_ms=1000)
+   >>> results = client.run_sync_query(query, timeout_ms=1000)
    >>> retry_count = 100
    >>> while retry_count > 0 and not results.job_complete:
    ...     retry_count -= 1
@@ -314,9 +314,9 @@ Background a query, loading the results into a table:
    """
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> job = client.query_async(query,
-   ...                          destination=table,
-   ...                          write_disposition='truncate')
+   >>> job = client.run_async_query(query,
+   ...                              destination=table,
+   ...                              write_disposition='truncate')
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
