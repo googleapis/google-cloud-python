@@ -97,10 +97,27 @@ class Test_make_stub(unittest2.TestCase):
         mock_result = object()
         stub_inputs = []
 
-        def mock_stub_factory(host, port, metadata_transformer=None,
-                              secure=None, root_certificates=None):
-            stub_inputs.append((host, port, metadata_transformer,
-                                secure, root_certificates))
+        CLIENT_CREDS = object()
+        CHANNEL = object()
+
+        class _ImplementationsModule(object):
+
+            def __init__(self):
+                self.ssl_client_credentials_args = None
+                self.secure_channel_args = None
+
+            def ssl_client_credentials(self, *args, **kwargs):
+                self.ssl_client_credentials_args = (args, kwargs)
+                return CLIENT_CREDS
+
+            def secure_channel(self, *args, **kwargs):
+                self.secure_channel_args = (args, kwargs)
+                return CHANNEL
+
+        implementations_mod = _ImplementationsModule()
+
+        def mock_stub_factory(channel, metadata_transformer=None):
+            stub_inputs.append((channel, metadata_transformer))
             return mock_result
 
         transformed = object()
@@ -115,12 +132,18 @@ class Test_make_stub(unittest2.TestCase):
         certs = 'FOOBAR'
         client = object()
         with _Monkey(MUT, get_certs=lambda: certs,
+                     implementations=implementations_mod,
                      MetadataTransformer=mock_transformer):
             result = self._callFUT(client, mock_stub_factory, host, port)
 
         self.assertTrue(result is mock_result)
-        self.assertEqual(stub_inputs, [(host, port, transformed, True, certs)])
+        self.assertEqual(stub_inputs, [(CHANNEL, transformed)])
         self.assertEqual(clients, [client])
+        ssl_cli_kwargs = {'private_key': None, 'certificate_chain': None}
+        self.assertEqual(implementations_mod.ssl_client_credentials_args,
+                         ((certs,), ssl_cli_kwargs))
+        self.assertEqual(implementations_mod.secure_channel_args,
+                         ((host, port, CLIENT_CREDS), {}))
 
 
 class _Credentials(object):
