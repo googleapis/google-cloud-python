@@ -191,11 +191,17 @@ class TestBigQuery(unittest2.TestCase):
             self.assertEqual(found.mode, expected.mode)
 
     def test_load_table_then_dump_table(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        NOW_SECONDS = 1448911495.484366
+        NOW = datetime.datetime.utcfromtimestamp(
+            NOW_SECONDS).replace(tzinfo=UTC)
         ROWS = [
-            ('Phred Phlyntstone', 32),
-            ('Bharney Rhubble', 33),
-            ('Wylma Phlyntstone', 29),
-            ('Bhettye Rhubble', 27),
+            ('Phred Phlyntstone', 32, NOW),
+            ('Bharney Rhubble', 33, NOW + datetime.timedelta(seconds=10)),
+            ('Wylma Phlyntstone', 29, NOW + datetime.timedelta(seconds=20)),
+            ('Bhettye Rhubble', 27, None),
         ]
         ROW_IDS = range(len(ROWS))
         dataset = CLIENT.dataset(DATASET_NAME)
@@ -206,7 +212,8 @@ class TestBigQuery(unittest2.TestCase):
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
         age = bigquery.SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = dataset.table(TABLE_NAME, schema=[full_name, age])
+        now = bigquery.SchemaField('now', 'TIMESTAMP')
+        table = dataset.table(TABLE_NAME, schema=[full_name, age, now])
         self.assertFalse(table.exists())
         table.create()
         self.to_delete.insert(0, table)
