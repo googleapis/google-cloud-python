@@ -24,12 +24,27 @@ from gcloud.streaming.util import calculate_wait_for_retry
 # 308 and 429 don't have names in httplib.
 RESUME_INCOMPLETE = 308
 TOO_MANY_REQUESTS = 429
+
+
 _REDIRECT_STATUS_CODES = (
     http_client.MOVED_PERMANENTLY,
     http_client.FOUND,
     http_client.SEE_OTHER,
     http_client.TEMPORARY_REDIRECT,
     RESUME_INCOMPLETE,
+)
+
+
+_RETRYABLE_EXCEPTIONS = (
+    http_client.BadStatusLine,
+    http_client.IncompleteRead,
+    http_client.ResponseNotReady,
+    socket.error,
+    httplib2.ServerNotFoundError,
+    ValueError,
+    RequestError,
+    BadStatusCodeError,
+    RetryAfterError,
 )
 
 
@@ -343,19 +358,6 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
     response = Response(info, content, http_request.url)
     check_response_func(response)
     return response
-
-
-_RETRYABLE_EXCEPTIONS = (
-    http_client.BadStatusLine,
-    http_client.IncompleteRead,
-    http_client.ResponseNotReady,
-    socket.error,
-    httplib2.ServerNotFoundError,
-    ValueError,
-    RequestError,
-    BadStatusCodeError,
-    RetryAfterError,
-)
 
 
 def make_api_request(http, http_request,
