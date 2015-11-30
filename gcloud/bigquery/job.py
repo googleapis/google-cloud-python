@@ -444,10 +444,14 @@ class LoadTableFromStorageJob(_AsyncJob):
     :type schema: list of :class:`gcloud.bigquery.table.SchemaField`
     :param schema: The job's schema
     """
+
+    _schema = None
+
     def __init__(self, name, destination, source_uris, client, schema=()):
         super(LoadTableFromStorageJob, self).__init__(name, client)
         self.destination = destination
         self.source_uris = source_uris
+        # Let the @property do validation.
         self.schema = schema
         self._configuration = _LoadConfiguration()
 

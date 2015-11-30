@@ -182,7 +182,8 @@ class Document(object):
         document._parse_fields_resource(resource)
         return document
 
-    def _parse_value_resource(self, resource):
+    @staticmethod
+    def _parse_value_resource(resource):
         """Helper for _parse_fields_resource"""
         if 'stringValue' in resource:
             string_format = resource.get('stringFormat')
@@ -245,7 +246,8 @@ class Document(object):
             client = self.index._client
         return client
 
-    def _build_value_resource(self, value):
+    @staticmethod
+    def _build_value_resource(value):
         """Helper for _build_fields_resource"""
         result = {}
         if value.value_type == 'string':

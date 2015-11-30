@@ -52,6 +52,9 @@ class _Transfer(object):
     :type num_retries: integer
     :param num_retries: how many retries should the transfer attempt
     """
+
+    _num_retries = None
+
     def __init__(self, stream, close_stream=False,
                  chunksize=_DEFAULT_CHUNKSIZE, auto_transfer=True,
                  http=None, num_retries=5):
@@ -61,7 +64,7 @@ class _Transfer(object):
         self._stream = stream
         self._url = None
 
-        # Let the @property do validation
+        # Let the @property do validation.
         self.num_retries = num_retries
 
         self.auto_transfer = auto_transfer
@@ -385,7 +388,8 @@ class Download(_Transfer):
                 start = max(0, start + self.total_size)
             return start, self.total_size - 1
 
-    def _set_range_header(self, request, start, end=None):
+    @staticmethod
+    def _set_range_header(request, start, end=None):
         """Update the 'Range' header in a request to match a byte range.
 
         :type request: :class:`gcloud.streaming.http_wrapper.Request`
@@ -915,7 +919,8 @@ class Upload(_Transfer):
         else:
             raise HttpError.from_response(refresh_response)
 
-    def _get_range_header(self, response):
+    @staticmethod
+    def _get_range_header(response):
         """Return a 'Range' header from a response.
 
         :type response: :class:`gcloud.streaming.http_wrapper.Response`
@@ -975,7 +980,8 @@ class Upload(_Transfer):
         else:
             return http_response
 
-    def _last_byte(self, range_header):
+    @staticmethod
+    def _last_byte(range_header):
         """Parse the last byte from a 'Range' header.
 
         :type range_header: string

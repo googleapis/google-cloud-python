@@ -79,7 +79,7 @@ class Key(object):
         :returns: True if the keys compare equal, else False.
         """
         if not isinstance(other, Key):
-            return NotImplemented
+            return False
 
         if self.is_partial or other.is_partial:
             return False
@@ -99,7 +99,7 @@ class Key(object):
         :rtype: boolean
         :returns: False if the keys compare equal, else True.
         """
-        return not self == other
+        return not self.__eq__(other)
 
     def __hash__(self):
         """Hash a keys for use in a dictionary lookp.

@@ -677,6 +677,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
         result = client.delete_multi([])
         self.assertEqual(result, None)
+        self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
         from gcloud.datastore.test_batch import _CommitResult

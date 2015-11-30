@@ -31,9 +31,6 @@ class _ClientFactoryMixin(object):
         This class is virtual.
     """
 
-    def __init__(self, *args, **kwargs):
-        raise NotImplementedError('_ClientFactoryMixin is a virtual class')
-
     @classmethod
     def from_service_account_json(cls, json_credentials_path, *args, **kwargs):
         """Factory to retrieve JSON credentials while creating client.

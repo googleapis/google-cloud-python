@@ -19,23 +19,20 @@ This module is not part of the public API surface of `gcloud`.
 import calendar
 import datetime
 import os
-import six
+from threading import local as Local
 import socket
 
-try:
-    from threading import local as Local
-except ImportError:     # pragma: NO COVER (who doesn't have it?)
-    class Local(object):
-        """Placeholder for non-threaded applications."""
-
+import six
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
+from gcloud.environment_vars import PROJECT
+
+# pylint: disable=wrong-import-position
 try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
-
-from gcloud.environment_vars import PROJECT
+# pylint: enable=wrong-import-position
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
@@ -297,7 +294,7 @@ def _to_bytes(value, encoding='ascii'):
 
 
 try:
-    from pytz import UTC  # pylint: disable=unused-import
+    from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
 

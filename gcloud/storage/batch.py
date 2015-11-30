@@ -20,10 +20,10 @@ from email.generator import Generator
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.parser import Parser
-import httplib2
 import io
 import json
 
+import httplib2
 import six
 
 from gcloud.exceptions import make_exception

@@ -80,6 +80,11 @@ load-plugins=pylint.extensions.check_docs
 #                      @_lazy_property_deco
 #                      def dataset_id():
 #                          ...
+# - redefined-variable-type: This error is overzealous and complains at e.g.
+#                      if some_prop:
+#                          return int(value)
+#                      else:
+#                          return float(value)
 disable =
     maybe-no-member,
     no-member,
@@ -88,6 +93,7 @@ disable =
     similarities,
     star-args,
     method-hidden,
+    redefined-variable-type,
 
 
 [REPORTS]

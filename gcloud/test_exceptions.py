@@ -21,8 +21,8 @@ class Test_GCloudError(unittest2.TestCase):
         from gcloud.exceptions import GCloudError
         return GCloudError
 
-    def _makeOne(self, *args):
-        return self._getTargetClass()(*args)
+    def _makeOne(self, message, errors=()):
+        return self._getTargetClass()(message, errors=errors)
 
     def test_ctor_defaults(self):
         e = self._makeOne('Testing')

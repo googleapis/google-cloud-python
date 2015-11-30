@@ -28,6 +28,8 @@ class Test_PropertyMixin(unittest2.TestCase):
 
         class Derived(self._getTargetClass()):
 
+            client = None
+
             @property
             def path(self):
                 return path

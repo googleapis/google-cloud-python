@@ -60,10 +60,13 @@ class Dataset(object):
     :param access_grants: roles granted to entities for this dataset
     """
 
+    _access_grants = None
+
     def __init__(self, name, client, access_grants=()):
         self.name = name
         self._client = client
         self._properties = {}
+        # Let the @property do validation.
         self.access_grants = access_grants
 
     @property
@@ -283,7 +286,8 @@ class Dataset(object):
             client = self._client
         return client
 
-    def _parse_access_grants(self, access):
+    @staticmethod
+    def _parse_access_grants(access):
         """Parse a resource fragment into a set of access grants.
 
         :type access: list of mappings
