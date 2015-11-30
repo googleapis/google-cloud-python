@@ -27,19 +27,20 @@ Authentication / Configuration
 
 - Override the credentials inferred from the environment by passing explicit
   ``credentials`` to one of the alternative ``classmethod`` factories,
-  `:meth:gcloud.bigquery.client.Client.from_service_account_json`:
+  :meth:`gcloud.bigquery.client.Client.from_service_account_json`:
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client.from_service_account_json('/path/to/creds.json')
 
-  or `:meth:gcloud.bigquery.client.Client.from_service_account_p12`:
+  or :meth:`gcloud.bigquery.client.Client.from_service_account_p12`:
 
   .. doctest::
 
      >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_p12('/path/to/creds.p12', 'jrandom@example.com')
+     >>> client = bigquery.Client.from_service_account_p12(
+     ...     '/path/to/creds.p12', 'jrandom@example.com')
 
 
 Projects
