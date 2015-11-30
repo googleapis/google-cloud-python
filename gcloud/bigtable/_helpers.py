@@ -19,6 +19,9 @@ protobuf objects.
 """
 
 
+from grpc.beta import implementations
+
+
 # See https://gist.github.com/dhermes/bbc5b7be1932bfffae77
 # for appropriate values on other systems.
 # NOTE: Even this path is Unix specific.
@@ -66,7 +69,9 @@ def get_certs():
 
 
 def make_stub(client, stub_factory, host, port):
-    """Makes a stub for the an API.
+    """Makes a stub for an RPC service.
+
+    Uses / depends on the beta implementation of gRPC.
 
     :type client: :class:`.client.Client`
     :param client: The client that owns the cluster. Provides authorization and
@@ -85,8 +90,11 @@ def make_stub(client, stub_factory, host, port):
     :rtype: :class:`grpc.beta._stub._AutoIntermediary`
     :returns: The stub object used to make gRPC requests to a given API.
     """
+    root_certificates = get_certs()
+    client_credentials = implementations.ssl_client_credentials(
+        root_certificates, private_key=None, certificate_chain=None)
+    channel = implementations.secure_channel(
+        host, port, client_credentials)
     custom_metadata_transformer = MetadataTransformer(client)
-    return stub_factory(host, port,
-                        metadata_transformer=custom_metadata_transformer,
-                        secure=True,
-                        root_certificates=get_certs())
+    return stub_factory(channel,
+                        metadata_transformer=custom_metadata_transformer)
