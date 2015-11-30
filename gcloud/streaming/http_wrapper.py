@@ -276,7 +276,7 @@ def _check_response(response):
         raise RetryAfterError.from_response(response)
 
 
-def _rebuild_http_connections(http):
+def _reset_http_connections(http):
     """Rebuild all http connections in the httplib2.Http instance.
 
     httplib2 overloads the map in http.connections to contain two different
@@ -293,60 +293,6 @@ def _rebuild_http_connections(http):
         for conn_key in list(http.connections.keys()):
             if ':' in conn_key:
                 del http.connections[conn_key]
-
-
-def handle_http_exceptions(retry_args):
-    """Exception handler for http failures.
-
-    Catches known failures and rebuild the underlying HTTP connections.
-
-    :type retry_args: :class:`_ExceptionRetryArgs`
-    :param retry_args: the exception information to be evaluated.
-    """
-    # If the server indicates how long to wait, use that value.  Otherwise,
-    # calculate the wait time on our own.
-    retry_after = None
-
-    # Transport failures
-    if isinstance(retry_args.exc, (http_client.BadStatusLine,
-                                   http_client.IncompleteRead,
-                                   http_client.ResponseNotReady)):
-        logging.debug('Caught HTTP error %s, retrying: %s',
-                      type(retry_args.exc).__name__, retry_args.exc)
-    elif isinstance(retry_args.exc, socket.gaierror):
-        logging.debug(
-            'Caught socket address error, retrying: %s', retry_args.exc)
-    elif isinstance(retry_args.exc, socket.timeout):
-        logging.debug(
-            'Caught socket timeout error, retrying: %s', retry_args.exc)
-    elif isinstance(retry_args.exc, socket.error):
-        logging.debug('Caught socket error, retrying: %s', retry_args.exc)
-    elif isinstance(retry_args.exc, httplib2.ServerNotFoundError):
-        logging.debug(
-            'Caught server not found error, retrying: %s', retry_args.exc)
-    elif isinstance(retry_args.exc, ValueError):
-        # oauth2client tries to JSON-decode the response, which can result
-        # in a ValueError if the response was invalid. Until that is fixed in
-        # oauth2client, need to handle it here.
-        logging.debug('Response content was invalid (%s), retrying',
-                      retry_args.exc)
-    elif isinstance(retry_args.exc, RequestError):
-        logging.debug('Request returned no response, retrying')
-    # API-level failures
-    elif isinstance(retry_args.exc, BadStatusCodeError):
-        logging.debug('Response returned status %s, retrying',
-                      retry_args.exc.status_code)
-    elif isinstance(retry_args.exc, RetryAfterError):
-        logging.debug('Response returned a retry-after header, retrying')
-        retry_after = retry_args.exc.retry_after
-    else:
-        raise
-    _rebuild_http_connections(retry_args.http)
-    logging.debug('Retrying request to url %s after exception %s',
-                  retry_args.http_request.url, retry_args.exc)
-    time.sleep(
-        retry_after or calculate_wait_for_retry(
-            retry_args.num_retries, max_wait=retry_args.max_retry_wait))
 
 
 def _make_api_request_no_retry(http, http_request, redirections=5,
@@ -399,11 +345,23 @@ def _make_api_request_no_retry(http, http_request, redirections=5,
     return response
 
 
+_RETRYABLE_EXCEPTIONS = (
+    http_client.BadStatusLine,
+    http_client.IncompleteRead,
+    http_client.ResponseNotReady,
+    socket.error,
+    httplib2.ServerNotFoundError,
+    ValueError,
+    RequestError,
+    BadStatusCodeError,
+    RetryAfterError,
+)
+
+
 def make_api_request(http, http_request,
                      retries=7,
                      max_retry_wait=60,
                      redirections=5,
-                     retry_func=handle_http_exceptions,
                      check_response_func=_check_response,
                      wo_retry_func=_make_api_request_no_retry):
     """Send an HTTP request via the given http, performing error/retry handling.
@@ -424,9 +382,6 @@ def make_api_request(http, http_request,
     :type redirections: integer
     :param redirections: Number of redirects to follow.
 
-    :type retry_func: function taking (http, request, exception, num_retries).
-    :param retry_func: Function to handle retries on exceptions.
-
     :type check_response_func: function taking (response, content, url).
     :param check_response_func: Function to validate the HTTP response.
 
@@ -446,14 +401,18 @@ def make_api_request(http, http_request,
             return wo_retry_func(
                 http, http_request, redirections=redirections,
                 check_response_func=check_response_func)
-        # retry_func will consume the exception types it handles and raise.
-        except Exception as exc:  # pylint: disable=broad-except
+        except _RETRYABLE_EXCEPTIONS as exc:
             retry += 1
             if retry >= retries:
                 raise
-            else:
-                retry_func(_ExceptionRetryArgs(
-                    http, http_request, exc, retry, max_retry_wait))
+            retry_after = getattr(exc, 'retry_after', None)
+            if retry_after is None:
+                retry_after = calculate_wait_for_retry(retry, max_retry_wait)
+
+        _reset_http_connections(http)
+        logging.debug('Retrying request to url %s after exception %s',
+                      http_request.url, exc)
+        time.sleep(retry_after)
 
 
 _HTTP_FACTORIES = []

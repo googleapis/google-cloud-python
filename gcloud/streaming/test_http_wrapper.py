@@ -233,11 +233,11 @@ class Test__check_response(unittest2.TestCase):
         self._callFUT(_Response(200))
 
 
-class Test__rebuild_http_connections(unittest2.TestCase):
+class Test__reset_http_connections(unittest2.TestCase):
 
     def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import _rebuild_http_connections
-        return _rebuild_http_connections(*args, **kw)
+        from gcloud.streaming.http_wrapper import _reset_http_connections
+        return _reset_http_connections(*args, **kw)
 
     def test_wo_connections(self):
         http = object()
@@ -249,248 +249,6 @@ class Test__rebuild_http_connections(unittest2.TestCase):
         self._callFUT(http)
         self.assertFalse('delete:me' in connections)
         self.assertTrue('skip_me' in connections)
-
-
-class Test_handle_http_exceptions(unittest2.TestCase):
-    URL = 'http://example.com/api'
-
-    def _callFUT(self, *args, **kw):
-        from gcloud.streaming.http_wrapper import (
-            handle_http_exceptions)
-        return handle_http_exceptions(*args, **kw)
-
-    def _monkeyMUT(self):
-        from gcloud._testing import _Monkey
-        from gcloud.streaming import http_wrapper as MUT
-        _logged = []
-
-        def _debug(msg, *args):
-            _logged.append((msg, args))
-
-        _logging = _Dummy(debug=_debug)
-        _slept = []
-
-        def _sleep(value):
-            _slept.append(value)
-
-        _time = _Dummy(sleep=_sleep)
-        monkey = _Monkey(MUT, logging=_logging, time=_time)
-        return monkey, _logged, _slept
-
-    def _build_retry_args(self, exc,
-                          url=URL, num_retries=0, max_retry_wait=10):
-        retry_args = _Dummy(exc=exc,
-                            num_retries=num_retries,
-                            max_retry_wait=max_retry_wait)
-        retry_args.http_request = _Dummy(url=url)
-        connections = {'delete:me': object(), 'skip_me': object()}
-        retry_args.http = _Dummy(connections=connections)
-        return retry_args
-
-    def _verify_logged_slept(self, logged, slept,
-                             expected_msg, expected_args, expected_sleep=1.25):
-        self.assertEqual(len(logged), 2)
-
-        msg, args = logged[0]
-        self.assertEqual(msg, expected_msg)
-        self.assertEqual(args, expected_args)
-
-        msg, args = logged[1]
-        self.assertEqual(msg, 'Retrying request to url %s after exception %s')
-        self.assertEqual(len(args), 2)
-        self.assertEqual(args[0], self.URL)
-
-        self.assertEqual(slept, [expected_sleep])
-
-    def test_w_BadStatusLine(self):
-        import random
-        from gcloud._testing import _Monkey
-        from six.moves.http_client import BadStatusLine
-        exc = BadStatusLine('invalid')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught HTTP error %s, retrying: %s',
-            ('BadStatusLine', exc))
-
-    def test_w_IncompleteRead(self):
-        import random
-        from gcloud._testing import _Monkey
-        from six.moves.http_client import IncompleteRead
-        exc = IncompleteRead(50, 100)
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught HTTP error %s, retrying: %s',
-            ('IncompleteRead', exc))
-
-    def test_w_ResponseNotReady(self):
-        import random
-        from gcloud._testing import _Monkey
-        from six.moves.http_client import ResponseNotReady
-        exc = ResponseNotReady('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught HTTP error %s, retrying: %s',
-            ('ResponseNotReady', exc))
-
-    def test_w_socket_gaierror(self):
-        import random
-        from gcloud._testing import _Monkey
-        import socket
-        exc = socket.gaierror('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught socket address error, retrying: %s', (exc,))
-
-    def test_w_socket_timeout(self):
-        import random
-        from gcloud._testing import _Monkey
-        import socket
-        exc = socket.timeout('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught socket timeout error, retrying: %s', (exc,))
-
-    def test_w_socket_error(self):
-        import random
-        from gcloud._testing import _Monkey
-        import socket
-        exc = socket.error('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Caught socket error, retrying: %s', (exc,))
-
-    def test_w_httplib2_ServerNotFoundError(self):
-        import random
-        from gcloud._testing import _Monkey
-        import httplib2
-        exc = httplib2.ServerNotFoundError('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept,
-            'Caught server not found error, retrying: %s', (exc,))
-
-    def test_w_ValueError(self):
-        import random
-        from gcloud._testing import _Monkey
-        exc = ValueError('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept,
-            'Response content was invalid (%s), retrying', (exc,))
-
-    def test_w_RequestError(self):
-        import random
-        from gcloud._testing import _Monkey
-        from gcloud.streaming.exceptions import RequestError
-        exc = RequestError('uh oh')
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Request returned no response, retrying', ())
-
-    def test_w_BadStatusCodeError(self):
-        import random
-        from gcloud._testing import _Monkey
-        from gcloud.streaming.exceptions import BadStatusCodeError
-        response = _Response(500)
-        exc = BadStatusCodeError.from_response(response)
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with _Monkey(random, uniform=lambda lower, upper: upper):
-            with monkey:
-                self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept, 'Response returned status %s, retrying', (500,))
-
-    def test_w_RetryAfterError(self):
-        from gcloud.streaming.exceptions import RetryAfterError
-        from gcloud.streaming.http_wrapper import TOO_MANY_REQUESTS
-        RETRY_AFTER = 25
-        response = _Response(TOO_MANY_REQUESTS, RETRY_AFTER)
-        exc = RetryAfterError.from_response(response)
-        retry_args = self._build_retry_args(exc)
-        monkey, logged, slept = self._monkeyMUT()
-
-        with monkey:
-            self._callFUT(retry_args)
-
-        self._verify_logged_slept(
-            logged, slept,
-            'Response returned a retry-after header, retrying', (),
-            RETRY_AFTER)
-
-    def test_wo_matching_type(self):
-
-        class _Nonesuch(Exception):
-            pass
-
-        def _raises():
-            raise _Nonesuch
-
-        monkey, _, _ = self._monkeyMUT()
-
-        with monkey:
-            with self.assertRaises(_Nonesuch):
-                try:
-                    _raises()
-                except _Nonesuch as exc:
-                    retry_args = _Dummy(exc=exc)
-                    self._callFUT(retry_args)
 
 
 class Test___make_api_request_no_retry(unittest2.TestCase):
@@ -635,28 +393,23 @@ class Test_make_api_request(unittest2.TestCase):
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
     def test_w_exceptions_lt_max_retries(self):
-        HTTP, REQUEST, RESPONSE = object(), object(), object()
+        from gcloud.streaming.exceptions import RetryAfterError
+        HTTP, RESPONSE = object(), object()
+        REQUEST = _Request()
         WAIT = 10,
-        _created, _checked, _retried = [], [], []
+        _created, _checked = [], []
         _counter = [None] * 4
-
-        class _Retry(Exception):
-            pass
 
         def _wo_exception(*args, **kw):
             _created.append((args, kw))
             if _counter:
                 _counter.pop()
-                raise _Retry()
+                raise RetryAfterError(RESPONSE, '', REQUEST.url, 0.1)
             return RESPONSE
-
-        def _retry(args):
-            _retried.append(args)
 
         response = self._callFUT(HTTP, REQUEST,
                                  retries=5,
                                  max_retry_wait=WAIT,
-                                 retry_func=_retry,
                                  wo_retry_func=_wo_exception,
                                  check_response_func=_checked.append)
 
@@ -669,36 +422,26 @@ class Test_make_api_request(unittest2.TestCase):
         for attempt in _created:
             self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
-        self.assertEqual(len(_retried), 4)
-        for index, retry in enumerate(_retried):
-            self.assertTrue(retry.http is HTTP)
-            self.assertTrue(retry.http_request is REQUEST)
-            self.assertTrue(isinstance(retry.exc, _Retry))
-            self.assertEqual(retry.num_retries, index + 1)
-            self.assertEqual(retry.max_retry_wait, WAIT)
 
     def test_w_exceptions_gt_max_retries(self):
-        HTTP, REQUEST = object(), object()
+        from gcloud._testing import _Monkey
+        from gcloud.streaming import http_wrapper as MUT
+        HTTP = object()
+        REQUEST = _Request()
         WAIT = 10,
-        _created, _checked, _retried = [], [], []
-
-        class _Retry(Exception):
-            pass
+        _created, _checked = [], []
 
         def _wo_exception(*args, **kw):
             _created.append((args, kw))
-            raise _Retry()
+            raise ValueError('Retryable')
 
-        def _retry(args):
-            _retried.append(args)
-
-        with self.assertRaises(_Retry):
-            self._callFUT(HTTP, REQUEST,
-                          retries=3,
-                          max_retry_wait=WAIT,
-                          retry_func=_retry,
-                          wo_retry_func=_wo_exception,
-                          check_response_func=_checked.append)
+        with _Monkey(MUT, calculate_wait_for_retry=lambda *ignored: 0.1):
+            with self.assertRaises(ValueError):
+                self._callFUT(HTTP, REQUEST,
+                              retries=3,
+                              max_retry_wait=WAIT,
+                              wo_retry_func=_wo_exception,
+                              check_response_func=_checked.append)
 
         self.assertEqual(len(_created), 3)
         expected_kw = {
@@ -708,13 +451,6 @@ class Test_make_api_request(unittest2.TestCase):
         for attempt in _created:
             self.assertEqual(attempt, ((HTTP, REQUEST), expected_kw))
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
-        self.assertEqual(len(_retried), 2)
-        for index, retry in enumerate(_retried):
-            self.assertTrue(retry.http is HTTP)
-            self.assertTrue(retry.http_request is REQUEST)
-            self.assertTrue(isinstance(retry.exc, _Retry))
-            self.assertEqual(retry.num_retries, index + 1)
-            self.assertEqual(retry.max_retry_wait, WAIT)
 
 
 class Test__register_http_factory(unittest2.TestCase):

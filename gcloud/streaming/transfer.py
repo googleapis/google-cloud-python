@@ -15,7 +15,6 @@ from gcloud.streaming.exceptions import HttpError
 from gcloud.streaming.exceptions import TransferInvalidError
 from gcloud.streaming.exceptions import TransferRetryError
 from gcloud.streaming.http_wrapper import get_http
-from gcloud.streaming.http_wrapper import handle_http_exceptions
 from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import RESUME_INCOMPLETE
@@ -65,7 +64,6 @@ class _Transfer(object):
         # Let the @property do validation
         self.num_retries = num_retries
 
-        self.retry_func = handle_http_exceptions
         self.auto_transfer = auto_transfer
         self.chunksize = chunksize
 
@@ -467,8 +465,7 @@ class Download(_Transfer):
         request = Request(url=self.url)
         self._set_range_header(request, start, end=end)
         return make_api_request(
-            self.bytes_http, request, retry_func=self.retry_func,
-            retries=self.num_retries)
+            self.bytes_http, request, retries=self.num_retries)
 
     def _process_response(self, response):
         """Update attribtes and writing stream, based on response.
@@ -1060,8 +1057,7 @@ class Upload(_Transfer):
                  code from the response indicates an error.
         """
         response = make_api_request(
-            self.bytes_http, request, retry_func=self.retry_func,
-            retries=self.num_retries)
+            self.bytes_http, request, retries=self.num_retries)
         if response.status_code not in (http_client.OK, http_client.CREATED,
                                         RESUME_INCOMPLETE):
             # We want to reset our state to wherever the server left us
