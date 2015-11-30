@@ -411,10 +411,10 @@ def make_api_request(http, http_request,
             if retry_after is None:
                 retry_after = calculate_wait_for_retry(retry, max_retry_wait)
 
-        _reset_http_connections(http)
-        logging.debug('Retrying request to url %s after exception %s',
-                      http_request.url, exc)
-        time.sleep(retry_after)
+            _reset_http_connections(http)
+            logging.debug('Retrying request to url %s after exception %s',
+                          http_request.url, type(exc).__name__)
+            time.sleep(retry_after)
 
 
 _HTTP_FACTORIES = []
