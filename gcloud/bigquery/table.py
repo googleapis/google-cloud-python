@@ -19,6 +19,7 @@ import datetime
 import six
 
 from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _millis_from_datetime
 from gcloud.exceptions import NotFound
 from gcloud.bigquery._helpers import _rows_from_json
@@ -657,8 +658,11 @@ class Table(object):
             row_info = {}
 
             for field, value in zip(self._schema, row):
-                if field.field_type == 'TIMESTAMP':
-                    value = _millis_from_datetime(value)
+                if field.field_type == 'TIMESTAMP' and value is not None:
+                    # BigQuery stores TIMESTAMP data internally as a
+                    # UNIX timestamp with microsecond precision.
+                    # Specifies the number of seconds since the epoch.
+                    value = _microseconds_from_datetime(value) * 1e-6
                 row_info[field.name] = value
 
             info = {'json': row_info}
