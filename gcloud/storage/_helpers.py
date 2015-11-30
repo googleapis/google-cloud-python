@@ -17,8 +17,9 @@
 These are *not* part of the API.
 """
 
-from Crypto.Hash import MD5
 import base64
+
+from Crypto.Hash import MD5
 
 
 class _PropertyMixin(object):

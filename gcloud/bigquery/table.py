@@ -72,10 +72,13 @@ class Table(object):
     :param schema: The table's schema
     """
 
+    _schema = None
+
     def __init__(self, name, dataset, schema=()):
         self.name = name
         self._dataset = dataset
         self._properties = {}
+        # Let the @property do validation.
         self.schema = schema
 
     @property

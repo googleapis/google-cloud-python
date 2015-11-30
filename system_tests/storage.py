@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import httplib2
 import os
-import six
 import tempfile
 import time
+
+import httplib2
+import six
 import unittest2
 
 from gcloud import _helpers

@@ -26,21 +26,22 @@ from oauth2client import client
 from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client import service_account
-
-try:
-    from google.appengine.api import app_identity
-except ImportError:
-    app_identity = None
-
 try:
     from oauth2client.appengine import AppAssertionCredentials as _GAECreds
 except ImportError:
     class _GAECreds(object):
         """Dummy class if not in App Engine environment."""
 
+# pylint: disable=wrong-import-position
+try:
+    from google.appengine.api import app_identity
+except ImportError:
+    app_identity = None
+
 from gcloud._helpers import UTC
 from gcloud._helpers import _NOW
 from gcloud._helpers import _microseconds_from_datetime
+# pylint: enable=wrong-import-position
 
 
 def get_credentials():

@@ -51,6 +51,8 @@ TEST_DISABLED_MESSAGES = [
     'too-many-locals',
     'too-many-public-methods',
     'unbalanced-tuple-unpacking',
+    'arguments-differ',
+    'assignment-from-no-return',
 ]
 TEST_RC_ADDITIONS = {
     'MESSAGES CONTROL': {
