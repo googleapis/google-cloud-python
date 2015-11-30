@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.client &mdash; gcloud af18334 documentation</title>
+    <title>gcloud.bigquery.client &mdash; gcloud 4042086 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'af18334',
+        VERSION:     '4042086',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud af18334 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4042086 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/client%0ARelease%3A%20af18334" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/client%0ARelease%3A%204042086" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (af18334)
+              Version History (4042086)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -182,8 +182,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                            <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
         <span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s">&#39;datasets&#39;</span><span class="p">]]</span>
-        <span class="k">return</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a dataset bound to this client.</span>
 
@@ -193,8 +193,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.bigquery.dataset.Dataset`</span>
 <span class="sd">        :returns: a new ``Dataset`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.load_table_from_storage"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.load_table_from_storage">[docs]</a>    <span class="k">def</span> <span class="nf">load_table_from_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">*</span><span class="n">source_uris</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for loading data into a table from CloudStorage.</span>
 
@@ -211,8 +211,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: a new ``LoadTableFromStorageJob`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">LoadTableFromStorageJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span>
-                                       <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
+                                       <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.copy_table"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.copy_table">[docs]</a>    <span class="k">def</span> <span class="nf">copy_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for copying one or more tables into another table.</span>
 
@@ -228,8 +228,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.bigquery.job.CopyJob`</span>
 <span class="sd">        :returns: a new ``CopyJob`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">CopyJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">CopyJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.extract_table_to_storage"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.extract_table_to_storage">[docs]</a>    <span class="k">def</span> <span class="nf">extract_table_to_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">*</span><span class="n">destination_uris</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for extracting a table into Cloud Storage files.</span>
 
@@ -247,8 +247,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: a new ``ExtractTableToStorageJob`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ExtractTableToStorageJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span>
-                                        <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
+                                        <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.run_async_query"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.run_async_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_async_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for running a SQL query asynchronously.</span>
 
@@ -261,8 +261,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`</span>
 <span class="sd">        :returns: a new ``RunAsyncQueryJob`` instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">RunAsyncQueryJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">RunAsyncQueryJob</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.run_sync_query"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.run_sync_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_sync_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a job for running a SQL query synchronously.</span>
 

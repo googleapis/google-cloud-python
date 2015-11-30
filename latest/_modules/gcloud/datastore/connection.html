@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.connection &mdash; gcloud af18334 documentation</title>
+    <title>gcloud.datastore.connection &mdash; gcloud 4042086 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'af18334',
+        VERSION:     '4042086',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud af18334 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4042086 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%20af18334" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%204042086" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (af18334)
+              Version History (4042086)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -231,8 +231,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">api_base</span><span class="o">=</span><span class="p">(</span><span class="n">base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_base_url</span><span class="p">),</span>
             <span class="n">api_version</span><span class="o">=</span><span class="p">(</span><span class="n">api_version</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_VERSION</span><span class="p">),</span>
-            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
-</div>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
                <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lookup keys from a dataset in the Cloud Datastore.</span>
@@ -287,8 +287,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">found</span><span class="p">]</span>
         <span class="n">missing</span> <span class="o">=</span> <span class="p">[</span><span class="n">result</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">lookup_response</span><span class="o">.</span><span class="n">missing</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">)</span>
-</div>
+        <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Connection.run_query"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.run_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">query_pb</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                   <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run a query on the Cloud Datastore.</span>
@@ -358,8 +358,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>  <span class="c"># Assume response always has cursor.</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span><span class="p">,</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span><span class="p">,</span>
-        <span class="p">)</span>
-</div>
+        <span class="p">)</span></div>
+
 <div class="viewcode-block" id="Connection.begin_transaction"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.begin_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">begin_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">serializable</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Begin a transaction.</span>
 
@@ -388,8 +388,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;beginTransaction&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">BeginTransactionResponse</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">transaction</span>
-</div>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">transaction</span></div>
+
 <div class="viewcode-block" id="Connection.commit"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">mutation_pb</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Commit dataset mutations in context of current transation (if any).</span>
 
@@ -420,8 +420,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">request</span><span class="o">.</span><span class="n">mutation</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;commit&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">CommitResponse</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">mutation_result</span>
-</div>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">mutation_result</span></div>
+
 <div class="viewcode-block" id="Connection.rollback"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.rollback">[docs]</a>    <span class="k">def</span> <span class="nf">rollback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rollback the connection&#39;s existing transaction.</span>
 
@@ -439,8 +439,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">request</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction_id</span>
         <span class="c"># Nothing to do with this response, so just execute the method.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;rollback&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
-                  <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RollbackResponse</span><span class="p">)</span>
-</div>
+                  <span class="n">datastore_pb</span><span class="o">.</span><span class="n">RollbackResponse</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Connection.allocate_ids"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.allocate_ids">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Obtain backend-generated IDs for a set of keys.</span>
 
@@ -461,9 +461,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c"># Nothing to do with this response, so just execute the method.</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">,</span> <span class="s">&#39;allocateIds&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">datastore_pb</span><span class="o">.</span><span class="n">AllocateIdsResponse</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">key</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <span class="k">def</span> <span class="nf">_set_read_options</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Validate rules for read options, and assign to the request.</span>
 

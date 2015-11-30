@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.exceptions &mdash; gcloud af18334 documentation</title>
+    <title>gcloud.exceptions &mdash; gcloud 4042086 documentation</title>
     
     <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'af18334',
+        VERSION:     '4042086',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud af18334 documentation" href="../../index.html" />
+    <link rel="top" title="gcloud 4042086 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/exceptions%0ARelease%3A%20af18334" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/exceptions%0ARelease%3A%204042086" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (af18334)
+              Version History (4042086)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -144,112 +144,112 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: list(dict)</span>
 <span class="sd">        :returns: a list of mappings describing each error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">]</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Redirection"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.Redirection">[docs]</a><span class="k">class</span> <span class="nc">Redirection</span><span class="p">(</span><span class="n">GCloudError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for 3xx responses</span>
 
 <span class="sd">    This class is abstract.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="MovedPermanently"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.MovedPermanently">[docs]</a><span class="k">class</span> <span class="nc">MovedPermanently</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;301 Moved Permanently&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">301</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">301</span></div>
 
-</div>
+
 <div class="viewcode-block" id="NotModified"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.NotModified">[docs]</a><span class="k">class</span> <span class="nc">NotModified</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;304 Not Modified&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">304</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">304</span></div>
 
-</div>
+
 <div class="viewcode-block" id="TemporaryRedirect"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.TemporaryRedirect">[docs]</a><span class="k">class</span> <span class="nc">TemporaryRedirect</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;307 Temporary Redirect&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">307</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">307</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ResumeIncomplete"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.ResumeIncomplete">[docs]</a><span class="k">class</span> <span class="nc">ResumeIncomplete</span><span class="p">(</span><span class="n">Redirection</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;308 Resume Incomplete&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">308</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">308</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ClientError"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.ClientError">[docs]</a><span class="k">class</span> <span class="nc">ClientError</span><span class="p">(</span><span class="n">GCloudError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base for 4xx responses</span>
 
 <span class="sd">    This class is abstract</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="BadRequest"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.BadRequest">[docs]</a><span class="k">class</span> <span class="nc">BadRequest</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;400 Bad Request&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">400</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">400</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Unauthorized"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.Unauthorized">[docs]</a><span class="k">class</span> <span class="nc">Unauthorized</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;401 Unauthorized&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">401</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">401</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Forbidden"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.Forbidden">[docs]</a><span class="k">class</span> <span class="nc">Forbidden</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;403 Forbidden&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">403</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">403</span></div>
 
-</div>
+
 <div class="viewcode-block" id="NotFound"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.NotFound">[docs]</a><span class="k">class</span> <span class="nc">NotFound</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;404 Not Found&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">404</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">404</span></div>
 
-</div>
+
 <div class="viewcode-block" id="MethodNotAllowed"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.MethodNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">MethodNotAllowed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;405 Method Not Allowed&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">405</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">405</span></div>
 
-</div>
+
 <div class="viewcode-block" id="Conflict"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.Conflict">[docs]</a><span class="k">class</span> <span class="nc">Conflict</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;409 Conflict&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">409</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">409</span></div>
 
-</div>
+
 <div class="viewcode-block" id="LengthRequired"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.LengthRequired">[docs]</a><span class="k">class</span> <span class="nc">LengthRequired</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;411 Length Required&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">411</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">411</span></div>
 
-</div>
+
 <div class="viewcode-block" id="PreconditionFailed"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.PreconditionFailed">[docs]</a><span class="k">class</span> <span class="nc">PreconditionFailed</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;412 Precondition Failed&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">412</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">412</span></div>
 
-</div>
+
 <div class="viewcode-block" id="RequestRangeNotSatisfiable"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.RequestRangeNotSatisfiable">[docs]</a><span class="k">class</span> <span class="nc">RequestRangeNotSatisfiable</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;416 Request Range Not Satisfiable&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">416</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">416</span></div>
 
-</div>
+
 <div class="viewcode-block" id="TooManyRequests"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.TooManyRequests">[docs]</a><span class="k">class</span> <span class="nc">TooManyRequests</span><span class="p">(</span><span class="n">ClientError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;429 Too Many Requests&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">429</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">429</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ServerError"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.ServerError">[docs]</a><span class="k">class</span> <span class="nc">ServerError</span><span class="p">(</span><span class="n">GCloudError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base for 5xx responses:  (abstract)&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Base for 5xx responses:  (abstract)&quot;&quot;&quot;</span></div>
 
-</div>
+
 <div class="viewcode-block" id="InternalServerError"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.InternalServerError">[docs]</a><span class="k">class</span> <span class="nc">InternalServerError</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;500 Internal Server Error&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">500</span></div>
 
-</div>
+
 <div class="viewcode-block" id="NotImplemented"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.NotImplemented">[docs]</a><span class="k">class</span> <span class="nc">NotImplemented</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;501 Not Implemented&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">501</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">501</span></div>
 
-</div>
+
 <div class="viewcode-block" id="ServiceUnavailable"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.ServiceUnavailable">[docs]</a><span class="k">class</span> <span class="nc">ServiceUnavailable</span><span class="p">(</span><span class="n">ServerError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception mapping a &#39;503 Service Unavailable&#39; response.&quot;&quot;&quot;</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="mi">503</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="mi">503</span></div>
 
-</div>
+
 <div class="viewcode-block" id="make_exception"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.exceptions.make_exception">[docs]</a><span class="k">def</span> <span class="nf">make_exception</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">error_info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Factory:  create exception based on HTTP response code.</span>
 
@@ -294,9 +294,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">error</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">status</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">klass</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">errors</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">error</span>
+    <span class="k">return</span> <span class="n">error</span></div>
 
-</div>
+
 <span class="k">def</span> <span class="nf">_walk_subclasses</span><span class="p">(</span><span class="n">klass</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Recursively walk subclass tree.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">klass</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>

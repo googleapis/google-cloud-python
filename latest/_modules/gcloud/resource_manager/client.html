@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.resource_manager.client &mdash; gcloud af18334 documentation</title>
+    <title>gcloud.resource_manager.client &mdash; gcloud 4042086 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'af18334',
+        VERSION:     '4042086',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud af18334 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4042086 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/client%0ARelease%3A%20af18334" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/client%0ARelease%3A%204042086" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (af18334)
+              Version History (4042086)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -154,8 +154,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;A service account cannot be used with the &#39;</span>
                                   <span class="s">&#39;Resource Manager API. Only user &#39;</span>
-                                  <span class="s">&#39;credentials can be used.&#39;</span><span class="p">)</span>
-</div>
+                                  <span class="s">&#39;credentials can be used.&#39;</span><span class="p">)</span></div>
+
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Client.from_service_account_p12"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.from_service_account_p12">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_p12</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to retrieve P12 credentials while creating client.</span>
@@ -169,8 +169,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;A service account cannot be used with the &#39;</span>
                                   <span class="s">&#39;Resource Manager API. Only user &#39;</span>
-                                  <span class="s">&#39;credentials can be used.&#39;</span><span class="p">)</span>
-</div>
+                                  <span class="s">&#39;credentials can be used.&#39;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.new_project"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.new_project">[docs]</a>    <span class="k">def</span> <span class="nf">new_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a :class:`.Project` bound to the current client.</span>
 
@@ -196,8 +196,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  any metadata loaded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Project</span><span class="p">(</span><span class="n">project_id</span><span class="o">=</span><span class="n">project_id</span><span class="p">,</span>
-                       <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-</div>
+                       <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Client.fetch_project"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.fetch_project">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch an existing project and it&#39;s relevant metadata by ID.</span>
 
@@ -214,8 +214,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_project</span><span class="p">(</span><span class="n">project_id</span><span class="p">)</span>
         <span class="n">project</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">project</span>
-</div>
+        <span class="k">return</span> <span class="n">project</span></div>
+
 <div class="viewcode-block" id="Client.list_projects"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.list_projects">[docs]</a>    <span class="k">def</span> <span class="nf">list_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List the projects visible to this client.</span>
 
@@ -275,9 +275,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">filter_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_params</span>
 
-        <span class="k">return</span> <span class="n">_ProjectIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_ProjectIterator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span></div></div>
 
-</div></div>
+
 <span class="k">class</span> <span class="nc">_ProjectIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An iterator over a list of Project resources.</span>
 
