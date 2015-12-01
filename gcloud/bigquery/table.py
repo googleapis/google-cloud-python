@@ -171,7 +171,9 @@ class Table(object):
         :rtype: integer, or ``NoneType``
         :returns: the byte count (None until set from the server).
         """
-        return self._properties.get('numBytes')
+        num_bytes_as_str = self._properties.get('numBytes')
+        if num_bytes_as_str is not None:
+            return int(num_bytes_as_str)
 
     @property
     def num_rows(self):
@@ -180,7 +182,9 @@ class Table(object):
         :rtype: integer, or ``NoneType``
         :returns: the row count (None until set from the server).
         """
-        return self._properties.get('numRows')
+        num_rows_as_str = self._properties.get('numRows')
+        if num_rows_as_str is not None:
+            return int(num_rows_as_str)
 
     @property
     def self_link(self):
@@ -247,7 +251,7 @@ class Table(object):
 
     @expires.setter
     def expires(self, value):
-        """Update atetime at which the table will be removed.
+        """Update datetime at which the table will be removed.
 
         :type value: ``datetime.datetime``, or ``NoneType``
         :param value: the new expiration time, or None

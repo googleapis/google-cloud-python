@@ -216,6 +216,50 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                               schema=[full_name, age])
         self.assertEqual(table.schema, [full_name, age])
 
+    def test_num_bytes_getter(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+
+        # Check with no value set.
+        self.assertEqual(table.num_bytes, None)
+
+        num_bytes = 1337
+        # Check with integer value set.
+        table._properties = {'numBytes': num_bytes}
+        self.assertEqual(table.num_bytes, num_bytes)
+
+        # Check with a string value set.
+        table._properties = {'numBytes': str(num_bytes)}
+        self.assertEqual(table.num_bytes, num_bytes)
+
+        # Check with invalid int value.
+        table._properties = {'numBytes': 'x'}
+        with self.assertRaises(ValueError):
+            getattr(table, 'num_bytes')
+
+    def test_num_rows_getter(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+
+        # Check with no value set.
+        self.assertEqual(table.num_rows, None)
+
+        num_rows = 42
+        # Check with integer value set.
+        table._properties = {'numRows': num_rows}
+        self.assertEqual(table.num_rows, num_rows)
+
+        # Check with a string value set.
+        table._properties = {'numRows': str(num_rows)}
+        self.assertEqual(table.num_rows, num_rows)
+
+        # Check with invalid int value.
+        table._properties = {'numRows': 'x'}
+        with self.assertRaises(ValueError):
+            getattr(table, 'num_rows')
+
     def test_schema_setter_non_list(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
