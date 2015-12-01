@@ -1060,7 +1060,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
     def test_insert_data_w_bound_client(self):
         import datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _millis_from_datetime
+        from gcloud._helpers import _microseconds_from_datetime
         from gcloud.bigquery.table import SchemaField
 
         WHEN_TS = 1437767599.006
@@ -1084,9 +1084,12 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         ]
 
         def _row_data(row):
+            joined = None
+            if row[2] is not None:
+                joined = _microseconds_from_datetime(row[2]) * 1e-6
             return {'full_name': row[0],
                     'age': row[1],
-                    'joined': _millis_from_datetime(row[2])}
+                    'joined': joined}
 
         SENT = {
             'rows': [{'json': _row_data(row)} for row in ROWS],
