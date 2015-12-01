@@ -216,6 +216,23 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                               schema=[full_name, age])
         self.assertEqual(table.schema, [full_name, age])
 
+    def test_query_id_property(self):
+        client = _Client(self.PROJECT)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        expected_result = ''.join([self.PROJECT, ':', self.DS_NAME,
+                                   '.', self.TABLE_NAME])
+        self.assertEqual(table.query_id, expected_result)
+
+    def test_query_id_property_with_hyphen(self):
+        curr_project = self.PROJECT + '-extra'
+        client = _Client(curr_project)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+        expected_result = ''.join(['[', curr_project, ':', self.DS_NAME,
+                                   '.', self.TABLE_NAME, ']'])
+        self.assertEqual(table.query_id, expected_result)
+
     def test_num_bytes_getter(self):
         client = _Client(self.PROJECT)
         dataset = _Dataset(client)
