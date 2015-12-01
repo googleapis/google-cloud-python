@@ -121,6 +121,17 @@ class TestCluster(unittest2.TestCase):
         with self.assertRaises(ValueError):
             klass.from_pb(cluster_pb, client)
 
+    def test_name_property(self):
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        client = _Client(project=project)
+
+        cluster = self._makeOne(zone, cluster_id, client)
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        self.assertEqual(cluster.name, cluster_name)
+
     def test___eq__(self):
         zone = 'zone'
         cluster_id = 'cluster_id'
@@ -148,6 +159,57 @@ class TestCluster(unittest2.TestCase):
         cluster2 = self._makeOne('zone2', 'cluster_id2', 'client2')
         self.assertNotEqual(cluster1, cluster2)
 
+    def test_reload(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        timeout_seconds = 123
+        client = _Client(project=project, timeout_seconds=timeout_seconds)
+        cluster = self._makeOne(zone, cluster_id, client)
+
+        # Create request_pb
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        request_pb = messages_pb2.GetClusterRequest(name=cluster_name)
+
+        # Create response_pb
+        serve_nodes = 31
+        display_name = u'hey-hi-hello'
+        response_pb = data_pb2.Cluster(
+            display_name=display_name,
+            serve_nodes=serve_nodes,
+        )
+
+        # Patch the stub used by the API method.
+        client._cluster_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # reload() has no return value.
+
+        # Check Cluster optional config values before.
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.display_name, cluster_id)
+
+        # Perform the method and check the result.
+        result = cluster.reload()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'GetCluster',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+        # Check Cluster optional config values before.
+        self.assertEqual(cluster.serve_nodes, serve_nodes)
+        self.assertEqual(cluster.display_name, display_name)
+
 
 class Test__get_pb_property_value(unittest2.TestCase):
 
@@ -173,5 +235,7 @@ class Test__get_pb_property_value(unittest2.TestCase):
 
 class _Client(object):
 
-    def __init__(self, project):
+    def __init__(self, project, timeout_seconds=None):
         self.project = project
+        self.project_name = 'projects/' + self.project
+        self.timeout_seconds = timeout_seconds

@@ -17,12 +17,15 @@
 
 import re
 
+from gcloud.bigtable._generated import (
+    bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable.table import Table
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'zones/(?P<zone>[^/]+)/clusters/'
                               r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
+_DEFAULT_SERVE_NODES = 3
 
 
 def _get_pb_property_value(message_pb, property_name):
@@ -74,7 +77,7 @@ class Cluster(object):
     """
 
     def __init__(self, zone, cluster_id, client,
-                 display_name=None, serve_nodes=3):
+                 display_name=None, serve_nodes=_DEFAULT_SERVE_NODES):
         self.zone = zone
         self.cluster_id = cluster_id
         self.display_name = display_name or cluster_id
@@ -124,6 +127,24 @@ class Cluster(object):
         result._update_from_pb(cluster_pb)
         return result
 
+    @property
+    def name(self):
+        """Cluster name used in requests.
+
+        .. note::
+          This property will not change if ``zone`` and ``cluster_id`` do not,
+          but the return value is not cached.
+
+        The cluster name is of the form
+
+            ``"projects/{project}/zones/{zone}/clusters/{cluster_id}"``
+
+        :rtype: str
+        :returns: The cluster name.
+        """
+        return (self._client.project_name + '/zones/' + self.zone +
+                '/clusters/' + self.cluster_id)
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
@@ -139,3 +160,14 @@ class Cluster(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def reload(self):
+        """Reload the metadata for this cluster."""
+        request_pb = messages_pb2.GetClusterRequest(name=self.name)
+        # We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.
+        cluster_pb = self._client._cluster_stub.GetCluster(
+            request_pb, self._client.timeout_seconds)
+
+        # NOTE: _update_from_pb does not check that the project, zone and
+        #       cluster ID on the response match the request.
+        self._update_from_pb(cluster_pb)

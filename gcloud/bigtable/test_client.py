@@ -379,6 +379,7 @@ class TestClient(unittest2.TestCase):
 
     def _start_method_helper(self, admin):
         from gcloud._testing import _Monkey
+        from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import client as MUT
 
         credentials = _Credentials()
@@ -429,6 +430,8 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client._data_stub_internal, data_stub)
 
     def _stop_method_helper(self, admin):
+        from gcloud.bigtable._testing import _FakeStub
+
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
@@ -499,6 +502,7 @@ class TestClient(unittest2.TestCase):
             bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -552,6 +556,7 @@ class TestClient(unittest2.TestCase):
             bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -625,45 +630,3 @@ class _Credentials(object):
 
     def __eq__(self, other):
         return self.value == other.value
-
-
-class _FakeStub(object):
-    """Acts as a gPRC stub."""
-
-    def __init__(self, *results):
-        self.results = results
-        self.method_calls = []
-        self._entered = 0
-        self._exited = []
-
-    def __enter__(self):
-        self._entered += 1
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self._exited.append((exc_type, exc_val, exc_tb))
-        return True
-
-    def __getattr__(self, name):
-        # We need not worry about attributes set in constructor
-        # since __getattribute__ will handle them.
-        return _MethodMock(name, self)
-
-
-class _MethodMock(object):
-    """Mock for API method attached to a gRPC stub.
-
-    In the beta implementation, these are of type.
-    :class:`grpc.framework.crust.implementations._UnaryUnaryMultiCallable`
-    """
-
-    def __init__(self, name, factory):
-        self._name = name
-        self._factory = factory
-
-    def __call__(self, *args, **kwargs):
-        """Sync method meant to mock a gRPC stub request."""
-        self._factory.method_calls.append((self._name, args, kwargs))
-        curr_result, self._factory.results = (self._factory.results[0],
-                                              self._factory.results[1:])
-        return curr_result

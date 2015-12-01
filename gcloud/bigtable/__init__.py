@@ -27,3 +27,5 @@ except ImportError as exc:  # pragma: NO COVER
               'to set your LD_LIBRARY_PATH variable to help '
               'Python locate the libraries.', file=sys.stderr)
     raise
+
+from gcloud.bigtable.client import Client

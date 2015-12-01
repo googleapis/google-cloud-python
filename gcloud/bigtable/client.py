@@ -97,7 +97,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
         :data:`NoneType <types.NoneType>`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        cluster. If not provided, defaulst to the Google
+                        cluster. If not provided, defaults to the Google
                         Application Default Credentials.
 
     :type read_only: bool
