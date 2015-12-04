@@ -17,6 +17,7 @@
 
 import re
 
+from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable.table import Table
@@ -52,6 +53,27 @@ def _get_pb_property_value(message_pb, property_name):
     return getattr(message_pb, property_name)
 
 
+def _prepare_create_request(cluster):
+    """Creates a protobuf request for a CreateCluster request.
+
+    :type cluster: :class:`Cluster`
+    :param cluster: The cluster to be created.
+
+    :rtype: :class:`.messages_pb2.CreateClusterRequest`
+    :returns: The CreateCluster request object containing the cluster info.
+    """
+    zone_full_name = ('projects/' + cluster._client.project +
+                      '/zones/' + cluster.zone)
+    return messages_pb2.CreateClusterRequest(
+        name=zone_full_name,
+        cluster_id=cluster.cluster_id,
+        cluster=data_pb2.Cluster(
+            display_name=cluster.display_name,
+            serve_nodes=cluster.serve_nodes,
+        ),
+    )
+
+
 class Cluster(object):
     """Representation of a Google Cloud Bigtable Cluster.
 
@@ -83,6 +105,7 @@ class Cluster(object):
         self.display_name = display_name or cluster_id
         self.serve_nodes = serve_nodes
         self._client = client
+        self._operation = None
 
     def table(self, table_id):
         """Factory to create a table associated with this cluster.
@@ -171,3 +194,27 @@ class Cluster(object):
         # NOTE: _update_from_pb does not check that the project, zone and
         #       cluster ID on the response match the request.
         self._update_from_pb(cluster_pb)
+
+    def create(self):
+        """Create this cluster.
+
+        .. note::
+
+            Uses the ``project``, ``zone`` and ``cluster_id`` on the current
+            :class:`Cluster` in addition to the ``display_name`` and
+            ``serve_nodes``. If you'd like to change them before creating,
+            reset the values via
+
+            .. code:: python
+
+                cluster.display_name = 'New display name'
+                cluster.cluster_id = 'i-changed-my-mind'
+
+            before calling :meth:`create`.
+        """
+        request_pb = _prepare_create_request(self)
+        # We expect an `operations_pb2.Operation`.
+        cluster_pb = self._client._cluster_stub.CreateCluster(
+            request_pb, self._client.timeout_seconds)
+
+        self._operation = cluster_pb.current_operation
