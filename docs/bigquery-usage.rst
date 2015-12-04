@@ -232,11 +232,7 @@ Get rows from a table's data:
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> rows, next_page_token = table.data(max_results=100)  # API request
-   >>> rows.csv.headers
-   ('full_name', 'age')
-   >>> list(rows.csv)
-   [('Abel Adamson', 27), ('Beverly Bowman', 33)]
+   >>> rows, next_page_token = table.fetch_data(max_results=100)  # API request
    >>> for row in rows:
    ...     for field, value in zip(table.schema, row):
    ...         do_something(field, value)
