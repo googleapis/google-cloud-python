@@ -15,8 +15,10 @@
 """User friendly container for Google Cloud Bigtable Cluster."""
 
 
+import datetime
 import re
 
+from gcloud._helpers import _EPOCH
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
@@ -26,7 +28,16 @@ from gcloud.bigtable.table import Table
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                               r'zones/(?P<zone>[^/]+)/clusters/'
                               r'(?P<cluster_id>[a-z][-a-z0-9]*)$')
+_OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/zones/([^/]+)/'
+                                r'clusters/([a-z][-a-z0-9]*)/operations/'
+                                r'(?P<operation_id>\d+)$')
 _DEFAULT_SERVE_NODES = 3
+_TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
+_ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.cluster.v1.'
+_CLUSTER_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateClusterMetadata'
+_TYPE_URL_MAP = {
+    _CLUSTER_CREATE_METADATA: messages_pb2.CreateClusterMetadata,
+}
 
 
 def _get_pb_property_value(message_pb, property_name):
@@ -74,6 +85,74 @@ def _prepare_create_request(cluster):
     )
 
 
+def _pb_timestamp_to_datetime(timestamp):
+    """Convert a Timestamp protobuf to a datetime object.
+
+    :type timestamp: :class:`._generated.timestamp_pb2.Timestamp`
+    :param timestamp: A Google returned timestamp protobuf.
+
+    :rtype: :class:`datetime.datetime`
+    :returns: A UTC datetime object converted from a protobuf timestamp.
+    """
+    return (
+        _EPOCH +
+        datetime.timedelta(
+            seconds=timestamp.seconds,
+            microseconds=(timestamp.nanos / 1000.0),
+        )
+    )
+
+
+def _parse_pb_any_to_native(any_val, expected_type=None):
+    """Convert a serialized "google.protobuf.Any" value to actual type.
+
+    :type any_val: :class:`gcloud.bigtable._generated.any_pb2.Any`
+    :param any_val: A serialized protobuf value container.
+
+    :type expected_type: str
+    :param expected_type: (Optional) The type URL we expect ``any_val``
+                          to have.
+
+    :rtype: object
+    :returns: The de-serialized object.
+    :raises: :class:`ValueError <exceptions.ValueError>` if the
+             ``expected_type`` does not match the ``type_url`` on the input.
+    """
+    if expected_type is not None and expected_type != any_val.type_url:
+        raise ValueError('Expected type: %s, Received: %s' % (
+            expected_type, any_val.type_url))
+    container_class = _TYPE_URL_MAP[any_val.type_url]
+    return container_class.FromString(any_val.value)
+
+
+def _process_operation(operation_pb):
+    """Processes a create protobuf response.
+
+    :type operation_pb: :class:`operations_pb2.Operation`
+    :param operation_pb: The long-running operation response from a
+                         Create/Update/Undelete cluster request.
+
+    :rtype: tuple
+    :returns: A pair of an integer and datetime stamp. The integer is the ID
+              of the operation (``operation_id``) and the timestamp when
+              the create operation began (``operation_begin``).
+    :raises: :class:`ValueError <exceptions.ValueError>` if the operation name
+             doesn't match the :data:`_OPERATION_NAME_RE` regex.
+    """
+    match = _OPERATION_NAME_RE.match(operation_pb.name)
+    if match is None:
+        raise ValueError('Operation name was not in the expected '
+                         'format after a cluster modification.',
+                         operation_pb.name)
+    operation_id = int(match.group('operation_id'))
+
+    request_metadata = _parse_pb_any_to_native(operation_pb.metadata)
+    operation_begin = _pb_timestamp_to_datetime(
+        request_metadata.request_time)
+
+    return operation_id, operation_begin
+
+
 class Cluster(object):
     """Representation of a Google Cloud Bigtable Cluster.
 
@@ -105,7 +184,9 @@ class Cluster(object):
         self.display_name = display_name or cluster_id
         self.serve_nodes = serve_nodes
         self._client = client
-        self._operation = None
+        self._operation_type = None
+        self._operation_id = None
+        self._operation_begin = None
 
     def table(self, table_id):
         """Factory to create a table associated with this cluster.
@@ -217,7 +298,9 @@ class Cluster(object):
         cluster_pb = self._client._cluster_stub.CreateCluster(
             request_pb, self._client.timeout_seconds)
 
-        self._operation = cluster_pb.current_operation
+        self._operation_type = 'create'
+        self._operation_id, self._operation_begin = _process_operation(
+            cluster_pb.current_operation)
 
     def delete(self):
         """Delete this cluster.
