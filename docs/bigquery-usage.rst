@@ -313,7 +313,7 @@ Background a query, loading the results into a table:
    """
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> job = client.run_async_query('fullname-age', query)
+   >>> job = client.run_async_query('fullname-age-query-job', query)
    >>> job.destination_table = table
    >>> job.write_disposition= 'truncate'
    >>> job.job_id
@@ -393,9 +393,9 @@ the job locally:
    ...     SchemaField(name='full_name', type='string', mode='required'),
    ...     SchemaField(name='age', type='int', mode='required)]
    >>> job = client.load_table_from_storage(
-   ...          'from-storage', table, 'gs://bucket-name/object-prefix*')
+   ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
    >>> job.source_format = 'CSV'
-   >>> job.skip_leading_rows = 1
+   >>> job.skip_leading_rows = 1  # count of skipped header rows
    >>> job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
@@ -449,10 +449,10 @@ located on Google Cloud Storage.  First, create the job locally:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> job = client.extract_table_to_storage(
-   ...          'extract-person-ages', table,
-   ...          'gs://bucket-name/export-prefix*.csv')
+   ...     'extract-person-ages-job', table,
+   ...     'gs://bucket-name/export-prefix*.csv')
    ... job.destination_format = 'CSV'
-   ... job.print_header = 1
+   ... job.print_header = True
    ... job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
@@ -506,7 +506,8 @@ First, create the job locally:
    >>> client = bigquery.Client()
    >>> source_table = dataset.table(name='person_ages')
    >>> destination_table = dataset.table(name='person_ages_copy')
-   >>> job = client.copy_table('copy-table', destination_table, source_table)
+   >>> job = client.copy_table(
+   ...     'copy-table-job', destination_table, source_table)
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
