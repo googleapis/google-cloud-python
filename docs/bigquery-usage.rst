@@ -279,20 +279,22 @@ Run a query which can be expected to complete within bounded time:
    >>> query = """\
    SELECT count(*) AS age_count FROM dataset_name.person_ages
    """
-   >>> results = client.run_sync_query(query, timeout_ms=1000)
+   >>> job = client.run_sync_query(query)
+   >>> job.timeout_ms = 1000
+   >>> job.run()  # API request
    >>> retry_count = 100
-   >>> while retry_count > 0 and not results.job_complete:
+   >>> while retry_count > 0 and not job.complete:
    ...     retry_count -= 1
    ...     time.sleep(10)
-   ...     results.reload()  # API request
-   >>> results.schema
+   ...     job.reload()  # API request
+   >>> job.schema
    [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
-   >>> results.rows
+   >>> job.rows
    [(15,)]
 
 .. note::
 
-   If the query takes longer than the timeout allowed, ``results.job_complete``
+   If the query takes longer than the timeout allowed, ``job.complete``
    will be ``False``:  we therefore poll until it is completed.
 
 Querying data (asynchronous)
