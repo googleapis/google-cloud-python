@@ -359,31 +359,22 @@ Poll until the job is complete:
 Inserting data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Load data synchronously from a local CSV file into a new table.  First,
-create the job locally:
+Load data synchronously from a local CSV file into a new table:
 
 .. doctest::
 
+   >>> import csv
    >>> from gcloud import bigquery
+   >>> from gcloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
    >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
-   ...     job = table.load_from_file(
-   ...         file_obj,
-   ...         source_format='CSV',
-   ...         skip_leading_rows=1
-   ...         write_disposition='truncate',
-   ...         )  # API request
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
-   'load'
-   >>> job.created
-   datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
-   >>> job.state
-   'done'
-   >>> job.ended
-   datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+   ...     reader = csv.reader(file_obj)
+   ...     rows = list(reader)
+   >>> table.insert_data(rows)  # API request
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
