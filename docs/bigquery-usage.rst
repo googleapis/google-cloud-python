@@ -448,11 +448,12 @@ located on Google Cloud Storage.  First, create the job locally:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
-   >>> job = table.export_to_storage(bucket_name='bucket-name',
-   ...                               object_name_glob='export-prefix*.csv',
-   ...                               destination_format='CSV',
-   ...                               print_header=1,
-   ...                               write_disposition='truncate')
+   >>> job = client.extract_table_to_storage(
+   ...          'extract-person-ages', table,
+   ...          'gs://bucket-name/export-prefix*.csv')
+   ... job.destination_format = 'CSV'
+   ... job.print_header = 1
+   ... job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -472,7 +473,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
