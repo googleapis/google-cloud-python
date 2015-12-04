@@ -386,13 +386,17 @@ the job locally:
 .. doctest::
 
    >>> from gcloud import bigquery
+   >>> from gcloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
-   >>> job = table.load_from_storage(bucket_name='bucket-name',
-   ...                               object_name_glob='object-prefix*',
-   ...                               source_format='CSV',
-   ...                               skip_leading_rows=1,
-   ...                               write_disposition='truncate')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
+   >>> job = client.load_table_from_storage(
+   ...          'from-storage', table, 'gs://bucket-name/object-prefix*')
+   >>> job.source_format = 'CSV'
+   >>> job.skip_leading_rows = 1
+   >>> job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -412,7 +416,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
