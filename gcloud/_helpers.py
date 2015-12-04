@@ -27,12 +27,10 @@ from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
 from gcloud.environment_vars import PROJECT
 
-# pylint: disable=wrong-import-position
 try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
-# pylint: enable=wrong-import-position
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.

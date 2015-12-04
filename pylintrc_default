@@ -85,6 +85,16 @@ load-plugins=pylint.extensions.check_docs
 #                          return int(value)
 #                      else:
 #                          return float(value)
+# - wrong-import-position: This error is overzealous. It assumes imports are
+#                          completed whenever something non-trivial is
+#                          defined, e.g.
+#                              try:
+#                                  from foo import Bar
+#                              except ImportError:
+#                                  class Bar(object):
+#                                      """Hi everyone"""
+#                          and thus causes subsequent imports to be
+#                          diagnosed as out-of-order.
 disable =
     maybe-no-member,
     no-member,
@@ -94,6 +104,7 @@ disable =
     star-args,
     method-hidden,
     redefined-variable-type,
+    wrong-import-position,
 
 
 [REPORTS]

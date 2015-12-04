@@ -32,7 +32,6 @@ except ImportError:
     class _GAECreds(object):
         """Dummy class if not in App Engine environment."""
 
-# pylint: disable=wrong-import-position
 try:
     from google.appengine.api import app_identity
 except ImportError:
@@ -41,7 +40,6 @@ except ImportError:
 from gcloud._helpers import UTC
 from gcloud._helpers import _NOW
 from gcloud._helpers import _microseconds_from_datetime
-# pylint: enable=wrong-import-position
 
 
 def get_credentials():
