@@ -313,9 +313,9 @@ Background a query, loading the results into a table:
    """
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> job = client.run_async_query(query,
-   ...                              destination=table,
-   ...                              write_disposition='truncate')
+   >>> job = client.run_async_query('fullname-age', query)
+   >>> job.destination_table = table
+   >>> job.write_disposition= 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
