@@ -263,6 +263,44 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(cluster._operation, current_op)
         self.assertEqual(prep_create_called, [cluster])
 
+    def test_delete(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated import empty_pb2
+        from gcloud.bigtable._testing import _FakeStub
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        timeout_seconds = 57
+
+        client = _Client(project, timeout_seconds=timeout_seconds)
+        cluster = self._makeOne(zone, cluster_id, client)
+
+        # Create request_pb
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        request_pb = messages_pb2.DeleteClusterRequest(name=cluster_name)
+
+        # Create response_pb
+        response_pb = empty_pb2.Empty()
+
+        # Patch the stub used by the API method.
+        client._cluster_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # delete() has no return value.
+
+        # Perform the method and check the result.
+        result = cluster.delete()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'DeleteCluster',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
 
 class Test__get_pb_property_value(unittest2.TestCase):
 

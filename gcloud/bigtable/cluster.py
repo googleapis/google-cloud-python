@@ -218,3 +218,33 @@ class Cluster(object):
             request_pb, self._client.timeout_seconds)
 
         self._operation = cluster_pb.current_operation
+
+    def delete(self):
+        """Delete this cluster.
+
+        Marks a cluster and all of its tables for permanent deletion in 7 days.
+
+        Immediately upon completion of the request:
+
+        * Billing will cease for all of the cluster's reserved resources.
+        * The cluster's ``delete_time`` field will be set 7 days in the future.
+
+        Soon afterward:
+
+        * All tables within the cluster will become unavailable.
+
+        Prior to the cluster's ``delete_time``:
+
+        * The cluster can be recovered with a call to ``UndeleteCluster``.
+        * All other attempts to modify or delete the cluster will be rejected.
+
+        At the cluster's ``delete_time``:
+
+        * The cluster and **all of its tables** will immediately and
+          irrevocably disappear from the API, and their data will be
+          permanently deleted.
+        """
+        request_pb = messages_pb2.DeleteClusterRequest(name=self.name)
+        # We expect a `._generated.empty_pb2.Empty`
+        self._client._cluster_stub.DeleteCluster(
+            request_pb, self._client.timeout_seconds)
