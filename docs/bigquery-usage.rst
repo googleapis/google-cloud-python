@@ -506,7 +506,7 @@ First, create the job locally:
    >>> client = bigquery.Client()
    >>> source_table = dataset.table(name='person_ages')
    >>> destination_table = dataset.table(name='person_ages_copy')
-   >>> job = source_table.copy_to(destination_table)  # API request
+   >>> job = client.copy_table('copy-table', destination_table, source_table)
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -526,7 +526,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
