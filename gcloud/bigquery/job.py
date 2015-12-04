@@ -635,6 +635,39 @@ class LoadTableFromStorageJob(_AsyncJob):
         schema = cleaned.pop('schema', {'fields': ()})
         self.schema = _parse_schema_resource(schema)
 
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
+        :returns: Job parsed from ``resource``.
+        """
+        if ('jobReference' not in resource or
+                'jobId' not in resource['jobReference']):
+            raise KeyError('Resource lacks required identity information:'
+                           '["jobReference"]["jobId"]')
+        name = resource['jobReference']['jobId']
+        if ('configuration' not in resource or
+                'load' not in resource['configuration']):
+            raise KeyError('Resource lacks required configuration:'
+                           '["configuration"]["load"]')
+        config = resource['configuration']['load']
+        dest_config = config['destinationTable']
+        assert dest_config['projectId'] == client.project
+        dataset = Dataset(dest_config['datasetId'], client)
+        destination = Table(dest_config['tableId'], dataset)
+        source_urls = config['sourceUris']
+        job = cls(name, destination, source_urls, client=client)
+        job._set_properties(resource)
+        return job
+
 
 class _CopyConfiguration(object):
     """User-settable configuration options for copy jobs.

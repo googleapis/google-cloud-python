@@ -241,6 +241,13 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
     def _makeResource(self, started=False, ended=False):
         resource = super(TestLoadTableFromStorageJob, self)._makeResource(
             started, ended)
+        config = resource['configuration']['load']
+        config['sourceUris'] = [self.SOURCE1]
+        config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.TABLE_NAME,
+        }
 
         if ended:
             resource['statistics']['load']['inputFiles'] = self.INPUT_FILES
@@ -296,6 +303,13 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
 
         self._verifyBooleanConfigProperties(job, config)
         self._verifyEnumConfigProperties(job, config)
+
+        self.assertEqual(job.source_uris, config['sourceUris'])
+
+        table_ref = config['destinationTable']
+        self.assertEqual(job.destination.project, table_ref['projectId'])
+        self.assertEqual(job.destination.dataset_name, table_ref['datasetId'])
+        self.assertEqual(job.destination.name, table_ref['tableId'])
 
         if 'fieldDelimiter' in config:
             self.assertEqual(job.field_delimiter,
@@ -449,6 +463,61 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self.assertEqual(job.error_result, ERROR_RESULT)
         self.assertEqual(job.errors, [ERROR_RESULT])
         self.assertEqual(job.state, 'STATE')
+
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_missing_config(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'load': {
+                    'sourceUris': [self.SOURCE1],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.TABLE_NAME,
+                    },
+                }
+            },
+        }
+        klass = self._getTargetClass()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(job._client is client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
