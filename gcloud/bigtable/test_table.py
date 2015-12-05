@@ -56,3 +56,28 @@ class TestTable(unittest2.TestCase):
         self.assertTrue(isinstance(row, Row))
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
+
+    def test___eq__(self):
+        table_id = 'table_id'
+        cluster = object()
+        table1 = self._makeOne(table_id, cluster)
+        table2 = self._makeOne(table_id, cluster)
+        self.assertEqual(table1, table2)
+
+    def test___eq__type_differ(self):
+        table1 = self._makeOne('table_id', None)
+        table2 = object()
+        self.assertNotEqual(table1, table2)
+
+    def test___ne__same_value(self):
+        table_id = 'table_id'
+        cluster = object()
+        table1 = self._makeOne(table_id, cluster)
+        table2 = self._makeOne(table_id, cluster)
+        comparison_val = (table1 != table2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        table1 = self._makeOne('table_id1', 'cluster1')
+        table2 = self._makeOne('table_id2', 'cluster2')
+        self.assertNotEqual(table1, table2)

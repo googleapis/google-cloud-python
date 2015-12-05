@@ -22,6 +22,8 @@ from gcloud._helpers import _EPOCH
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_table_service_messages_pb2 as table_messages_pb2)
 from gcloud.bigtable.table import Table
 
 
@@ -346,3 +348,27 @@ class Cluster(object):
         # We expect a `._generated.empty_pb2.Empty`
         self._client._cluster_stub.DeleteCluster(
             request_pb, self._client.timeout_seconds)
+
+    def list_tables(self):
+        """List the tables in this cluster.
+
+        :rtype: list of :class:`Table <gcloud.bigtable.table.Table>`
+        :returns: The list of tables owned by the cluster.
+        :raises: :class:`ValueError <exceptions.ValueError>` if one of the
+                 returned tables has a name that is not of the expected format.
+        """
+        request_pb = table_messages_pb2.ListTablesRequest(name=self.name)
+        # We expect a `table_messages_pb2.ListTablesResponse`
+        table_list_pb = self._client._table_stub.ListTables(
+            request_pb, self._client.timeout_seconds)
+
+        result = []
+        for table_pb in table_list_pb.tables:
+            table_prefix = self.name + '/tables/'
+            if not table_pb.name.startswith(table_prefix):
+                raise ValueError('Table name %s not of expected format' % (
+                    table_pb.name,))
+            table_id = table_pb.name[len(table_prefix):]
+            result.append(self.table(table_id))
+
+        return result
