@@ -233,6 +233,7 @@ class TestCluster(unittest2.TestCase):
 
         # Create response_pb
         op_id = 5678
+        op_begin = object()
         op_name = ('operations/projects/%s/zones/%s/clusters/%s/'
                    'operations/%d' % (project, zone, cluster_id, op_id))
         current_op = operations_pb2.Operation(name=op_name)
@@ -244,14 +245,22 @@ class TestCluster(unittest2.TestCase):
         # Create expected_result.
         expected_result = None  # create() has no return value.
 
-        # Perform the method and check the result.
+        # Create the mocks.
         prep_create_called = []
 
         def mock_prep_create_req(cluster):
             prep_create_called.append(cluster)
             return request_pb
 
-        with _Monkey(MUT, _prepare_create_request=mock_prep_create_req):
+        process_operation_called = []
+
+        def mock_process_operation(operation_pb):
+            process_operation_called.append(operation_pb)
+            return (op_id, op_begin)
+
+        # Perform the method and check the result.
+        with _Monkey(MUT, _prepare_create_request=mock_prep_create_req,
+                     _process_operation=mock_process_operation):
             result = cluster.create()
 
         self.assertEqual(result, expected_result)
@@ -260,8 +269,11 @@ class TestCluster(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(cluster._operation, current_op)
+        self.assertEqual(cluster._operation_type, 'create')
+        self.assertEqual(cluster._operation_id, op_id)
+        self.assertTrue(cluster._operation_begin is op_begin)
         self.assertEqual(prep_create_called, [cluster])
+        self.assertEqual(process_operation_called, [current_op])
 
     def test_delete(self):
         from gcloud.bigtable._generated import (
@@ -355,6 +367,172 @@ class Test__prepare_create_request(unittest2.TestCase):
         self.assertTrue(isinstance(request_pb.cluster, data_pb2.Cluster))
         self.assertEqual(request_pb.cluster.display_name, display_name)
         self.assertEqual(request_pb.cluster.serve_nodes, serve_nodes)
+
+
+class Test__pb_timestamp_to_datetime(unittest2.TestCase):
+
+    def _callFUT(self, timestamp):
+        from gcloud.bigtable.cluster import _pb_timestamp_to_datetime
+        return _pb_timestamp_to_datetime(timestamp)
+
+    def test_it(self):
+        import datetime
+        from gcloud._helpers import UTC
+        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
+
+        # Epoch is midnight on January 1, 1970 ...
+        dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
+                                     minute=1, second=1, microsecond=1234,
+                                     tzinfo=UTC)
+        # ... so 1 minute and 1 second after is 61 seconds and 1234
+        # microseconds is 1234000 nanoseconds.
+        timestamp = Timestamp(seconds=61, nanos=1234000)
+        self.assertEqual(self._callFUT(timestamp), dt_stamp)
+
+
+class Test__parse_pb_any_to_native(unittest2.TestCase):
+
+    def _callFUT(self, any_val, expected_type=None):
+        from gcloud.bigtable.cluster import _parse_pb_any_to_native
+        return _parse_pb_any_to_native(any_val, expected_type=expected_type)
+
+    def test_with_known_type_url(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable import cluster as MUT
+
+        type_url = 'type.googleapis.com/' + data_pb2._CELL.full_name
+        fake_type_url_map = {type_url: data_pb2.Cell}
+
+        cell = data_pb2.Cell(
+            timestamp_micros=0,
+            value=b'foobar',
+        )
+        any_val = any_pb2.Any(
+            type_url=type_url,
+            value=cell.SerializeToString(),
+        )
+        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
+            result = self._callFUT(any_val)
+
+        self.assertEqual(result, cell)
+
+    def test_with_create_cluster_metadata(self):
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
+
+        type_url = ('type.googleapis.com/' +
+                    messages_pb2._CREATECLUSTERMETADATA.full_name)
+        metadata = messages_pb2.CreateClusterMetadata(
+            request_time=Timestamp(seconds=1, nanos=1234),
+            finish_time=Timestamp(seconds=10, nanos=891011),
+            original_request=messages_pb2.CreateClusterRequest(
+                name='foo',
+                cluster_id='bar',
+                cluster=data_pb2.Cluster(
+                    display_name='quux',
+                    serve_nodes=1337,
+                ),
+            ),
+        )
+
+        any_val = any_pb2.Any(
+            type_url=type_url,
+            value=metadata.SerializeToString(),
+        )
+        result = self._callFUT(any_val)
+        self.assertEqual(result, metadata)
+
+    def test_unknown_type_url(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable import cluster as MUT
+
+        fake_type_url_map = {}
+        any_val = any_pb2.Any()
+        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
+            with self.assertRaises(KeyError):
+                self._callFUT(any_val)
+
+    def test_disagreeing_type_url(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable import cluster as MUT
+
+        type_url1 = 'foo'
+        type_url2 = 'bar'
+        fake_type_url_map = {type_url1: None}
+        any_val = any_pb2.Any(type_url=type_url2)
+        with _Monkey(MUT, _TYPE_URL_MAP=fake_type_url_map):
+            with self.assertRaises(ValueError):
+                self._callFUT(any_val, expected_type=type_url1)
+
+
+class Test__process_operation(unittest2.TestCase):
+
+    def _callFUT(self, operation_pb):
+        from gcloud.bigtable.cluster import _process_operation
+        return _process_operation(operation_pb)
+
+    def test_it(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated import operations_pb2
+        from gcloud.bigtable import cluster as MUT
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        expected_operation_id = 234
+        operation_name = ('operations/projects/%s/zones/%s/clusters/%s/'
+                          'operations/%d' % (project, zone, cluster_id,
+                                             expected_operation_id))
+
+        current_op = operations_pb2.Operation(name=operation_name)
+
+        # Create mocks.
+        request_metadata = messages_pb2.CreateClusterMetadata()
+        parse_pb_any_called = []
+
+        def mock_parse_pb_any_to_native(any_val, expected_type=None):
+            parse_pb_any_called.append((any_val, expected_type))
+            return request_metadata
+
+        expected_operation_begin = object()
+        ts_to_dt_called = []
+
+        def mock_pb_timestamp_to_datetime(timestamp):
+            ts_to_dt_called.append(timestamp)
+            return expected_operation_begin
+
+        # Exectute method with mocks in place.
+        with _Monkey(MUT, _parse_pb_any_to_native=mock_parse_pb_any_to_native,
+                     _pb_timestamp_to_datetime=mock_pb_timestamp_to_datetime):
+            operation_id, operation_begin = self._callFUT(current_op)
+
+        # Check outputs.
+        self.assertEqual(operation_id, expected_operation_id)
+        self.assertTrue(operation_begin is expected_operation_begin)
+
+        # Check mocks were used correctly.
+        self.assertEqual(parse_pb_any_called, [(current_op.metadata, None)])
+        self.assertEqual(ts_to_dt_called, [request_metadata.request_time])
+
+    def test_op_name_parsing_failure(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import operations_pb2
+
+        current_op = operations_pb2.Operation(name='invalid')
+        cluster = data_pb2.Cluster(current_operation=current_op)
+        with self.assertRaises(ValueError):
+            self._callFUT(cluster)
 
 
 class _Client(object):
