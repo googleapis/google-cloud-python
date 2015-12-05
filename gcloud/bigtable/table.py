@@ -55,3 +55,12 @@ class Table(object):
         :returns: A row owned by this table.
         """
         return Row(row_key, self)
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other.table_id == self.table_id and
+                other._cluster == self._cluster)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)

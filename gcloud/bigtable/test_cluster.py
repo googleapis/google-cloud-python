@@ -333,6 +333,71 @@ class TestCluster(unittest2.TestCase):
             {},
         )])
 
+    def _list_tables_helper(self, table_id, table_name=None):
+        from gcloud.bigtable._generated import (
+            bigtable_table_data_pb2 as table_data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as table_messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        timeout_seconds = 45
+
+        client = _Client(project, timeout_seconds=timeout_seconds)
+        cluster = self._makeOne(zone, cluster_id, client)
+
+        # Create request_
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        request_pb = table_messages_pb2.ListTablesRequest(name=cluster_name)
+
+        # Create response_pb
+        table_name = table_name or (cluster_name + '/tables/' + table_id)
+        response_pb = table_messages_pb2.ListTablesResponse(
+            tables=[
+                table_data_pb2.Table(name=table_name),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_table = cluster.table(table_id)
+        expected_result = [expected_table]
+
+        # Perform the method and check the result.
+        result = cluster.list_tables()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListTables',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+    def test_list_tables(self):
+        table_id = 'table_id'
+        self._list_tables_helper(table_id)
+
+    def test_list_tables_failure_bad_split(self):
+        with self.assertRaises(ValueError):
+            self._list_tables_helper(None, table_name='wrong-format')
+
+    def test_list_tables_failure_name_bad_before(self):
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+
+        table_id = 'table_id'
+        bad_table_name = ('nonempty-section-before' +
+                          'projects/' + project + '/zones/' + zone +
+                          '/clusters/' + cluster_id + '/tables/' + table_id)
+        with self.assertRaises(ValueError):
+            self._list_tables_helper(table_id, table_name=bad_table_name)
+
 
 class Test__get_pb_property_value(unittest2.TestCase):
 
