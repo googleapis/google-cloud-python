@@ -231,6 +231,21 @@ class Cluster(object):
         result._update_from_pb(cluster_pb)
         return result
 
+    def copy(self):
+        """Make a copy of this cluster.
+
+        Copies the local data stored as simple types but does not copy the
+        current state of any operations with the Cloud Bigtable API. Also
+        copies the client attached to this instance.
+
+        :rtype: :class:`.Cluster`
+        :returns: A copy of the current cluster.
+        """
+        new_client = self._client.copy()
+        return self.__class__(self.zone, self.cluster_id, new_client,
+                              display_name=self.display_name,
+                              serve_nodes=self.serve_nodes)
+
     @property
     def name(self):
         """Cluster name used in requests.

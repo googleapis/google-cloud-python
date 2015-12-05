@@ -53,6 +53,26 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(cluster.serve_nodes, serve_nodes)
         self.assertTrue(cluster._client is client)
 
+    def test_copy(self):
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        display_name = 'display_name'
+        serve_nodes = 8
+
+        client = _Client(project)
+        cluster = self._makeOne(zone, cluster_id, client,
+                                display_name=display_name,
+                                serve_nodes=serve_nodes)
+        new_cluster = cluster.copy()
+
+        # Make sure the client copy succeeded.
+        self.assertFalse(new_cluster._client is client)
+        self.assertEqual(new_cluster._client, client)
+        # Make sure the client got copied to a new instance.
+        self.assertFalse(cluster is new_cluster)
+        self.assertEqual(cluster, new_cluster)
+
     def test_table_factory(self):
         from gcloud.bigtable.table import Table
 
@@ -80,7 +100,7 @@ class TestCluster(unittest2.TestCase):
         cluster_pb = data_pb2.Cluster(
             name=cluster_name,
             display_name=cluster_id,
-            serve_nodes=3,
+            serve_nodes=331,
         )
 
         klass = self._getTargetClass()
@@ -541,3 +561,12 @@ class _Client(object):
         self.project = project
         self.project_name = 'projects/' + self.project
         self.timeout_seconds = timeout_seconds
+
+    def copy(self):
+        from copy import deepcopy
+        return deepcopy(self)
+
+    def __eq__(self, other):
+        return (other.project == self.project and
+                other.project_name == self.project_name and
+                other.timeout_seconds == self.timeout_seconds)
