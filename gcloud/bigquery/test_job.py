@@ -739,10 +739,39 @@ class TestCopyJob(unittest2.TestCase, _Base):
         from gcloud.bigquery.job import CopyJob
         return CopyJob
 
+    def _makeResource(self, started=False, ended=False):
+        resource = super(TestCopyJob, self)._makeResource(
+            started, ended)
+        config = resource['configuration']['copy']
+        config['sourceTables'] = [{
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.SOURCE_TABLE,
+        }]
+        config['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.DESTINATION_TABLE,
+        }
+
+        return resource
+
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('copy')
+
+        table_ref = config['destinationTable']
+        self.assertEqual(job.destination.project, table_ref['projectId'])
+        self.assertEqual(job.destination.dataset_name, table_ref['datasetId'])
+        self.assertEqual(job.destination.name, table_ref['tableId'])
+
+        sources = config['sourceTables']
+        self.assertEqual(len(sources), len(job.sources))
+        for table_ref, table in zip(sources, job.sources):
+            self.assertEqual(table.project, table_ref['projectId'])
+            self.assertEqual(table.dataset_name, table_ref['datasetId'])
+            self.assertEqual(table.name, table_ref['tableId'])
 
         if 'createDisposition' in config:
             self.assertEqual(job.create_disposition,
@@ -773,6 +802,65 @@ class TestCopyJob(unittest2.TestCase, _Base):
         # set/read from resource['configuration']['copy']
         self.assertTrue(job.create_disposition is None)
         self.assertTrue(job.write_disposition is None)
+
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_missing_config(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'copy': {
+                    'sourceTables': [{
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE,
+                    }],
+                    'destinationTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.DESTINATION_TABLE,
+                    },
+                }
+            },
+        }
+        klass = self._getTargetClass()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(job._client is client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
