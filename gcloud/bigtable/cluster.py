@@ -38,8 +38,10 @@ _DEFAULT_SERVE_NODES = 3
 _TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
 _ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.cluster.v1.'
 _CLUSTER_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateClusterMetadata'
+_UPDATE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'UpdateClusterMetadata'
 _TYPE_URL_MAP = {
     _CLUSTER_CREATE_METADATA: messages_pb2.CreateClusterMetadata,
+    _UPDATE_CREATE_METADATA: messages_pb2.UpdateClusterMetadata,
 }
 
 
@@ -383,6 +385,37 @@ class Cluster(object):
 
         op_id, op_begin = _process_operation(cluster_pb.current_operation)
         return Operation('create', op_id, op_begin)
+
+    def update(self):
+        """Update this cluster.
+
+        .. note::
+
+            Updates the ``display_name`` and ``serve_nodes``. If you'd like to
+            change them before updating, reset the values via
+
+            .. code:: python
+
+                cluster.display_name = 'New display name'
+                cluster.serve_nodes = 3
+
+            before calling :meth:`update`.
+
+        :rtype: :class:`Operation`
+        :returns: The long-running operation corresponding to the
+                  update operation.
+        """
+        request_pb = data_pb2.Cluster(
+            name=self.name,
+            display_name=self.display_name,
+            serve_nodes=self.serve_nodes,
+        )
+        # We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.
+        cluster_pb = self._client._cluster_stub.UpdateCluster(
+            request_pb, self._client.timeout_seconds)
+
+        op_id, op_begin = _process_operation(cluster_pb.current_operation)
+        return Operation('update', op_id, op_begin)
 
     def delete(self):
         """Delete this cluster.
