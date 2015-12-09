@@ -511,6 +511,57 @@ class TestCluster(unittest2.TestCase):
             {},
         )])
 
+    def test_undelete(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated import operations_pb2
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable import cluster as MUT
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        timeout_seconds = 78
+
+        client = _Client(project, timeout_seconds=timeout_seconds)
+        cluster = self._makeOne(zone, cluster_id, client)
+
+        # Create request_pb
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        request_pb = messages_pb2.UndeleteClusterRequest(name=cluster_name)
+
+        # Create response_pb
+        response_pb = operations_pb2.Operation()
+
+        # Patch the stub used by the API method.
+        client._cluster_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        op_id = 5678
+        op_begin = object()
+        expected_result = MUT.Operation('undelete', op_id, op_begin)
+
+        # Create the mocks.
+        process_operation_called = []
+
+        def mock_process_operation(operation_pb):
+            process_operation_called.append(operation_pb)
+            return op_id, op_begin
+
+        # Perform the method and check the result.
+        with _Monkey(MUT, _process_operation=mock_process_operation):
+            result = cluster.undelete()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'UndeleteCluster',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(process_operation_called, [response_pb])
+
     def _list_tables_helper(self, table_id, table_name=None):
         from gcloud.bigtable._generated import (
             bigtable_table_data_pb2 as table_data_pb2)
@@ -729,6 +780,28 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
                 display_name='the-end',
                 serve_nodes=42,
             ),
+        )
+
+        any_val = any_pb2.Any(
+            type_url=type_url,
+            value=metadata.SerializeToString(),
+        )
+        result = self._callFUT(any_val)
+        self.assertEqual(result, metadata)
+
+    def test_with_undelete_cluster_metadata(self):
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
+
+        type_url = ('type.googleapis.com/' +
+                    messages_pb2._UNDELETECLUSTERMETADATA.full_name)
+        metadata = messages_pb2.UndeleteClusterMetadata(
+            request_time=Timestamp(seconds=1, nanos=1234),
+            finish_time=Timestamp(seconds=10, nanos=891011),
         )
 
         any_val = any_pb2.Any(

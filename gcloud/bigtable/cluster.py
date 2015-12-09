@@ -39,9 +39,11 @@ _TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
 _ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.cluster.v1.'
 _CLUSTER_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateClusterMetadata'
 _UPDATE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'UpdateClusterMetadata'
+_UNDELETE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'UndeleteClusterMetadata'
 _TYPE_URL_MAP = {
     _CLUSTER_CREATE_METADATA: messages_pb2.CreateClusterMetadata,
     _UPDATE_CREATE_METADATA: messages_pb2.UpdateClusterMetadata,
+    _UNDELETE_CREATE_METADATA: messages_pb2.UndeleteClusterMetadata,
 }
 
 
@@ -446,6 +448,39 @@ class Cluster(object):
         # We expect a `._generated.empty_pb2.Empty`
         self._client._cluster_stub.DeleteCluster(
             request_pb, self._client.timeout_seconds)
+
+    def undelete(self):
+        """Undelete this cluster.
+
+        Cancels the scheduled deletion of an cluster and begins preparing it to
+        resume serving. The returned operation will also be embedded as the
+        cluster's ``current_operation``.
+
+        Immediately upon completion of this request:
+
+        * The cluster's ``delete_time`` field will be unset, protecting it from
+          automatic deletion.
+
+        Until completion of the returned operation:
+
+        * The operation cannot be cancelled.
+
+        Upon completion of the returned operation:
+
+        * Billing for the cluster's resources will resume.
+        * All tables within the cluster will be available.
+
+        :rtype: :class:`Operation`
+        :returns: The long-running operation corresponding to the
+                  undelete operation.
+        """
+        request_pb = messages_pb2.UndeleteClusterRequest(name=self.name)
+        # We expect a `._generated.operations_pb2.Operation`
+        operation_pb2 = self._client._cluster_stub.UndeleteCluster(
+            request_pb, self._client.timeout_seconds)
+
+        op_id, op_begin = _process_operation(operation_pb2)
+        return Operation('undelete', op_id, op_begin)
 
     def list_tables(self):
         """List the tables in this cluster.
