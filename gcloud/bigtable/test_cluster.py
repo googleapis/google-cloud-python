@@ -25,24 +25,34 @@ class TestOperation(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def test_constructor(self):
+    def _constructor_test_helper(self, cluster=None):
         import datetime
         op_type = 'fake-op'
         op_id = 8915
         begin = datetime.datetime(2015, 10, 22, 1, 1)
-        operation = self._makeOne(op_type, op_id, begin)
+        operation = self._makeOne(op_type, op_id, begin, cluster=cluster)
 
         self.assertEqual(operation.op_type, op_type)
         self.assertEqual(operation.op_id, op_id)
         self.assertEqual(operation.begin, begin)
+        self.assertEqual(operation._cluster, cluster)
+        self.assertFalse(operation._complete)
+
+    def test_constructor_defaults(self):
+        self._constructor_test_helper()
+
+    def test_constructor_explicit_cluster(self):
+        cluster = object()
+        self._constructor_test_helper(cluster=cluster)
 
     def test___eq__(self):
         import datetime
         op_type = 'fake-op'
         op_id = 8915
         begin = datetime.datetime(2015, 10, 22, 1, 1)
-        operation1 = self._makeOne(op_type, op_id, begin)
-        operation2 = self._makeOne(op_type, op_id, begin)
+        cluster = object()
+        operation1 = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        operation2 = self._makeOne(op_type, op_id, begin, cluster=cluster)
         self.assertEqual(operation1, operation2)
 
     def test___eq__type_differ(self):
@@ -55,8 +65,9 @@ class TestOperation(unittest2.TestCase):
         op_type = 'fake-op'
         op_id = 8915
         begin = datetime.datetime(2015, 10, 22, 1, 1)
-        operation1 = self._makeOne(op_type, op_id, begin)
-        operation2 = self._makeOne(op_type, op_id, begin)
+        cluster = object()
+        operation1 = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        operation2 = self._makeOne(op_type, op_id, begin, cluster=cluster)
         comparison_val = (operation1 != operation2)
         self.assertFalse(comparison_val)
 
@@ -64,6 +75,66 @@ class TestOperation(unittest2.TestCase):
         operation1 = self._makeOne('foo', 123, None)
         operation2 = self._makeOne('bar', 456, None)
         self.assertNotEqual(operation1, operation2)
+
+    def test_finished_without_operation(self):
+        operation = self._makeOne(None, None, None)
+        operation._complete = True
+        with self.assertRaises(ValueError):
+            operation.finished()
+
+    def _finished_helper(self, done):
+        import datetime
+        from gcloud.bigtable._generated import operations_pb2
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.cluster import Cluster
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        op_type = 'fake-op'
+        op_id = 789
+        begin = datetime.datetime(2015, 10, 22, 1, 1)
+        timeout_seconds = 1
+
+        client = _Client(project, timeout_seconds=timeout_seconds)
+        cluster = Cluster(zone, cluster_id, client)
+        operation = self._makeOne(op_type, op_id, begin, cluster=cluster)
+
+        # Create request_pb
+        op_name = ('operations/projects/' + project + '/zones/' +
+                   zone + '/clusters/' + cluster_id +
+                   '/operations/%d' % (op_id,))
+        request_pb = operations_pb2.GetOperationRequest(name=op_name)
+
+        # Create response_pb
+        response_pb = operations_pb2.Operation(done=done)
+
+        # Patch the stub used by the API method.
+        client._operations_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = done
+
+        # Perform the method and check the result.
+        result = operation.finished()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'GetOperation',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+        if done:
+            self.assertTrue(operation._complete)
+        else:
+            self.assertFalse(operation._complete)
+
+    def test_finished(self):
+        self._finished_helper(done=True)
+
+    def test_finished_not_done(self):
+        self._finished_helper(done=False)
 
 
 class TestCluster(unittest2.TestCase):
