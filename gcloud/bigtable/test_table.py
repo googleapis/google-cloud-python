@@ -33,6 +33,15 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertTrue(table._cluster is cluster)
 
+    def test_name_property(self):
+        table_id = 'table-id'
+        cluster_name = 'cluster_name'
+
+        cluster = _Cluster(cluster_name)
+        table = self._makeOne(table_id, cluster)
+        expected_name = cluster_name + '/tables/' + table_id
+        self.assertEqual(table.name, expected_name)
+
     def test_column_family_factory(self):
         from gcloud.bigtable.column_family import ColumnFamily
 
@@ -133,6 +142,46 @@ class TestTable(unittest2.TestCase):
     def test_create_with_split_keys(self):
         initial_split_keys = ['s1', 's2']
         self._create_test_helper(initial_split_keys)
+
+    def test_delete(self):
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated import empty_pb2
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 871
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        table_name = cluster_name + '/tables/' + table_id
+        request_pb = messages_pb2.DeleteTableRequest(name=table_name)
+
+        # Create response_pb
+        response_pb = empty_pb2.Empty()
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # delete() has no return value.
+
+        # Perform the method and check the result.
+        result = table.delete()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'DeleteTable',
+            (request_pb, timeout_seconds),
+            {},
+        )])
 
 
 class _Client(object):
