@@ -39,6 +39,7 @@ class Table(object):
     We can use a :class:`Table` to:
 
     * :meth:`create` the table
+    * :meth:`delete` the table
 
     :type table_id: str
     :param table_id: The ID of the table.
@@ -50,6 +51,24 @@ class Table(object):
     def __init__(self, table_id, cluster):
         self.table_id = table_id
         self._cluster = cluster
+
+    @property
+    def name(self):
+        """Table name used in requests.
+
+        .. note::
+
+          This property will not change if ``table_id`` does not, but the
+          return value is not cached.
+
+        The table name is of the form
+
+            ``"projects/../zones/../clusters/../tables/{table_id}"``
+
+        :rtype: str
+        :returns: The table name.
+        """
+        return self._cluster.name + '/tables/' + self.table_id
 
     def column_family(self, column_family_id):
         """Factory to create a column family associated with this table.
@@ -119,3 +138,10 @@ class Table(object):
         client = self._cluster._client
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
+
+    def delete(self):
+        """Delete this table."""
+        request_pb = messages_pb2.DeleteTableRequest(name=self.name)
+        client = self._cluster._client
+        # We expect a `._generated.empty_pb2.Empty`
+        client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
