@@ -24,6 +24,7 @@ from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import (
     bigtable_table_service_messages_pb2 as table_messages_pb2)
+from gcloud.bigtable._generated import operations_pb2
 from gcloud.bigtable.table import Table
 
 
@@ -170,22 +171,53 @@ class Operation(object):
 
     :type begin: :class:`datetime.datetime`
     :param begin: The time when the operation was started.
+
+    :type cluster: :class:`Cluster`
+    :param cluster: The cluster that created the operation.
     """
 
-    def __init__(self, op_type, op_id, begin):
+    def __init__(self, op_type, op_id, begin, cluster=None):
         self.op_type = op_type
         self.op_id = op_id
         self.begin = begin
+        self._cluster = cluster
+        self._complete = False
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
         return (other.op_type == self.op_type and
                 other.op_id == self.op_id and
-                other.begin == self.begin)
+                other.begin == self.begin and
+                other._cluster == self._cluster and
+                other._complete == self._complete)
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def finished(self):
+        """Check if the operation has finished.
+
+        :rtype: bool
+        :returns: A boolean indicating if the current operation has completed.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the operation
+                 has already completed.
+        """
+        if self._complete:
+            raise ValueError('The operation has completed.')
+
+        operation_name = ('operations/' + self._cluster.name +
+                          '/operations/%d' % (self.op_id,))
+        request_pb = operations_pb2.GetOperationRequest(name=operation_name)
+        # We expact a `._generated.operations_pb2.Operation`.
+        operation_pb = self._cluster._client._operations_stub.GetOperation(
+            request_pb, self._cluster._client.timeout_seconds)
+
+        if operation_pb.done:
+            self._complete = True
+            return True
+        else:
+            return False
 
 
 class Cluster(object):
