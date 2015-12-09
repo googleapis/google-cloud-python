@@ -81,3 +81,73 @@ class TestTable(unittest2.TestCase):
         table1 = self._makeOne('table_id1', 'cluster1')
         table2 = self._makeOne('table_id2', 'cluster2')
         self.assertNotEqual(table1, table2)
+
+    def _create_test_helper(self, initial_split_keys):
+        from gcloud.bigtable._generated import (
+            bigtable_table_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 150
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        request_pb = messages_pb2.CreateTableRequest(
+            initial_split_keys=initial_split_keys,
+            name=cluster_name,
+            table_id=table_id,
+        )
+
+        # Create response_pb
+        response_pb = data_pb2.Table()
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # create() has no return value.
+
+        # Perform the method and check the result.
+        result = table.create(initial_split_keys=initial_split_keys)
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'CreateTable',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+    def test_create(self):
+        initial_split_keys = None
+        self._create_test_helper(initial_split_keys)
+
+    def test_create_with_split_keys(self):
+        initial_split_keys = ['s1', 's2']
+        self._create_test_helper(initial_split_keys)
+
+
+class _Client(object):
+
+    data_stub = None
+    cluster_stub = None
+    operations_stub = None
+    table_stub = None
+
+    def __init__(self, timeout_seconds=None):
+        self.timeout_seconds = timeout_seconds
+
+
+class _Cluster(object):
+
+    def __init__(self, name, client=None):
+        self.name = name
+        self._client = client
