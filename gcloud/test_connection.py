@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import threading
 import unittest2
 
 
@@ -65,6 +66,36 @@ class TestConnection(unittest2.TestCase):
             get_distribution('gcloud').version)
         conn = self._makeOne()
         self.assertEqual(conn.USER_AGENT, expected_ua)
+
+    def test_thread_local_http(self):
+        credentials = _Credentials(lambda http: object())
+        conn = self._makeOne(credentials)
+
+        self.assertTrue(conn.http is not None)
+
+        # Should return the same instance when called again.
+        self.assertTrue(conn.http is conn.http)
+
+        # Should return a different instance from a different thread.
+        http_main = conn.http
+        http_objs = []
+
+        def test_thread():
+            self.assertTrue(conn.http is not None)
+            self.assertTrue(conn.http is not http_main)
+            http_objs.append(conn.http)
+
+        thread1 = threading.Thread(target=test_thread)
+        thread2 = threading.Thread(target=test_thread)
+        thread1.start()
+        thread2.start()
+        thread1.join()
+        thread2.join()
+
+        self.assertEqual(len(http_objs), 2)
+        self.assertTrue(http_objs[0] is not http_objs[1])
+        self.assertTrue(http_objs[0] is not http_main)
+        self.assertTrue(http_objs[1] is not http_main)
 
 
 class TestJSONConnection(unittest2.TestCase):
@@ -374,7 +405,11 @@ class _Credentials(object):
 
     def authorize(self, http):
         self._called_with = http
-        return self._authorized
+
+        if callable(self._authorized):
+            return self._authorized(http)
+        else:
+            return self._authorized
 
     @staticmethod
     def create_scoped_required():

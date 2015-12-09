@@ -15,11 +15,12 @@
 """Shared implementation of connections to API servers."""
 
 import json
+import threading
+
+import httplib2
 from pkg_resources import get_distribution
 import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
-
-import httplib2
 
 from gcloud.exceptions import make_exception
 
@@ -55,6 +56,8 @@ class Connection(object):
     object will also need to be able to add a bearer token to API
     requests and handle token refresh on 401 errors.
 
+    A custom ``http`` object will also need to ensure its own thread safety.
+
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
     :param credentials: The OAuth2 Credentials to use for this connection.
@@ -73,6 +76,7 @@ class Connection(object):
     """
 
     def __init__(self, credentials=None, http=None):
+        self._local = threading.local()
         self._http = http
         self._credentials = self._create_scoped_credentials(
             credentials, self.SCOPE)
@@ -91,14 +95,32 @@ class Connection(object):
     def http(self):
         """A getter for the HTTP transport used in talking to the API.
 
-        :rtype: :class:`httplib2.Http`
-        :returns: A Http object used to transport data.
+        This will return a thread-local :class:`httplib2.Http` instance unless
+        a custom transport has been provided to the :class:`Connection`
+        constructor.
+
+        :rtype: :class:`httplib2.Http` or the custom HTTP transport specifed
+                to the connection constructor.
+        :returns: An ``Http`` object used to transport data.
         """
-        if self._http is None:
-            self._http = httplib2.Http()
+        if self._http is not None:
+            return self._http
+
+        if not hasattr(self._local, 'http'):
+            self._local.http = httplib2.Http()
+
+            # NOTE: Because this checks the existance of the credentials before
+            # using it, this is not thread safe. Another thread could change
+            # self._credentials between the if and the call to authorize.
+            # However, self._credentials is read-only and set at connection
+            # creation time, so it should never be change during normal
+            # circumstances. A lock or EAFP could mitigate this, but we don't
+            # see it necessary right now.
             if self._credentials:
-                self._http = self._credentials.authorize(self._http)
-        return self._http
+                self._local.http = self._credentials.authorize(
+                    self._local.http)
+
+        return self._local.http
 
     @staticmethod
     def _create_scoped_credentials(credentials, scope):
