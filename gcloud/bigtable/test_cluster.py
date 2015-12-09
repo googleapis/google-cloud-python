@@ -384,7 +384,8 @@ class TestCluster(unittest2.TestCase):
         client._cluster_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_result = MUT.Operation('create', op_id, op_begin)
+        expected_result = MUT.Operation('create', op_id, op_begin,
+                                        cluster=cluster)
 
         # Create the mocks.
         prep_create_called = []
@@ -452,7 +453,8 @@ class TestCluster(unittest2.TestCase):
         # Create expected_result.
         op_id = 5678
         op_begin = object()
-        expected_result = MUT.Operation('update', op_id, op_begin)
+        expected_result = MUT.Operation('update', op_id, op_begin,
+                                        cluster=cluster)
 
         # Create mocks
         process_operation_called = []
@@ -541,7 +543,8 @@ class TestCluster(unittest2.TestCase):
         # Create expected_result.
         op_id = 5678
         op_begin = object()
-        expected_result = MUT.Operation('undelete', op_id, op_begin)
+        expected_result = MUT.Operation('undelete', op_id, op_begin,
+                                        cluster=cluster)
 
         # Create the mocks.
         process_operation_called = []

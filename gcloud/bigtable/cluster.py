@@ -227,6 +227,19 @@ class Operation(object):
 class Cluster(object):
     """Representation of a Google Cloud Bigtable Cluster.
 
+    We can use a :class:`Cluster` to:
+
+    * :meth:`reload` itself
+    * :meth:`create` itself
+    * :meth:`update` itself
+    * :meth:`delete` itself
+    * :meth:`undelete` itself
+
+    .. note::
+
+        For now, we leave out the ``default_storage_type`` (an enum)
+        which if not sent will end up as :data:`.data_pb2.STORAGE_SSD`.
+
     :type zone: str
     :param zone: The name of the zone where the cluster resides.
 
@@ -386,7 +399,7 @@ class Cluster(object):
             request_pb, self._client.timeout_seconds)
 
         op_id, op_begin = _process_operation(cluster_pb.current_operation)
-        return Operation('create', op_id, op_begin)
+        return Operation('create', op_id, op_begin, cluster=self)
 
     def update(self):
         """Update this cluster.
@@ -417,7 +430,7 @@ class Cluster(object):
             request_pb, self._client.timeout_seconds)
 
         op_id, op_begin = _process_operation(cluster_pb.current_operation)
-        return Operation('update', op_id, op_begin)
+        return Operation('update', op_id, op_begin, cluster=self)
 
     def delete(self):
         """Delete this cluster.
@@ -480,7 +493,7 @@ class Cluster(object):
             request_pb, self._client.timeout_seconds)
 
         op_id, op_begin = _process_operation(operation_pb2)
-        return Operation('undelete', op_id, op_begin)
+        return Operation('undelete', op_id, op_begin, cluster=self)
 
     def list_tables(self):
         """List the tables in this cluster.
