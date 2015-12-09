@@ -353,12 +353,12 @@ class _AsyncJob(_BaseJob):
         """
         if ('jobReference' not in resource or
                 'jobId' not in resource['jobReference']):
-            raise KeyError('Resource lacks required identity information:'
+            raise KeyError('Resource lacks required identity information: '
                            '["jobReference"]["jobId"]')
         name = resource['jobReference']['jobId']
         if ('configuration' not in resource or
                 cls._CONFIG_KEY not in resource['configuration']):
-            raise KeyError('Resource lacks required configuration:'
+            raise KeyError('Resource lacks required configuration: '
                            '["configuration"]["%s"]' % cls._CONFIG_KEY)
         config = resource['configuration'][cls._CONFIG_KEY]
         return name, config
