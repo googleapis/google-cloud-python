@@ -1321,10 +1321,18 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
 class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
+    DESTINATION_TABLE = 'destination_table'
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import RunAsyncQueryJob
         return RunAsyncQueryJob
+
+    def _makeResource(self, started=False, ended=False):
+        resource = super(TestRunAsyncQueryJob, self)._makeResource(
+            started, ended)
+        config = resource['configuration']['query']
+        config['query'] = self.QUERY
+        return resource
 
     def _verifyBooleanResourceProperties(self, job, config):
 
@@ -1365,7 +1373,7 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
         else:
             self.assertTrue(job.default_dataset is None)
         if 'destinationTable' in config:
-            table = job.destination_table
+            table = job.destination
             tb_ref = {
                 'projectId': table.project,
                 'datasetId': table.dataset_name,
@@ -1373,7 +1381,7 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
             }
             self.assertEqual(tb_ref, config['destinationTable'])
         else:
-            self.assertTrue(job.destination_table is None)
+            self.assertTrue(job.destination is None)
         if 'priority' in config:
             self.assertEqual(job.priority,
                              config['priority'])
@@ -1400,11 +1408,64 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(job.allow_large_results is None)
         self.assertTrue(job.create_disposition is None)
         self.assertTrue(job.default_dataset is None)
-        self.assertTrue(job.destination_table is None)
+        self.assertTrue(job.destination is None)
         self.assertTrue(job.flatten_results is None)
         self.assertTrue(job.priority is None)
         self.assertTrue(job.use_query_cache is None)
         self.assertTrue(job.write_disposition is None)
+
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_missing_config(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {'query': self.QUERY}
+            },
+        }
+        klass = self._getTargetClass()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(job._client is client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        RESOURCE['configuration']['query']['destinationTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.DESTINATION_TABLE,
+        }
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
@@ -1476,7 +1537,7 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
         job.allow_large_results = True
         job.create_disposition = 'CREATE_NEVER'
         job.default_dataset = dataset
-        job.destination_table = table
+        job.destination = table
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
@@ -1545,11 +1606,11 @@ class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
 
         dataset = Dataset(DS_NAME, client)
         table = Table(DEST_TABLE, dataset)
-        job.destination_table = table
+        job.destination = table
 
         job.reload()
 
-        self.assertEqual(job.destination_table, None)
+        self.assertEqual(job.destination, None)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]

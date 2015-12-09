@@ -923,7 +923,7 @@ class _AsyncQueryConfiguration(object):
     _allow_large_results = None
     _create_disposition = None
     _default_dataset = None
-    _destination_table = None
+    _destination = None
     _flatten_results = None
     _priority = None
     _use_query_cache = None
@@ -943,6 +943,8 @@ class RunAsyncQueryJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
+    _CONFIG_KEY = 'query'
+
     def __init__(self, name, query, client):
         super(RunAsyncQueryJob, self).__init__(name, client)
         self.query = query
@@ -963,7 +965,7 @@ class RunAsyncQueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
     """
 
-    destination_table = _TypedProperty('destination_table', Table)
+    destination = _TypedProperty('destination', Table)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
     """
@@ -989,11 +991,11 @@ class RunAsyncQueryJob(_AsyncJob):
     """
 
     def _destination_table_resource(self):
-        if self.destination_table is not None:
+        if self.destination is not None:
             return {
-                'projectId': self.destination_table.project,
-                'datasetId': self.destination_table.dataset_name,
-                'tableId': self.destination_table.name,
+                'projectId': self.destination.project,
+                'datasetId': self.destination.dataset_name,
+                'tableId': self.destination.name,
             }
 
     def _populate_config_resource(self, configuration):
@@ -1007,7 +1009,7 @@ class RunAsyncQueryJob(_AsyncJob):
                 'projectId': self.default_dataset.project,
                 'datasetId': self.default_dataset.name,
             }
-        if self.destination_table is not None:
+        if self.destination is not None:
             table_res = self._destination_table_resource()
             configuration['destinationTable'] = table_res
         if self.flatten_results is not None:
@@ -1028,12 +1030,12 @@ class RunAsyncQueryJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'query': {
+                self._CONFIG_KEY: {
                     'query': self.query,
                 },
             },
         }
-        configuration = resource['configuration']['query']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         return resource
@@ -1044,14 +1046,34 @@ class RunAsyncQueryJob(_AsyncJob):
         dest_remote = configuration.get('destinationTable')
 
         if dest_remote is None:
-            if self.destination_table is not None:
-                del self.destination_table
+            if self.destination is not None:
+                del self.destination
         else:
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
                 assert dest_remote['projectId'] == self.project
                 dataset = self._client.dataset(dest_remote['datasetId'])
-                self.destination_table = dataset.table(dest_remote['tableId'])
+                self.destination = dataset.table(dest_remote['tableId'])
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        query = config['query']
+        job = cls(name, query, client=client)
+        job._set_properties(resource)
+        return job
 
 
 class _SyncQueryConfiguration(object):
