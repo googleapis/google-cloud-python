@@ -1035,10 +1035,29 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         from gcloud.bigquery.job import ExtractTableToStorageJob
         return ExtractTableToStorageJob
 
+    def _makeResource(self, started=False, ended=False):
+        resource = super(TestExtractTableToStorageJob, self)._makeResource(
+            started, ended)
+        config = resource['configuration']['extract']
+        config['sourceTable'] = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.SOURCE_TABLE,
+        }
+        config['destinationUris'] = [self.DESTINATION_URI]
+        return resource
+
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
 
         config = resource.get('configuration', {}).get('extract')
+
+        self.assertEqual(job.destination_uris, config['destinationUris'])
+
+        table_ref = config['sourceTable']
+        self.assertEqual(job.source.project, table_ref['projectId'])
+        self.assertEqual(job.source.dataset_name, table_ref['datasetId'])
+        self.assertEqual(job.source.name, table_ref['tableId'])
 
         if 'compression' in config:
             self.assertEqual(job.compression,
@@ -1083,6 +1102,61 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self.assertTrue(job.destination_format is None)
         self.assertTrue(job.field_delimiter is None)
         self.assertTrue(job.print_header is None)
+
+    def test_from_api_repr_missing_identity(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {}
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_missing_config(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': '%s:%s' % (self.PROJECT, self.DS_NAME),
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            }
+        }
+        klass = self._getTargetClass()
+        with self.assertRaises(KeyError):
+            klass.from_api_repr(RESOURCE, client=client)
+
+    def test_from_api_repr_bare(self):
+        self._setUpConstants()
+        client = _Client(self.PROJECT)
+        RESOURCE = {
+            'id': self.JOB_ID,
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': self.PROJECT,
+                        'datasetId': self.DS_NAME,
+                        'tableId': self.SOURCE_TABLE,
+                    },
+                    'destinationUris': [self.DESTINATION_URI],
+                }
+            },
+        }
+        klass = self._getTargetClass()
+        job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(job._client is client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_w_properties(self):
+        client = _Client(self.PROJECT)
+        RESOURCE = self._makeResource()
+        klass = self._getTargetClass()
+        dataset = klass.from_api_repr(RESOURCE, client=client)
+        self.assertTrue(dataset._client is client)
+        self._verifyResourceProperties(dataset, RESOURCE)
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT

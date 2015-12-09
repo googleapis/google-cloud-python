@@ -825,6 +825,8 @@ class ExtractTableToStorageJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
+    _CONFIG_KEY = 'extract'
+
     def __init__(self, name, source, destination_uris, client):
         super(ExtractTableToStorageJob, self).__init__(name, client)
         self.source = source
@@ -877,16 +879,40 @@ class ExtractTableToStorageJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'extract': {
+                self._CONFIG_KEY: {
                     'sourceTable': source_ref,
                     'destinationUris': self.destination_uris,
                 },
             },
         }
-        configuration = resource['configuration']['extract']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         return resource
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        source_config = config['sourceTable']
+        assert source_config['projectId'] == client.project
+        dataset = Dataset(source_config['datasetId'], client)
+        source = Table(source_config['tableId'], dataset)
+        destination_uris = config['destinationUris']
+        job = cls(name, source, destination_uris, client=client)
+        job._set_properties(resource)
+        return job
 
 
 class _AsyncQueryConfiguration(object):
