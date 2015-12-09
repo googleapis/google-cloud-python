@@ -435,7 +435,8 @@ class LoadTableFromStorageJob(_AsyncJob):
     :param destination: Table into which data is to be loaded.
 
     :type source_uris: sequence of string
-    :param source_uris: URIs of data files to be loaded.
+    :param source_uris: URIs of one or more data files to be loaded, in
+                        format ``gs://<bucket_name>/<object_name_or_glob>``.
 
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
@@ -736,7 +737,8 @@ class ExtractTableToStorageJob(_AsyncJob):
 
     :type destination_uris: list of string
     :param destination_uris: URIs describing Cloud Storage blobs into which
-                             extracted data will be written.
+                             extracted data will be written, in format
+                             ``gs://<bucket_name>/<object_name_or_glob>``.
 
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
