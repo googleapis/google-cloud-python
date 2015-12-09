@@ -413,6 +413,66 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(prep_create_called, [cluster])
         self.assertEqual(process_operation_called, [current_op])
 
+    def test_update(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import operations_pb2
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable import cluster as MUT
+
+        project = 'PROJECT'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        serve_nodes = 81
+        display_name = 'display_name'
+        timeout_seconds = 9
+
+        client = _Client(project, timeout_seconds=timeout_seconds)
+        cluster = self._makeOne(zone, cluster_id, client,
+                                display_name=display_name,
+                                serve_nodes=serve_nodes)
+
+        # Create request_pb
+        cluster_name = ('projects/' + project + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        request_pb = data_pb2.Cluster(
+            name=cluster_name,
+            display_name=display_name,
+            serve_nodes=serve_nodes,
+        )
+
+        # Create response_pb
+        current_op = operations_pb2.Operation()
+        response_pb = data_pb2.Cluster(current_operation=current_op)
+
+        # Patch the stub used by the API method.
+        client._cluster_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        op_id = 5678
+        op_begin = object()
+        expected_result = MUT.Operation('update', op_id, op_begin)
+
+        # Create mocks
+        process_operation_called = []
+
+        def mock_process_operation(operation_pb):
+            process_operation_called.append(operation_pb)
+            return op_id, op_begin
+
+        # Perform the method and check the result.
+        with _Monkey(MUT, _process_operation=mock_process_operation):
+            result = cluster.update()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'UpdateCluster',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(process_operation_called, [current_op])
+
     def test_delete(self):
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
@@ -641,6 +701,33 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
                     display_name='quux',
                     serve_nodes=1337,
                 ),
+            ),
+        )
+
+        any_val = any_pb2.Any(
+            type_url=type_url,
+            value=metadata.SerializeToString(),
+        )
+        result = self._callFUT(any_val)
+        self.assertEqual(result, metadata)
+
+    def test_with_update_cluster_metadata(self):
+        from gcloud.bigtable._generated import any_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
+
+        type_url = ('type.googleapis.com/' +
+                    messages_pb2._UPDATECLUSTERMETADATA.full_name)
+        metadata = messages_pb2.UpdateClusterMetadata(
+            request_time=Timestamp(seconds=1, nanos=1234),
+            finish_time=Timestamp(seconds=10, nanos=891011),
+            cancel_time=Timestamp(seconds=100, nanos=76543),
+            original_request=data_pb2.Cluster(
+                display_name='the-end',
+                serve_nodes=42,
             ),
         )
 
