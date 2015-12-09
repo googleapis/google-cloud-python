@@ -232,11 +232,7 @@ Get rows from a table's data:
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> rows, next_page_token = table.data(max_results=100)  # API request
-   >>> rows.csv.headers
-   ('full_name', 'age')
-   >>> list(rows.csv)
-   [('Abel Adamson', 27), ('Beverly Bowman', 33)]
+   >>> rows, next_page_token = table.fetch_data(max_results=100)  # API request
    >>> for row in rows:
    ...     for field, value in zip(table.schema, row):
    ...         do_something(field, value)
@@ -283,20 +279,22 @@ Run a query which can be expected to complete within bounded time:
    >>> query = """\
    SELECT count(*) AS age_count FROM dataset_name.person_ages
    """
-   >>> results = client.run_sync_query(query, timeout_ms=1000)
+   >>> job = client.run_sync_query(query)
+   >>> job.timeout_ms = 1000
+   >>> job.run()  # API request
    >>> retry_count = 100
-   >>> while retry_count > 0 and not results.job_complete:
+   >>> while retry_count > 0 and not job.complete:
    ...     retry_count -= 1
    ...     time.sleep(10)
-   ...     results.reload()  # API request
-   >>> results.schema
+   ...     job.reload()  # API request
+   >>> job.schema
    [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
-   >>> results.rows
+   >>> job.rows
    [(15,)]
 
 .. note::
 
-   If the query takes longer than the timeout allowed, ``results.job_complete``
+   If the query takes longer than the timeout allowed, ``job.complete``
    will be ``False``:  we therefore poll until it is completed.
 
 Querying data (asynchronous)
@@ -315,9 +313,9 @@ Background a query, loading the results into a table:
    """
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> job = client.run_async_query(query,
-   ...                              destination=table,
-   ...                              write_disposition='truncate')
+   >>> job = client.run_async_query('fullname-age-query-job', query)
+   >>> job.destination_table = table
+   >>> job.write_disposition= 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -361,31 +359,22 @@ Poll until the job is complete:
 Inserting data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Load data synchronously from a local CSV file into a new table.  First,
-create the job locally:
+Load data synchronously from a local CSV file into a new table:
 
 .. doctest::
 
+   >>> import csv
    >>> from gcloud import bigquery
+   >>> from gcloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
    >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
-   ...     job = table.load_from_file(
-   ...         file_obj,
-   ...         source_format='CSV',
-   ...         skip_leading_rows=1
-   ...         write_disposition='truncate',
-   ...         )  # API request
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
-   'load'
-   >>> job.created
-   datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
-   >>> job.state
-   'done'
-   >>> job.ended
-   datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+   ...     reader = csv.reader(file_obj)
+   ...     rows = list(reader)
+   >>> table.insert_data(rows)  # API request
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -397,13 +386,17 @@ the job locally:
 .. doctest::
 
    >>> from gcloud import bigquery
+   >>> from gcloud.bigquery import SchemaField
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
-   >>> job = table.load_from_storage(bucket_name='bucket-name',
-   ...                               object_name_glob='object-prefix*',
-   ...                               source_format='CSV',
-   ...                               skip_leading_rows=1,
-   ...                               write_disposition='truncate')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
+   >>> job = client.load_table_from_storage(
+   ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
+   >>> job.source_format = 'CSV'
+   >>> job.skip_leading_rows = 1  # count of skipped header rows
+   >>> job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -423,7 +416,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
@@ -455,11 +448,12 @@ located on Google Cloud Storage.  First, create the job locally:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
-   >>> job = table.export_to_storage(bucket_name='bucket-name',
-   ...                               object_name_glob='export-prefix*.csv',
-   ...                               destination_format='CSV',
-   ...                               print_header=1,
-   ...                               write_disposition='truncate')
+   >>> job = client.extract_table_to_storage(
+   ...     'extract-person-ages-job', table,
+   ...     'gs://bucket-name/export-prefix*.csv')
+   ... job.destination_format = 'CSV'
+   ... job.print_header = True
+   ... job.write_disposition = 'truncate'
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -479,7 +473,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
@@ -512,7 +506,8 @@ First, create the job locally:
    >>> client = bigquery.Client()
    >>> source_table = dataset.table(name='person_ages')
    >>> destination_table = dataset.table(name='person_ages_copy')
-   >>> job = source_table.copy_to(destination_table)  # API request
+   >>> job = client.copy_table(
+   ...     'copy-table-job', destination_table, source_table)
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
@@ -532,7 +527,7 @@ Then, begin executing the job on the server:
 
 .. doctest::
 
-   >>> job.submit()  # API call
+   >>> job.begin()  # API call
    >>> job.created
    datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>)
    >>> job.state
