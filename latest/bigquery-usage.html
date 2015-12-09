@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud a04840b documentation</title>
+    <title>Using the API &mdash; gcloud cda34f4 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'a04840b',
+        VERSION:     'cda34f4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud a04840b documentation" href="index.html" />
+    <link rel="top" title="gcloud cda34f4 documentation" href="index.html" />
     <link rel="next" title="BigQuery Client" href="bigquery-client.html" />
     <link rel="prev" title="Message" href="pubsub-message.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%20a04840b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%20cda34f4" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a04840b)
+              Version History (cda34f4)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -287,11 +287,7 @@ dataset will have the value as their expiration period.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span><span class="o">.</span><span class="n">csv</span><span class="o">.</span><span class="n">headers</span>
-<span class="go">(&#39;full_name&#39;, &#39;age&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">csv</span><span class="p">)</span>
-<span class="go">[(&#39;Abel Adamson&#39;, 27), (&#39;Beverly Bowman&#39;, 33)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">fetch_data</span><span class="p">(</span><span class="n">max_results</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="n">do_something</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -331,21 +327,23 @@ dataset will have the value as their expiration period.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
 <span class="go">SELECT count(*) AS age_count FROM dataset_name.person_ages</span>
 <span class="go">&quot;&quot;&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_sync_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>  <span class="c"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">retry_count</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">results</span><span class="o">.</span><span class="n">job_complete</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">retry_count</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">job</span><span class="o">.</span><span class="n">complete</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">retry_count</span> <span class="o">-=</span> <span class="mi">1</span>
 <span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">results</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">schema</span>
+<span class="gp">... </span>    <span class="n">job</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">schema</span>
 <span class="go">[{&#39;name&#39;: &#39;age_count&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;mode&#39;: &#39;nullable&#39;}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span><span class="o">.</span><span class="n">rows</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">rows</span>
 <span class="go">[(15,)]</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If the query takes longer than the timeout allowed, <code class="docutils literal"><span class="pre">results.job_complete</span></code>
+<p class="last">If the query takes longer than the timeout allowed, <code class="docutils literal"><span class="pre">job.complete</span></code>
 will be <code class="docutils literal"><span class="pre">False</span></code>:  we therefore poll until it is completed.</p>
 </div>
 </div>
@@ -361,9 +359,9 @@ will be <code class="docutils literal"><span class="pre">False</span></code>:  w
 <span class="go">&quot;&quot;&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s">&#39;dataset_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_async_query</span><span class="p">(</span><span class="n">query</span><span class="p">,</span>
-<span class="gp">... </span>                             <span class="n">destination</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
-<span class="gp">... </span>                             <span class="n">write_disposition</span><span class="o">=</span><span class="s">&#39;truncate&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_async_query</span><span class="p">(</span><span class="s">&#39;fullname-age-query-job&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">table</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span><span class="o">=</span> <span class="s">&#39;truncate&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
 <span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
@@ -406,28 +404,19 @@ is submitted to the BigQuery back-end.</li>
 </div>
 <div class="section" id="inserting-data-synchronous">
 <h3>Inserting data (synchronous)<a class="headerlink" href="#inserting-data-synchronous" title="Permalink to this headline">#</a></h3>
-<p>Load data synchronously from a local CSV file into a new table.  First,
-create the job locally:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<p>Load data synchronously from a local CSV file into a new table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.bigquery</span> <span class="kn">import</span> <span class="n">SchemaField</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;full_name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;required&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;required)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/person_ages.csv&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">job</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">load_from_file</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">file_obj</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">source_format</span><span class="o">=</span><span class="s">&#39;CSV&#39;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="n">skip_leading_rows</span><span class="o">=</span><span class="mi">1</span>
-<span class="gp">... </span>        <span class="n">write_disposition</span><span class="o">=</span><span class="s">&#39;truncate&#39;</span><span class="p">,</span>
-<span class="gp">... </span>        <span class="p">)</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
-<span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
-<span class="go">&#39;load&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
-<span class="go">&#39;done&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">ended</span>
-<span class="go">datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=&lt;UTC&gt;)</span>
+<span class="gp">... </span>    <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">insert_data</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>  <span class="c"># API request</span>
 </pre></div>
 </div>
 </div>
@@ -437,13 +426,17 @@ create the job locally:</p>
 Google Cloud Storage, appending rows into an existing table.  First, create
 the job locally:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.bigquery</span> <span class="kn">import</span> <span class="n">SchemaField</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">load_from_storage</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s">&#39;bucket-name&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">object_name_glob</span><span class="o">=</span><span class="s">&#39;object-prefix*&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">source_format</span><span class="o">=</span><span class="s">&#39;CSV&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">skip_leading_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">write_disposition</span><span class="o">=</span><span class="s">&#39;truncate&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;full_name&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;string&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;required&#39;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;required)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_table_from_storage</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;load-from-storage-job&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="s">&#39;gs://bucket-name/object-prefix*&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s">&#39;CSV&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># count of skipped header rows</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s">&#39;truncate&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
 <span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
@@ -463,7 +456,7 @@ is submitted to the BigQuery back-end.</li>
 </ul>
 </div>
 <p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
@@ -491,11 +484,12 @@ located on Google Cloud Storage.  First, create the job locally:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">export_to_storage</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="s">&#39;bucket-name&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">object_name_glob</span><span class="o">=</span><span class="s">&#39;export-prefix*.csv&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">destination_format</span><span class="o">=</span><span class="s">&#39;CSV&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">print_header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="gp">... </span>                              <span class="n">write_disposition</span><span class="o">=</span><span class="s">&#39;truncate&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">extract_table_to_storage</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;extract-person-ages-job&#39;</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="s">&#39;gs://bucket-name/export-prefix*.csv&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">destination_format</span> <span class="o">=</span> <span class="s">&#39;CSV&#39;</span>
+<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">print_header</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s">&#39;truncate&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
 <span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
@@ -515,7 +509,7 @@ is submitted to the BigQuery back-end.</li>
 </ul>
 </div>
 <p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
@@ -543,7 +537,8 @@ is submitted to the BigQuery back-end.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">source_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;person_ages_copy&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">source_table</span><span class="o">.</span><span class="n">copy_to</span><span class="p">(</span><span class="n">destination_table</span><span class="p">)</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s">&#39;copy-table-job&#39;</span><span class="p">,</span> <span class="n">destination_table</span><span class="p">,</span> <span class="n">source_table</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
 <span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
@@ -563,7 +558,7 @@ is submitted to the BigQuery back-end.</li>
 </ul>
 </div>
 <p>Then, begin executing the job on the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">submit</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
