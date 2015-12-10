@@ -91,22 +91,22 @@ class Client(JSONClient):
                     for resource in resp['datasets']]
         return datasets, resp.get('nextPageToken')
 
-    def dataset(self, name):
+    def dataset(self, dataset_name):
         """Construct a dataset bound to this client.
 
-        :type name: string
-        :param name: Name of the dataset.
+        :type dataset_name: string
+        :param dataset_name: Name of the dataset.
 
         :rtype: :class:`gcloud.bigquery.dataset.Dataset`
         :returns: a new ``Dataset`` instance
         """
-        return Dataset(name, client=self)
+        return Dataset(dataset_name, client=self)
 
-    def load_table_from_storage(self, name, destination, *source_uris):
+    def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
 
-        :type name: string
-        :param name: Name of the job.
+        :type job_name: string
+        :param job_name: Name of the job.
 
         :type destination: :class:`gcloud.bigquery.table.Table`
         :param destination: Table into which data is to be loaded.
@@ -117,14 +117,14 @@ class Client(JSONClient):
         :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
         :returns: a new ``LoadTableFromStorageJob`` instance
         """
-        return LoadTableFromStorageJob(name, destination, source_uris,
+        return LoadTableFromStorageJob(job_name, destination, source_uris,
                                        client=self)
 
-    def copy_table(self, name, destination, *sources):
+    def copy_table(self, job_name, destination, *sources):
         """Construct a job for copying one or more tables into another table.
 
-        :type name: string
-        :param name: Name of the job.
+        :type job_name: string
+        :param job_name: Name of the job.
 
         :type destination: :class:`gcloud.bigquery.table.Table`
         :param destination: Table into which data is to be copied.
@@ -135,13 +135,13 @@ class Client(JSONClient):
         :rtype: :class:`gcloud.bigquery.job.CopyJob`
         :returns: a new ``CopyJob`` instance
         """
-        return CopyJob(name, destination, sources, client=self)
+        return CopyJob(job_name, destination, sources, client=self)
 
-    def extract_table_to_storage(self, name, source, *destination_uris):
+    def extract_table_to_storage(self, job_name, source, *destination_uris):
         """Construct a job for extracting a table into Cloud Storage files.
 
-        :type name: string
-        :param name: Name of the job.
+        :type job_name: string
+        :param job_name: Name of the job.
 
         :type source: :class:`gcloud.bigquery.table.Table`
         :param source: table to be extracted.
@@ -153,14 +153,14 @@ class Client(JSONClient):
         :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
         :returns: a new ``ExtractTableToStorageJob`` instance
         """
-        return ExtractTableToStorageJob(name, source, destination_uris,
+        return ExtractTableToStorageJob(job_name, source, destination_uris,
                                         client=self)
 
-    def run_async_query(self, name, query):
+    def run_async_query(self, job_name, query):
         """Construct a job for running a SQL query asynchronously.
 
-        :type name: string
-        :param name: Name of the job.
+        :type job_name: string
+        :param job_name: Name of the job.
 
         :type query: string
         :param query: SQL query to be executed
@@ -168,7 +168,7 @@ class Client(JSONClient):
         :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`
         :returns: a new ``RunAsyncQueryJob`` instance
         """
-        return RunAsyncQueryJob(name, query, client=self)
+        return RunAsyncQueryJob(job_name, query, client=self)
 
     def run_sync_query(self, query):
         """Construct a job for running a SQL query synchronously.
