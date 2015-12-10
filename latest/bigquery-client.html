@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>BigQuery Client &mdash; gcloud 5e180f1 documentation</title>
+    <title>BigQuery Client &mdash; gcloud d6820b9 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5e180f1',
+        VERSION:     'd6820b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 5e180f1 documentation" href="index.html" />
+    <link rel="top" title="gcloud d6820b9 documentation" href="index.html" />
     <link rel="next" title="Datasets" href="bigquery-dataset.html" />
     <link rel="prev" title="Using the API" href="bigquery-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%205e180f1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%20d6820b9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (5e180f1)
+              Version History (d6820b9)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -124,6 +124,8 @@ from the environment.</li>
 <dt id="gcloud.bigquery.client.Client.copy_table">
 <code class="descname">copy_table</code><span class="sig-paren">(</span><em>job_name</em>, <em>destination</em>, <em>*sources</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/client.html#Client.copy_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.client.Client.copy_table" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for copying one or more tables into another table.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -167,6 +169,8 @@ from the environment.</li>
 <dt id="gcloud.bigquery.client.Client.extract_table_to_storage">
 <code class="descname">extract_table_to_storage</code><span class="sig-paren">(</span><em>job_name</em>, <em>source</em>, <em>*destination_uris</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/client.html#Client.extract_table_to_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.client.Client.extract_table_to_storage" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for extracting a table into Cloud Storage files.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -175,7 +179,8 @@ from the environment.</li>
 <li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
 <li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; table to be extracted.</li>
 <li><strong>destination_uris</strong> (<em>sequence of string</em>) &#8211; URIs of CloudStorage file(s) into which
-table data is to be extracted.</li>
+table data is to be extracted; in format
+<code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -226,6 +231,8 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <dt id="gcloud.bigquery.client.Client.load_table_from_storage">
 <code class="descname">load_table_from_storage</code><span class="sig-paren">(</span><em>job_name</em>, <em>destination</em>, <em>*source_uris</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/client.html#Client.load_table_from_storage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.client.Client.load_table_from_storage" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for loading data into a table from CloudStorage.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -233,7 +240,8 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
-<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded.</li>
+<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded; in format
+<code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -251,6 +259,8 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <dt id="gcloud.bigquery.client.Client.run_async_query">
 <code class="descname">run_async_query</code><span class="sig-paren">(</span><em>job_name</em>, <em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/client.html#Client.run_async_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.client.Client.run_async_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct a job for running a SQL query asynchronously.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query">https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

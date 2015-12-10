@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Jobs &mdash; gcloud 5e180f1 documentation</title>
+    <title>Jobs &mdash; gcloud d6820b9 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '5e180f1',
+        VERSION:     'd6820b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 5e180f1 documentation" href="index.html" />
+    <link rel="top" title="gcloud d6820b9 documentation" href="index.html" />
     <link rel="next" title="Tables" href="bigquery-table.html" />
     <link rel="prev" title="Datasets" href="bigquery-dataset.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-job%0ARelease%3A%205e180f1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-job%0ARelease%3A%20d6820b9" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (5e180f1)
+              Version History (d6820b9)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -236,7 +236,8 @@ for the dataset (which requires a project).</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
 <li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>destination_uris</strong> (<em>list of string</em>) &#8211; URIs describing Cloud Storage blobs into which
-extracted data will be written.</li>
+extracted data will be written, in format
+<code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 </ul>
@@ -286,7 +287,8 @@ for the dataset (which requires a project).</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the job</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
-<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded.</li>
+<li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of one or more data files to be loaded, in
+format <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the dataset (which requires a project).</li>
 <li><strong>schema</strong> (list of <a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.SchemaField" title="gcloud.bigquery.table.SchemaField"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.SchemaField</span></code></a>) &#8211; The job&#8217;s schema</li>
