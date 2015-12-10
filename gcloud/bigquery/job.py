@@ -57,7 +57,7 @@ class Encoding(_EnumProperty):
 
 
 class QueryPriority(_EnumProperty):
-    """Pseudo-enum for ``RunAsyncQueryJob.priority`` property."""
+    """Pseudo-enum for ``QueryJob.priority`` property."""
     INTERACTIVE = 'INTERACTIVE'
     BATCH = 'BATCH'
     ALLOWED = (INTERACTIVE, BATCH)
@@ -754,7 +754,7 @@ class _AsyncQueryConfiguration(object):
     _write_disposition = None
 
 
-class RunAsyncQueryJob(_AsyncJob):
+class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
     :type name: string
@@ -768,7 +768,7 @@ class RunAsyncQueryJob(_AsyncJob):
                    for the dataset (which requires a project).
     """
     def __init__(self, name, query, client):
-        super(RunAsyncQueryJob, self).__init__(name, client)
+        super(QueryJob, self).__init__(name, client)
         self.query = query
         self._configuration = _AsyncQueryConfiguration()
 

@@ -986,13 +986,13 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
-class TestRunAsyncQueryJob(unittest2.TestCase, _Base):
+class TestQueryJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.job import RunAsyncQueryJob
-        return RunAsyncQueryJob
+        from gcloud.bigquery.job import QueryJob
+        return QueryJob
 
     def _verifyBooleanResourceProperties(self, job, config):
 
