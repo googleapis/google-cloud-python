@@ -277,7 +277,7 @@ Run a query which can be expected to complete within bounded time:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> query = """\
-   SELECT count(*) AS age_count FROM dataset_name.person_ages
+   SELECT count(*) AS age_count FROM [project-name:dataset_name.person_ages]
    """
    >>> job = client.run_sync_query(query)
    >>> job.timeout_ms = 1000
@@ -309,7 +309,7 @@ Background a query, loading the results into a table:
    >>> query = """\
    SELECT firstname + ' ' + last_name AS full_name,
           FLOOR(DATEDIFF(CURRENT_DATE(), birth_date) / 365) AS age
-    FROM dataset_name.persons
+    FROM [project-name:dataset_name.person_ages]
    """
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')

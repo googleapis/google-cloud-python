@@ -133,6 +133,33 @@ class Table(object):
         self._schema = tuple(value)
 
     @property
+    def query_id(self):
+        """The identifier for the table to be used in a query.
+
+        This is of the form
+
+            ``"{project_name}:{dataset_name}.{table_name}"``
+
+        and brackets will be added if the project name includes a
+        dash. For reference, see:
+
+        https://cloud.google.com/bigquery/query-reference#from
+
+        .. note::
+
+            This is identical to the ID (``table_id``) returned from the
+            server, but that value from the server will not have the
+            square brackets added.
+
+        :rtype: string
+        :returns: The table identifier to be used in a query.
+        """
+        query_parts = [self.project, ':', self.dataset_name, '.', self.name]
+        if '-' in self.project:
+            query_parts = ['['] + query_parts + [']']
+        return ''.join(query_parts)
+
+    @property
     def created(self):
         """Datetime at which the table was created.
 
