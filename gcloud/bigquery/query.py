@@ -32,7 +32,7 @@ class _SyncQueryConfiguration(object):
     _use_query_cache = None
 
 
-class RunSyncQueryJob(object):
+class QueryResults(object):
     """Synchronous job: query tables.
 
     :type query: string

@@ -15,7 +15,7 @@
 import unittest2
 
 
-class TestRunSyncQueryJob(unittest2.TestCase):
+class TestQueryResults(unittest2.TestCase):
     PROJECT = 'project'
     JOB_NAME = 'job_name'
     JOB_NAME = 'test-synchronous-query'
@@ -24,8 +24,8 @@ class TestRunSyncQueryJob(unittest2.TestCase):
     TOKEN = 'TOKEN'
 
     def _getTargetClass(self):
-        from gcloud.bigquery.query import RunSyncQueryJob
-        return RunSyncQueryJob
+        from gcloud.bigquery.query import QueryResults
+        return QueryResults
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -72,12 +72,12 @@ class TestRunSyncQueryJob(unittest2.TestCase):
 
         return resource
 
-    def _verifySchema(self, job, resource):
+    def _verifySchema(self, query, resource):
         from gcloud.bigquery.table import SchemaField
         if 'schema' in resource:
             fields = resource['schema']['fields']
-            self.assertEqual(len(job.schema), len(fields))
-            for found, expected in zip(job.schema, fields):
+            self.assertEqual(len(query.schema), len(fields))
+            for found, expected in zip(query.schema, fields):
                 self.assertTrue(isinstance(found, SchemaField))
                 self.assertEqual(found.name, expected['name'])
                 self.assertEqual(found.field_type, expected['type'])
@@ -86,73 +86,61 @@ class TestRunSyncQueryJob(unittest2.TestCase):
                                  expected.get('description'))
                 self.assertEqual(found.fields, expected.get('fields'))
         else:
-            self.assertTrue(job.schema is None)
+            self.assertTrue(query.schema is None)
 
-    def _verifyRows(self, job, resource):
+    def _verifyRows(self, query, resource):
         expected = resource.get('rows')
         if expected is None:
-            self.assertEqual(job.rows, [])
+            self.assertEqual(query.rows, [])
         else:
-            found = job.rows
+            found = query.rows
             self.assertEqual(len(found), len(expected))
             for f_row, e_row in zip(found, expected):
                 self.assertEqual(f_row,
                                  tuple([cell['v'] for cell in e_row['f']]))
 
-    def _verifyResourceProperties(self, job, resource):
-        self.assertEqual(job.cache_hit, resource.get('cacheHit'))
-        self.assertEqual(job.complete, resource.get('jobComplete'))
-        self.assertEqual(job.errors, resource.get('errors'))
-        self.assertEqual(job.page_token, resource.get('pageToken'))
-        self.assertEqual(job.total_rows, resource.get('totalRows'))
-        self.assertEqual(job.total_bytes_processed,
+    def _verifyResourceProperties(self, query, resource):
+        self.assertEqual(query.cache_hit, resource.get('cacheHit'))
+        self.assertEqual(query.complete, resource.get('jobComplete'))
+        self.assertEqual(query.errors, resource.get('errors'))
+        self.assertEqual(query.page_token, resource.get('pageToken'))
+        self.assertEqual(query.total_rows, resource.get('totalRows'))
+        self.assertEqual(query.total_bytes_processed,
                          resource.get('totalBytesProcessed'))
 
         if 'jobReference' in resource:
-            self.assertEqual(job.name, resource['jobReference']['jobId'])
+            self.assertEqual(query.name, resource['jobReference']['jobId'])
         else:
-            self.assertTrue(job.name is None)
+            self.assertTrue(query.name is None)
 
-        self._verifySchema(job, resource)
-        self._verifyRows(job, resource)
+        self._verifySchema(query, resource)
+        self._verifyRows(query, resource)
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        job = self._makeOne(self.QUERY, client)
-        self.assertEqual(job.query, self.QUERY)
-        self.assertTrue(job._client is client)
+        query = self._makeOne(self.QUERY, client)
+        self.assertEqual(query.query, self.QUERY)
+        self.assertTrue(query._client is client)
 
-        self.assertTrue(job.cache_hit is None)
-        self.assertTrue(job.complete is None)
-        self.assertTrue(job.errors is None)
-        self.assertTrue(job.name is None)
-        self.assertTrue(job.page_token is None)
-        self.assertEqual(job.rows, [])
-        self.assertTrue(job.schema is None)
-        self.assertTrue(job.total_rows is None)
-        self.assertTrue(job.total_bytes_processed is None)
+        self.assertTrue(query.cache_hit is None)
+        self.assertTrue(query.complete is None)
+        self.assertTrue(query.errors is None)
+        self.assertTrue(query.name is None)
+        self.assertTrue(query.page_token is None)
+        self.assertEqual(query.rows, [])
+        self.assertTrue(query.schema is None)
+        self.assertTrue(query.total_rows is None)
+        self.assertTrue(query.total_bytes_processed is None)
 
-        self.assertTrue(job.default_dataset is None)
-        self.assertTrue(job.max_results is None)
-        self.assertTrue(job.preserve_nulls is None)
-        self.assertTrue(job.use_query_cache is None)
-
-    def test_name_setter_bad_value(self):
-        client = _Client(self.PROJECT)
-        job = self._makeOne(self.QUERY, client)
-        with self.assertRaises(ValueError):
-            job.name = 12345
-
-    def test_name_setter(self):
-        client = _Client(self.PROJECT)
-        job = self._makeOne(self.QUERY, client)
-        job.name = 'NAME'
-        self.assertEqual(job.name, 'NAME')
+        self.assertTrue(query.default_dataset is None)
+        self.assertTrue(query.max_results is None)
+        self.assertTrue(query.preserve_nulls is None)
+        self.assertTrue(query.use_query_cache is None)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
-        job = self._makeOne(self.QUERY, client)
-        self._verifyResourceProperties(job, {})
+        query = self._makeOne(self.QUERY, client)
+        self._verifyResourceProperties(query, {})
         resource = {
             'schema': {
                 'fields': [
@@ -161,17 +149,17 @@ class TestRunSyncQueryJob(unittest2.TestCase):
                 ],
             },
         }
-        job._set_properties(resource)
-        self._verifyResourceProperties(job, resource)
+        query._set_properties(resource)
+        self._verifyResourceProperties(query, resource)
 
     def test_run_w_bound_client(self):
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.QUERY, client)
+        query = self._makeOne(self.QUERY, client)
 
-        job.run()
+        query.run()
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -179,7 +167,7 @@ class TestRunSyncQueryJob(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {'query': self.QUERY}
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(job, RESOURCE)
+        self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_alternate_client(self):
         PATH = 'projects/%s/queries' % self.PROJECT
@@ -189,15 +177,15 @@ class TestRunSyncQueryJob(unittest2.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        job = self._makeOne(self.QUERY, client1)
+        query = self._makeOne(self.QUERY, client1)
 
-        job.default_dataset = client2.dataset(DATASET)
-        job.max_results = 100
-        job.preserve_nulls = True
-        job.timeout_ms = 20000
-        job.use_query_cache = False
+        query.default_dataset = client2.dataset(DATASET)
+        query.max_results = 100
+        query.preserve_nulls = True
+        query.timeout_ms = 20000
+        query.use_query_cache = False
 
-        job.run(client=client2)
+        query.run(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -216,13 +204,13 @@ class TestRunSyncQueryJob(unittest2.TestCase):
             'useQueryCache': False,
         }
         self.assertEqual(req['data'], SENT)
-        self._verifyResourceProperties(job, RESOURCE)
+        self._verifyResourceProperties(query, RESOURCE)
 
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.QUERY, client)
-        self.assertRaises(ValueError, job.fetch_data)
+        query = self._makeOne(self.QUERY, client)
+        self.assertRaises(ValueError, query.fetch_data)
 
     def test_fetch_data_w_bound_client(self):
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
@@ -231,13 +219,13 @@ class TestRunSyncQueryJob(unittest2.TestCase):
 
         conn = _Connection(AFTER)
         client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.QUERY, client)
-        job._set_properties(BEFORE)
-        self.assertFalse(job.complete)
+        query = self._makeOne(self.QUERY, client)
+        query._set_properties(BEFORE)
+        self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = job.fetch_data()
+        rows, total_rows, page_token = query.fetch_data()
 
-        self.assertTrue(job.complete)
+        self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
@@ -264,17 +252,17 @@ class TestRunSyncQueryJob(unittest2.TestCase):
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(AFTER)
         client2 = _Client(project=self.PROJECT, connection=conn2)
-        job = self._makeOne(self.QUERY, client1)
-        job._set_properties(BEFORE)
-        self.assertFalse(job.complete)
+        query = self._makeOne(self.QUERY, client1)
+        query._set_properties(BEFORE)
+        self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = job.fetch_data(client=client2,
+        rows, total_rows, page_token = query.fetch_data(client=client2,
                                                       max_results=MAX,
                                                       page_token=TOKEN,
                                                       start_index=START,
                                                       timeout_ms=TIMEOUT)
 
-        self.assertTrue(job.complete)
+        self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)
         self.assertEqual(rows[0], ('Phred Phlyntstone', 32))
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
