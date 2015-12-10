@@ -22,7 +22,7 @@ from gcloud.bigquery.job import CopyJob
 from gcloud.bigquery.job import ExtractTableToStorageJob
 from gcloud.bigquery.job import LoadTableFromStorageJob
 from gcloud.bigquery.job import RunAsyncQueryJob
-from gcloud.bigquery.job import RunSyncQueryJob
+from gcloud.bigquery.query import RunSyncQueryJob
 
 
 class Client(JSONClient):

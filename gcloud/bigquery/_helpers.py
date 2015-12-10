@@ -58,6 +58,7 @@ def _record_from_json(value, field):
 def _string_from_json(value, _):
     return value
 
+
 _CELLDATA_FROM_JSON = {
     'INTEGER': _int_from_json,
     'FLOAT': _float_from_json,
@@ -81,3 +82,73 @@ def _rows_from_json(rows, schema):
                 row_data.append(converter(cell['v'], field))
         rows_data.append(tuple(row_data))
     return rows_data
+
+
+class _ConfigurationProperty(object):
+    """Base property implementation.
+
+    Values will be stored on a `_configuration` helper attribute of the
+    property's job instance.
+
+    :type name: string
+    :param name:  name of the property
+    """
+
+    def __init__(self, name):
+        self.name = name
+        self._backing_name = '_%s' % (self.name,)
+
+    def __get__(self, instance, owner):
+        """Descriptor protocal:  accesstor"""
+        if instance is None:
+            return self
+        return getattr(instance._configuration, self._backing_name)
+
+    def _validate(self, value):
+        """Subclasses override to impose validation policy."""
+        pass
+
+    def __set__(self, instance, value):
+        """Descriptor protocal:  mutator"""
+        self._validate(value)
+        setattr(instance._configuration, self._backing_name, value)
+
+    def __delete__(self, instance):
+        """Descriptor protocal:  deleter"""
+        delattr(instance._configuration, self._backing_name)
+
+
+class _TypedProperty(_ConfigurationProperty):
+    """Property implementation:  validates based on value type.
+
+    :type name: string
+    :param name:  name of the property
+
+    :type property_type: type or sequence of types
+    :param property_type: type to be validated
+    """
+    def __init__(self, name, property_type):
+        super(_TypedProperty, self).__init__(name)
+        self.property_type = property_type
+
+    def _validate(self, value):
+        if not isinstance(value, self.property_type):
+            raise ValueError('Required type: %s' % (self.property_type,))
+
+
+class _EnumProperty(_ConfigurationProperty):
+    """Psedo-enumeration class.
+
+    Subclasses must define ``ALLOWED`` as a class-level constant:  it must
+    be a sequence of strings.
+
+    :type name: string
+    :param name:  name of the property
+    """
+    def _validate(self, value):
+        """Check that ``value`` is one of the allowed values.
+
+        :raises: ValueError if value is not allowed.
+        """
+        if value not in self.ALLOWED:
+            raise ValueError('Pass one of: %s' ', '.join(self.ALLOWED))

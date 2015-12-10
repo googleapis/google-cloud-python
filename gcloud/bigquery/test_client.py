@@ -201,7 +201,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(job.query, QUERY)
 
     def test_run_sync_query(self):
-        from gcloud.bigquery.job import RunSyncQueryJob
+        from gcloud.bigquery.query import RunSyncQueryJob
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
