@@ -137,6 +137,21 @@ class TestQueryResults(unittest2.TestCase):
         self.assertTrue(query.preserve_nulls is None)
         self.assertTrue(query.use_query_cache is None)
 
+    def test_job(self):
+        from gcloud.bigquery.job import QueryJob
+        SERVER_GENERATED = 'SERVER_GENERATED'
+        client = _Client(self.PROJECT)
+        query = self._makeOne(self.QUERY, client)
+        query._properties['jobReference'] = {
+            'projectId': self.PROJECT,
+            'jobId': SERVER_GENERATED,
+        }
+        job = query.job
+        self.assertTrue(isinstance(job, QueryJob))
+        self.assertEqual(job.query, self.QUERY)
+        self.assertTrue(job._client is client)
+        self.assertEqual(job.name, SERVER_GENERATED)
+
     def test_schema(self):
         client = _Client(self.PROJECT)
         query = self._makeOne(self.QUERY, client)
@@ -256,11 +271,9 @@ class TestQueryResults(unittest2.TestCase):
         query._set_properties(BEFORE)
         self.assertFalse(query.complete)
 
-        rows, total_rows, page_token = query.fetch_data(client=client2,
-                                                      max_results=MAX,
-                                                      page_token=TOKEN,
-                                                      start_index=START,
-                                                      timeout_ms=TIMEOUT)
+        rows, total_rows, page_token = query.fetch_data(
+            client=client2, max_results=MAX, page_token=TOKEN,
+            start_index=START, timeout_ms=TIMEOUT)
 
         self.assertTrue(query.complete)
         self.assertEqual(len(rows), 4)

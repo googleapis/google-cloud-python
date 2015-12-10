@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Define API Queries."""
+
 import six
 
 from gcloud.bigquery._helpers import _TypedProperty
 from gcloud.bigquery._helpers import _rows_from_json
 from gcloud.bigquery.dataset import Dataset
+from gcloud.bigquery.job import QueryJob
 from gcloud.bigquery.table import _parse_schema_resource
 
 
@@ -123,21 +126,17 @@ class QueryResults(object):
         """
         return self._properties.get('jobReference', {}).get('jobId')
 
-    @name.setter
-    def name(self, value):
-        """Update name of the query.
+    @property
+    def job(self):
+        """Job instance used to run the query.
 
-        :type value: string, or ``NoneType``
-        :param value: new name
-
-        :raises: ValueError for invalid value types.
+        :rtype: :class:`gcloud.bigquery.job.QueryJob`, or ``NoneType``
+        :returns: Job instance used to run the query (None until
+                  ``jobReference`` property is set by the server).
         """
-        if not isinstance(value, six.string_types) and value is not None:
-            raise ValueError("Pass a string, or None")
-        self._properties['jobReference'] = {
-            'projectId': self.project,
-            'jobId': value,
-        }
+        job_ref = self._properties.get('jobReference')
+        if job_ref is not None:
+            return QueryJob(job_ref['jobId'], self.query, self._client)
 
     @property
     def page_token(self):
