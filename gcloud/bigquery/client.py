@@ -105,6 +105,9 @@ class Client(JSONClient):
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load
+
         :type job_name: string
         :param job_name: Name of the job.
 
@@ -112,7 +115,8 @@ class Client(JSONClient):
         :param destination: Table into which data is to be loaded.
 
         :type source_uris: sequence of string
-        :param source_uris: URIs of data files to be loaded.
+        :param source_uris: URIs of data files to be loaded; in format
+                            ``gs://<bucket_name>/<object_name_or_glob>``.
 
         :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
         :returns: a new ``LoadTableFromStorageJob`` instance
@@ -122,6 +126,9 @@ class Client(JSONClient):
 
     def copy_table(self, job_name, destination, *sources):
         """Construct a job for copying one or more tables into another table.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy
 
         :type job_name: string
         :param job_name: Name of the job.
@@ -140,6 +147,9 @@ class Client(JSONClient):
     def extract_table_to_storage(self, job_name, source, *destination_uris):
         """Construct a job for extracting a table into Cloud Storage files.
 
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract
+
         :type job_name: string
         :param job_name: Name of the job.
 
@@ -148,7 +158,8 @@ class Client(JSONClient):
 
         :type destination_uris: sequence of string
         :param destination_uris: URIs of CloudStorage file(s) into which
-                                 table data is to be extracted.
+                                 table data is to be extracted; in format
+                                 ``gs://<bucket_name>/<object_name_or_glob>``.
 
         :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
         :returns: a new ``ExtractTableToStorageJob`` instance
@@ -158,6 +169,9 @@ class Client(JSONClient):
 
     def run_async_query(self, job_name, query):
         """Construct a job for running a SQL query asynchronously.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query
 
         :type job_name: string
         :param job_name: Name of the job.
