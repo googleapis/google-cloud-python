@@ -137,7 +137,12 @@ class TestQueryResults(unittest2.TestCase):
         self.assertTrue(query.preserve_nulls is None)
         self.assertTrue(query.use_query_cache is None)
 
-    def test_job(self):
+    def test_job_wo_jobid(self):
+        client = _Client(self.PROJECT)
+        query = self._makeOne(self.QUERY, client)
+        self.assertTrue(query.job is None)
+
+    def test_job_w_jobid(self):
         from gcloud.bigquery.job import QueryJob
         SERVER_GENERATED = 'SERVER_GENERATED'
         client = _Client(self.PROJECT)
@@ -319,7 +324,7 @@ class _Connection(object):
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
-        except:
+        except:  # pragma: NO COVER
             raise NotFound('miss')
         else:
             return response
