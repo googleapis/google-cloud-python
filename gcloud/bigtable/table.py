@@ -17,6 +17,8 @@
 
 from gcloud.bigtable._generated import (
     bigtable_table_service_messages_pb2 as messages_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_service_messages_pb2 as data_messages_pb2)
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import Row
 
@@ -145,3 +147,41 @@ class Table(object):
         client = self._cluster._client
         # We expect a `._generated.empty_pb2.Empty`
         client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
+
+    def sample_row_keys(self):
+        """Read a sample of row keys in the table.
+
+        The returned row keys will delimit contiguous sections of the table of
+        approximately equal size, which can be used to break up the data for
+        distributed tasks like mapreduces.
+
+        The elements in the iterator are a SampleRowKeys response and they have
+        the properties ``offset_bytes`` and ``row_key``. They occur in sorted
+        order. The table might have contents before the first row key in the
+        list and after the last one, but a key containing the empty string
+        indicates "end of table" and will be the last response given, if
+        present.
+
+        .. note::
+
+            Row keys in this list may not have ever been written to or read
+            from, and users should therefore not make any assumptions about the
+            row key structure that are specific to their use case.
+
+        The ``offset_bytes`` field on a response indicates the approximate
+        total storage space used by all rows in the table which precede
+        ``row_key``. Buffering the contents of all rows between two subsequent
+        samples would require space roughly equal to the difference in their
+        ``offset_bytes`` fields.
+
+        :rtype: :class:`grpc.framework.alpha._reexport._CancellableIterator`
+        :returns: A cancel-able iterator. Can be consumed by calling ``next()``
+                  or by casting to a :class:`list` and can be cancelled by
+                  calling ``cancel()``.
+        """
+        request_pb = data_messages_pb2.SampleRowKeysRequest(
+            table_name=self.name)
+        client = self._cluster._client
+        response_iterator = client._data_stub.SampleRowKeys(
+            request_pb, client.timeout_seconds)
+        return response_iterator

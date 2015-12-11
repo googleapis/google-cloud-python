@@ -183,6 +183,45 @@ class TestTable(unittest2.TestCase):
             {},
         )])
 
+    def test_sample_row_keys(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 1333
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        table_name = cluster_name + '/tables/' + table_id
+        request_pb = messages_pb2.SampleRowKeysRequest(table_name=table_name)
+
+        # Create response_iterator
+        response_iterator = object()  # Just passed to a mock.
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_iterator)
+
+        # Create expected_result.
+        expected_result = response_iterator
+
+        # Perform the method and check the result.
+        result = table.sample_row_keys()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'SampleRowKeys',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
 
 class _Client(object):
 
