@@ -139,7 +139,7 @@ class TestClient(unittest2.TestCase):
         from gcloud.bigquery.job import LoadTableFromStorageJob
         from gcloud.bigquery.job import CopyJob
         from gcloud.bigquery.job import ExtractTableToStorageJob
-        from gcloud.bigquery.job import RunAsyncQueryJob
+        from gcloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         DATASET = 'test_dataset'
         SOURCE_TABLE = 'source_table'
@@ -151,7 +151,7 @@ class TestClient(unittest2.TestCase):
             'load_job': LoadTableFromStorageJob,
             'copy_job': CopyJob,
             'extract_job': ExtractTableToStorageJob,
-            'query_job': RunAsyncQueryJob,
+            'query_job': QueryJob,
         }
         PATH = 'projects/%s/jobs' % PROJECT
         TOKEN = 'TOKEN'
@@ -346,7 +346,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
     def test_run_async_query(self):
-        from gcloud.bigquery.job import RunAsyncQueryJob
+        from gcloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
@@ -354,20 +354,20 @@ class TestClient(unittest2.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
-        self.assertTrue(isinstance(job, RunAsyncQueryJob))
+        self.assertTrue(isinstance(job, QueryJob))
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.query, QUERY)
 
     def test_run_sync_query(self):
-        from gcloud.bigquery.job import RunSyncQueryJob
+        from gcloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
-        self.assertTrue(isinstance(job, RunSyncQueryJob))
+        self.assertTrue(isinstance(job, QueryResults))
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, None)
         self.assertEqual(job.query, QUERY)

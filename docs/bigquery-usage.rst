@@ -279,17 +279,17 @@ Run a query which can be expected to complete within bounded time:
    >>> query = """\
    SELECT count(*) AS age_count FROM dataset_name.person_ages
    """
-   >>> job = client.run_sync_query(query)
-   >>> job.timeout_ms = 1000
-   >>> job.run()  # API request
+   >>> query = client.run_sync_query(query)
+   >>> query.timeout_ms = 1000
+   >>> query.run()  # API request
    >>> retry_count = 100
    >>> while retry_count > 0 and not job.complete:
    ...     retry_count -= 1
    ...     time.sleep(10)
-   ...     job.reload()  # API request
-   >>> job.schema
+   ...     query.reload()  # API request
+   >>> query.schema
    [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
-   >>> job.rows
+   >>> query.rows
    [(15,)]
 
 .. note::
