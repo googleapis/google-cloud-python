@@ -187,7 +187,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(list(job.destination_uris), [DESTINATION])
 
     def test_run_async_query(self):
-        from gcloud.bigquery.job import RunAsyncQueryJob
+        from gcloud.bigquery.job import QueryJob
         PROJECT = 'PROJECT'
         JOB = 'job_name'
         QUERY = 'select count(*) from persons'
@@ -195,20 +195,20 @@ class TestClient(unittest2.TestCase):
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_async_query(JOB, QUERY)
-        self.assertTrue(isinstance(job, RunAsyncQueryJob))
+        self.assertTrue(isinstance(job, QueryJob))
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, JOB)
         self.assertEqual(job.query, QUERY)
 
     def test_run_sync_query(self):
-        from gcloud.bigquery.job import RunSyncQueryJob
+        from gcloud.bigquery.query import QueryResults
         PROJECT = 'PROJECT'
         QUERY = 'select count(*) from persons'
         creds = _Credentials()
         http = object()
         client = self._makeOne(project=PROJECT, credentials=creds, http=http)
         job = client.run_sync_query(QUERY)
-        self.assertTrue(isinstance(job, RunSyncQueryJob))
+        self.assertTrue(isinstance(job, QueryResults))
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, None)
         self.assertEqual(job.query, QUERY)
