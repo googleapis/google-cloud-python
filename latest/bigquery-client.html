@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>BigQuery Client &mdash; gcloud f7d0371 documentation</title>
+    <title>BigQuery Client &mdash; gcloud 883bfe6 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f7d0371',
+        VERSION:     '883bfe6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f7d0371 documentation" href="index.html" />
+    <link rel="top" title="gcloud 883bfe6 documentation" href="index.html" />
     <link rel="next" title="Datasets" href="bigquery-dataset.html" />
     <link rel="prev" title="Using the API" href="bigquery-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%20f7d0371" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%20883bfe6" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f7d0371)
+              Version History (883bfe6)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -271,10 +271,10 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.RunAsyncQueryJob" title="gcloud.bigquery.job.RunAsyncQueryJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.RunAsyncQueryJob</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.QueryJob" title="gcloud.bigquery.job.QueryJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.QueryJob</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">RunAsyncQueryJob</span></code> instance</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">QueryJob</span></code> instance</p>
 </td>
 </tr>
 </tbody>
@@ -284,16 +284,16 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <dl class="method">
 <dt id="gcloud.bigquery.client.Client.run_sync_query">
 <code class="descname">run_sync_query</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/client.html#Client.run_sync_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.client.Client.run_sync_query" title="Permalink to this definition">#</a></dt>
-<dd><p>Construct a job for running a SQL query synchronously.</p>
+<dd><p>Run a SQL query synchronously.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query to be executed</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.RunSyncQueryJob" title="gcloud.bigquery.job.RunSyncQueryJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.RunSyncQueryJob</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.query.QueryResults</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <code class="docutils literal"><span class="pre">RunSyncQueryJob</span></code> instance</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <code class="docutils literal"><span class="pre">QueryResults</span></code> instance</td>
 </tr>
 </tbody>
 </table>
