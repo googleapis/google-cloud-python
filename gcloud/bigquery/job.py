@@ -665,6 +665,11 @@ class LoadTableFromStorageJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory:  construct a job given its API representation
 
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
@@ -677,7 +682,6 @@ class LoadTableFromStorageJob(_AsyncJob):
         """
         name, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        assert dest_config['projectId'] == client.project
         dataset = Dataset(dest_config['datasetId'], client)
         destination = Table(dest_config['tableId'], dataset)
         source_urls = config['sourceUris']
@@ -771,6 +775,11 @@ class CopyJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory:  construct a job given its API representation
 
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
@@ -783,12 +792,10 @@ class CopyJob(_AsyncJob):
         """
         name, config = cls._get_resource_config(resource)
         dest_config = config['destinationTable']
-        assert dest_config['projectId'] == client.project
         dataset = Dataset(dest_config['datasetId'], client)
         destination = Table(dest_config['tableId'], dataset)
         sources = []
         for source_config in config['sourceTables']:
-            assert source_config['projectId'] == client.project
             dataset = Dataset(source_config['datasetId'], client)
             sources.append(Table(source_config['tableId'], dataset))
         job = cls(name, destination, sources, client=client)
@@ -894,6 +901,11 @@ class ExtractTableToStorageJob(_AsyncJob):
     def from_api_repr(cls, resource, client):
         """Factory:  construct a job given its API representation
 
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
         :type resource: dict
         :param resource: dataset job representation returned from the API
 
@@ -906,7 +918,6 @@ class ExtractTableToStorageJob(_AsyncJob):
         """
         name, config = cls._get_resource_config(resource)
         source_config = config['sourceTable']
-        assert source_config['projectId'] == client.project
         dataset = Dataset(source_config['datasetId'], client)
         source = Table(source_config['tableId'], dataset)
         destination_uris = config['destinationUris']
@@ -1041,7 +1052,13 @@ class RunAsyncQueryJob(_AsyncJob):
         return resource
 
     def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned."""
+        """Helper:  handle subclass properties in cleaned.
+
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+        """
         configuration = cleaned['configuration']['query']
         dest_remote = configuration.get('destinationTable')
 
@@ -1051,7 +1068,6 @@ class RunAsyncQueryJob(_AsyncJob):
         else:
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
-                assert dest_remote['projectId'] == self.project
                 dataset = self._client.dataset(dest_remote['datasetId'])
                 self.destination = dataset.table(dest_remote['tableId'])
 
