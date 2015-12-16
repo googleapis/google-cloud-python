@@ -102,6 +102,84 @@ class Client(JSONClient):
         """
         return Dataset(dataset_name, client=self)
 
+    def _job_from_resource(self, resource):
+        """Detect correct job type from resource and instantiate.
+
+        Helper for :meth:`list_jobs`.
+
+        :type resource: dict
+        :param resource: one job resource from API response
+
+        :rtype; One of:
+                :class:`gcloud.bigquery.job.LoadTableFromStorageJob`,
+                :class:`gcloud.bigquery.job.CopyJob,
+                :class:`gcloud.bigquery.job.ExtractTableToStorageJob,
+                :class:`gcloud.bigquery.job.QueryJob,
+                :class:`gcloud.bigquery.job.RunSyncQueryJob
+        :returns: the job instance, constructed via the resource
+        """
+        config = resource['configuration']
+        if 'load' in config:
+            return LoadTableFromStorageJob.from_api_repr(resource, self)
+        elif 'copy' in config:
+            return CopyJob.from_api_repr(resource, self)
+        elif 'extract' in config:
+            return ExtractTableToStorageJob.from_api_repr(resource, self)
+        elif 'query' in config:
+            return QueryJob.from_api_repr(resource, self)
+        raise ValueError('Cannot parse job resource')
+
+    def list_jobs(self, max_results=None, page_token=None, all_users=None,
+                  state_filter=None):
+        """List jobs for the project associated with this client.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/v2/jobs/list
+
+        :type max_results: int
+        :param max_results: maximum number of jobs to return, If not
+                            passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of jobs. If
+                           not passed, the API will return the first page of
+                           jobs.
+
+        :type all_users: boolean
+        :param all_users: if true, include jobs owned by all users in the
+                          project.
+
+        :type state_filter: string
+        :param state_filter: if passed, include only jobs matching the given
+                             state.  One of "done", "pending", or "running".
+
+        :rtype: tuple, (list, str)
+        :returns: list of job instances, plus a "next page token" string:
+                  if the token is not None, indicates that more jobs can be
+                  retrieved with another call, passing that value as
+                  ``page_token``).
+        """
+        params = {}
+
+        if max_results is not None:
+            params['maxResults'] = max_results
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        if all_users is not None:
+            params['allUsers'] = all_users
+
+        if state_filter is not None:
+            params['stateFilter'] = state_filter
+
+        path = '/projects/%s/jobs' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        jobs = [self._job_from_resource(resource)
+                for resource in resp['jobs']]
+        return jobs, resp.get('nextPageToken')
+
     def load_table_from_storage(self, job_name, destination, *source_uris):
         """Construct a job for loading data into a table from CloudStorage.
 

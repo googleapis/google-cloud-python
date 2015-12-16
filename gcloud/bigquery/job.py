@@ -269,6 +269,31 @@ class _AsyncJob(_BaseJob):
         self._properties.clear()
         self._properties.update(cleaned)
 
+    @classmethod
+    def _get_resource_config(cls, resource):
+        """Helper for :meth:`from_api_repr`
+
+        :type resource: dict
+        :param resource: resource for the job
+
+        :rtype: dict
+        :returns: tuple (string, dict), where the first element is the
+                  job name and the second contains job-specific configuration.
+        :raises: :class:`KeyError` if the resource has no identifier, or
+                 is missing the appropriate configuration.
+        """
+        if ('jobReference' not in resource or
+                'jobId' not in resource['jobReference']):
+            raise KeyError('Resource lacks required identity information: '
+                           '["jobReference"]["jobId"]')
+        name = resource['jobReference']['jobId']
+        if ('configuration' not in resource or
+                cls._CONFIG_KEY not in resource['configuration']):
+            raise KeyError('Resource lacks required configuration: '
+                           '["configuration"]["%s"]' % cls._CONFIG_KEY)
+        config = resource['configuration'][cls._CONFIG_KEY]
+        return name, config
+
     def begin(self, client=None):
         """API call:  begin the job via a POST request
 
@@ -378,6 +403,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     """
 
     _schema = None
+    _CONFIG_KEY = 'load'
 
     def __init__(self, name, destination, source_uris, client, schema=()):
         super(LoadTableFromStorageJob, self).__init__(name, client)
@@ -542,7 +568,7 @@ class LoadTableFromStorageJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'load': {
+                self._CONFIG_KEY: {
                     'sourceUris': self.source_uris,
                     'destinationTable': {
                         'projectId': self.destination.project,
@@ -552,7 +578,7 @@ class LoadTableFromStorageJob(_AsyncJob):
                 },
             },
         }
-        configuration = resource['configuration']['load']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         if len(self.schema) > 0:
@@ -565,6 +591,34 @@ class LoadTableFromStorageJob(_AsyncJob):
         """Helper:  handle subclass properties in cleaned."""
         schema = cleaned.pop('schema', {'fields': ()})
         self.schema = _parse_schema_resource(schema)
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        dest_config = config['destinationTable']
+        dataset = Dataset(dest_config['datasetId'], client)
+        destination = Table(dest_config['tableId'], dataset)
+        source_urls = config['sourceUris']
+        job = cls(name, destination, source_urls, client=client)
+        job._set_properties(resource)
+        return job
 
 
 class _CopyConfiguration(object):
@@ -592,6 +646,9 @@ class CopyJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
+
+    _CONFIG_KEY = 'copy'
+
     def __init__(self, name, destination, sources, client):
         super(CopyJob, self).__init__(name, client)
         self.destination = destination
@@ -630,7 +687,7 @@ class CopyJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'copy': {
+                self._CONFIG_KEY: {
                     'sourceTables': source_refs,
                     'destinationTable': {
                         'projectId': self.destination.project,
@@ -640,10 +697,41 @@ class CopyJob(_AsyncJob):
                 },
             },
         }
-        configuration = resource['configuration']['copy']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         return resource
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.CopyJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        dest_config = config['destinationTable']
+        dataset = Dataset(dest_config['datasetId'], client)
+        destination = Table(dest_config['tableId'], dataset)
+        sources = []
+        for source_config in config['sourceTables']:
+            dataset = Dataset(source_config['datasetId'], client)
+            sources.append(Table(source_config['tableId'], dataset))
+        job = cls(name, destination, sources, client=client)
+        job._set_properties(resource)
+        return job
 
 
 class _ExtractConfiguration(object):
@@ -675,6 +763,8 @@ class ExtractTableToStorageJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
+    _CONFIG_KEY = 'extract'
+
     def __init__(self, name, source, destination_uris, client):
         super(ExtractTableToStorageJob, self).__init__(name, client)
         self.source = source
@@ -727,16 +817,44 @@ class ExtractTableToStorageJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'extract': {
+                self._CONFIG_KEY: {
                     'sourceTable': source_ref,
                     'destinationUris': self.destination_uris,
                 },
             },
         }
-        configuration = resource['configuration']['extract']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         return resource
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        source_config = config['sourceTable']
+        dataset = Dataset(source_config['datasetId'], client)
+        source = Table(source_config['tableId'], dataset)
+        destination_uris = config['destinationUris']
+        job = cls(name, source, destination_uris, client=client)
+        job._set_properties(resource)
+        return job
 
 
 class _AsyncQueryConfiguration(object):
@@ -747,7 +865,7 @@ class _AsyncQueryConfiguration(object):
     _allow_large_results = None
     _create_disposition = None
     _default_dataset = None
-    _destination_table = None
+    _destination = None
     _flatten_results = None
     _priority = None
     _use_query_cache = None
@@ -767,6 +885,8 @@ class QueryJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
+    _CONFIG_KEY = 'query'
+
     def __init__(self, name, query, client):
         super(QueryJob, self).__init__(name, client)
         self.query = query
@@ -787,7 +907,7 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset
     """
 
-    destination_table = _TypedProperty('destination_table', Table)
+    destination = _TypedProperty('destination', Table)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable
     """
@@ -813,11 +933,11 @@ class QueryJob(_AsyncJob):
     """
 
     def _destination_table_resource(self):
-        if self.destination_table is not None:
+        if self.destination is not None:
             return {
-                'projectId': self.destination_table.project,
-                'datasetId': self.destination_table.dataset_name,
-                'tableId': self.destination_table.name,
+                'projectId': self.destination.project,
+                'datasetId': self.destination.dataset_name,
+                'tableId': self.destination.name,
             }
 
     def _populate_config_resource(self, configuration):
@@ -831,7 +951,7 @@ class QueryJob(_AsyncJob):
                 'projectId': self.default_dataset.project,
                 'datasetId': self.default_dataset.name,
             }
-        if self.destination_table is not None:
+        if self.destination is not None:
             table_res = self._destination_table_resource()
             configuration['destinationTable'] = table_res
         if self.flatten_results is not None:
@@ -852,27 +972,52 @@ class QueryJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                'query': {
+                self._CONFIG_KEY: {
                     'query': self.query,
                 },
             },
         }
-        configuration = resource['configuration']['query']
+        configuration = resource['configuration'][self._CONFIG_KEY]
         self._populate_config_resource(configuration)
 
         return resource
 
     def _scrub_local_properties(self, cleaned):
-        """Helper:  handle subclass properties in cleaned."""
+        """Helper:  handle subclass properties in cleaned.
+
+        .. note:
+
+           This method assumes that the project found in the resource matches
+           the client's project.
+        """
         configuration = cleaned['configuration']['query']
         dest_remote = configuration.get('destinationTable')
 
         if dest_remote is None:
-            if self.destination_table is not None:
-                del self.destination_table
+            if self.destination is not None:
+                del self.destination
         else:
             dest_local = self._destination_table_resource()
             if dest_remote != dest_local:
-                assert dest_remote['projectId'] == self.project
                 dataset = self._client.dataset(dest_remote['datasetId'])
-                self.destination_table = dataset.table(dest_remote['tableId'])
+                self.destination = dataset.table(dest_remote['tableId'])
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a job given its API representation
+
+        :type resource: dict
+        :param resource: dataset job representation returned from the API
+
+        :type client: :class:`gcloud.bigquery.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the dataset.
+
+        :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`
+        :returns: Job parsed from ``resource``.
+        """
+        name, config = cls._get_resource_config(resource)
+        query = config['query']
+        job = cls(name, query, client=client)
+        job._set_properties(resource)
+        return job

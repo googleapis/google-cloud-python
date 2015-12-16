@@ -128,6 +128,165 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET)
         self.assertTrue(dataset._client is client)
 
+    def test__job_from_resource_unknown_type(self):
+        PROJECT = 'PROJECT'
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        with self.assertRaises(ValueError):
+            client._job_from_resource({'configuration': {'nonesuch': {}}})
+
+    def test_list_jobs_defaults(self):
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        from gcloud.bigquery.job import CopyJob
+        from gcloud.bigquery.job import ExtractTableToStorageJob
+        from gcloud.bigquery.job import QueryJob
+        PROJECT = 'PROJECT'
+        DATASET = 'test_dataset'
+        SOURCE_TABLE = 'source_table'
+        DESTINATION_TABLE = 'destination_table'
+        QUERY_DESTINATION_TABLE = 'query_destination_table'
+        SOURCE_URI = 'gs://test_bucket/src_object*'
+        DESTINATION_URI = 'gs://test_bucket/dst_object*'
+        JOB_TYPES = {
+            'load_job': LoadTableFromStorageJob,
+            'copy_job': CopyJob,
+            'extract_job': ExtractTableToStorageJob,
+            'query_job': QueryJob,
+        }
+        PATH = 'projects/%s/jobs' % PROJECT
+        TOKEN = 'TOKEN'
+        QUERY = 'SELECT * from test_dataset:test_table'
+        ASYNC_QUERY_DATA = {
+            'id': '%s:%s' % (PROJECT, 'query_job'),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'query_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'query': {
+                    'query': QUERY,
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': QUERY_DESTINATION_TABLE,
+                    },
+                    'createDisposition': 'CREATE_IF_NEEDED',
+                    'writeDisposition': 'WRITE_TRUNCATE',
+                }
+            },
+        }
+        EXTRACT_DATA = {
+            'id': '%s:%s' % (PROJECT, 'extract_job'),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'extract_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'extract': {
+                    'sourceTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE_TABLE,
+                    },
+                    'destinationUris': [DESTINATION_URI],
+                }
+            },
+        }
+        COPY_DATA = {
+            'id': '%s:%s' % (PROJECT, 'copy_job'),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'copy_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'copy': {
+                    'sourceTables': [{
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE_TABLE,
+                    }],
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': DESTINATION_TABLE,
+                    },
+                }
+            },
+        }
+        LOAD_DATA = {
+            'id': '%s:%s' % (PROJECT, 'load_job'),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'load_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'load': {
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE_TABLE,
+                    },
+                    'sourceUris': [SOURCE_URI],
+                }
+            },
+        }
+        DATA = {
+            'nextPageToken': TOKEN,
+            'jobs': [
+                ASYNC_QUERY_DATA,
+                EXTRACT_DATA,
+                COPY_DATA,
+                LOAD_DATA,
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        jobs, token = client.list_jobs()
+
+        self.assertEqual(len(jobs), len(DATA['jobs']))
+        for found, expected in zip(jobs, DATA['jobs']):
+            name = expected['jobReference']['jobId']
+            self.assertTrue(isinstance(found, JOB_TYPES[name]))
+            self.assertEqual(found.job_id, expected['id'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {})
+
+    def test_list_jobs_explicit_empty(self):
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/jobs' % PROJECT
+        DATA = {'jobs': []}
+        TOKEN = 'TOKEN'
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        jobs, token = client.list_jobs(max_results=1000, page_token=TOKEN,
+                                       all_users=True, state_filter='done')
+
+        self.assertEqual(len(jobs), 0)
+        self.assertEqual(token, None)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'],
+                         {'maxResults': 1000,
+                          'pageToken': TOKEN,
+                          'allUsers': True,
+                          'stateFilter': 'done'})
+
     def test_load_table_from_storage(self):
         from gcloud.bigquery.job import LoadTableFromStorageJob
         PROJECT = 'PROJECT'
