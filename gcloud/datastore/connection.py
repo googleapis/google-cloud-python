@@ -39,6 +39,9 @@ class Connection(connection.Connection):
                          from :mod:`gcloud.connection`.
     """
 
+    API_BASE_URL = 'https://www.googleapis.com'
+    """The base of the API call URL."""
+
     API_VERSION = 'v1beta2'
     """The version of the API, used in building the API call's URL."""
 
@@ -54,7 +57,7 @@ class Connection(connection.Connection):
         super(Connection, self).__init__(credentials=credentials, http=http)
         if api_base_url is None:
             api_base_url = os.getenv(GCD_HOST,
-                                     connection.API_BASE_URL)
+                                     self.__class__.API_BASE_URL)
         self.api_base_url = api_base_url
 
     def _request(self, dataset_id, method, data):
