@@ -15,6 +15,8 @@
 """Define API Datasets."""
 
 import datetime
+import json
+import os
 
 import six
 
@@ -22,6 +24,10 @@ from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _millis_from_datetime
 from gcloud.exceptions import NotFound
+from gcloud.streaming.http_wrapper import Request
+from gcloud.streaming.http_wrapper import make_api_request
+from gcloud.streaming.transfer import RESUMABLE_UPLOAD
+from gcloud.streaming.transfer import Upload
 from gcloud.bigquery._helpers import _rows_from_json
 
 
@@ -693,6 +699,225 @@ class Table(object):
 
         return errors
 
+    @staticmethod
+    def _configure_job_metadata(metadata,  # pylint: disable=R0913
+                                allow_jagged_rows,
+                                allow_quoted_newlines,
+                                create_disposition,
+                                encoding,
+                                field_delimiter,
+                                ignore_unknown_values,
+                                max_bad_records,
+                                quote_character,
+                                skip_leading_rows,
+                                write_disposition):
+        """Helper for :meth:`upload_from_file`."""
+        load_config = metadata['configuration']['load']
+
+        if allow_jagged_rows is not None:
+            load_config['allowJaggedRows'] = allow_jagged_rows
+
+        if allow_quoted_newlines is not None:
+            load_config['allowQuotedNewlines'] = allow_quoted_newlines
+
+        if create_disposition is not None:
+            load_config['createDisposition'] = create_disposition
+
+        if encoding is not None:
+            load_config['encoding'] = encoding
+
+        if field_delimiter is not None:
+            load_config['fieldDelimiter'] = field_delimiter
+
+        if ignore_unknown_values is not None:
+            load_config['ignoreUnknownValues'] = ignore_unknown_values
+
+        if max_bad_records is not None:
+            load_config['maxBadRecords'] = max_bad_records
+
+        if quote_character is not None:
+            load_config['quote'] = quote_character
+
+        if skip_leading_rows is not None:
+            load_config['skipLeadingRows'] = skip_leading_rows
+
+        if write_disposition is not None:
+            load_config['writeDisposition'] = write_disposition
+
+    def upload_from_file(self,  # pylint: disable=R0913,R0914
+                         file_obj,
+                         source_format,
+                         rewind=False,
+                         size=None,
+                         num_retries=6,
+                         allow_jagged_rows=None,
+                         allow_quoted_newlines=None,
+                         create_disposition=None,
+                         encoding=None,
+                         field_delimiter=None,
+                         ignore_unknown_values=None,
+                         max_bad_records=None,
+                         quote_character=None,
+                         skip_leading_rows=None,
+                         write_disposition=None,
+                         client=None):
+        """Upload the contents of this table from a file-like object.
+
+        The content type of the upload will either be
+        - The value passed in to the function (if any)
+        - ``text/csv``.
+
+        :type file_obj: file
+        :param file_obj: A file handle open for reading.
+
+        :type source_format: string
+        :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
+                              job configuration option; see
+                              :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type rewind: boolean
+        :param rewind: If True, seek to the beginning of the file handle before
+                       writing the file to Cloud Storage.
+
+        :type size: int
+        :param size: The number of bytes to read from the file handle.
+                     If not provided, we'll try to guess the size using
+                     :func:`os.fstat`. (If the file handle is not from the
+                     filesystem this won't be possible.)
+
+        :type num_retries: integer
+        :param num_retries: Number of upload retries. Defaults to 6.
+
+        :type allow_jagged_rows: boolean
+        :param allow_jagged_rows: job configuration option;  see
+                                  :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type allow_quoted_newlines: boolean
+        :param allow_quoted_newlines: job configuration option; see
+                                      :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type create_disposition: string
+        :param create_disposition: job configuration option; see
+                                   :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type encoding: string
+        :param encoding: job configuration option; see
+                         :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type field_delimiter: string
+        :param field_delimiter: job configuration option; see
+                                :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type ignore_unknown_values: boolean
+        :param ignore_unknown_values: job configuration option; see
+                                      :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type max_bad_records: integer
+        :param max_bad_records: job configuration option; see
+                                :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type quote_character: string
+        :param quote_character: job configuration option; see
+                                :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type skip_leading_rows: integer
+        :param skip_leading_rows: job configuration option; see
+                                  :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type write_disposition: string
+        :param write_disposition: job configuration option; see
+                                  :meth:`gcloud.bigquery.job.LoadJob`
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: Optional. The client to use.  If not passed, falls back
+                       to the ``client`` stored on the current dataset.
+
+        :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`
+        :returns: the job instance used to load the data (e.g., for
+                  querying status)
+        :raises: :class:`ValueError` if size is not passed in and can not be
+                 determined
+        """
+        client = self._require_client(client)
+        connection = client.connection
+        content_type = 'application/octet-stream'
+
+        # Rewind the file if desired.
+        if rewind:
+            file_obj.seek(0, os.SEEK_SET)
+
+        # Get the basic stats about the file.
+        total_bytes = size
+        if total_bytes is None:
+            if hasattr(file_obj, 'fileno'):
+                total_bytes = os.fstat(file_obj.fileno()).st_size
+            else:
+                raise ValueError('total bytes could not be determined. Please '
+                                 'pass an explicit size.')
+        headers = {
+            'Accept': 'application/json',
+            'Accept-Encoding': 'gzip, deflate',
+            'User-Agent': connection.USER_AGENT,
+            'content-type': 'application/json',
+        }
+
+        metadata = {
+            'configuration': {
+                'load': {
+                    'sourceFormat': source_format,
+                    'schema': {
+                        'fields': _build_schema_resource(self._schema),
+                    },
+                    'destinationTable': {
+                        'projectId': self._dataset.project,
+                        'datasetId': self._dataset.name,
+                        'tableId': self.name,
+                    }
+                }
+            }
+        }
+
+        self._configure_job_metadata(metadata, allow_jagged_rows,
+                                     allow_quoted_newlines, create_disposition,
+                                     encoding, field_delimiter,
+                                     ignore_unknown_values, max_bad_records,
+                                     quote_character, skip_leading_rows,
+                                     write_disposition)
+
+        upload = Upload(file_obj, content_type, total_bytes,
+                        auto_transfer=False)
+
+        url_builder = _UrlBuilder()
+        upload_config = _UploadConfig()
+
+        # Temporary URL, until we know simple vs. resumable.
+        base_url = connection.API_BASE_URL + '/upload'
+        path = '/projects/%s/jobs' % self._dataset.project
+        upload_url = connection.build_api_url(api_base_url=base_url, path=path)
+
+        # Use apitools 'Upload' facility.
+        request = Request(upload_url, 'POST', headers,
+                          body=json.dumps(metadata))
+
+        upload.configure_request(upload_config, request, url_builder)
+        query_params = url_builder.query_params
+        base_url = connection.API_BASE_URL + '/upload'
+        request.url = connection.build_api_url(api_base_url=base_url,
+                                               path=path,
+                                               query_params=query_params)
+        upload.initialize_upload(request, connection.http)
+
+        if upload.strategy == RESUMABLE_UPLOAD:
+            http_response = upload.stream_file(use_chunks=True)
+        else:
+            http_response = make_api_request(connection.http, request,
+                                             retries=num_retries)
+        response_content = http_response.content
+        if not isinstance(response_content,
+                          six.string_types):  # pragma: NO COVER  Python3
+            response_content = response_content.decode('utf-8')
+        return client.job_from_resource(json.loads(response_content))
+
 
 def _parse_schema_resource(info):
     """Parse a resource fragment into a schema field.
@@ -739,3 +964,21 @@ def _build_schema_resource(fields):
             info['fields'] = _build_schema_resource(field.fields)
         infos.append(info)
     return infos
+
+
+class _UploadConfig(object):
+    """Faux message FBO apitools' 'configure_request'.
+    """
+    accept = ['*/*']
+    max_size = None
+    resumable_multipart = True
+    resumable_path = u'/upload/bigquery/v2/projects/{project}/jobs'
+    simple_multipart = True
+    simple_path = u'/upload/bigquery/v2/projects/{project}/jobs'
+
+
+class _UrlBuilder(object):
+    """Faux builder FBO apitools' 'configure_request'"""
+    def __init__(self):
+        self.query_params = {}
+        self._relative_path = ''
