@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.job &mdash; gcloud 883bfe6 documentation</title>
+    <title>gcloud.bigquery.job &mdash; gcloud a3c504f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '883bfe6',
+        VERSION:     'a3c504f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 883bfe6 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud a3c504f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%20883bfe6" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%20a3c504f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (883bfe6)
+              Version History (a3c504f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -362,6 +362,31 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_resource_config</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for :meth:`from_api_repr`</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: resource for the job</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: tuple (string, dict), where the first element is the</span>
+<span class="sd">                  job name and the second contains job-specific configuration.</span>
+<span class="sd">        :raises: :class:`KeyError` if the resource has no identifier, or</span>
+<span class="sd">                 is missing the appropriate configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;jobReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
+                <span class="s">&#39;jobId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;jobReference&#39;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&#39;Resource lacks required identity information: &#39;</span>
+                           <span class="s">&#39;[&quot;jobReference&quot;][&quot;jobId&quot;]&#39;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;jobReference&#39;</span><span class="p">][</span><span class="s">&#39;jobId&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;configuration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&#39;Resource lacks required configuration: &#39;</span>
+                           <span class="s">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s">&quot;]&#39;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span>
+
     <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  begin the job via a POST request</span>
 
@@ -471,6 +496,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_schema</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s">&#39;load&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LoadTableFromStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -635,7 +661,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&#39;load&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s">&#39;sourceUris&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span><span class="p">,</span>
                     <span class="s">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
@@ -645,7 +671,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="s">&#39;load&#39;</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -657,7 +683,35 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">_scrub_local_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cleaned</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper:  handle subclass properties in cleaned.&quot;&quot;&quot;</span>
         <span class="n">schema</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="p">()})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="LoadTableFromStorageJob.from_api_repr"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.LoadTableFromStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
+
+<span class="sd">        .. note:</span>
+
+<span class="sd">           This method assumes that the project found in the resource matches</span>
+<span class="sd">           the client&#39;s project.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: dataset job representation returned from the API</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: Client which holds credentials and project</span>
+<span class="sd">                       configuration for the dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.job.LoadTableFromStorageJob`</span>
+<span class="sd">        :returns: Job parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">dest_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;destinationTable&#39;</span><span class="p">]</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
+        <span class="n">source_urls</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sourceUris&#39;</span><span class="p">]</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_urls</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_CopyConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -685,6 +739,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s">&#39;copy&#39;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CopyJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">destination</span>
@@ -723,7 +780,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&#39;copy&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s">&#39;sourceTables&#39;</span><span class="p">:</span> <span class="n">source_refs</span><span class="p">,</span>
                     <span class="s">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
@@ -733,10 +790,41 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="s">&#39;copy&#39;</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">resource</span></div>
+        <span class="k">return</span> <span class="n">resource</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CopyJob.from_api_repr"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.CopyJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
+
+<span class="sd">        .. note:</span>
+
+<span class="sd">           This method assumes that the project found in the resource matches</span>
+<span class="sd">           the client&#39;s project.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: dataset job representation returned from the API</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: Client which holds credentials and project</span>
+<span class="sd">                       configuration for the dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.job.CopyJob`</span>
+<span class="sd">        :returns: Job parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">dest_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;destinationTable&#39;</span><span class="p">]</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
+        <span class="n">destination</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">dest_config</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
+        <span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">source_config</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sourceTables&#39;</span><span class="p">]:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
+            <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">))</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_ExtractConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -768,6 +856,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s">&#39;extract&#39;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ExtractTableToStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
@@ -820,16 +910,44 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&#39;extract&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s">&#39;sourceTable&#39;</span><span class="p">:</span> <span class="n">source_ref</span><span class="p">,</span>
                     <span class="s">&#39;destinationUris&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="s">&#39;extract&#39;</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">resource</span></div>
+        <span class="k">return</span> <span class="n">resource</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ExtractTableToStorageJob.from_api_repr"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.ExtractTableToStorageJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
+
+<span class="sd">        .. note:</span>
+
+<span class="sd">           This method assumes that the project found in the resource matches</span>
+<span class="sd">           the client&#39;s project.</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: dataset job representation returned from the API</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: Client which holds credentials and project</span>
+<span class="sd">                       configuration for the dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.job.ExtractTableToStorageJob`</span>
+<span class="sd">        :returns: Job parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">source_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sourceTable&#39;</span><span class="p">]</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s">&#39;datasetId&#39;</span><span class="p">],</span> <span class="n">client</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="n">source_config</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">],</span> <span class="n">dataset</span><span class="p">)</span>
+        <span class="n">destination_uris</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;destinationUris&#39;</span><span class="p">]</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_AsyncQueryConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -840,7 +958,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">_allow_large_results</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_create_disposition</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_default_dataset</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">_destination_table</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_destination</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_flatten_results</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_priority</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_use_query_cache</span> <span class="o">=</span> <span class="bp">None</span>
@@ -860,6 +978,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s">&#39;query&#39;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
@@ -880,7 +1000,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.defaultDataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">destination_table</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s">&#39;destination_table&#39;</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s">&#39;destination&#39;</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.destinationTable</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -906,11 +1026,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_destination_table_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                <span class="s">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span>
-                <span class="s">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="s">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span>
+                <span class="s">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_populate_config_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">):</span>
@@ -924,7 +1044,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
                 <span class="s">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">table_res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_destination_table_resource</span><span class="p">()</span>
             <span class="n">configuration</span><span class="p">[</span><span class="s">&#39;destinationTable&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table_res</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flatten_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -945,30 +1065,55 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&#39;query&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s">&#39;query&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="s">&#39;query&#39;</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">resource</span>
 
     <span class="k">def</span> <span class="nf">_scrub_local_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cleaned</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Helper:  handle subclass properties in cleaned.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Helper:  handle subclass properties in cleaned.</span>
+
+<span class="sd">        .. note:</span>
+
+<span class="sd">           This method assumes that the project found in the resource matches</span>
+<span class="sd">           the client&#39;s project.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">configuration</span> <span class="o">=</span> <span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;configuration&#39;</span><span class="p">][</span><span class="s">&#39;query&#39;</span><span class="p">]</span>
         <span class="n">dest_remote</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;destinationTable&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">dest_remote</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dest_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_destination_table_resource</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">dest_remote</span> <span class="o">!=</span> <span class="n">dest_local</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">dest_remote</span><span class="p">[</span><span class="s">&#39;projectId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
                 <span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s">&#39;datasetId&#39;</span><span class="p">])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">])</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">dest_remote</span><span class="p">[</span><span class="s">&#39;tableId&#39;</span><span class="p">])</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="QueryJob.from_api_repr"><a class="viewcode-back" href="../../../bigquery-job.html#gcloud.bigquery.job.QueryJob.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory:  construct a job given its API representation</span>
+
+<span class="sd">        :type resource: dict</span>
+<span class="sd">        :param resource: dataset job representation returned from the API</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">        :param client: Client which holds credentials and project</span>
+<span class="sd">                       configuration for the dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.job.RunAsyncQueryJob`</span>
+<span class="sd">        :returns: Job parsed from ``resource``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_resource_config</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">]</span>
+        <span class="n">job</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">job</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">job</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
