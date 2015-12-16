@@ -167,7 +167,7 @@ class Project(object):
         """API call:  test the existence of a project via a ``GET`` request.
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/projects/get
+        https://cloud.google.com/resource-manager/reference/rest/v1beta1/projects/get
 
         :type client: :class:`gcloud.resource_manager.client.Client` or
                       :data:`NoneType <types.NoneType>`
