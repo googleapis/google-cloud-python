@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud 977b7f8 documentation</title>
+    <title>Datastore Client &mdash; gcloud 1e2d80a documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '977b7f8',
+        VERSION:     '1e2d80a',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 977b7f8 documentation" href="index.html" />
+    <link rel="top" title="gcloud 1e2d80a documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20977b7f8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%201e2d80a" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (977b7f8)
+              Version History (1e2d80a)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -411,11 +411,11 @@ from <a class="reference internal" href="gcloud-api.html#module-gcloud.connectio
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to which the transaction
 belongs.</li>
-<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
+<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></code></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Key</span></code></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">An equal number of keys,  with IDs filled in by the backend.</p>
@@ -503,8 +503,8 @@ batches must pass <code class="docutils literal"><span class="pre">None</span></
 <dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Lookup</span></code> protobuf RPC.</p>
 <p>This method deals only with protobufs
-(<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></code> and
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></code>) and is used
+(<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Key</span></code> and
+<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Entity</span></code>) and is used
 under the hood in <code class="xref py py-func docutils literal"><span class="pre">gcloud.datastore.get()</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
@@ -523,7 +523,7 @@ under the hood in <code class="xref py py-func docutils literal"><span class="pr
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to look up the keys.</li>
-<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></code>) &#8211; The keys to retrieve from the datastore.</li>
+<li><strong>key_pbs</strong> (list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Key</span></code>) &#8211; The keys to retrieve from the datastore.</li>
 <li><strong>eventual</strong> (<em>boolean</em>) &#8211; If False (the default), request <code class="docutils literal"><span class="pre">STRONG</span></code> read
 consistency.  If True, request <code class="docutils literal"><span class="pre">EVENTUAL</span></code> read
 consistency.</li>
@@ -538,9 +538,9 @@ the given transaction.  Incompatible with
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A triple of (<code class="docutils literal"><span class="pre">results</span></code>, <code class="docutils literal"><span class="pre">missing</span></code>, <code class="docutils literal"><span class="pre">deferred</span></code>) where
 both <code class="docutils literal"><span class="pre">results</span></code> and <code class="docutils literal"><span class="pre">missing</span></code> are lists of
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Entity</span></code> and
+<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Entity</span></code> and
 <code class="docutils literal"><span class="pre">deferred</span></code> is a list of
-<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._datastore_v1_pb2.Key</span></code>.</p>
+<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._entity_pb2.Key</span></code>.</p>
 </td>
 </tr>
 </tbody>
