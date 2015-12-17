@@ -61,6 +61,26 @@ class Test__timedelta_to_duration_pb(unittest2.TestCase):
         self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
 
 
+class Test__duration_pb_to_timedelta(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.column_family import _duration_pb_to_timedelta
+        return _duration_pb_to_timedelta(*args, **kwargs)
+
+    def test_it(self):
+        import datetime
+        from gcloud.bigtable._generated import duration_pb2
+
+        seconds = microseconds = 1
+        duration_pb = duration_pb2.Duration(seconds=seconds,
+                                            nanos=1000 * microseconds)
+        timedelta_val = datetime.timedelta(seconds=seconds,
+                                           microseconds=microseconds)
+        result = self._callFUT(duration_pb)
+        self.assertTrue(isinstance(result, datetime.timedelta))
+        self.assertEqual(result, timedelta_val)
+
+
 class TestMaxVersionsGCRule(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -365,3 +385,78 @@ class TestColumnFamily(unittest2.TestCase):
         column_family1 = self._makeOne('column_family_id1', None)
         column_family2 = self._makeOne('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
+
+
+class Test__gc_rule_from_pb(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.column_family import _gc_rule_from_pb
+        return _gc_rule_from_pb(*args, **kwargs)
+
+    def test_empty(self):
+        from gcloud.bigtable._generated import (
+            bigtable_table_data_pb2 as data_pb2)
+
+        gc_rule_pb = data_pb2.GcRule()
+        self.assertEqual(self._callFUT(gc_rule_pb), None)
+
+    def test_max_num_versions(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        orig_rule = MaxVersionsGCRule(1)
+        gc_rule_pb = orig_rule.to_pb()
+        result = self._callFUT(gc_rule_pb)
+        self.assertTrue(isinstance(result, MaxVersionsGCRule))
+        self.assertEqual(result, orig_rule)
+
+    def test_max_age(self):
+        import datetime
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+
+        orig_rule = MaxAgeGCRule(datetime.timedelta(seconds=1))
+        gc_rule_pb = orig_rule.to_pb()
+        result = self._callFUT(gc_rule_pb)
+        self.assertTrue(isinstance(result, MaxAgeGCRule))
+        self.assertEqual(result, orig_rule)
+
+    def test_union(self):
+        import datetime
+        from gcloud.bigtable.column_family import GCRuleUnion
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        rule1 = MaxVersionsGCRule(1)
+        rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
+        orig_rule = GCRuleUnion([rule1, rule2])
+        gc_rule_pb = orig_rule.to_pb()
+        result = self._callFUT(gc_rule_pb)
+        self.assertTrue(isinstance(result, GCRuleUnion))
+        self.assertEqual(result, orig_rule)
+
+    def test_intersection(self):
+        import datetime
+        from gcloud.bigtable.column_family import GCRuleIntersection
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        rule1 = MaxVersionsGCRule(1)
+        rule2 = MaxAgeGCRule(datetime.timedelta(seconds=1))
+        orig_rule = GCRuleIntersection([rule1, rule2])
+        gc_rule_pb = orig_rule.to_pb()
+        result = self._callFUT(gc_rule_pb)
+        self.assertTrue(isinstance(result, GCRuleIntersection))
+        self.assertEqual(result, orig_rule)
+
+    def test_unknown_field_name(self):
+        class MockProto(object):
+
+            names = []
+
+            @classmethod
+            def WhichOneof(cls, name):
+                cls.names.append(name)
+                return 'unknown'
+
+        self.assertEqual(MockProto.names, [])
+        self.assertRaises(ValueError, self._callFUT, MockProto)
+        self.assertEqual(MockProto.names, ['rule'])

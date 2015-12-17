@@ -15,6 +15,8 @@
 """User friendly container for Google Cloud Bigtable Column Family."""
 
 
+import datetime
+
 from gcloud._helpers import _total_seconds
 from gcloud.bigtable._generated import bigtable_table_data_pb2 as data_pb2
 from gcloud.bigtable._generated import duration_pb2
@@ -44,6 +46,26 @@ def _timedelta_to_duration_pb(timedelta_val):
     # Convert nanoseconds to microseconds.
     nanos = 1000 * signed_micros
     return duration_pb2.Duration(seconds=seconds, nanos=nanos)
+
+
+def _duration_pb_to_timedelta(duration_pb):
+    """Convert a duration protobuf to a Python timedelta object.
+
+    .. note::
+
+        The Python timedelta has a granularity of microseconds while
+        the protobuf duration type has a duration of nanoseconds.
+
+    :type duration_pb: :class:`.duration_pb2.Duration`
+    :param duration_pb: A protobuf duration object.
+
+    :rtype: :class:`datetime.timedelta`
+    :returns: The converted timedelta object.
+    """
+    return datetime.timedelta(
+        seconds=duration_pb.seconds,
+        microseconds=(duration_pb.nanos / 1000.0),
+    )
 
 
 class GarbageCollectionRule(object):
@@ -197,3 +219,36 @@ class ColumnFamily(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+
+def _gc_rule_from_pb(gc_rule_pb):
+    """Convert a protobuf GC rule to a native object.
+
+    :type gc_rule_pb: :class:`.data_pb2.GcRule`
+    :param gc_rule_pb: The GC rule to convert.
+
+    :rtype: :class:`GarbageCollectionRule` or :data:`NoneType <types.NoneType>`
+    :returns: An instance of one of the native rules defined
+              in :module:`column_family` or :data:`None` if no values were
+              set on the protobuf passed in.
+    :raises: :class:`ValueError <exceptions.ValueError>` if the rule name
+             is unexpected.
+    """
+    rule_name = gc_rule_pb.WhichOneof('rule')
+    if rule_name is None:
+        return None
+
+    if rule_name == 'max_num_versions':
+        return MaxVersionsGCRule(gc_rule_pb.max_num_versions)
+    elif rule_name == 'max_age':
+        max_age = _duration_pb_to_timedelta(gc_rule_pb.max_age)
+        return MaxAgeGCRule(max_age)
+    elif rule_name == 'union':
+        return GCRuleUnion([_gc_rule_from_pb(rule)
+                            for rule in gc_rule_pb.union.rules])
+    elif rule_name == 'intersection':
+        rules = [_gc_rule_from_pb(rule)
+                 for rule in gc_rule_pb.intersection.rules]
+        return GCRuleIntersection(rules)
+    else:
+        raise ValueError('Unexpected rule name', rule_name)
