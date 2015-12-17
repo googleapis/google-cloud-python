@@ -107,8 +107,8 @@ class TestDatastoreSave(TestDatastore):
     def test_post_with_generated_id(self):
         self._generic_test_post()
 
-    def test_save_multiple_serializable(self):
-        with CLIENT.transaction(serializable=True) as xact:
+    def test_save_multiple(self):
+        with CLIENT.transaction() as xact:
             entity1 = self._get_post()
             xact.put(entity1)
             # Register entity to be deleted.

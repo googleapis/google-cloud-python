@@ -20,8 +20,8 @@ from gcloud.datastore.batch import Batch
 class Transaction(Batch):
     """An abstraction representing datastore Transactions.
 
-    Transactions can be used to build up a bulk mutuation as well as
-    provide isolation.
+    Transactions can be used to build up a bulk mutation and ensure all
+    or none succeed (transactionally).
 
     For example, the following snippet of code will put the two ``save``
     operations (either ``insert_auto_id`` or ``upsert``) into the same
@@ -86,11 +86,6 @@ class Transaction(Batch):
 
     :type client: :class:`gcloud.datastore.client.Client`
     :param client: the client used to connect to datastore.
-
-    :type serializable: boolean
-    :param serializable: if true, perform this transaction at
-                        ``serializable`` isolation level;  otherwise, perform
-                        it at ``snapshot`` level.
     """
 
     _INITIAL = 0
@@ -105,11 +100,10 @@ class Transaction(Batch):
     _FINISHED = 3
     """Enum value for _FINISHED status of transaction."""
 
-    def __init__(self, client, serializable=False):
+    def __init__(self, client):
         super(Transaction, self).__init__(client)
         self._id = None
         self._status = self._INITIAL
-        self._serializable = serializable
 
     @property
     def id(self):
@@ -119,17 +113,6 @@ class Transaction(Batch):
         :returns: The ID of the current transaction.
         """
         return self._id
-
-    @property
-    def serializable(self):
-        """Should this transaction be run at ``serializable`` isolation
-
-        :rtype: boolean
-        :returns: if true, perform this transaction at
-                  ``serializable`` isolation level;  otherwise, perform
-                  it at ``snapshot`` level.
-        """
-        return self._serializable
 
     def current(self):
         """Return the topmost transaction.
@@ -155,8 +138,7 @@ class Transaction(Batch):
         if self._status != self._INITIAL:
             raise ValueError('Transaction already started previously.')
         self._status = self._IN_PROGRESS
-        self._id = self.connection.begin_transaction(
-            self.dataset_id, serializable=self.serializable)
+        self._id = self.connection.begin_transaction(self.dataset_id)
 
     def rollback(self):
         """Rolls back the current transaction.

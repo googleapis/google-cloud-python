@@ -635,7 +635,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.partition_id.namespace, 'NS')
         self.assertEqual(request.query, q_pb)
 
-    def test_begin_transaction_default_serialize(self):
+    def test_begin_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
 
         DATASET_ID = 'DATASET'
@@ -653,31 +653,6 @@ class TestConnection(unittest2.TestCase):
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
-        cw = http._called_with
-        self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.BeginTransactionRequest
-        request = rq_class()
-        request.ParseFromString(cw['body'])
-        self.assertEqual(request.isolation_level, rq_class.SNAPSHOT)
-
-    def test_begin_transaction_explicit_serialize(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-
-        DATASET_ID = 'DATASET'
-        TRANSACTION = b'TRANSACTION'
-        rsp_pb = datastore_pb.BeginTransactionResponse()
-        rsp_pb.transaction = TRANSACTION
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.api_base_url,
-            'datastore',
-            conn.API_VERSION,
-            'datasets',
-            DATASET_ID,
-            'beginTransaction',
-        ])
-        http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.begin_transaction(DATASET_ID, True), TRANSACTION)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb.BeginTransactionRequest

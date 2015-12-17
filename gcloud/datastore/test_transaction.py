@@ -37,22 +37,6 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
         self.assertTrue(isinstance(xact.mutation, Mutation))
         self.assertEqual(len(xact._auto_id_entities), 0)
-        self.assertFalse(xact.serializable)
-
-    def test_ctor_explicit(self):
-        from gcloud.datastore._datastore_v1_pb2 import Mutation
-
-        _DATASET = 'DATASET'
-        connection = _Connection()
-        client = _Client(_DATASET, connection)
-        xact = self._makeOne(client, serializable=True)
-        self.assertEqual(xact.dataset_id, _DATASET)
-        self.assertEqual(xact.connection, connection)
-        self.assertEqual(xact.id, None)
-        self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
-        self.assertTrue(isinstance(xact.mutation, Mutation))
-        self.assertEqual(len(xact._auto_id_entities), 0)
-        self.assertTrue(xact.serializable)
 
     def test_current(self):
         from gcloud.datastore.test_client import _NoCommitBatch
@@ -80,25 +64,14 @@ class TestTransaction(unittest2.TestCase):
         self.assertTrue(xact1.current() is None)
         self.assertTrue(xact2.current() is None)
 
-    def test_begin_wo_serializable(self):
+    def test_begin(self):
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun[0], _DATASET)
-        self.assertFalse(connection._begun[1])
-
-    def test_begin_w_serializable(self):
-        _DATASET = 'DATASET'
-        connection = _Connection(234)
-        client = _Client(_DATASET, connection)
-        xact = self._makeOne(client, serializable=True)
-        xact.begin()
-        self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun[0], _DATASET)
-        self.assertTrue(connection._begun[1])
+        self.assertEqual(connection._begun, _DATASET)
 
     def test_begin_tombstoned(self):
         _DATASET = 'DATASET'
@@ -107,8 +80,7 @@ class TestTransaction(unittest2.TestCase):
         xact = self._makeOne(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun[0], _DATASET)
-        self.assertFalse(connection._begun[1])
+        self.assertEqual(connection._begun, _DATASET)
 
         xact.rollback()
         self.assertEqual(xact.id, None)
@@ -162,8 +134,7 @@ class TestTransaction(unittest2.TestCase):
         xact._mutation = mutation = object()
         with xact:
             self.assertEqual(xact.id, 234)
-            self.assertEqual(connection._begun[0], _DATASET)
-            self.assertFalse(connection._begun[1])
+            self.assertEqual(connection._begun, _DATASET)
         self.assertEqual(connection._committed, (_DATASET, mutation, 234))
         self.assertEqual(xact.id, None)
 
@@ -175,13 +146,12 @@ class TestTransaction(unittest2.TestCase):
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
-        xact = self._makeOne(client, serializable=True)
+        xact = self._makeOne(client)
         xact._mutation = object()
         try:
             with xact:
                 self.assertEqual(xact.id, 234)
-                self.assertEqual(connection._begun[0], _DATASET)
-                self.assertTrue(connection._begun[1])
+                self.assertEqual(connection._begun, _DATASET)
                 raise Foo()
         except Foo:
             self.assertEqual(xact.id, None)
@@ -209,8 +179,8 @@ class _Connection(object):
         self._xact_id = xact_id
         self._commit_result = _CommitResult()
 
-    def begin_transaction(self, dataset_id, serializable):
-        self._begun = (dataset_id, serializable)
+    def begin_transaction(self, dataset_id):
+        self._begun = dataset_id
         return self._xact_id
 
     def rollback(self, dataset_id, transaction_id):

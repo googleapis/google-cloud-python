@@ -858,21 +858,7 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(isinstance(xact, _Dummy))
         self.assertEqual(xact.args, (client,))
-        self.assertEqual(xact.kwargs, {'serializable': False})
-
-    def test_transaction_explicit(self):
-        from gcloud.datastore import client as MUT
-        from gcloud._testing import _Monkey
-
-        creds = object()
-        client = self._makeOne(credentials=creds)
-
-        with _Monkey(MUT, Transaction=_Dummy):
-            xact = client.transaction(serializable=True)
-
-        self.assertTrue(isinstance(xact, _Dummy))
-        self.assertEqual(xact.args, (client,))
-        self.assertEqual(xact.kwargs, {'serializable': True})
+        self.assertEqual(xact.kwargs, {})
 
     def test_query_w_client(self):
         KIND = 'KIND'
