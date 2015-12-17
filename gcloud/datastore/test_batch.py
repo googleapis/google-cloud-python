@@ -26,7 +26,7 @@ class TestBatch(unittest2.TestCase):
         return self._getTargetClass()(client)
 
     def test_ctor(self):
-        from gcloud.datastore._datastore_v1_pb2 import Mutation
+        from gcloud.datastore._datastore_pb2 import Mutation
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()

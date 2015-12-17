@@ -23,7 +23,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 
 from gcloud.datastore import helpers
 from gcloud.datastore.key import _dataset_ids_equal
-from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_pb2
 
 
 class Batch(object):
@@ -64,7 +64,7 @@ class Batch(object):
 
     def __init__(self, client):
         self._client = client
-        self._mutation = datastore_pb.Mutation()
+        self._mutation = _datastore_pb2.Mutation()
         self._partial_key_entities = []
 
     def current(self):
@@ -109,7 +109,7 @@ class Batch(object):
         This getter returns the Mutation protobuf that
         has been built-up so far.
 
-        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Mutation`
+        :rtype: :class:`gcloud.datastore._datastore_pb2.Mutation`
         :returns: The Mutation protobuf to be sent in the commit request.
         """
         return self._mutation
@@ -223,7 +223,7 @@ def _assign_entity_to_pb(entity_pb, entity):
 
     Helper method for ``Batch.put``.
 
-    :type entity_pb: :class:`gcloud.datastore._datastore_v1_pb2.Entity`
+    :type entity_pb: :class:`gcloud.datastore._entity_pb2.Entity`
     :param entity_pb: The entity owned by a mutation.
 
     :type entity: :class:`gcloud.datastore.entity.Entity`

@@ -25,7 +25,7 @@ class TestTransaction(unittest2.TestCase):
         return self._getTargetClass()(client, **kw)
 
     def test_ctor_defaults(self):
-        from gcloud.datastore._datastore_v1_pb2 import Mutation
+        from gcloud.datastore._datastore_pb2 import Mutation
 
         _DATASET = 'DATASET'
         connection = _Connection()

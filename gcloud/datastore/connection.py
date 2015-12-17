@@ -19,7 +19,7 @@ import os
 from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
-from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _datastore_pb2
 from gcloud.datastore import _entity_pb2
 
 
@@ -188,12 +188,12 @@ class Connection(connection.Connection):
                   ``deferred`` is a list of
                   :class:`gcloud.datastore._entity_pb2.Key`.
         """
-        lookup_request = datastore_pb.LookupRequest()
+        lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
         _add_keys_to_request(lookup_request.key, key_pbs)
 
         lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
-                                    datastore_pb.LookupResponse)
+                                    _datastore_pb2.LookupResponse)
 
         results = [result.entity for result in lookup_response.found]
         missing = [result.entity for result in lookup_response.missing]
@@ -255,7 +255,7 @@ class Connection(connection.Connection):
                                the given transaction.  Incompatible with
                                ``eventual==True``.
         """
-        request = datastore_pb.RunQueryRequest()
+        request = _datastore_pb2.RunQueryRequest()
         _set_read_options(request, eventual, transaction_id)
 
         if namespace:
@@ -263,7 +263,7 @@ class Connection(connection.Connection):
 
         request.query.CopyFrom(query_pb)
         response = self._rpc(dataset_id, 'runQuery', request,
-                             datastore_pb.RunQueryResponse)
+                             _datastore_pb2.RunQueryResponse)
         return (
             [e.entity for e in response.batch.entity_result],
             response.batch.end_cursor,  # Assume response always has cursor.
@@ -279,14 +279,14 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :rtype: :class:`._datastore_v1_pb2.BeginTransactionResponse`
+        :rtype: :class:`._datastore_pb2.BeginTransactionResponse`
         :returns': the result protobuf for the begin transaction request.
         """
-        request = datastore_pb.BeginTransactionRequest()
+        request = _datastore_pb2.BeginTransactionRequest()
         request.isolation_level = (
-            datastore_pb.BeginTransactionRequest.SERIALIZABLE)
+            _datastore_pb2.BeginTransactionRequest.SERIALIZABLE)
         response = self._rpc(dataset_id, 'beginTransaction', request,
-                             datastore_pb.BeginTransactionResponse)
+                             _datastore_pb2.BeginTransactionResponse)
         return response.transaction
 
     def commit(self, dataset_id, mutation_pb, transaction_id):
@@ -297,7 +297,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type mutation_pb: :class:`datastore_pb.Mutation`.
+        :type mutation_pb: :class:`._datastore_pb2.Mutation`.
         :param mutation_pb: The protobuf for the mutations being saved.
 
         :type transaction_id: string or None
@@ -305,20 +305,20 @@ class Connection(connection.Connection):
                                :meth:`begin_transaction`.  Non-transactional
                                batches must pass ``None``.
 
-        :rtype: :class:`gcloud.datastore._datastore_v1_pb2.MutationResult`.
+        :rtype: :class:`gcloud.datastore._datastore_pb2.MutationResult`.
         :returns': the result protobuf for the mutation.
         """
-        request = datastore_pb.CommitRequest()
+        request = _datastore_pb2.CommitRequest()
 
         if transaction_id:
-            request.mode = datastore_pb.CommitRequest.TRANSACTIONAL
+            request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
             request.transaction = transaction_id
         else:
-            request.mode = datastore_pb.CommitRequest.NON_TRANSACTIONAL
+            request.mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
 
         request.mutation.CopyFrom(mutation_pb)
         response = self._rpc(dataset_id, 'commit', request,
-                             datastore_pb.CommitResponse)
+                             _datastore_pb2.CommitResponse)
         return response.mutation_result
 
     def rollback(self, dataset_id, transaction_id):
@@ -334,11 +334,11 @@ class Connection(connection.Connection):
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.
         """
-        request = datastore_pb.RollbackRequest()
+        request = _datastore_pb2.RollbackRequest()
         request.transaction = transaction_id
         # Nothing to do with this response, so just execute the method.
         self._rpc(dataset_id, 'rollback', request,
-                  datastore_pb.RollbackResponse)
+                  _datastore_pb2.RollbackResponse)
 
     def allocate_ids(self, dataset_id, key_pbs):
         """Obtain backend-generated IDs for a set of keys.
@@ -355,11 +355,11 @@ class Connection(connection.Connection):
         :rtype: list of :class:`gcloud.datastore._entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
-        request = datastore_pb.AllocateIdsRequest()
+        request = _datastore_pb2.AllocateIdsRequest()
         _add_keys_to_request(request.key, key_pbs)
         # Nothing to do with this response, so just execute the method.
         response = self._rpc(dataset_id, 'allocateIds', request,
-                             datastore_pb.AllocateIdsResponse)
+                             _datastore_pb2.AllocateIdsResponse)
         return list(response.key)
 
 
@@ -376,7 +376,7 @@ def _set_read_options(request, eventual, transaction_id):
 
     opts = request.read_options
     if eventual:
-        opts.read_consistency = datastore_pb.ReadOptions.EVENTUAL
+        opts.read_consistency = _datastore_pb2.ReadOptions.EVENTUAL
     elif transaction_id:
         opts.transaction = transaction_id
 
