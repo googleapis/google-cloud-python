@@ -38,7 +38,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
         self.assertTrue(isinstance(batch.mutation, Mutation))
-        self.assertEqual(batch._auto_id_entities, [])
+        self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
         _DATASET = 'DATASET'
@@ -58,29 +58,6 @@ class TestBatch(unittest2.TestCase):
             self.assertTrue(batch2.current() is batch1)
         self.assertTrue(batch1.current() is None)
         self.assertTrue(batch2.current() is None)
-
-    def test_add_auto_id_entity_w_partial_key(self):
-        _DATASET = 'DATASET'
-        connection = _Connection()
-        client = _Client(_DATASET, connection)
-        batch = self._makeOne(client)
-        entity = _Entity()
-        key = entity.key = _Key(_DATASET)
-        key._id = None
-
-        batch.add_auto_id_entity(entity)
-
-        self.assertEqual(batch._auto_id_entities, [entity])
-
-    def test_add_auto_id_entity_w_completed_key(self):
-        _DATASET = 'DATASET'
-        connection = _Connection()
-        client = _Client(_DATASET, connection)
-        batch = self._makeOne(client)
-        entity = _Entity()
-        entity.key = _Key(_DATASET)
-
-        self.assertRaises(ValueError, batch.add_auto_id_entity, entity)
 
     def test_put_entity_wo_key(self):
         _DATASET = 'DATASET'
@@ -119,7 +96,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(len(upserts), 0)
         deletes = list(batch.mutation.delete)
         self.assertEqual(len(deletes), 0)
-        self.assertEqual(batch._auto_id_entities, [entity])
+        self.assertEqual(batch._partial_key_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
         _DATASET = 'DATASET'
@@ -257,7 +234,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(connection._committed,
                          [(_DATASET, batch.mutation, None)])
 
-    def test_commit_w_auto_id_entities(self):
+    def test_commit_w_partial_key_entities(self):
         _DATASET = 'DATASET'
         _NEW_ID = 1234
         connection = _Connection(_NEW_ID)
@@ -266,7 +243,7 @@ class TestBatch(unittest2.TestCase):
         entity = _Entity({})
         key = entity.key = _Key(_DATASET)
         key._id = None
-        batch._auto_id_entities.append(entity)
+        batch._partial_key_entities.append(entity)
 
         batch.commit()
 

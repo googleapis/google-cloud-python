@@ -36,7 +36,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
         self.assertTrue(isinstance(xact.mutation, Mutation))
-        self.assertEqual(len(xact._auto_id_entities), 0)
+        self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
         from gcloud.datastore.test_client import _NoCommitBatch
@@ -97,7 +97,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.id, None)
         self.assertEqual(connection._rolled_back, (_DATASET, 234))
 
-    def test_commit_no_auto_ids(self):
+    def test_commit_no_partial_keys(self):
         _DATASET = 'DATASET'
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
@@ -108,7 +108,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(connection._committed, (_DATASET, mutation, 234))
         self.assertEqual(xact.id, None)
 
-    def test_commit_w_auto_ids(self):
+    def test_commit_w_partial_keys(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 123
@@ -118,7 +118,7 @@ class TestTransaction(unittest2.TestCase):
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
         entity = _Entity()
-        xact.add_auto_id_entity(entity)
+        xact.put(entity)
         xact._mutation = mutation = object()
         xact.begin()
         xact.commit()
@@ -197,9 +197,10 @@ class _CommitResult(object):
         self.insert_auto_id_key = new_keys
 
 
-class _Entity(object):
+class _Entity(dict):
 
     def __init__(self):
+        super(_Entity, self).__init__()
         from gcloud.datastore.key import Key
         self.key = Key('KIND', dataset_id='DATASET')
 
