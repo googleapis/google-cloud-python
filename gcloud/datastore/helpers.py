@@ -263,7 +263,7 @@ def _get_value_from_property_pb(property_pb):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type property_pb: :class:`gcloud.datastore._datastore_v1_pb2.Property`
+    :type property_pb: :class:`gcloud.datastore._datastore_pb2.Property`
     :param property_pb: The Property Protobuf.
 
     :returns: The value provided by the Protobuf.

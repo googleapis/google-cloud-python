@@ -234,11 +234,11 @@ class TestConnection(unittest2.TestCase):
                          URI)
 
     def test_lookup_single_key_empty_response(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -255,7 +255,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -263,11 +263,11 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -285,14 +285,14 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
         self.assertEqual(len(keys), 1)
         _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.read_consistency,
-                         datastore_pb.ReadOptions.EVENTUAL)
+                         _datastore_pb2.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
@@ -304,12 +304,12 @@ class TestConnection(unittest2.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         TRANSACTION = b'TRANSACTION'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -327,7 +327,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -336,12 +336,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _entity_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         entity = _entity_pb2.Entity()
         entity.key.CopyFrom(key_pb)
         rsp_pb.found.add(entity=entity)
@@ -362,7 +362,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(found.key.path_element[0].id, 1234)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -370,12 +370,12 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
         key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -392,7 +392,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(deferred), 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -401,12 +401,12 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
         key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         er_1 = rsp_pb.missing.add()
         er_1.entity.key.CopyFrom(key_pb1)
         er_2 = rsp_pb.missing.add()
@@ -428,7 +428,7 @@ class TestConnection(unittest2.TestCase):
                          [key_pb1, key_pb2])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -437,12 +437,12 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb1 = self._make_key_pb(DATASET_ID)
         key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
-        rsp_pb = datastore_pb.LookupResponse()
+        rsp_pb = _datastore_pb2.LookupResponse()
         rsp_pb.deferred.add().CopyFrom(key_pb1)
         rsp_pb.deferred.add().CopyFrom(key_pb2)
         conn = self._makeOne()
@@ -466,7 +466,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cw['headers']['Content-Type'],
                          'application/x-protobuf')
         self.assertEqual(cw['headers']['User-Agent'], conn.USER_AGENT)
-        rq_class = datastore_pb.LookupRequest
+        rq_class = _datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         keys = list(request.key)
@@ -475,14 +475,14 @@ class TestConnection(unittest2.TestCase):
         _compare_key_pb_after_request(self, key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb = _datastore_pb2.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
@@ -505,17 +505,17 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(skipped, 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.RunQueryRequest
+        rq_class = _datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, '')
         self.assertEqual(request.query, q_pb)
         self.assertEqual(request.read_options.read_consistency,
-                         datastore_pb.ReadOptions.EVENTUAL)
+                         _datastore_pb2.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_run_query_wo_eventual_w_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
@@ -523,7 +523,7 @@ class TestConnection(unittest2.TestCase):
         CURSOR = b'\x00'
         TRANSACTION = b'TRANSACTION'
         q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb = _datastore_pb2.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
@@ -546,17 +546,17 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(skipped, 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.RunQueryRequest
+        rq_class = _datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, '')
         self.assertEqual(request.query, q_pb)
         self.assertEqual(request.read_options.read_consistency,
-                         datastore_pb.ReadOptions.DEFAULT)
+                         _datastore_pb2.ReadOptions.DEFAULT)
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_run_query_w_eventual_and_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
@@ -564,7 +564,7 @@ class TestConnection(unittest2.TestCase):
         CURSOR = b'\x00'
         TRANSACTION = b'TRANSACTION'
         q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb = _datastore_pb2.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
@@ -574,14 +574,14 @@ class TestConnection(unittest2.TestCase):
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb = _datastore_pb2.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
         no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
@@ -603,21 +603,21 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(skipped, 0)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.RunQueryRequest
+        rq_class = _datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, '')
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         from gcloud.datastore import _entity_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
         entity = _entity_pb2.Entity()
         q_pb = self._make_query_pb(KIND)
-        rsp_pb = datastore_pb.RunQueryResponse()
+        rsp_pb = _datastore_pb2.RunQueryResponse()
         rsp_pb.batch.entity_result.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
@@ -635,18 +635,18 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(pbs), 1)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.RunQueryRequest
+        rq_class = _datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace, 'NS')
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         TRANSACTION = b'TRANSACTION'
-        rsp_pb = datastore_pb.BeginTransactionResponse()
+        rsp_pb = _datastore_pb2.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
         conn = self._makeOne()
         URI = '/'.join([
@@ -661,18 +661,18 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.BeginTransactionRequest
+        rq_class = _datastore_pb2.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.isolation_level, rq_class.SERIALIZABLE)
 
     def test_commit_wo_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        mutation = datastore_pb.Mutation()
+        rsp_pb = _datastore_pb2.CommitResponse()
+        mutation = _datastore_pb2.Mutation()
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
         prop = insert.property.add()
@@ -693,7 +693,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
+        rq_class = _datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'')
@@ -701,12 +701,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
 
     def test_commit_w_transaction(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
-        rsp_pb = datastore_pb.CommitResponse()
-        mutation = datastore_pb.Mutation()
+        rsp_pb = _datastore_pb2.CommitResponse()
+        mutation = _datastore_pb2.Mutation()
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
         prop = insert.property.add()
@@ -727,7 +727,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(list(result.insert_auto_id_key), [])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.CommitRequest
+        rq_class = _datastore_pb2.CommitRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'xact')
@@ -735,11 +735,11 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
 
     def test_rollback_ok(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
         DATASET_ID = 'DATASET'
         TRANSACTION = b'xact'
 
-        rsp_pb = datastore_pb.RollbackResponse()
+        rsp_pb = _datastore_pb2.RollbackResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -753,16 +753,16 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.rollback(DATASET_ID, TRANSACTION), None)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.RollbackRequest
+        rq_class = _datastore_pb2.RollbackRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, TRANSACTION)
 
     def test_allocate_ids_empty(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
-        rsp_pb = datastore_pb.AllocateIdsResponse()
+        rsp_pb = _datastore_pb2.AllocateIdsResponse()
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -776,13 +776,13 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.allocate_ids(DATASET_ID, []), [])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.AllocateIdsRequest
+        rq_class = _datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(list(request.key), [])
 
     def test_allocate_ids_non_empty(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _datastore_pb2
 
         DATASET_ID = 'DATASET'
         before_key_pbs = [
@@ -793,7 +793,7 @@ class TestConnection(unittest2.TestCase):
             self._make_key_pb(DATASET_ID),
             self._make_key_pb(DATASET_ID, id=2345),
             ]
-        rsp_pb = datastore_pb.AllocateIdsResponse()
+        rsp_pb = _datastore_pb2.AllocateIdsResponse()
         rsp_pb.key.add().CopyFrom(after_key_pbs[0])
         rsp_pb.key.add().CopyFrom(after_key_pbs[1])
         conn = self._makeOne()
@@ -810,7 +810,7 @@ class TestConnection(unittest2.TestCase):
                          after_key_pbs)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
-        rq_class = datastore_pb.AllocateIdsRequest
+        rq_class = _datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(len(request.key), len(before_key_pbs))

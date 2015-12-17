@@ -391,7 +391,7 @@ class Test__get_value_from_property_pb(unittest2.TestCase):
         return _get_value_from_property_pb(pb)
 
     def test_it(self):
-        from gcloud.datastore._datastore_v1_pb2 import Property
+        from gcloud.datastore._datastore_pb2 import Property
 
         pb = Property()
         pb.value.string_value = 'value'
