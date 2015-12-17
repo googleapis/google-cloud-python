@@ -124,3 +124,63 @@ class FamilyNameRegexFilter(_RegexFilter):
         :returns: The converted current object.
         """
         return data_pb2.RowFilter(family_name_regex_filter=self.regex)
+
+
+class ColumnQualifierRegexFilter(_RegexFilter):
+    """Row filter for a column qualifier regular expression.
+
+    The ``regex`` must be valid RE2 patterns. See Google's
+    `RE2 reference`_ for the accepted syntax.
+
+    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
+
+    .. note::
+
+        Special care need be used with the expression used. Since
+        each of these properties can contain arbitrary bytes, the ``\\C``
+        escape sequence must be used if a true wildcard is desired. The ``.``
+        character will not match the new line character ``\\n``, which may be
+        present in a binary value.
+
+    :type regex: bytes
+    :param regex: A regular expression (RE2) to match cells from column that
+                  match this regex (irrespective of column family).
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
+
+
+class ValueRegexFilter(_RegexFilter):
+    """Row filter for a value regular expression.
+
+    The ``regex`` must be valid RE2 patterns. See Google's
+    `RE2 reference`_ for the accepted syntax.
+
+    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
+
+    .. note::
+
+        Special care need be used with the expression used. Since
+        each of these properties can contain arbitrary bytes, the ``\\C``
+        escape sequence must be used if a true wildcard is desired. The ``.``
+        character will not match the new line character ``\\n``, which may be
+        present in a binary value.
+
+    :type regex: bytes
+    :param regex: A regular expression (RE2) to match cells with values that
+                  match this regex.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(value_regex_filter=self.regex)

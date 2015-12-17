@@ -118,3 +118,41 @@ class TestFamilyNameRegexFilter(unittest2.TestCase):
         pb_val = row_filter.to_pb()
         expected_pb = data_pb2.RowFilter(family_name_regex_filter=regex)
         self.assertEqual(pb_val, expected_pb)
+
+
+class TestColumnQualifierRegexFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ColumnQualifierRegexFilter
+        return ColumnQualifierRegexFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        regex = b'column-regex'
+        row_filter = self._makeOne(regex)
+        pb_val = row_filter.to_pb()
+        expected_pb = data_pb2.RowFilter(column_qualifier_regex_filter=regex)
+        self.assertEqual(pb_val, expected_pb)
+
+
+class TestValueRegexFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ValueRegexFilter
+        return ValueRegexFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        regex = b'value-regex'
+        row_filter = self._makeOne(regex)
+        pb_val = row_filter.to_pb()
+        expected_pb = data_pb2.RowFilter(value_regex_filter=regex)
+        self.assertEqual(pb_val, expected_pb)
