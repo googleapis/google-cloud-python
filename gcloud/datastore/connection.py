@@ -270,7 +270,7 @@ class Connection(connection.Connection):
             response.batch.skipped_results,
         )
 
-    def begin_transaction(self, dataset_id, serializable=False):
+    def begin_transaction(self, dataset_id):
         """Begin a transaction.
 
         Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
@@ -278,26 +278,14 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type serializable: boolean
-        :param serializable: Boolean indicating if the isolation level of the
-                             transaction should be SERIALIZABLE (True) or
-                             SNAPSHOT (False).
-
         :rtype: :class:`._datastore_v1_pb2.BeginTransactionResponse`
         :returns': the result protobuf for the begin transaction request.
         """
         request = datastore_pb.BeginTransactionRequest()
-
-        if serializable:
-            request.isolation_level = (
-                datastore_pb.BeginTransactionRequest.SERIALIZABLE)
-        else:
-            request.isolation_level = (
-                datastore_pb.BeginTransactionRequest.SNAPSHOT)
-
+        request.isolation_level = (
+            datastore_pb.BeginTransactionRequest.SERIALIZABLE)
         response = self._rpc(dataset_id, 'beginTransaction', request,
                              datastore_pb.BeginTransactionResponse)
-
         return response.transaction
 
     def commit(self, dataset_id, mutation_pb, transaction_id):
