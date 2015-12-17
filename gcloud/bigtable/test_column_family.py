@@ -61,20 +61,6 @@ class Test__timedelta_to_duration_pb(unittest2.TestCase):
         self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
 
 
-class TestGarbageCollectionRule(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.bigtable.column_family import GarbageCollectionRule
-        return GarbageCollectionRule
-
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
-
-    def test_to_pb_virtual(self):
-        gc_rule = self._makeOne()
-        self.assertRaises(NotImplementedError, gc_rule.to_pb)
-
-
 class TestMaxVersionsGCRule(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -84,15 +70,15 @@ class TestMaxVersionsGCRule(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def test___eq__max_num_versions(self):
-        gc_rule1 = self._makeOne(2)
-        gc_rule2 = self._makeOne(2)
-        self.assertEqual(gc_rule1, gc_rule2)
-
     def test___eq__type_differ(self):
         gc_rule1 = self._makeOne(10)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
+
+    def test___eq__same_value(self):
+        gc_rule1 = self._makeOne(2)
+        gc_rule2 = self._makeOne(2)
+        self.assertEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
         gc_rule1 = self._makeOne(99)
@@ -119,17 +105,17 @@ class TestMaxAgeGCRule(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
-    def test___eq__max_age(self):
-        max_age = object()
-        gc_rule1 = self._makeOne(max_age=max_age)
-        gc_rule2 = self._makeOne(max_age=max_age)
-        self.assertEqual(gc_rule1, gc_rule2)
-
     def test___eq__type_differ(self):
         max_age = object()
         gc_rule1 = self._makeOne(max_age=max_age)
         gc_rule2 = object()
         self.assertNotEqual(gc_rule1, gc_rule2)
+
+    def test___eq__same_value(self):
+        max_age = object()
+        gc_rule1 = self._makeOne(max_age=max_age)
+        gc_rule2 = self._makeOne(max_age=max_age)
+        self.assertEqual(gc_rule1, gc_rule2)
 
     def test___ne__same_value(self):
         max_age = object()

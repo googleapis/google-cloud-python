@@ -63,14 +63,6 @@ class GarbageCollectionRule(object):
         don't support that feature and instead support via native classes.
     """
 
-    def to_pb(self):
-        """Converts the :class:`GarbageCollectionRule` to a protobuf.
-
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always since a virtual class.
-        """
-        raise NotImplementedError
-
     def __ne__(self, other):
         return not self.__eq__(other)
 
