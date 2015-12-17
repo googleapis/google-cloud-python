@@ -213,7 +213,7 @@ class Operation(object):
         operation_name = ('operations/' + self._cluster.name +
                           '/operations/%d' % (self.op_id,))
         request_pb = operations_pb2.GetOperationRequest(name=operation_name)
-        # We expact a `._generated.operations_pb2.Operation`.
+        # We expect a `._generated.operations_pb2.Operation`.
         operation_pb = self._cluster._client._operations_stub.GetOperation(
             request_pb, self._cluster._client.timeout_seconds)
 
@@ -258,7 +258,7 @@ class Cluster(object):
 
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
-                        Defaults to 3.
+                        Defaults to 3 (``_DEFAULT_SERVE_NODES``).
     """
 
     def __init__(self, zone, cluster_id, client,

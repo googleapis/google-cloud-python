@@ -41,6 +41,7 @@ class Table(object):
     We can use a :class:`Table` to:
 
     * :meth:`create` the table
+    * :meth:`rename` the table
     * :meth:`delete` the table
 
     :type table_id: str
