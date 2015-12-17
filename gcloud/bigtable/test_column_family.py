@@ -328,7 +328,40 @@ class TestColumnFamily(unittest2.TestCase):
     def test_constructor(self):
         column_family_id = u'column-family-id'
         table = object()
-        column_family = self._makeOne(column_family_id, table)
+        gc_rule = object()
+        column_family = self._makeOne(column_family_id, table, gc_rule=gc_rule)
 
         self.assertEqual(column_family.column_family_id, column_family_id)
         self.assertTrue(column_family._table is table)
+        self.assertTrue(column_family.gc_rule is gc_rule)
+
+    def test___eq__(self):
+        column_family_id = 'column_family_id'
+        table = object()
+        gc_rule = object()
+        column_family1 = self._makeOne(column_family_id, table,
+                                       gc_rule=gc_rule)
+        column_family2 = self._makeOne(column_family_id, table,
+                                       gc_rule=gc_rule)
+        self.assertEqual(column_family1, column_family2)
+
+    def test___eq__type_differ(self):
+        column_family1 = self._makeOne('column_family_id', None)
+        column_family2 = object()
+        self.assertNotEqual(column_family1, column_family2)
+
+    def test___ne__same_value(self):
+        column_family_id = 'column_family_id'
+        table = object()
+        gc_rule = object()
+        column_family1 = self._makeOne(column_family_id, table,
+                                       gc_rule=gc_rule)
+        column_family2 = self._makeOne(column_family_id, table,
+                                       gc_rule=gc_rule)
+        comparison_val = (column_family1 != column_family2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        column_family1 = self._makeOne('column_family_id1', None)
+        column_family2 = self._makeOne('column_family_id2', None)
+        self.assertNotEqual(column_family1, column_family2)
