@@ -177,8 +177,23 @@ class ColumnFamily(object):
 
     :type table: :class:`Table <gcloud.bigtable.table.Table>`
     :param table: The table that owns the column family.
+
+    :type gc_rule: :class:`GarbageCollectionRule`
+    :param gc_rule: (Optional) The garbage collection settings for this
+                    column family.
     """
 
-    def __init__(self, column_family_id, table):
+    def __init__(self, column_family_id, table, gc_rule=None):
         self.column_family_id = column_family_id
         self._table = table
+        self.gc_rule = gc_rule
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other.column_family_id == self.column_family_id and
+                other._table == self._table and
+                other.gc_rule == self.gc_rule)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
