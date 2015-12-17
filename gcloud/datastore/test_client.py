@@ -16,9 +16,9 @@ import unittest2
 
 
 def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
-    from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+    from gcloud.datastore import _entity_pb2
 
-    entity_pb = datastore_pb.Entity()
+    entity_pb = _entity_pb2.Entity()
     entity_pb.key.partition_id.dataset_id = dataset_id
     path_element = entity_pb.key.path_element.add()
     path_element.kind = kind
@@ -314,14 +314,14 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(results, [])
 
     def test_get_multi_miss_w_missing(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
         from gcloud.datastore.key import Key
 
         KIND = 'Kind'
         ID = 1234
 
         # Make a missing entity pb to be returned from mock backend.
-        missed = datastore_pb.Entity()
+        missed = _entity_pb2.Entity()
         missed.key.partition_id.dataset_id = self.DATASET_ID
         path_element = missed.key.path_element.add()
         path_element.kind = KIND
@@ -378,7 +378,7 @@ class TestClient(unittest2.TestCase):
                          [key.to_protobuf()])
 
     def test_get_multi_w_deferred_from_backend_but_not_passed(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
         from gcloud.datastore.entity import Entity
         from gcloud.datastore.key import Key
 
@@ -387,9 +387,9 @@ class TestClient(unittest2.TestCase):
         key2 = Key('Kind', 2345, dataset_id=self.DATASET_ID)
         key2_pb = key2.to_protobuf()
 
-        entity1_pb = datastore_pb.Entity()
+        entity1_pb = _entity_pb2.Entity()
         entity1_pb.key.CopyFrom(key1_pb)
-        entity2_pb = datastore_pb.Entity()
+        entity2_pb = _entity_pb2.Entity()
         entity2_pb.key.CopyFrom(key2_pb)
 
         creds = object()

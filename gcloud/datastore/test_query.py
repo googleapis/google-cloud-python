@@ -327,10 +327,12 @@ class TestIterator(unittest2.TestCase):
 
     def _addQueryResults(self, connection, cursor=_END, more=False):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
+
         MORE = datastore_pb.QueryResultBatch.NOT_FINISHED
         NO_MORE = datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
-        entity_pb = datastore_pb.Entity()
+        entity_pb = _entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = self._DATASET
         path_element = entity_pb.key.path_element.add()
         path_element.kind = self._KIND

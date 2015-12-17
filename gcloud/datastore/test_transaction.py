@@ -161,7 +161,7 @@ class TestTransaction(unittest2.TestCase):
 
 
 def _make_key(kind, id, dataset_id):
-    from gcloud.datastore._datastore_v1_pb2 import Key
+    from gcloud.datastore._entity_pb2 import Key
 
     key = Key()
     key.partition_id.dataset_id = dataset_id

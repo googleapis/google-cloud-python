@@ -426,8 +426,8 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from gcloud.datastore import _datastore_v1_pb2
-        key = self._key = _datastore_v1_pb2.Key()
+        from gcloud.datastore import _entity_pb2
+        key = self._key = _entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.dataset_id = self.dataset_id
 
