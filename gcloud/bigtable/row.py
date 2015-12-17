@@ -184,3 +184,72 @@ class ValueRegexFilter(_RegexFilter):
         :returns: The converted current object.
         """
         return data_pb2.RowFilter(value_regex_filter=self.regex)
+
+
+class _CellCountFilter(RowFilter):
+    """Row filter that uses an integer count of cells.
+
+    The cell count is used as an offset or a limit for the number
+    of results returned.
+
+    :type num_cells: int
+    :param num_cells: An integer count / offset / limit.
+    """
+
+    def __init__(self, num_cells):
+        self.num_cells = num_cells
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.num_cells == self.num_cells
+
+
+class CellsRowOffsetFilter(_CellCountFilter):
+    """Row filter to skip cells in a row.
+
+    :type num_cells: int
+    :param num_cells: Skips the first N cells of the row.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(cells_per_row_offset_filter=self.num_cells)
+
+
+class CellsRowLimitFilter(_CellCountFilter):
+    """Row filter to limit cells in a row.
+
+    :type num_cells: int
+    :param num_cells: Matches only the first N cells of the row.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(cells_per_row_limit_filter=self.num_cells)
+
+
+class CellsColumnLimitFilter(_CellCountFilter):
+    """Row filter to limit cells in a column.
+
+    :type num_cells: int
+    :param num_cells: Matches only the most recent N cells within each column.
+                      This filters a (family name, column) pair, based on
+                      timestamps of each cell.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(cells_per_column_limit_filter=self.num_cells)
