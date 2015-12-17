@@ -239,7 +239,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset over which to run the query.
 
-        :type query_pb: :class:`gcloud.datastore._datastore_v1_pb2.Query`
+        :type query_pb: :class:`gcloud.datastore._query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
         :type namespace: string

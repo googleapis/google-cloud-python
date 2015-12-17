@@ -17,7 +17,7 @@
 import base64
 
 from gcloud._helpers import _ensure_tuple_or_list
-from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _query_pb2
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
 
@@ -64,11 +64,11 @@ class Query(object):
     """
 
     OPERATORS = {
-        '<=': datastore_pb.PropertyFilter.LESS_THAN_OR_EQUAL,
-        '>=': datastore_pb.PropertyFilter.GREATER_THAN_OR_EQUAL,
-        '<': datastore_pb.PropertyFilter.LESS_THAN,
-        '>': datastore_pb.PropertyFilter.GREATER_THAN,
-        '=': datastore_pb.PropertyFilter.EQUAL,
+        '<=': _query_pb2.PropertyFilter.LESS_THAN_OR_EQUAL,
+        '>=': _query_pb2.PropertyFilter.GREATER_THAN_OR_EQUAL,
+        '<': _query_pb2.PropertyFilter.LESS_THAN,
+        '>': _query_pb2.PropertyFilter.GREATER_THAN,
+        '=': _query_pb2.PropertyFilter.EQUAL,
     }
     """Mapping of operator strings and their protobuf equivalents."""
 
@@ -359,11 +359,11 @@ class Iterator(object):
                        query results.
     """
 
-    _NOT_FINISHED = datastore_pb.QueryResultBatch.NOT_FINISHED
+    _NOT_FINISHED = _query_pb2.QueryResultBatch.NOT_FINISHED
 
     _FINISHED = (
-        datastore_pb.QueryResultBatch.NO_MORE_RESULTS,
-        datastore_pb.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+        _query_pb2.QueryResultBatch.NO_MORE_RESULTS,
+        _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
     )
 
     def __init__(self, query, client, limit=None, offset=0,
@@ -456,12 +456,12 @@ def _pb_from_query(query):
     :type query: :class:`Query`
     :param query: The source query.
 
-    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Query`
+    :rtype: :class:`gcloud.datastore._query_pb2.Query`
     :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).
     """
-    pb = datastore_pb.Query()
+    pb = _query_pb2.Query()
 
     for projection_name in query.projection:
         pb.projection.add().property.name = projection_name
@@ -470,7 +470,7 @@ def _pb_from_query(query):
         pb.kind.add().name = query.kind
 
     composite_filter = pb.filter.composite_filter
-    composite_filter.operator = datastore_pb.CompositeFilter.AND
+    composite_filter.operator = _query_pb2.CompositeFilter.AND
 
     if query.ancestor:
         ancestor_pb = helpers._prepare_key_for_request(
@@ -479,7 +479,7 @@ def _pb_from_query(query):
         # Filter on __key__ HAS_ANCESTOR == ancestor.
         ancestor_filter = composite_filter.filter.add().property_filter
         ancestor_filter.property.name = '__key__'
-        ancestor_filter.operator = datastore_pb.PropertyFilter.HAS_ANCESTOR
+        ancestor_filter.operator = _query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
     for property_name, operator, value in query.filters:

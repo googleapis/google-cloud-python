@@ -90,7 +90,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     :type dataset_id: string
     :param dataset_id: The ID of the dataset of which to make the request.
 
-    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
     :type missing: an empty list or None.
@@ -113,7 +113,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
                            the given transaction.  Incompatible with
                            ``eventual==True``.
 
-    :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Entity`
+    :rtype: list of :class:`gcloud.datastore._entity_pb2.Entity`
     :returns: The requested entities.
     :raises: :class:`ValueError` if missing / deferred are not null or
              empty list.

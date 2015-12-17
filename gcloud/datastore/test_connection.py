@@ -30,8 +30,8 @@ class TestConnection(unittest2.TestCase):
         return Key(*path_args, dataset_id=dataset_id).to_protobuf()
 
     def _make_query_pb(self, kind):
-        from gcloud.datastore.connection import datastore_pb
-        pb = datastore_pb.Query()
+        from gcloud.datastore import _query_pb2
+        pb = _query_pb2.Query()
         pb.kind.add().name = kind
         return pb
 
@@ -476,6 +476,7 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_eventual_no_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -483,9 +484,9 @@ class TestConnection(unittest2.TestCase):
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
-        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        rsp_pb.batch.entity_result_type = _query_pb2.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -515,6 +516,7 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_wo_eventual_w_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -523,9 +525,9 @@ class TestConnection(unittest2.TestCase):
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
-        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        rsp_pb.batch.entity_result_type = _query_pb2.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -555,6 +557,7 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_eventual_and_transaction(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -563,15 +566,16 @@ class TestConnection(unittest2.TestCase):
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
-        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        rsp_pb.batch.entity_result_type = _query_pb2.EntityResult.FULL
         conn = self._makeOne()
         self.assertRaises(ValueError, conn.run_query, DATASET_ID, q_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _query_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Nonesuch'
@@ -579,9 +583,9 @@ class TestConnection(unittest2.TestCase):
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.end_cursor = CURSOR
-        no_more = datastore_pb.QueryResultBatch.NO_MORE_RESULTS
+        no_more = _query_pb2.QueryResultBatch.NO_MORE_RESULTS
         rsp_pb.batch.more_results = no_more
-        rsp_pb.batch.entity_result_type = datastore_pb.EntityResult.FULL
+        rsp_pb.batch.entity_result_type = _query_pb2.EntityResult.FULL
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
