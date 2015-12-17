@@ -124,6 +124,58 @@ class MaxAgeGCRule(GarbageCollectionRule):
         return data_pb2.GcRule(max_age=max_age)
 
 
+class GCRuleUnion(GarbageCollectionRule):
+    """Union of garbage collection rules.
+
+    :type rules: list
+    :param rules: List of :class:`GarbageCollectionRule`,
+    """
+
+    def __init__(self, rules):
+        self.rules = rules
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.rules == self.rules
+
+    def to_pb(self):
+        """Converts the union into a single gc rule as a protobuf.
+
+        :rtype: :class:`.data_pb2.GcRule`
+        :returns: The converted current object.
+        """
+        union = data_pb2.GcRule.Union(
+            rules=[rule.to_pb() for rule in self.rules])
+        return data_pb2.GcRule(union=union)
+
+
+class GCRuleIntersection(GarbageCollectionRule):
+    """Intersection of garbage collection rules.
+
+    :type rules: list
+    :param rules: List of :class:`GarbageCollectionRule`.
+    """
+
+    def __init__(self, rules):
+        self.rules = rules
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.rules == self.rules
+
+    def to_pb(self):
+        """Converts the intersection into a single gc rule as a protobuf.
+
+        :rtype: :class:`.data_pb2.GcRule`
+        :returns: The converted current object.
+        """
+        intersection = data_pb2.GcRule.Intersection(
+            rules=[rule.to_pb() for rule in self.rules])
+        return data_pb2.GcRule(intersection=intersection)
+
+
 class ColumnFamily(object):
     """Representation of a Google Cloud Bigtable Column Family.
 
