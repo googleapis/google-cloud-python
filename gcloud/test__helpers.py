@@ -354,6 +354,34 @@ class Test__datetime_from_microseconds(unittest2.TestCase):
         self.assertEqual(self._callFUT(NOW_MICROS), NOW)
 
 
+class Test__total_seconds_backport(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import _total_seconds_backport
+        return _total_seconds_backport(*args, **kwargs)
+
+    def test_it(self):
+        import datetime
+        offset = datetime.timedelta(seconds=3,
+                                    microseconds=140000)
+        result = self._callFUT(offset)
+        self.assertEqual(result, 3.14)
+
+
+class Test__total_seconds(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import _total_seconds
+        return _total_seconds(*args, **kwargs)
+
+    def test_it(self):
+        import datetime
+        offset = datetime.timedelta(seconds=1,
+                                    microseconds=414000)
+        result = self._callFUT(offset)
+        self.assertEqual(result, 1.414)
+
+
 class Test__to_bytes(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):

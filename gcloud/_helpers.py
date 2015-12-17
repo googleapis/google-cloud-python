@@ -21,6 +21,7 @@ import datetime
 import os
 from threading import local as Local
 import socket
+import sys
 
 import six
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
@@ -258,6 +259,36 @@ def _millis_from_datetime(value):
     """
     if value is not None:
         return _millis(value)
+
+
+def _total_seconds_backport(offset):
+    """Backport of timedelta.total_seconds() from python 2.7+.
+
+    :type offset: :class:`datetime.timedelta`
+    :param offset: A timedelta object.
+
+    :rtype: int
+    :returns: The total seconds (including microseconds) in the
+              duration.
+    """
+    seconds = offset.days * 24 * 60 * 60 + offset.seconds
+    return seconds + offset.microseconds * 1e-6
+
+
+def _total_seconds(offset):
+    """Version independent total seconds for a time delta.
+
+    :type offset: :class:`datetime.timedelta`
+    :param offset: A timedelta object.
+
+    :rtype: int
+    :returns: The total seconds (including microseconds) in the
+              duration.
+    """
+    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER
+        return _total_seconds_backport(offset)
+    else:
+        return offset.total_seconds()
 
 
 def _to_bytes(value, encoding='ascii'):
