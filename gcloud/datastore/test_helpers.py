@@ -22,12 +22,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         return entity_from_protobuf(val)
 
     def test_it(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         _DATASET_ID = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        entity_pb = datastore_pb.Entity()
+        entity_pb = _entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
         prop_pb = entity_pb.property.add()
@@ -71,12 +71,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(key.id, _ID)
 
     def test_mismatched_value_indexed(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         _DATASET_ID = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        entity_pb = datastore_pb.Entity()
+        entity_pb = _entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
@@ -96,16 +96,16 @@ class Test_entity_from_protobuf(unittest2.TestCase):
             self._callFUT(entity_pb)
 
     def test_entity_no_key(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
-        entity_pb = datastore_pb.Entity()
+        entity_pb = _entity_pb2.Entity()
         entity = self._callFUT(entity_pb)
 
         self.assertEqual(entity.key, None)
         self.assertEqual(dict(entity), {})
 
     def test_nested_entity_no_key(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         DATASET_ID = 's~FOO'
         KIND = 'KIND'
@@ -113,12 +113,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         OUTSIDE_NAME = 'OBAR'
         INSIDE_VALUE = 1337
 
-        entity_inside = datastore_pb.Entity()
+        entity_inside = _entity_pb2.Entity()
         inside_prop = entity_inside.property.add()
         inside_prop.name = INSIDE_NAME
         inside_prop.value.integer_value = INSIDE_VALUE
 
-        entity_pb = datastore_pb.Entity()
+        entity_pb = _entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = DATASET_ID
         element = entity_pb.key.path_element.add()
         element.kind = KIND
@@ -146,7 +146,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
         return key_from_protobuf(val)
 
     def _makePB(self, dataset_id=None, namespace=None, path=()):
-        from gcloud.datastore._datastore_v1_pb2 import Key
+        from gcloud.datastore._entity_pb2 import Key
         pb = Key()
         if dataset_id is not None:
             pb.partition_id.dataset_id = dataset_id
@@ -303,7 +303,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         return _get_value_from_value_pb(pb)
 
     def _makePB(self, attr_name, value):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
 
         pb = Value()
         setattr(pb, attr_name, value)
@@ -320,7 +320,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
         from gcloud.datastore.key import Key
 
         pb = Value()
@@ -350,7 +350,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), u'str')
 
     def test_entity(self):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
         from gcloud.datastore.entity import Entity
 
         pb = Value()
@@ -365,7 +365,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_list(self):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
 
         pb = Value()
         list_pb = pb.list_value
@@ -377,7 +377,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(items, ['Foo', 'Bar'])
 
     def test_unknown(self):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
 
         pb = Value()
         self.assertEqual(self._callFUT(pb), None)
@@ -406,7 +406,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         return _set_protobuf_value(value_pb, val)
 
     def _makePB(self):
-        from gcloud.datastore._datastore_v1_pb2 import Value
+        from gcloud.datastore._entity_pb2 import Value
 
         return Value()
 
@@ -543,19 +543,19 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         return _prepare_key_for_request(key_pb)
 
     def test_prepare_dataset_id_valid(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-        key = datastore_pb.Key()
+        from gcloud.datastore import _entity_pb2
+        key = _entity_pb2.Key()
         key.partition_id.dataset_id = 'foo'
         new_key = self._callFUT(key)
         self.assertFalse(new_key is key)
 
-        key_without = datastore_pb.Key()
+        key_without = _entity_pb2.Key()
         new_key.ClearField('partition_id')
         self.assertEqual(new_key, key_without)
 
     def test_prepare_dataset_id_unset(self):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
-        key = datastore_pb.Key()
+        from gcloud.datastore import _entity_pb2
+        key = _entity_pb2.Key()
         new_key = self._callFUT(key)
         self.assertTrue(new_key is key)
 
@@ -622,7 +622,7 @@ class _Connection(object):
         self.from_missing = from_missing
 
     def lookup(self, dataset_id, key_pbs):
-        from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         # Store the arguments called with.
         self._called_dataset_id = dataset_id
@@ -630,7 +630,7 @@ class _Connection(object):
 
         key_pb, = key_pbs
 
-        response = datastore_pb.Entity()
+        response = _entity_pb2.Entity()
         response.key.CopyFrom(key_pb)
         response.key.partition_id.dataset_id = self.prefix + dataset_id
 

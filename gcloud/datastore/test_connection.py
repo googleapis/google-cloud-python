@@ -337,11 +337,12 @@ class TestConnection(unittest2.TestCase):
 
     def test_lookup_single_key_nonempty_response(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb.LookupResponse()
-        entity = datastore_pb.Entity()
+        entity = _entity_pb2.Entity()
         entity.key.CopyFrom(key_pb)
         rsp_pb.found.add(entity=entity)
         conn = self._makeOne()
@@ -606,10 +607,11 @@ class TestConnection(unittest2.TestCase):
 
     def test_run_query_w_namespace_nonempty_result(self):
         from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+        from gcloud.datastore import _entity_pb2
 
         DATASET_ID = 'DATASET'
         KIND = 'Kind'
-        entity = datastore_pb.Entity()
+        entity = _entity_pb2.Entity()
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb.RunQueryResponse()
         rsp_pb.batch.entity_result.add(entity=entity)

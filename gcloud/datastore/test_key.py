@@ -333,7 +333,7 @@ class TestKey(unittest2.TestCase):
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
-        from gcloud.datastore._datastore_v1_pb2 import Key as KeyPB
+        from gcloud.datastore._entity_pb2 import Key as KeyPB
         _KIND = 'KIND'
         key = self._makeOne(_KIND, dataset_id=self._DEFAULT_DATASET)
         pb = key.to_protobuf()

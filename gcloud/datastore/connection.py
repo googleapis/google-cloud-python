@@ -20,6 +20,7 @@ from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
 from gcloud.datastore import _datastore_v1_pb2 as datastore_pb
+from gcloud.datastore import _entity_pb2
 
 
 class Connection(connection.Connection):
@@ -150,8 +151,8 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This method deals only with protobufs
-        (:class:`gcloud.datastore._datastore_v1_pb2.Key` and
-        :class:`gcloud.datastore._datastore_v1_pb2.Entity`) and is used
+        (:class:`gcloud.datastore._entity_pb2.Key` and
+        :class:`gcloud.datastore._entity_pb2.Entity`) and is used
         under the hood in :func:`gcloud.datastore.get`:
 
         >>> from gcloud import datastore
@@ -167,7 +168,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to look up the keys.
 
-        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+        :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
         :param key_pbs: The keys to retrieve from the datastore.
 
         :type eventual: boolean
@@ -183,9 +184,9 @@ class Connection(connection.Connection):
         :rtype: tuple
         :returns: A triple of (``results``, ``missing``, ``deferred``) where
                   both ``results`` and ``missing`` are lists of
-                  :class:`gcloud.datastore._datastore_v1_pb2.Entity` and
+                  :class:`gcloud.datastore._entity_pb2.Entity` and
                   ``deferred`` is a list of
-                  :class:`gcloud.datastore._datastore_v1_pb2.Key`.
+                  :class:`gcloud.datastore._entity_pb2.Key`.
         """
         lookup_request = datastore_pb.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
@@ -348,10 +349,10 @@ class Connection(connection.Connection):
         :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
 
-        :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+        :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+        :rtype: list of :class:`gcloud.datastore._entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = datastore_pb.AllocateIdsRequest()
@@ -387,15 +388,15 @@ def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
       This is copied from `helpers` to avoid a cycle:
       _implicit_environ -> connection -> helpers -> key -> _implicit_environ
 
-    :type key_pb: :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :type key_pb: :class:`gcloud.datastore._entity_pb2.Key`
     :param key_pb: A key to be added to a request.
 
-    :rtype: :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :rtype: :class:`gcloud.datastore._entity_pb2.Key`
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
     if key_pb.partition_id.HasField('dataset_id'):
-        new_key_pb = datastore_pb.Key()
+        new_key_pb = _entity_pb2.Key()
         new_key_pb.CopyFrom(key_pb)
         new_key_pb.partition_id.ClearField('dataset_id')
         key_pb = new_key_pb
@@ -408,7 +409,7 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :type request_field_pb: `RepeatedCompositeFieldContainer`
     :param request_field_pb: A repeated proto field that contains keys.
 
-    :type key_pbs: list of :class:`gcloud.datastore._datastore_v1_pb2.Key`
+    :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
