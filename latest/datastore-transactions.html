@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Transactions &mdash; gcloud f143da2 documentation</title>
+    <title>Transactions &mdash; gcloud 977b7f8 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f143da2',
+        VERSION:     '977b7f8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f143da2 documentation" href="index.html" />
+    <link rel="top" title="gcloud 977b7f8 documentation" href="index.html" />
     <link rel="next" title="Batches" href="datastore-batches.html" />
     <link rel="prev" title="Queries" href="datastore-queries.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%20f143da2" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-transactions%0ARelease%3A%20977b7f8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f143da2)
+              Version History (977b7f8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -96,11 +96,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Create / interact with gcloud datastore transactions.</p>
 <dl class="class">
 <dt id="gcloud.datastore.transaction.Transaction">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>client</em>, <em>serializable=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.transaction.</code><code class="descname">Transaction</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/transaction.html#Transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.transaction.Transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a></p>
 <p>An abstraction representing datastore Transactions.</p>
-<p>Transactions can be used to build up a bulk mutuation as well as
-provide isolation.</p>
+<p>Transactions can be used to build up a bulk mutation and ensure all
+or none succeed (transactionally).</p>
 <p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
 operations (either <code class="docutils literal"><span class="pre">insert_auto_id</span></code> or <code class="docutils literal"><span class="pre">upsert</span></code>) into the same
 mutation, and execute those within a transaction:</p>
@@ -167,13 +167,7 @@ transaction manually:</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; the client used to connect to datastore.</li>
-<li><strong>serializable</strong> (<em>boolean</em>) &#8211; if true, perform this transaction at
-<code class="docutils literal"><span class="pre">serializable</span></code> isolation level;  otherwise, perform
-it at <code class="docutils literal"><span class="pre">snapshot</span></code> level.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="datastore-client.html#gcloud.datastore.client.Client" title="gcloud.datastore.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.client.Client</span></code></a>) &#8211; the client used to connect to datastore.</td>
 </tr>
 </tbody>
 </table>
@@ -251,24 +245,6 @@ returns None.</p>
 <li>Sets the current connection&#8217;s transaction reference to None.</li>
 <li>Sets the current transaction&#8217;s ID to None.</li>
 </ul>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.datastore.transaction.Transaction.serializable">
-<code class="descname">serializable</code><a class="headerlink" href="#gcloud.datastore.transaction.Transaction.serializable" title="Permalink to this definition">#</a></dt>
-<dd><p>Should this transaction be run at <code class="docutils literal"><span class="pre">serializable</span></code> isolation</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">if true, perform this transaction at
-<code class="docutils literal"><span class="pre">serializable</span></code> isolation level;  otherwise, perform
-it at <code class="docutils literal"><span class="pre">snapshot</span></code> level.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </dd></dl>

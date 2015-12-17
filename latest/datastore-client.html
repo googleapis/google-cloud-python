@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud f143da2 documentation</title>
+    <title>Datastore Client &mdash; gcloud 977b7f8 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f143da2',
+        VERSION:     '977b7f8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f143da2 documentation" href="index.html" />
+    <link rel="top" title="gcloud 977b7f8 documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20f143da2" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20977b7f8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f143da2)
+              Version History (977b7f8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -344,19 +344,9 @@ entity or multiple entities in a commit request.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.client.Client.transaction">
-<code class="descname">transaction</code><span class="sig-paren">(</span><em>serializable=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.transaction" title="Permalink to this definition">#</a></dt>
+<code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
 <p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>serializable</strong> (<em>boolean</em>) &#8211; if true, perform this transaction at
-<code class="docutils literal"><span class="pre">serializable</span></code> isolation level;  otherwise,
-perform it at <code class="docutils literal"><span class="pre">snapshot</span></code> level.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </dd></dl>
@@ -437,26 +427,18 @@ belongs.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.begin_transaction">
-<code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>serializable=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">#</a></dt>
+<code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Begin a transaction.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.BeginTransaction</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID dataset to which the transaction applies.</li>
-<li><strong>serializable</strong> (<em>boolean</em>) &#8211; Boolean indicating if the isolation level of the
-transaction should be SERIALIZABLE (True) or
-SNAPSHOT (False).</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID dataset to which the transaction applies.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">_datastore_v1_pb2.BeginTransactionResponse</span></code></p>
-</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">_datastore_v1_pb2.BeginTransactionResponse</span></code></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body"><p class="first last">the result protobuf for the begin transaction request.</p>
-</td>
+<tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body">the result protobuf for the begin transaction request.</td>
 </tr>
 </tbody>
 </table>
