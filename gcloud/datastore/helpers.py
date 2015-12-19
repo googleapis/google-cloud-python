@@ -73,6 +73,48 @@ def find_true_dataset_id(dataset_id, connection):
     return returned_pb.key.partition_id.dataset_id
 
 
+def _get_meaning(value_pb, is_list=False):
+    """Get the meaning from a protobuf value.
+
+    :type value_pb: :class:`gcloud.datastore._entity_pb2.Value`
+    :param value_pb: The protobuf value to be checked for an
+                     associated meaning.
+
+    :type is_list: bool
+    :param is_list: Boolean indicating if the ``value_pb`` contains
+                    a list value.
+
+    :rtype: int
+    :returns: The meaning for the ``value_pb`` if one is set, else
+              :data:`None`.
+    :raises: :class:`ValueError <exceptions.ValueError>` if a list value
+             has disagreeing meanings (in sub-elements) or has some
+             elements with meanings and some without.
+    """
+    meaning = None
+    if is_list:
+        # An empty list will have no values, hence no shared meaning
+        # set among them.
+        if len(value_pb.list_value) == 0:
+            return None
+
+        # We check among all the meanings, some of which may be None,
+        # the rest which may be enum/int values.
+        all_meanings = set(_get_meaning(sub_value_pb)
+                           for sub_value_pb in value_pb.list_value)
+        meaning = all_meanings.pop()
+        # The value we popped off should have been unique. If not
+        # then we can't handle a list with values that have more
+        # than one meaning.
+        if all_meanings:
+            raise ValueError('Different meanings set on values '
+                             'within a list_value')
+    elif value_pb.HasField('meaning'):
+        meaning = value_pb.meaning
+
+    return meaning
+
+
 def entity_from_protobuf(pb):
     """Factory method for creating an entity based on a protobuf.
 
@@ -90,11 +132,19 @@ def entity_from_protobuf(pb):
         key = key_from_protobuf(pb.key)
 
     entity_props = {}
+    entity_meanings = {}
     exclude_from_indexes = []
 
     for property_pb in pb.property:
-        value = _get_value_from_property_pb(property_pb)
-        entity_props[property_pb.name] = value
+        value = _get_value_from_value_pb(property_pb.value)
+        prop_name = property_pb.name
+        entity_props[prop_name] = value
+
+        # Check if the property has an associated meaning.
+        meaning = _get_meaning(property_pb.value,
+                               is_list=isinstance(value, list))
+        if meaning is not None:
+            entity_meanings[prop_name] = (meaning, value)
 
         # Check if property_pb.value was indexed. Lists need to be
         # special-cased and we require all `indexed` values in a list agree.
@@ -106,14 +156,65 @@ def entity_from_protobuf(pb):
                                  'be indexed or all excluded from indexes.')
 
             if not indexed_values.pop():
-                exclude_from_indexes.append(property_pb.name)
+                exclude_from_indexes.append(prop_name)
         else:
             if not property_pb.value.indexed:
-                exclude_from_indexes.append(property_pb.name)
+                exclude_from_indexes.append(prop_name)
 
     entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
     entity.update(entity_props)
+    entity._meanings.update(entity_meanings)
     return entity
+
+
+def entity_to_protobuf(entity):
+    """Converts an entity into a protobuf.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity: The entity to be turned into a protobuf.
+
+    :rtype: :class:`gcloud.datastore._entity_pb2.Entity`
+    :returns: The protobuf representing the entity.
+    """
+    entity_pb = _entity_pb2.Entity()
+    if entity.key is not None:
+        key_pb = entity.key.to_protobuf()
+        entity_pb.key.CopyFrom(key_pb)
+
+    for name, value in entity.items():
+        value_is_list = isinstance(value, list)
+        if value_is_list and len(value) == 0:
+            continue
+
+        prop = entity_pb.property.add()
+        # Set the name of the property.
+        prop.name = name
+
+        # Set the appropriate value.
+        _set_protobuf_value(prop.value, value)
+
+        # Add index information to protobuf.
+        if name in entity.exclude_from_indexes:
+            if not value_is_list:
+                prop.value.indexed = False
+
+            for sub_value in prop.value.list_value:
+                sub_value.indexed = False
+
+        # Add meaning information to protobuf.
+        if name in entity._meanings:
+            meaning, orig_value = entity._meanings[name]
+            # Only add the meaning back to the protobuf if the value is
+            # unchanged from when it was originally read from the API.
+            if orig_value is value:
+                # For lists, we set meaning on each sub-element.
+                if value_is_list:
+                    for sub_value_pb in prop.value.list_value:
+                        sub_value_pb.meaning = meaning
+                else:
+                    prop.value.meaning = meaning
+
+    return entity_pb
 
 
 def key_from_protobuf(pb):
@@ -248,27 +349,10 @@ def _get_value_from_value_pb(value_pb):
         result = entity_from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
-        result = [_get_value_from_value_pb(x) for x in value_pb.list_value]
+        result = [_get_value_from_value_pb(value)
+                  for value in value_pb.list_value]
 
     return result
-
-
-def _get_value_from_property_pb(property_pb):
-    """Given a protobuf for a Property, get the correct value.
-
-    The Cloud Datastore Protobuf API returns a Property Protobuf which
-    has one value set and the rest blank.  This function retrieves the
-    the one value provided.
-
-    Some work is done to coerce the return value into a more useful type
-    (particularly in the case of a timestamp value, or a key value).
-
-    :type property_pb: :class:`gcloud.datastore._datastore_pb2.Property`
-    :param property_pb: The Property Protobuf.
-
-    :returns: The value provided by the Protobuf.
-    """
-    return _get_value_from_value_pb(property_pb.value)
 
 
 def _set_protobuf_value(value_pb, val):
@@ -285,7 +369,7 @@ def _set_protobuf_value(value_pb, val):
 
     :type val: :class:`datetime.datetime`, boolean, float, integer, string,
                :class:`gcloud.datastore.key.Key`,
-               :class:`gcloud.datastore.entity.Entity`,
+               :class:`gcloud.datastore.entity.Entity`
     :param val: The value to be assigned.
     """
     if val is None:
@@ -296,15 +380,8 @@ def _set_protobuf_value(value_pb, val):
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
     elif attr == 'entity_value':
-        e_pb = value_pb.entity_value
-        e_pb.Clear()
-        key = val.key
-        if key is not None:
-            e_pb.key.CopyFrom(key.to_protobuf())
-        for item_key, value in val.items():
-            p_pb = e_pb.property.add()
-            p_pb.name = item_key
-            _set_protobuf_value(p_pb.value, value)
+        entity_pb = entity_to_protobuf(val)
+        value_pb.entity_value.CopyFrom(entity_pb)
     elif attr == 'list_value':
         l_pb = value_pb.list_value
         for item in val:
