@@ -49,6 +49,77 @@ class RowFilter(object):
         return not self.__eq__(other)
 
 
+class _BoolFilter(RowFilter):
+    """Row filter that uses a boolean flag.
+
+    :type flag: bool
+    :param flag: An indicator if a setting is turned on or off.
+    """
+
+    def __init__(self, flag):
+        self.flag = flag
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.flag == self.flag
+
+
+class SinkFilter(_BoolFilter):
+    """Advanced row filter to skip parent filters.
+
+    :type flag: bool
+    :param flag: ADVANCED USE ONLY. Hook for introspection into the row filter.
+                 Outputs all cells directly to the output of the read rather
+                 than to any parent filter. Cannot be used within the
+                 ``predicate_filter``, ``true_filter``, or ``false_filter``
+                 of a :class:`ConditionalRowFilter`.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(sink=self.flag)
+
+
+class PassAllFilter(_BoolFilter):
+    """Row filter equivalent to not filtering at all.
+
+    :type flag: bool
+    :param flag: Matches all cells, regardless of input. Functionally
+                 equivalent to leaving ``filter`` unset, but included for
+                 completeness.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(pass_all_filter=self.flag)
+
+
+class BlockAllFilter(_BoolFilter):
+    """Row filter that doesn't match any cells.
+
+    :type flag: bool
+    :param flag: Does not match any cells, regardless of input. Useful for
+                 temporarily disabling just part of a filter.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(block_all_filter=self.flag)
+
+
 class _RegexFilter(RowFilter):
     """Row filter that uses a regular expression.
 
@@ -253,3 +324,21 @@ class CellsColumnLimitFilter(_CellCountFilter):
         :returns: The converted current object.
         """
         return data_pb2.RowFilter(cells_per_column_limit_filter=self.num_cells)
+
+
+class StripValueTransformerFilter(_BoolFilter):
+    """Row filter that transforms cells into empty string (0 bytes).
+
+    :type flag: bool
+    :param flag: If :data:`True`, replaces each cell's value with the empty
+                 string. As the name indicates, this is more useful as a
+                 transformer than a generic query / filter.
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(strip_value_transformer=self.flag)
