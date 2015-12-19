@@ -19,6 +19,7 @@ from gcloud.bigtable._generated import (
     bigtable_table_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import (
     bigtable_service_messages_pb2 as data_messages_pb2)
+from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import Row
 
@@ -73,17 +74,21 @@ class Table(object):
         """
         return self._cluster.name + '/tables/' + self.table_id
 
-    def column_family(self, column_family_id):
+    def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
 
         :type column_family_id: str
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
+        :type gc_rule: :class:`.column_family.GarbageCollectionRule`
+        :param gc_rule: (Optional) The garbage collection settings for this
+                        column family.
+
         :rtype: :class:`.column_family.ColumnFamily`
         :returns: A column family owned by this table.
         """
-        return ColumnFamily(column_family_id, self)
+        return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
 
     def row(self, row_key):
         """Factory to create a row associated with this table.
@@ -178,6 +183,34 @@ class Table(object):
         client = self._cluster._client
         # We expect a `._generated.empty_pb2.Empty`
         client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
+
+    def list_column_families(self):
+        """List the column families owned by this table.
+
+        :rtype: dictionary with string as keys and
+                :class:`.column_family.ColumnFamily` as values
+        :returns: List of column families attached to this table.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the column
+                 family name from the response does not agree with the computed
+                 name from the column family ID.
+        """
+        request_pb = messages_pb2.GetTableRequest(name=self.name)
+        client = self._cluster._client
+        # We expect a `._generated.bigtable_table_data_pb2.Table`
+        table_pb = client._table_stub.GetTable(request_pb,
+                                               client.timeout_seconds)
+
+        result = {}
+        for column_family_id, value_pb in table_pb.column_families.items():
+            gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
+            column_family = self.column_family(column_family_id,
+                                               gc_rule=gc_rule)
+            if column_family.name != value_pb.name:
+                raise ValueError('Column family name %s does not agree with '
+                                 'name from request: %s.' % (
+                                     column_family.name, value_pb.name))
+            result[column_family_id] = column_family
+        return result
 
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
