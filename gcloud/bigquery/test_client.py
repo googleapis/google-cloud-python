@@ -260,7 +260,7 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(req['query_params'], {'projection': 'full'})
 
     def test_list_jobs_explicit_empty(self):
         PROJECT = 'PROJECT'
@@ -282,7 +282,8 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'],
-                         {'maxResults': 1000,
+                         {'projection': 'full',
+                          'maxResults': 1000,
                           'pageToken': TOKEN,
                           'allUsers': True,
                           'stateFilter': 'done'})

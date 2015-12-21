@@ -159,7 +159,7 @@ class Client(JSONClient):
                   retrieved with another call, passing that value as
                   ``page_token``).
         """
-        params = {}
+        params = {'projection': 'full'}
 
         if max_results is not None:
             params['maxResults'] = max_results
