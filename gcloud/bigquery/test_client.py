@@ -262,6 +262,58 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
+    def test_list_jobs_load_job_wo_sourceUris(self):
+        from gcloud.bigquery.job import LoadTableFromStorageJob
+        PROJECT = 'PROJECT'
+        DATASET = 'test_dataset'
+        SOURCE_TABLE = 'source_table'
+        JOB_TYPES = {
+            'load_job': LoadTableFromStorageJob,
+        }
+        PATH = 'projects/%s/jobs' % PROJECT
+        TOKEN = 'TOKEN'
+        LOAD_DATA = {
+            'id': '%s:%s' % (PROJECT, 'load_job'),
+            'jobReference': {
+                'projectId': PROJECT,
+                'jobId': 'load_job',
+            },
+            'state': 'DONE',
+            'configuration': {
+                'load': {
+                    'destinationTable': {
+                        'projectId': PROJECT,
+                        'datasetId': DATASET,
+                        'tableId': SOURCE_TABLE,
+                    },
+                }
+            },
+        }
+        DATA = {
+            'nextPageToken': TOKEN,
+            'jobs': [
+                LOAD_DATA,
+            ]
+        }
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(DATA)
+
+        jobs, token = client.list_jobs()
+
+        self.assertEqual(len(jobs), len(DATA['jobs']))
+        for found, expected in zip(jobs, DATA['jobs']):
+            name = expected['jobReference']['jobId']
+            self.assertTrue(isinstance(found, JOB_TYPES[name]))
+            self.assertEqual(found.job_id, expected['id'])
+        self.assertEqual(token, TOKEN)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['query_params'], {'projection': 'full'})
+
     def test_list_jobs_explicit_empty(self):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/jobs' % PROJECT
