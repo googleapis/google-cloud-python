@@ -104,6 +104,20 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity.key, None)
         self.assertEqual(dict(entity), {})
 
+    def test_entity_with_meaning(self):
+        from gcloud.datastore import _entity_pb2
+
+        entity_pb = _entity_pb2.Entity()
+        prop = entity_pb.property.add()
+        prop.value.meaning = meaning = 9
+        prop.value.string_value = val = u'something'
+        prop.name = name = 'hello'
+
+        entity = self._callFUT(entity_pb)
+        self.assertEqual(entity.key, None)
+        self.assertEqual(dict(entity), {name: val})
+        self.assertEqual(entity._meanings, {name: (meaning, val)})
+
     def test_nested_entity_no_key(self):
         from gcloud.datastore import _entity_pb2
 
@@ -136,6 +150,163 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(inside_entity.key, None)
         self.assertEqual(len(inside_entity), 1)
         self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
+
+
+class Test_entity_to_protobuf(unittest2.TestCase):
+
+    def _callFUT(self, entity):
+        from gcloud.datastore.helpers import entity_to_protobuf
+        return entity_to_protobuf(entity)
+
+    def _compareEntityProto(self, entity_pb1, entity_pb2):
+        import operator
+        self.assertEqual(entity_pb1.key, entity_pb2.key)
+        name_getter = operator.attrgetter('name')
+        prop_list1 = sorted(entity_pb1.property, key=name_getter)
+        prop_list2 = sorted(entity_pb2.property, key=name_getter)
+        self.assertEqual(len(prop_list1), len(prop_list2))
+        for val1, val2 in zip(prop_list1, prop_list2):
+            if val1.value.HasField('entity_value'):
+                self.assertEqual(val1.name, val2.name)
+                self.assertEqual(val1.value.meaning, val2.value.meaning)
+                self._compareEntityProto(val1.value.entity_value,
+                                         val2.value.entity_value)
+            else:
+                self.assertEqual(val1, val2)
+
+    def test_empty(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
+        entity_pb = self._callFUT(entity)
+        self._compareEntityProto(entity_pb, _entity_pb2.Entity())
+
+    def test_key_only(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.entity import Entity
+        from gcloud.datastore.key import Key
+
+        kind, name = 'PATH', 'NAME'
+        dataset_id = 'DATASET'
+        key = Key(kind, name, dataset_id=dataset_id)
+        entity = Entity(key=key)
+        entity_pb = self._callFUT(entity)
+
+        expected_pb = _entity_pb2.Entity()
+        expected_pb.key.partition_id.dataset_id = dataset_id
+        path_elt = expected_pb.key.path_element.add()
+        path_elt.kind = kind
+        path_elt.name = name
+
+        self._compareEntityProto(entity_pb, expected_pb)
+
+    def test_simple_fields(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
+        name1 = 'foo'
+        entity[name1] = value1 = 42
+        name2 = 'bar'
+        entity[name2] = value2 = u'some-string'
+        entity_pb = self._callFUT(entity)
+
+        expected_pb = _entity_pb2.Entity()
+        prop1 = expected_pb.property.add()
+        prop1.name = name1
+        prop1.value.integer_value = value1
+        prop2 = expected_pb.property.add()
+        prop2.name = name2
+        prop2.value.string_value = value2
+
+        self._compareEntityProto(entity_pb, expected_pb)
+
+    def test_with_empty_list(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
+        entity['foo'] = []
+        entity_pb = self._callFUT(entity)
+
+        self._compareEntityProto(entity_pb, _entity_pb2.Entity())
+
+    def test_inverts_to_protobuf(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.helpers import entity_from_protobuf
+
+        original_pb = _entity_pb2.Entity()
+        # Add a key.
+        original_pb.key.partition_id.dataset_id = dataset_id = 'DATASET'
+        elem1 = original_pb.key.path_element.add()
+        elem1.kind = 'Family'
+        elem1.id = 1234
+        elem2 = original_pb.key.path_element.add()
+        elem2.kind = 'King'
+        elem2.name = 'Spades'
+
+        # Add an integer property.
+        prop1 = original_pb.property.add()
+        prop1.name = 'foo'
+        prop1.value.integer_value = 1337
+        prop1.value.indexed = False
+        # Add a string property.
+        prop2 = original_pb.property.add()
+        prop2.name = 'bar'
+        prop2.value.string_value = u'hello'
+
+        # Add a nested (entity) property.
+        prop3 = original_pb.property.add()
+        prop3.name = 'entity-baz'
+        sub_pb = _entity_pb2.Entity()
+        sub_prop1 = sub_pb.property.add()
+        sub_prop1.name = 'x'
+        sub_prop1.value.double_value = 3.14
+        sub_prop2 = sub_pb.property.add()
+        sub_prop2.name = 'y'
+        sub_prop2.value.double_value = 2.718281828
+        prop3.value.meaning = 9
+        prop3.value.entity_value.CopyFrom(sub_pb)
+
+        # Add a list property.
+        prop4 = original_pb.property.add()
+        prop4.name = 'list-quux'
+        list_val1 = prop4.value.list_value.add()
+        list_val1.indexed = False
+        list_val1.meaning = meaning = 22
+        list_val1.blob_value = b'\xe2\x98\x83'
+        list_val2 = prop4.value.list_value.add()
+        list_val2.indexed = False
+        list_val2.meaning = meaning
+        list_val2.blob_value = b'\xe2\x98\x85'
+
+        # Convert to the user-space Entity.
+        entity = entity_from_protobuf(original_pb)
+        # Convert the user-space Entity back to a protobuf.
+        new_pb = self._callFUT(entity)
+
+        # NOTE: entity_to_protobuf() strips the dataset_id so we "cheat".
+        new_pb.key.partition_id.dataset_id = dataset_id
+        self._compareEntityProto(original_pb, new_pb)
+
+    def test_meaning_with_change(self):
+        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore.entity import Entity
+
+        entity = Entity()
+        name = 'foo'
+        entity[name] = value = 42
+        entity._meanings[name] = (9, 1337)
+        entity_pb = self._callFUT(entity)
+
+        expected_pb = _entity_pb2.Entity()
+        prop = expected_pb.property.add()
+        prop.name = name
+        prop.value.integer_value = value
+        # NOTE: No meaning is used since the value differs from the
+        #       value stored.
+        self._compareEntityProto(entity_pb, expected_pb)
 
 
 class Test_key_from_protobuf(unittest2.TestCase):
@@ -383,21 +554,6 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), None)
 
 
-class Test__get_value_from_property_pb(unittest2.TestCase):
-
-    def _callFUT(self, pb):
-        from gcloud.datastore.helpers import _get_value_from_property_pb
-
-        return _get_value_from_property_pb(pb)
-
-    def test_it(self):
-        from gcloud.datastore._datastore_pb2 import Property
-
-        pb = Property()
-        pb.value.string_value = 'value'
-        self.assertEqual(self._callFUT(pb), 'value')
-
-
 class Test_set_protobuf_value(unittest2.TestCase):
 
     def _callFUT(self, value_pb, val):
@@ -611,6 +767,86 @@ class Test_find_true_dataset_id(unittest2.TestCase):
 
         PREFIXED = PREFIX + UNPREFIXED
         self.assertEqual(result, PREFIXED)
+
+
+class Test__get_meaning(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.datastore.helpers import _get_meaning
+        return _get_meaning(*args, **kwargs)
+
+    def test_no_meaning(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        result = self._callFUT(value_pb)
+        self.assertEqual(result, None)
+
+    def test_single(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        value_pb.meaning = meaning = 22
+        value_pb.string_value = u'hi'
+        result = self._callFUT(value_pb)
+        self.assertEqual(meaning, result)
+
+    def test_empty_list_value(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        value_pb.list_value.add()
+        value_pb.list_value.pop()
+
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(None, result)
+
+    def test_list_value(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        meaning = 9
+        sub_value_pb1 = value_pb.list_value.add()
+        sub_value_pb2 = value_pb.list_value.add()
+
+        sub_value_pb1.meaning = sub_value_pb2.meaning = meaning
+        sub_value_pb1.string_value = u'hi'
+        sub_value_pb2.string_value = u'bye'
+
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(meaning, result)
+
+    def test_list_value_disagreeing(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        meaning1 = 9
+        meaning2 = 10
+        sub_value_pb1 = value_pb.list_value.add()
+        sub_value_pb2 = value_pb.list_value.add()
+
+        sub_value_pb1.meaning = meaning1
+        sub_value_pb2.meaning = meaning2
+        sub_value_pb1.string_value = u'hi'
+        sub_value_pb2.string_value = u'bye'
+
+        with self.assertRaises(ValueError):
+            self._callFUT(value_pb, is_list=True)
+
+    def test_list_value_partially_unset(self):
+        from gcloud.datastore import _entity_pb2
+
+        value_pb = _entity_pb2.Value()
+        meaning1 = 9
+        sub_value_pb1 = value_pb.list_value.add()
+        sub_value_pb2 = value_pb.list_value.add()
+
+        sub_value_pb1.meaning = meaning1
+        sub_value_pb1.string_value = u'hi'
+        sub_value_pb2.string_value = u'bye'
+
+        with self.assertRaises(ValueError):
+            self._callFUT(value_pb, is_list=True)
 
 
 class _Connection(object):

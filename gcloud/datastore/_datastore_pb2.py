@@ -35,4 +35,3 @@ AllocateIdsResponse = _datastore_v1_pb2.AllocateIdsResponse
 Mutation = _datastore_v1_pb2.Mutation
 MutationResult = _datastore_v1_pb2.MutationResult
 ReadOptions = _datastore_v1_pb2.ReadOptions
-Property = _datastore_v1_pb2.Property  # Not present in v1beta3

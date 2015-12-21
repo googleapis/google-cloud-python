@@ -385,6 +385,7 @@ class _Connection(object):
 class _Entity(dict):
     key = None
     exclude_from_indexes = ()
+    _meanings = {}
 
 
 class _Key(object):

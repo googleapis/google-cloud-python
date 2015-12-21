@@ -81,6 +81,9 @@ class Entity(dict):
         self.key = key
         self._exclude_from_indexes = set(_ensure_tuple_or_list(
             'exclude_from_indexes', exclude_from_indexes))
+        # NOTE: This will be populated when parsing a protobuf in
+        #       gcloud.datastore.helpers.entity_from_protobuf.
+        self._meanings = {}
 
     def __eq__(self, other):
         """Compare two entities for equality.

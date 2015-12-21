@@ -229,26 +229,7 @@ def _assign_entity_to_pb(entity_pb, entity):
     :type entity: :class:`gcloud.datastore.entity.Entity`
     :param entity: The entity being updated within the batch / transaction.
     """
-    key_pb = entity.key.to_protobuf()
-    key_pb = helpers._prepare_key_for_request(key_pb)
-    entity_pb.key.CopyFrom(key_pb)
-
-    for name, value in entity.items():
-
-        value_is_list = isinstance(value, list)
-        if value_is_list and len(value) == 0:
-            continue
-
-        prop = entity_pb.property.add()
-        # Set the name of the property.
-        prop.name = name
-
-        # Set the appropriate value.
-        helpers._set_protobuf_value(prop.value, value)
-
-        if name in entity.exclude_from_indexes:
-            if not value_is_list:
-                prop.value.indexed = False
-
-            for sub_value in prop.value.list_value:
-                sub_value.indexed = False
+    bare_entity_pb = helpers.entity_to_protobuf(entity)
+    key_pb = helpers._prepare_key_for_request(bare_entity_pb.key)
+    bare_entity_pb.key.CopyFrom(key_pb)
+    entity_pb.CopyFrom(bare_entity_pb)
