@@ -615,7 +615,7 @@ class LoadTableFromStorageJob(_AsyncJob):
         dest_config = config['destinationTable']
         dataset = Dataset(dest_config['datasetId'], client)
         destination = Table(dest_config['tableId'], dataset)
-        source_urls = config['sourceUris']
+        source_urls = config.get('sourceUris', ())
         job = cls(name, destination, source_urls, client=client)
         job._set_properties(resource)
         return job
