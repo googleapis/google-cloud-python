@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.batch &mdash; gcloud 7a994b0 documentation</title>
+    <title>gcloud.datastore.batch &mdash; gcloud 0870be4 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7a994b0',
+        VERSION:     '0870be4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7a994b0 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 0870be4 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%207a994b0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%200870be4" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7a994b0)
+              Version History (0870be4)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -322,29 +322,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type entity: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">    :param entity: The entity being updated within the batch / transaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">key_pb</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
-    <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
-    <span class="n">entity_pb</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-        <span class="n">value_is_list</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value_is_list</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">continue</span>
-
-        <span class="n">prop</span> <span class="o">=</span> <span class="n">entity_pb</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-        <span class="c"># Set the name of the property.</span>
-        <span class="n">prop</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-
-        <span class="c"># Set the appropriate value.</span>
-        <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">value_is_list</span><span class="p">:</span>
-                <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
-
-            <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">list_value</span><span class="p">:</span>
-                <span class="n">sub_value</span><span class="o">.</span><span class="n">indexed</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">bare_entity_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">entity_to_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+    <span class="n">key_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">bare_entity_pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">bare_entity_pb</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
+    <span class="n">entity_pb</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">bare_entity_pb</span><span class="p">)</span>
 </pre></div>
 
       </section><!-- end of .content -->
