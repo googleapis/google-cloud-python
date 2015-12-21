@@ -355,6 +355,15 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertTrue(column_family._table is table)
         self.assertTrue(column_family.gc_rule is gc_rule)
 
+    def test_name_property(self):
+        column_family_id = u'column-family-id'
+        table_name = 'table_name'
+        table = _Table(table_name)
+        column_family = self._makeOne(column_family_id, table)
+
+        expected_name = table_name + '/columnFamilies/' + column_family_id
+        self.assertEqual(column_family.name, expected_name)
+
     def test___eq__(self):
         column_family_id = 'column_family_id'
         table = object()
@@ -460,3 +469,9 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
         self.assertEqual(MockProto.names, [])
         self.assertRaises(ValueError, self._callFUT, MockProto)
         self.assertEqual(MockProto.names, ['rule'])
+
+
+class _Table(object):
+
+    def __init__(self, name):
+        self.name = name

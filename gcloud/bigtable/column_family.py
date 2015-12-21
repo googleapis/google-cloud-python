@@ -210,6 +210,24 @@ class ColumnFamily(object):
         self._table = table
         self.gc_rule = gc_rule
 
+    @property
+    def name(self):
+        """Column family name used in requests.
+
+        .. note::
+
+          This property will not change if ``column_family_id`` does not, but
+          the return value is not cached.
+
+        The table name is of the form
+
+            ``"projects/../zones/../clusters/../tables/../columnFamilies/.."``
+
+        :rtype: str
+        :returns: The column family name.
+        """
+        return self._table.name + '/columnFamilies/' + self.column_family_id
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False

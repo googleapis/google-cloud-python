@@ -46,12 +46,14 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable.column_family import ColumnFamily
 
         table_id = 'table-id'
+        gc_rule = object()
         table = self._makeOne(table_id, None)
         column_family_id = 'column_family_id'
-        column_family = table.column_family(column_family_id)
+        column_family = table.column_family(column_family_id, gc_rule=gc_rule)
 
         self.assertTrue(isinstance(column_family, ColumnFamily))
         self.assertEqual(column_family.column_family_id, column_family_id)
+        self.assertTrue(column_family.gc_rule is gc_rule)
         self.assertEqual(column_family._table, table)
 
     def test_row_factory(self):
@@ -187,6 +189,65 @@ class TestTable(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
+
+    def _list_column_families_helper(self, column_family_name=None):
+        from gcloud.bigtable._generated import (
+            bigtable_table_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 502
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        table_name = cluster_name + '/tables/' + table_id
+        request_pb = messages_pb2.GetTableRequest(name=table_name)
+
+        # Create response_pb
+        column_family_id = 'foo'
+        if column_family_name is None:
+            column_family_name = (table_name + '/columnFamilies/' +
+                                  column_family_id)
+        column_family = data_pb2.ColumnFamily(name=column_family_name)
+        response_pb = data_pb2.Table(
+            column_families={column_family_id: column_family},
+        )
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = {
+            column_family_id: table.column_family(column_family_id),
+        }
+
+        # Perform the method and check the result.
+        result = table.list_column_families()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'GetTable',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+    def test_list_column_families(self):
+        self._list_column_families_helper()
+
+    def test_list_column_families_failure(self):
+        column_family_name = 'not-the-right-format'
+        with self.assertRaises(ValueError):
+            self._list_column_families_helper(
+                column_family_name=column_family_name)
 
     def test_delete(self):
         from gcloud.bigtable._generated import (
