@@ -779,3 +779,118 @@ class TestApplyLabelFilter(unittest2.TestCase):
         pb_val = row_filter.to_pb()
         expected_pb = data_pb2.RowFilter(apply_label_transformer=label)
         self.assertEqual(pb_val, expected_pb)
+
+
+class TestConditionalRowFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ConditionalRowFilter
+        return ConditionalRowFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        base_filter = object()
+        true_filter = object()
+        false_filter = object()
+        cond_filter = self._makeOne(base_filter,
+                                    true_filter=true_filter,
+                                    false_filter=false_filter)
+        self.assertTrue(cond_filter.base_filter is base_filter)
+        self.assertTrue(cond_filter.true_filter is true_filter)
+        self.assertTrue(cond_filter.false_filter is false_filter)
+
+    def test___eq__(self):
+        base_filter = object()
+        true_filter = object()
+        false_filter = object()
+        cond_filter1 = self._makeOne(base_filter,
+                                     true_filter=true_filter,
+                                     false_filter=false_filter)
+        cond_filter2 = self._makeOne(base_filter,
+                                     true_filter=true_filter,
+                                     false_filter=false_filter)
+        self.assertEqual(cond_filter1, cond_filter2)
+
+    def test___eq__type_differ(self):
+        base_filter = object()
+        true_filter = object()
+        false_filter = object()
+        cond_filter1 = self._makeOne(base_filter,
+                                     true_filter=true_filter,
+                                     false_filter=false_filter)
+        cond_filter2 = object()
+        self.assertNotEqual(cond_filter1, cond_filter2)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import CellsRowOffsetFilter
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter1_pb = row_filter1.to_pb()
+
+        row_filter2 = RowSampleFilter(0.25)
+        row_filter2_pb = row_filter2.to_pb()
+
+        row_filter3 = CellsRowOffsetFilter(11)
+        row_filter3_pb = row_filter3.to_pb()
+
+        row_filter4 = self._makeOne(row_filter1, true_filter=row_filter2,
+                                    false_filter=row_filter3)
+        filter_pb = row_filter4.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            condition=data_pb2.RowFilter.Condition(
+                predicate_filter=row_filter1_pb,
+                true_filter=row_filter2_pb,
+                false_filter=row_filter3_pb,
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+    def test_to_pb_true_only(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter1_pb = row_filter1.to_pb()
+
+        row_filter2 = RowSampleFilter(0.25)
+        row_filter2_pb = row_filter2.to_pb()
+
+        row_filter3 = self._makeOne(row_filter1, true_filter=row_filter2)
+        filter_pb = row_filter3.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            condition=data_pb2.RowFilter.Condition(
+                predicate_filter=row_filter1_pb,
+                true_filter=row_filter2_pb,
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+    def test_to_pb_false_only(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter1_pb = row_filter1.to_pb()
+
+        row_filter2 = RowSampleFilter(0.25)
+        row_filter2_pb = row_filter2.to_pb()
+
+        row_filter3 = self._makeOne(row_filter1, false_filter=row_filter2)
+        filter_pb = row_filter3.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            condition=data_pb2.RowFilter.Condition(
+                predicate_filter=row_filter1_pb,
+                false_filter=row_filter2_pb,
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
