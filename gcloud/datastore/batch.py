@@ -98,6 +98,33 @@ class Batch(object):
         """
         return self._client.connection
 
+    def _add_partial_key_entity_pb(self):
+        """Adds a new mutation for an entity with a partial key.
+
+        :rtype: :class:`gcloud.datastore._entity_pb2.Entity`
+        :returns: The newly created entity protobuf that will be
+                  updated and sent with a commit.
+        """
+        return self.mutations.insert_auto_id.add()
+
+    def _add_complete_key_entity_pb(self):
+        """Adds a new mutation for an entity with a completed key.
+
+        :rtype: :class:`gcloud.datastore._entity_pb2.Entity`
+        :returns: The newly created entity protobuf that will be
+                  updated and sent with a commit.
+        """
+        return self.mutations.upsert.add()
+
+    def _add_delete_key_pb(self):
+        """Adds a new mutation for a key to be deleted.
+
+        :rtype: :class:`gcloud.datastore._entity_pb2.Key`
+        :returns: The newly created key protobuf that will be
+                  deleted when sent with a commit.
+        """
+        return self.mutations.delete.add()
+
     @property
     def mutations(self):
         """Getter for the changes accumulated by this batch.
@@ -146,10 +173,10 @@ class Batch(object):
             raise ValueError("Key must be from same dataset as batch")
 
         if entity.key.is_partial:
-            entity_pb = self.mutations.insert_auto_id.add()
+            entity_pb = self._add_partial_key_entity_pb()
             self._partial_key_entities.append(entity)
         else:
-            entity_pb = self.mutations.upsert.add()
+            entity_pb = self._add_complete_key_entity_pb()
 
         _assign_entity_to_pb(entity_pb, entity)
 
@@ -169,14 +196,13 @@ class Batch(object):
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = helpers._prepare_key_for_request(key.to_protobuf())
-        self.mutations.delete.add().CopyFrom(key_pb)
+        self._add_delete_key_pb().CopyFrom(key_pb)
 
     def begin(self):
         """No-op
 
         Overridden by :class:`gcloud.datastore.transaction.Transaction`.
         """
-        pass
 
     def commit(self):
         """Commits the batch.

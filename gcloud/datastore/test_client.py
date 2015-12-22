@@ -637,6 +637,7 @@ class TestClient(unittest2.TestCase):
     def test_put_multi_existing_batch_w_completed_key(self):
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _mutated_pb
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -647,14 +648,11 @@ class TestClient(unittest2.TestCase):
             result = client.put_multi([entity])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_BATCH.mutations.insert_auto_id), 0)
-        upserts = list(CURR_BATCH.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-        self.assertEqual(upserts[0].key, key.to_protobuf())
-        properties = list(upserts[0].property)
+        mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, 'upsert')
+        self.assertEqual(mutated_entity.key, key.to_protobuf())
+        properties = list(mutated_entity.property)
         self.assertEqual(properties[0].name, 'foo')
         self.assertEqual(properties[0].value.string_value, u'bar')
-        self.assertEqual(len(CURR_BATCH.mutations.delete), 0)
 
     def test_delete(self):
         _called_with = []
@@ -698,6 +696,7 @@ class TestClient(unittest2.TestCase):
 
     def test_delete_multi_w_existing_batch(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _mutated_pb
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -707,15 +706,13 @@ class TestClient(unittest2.TestCase):
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_BATCH.mutations.insert_auto_id), 0)
-        self.assertEqual(len(CURR_BATCH.mutations.upsert), 0)
-        deletes = list(CURR_BATCH.mutations.delete)
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0], key._key)
+        mutated_key = _mutated_pb(self, CURR_BATCH.mutations, 'delete')
+        self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_w_existing_transaction(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _mutated_pb
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -725,11 +722,8 @@ class TestClient(unittest2.TestCase):
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_XACT.mutations.insert_auto_id), 0)
-        self.assertEqual(len(CURR_XACT.mutations.upsert), 0)
-        deletes = list(CURR_XACT.mutations.delete)
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0], key._key)
+        mutated_key = _mutated_pb(self, CURR_XACT.mutations, 'delete')
+        self.assertEqual(mutated_key, key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_allocate_ids_w_partial_key(self):
