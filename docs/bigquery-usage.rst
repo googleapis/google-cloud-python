@@ -263,7 +263,7 @@ List jobs for a project:
 
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
-   >>> jobs = client.jobs()  # API request
+   >>> jobs, token = client.list_jobs()  # API request
    >>> [(job.job_id, job.type, job.created, job.state) for job in jobs]
    ['e3344fba-09df-4ae0-8337-fddee34b3840', 'insert', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
