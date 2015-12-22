@@ -224,6 +224,21 @@ Update all writable metadata for a table
    ...     SchemaField(name='age', type='int', mode='required)]
    >>> table.update()  # API request
 
+Upload table data from a file:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
+   >>> with open('person_ages.csv', 'rb') as csv_file:
+   ...     table.upload_from_file(csv_file, CSV,
+   ...                            create_disposition='CREATE_IF_NEEDED')
+
 Get rows from a table's data:
 
 .. doctest::
