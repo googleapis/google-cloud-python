@@ -257,6 +257,93 @@ class ValueRegexFilter(_RegexFilter):
         return data_pb2.RowFilter(value_regex_filter=self.regex)
 
 
+class ValueRangeFilter(RowFilter):
+    """A range of values to restrict to in a row filter.
+
+    Will only match cells that have values in this range.
+
+    Both the start and end value can be included or excluded in the range.
+    By default, we include them both, but this can be changed with optional
+    flags.
+
+    :type start_value: bytes
+    :param start_value: The start of the range of values. If no value is used,
+                        the backend applies no lower bound to the values.
+
+    :type end_value: bytes
+    :param end_value: The end of the range of values. If no value is used,
+                      the backend applies no upper bound to the values.
+
+    :type inclusive_start: bool
+    :param inclusive_start: Boolean indicating if the start value should be
+                            included in the range (or excluded). Defaults
+                            to :data:`True` if ``start_value`` is passed and
+                            no ``inclusive_start`` was given.
+
+    :type inclusive_end: bool
+    :param inclusive_end: Boolean indicating if the end value should be
+                          included in the range (or excluded). Defaults
+                          to :data:`True` if ``end_value`` is passed and
+                          no ``inclusive_end`` was given.
+
+    :raises: :class:`ValueError <exceptions.ValueError>` if ``inclusive_start``
+             is set but no ``start_value`` is given or if ``inclusive_end``
+             is set but no ``end_value`` is given
+    """
+
+    def __init__(self, start_value=None, end_value=None,
+                 inclusive_start=None, inclusive_end=None):
+        if inclusive_start is None:
+            inclusive_start = True
+        elif start_value is None:
+            raise ValueError('Inclusive start was specified but no '
+                             'start value was given.')
+        self.start_value = start_value
+        self.inclusive_start = inclusive_start
+
+        if inclusive_end is None:
+            inclusive_end = True
+        elif end_value is None:
+            raise ValueError('Inclusive end was specified but no '
+                             'end value was given.')
+        self.end_value = end_value
+        self.inclusive_end = inclusive_end
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other.start_value == self.start_value and
+                other.end_value == self.end_value and
+                other.inclusive_start == self.inclusive_start and
+                other.inclusive_end == self.inclusive_end)
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        First converts to a :class:`.data_pb2.ValueRange` and then uses
+        it to create a row filter protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        value_range_kwargs = {}
+        if self.start_value is not None:
+            if self.inclusive_start:
+                key = 'start_value_inclusive'
+            else:
+                key = 'start_value_exclusive'
+            value_range_kwargs[key] = _to_bytes(self.start_value)
+        if self.end_value is not None:
+            if self.inclusive_end:
+                key = 'end_value_inclusive'
+            else:
+                key = 'end_value_exclusive'
+            value_range_kwargs[key] = _to_bytes(self.end_value)
+
+        value_range = data_pb2.ValueRange(**value_range_kwargs)
+        return data_pb2.RowFilter(value_range_filter=value_range)
+
+
 class _CellCountFilter(RowFilter):
     """Row filter that uses an integer count of cells.
 
