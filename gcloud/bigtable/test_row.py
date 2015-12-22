@@ -398,6 +398,120 @@ class TestColumnRangeFilter(unittest2.TestCase):
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
 
+class TestTimestampRange(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import TimestampRange
+        return TimestampRange
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        start = object()
+        end = object()
+        time_range = self._makeOne(start=start, end=end)
+        self.assertTrue(time_range.start is start)
+        self.assertTrue(time_range.end is end)
+
+    def test___eq__(self):
+        start = object()
+        end = object()
+        time_range1 = self._makeOne(start=start, end=end)
+        time_range2 = self._makeOne(start=start, end=end)
+        self.assertEqual(time_range1, time_range2)
+
+    def test___eq__type_differ(self):
+        start = object()
+        end = object()
+        time_range1 = self._makeOne(start=start, end=end)
+        time_range2 = object()
+        self.assertNotEqual(time_range1, time_range2)
+
+    def test___ne__same_value(self):
+        start = object()
+        end = object()
+        time_range1 = self._makeOne(start=start, end=end)
+        time_range2 = self._makeOne(start=start, end=end)
+        comparison_val = (time_range1 != time_range2)
+        self.assertFalse(comparison_val)
+
+    def _to_pb_helper(self, start_micros=None, end_micros=None):
+        import datetime
+        from gcloud._helpers import _EPOCH
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        pb_kwargs = {}
+
+        start = None
+        if start_micros is not None:
+            start = _EPOCH + datetime.timedelta(microseconds=start_micros)
+            pb_kwargs['start_timestamp_micros'] = start_micros
+        end = None
+        if end_micros is not None:
+            end = _EPOCH + datetime.timedelta(microseconds=end_micros)
+            pb_kwargs['end_timestamp_micros'] = end_micros
+        time_range = self._makeOne(start=start, end=end)
+
+        expected_pb = data_pb2.TimestampRange(**pb_kwargs)
+        self.assertEqual(time_range.to_pb(), expected_pb)
+
+    def test_to_pb(self):
+        # Makes sure already milliseconds granularity
+        start_micros = 30871000
+        end_micros = 12939371000
+        self._to_pb_helper(start_micros=start_micros,
+                           end_micros=end_micros)
+
+    def test_to_pb_start_only(self):
+        # Makes sure already milliseconds granularity
+        start_micros = 30871000
+        self._to_pb_helper(start_micros=start_micros)
+
+    def test_to_pb_end_only(self):
+        # Makes sure already milliseconds granularity
+        end_micros = 12939371000
+        self._to_pb_helper(end_micros=end_micros)
+
+
+class TestTimestampRangeFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import TimestampRangeFilter
+        return TimestampRangeFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        range_ = object()
+        row_filter = self._makeOne(range_)
+        self.assertTrue(row_filter.range_ is range_)
+
+    def test___eq__type_differ(self):
+        range_ = object()
+        row_filter1 = self._makeOne(range_)
+        row_filter2 = object()
+        self.assertNotEqual(row_filter1, row_filter2)
+
+    def test___eq__same_value(self):
+        range_ = object()
+        row_filter1 = self._makeOne(range_)
+        row_filter2 = self._makeOne(range_)
+        self.assertEqual(row_filter1, row_filter2)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import TimestampRange
+
+        range_ = TimestampRange()
+        row_filter = self._makeOne(range_)
+        pb_val = row_filter.to_pb()
+        expected_pb = data_pb2.RowFilter(
+            timestamp_range_filter=data_pb2.TimestampRange())
+        self.assertEqual(pb_val, expected_pb)
+
+
 class TestValueRegexFilter(unittest2.TestCase):
 
     def _getTargetClass(self):

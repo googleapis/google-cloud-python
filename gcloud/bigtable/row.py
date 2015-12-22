@@ -15,6 +15,7 @@
 """User friendly container for Google Cloud Bigtable Row."""
 
 
+from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
 from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 
@@ -250,6 +251,74 @@ class ColumnQualifierRegexFilter(_RegexFilter):
         :returns: The converted current object.
         """
         return data_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
+
+
+class TimestampRange(object):
+    """Range of time with inclusive lower and exclusive upper bounds.
+
+    :type start: :class:`datetime.datetime`
+    :param start: (Optional) The (inclusive) lower bound of the timestamp
+                  range. If omitted, defaults to Unix epoch.
+
+    :type end: :class:`datetime.datetime`
+    :param end: (Optional) The (exclusive) upper bound of the timestamp
+                range. If omitted, no upper bound is used.
+    """
+
+    def __init__(self, start=None, end=None):
+        self.start = start
+        self.end = end
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other.start == self.start and
+                other.end == self.end)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def to_pb(self):
+        """Converts the :class:`TimestampRange` to a protobuf.
+
+        :rtype: :class:`.data_pb2.TimestampRange`
+        :returns: The converted current object.
+        """
+        timestamp_range_kwargs = {}
+        if self.start is not None:
+            timestamp_range_kwargs['start_timestamp_micros'] = (
+                _microseconds_from_datetime(self.start))
+        if self.end is not None:
+            timestamp_range_kwargs['end_timestamp_micros'] = (
+                _microseconds_from_datetime(self.end))
+        return data_pb2.TimestampRange(**timestamp_range_kwargs)
+
+
+class TimestampRangeFilter(RowFilter):
+    """Row filter that limits cells to a range of time.
+
+    :type range_: :class:`TimestampRange`
+    :param range_: Range of time that cells should match against.
+    """
+
+    def __init__(self, range_):
+        self.range_ = range_
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.range_ == self.range_
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        First converts the ``range_`` on the current object to a protobuf and
+        then uses it in the ``timestamp_range_filter`` field.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(timestamp_range_filter=self.range_.to_pb())
 
 
 class ColumnRangeFilter(RowFilter):
