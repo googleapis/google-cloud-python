@@ -192,6 +192,42 @@ class TestRowKeyRegexFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
+class TestRowSampleFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import RowSampleFilter
+        return RowSampleFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        sample = object()
+        row_filter = self._makeOne(sample)
+        self.assertTrue(row_filter.sample is sample)
+
+    def test___eq__type_differ(self):
+        sample = object()
+        row_filter1 = self._makeOne(sample)
+        row_filter2 = object()
+        self.assertNotEqual(row_filter1, row_filter2)
+
+    def test___eq__same_value(self):
+        sample = object()
+        row_filter1 = self._makeOne(sample)
+        row_filter2 = self._makeOne(sample)
+        self.assertEqual(row_filter1, row_filter2)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        sample = 0.25
+        row_filter = self._makeOne(sample)
+        pb_val = row_filter.to_pb()
+        expected_pb = data_pb2.RowFilter(row_sample_filter=sample)
+        self.assertEqual(pb_val, expected_pb)
+
+
 class TestFamilyNameRegexFilter(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -590,4 +626,40 @@ class TestStripValueTransformerFilter(unittest2.TestCase):
         row_filter = self._makeOne(flag)
         pb_val = row_filter.to_pb()
         expected_pb = data_pb2.RowFilter(strip_value_transformer=flag)
+        self.assertEqual(pb_val, expected_pb)
+
+
+class TestApplyLabelFilter(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ApplyLabelFilter
+        return ApplyLabelFilter
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        label = object()
+        row_filter = self._makeOne(label)
+        self.assertTrue(row_filter.label is label)
+
+    def test___eq__type_differ(self):
+        label = object()
+        row_filter1 = self._makeOne(label)
+        row_filter2 = object()
+        self.assertNotEqual(row_filter1, row_filter2)
+
+    def test___eq__same_value(self):
+        label = object()
+        row_filter1 = self._makeOne(label)
+        row_filter2 = self._makeOne(label)
+        self.assertEqual(row_filter1, row_filter2)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        label = u'label'
+        row_filter = self._makeOne(label)
+        pb_val = row_filter.to_pb()
+        expected_pb = data_pb2.RowFilter(apply_label_transformer=label)
         self.assertEqual(pb_val, expected_pb)
