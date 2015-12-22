@@ -37,7 +37,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
-        self.assertTrue(isinstance(batch.mutation, Mutation))
+        self.assertTrue(isinstance(batch.mutations, Mutation))
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -89,12 +89,12 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 1)
         self.assertEqual(insert_auto_ids[0].key, key._key)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 0)
         self.assertEqual(batch._partial_key_entities, [entity])
 
@@ -115,9 +115,9 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 1)
 
         upsert = upserts[0]
@@ -131,7 +131,7 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(props['spam'].list_value[2].indexed)
         self.assertFalse('frotz' in props)
 
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 0)
 
     def test_put_entity_w_completed_key_prefixed_dataset_id(self):
@@ -151,9 +151,9 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 1)
 
         upsert = upserts[0]
@@ -167,7 +167,7 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(props['spam'].list_value[2].indexed)
         self.assertFalse('frotz' in props)
 
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 0)
 
     def test_delete_w_partial_key(self):
@@ -198,11 +198,11 @@ class TestBatch(unittest2.TestCase):
 
         batch.delete(key)
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
 
@@ -215,11 +215,11 @@ class TestBatch(unittest2.TestCase):
 
         batch.delete(key)
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
 
@@ -232,7 +232,7 @@ class TestBatch(unittest2.TestCase):
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutation, None)])
+                         [(_DATASET, batch.mutations, None)])
 
     def test_commit_w_partial_key_entities(self):
         _DATASET = 'DATASET'
@@ -248,7 +248,7 @@ class TestBatch(unittest2.TestCase):
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutation, None)])
+                         [(_DATASET, batch.mutations, None)])
         self.assertFalse(entity.key.is_partial)
         self.assertEqual(entity.key._id, _NEW_ID)
 
@@ -268,15 +268,15 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 1)
         self.assertEqual(upserts[0].key, key._key)
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 0)
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutation, None)])
+                         [(_DATASET, batch.mutations, None)])
 
     def test_as_context_mgr_nested(self):
         _DATASET = 'DATASET'
@@ -301,25 +301,25 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch1.mutation.insert_auto_id)
+        insert_auto_ids = list(batch1.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch1.mutation.upsert)
+        upserts = list(batch1.mutations.upsert)
         self.assertEqual(len(upserts), 1)
         self.assertEqual(upserts[0].key, key1._key)
-        deletes = list(batch1.mutation.delete)
+        deletes = list(batch1.mutations.delete)
         self.assertEqual(len(deletes), 0)
 
-        insert_auto_ids = list(batch2.mutation.insert_auto_id)
+        insert_auto_ids = list(batch2.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch2.mutation.upsert)
+        upserts = list(batch2.mutations.upsert)
         self.assertEqual(len(upserts), 1)
         self.assertEqual(upserts[0].key, key2._key)
-        deletes = list(batch2.mutation.delete)
+        deletes = list(batch2.mutations.delete)
         self.assertEqual(len(deletes), 0)
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch2.mutation, None),
-                          (_DATASET, batch1.mutation, None)])
+                         [(_DATASET, batch2.mutations, None),
+                          (_DATASET, batch1.mutations, None)])
 
     def test_as_context_mgr_w_error(self):
         _DATASET = 'DATASET'
@@ -341,12 +341,12 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch.mutation.insert_auto_id)
+        insert_auto_ids = list(batch.mutations.insert_auto_id)
         self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutation.upsert)
+        upserts = list(batch.mutations.upsert)
         self.assertEqual(len(upserts), 1)
         self.assertEqual(upserts[0].key, key._key)
-        deletes = list(batch.mutation.delete)
+        deletes = list(batch.mutations.delete)
         self.assertEqual(len(deletes), 0)
         self.assertEqual(connection._committed, [])
 

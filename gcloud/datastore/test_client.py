@@ -647,14 +647,14 @@ class TestClient(unittest2.TestCase):
             result = client.put_multi([entity])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
-        upserts = list(CURR_BATCH.mutation.upsert)
+        self.assertEqual(len(CURR_BATCH.mutations.insert_auto_id), 0)
+        upserts = list(CURR_BATCH.mutations.upsert)
         self.assertEqual(len(upserts), 1)
         self.assertEqual(upserts[0].key, key.to_protobuf())
         properties = list(upserts[0].property)
         self.assertEqual(properties[0].name, 'foo')
         self.assertEqual(properties[0].value.string_value, u'bar')
-        self.assertEqual(len(CURR_BATCH.mutation.delete), 0)
+        self.assertEqual(len(CURR_BATCH.mutations.delete), 0)
 
     def test_delete(self):
         _called_with = []
@@ -707,9 +707,9 @@ class TestClient(unittest2.TestCase):
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_BATCH.mutation.insert_auto_id), 0)
-        self.assertEqual(len(CURR_BATCH.mutation.upsert), 0)
-        deletes = list(CURR_BATCH.mutation.delete)
+        self.assertEqual(len(CURR_BATCH.mutations.insert_auto_id), 0)
+        self.assertEqual(len(CURR_BATCH.mutations.upsert), 0)
+        deletes = list(CURR_BATCH.mutations.delete)
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)
@@ -725,9 +725,9 @@ class TestClient(unittest2.TestCase):
             result = client.delete_multi([key])
 
         self.assertEqual(result, None)
-        self.assertEqual(len(CURR_XACT.mutation.insert_auto_id), 0)
-        self.assertEqual(len(CURR_XACT.mutation.upsert), 0)
-        deletes = list(CURR_XACT.mutation.delete)
+        self.assertEqual(len(CURR_XACT.mutations.insert_auto_id), 0)
+        self.assertEqual(len(CURR_XACT.mutations.upsert), 0)
+        deletes = list(CURR_XACT.mutations.delete)
         self.assertEqual(len(deletes), 1)
         self.assertEqual(deletes[0], key._key)
         self.assertEqual(len(client.connection._commit_cw), 0)

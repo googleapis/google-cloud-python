@@ -35,7 +35,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
-        self.assertTrue(isinstance(xact.mutation, Mutation))
+        self.assertTrue(isinstance(xact.mutations, Mutation))
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):

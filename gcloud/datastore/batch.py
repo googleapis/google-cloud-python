@@ -99,8 +99,8 @@ class Batch(object):
         return self._client.connection
 
     @property
-    def mutation(self):
-        """Getter for the current mutation.
+    def mutations(self):
+        """Getter for the changes accumulated by this batch.
 
         Every batch is committed with a single Mutation
         representing the 'work' to be done as part of the batch.
@@ -146,10 +146,10 @@ class Batch(object):
             raise ValueError("Key must be from same dataset as batch")
 
         if entity.key.is_partial:
-            entity_pb = self.mutation.insert_auto_id.add()
+            entity_pb = self.mutations.insert_auto_id.add()
             self._partial_key_entities.append(entity)
         else:
-            entity_pb = self.mutation.upsert.add()
+            entity_pb = self.mutations.upsert.add()
 
         _assign_entity_to_pb(entity_pb, entity)
 
@@ -169,7 +169,7 @@ class Batch(object):
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = helpers._prepare_key_for_request(key.to_protobuf())
-        self.mutation.delete.add().CopyFrom(key_pb)
+        self.mutations.delete.add().CopyFrom(key_pb)
 
     def begin(self):
         """No-op
@@ -186,7 +186,7 @@ class Batch(object):
         context manager.
         """
         _, updated_keys = self.connection.commit(
-            self.dataset_id, self.mutation, self._id)
+            self.dataset_id, self.mutations, self._id)
         # If the back-end returns without error, we are guaranteed that
         # the response's 'insert_auto_id_key' will match (length and order)
         # the request's 'insert_auto_id` entities, which are derived from
