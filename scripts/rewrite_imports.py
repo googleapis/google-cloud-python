@@ -49,8 +49,10 @@ def transform_old_to_new(line, old_module, new_module,
         "from {old_module} import ..."
     then checks if the line contains
         "import {old_module} ..."
-    and finally checks if the line starts with (ignoring whitespace)
+    then checks if the line starts with (ignoring whitespace)
         "{old_module} ..."
+    and finally checks if the line contians
+        "'some-dict-key': {old_module} ..."
 
     In any of these cases, "{old_module}" is replaced with "{new_module}".
     If none match, nothing is returned.
@@ -95,6 +97,11 @@ def transform_old_to_new(line, old_module, new_module,
     if line.lstrip().startswith(old_module):
         # Only replace the first instance of the old_module.
         return line.replace(old_module, new_module, 1)
+
+    # Finally check for usage in dictionaries.
+    if ': ' + old_module in line:
+        # Only replace the first instance of the old_module.
+        return line.replace(': ' + old_module, ': ' + new_module, 1)
 
 
 def transform_line(line):
