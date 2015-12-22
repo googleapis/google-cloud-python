@@ -128,12 +128,12 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET)
         self.assertTrue(dataset._client is client)
 
-    def test__job_from_resource_unknown_type(self):
+    def test_job_from_resource_unknown_type(self):
         PROJECT = 'PROJECT'
         creds = _Credentials()
         client = self._makeOne(PROJECT, creds)
         with self.assertRaises(ValueError):
-            client._job_from_resource({'configuration': {'nonesuch': {}}})
+            client.job_from_resource({'configuration': {'nonesuch': {}}})
 
     def test_list_jobs_defaults(self):
         from gcloud.bigquery.job import LoadTableFromStorageJob
