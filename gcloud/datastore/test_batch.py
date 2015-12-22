@@ -89,13 +89,8 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 1)
-        self.assertEqual(insert_auto_ids[0].key, key._key)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 0)
+        mutated_entity = _mutated_pb(self, batch.mutations, 'insert_auto_id')
+        self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(batch._partial_key_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
@@ -115,14 +110,10 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-
-        upsert = upserts[0]
-        self.assertEqual(upsert.key, key._key)
-        props = dict([(prop.name, prop.value) for prop in upsert.property])
+        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
+        self.assertEqual(mutated_entity.key, key._key)
+        props = dict([(prop.name, prop.value)
+                      for prop in mutated_entity.property])
         self.assertTrue(props['foo'].indexed)
         self.assertFalse(props['baz'].indexed)
         self.assertTrue(props['spam'].indexed)
@@ -130,9 +121,6 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(props['spam'].list_value[1].indexed)
         self.assertFalse(props['spam'].list_value[2].indexed)
         self.assertFalse('frotz' in props)
-
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 0)
 
     def test_put_entity_w_completed_key_prefixed_dataset_id(self):
         _DATASET = 'DATASET'
@@ -151,14 +139,10 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-
-        upsert = upserts[0]
-        self.assertEqual(upsert.key, key._key)
-        props = dict([(prop.name, prop.value) for prop in upsert.property])
+        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
+        self.assertEqual(mutated_entity.key, key._key)
+        props = dict([(prop.name, prop.value)
+                      for prop in mutated_entity.property])
         self.assertTrue(props['foo'].indexed)
         self.assertFalse(props['baz'].indexed)
         self.assertTrue(props['spam'].indexed)
@@ -166,9 +150,6 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(props['spam'].list_value[1].indexed)
         self.assertFalse(props['spam'].list_value[2].indexed)
         self.assertFalse('frotz' in props)
-
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 0)
 
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'
@@ -198,13 +179,8 @@ class TestBatch(unittest2.TestCase):
 
         batch.delete(key)
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0], key._key)
+        mutated_key = _mutated_pb(self, batch.mutations, 'delete')
+        self.assertEqual(mutated_key, key._key)
 
     def test_delete_w_completed_key_w_prefixed_dataset_id(self):
         _DATASET = 'DATASET'
@@ -215,13 +191,8 @@ class TestBatch(unittest2.TestCase):
 
         batch.delete(key)
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 0)
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 1)
-        self.assertEqual(deletes[0], key._key)
+        mutated_key = _mutated_pb(self, batch.mutations, 'delete')
+        self.assertEqual(mutated_key, key._key)
 
     def test_commit(self):
         _DATASET = 'DATASET'
@@ -268,13 +239,8 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-        self.assertEqual(upserts[0].key, key._key)
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 0)
+        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
+        self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(connection._committed,
                          [(_DATASET, batch.mutations, None)])
 
@@ -301,21 +267,11 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch1.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch1.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-        self.assertEqual(upserts[0].key, key1._key)
-        deletes = list(batch1.mutations.delete)
-        self.assertEqual(len(deletes), 0)
+        mutated_entity1 = _mutated_pb(self, batch1.mutations, 'upsert')
+        self.assertEqual(mutated_entity1.key, key1._key)
 
-        insert_auto_ids = list(batch2.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch2.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-        self.assertEqual(upserts[0].key, key2._key)
-        deletes = list(batch2.mutations.delete)
-        self.assertEqual(len(deletes), 0)
+        mutated_entity2 = _mutated_pb(self, batch2.mutations, 'upsert')
+        self.assertEqual(mutated_entity2.key, key2._key)
 
         self.assertEqual(connection._committed,
                          [(_DATASET, batch2.mutations, None),
@@ -341,13 +297,8 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(client._batches), [])
 
-        insert_auto_ids = list(batch.mutations.insert_auto_id)
-        self.assertEqual(len(insert_auto_ids), 0)
-        upserts = list(batch.mutations.upsert)
-        self.assertEqual(len(upserts), 1)
-        self.assertEqual(upserts[0].key, key._key)
-        deletes = list(batch.mutations.delete)
-        self.assertEqual(len(deletes), 0)
+        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
+        self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(connection._committed, [])
 
 
@@ -436,3 +387,22 @@ class _Client(object):
     def current_batch(self):
         if self._batches:
             return self._batches[0]
+
+
+def _assert_num_mutations(test_case, mutation_pb, num_mutations):
+    total_mutations = (len(mutation_pb.upsert) +
+                       len(mutation_pb.update) +
+                       len(mutation_pb.insert) +
+                       len(mutation_pb.insert_auto_id) +
+                       len(mutation_pb.delete))
+    test_case.assertEqual(total_mutations, num_mutations)
+
+
+def _mutated_pb(test_case, mutation_pb, mutation_type):
+    # Make sure there is only one mutation.
+    _assert_num_mutations(test_case, mutation_pb, 1)
+
+    mutated_pbs = getattr(mutation_pb, mutation_type, [])
+    # Make sure we have exactly one protobuf.
+    test_case.assertEqual(len(mutated_pbs), 1)
+    return mutated_pbs[0]
