@@ -351,12 +351,6 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(connection._committed, [])
 
 
-class _CommitResult(object):
-
-    def __init__(self, *new_keys):
-        self.insert_auto_id_key = [_KeyPB(key) for key in new_keys]
-
-
 class _PathElementPB(object):
 
     def __init__(self, id):
@@ -374,12 +368,13 @@ class _Connection(object):
     _save_result = (False, None)
 
     def __init__(self, *new_keys):
-        self._commit_result = _CommitResult(*new_keys)
+        self._completed_keys = [_KeyPB(key) for key in new_keys]
         self._committed = []
+        self._index_updates = 0
 
     def commit(self, dataset_id, mutation, transaction_id):
         self._committed.append((dataset_id, mutation, transaction_id))
-        return self._commit_result
+        return self._index_updates, self._completed_keys
 
 
 class _Entity(dict):

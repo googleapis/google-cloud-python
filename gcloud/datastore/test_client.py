@@ -608,9 +608,9 @@ class TestClient(unittest2.TestCase):
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
-        from gcloud.datastore.test_batch import _CommitResult
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _KeyPB
 
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.DATASET_ID)
@@ -618,7 +618,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        client.connection._commit.append(_CommitResult(key))
+        client.connection._commit.append([_KeyPB(key)])
 
         result = client.put_multi([entity])
         self.assertTrue(result is None)
@@ -680,14 +680,13 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(len(client.connection._commit_cw), 0)
 
     def test_delete_multi_no_batch(self):
-        from gcloud.datastore.test_batch import _CommitResult
         from gcloud.datastore.test_batch import _Key
 
         key = _Key(self.DATASET_ID)
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        client.connection._commit.append(_CommitResult())
+        client.connection._commit.append([])
 
         result = client.delete_multi([key])
         self.assertEqual(result, None)
@@ -1000,6 +999,7 @@ class _MockConnection(object):
         self._commit = []
         self._alloc_cw = []
         self._alloc = []
+        self._index_updates = 0
 
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
@@ -1013,7 +1013,7 @@ class _MockConnection(object):
     def commit(self, dataset_id, mutation, transaction_id):
         self._commit_cw.append((dataset_id, mutation, transaction_id))
         response, self._commit = self._commit[0], self._commit[1:]
-        return response
+        return self._index_updates, response
 
     def allocate_ids(self, dataset_id, key_pbs):
         from gcloud.datastore.test_connection import _KeyProto

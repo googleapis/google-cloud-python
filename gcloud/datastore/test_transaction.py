@@ -113,8 +113,7 @@ class TestTransaction(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 123
         connection = _Connection(234)
-        connection._commit_result = _CommitResult(
-            _make_key(_KIND, _ID, _DATASET))
+        connection._completed_keys = [_make_key(_KIND, _ID, _DATASET)]
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
         entity = _Entity()
@@ -177,7 +176,8 @@ class _Connection(object):
 
     def __init__(self, xact_id=123):
         self._xact_id = xact_id
-        self._commit_result = _CommitResult()
+        self._completed_keys = []
+        self._index_updates = 0
 
     def begin_transaction(self, dataset_id):
         self._begun = dataset_id
@@ -188,13 +188,7 @@ class _Connection(object):
 
     def commit(self, dataset_id, mutation, transaction_id):
         self._committed = (dataset_id, mutation, transaction_id)
-        return self._commit_result
-
-
-class _CommitResult(object):
-
-    def __init__(self, *new_keys):
-        self.insert_auto_id_key = new_keys
+        return self._index_updates, self._completed_keys
 
 
 class _Entity(dict):
