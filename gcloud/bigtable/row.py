@@ -173,6 +173,31 @@ class RowKeyRegexFilter(_RegexFilter):
         return data_pb2.RowFilter(row_key_regex_filter=self.regex)
 
 
+class RowSampleFilter(RowFilter):
+    """Matches all cells from a row with probability p.
+
+    :type sample: float
+    :param sample: The probability of matching a cell (must be in the
+                   interval ``[0, 1]``).
+    """
+
+    def __init__(self, sample):
+        self.sample = sample
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.sample == self.sample
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(row_sample_filter=self.sample)
+
+
 class FamilyNameRegexFilter(_RegexFilter):
     """Row filter for a family name regular expression.
 
@@ -522,3 +547,39 @@ class StripValueTransformerFilter(_BoolFilter):
         :returns: The converted current object.
         """
         return data_pb2.RowFilter(strip_value_transformer=self.flag)
+
+
+class ApplyLabelFilter(RowFilter):
+    """Filter to apply labels to cells.
+
+    Intended to be used as an intermediate filter on a pre-existing filtered
+    result set. This was if two sets are combined, the label can tell where
+    the cell(s) originated.This allows the client to determine which results
+    were produced from which part of the filter.
+
+    .. note::
+
+        Due to a technical limitation, it is not currently possible to apply
+        multiple labels to a cell.
+
+    :type label: str
+    :param label: Label to apply to cells in the output row. Values must be
+                  at most 15 characters long, and match the pattern
+                  ``[a-z0-9\\-]+``.
+    """
+
+    def __init__(self, label):
+        self.label = label
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.label == self.label
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        return data_pb2.RowFilter(apply_label_transformer=self.label)
