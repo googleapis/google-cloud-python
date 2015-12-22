@@ -185,13 +185,13 @@ class Batch(object):
         however it can be called explicitly if you don't want to use a
         context manager.
         """
-        response = self.connection.commit(
+        _, updated_keys = self.connection.commit(
             self.dataset_id, self.mutation, self._id)
         # If the back-end returns without error, we are guaranteed that
         # the response's 'insert_auto_id_key' will match (length and order)
         # the request's 'insert_auto_id` entities, which are derived from
         # our '_partial_key_entities' (no partial success).
-        for new_key_pb, entity in zip(response.insert_auto_id_key,
+        for new_key_pb, entity in zip(updated_keys,
                                       self._partial_key_entities):
             new_id = new_key_pb.path_element[-1].id
             entity.key = entity.key.completed_key(new_id)

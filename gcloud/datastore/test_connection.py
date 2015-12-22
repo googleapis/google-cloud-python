@@ -667,7 +667,9 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.isolation_level, rq_class.SERIALIZABLE)
 
     def test_commit_wo_transaction(self):
+        from gcloud._testing import _Monkey
         from gcloud.datastore import _datastore_pb2
+        from gcloud.datastore import connection as MUT
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -688,9 +690,19 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.commit(DATASET_ID, mutation, None)
-        self.assertEqual(result.index_updates, 0)
-        self.assertEqual(list(result.insert_auto_id_key), [])
+
+        # Set up mock for parsing the response.
+        expected_result = object()
+        _parsed = []
+
+        def mock_parse(response):
+            _parsed.append(response)
+            return expected_result
+
+        with _Monkey(MUT, _parse_commit_response=mock_parse):
+            result = conn.commit(DATASET_ID, mutation, None)
+
+        self.assertTrue(result is expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = _datastore_pb2.CommitRequest
@@ -699,9 +711,12 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.transaction, b'')
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
+        self.assertEqual(_parsed, [rsp_pb])
 
     def test_commit_w_transaction(self):
+        from gcloud._testing import _Monkey
         from gcloud.datastore import _datastore_pb2
+        from gcloud.datastore import connection as MUT
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -722,9 +737,19 @@ class TestConnection(unittest2.TestCase):
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result = conn.commit(DATASET_ID, mutation, b'xact')
-        self.assertEqual(result.index_updates, 0)
-        self.assertEqual(list(result.insert_auto_id_key), [])
+
+        # Set up mock for parsing the response.
+        expected_result = object()
+        _parsed = []
+
+        def mock_parse(response):
+            _parsed.append(response)
+            return expected_result
+
+        with _Monkey(MUT, _parse_commit_response=mock_parse):
+            result = conn.commit(DATASET_ID, mutation, b'xact')
+
+        self.assertTrue(result is expected_result)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = _datastore_pb2.CommitRequest
@@ -733,6 +758,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.transaction, b'xact')
         self.assertEqual(request.mutation, mutation)
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
+        self.assertEqual(_parsed, [rsp_pb])
 
     def test_rollback_ok(self):
         from gcloud.datastore import _datastore_pb2
@@ -816,6 +842,45 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(request.key), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.key):
             _compare_key_pb_after_request(self, key_before, key_after)
+
+
+class Test__parse_commit_response(unittest2.TestCase):
+
+    def _callFUT(self, commit_response_pb):
+        from gcloud.datastore.connection import _parse_commit_response
+        return _parse_commit_response(commit_response_pb)
+
+    def test_it(self):
+        from gcloud.datastore import _datastore_pb2
+        from gcloud.datastore import _entity_pb2
+
+        index_updates = 1337
+        keys = [
+            _entity_pb2.Key(
+                path_element=[
+                    _entity_pb2.Key.PathElement(
+                        kind='Foo',
+                        id=1234,
+                    ),
+                ],
+            ),
+            _entity_pb2.Key(
+                path_element=[
+                    _entity_pb2.Key.PathElement(
+                        kind='Bar',
+                        name='baz',
+                    ),
+                ],
+            ),
+        ]
+        response = _datastore_pb2.CommitResponse(
+            mutation_result=_datastore_pb2.MutationResult(
+                index_updates=index_updates,
+                insert_auto_id_key=keys,
+            ),
+        )
+        result = self._callFUT(response)
+        self.assertEqual(result, (index_updates, keys))
 
 
 class Http(object):

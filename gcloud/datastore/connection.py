@@ -297,7 +297,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type mutation_pb: :class:`._datastore_pb2.Mutation`.
+        :type mutation_pb: :class:`._datastore_pb2.Mutation`
         :param mutation_pb: The protobuf for the mutations being saved.
 
         :type transaction_id: string or None
@@ -305,8 +305,10 @@ class Connection(connection.Connection):
                                :meth:`begin_transaction`.  Non-transactional
                                batches must pass ``None``.
 
-        :rtype: :class:`gcloud.datastore._datastore_pb2.MutationResult`.
-        :returns': the result protobuf for the mutation.
+        :rtype: tuple
+        :returns': The pair of the number of index updates and a list of
+                   :class:`._entity_pb2.Key` for each incomplete key that was
+                   completed in the commit.
         """
         request = _datastore_pb2.CommitRequest()
 
@@ -319,7 +321,7 @@ class Connection(connection.Connection):
         request.mutation.CopyFrom(mutation_pb)
         response = self._rpc(dataset_id, 'commit', request,
                              _datastore_pb2.CommitResponse)
-        return response.mutation_result
+        return _parse_commit_response(response)
 
     def rollback(self, dataset_id, transaction_id):
         """Rollback the connection's existing transaction.
@@ -415,3 +417,20 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     for key_pb in key_pbs:
         key_pb = _prepare_key_for_request(key_pb)
         request_field_pb.add().CopyFrom(key_pb)
+
+
+def _parse_commit_response(commit_response_pb):
+    """Extract response data from a commit response.
+
+    :type commit_response_pb: :class:`._datastore_pb2.CommitResponse`
+    :param commit_response_pb: The protobuf response from a commit request.
+
+    :rtype: tuple
+    :returns': The pair of the number of index updates and a list of
+               :class:`._entity_pb2.Key` for each incomplete key that was
+               completed in the commit.
+    """
+    mut_result = commit_response_pb.mutation_result
+    index_updates = mut_result.index_updates
+    completed_keys = list(mut_result.insert_auto_id_key)
+    return index_updates, completed_keys
