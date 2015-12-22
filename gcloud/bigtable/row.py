@@ -227,6 +227,99 @@ class ColumnQualifierRegexFilter(_RegexFilter):
         return data_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
 
 
+class ColumnRangeFilter(RowFilter):
+    """A row filter to restrict to a range of columns.
+
+    Both the start and end column can be included or excluded in the range.
+    By default, we include them both, but this can be changed with optional
+    flags.
+
+    :type column_family_id: str
+    :param column_family_id: The column family that contains the columns. Must
+                             be of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+    :type start_column: bytes
+    :param start_column: The start of the range of columns. If no value is
+                         used, the backend applies no upper bound to the
+                         values.
+
+    :type end_column: bytes
+    :param end_column: The end of the range of columns. If no value is used,
+                       the backend applies no upper bound to the values.
+
+    :type inclusive_start: bool
+    :param inclusive_start: Boolean indicating if the start column should be
+                            included in the range (or excluded). Defaults
+                            to :data:`True` if ``start_column`` is passed and
+                            no ``inclusive_start`` was given.
+
+    :type inclusive_end: bool
+    :param inclusive_end: Boolean indicating if the end column should be
+                          included in the range (or excluded). Defaults
+                          to :data:`True` if ``end_column`` is passed and
+                          no ``inclusive_end`` was given.
+
+    :raises: :class:`ValueError <exceptions.ValueError>` if ``inclusive_start``
+             is set but no ``start_column`` is given or if ``inclusive_end``
+             is set but no ``end_column`` is given
+    """
+
+    def __init__(self, column_family_id, start_column=None, end_column=None,
+                 inclusive_start=None, inclusive_end=None):
+        self.column_family_id = column_family_id
+
+        if inclusive_start is None:
+            inclusive_start = True
+        elif start_column is None:
+            raise ValueError('Inclusive start was specified but no '
+                             'start column was given.')
+        self.start_column = start_column
+        self.inclusive_start = inclusive_start
+
+        if inclusive_end is None:
+            inclusive_end = True
+        elif end_column is None:
+            raise ValueError('Inclusive end was specified but no '
+                             'end column was given.')
+        self.end_column = end_column
+        self.inclusive_end = inclusive_end
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other.column_family_id == self.column_family_id and
+                other.start_column == self.start_column and
+                other.end_column == self.end_column and
+                other.inclusive_start == self.inclusive_start and
+                other.inclusive_end == self.inclusive_end)
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        First converts to a :class:`.data_pb2.ColumnRange` and then uses it
+        in the ``column_range_filter`` field.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        column_range_kwargs = {'family_name': self.column_family_id}
+        if self.start_column is not None:
+            if self.inclusive_start:
+                key = 'start_qualifier_inclusive'
+            else:
+                key = 'start_qualifier_exclusive'
+            column_range_kwargs[key] = _to_bytes(self.start_column)
+        if self.end_column is not None:
+            if self.inclusive_end:
+                key = 'end_qualifier_inclusive'
+            else:
+                key = 'end_qualifier_exclusive'
+            column_range_kwargs[key] = _to_bytes(self.end_column)
+
+        column_range = data_pb2.ColumnRange(**column_range_kwargs)
+        return data_pb2.RowFilter(column_range_filter=column_range)
+
+
 class ValueRegexFilter(_RegexFilter):
     """Row filter for a value regular expression.
 
