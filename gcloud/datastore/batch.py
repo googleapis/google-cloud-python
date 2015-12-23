@@ -167,7 +167,7 @@ class Batch(object):
         :param entity: the entity to be saved.
 
         :raises: ValueError if entity has no key assigned, or if the key's
-                 ``dataset_id`` does not match ours.
+                 ``project`` does not match ours.
         """
         if entity.key is None:
             raise ValueError("Entity must have a key")
@@ -190,7 +190,7 @@ class Batch(object):
         :param key: the key to be deleted.
 
         :raises: ValueError if key is not complete, or if the key's
-                 ``dataset_id`` does not match ours.
+                 ``project`` does not match ours.
         """
         if key.is_partial:
             raise ValueError("Key must be complete")
