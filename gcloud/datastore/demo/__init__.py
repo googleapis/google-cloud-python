@@ -15,6 +15,6 @@
 import os
 from gcloud.environment_vars import TESTS_DATASET
 
-__all__ = ['DATASET_ID']
+__all__ = ['PROJECT']
 
-DATASET_ID = os.getenv(TESTS_DATASET)
+PROJECT = os.getenv(TESTS_DATASET)

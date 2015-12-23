@@ -30,9 +30,9 @@ The main concepts with this API are:
   API.
 
 - :class:`gcloud.datastore.client.Client`
-  which represents a dataset ID (string) and namespace (string) bundled with
+  which represents a project (string) and namespace (string) bundled with
   a connection and has convenience methods for constructing objects with that
-  dataset ID / namespace.
+  project / namespace.
 
 - :class:`gcloud.datastore.entity.Entity`
   which represents a single entity in the datastore
