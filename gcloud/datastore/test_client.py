@@ -879,7 +879,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
 
         self.assertRaises(TypeError,
-                          client.query, kind=KIND, dataset_id=self.PROJECT)
+                          client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
         from gcloud.datastore import client as MUT
