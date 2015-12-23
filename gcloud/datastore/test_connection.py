@@ -22,12 +22,12 @@ class TestConnection(unittest2.TestCase):
 
         return Connection
 
-    def _make_key_pb(self, dataset_id, id=1234):
+    def _make_key_pb(self, project, id=1234):
         from gcloud.datastore.key import Key
         path_args = ('Kind',)
         if id is not None:
             path_args += (id,)
-        return Key(*path_args, project=dataset_id).to_protobuf()
+        return Key(*path_args, project=project).to_protobuf()
 
     def _make_query_pb(self, kind):
         from gcloud.datastore._generated import query_pb2
@@ -137,7 +137,7 @@ class TestConnection(unittest2.TestCase):
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
 
     def test__request_w_200(self):
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = b'DATA'
         conn = self._makeOne()
@@ -146,24 +146,24 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             METHOD,
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
-        self.assertEqual(conn._request(DATASET_ID, METHOD, DATA), 'CONTENT')
+        self.assertEqual(conn._request(PROJECT, METHOD, DATA), 'CONTENT')
         self._verifyProtobufCall(http._called_with, URI, conn)
         self.assertEqual(http._called_with['body'], DATA)
 
     def test__request_not_200(self):
         from gcloud.exceptions import BadRequest
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
         conn._http = Http({'status': '400'}, b'Entity value is indexed.')
         with self.assertRaises(BadRequest) as e:
-            conn._request(DATASET_ID, METHOD, DATA)
+            conn._request(PROJECT, METHOD, DATA)
         expected_message = '400 Entity value is indexed.'
         self.assertEqual(str(e.exception), expected_message)
 
@@ -184,7 +184,7 @@ class TestConnection(unittest2.TestCase):
                 return cls(pb)
 
         REQPB = b'REQPB'
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         conn = self._makeOne()
         URI = '/'.join([
@@ -192,18 +192,18 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             METHOD,
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
-        response = conn._rpc(DATASET_ID, METHOD, ReqPB(), RspPB)
+        response = conn._rpc(PROJECT, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
         self.assertEqual(response._pb, 'CONTENT')
         self._verifyProtobufCall(http._called_with, URI, conn)
         self.assertEqual(http._called_with['body'], REQPB)
 
     def test_build_api_url_w_default_base_version(self):
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         conn = self._makeOne()
         URI = '/'.join([
@@ -211,15 +211,15 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             METHOD,
         ])
-        self.assertEqual(conn.build_api_url(DATASET_ID, METHOD), URI)
+        self.assertEqual(conn.build_api_url(PROJECT, METHOD), URI)
 
     def test_build_api_url_w_explicit_base_version(self):
         BASE = 'http://example.com/'
         VER = '3.1415926'
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         conn = self._makeOne()
         URI = '/'.join([
@@ -227,17 +227,17 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             VER,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             METHOD,
         ])
-        self.assertEqual(conn.build_api_url(DATASET_ID, METHOD, BASE, VER),
+        self.assertEqual(conn.build_api_url(PROJECT, METHOD, BASE, VER),
                          URI)
 
     def test_lookup_single_key_empty_response(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
+        PROJECT = 'PROJECT'
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -245,11 +245,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb])
+        found, missing, deferred = conn.lookup(PROJECT, [key_pb])
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
@@ -265,8 +265,8 @@ class TestConnection(unittest2.TestCase):
     def test_lookup_single_key_empty_response_w_eventual(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
+        PROJECT = 'PROJECT'
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -274,11 +274,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb],
+        found, missing, deferred = conn.lookup(PROJECT, [key_pb],
                                                eventual=True)
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
@@ -296,19 +296,19 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(request.read_options.transaction, b'')
 
     def test_lookup_single_key_empty_response_w_eventual_and_transaction(self):
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
-        key_pb = self._make_key_pb(DATASET_ID)
+        key_pb = self._make_key_pb(PROJECT)
         conn = self._makeOne()
-        self.assertRaises(ValueError, conn.lookup, DATASET_ID, key_pb,
+        self.assertRaises(ValueError, conn.lookup, PROJECT, key_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_lookup_single_key_empty_response_w_transaction(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
-        key_pb = self._make_key_pb(DATASET_ID)
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -316,11 +316,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb],
+        found, missing, deferred = conn.lookup(PROJECT, [key_pb],
                                                transaction_id=TRANSACTION)
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
@@ -339,8 +339,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import entity_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
+        PROJECT = 'PROJECT'
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.LookupResponse()
         entity = entity_pb2.Entity()
         entity.key.CopyFrom(key_pb)
@@ -351,11 +351,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        (found,), missing, deferred = conn.lookup(DATASET_ID, [key_pb])
+        (found,), missing, deferred = conn.lookup(PROJECT, [key_pb])
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
         self.assertEqual(found.key.path_element[0].kind, 'Kind')
@@ -372,9 +372,9 @@ class TestConnection(unittest2.TestCase):
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
+        PROJECT = 'PROJECT'
+        key_pb1 = self._make_key_pb(PROJECT)
+        key_pb2 = self._make_key_pb(PROJECT, id=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -382,11 +382,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        found, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        found, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(len(found), 0)
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
@@ -403,9 +403,9 @@ class TestConnection(unittest2.TestCase):
     def test_lookup_multiple_keys_w_missing(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
+        PROJECT = 'PROJECT'
+        key_pb1 = self._make_key_pb(PROJECT)
+        key_pb2 = self._make_key_pb(PROJECT, id=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         er_1 = rsp_pb.missing.add()
         er_1.entity.key.CopyFrom(key_pb1)
@@ -417,11 +417,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(result, [])
         self.assertEqual(len(deferred), 0)
         self.assertEqual([missed.key for missed in missing],
@@ -439,9 +439,9 @@ class TestConnection(unittest2.TestCase):
     def test_lookup_multiple_keys_w_deferred(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
-        key_pb1 = self._make_key_pb(DATASET_ID)
-        key_pb2 = self._make_key_pb(DATASET_ID, id=2345)
+        PROJECT = 'PROJECT'
+        key_pb1 = self._make_key_pb(PROJECT)
+        key_pb2 = self._make_key_pb(PROJECT, id=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         rsp_pb.deferred.add().CopyFrom(key_pb1)
         rsp_pb.deferred.add().CopyFrom(key_pb2)
@@ -451,11 +451,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        result, missing, deferred = conn.lookup(DATASET_ID, [key_pb1, key_pb2])
+        result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
         self.assertEqual(result, [])
         self.assertEqual(len(missing), 0)
         self.assertEqual([def_key for def_key in deferred], [key_pb1, key_pb2])
@@ -478,7 +478,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import query_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         q_pb = self._make_query_pb(KIND)
@@ -493,11 +493,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb,
+        pbs, end, more, skipped = conn.run_query(PROJECT, q_pb,
                                                  eventual=True)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
@@ -518,7 +518,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import query_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         TRANSACTION = b'TRANSACTION'
@@ -534,12 +534,12 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(
-            DATASET_ID, q_pb, transaction_id=TRANSACTION)
+            PROJECT, q_pb, transaction_id=TRANSACTION)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
         self.assertTrue(more)
@@ -559,7 +559,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import query_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         TRANSACTION = b'TRANSACTION'
@@ -570,14 +570,14 @@ class TestConnection(unittest2.TestCase):
         rsp_pb.batch.more_results = no_more
         rsp_pb.batch.entity_result_type = query_pb2.EntityResult.FULL
         conn = self._makeOne()
-        self.assertRaises(ValueError, conn.run_query, DATASET_ID, q_pb,
+        self.assertRaises(ValueError, conn.run_query, PROJECT, q_pb,
                           eventual=True, transaction_id=TRANSACTION)
 
     def test_run_query_wo_namespace_empty_result(self):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import query_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         KIND = 'Nonesuch'
         CURSOR = b'\x00'
         q_pb = self._make_query_pb(KIND)
@@ -592,11 +592,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        pbs, end, more, skipped = conn.run_query(DATASET_ID, q_pb)
+        pbs, end, more, skipped = conn.run_query(PROJECT, q_pb)
         self.assertEqual(pbs, [])
         self.assertEqual(end, CURSOR)
         self.assertTrue(more)
@@ -613,7 +613,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore._generated import entity_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         KIND = 'Kind'
         entity = entity_pb2.Entity()
         q_pb = self._make_query_pb(KIND)
@@ -627,11 +627,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        pbs = conn.run_query(DATASET_ID, q_pb, 'NS')[0]
+        pbs = conn.run_query(PROJECT, q_pb, 'NS')[0]
         self.assertEqual(len(pbs), 1)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
@@ -644,7 +644,7 @@ class TestConnection(unittest2.TestCase):
     def test_begin_transaction(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         TRANSACTION = b'TRANSACTION'
         rsp_pb = datastore_pb2.BeginTransactionResponse()
         rsp_pb.transaction = TRANSACTION
@@ -654,11 +654,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'beginTransaction',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.begin_transaction(DATASET_ID), TRANSACTION)
+        self.assertEqual(conn.begin_transaction(PROJECT), TRANSACTION)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.BeginTransactionRequest
@@ -672,8 +672,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import connection as MUT
         from gcloud.datastore.helpers import _new_value_pb
 
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
+        PROJECT = 'PROJECT'
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutation
@@ -687,7 +687,7 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
@@ -701,7 +701,7 @@ class TestConnection(unittest2.TestCase):
             return expected_result
 
         with _Monkey(MUT, _parse_commit_response=mock_parse):
-            result = conn.commit(DATASET_ID, req_pb, None)
+            result = conn.commit(PROJECT, req_pb, None)
 
         self.assertTrue(result is expected_result)
         cw = http._called_with
@@ -720,8 +720,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud.datastore import connection as MUT
         from gcloud.datastore.helpers import _new_value_pb
 
-        DATASET_ID = 'DATASET'
-        key_pb = self._make_key_pb(DATASET_ID)
+        PROJECT = 'PROJECT'
+        key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
         mutation = req_pb.mutation
@@ -735,7 +735,7 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
@@ -749,7 +749,7 @@ class TestConnection(unittest2.TestCase):
             return expected_result
 
         with _Monkey(MUT, _parse_commit_response=mock_parse):
-            result = conn.commit(DATASET_ID, req_pb, b'xact')
+            result = conn.commit(PROJECT, req_pb, b'xact')
 
         self.assertTrue(result is expected_result)
         cw = http._called_with
@@ -764,7 +764,7 @@ class TestConnection(unittest2.TestCase):
 
     def test_rollback_ok(self):
         from gcloud.datastore._generated import datastore_pb2
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         TRANSACTION = b'xact'
 
         rsp_pb = datastore_pb2.RollbackResponse()
@@ -774,11 +774,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.rollback(DATASET_ID, TRANSACTION), None)
+        self.assertEqual(conn.rollback(PROJECT, TRANSACTION), None)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.RollbackRequest
@@ -789,7 +789,7 @@ class TestConnection(unittest2.TestCase):
     def test_allocate_ids_empty(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -797,11 +797,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'allocateIds',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.allocate_ids(DATASET_ID, []), [])
+        self.assertEqual(conn.allocate_ids(PROJECT, []), [])
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.AllocateIdsRequest
@@ -812,14 +812,14 @@ class TestConnection(unittest2.TestCase):
     def test_allocate_ids_non_empty(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        DATASET_ID = 'DATASET'
+        PROJECT = 'PROJECT'
         before_key_pbs = [
-            self._make_key_pb(DATASET_ID, id=None),
-            self._make_key_pb(DATASET_ID, id=None),
+            self._make_key_pb(PROJECT, id=None),
+            self._make_key_pb(PROJECT, id=None),
             ]
         after_key_pbs = [
-            self._make_key_pb(DATASET_ID),
-            self._make_key_pb(DATASET_ID, id=2345),
+            self._make_key_pb(PROJECT),
+            self._make_key_pb(PROJECT, id=2345),
             ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.key.add().CopyFrom(after_key_pbs[0])
@@ -830,11 +830,11 @@ class TestConnection(unittest2.TestCase):
             'datastore',
             conn.API_VERSION,
             'datasets',
-            DATASET_ID,
+            PROJECT,
             'allocateIds',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
-        self.assertEqual(conn.allocate_ids(DATASET_ID, before_key_pbs),
+        self.assertEqual(conn.allocate_ids(PROJECT, before_key_pbs),
                          after_key_pbs)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
