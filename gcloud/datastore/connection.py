@@ -47,7 +47,7 @@ class Connection(connection.Connection):
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = ('{api_base}/datastore/{api_version}'
-                        '/datasets/{dataset_id}/{method}')
+                        '/datasets/{project}/{method}')
     """A template for the URL of a particular API call."""
 
     SCOPE = ('https://www.googleapis.com/auth/datastore',
@@ -61,11 +61,11 @@ class Connection(connection.Connection):
                                      self.__class__.API_BASE_URL)
         self.api_base_url = api_base_url
 
-    def _request(self, dataset_id, method, data):
+    def _request(self, project, method, data):
         """Make a request over the Http transport to the Cloud Datastore API.
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset of which to make the request.
+        :type project: string
+        :param project: The project to make the request for.
 
         :type method: string
         :param method: The API call method name (ie, ``runQuery``,
@@ -86,7 +86,7 @@ class Connection(connection.Connection):
             'User-Agent': self.USER_AGENT,
         }
         headers, content = self.http.request(
-            uri=self.build_api_url(dataset_id=dataset_id, method=method),
+            uri=self.build_api_url(project=project, method=method),
             method='POST', headers=headers, body=data)
 
         status = headers['status']
@@ -95,12 +95,12 @@ class Connection(connection.Connection):
 
         return content
 
-    def _rpc(self, dataset_id, method, request_pb, response_pb_cls):
+    def _rpc(self, project, method, request_pb, response_pb_cls):
         """Make a protobuf RPC request.
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset to connect to. This is
-                           usually your project name in the cloud console.
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
 
         :type method: string
         :param method: The name of the method to invoke.
@@ -113,20 +113,20 @@ class Connection(connection.Connection):
         :param response_pb_cls: The class used to unmarshall the response
                                 protobuf.
         """
-        response = self._request(dataset_id=dataset_id, method=method,
+        response = self._request(project=project, method=method,
                                  data=request_pb.SerializeToString())
         return response_pb_cls.FromString(response)
 
-    def build_api_url(self, dataset_id, method, base_url=None,
+    def build_api_url(self, project, method, base_url=None,
                       api_version=None):
         """Construct the URL for a particular API call.
 
         This method is used internally to come up with the URL to use when
         making RPCs to the Cloud Datastore API.
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset to connect to. This is
-                           usually your project name in the cloud console.
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
 
         :type method: string
         :param method: The API method to call (e.g. 'runQuery', 'lookup').
@@ -142,11 +142,11 @@ class Connection(connection.Connection):
         return self.API_URL_TEMPLATE.format(
             api_base=(base_url or self.api_base_url),
             api_version=(api_version or self.API_VERSION),
-            dataset_id=dataset_id, method=method)
+            project=project, method=method)
 
-    def lookup(self, dataset_id, key_pbs,
+    def lookup(self, project, key_pbs,
                eventual=False, transaction_id=None):
-        """Lookup keys from a dataset in the Cloud Datastore.
+        """Lookup keys from a project in the Cloud Datastore.
 
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
@@ -157,18 +157,18 @@ class Connection(connection.Connection):
         :meth:`Client.get() <.datastore.client.Client.get>`:
 
         >>> from gcloud import datastore
-        >>> client = datastore.Client(dataset_id='dataset-id')
+        >>> client = datastore.Client(project='project')
         >>> key = client.key('MyKind', 1234)
         >>> client.get(key)
         [<Entity object>]
 
         Using a :class:`Connection` directly:
 
-        >>> connection.lookup('dataset-id', [key.to_protobuf()])
+        >>> connection.lookup('project', [key.to_protobuf()])
         [<Entity protobuf>]
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset to look up the keys.
+        :type project: string
+        :param project: The project to look up the keys in.
 
         :type key_pbs: list of
                        :class:`gcloud.datastore._generated.entity_pb2.Key`
@@ -195,7 +195,7 @@ class Connection(connection.Connection):
         _set_read_options(lookup_request, eventual, transaction_id)
         _add_keys_to_request(lookup_request.key, key_pbs)
 
-        lookup_response = self._rpc(dataset_id, 'lookup', lookup_request,
+        lookup_response = self._rpc(project, 'lookup', lookup_request,
                                     _datastore_pb2.LookupResponse)
 
         results = [result.entity for result in lookup_response.found]
@@ -203,7 +203,7 @@ class Connection(connection.Connection):
 
         return results, missing, list(lookup_response.deferred)
 
-    def run_query(self, dataset_id, query_pb, namespace=None,
+    def run_query(self, project, query_pb, namespace=None,
                   eventual=False, transaction_id=None):
         """Run a query on the Cloud Datastore.
 
@@ -237,11 +237,11 @@ class Connection(connection.Connection):
 
         Under the hood this is doing:
 
-        >>> connection.run_query('dataset-id', query.to_protobuf())
+        >>> connection.run_query('project', query.to_protobuf())
         [<list of Entity Protobufs>], cursor, more_results, skipped_results
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset over which to run the query.
+        :type project: string
+        :param project: The project over which to run the query.
 
         :type query_pb: :class:`gcloud.datastore._generated.query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
@@ -266,7 +266,7 @@ class Connection(connection.Connection):
             request.partition_id.namespace = namespace
 
         request.query.CopyFrom(query_pb)
-        response = self._rpc(dataset_id, 'runQuery', request,
+        response = self._rpc(project, 'runQuery', request,
                              _datastore_pb2.RunQueryResponse)
         return (
             [e.entity for e in response.batch.entity_result],
@@ -275,13 +275,13 @@ class Connection(connection.Connection):
             response.batch.skipped_results,
         )
 
-    def begin_transaction(self, dataset_id):
+    def begin_transaction(self, project):
         """Begin a transaction.
 
         Maps the ``DatastoreService.BeginTransaction`` protobuf RPC.
 
-        :type dataset_id: string
-        :param dataset_id: The ID dataset to which the transaction applies.
+        :type project: string
+        :param project: The project to which the transaction applies.
 
         :rtype: bytes
         :returns: The serialized transaction that was begun.
@@ -289,17 +289,17 @@ class Connection(connection.Connection):
         request = _datastore_pb2.BeginTransactionRequest()
         request.isolation_level = (
             _datastore_pb2.BeginTransactionRequest.SERIALIZABLE)
-        response = self._rpc(dataset_id, 'beginTransaction', request,
+        response = self._rpc(project, 'beginTransaction', request,
                              _datastore_pb2.BeginTransactionResponse)
         return response.transaction
 
-    def commit(self, dataset_id, commit_request, transaction_id):
+    def commit(self, project, commit_request, transaction_id):
         """Commit mutations in context of current transation (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 
-        :type dataset_id: string
-        :param dataset_id: The ID dataset to which the transaction applies.
+        :type project: string
+        :param project: The project to which the transaction applies.
 
         :type commit_request: :class:`._generated.datastore_pb2.CommitRequest`
         :param commit_request: The protobuf with the mutations being committed.
@@ -323,18 +323,17 @@ class Connection(connection.Connection):
         else:
             request.mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
 
-        response = self._rpc(dataset_id, 'commit', request,
+        response = self._rpc(project, 'commit', request,
                              _datastore_pb2.CommitResponse)
         return _parse_commit_response(response)
 
-    def rollback(self, dataset_id, transaction_id):
+    def rollback(self, project, transaction_id):
         """Rollback the connection's existing transaction.
 
         Maps the ``DatastoreService.Rollback`` protobuf RPC.
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset to which the transaction
-                           belongs.
+        :type project: string
+        :param project: The project to which the transaction belongs.
 
         :type transaction_id: string
         :param transaction_id: The transaction ID returned from
@@ -343,17 +342,16 @@ class Connection(connection.Connection):
         request = _datastore_pb2.RollbackRequest()
         request.transaction = transaction_id
         # Nothing to do with this response, so just execute the method.
-        self._rpc(dataset_id, 'rollback', request,
+        self._rpc(project, 'rollback', request,
                   _datastore_pb2.RollbackResponse)
 
-    def allocate_ids(self, dataset_id, key_pbs):
+    def allocate_ids(self, project, key_pbs):
         """Obtain backend-generated IDs for a set of keys.
 
         Maps the ``DatastoreService.AllocateIds`` protobuf RPC.
 
-        :type dataset_id: string
-        :param dataset_id: The ID of the dataset to which the transaction
-                           belongs.
+        :type project: string
+        :param project: The project to which the transaction belongs.
 
         :type key_pbs: list of
                        :class:`gcloud.datastore._generated.entity_pb2.Key`
@@ -365,7 +363,7 @@ class Connection(connection.Connection):
         request = _datastore_pb2.AllocateIdsRequest()
         _add_keys_to_request(request.key, key_pbs)
         # Nothing to do with this response, so just execute the method.
-        response = self._rpc(dataset_id, 'allocateIds', request,
+        response = self._rpc(project, 'allocateIds', request,
                              _datastore_pb2.AllocateIdsResponse)
         return list(response.key)
 
