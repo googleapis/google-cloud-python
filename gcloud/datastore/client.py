@@ -426,9 +426,9 @@ class Client(_BaseClient):
 
         Passes our ``project``.
         """
-        if 'dataset_id' in kwargs:
-            raise TypeError('Cannot pass dataset_id')
-        kwargs['dataset_id'] = self.project
+        if 'project' in kwargs:
+            raise TypeError('Cannot pass project')
+        kwargs['project'] = self.project
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Key(*path_args, **kwargs)
@@ -448,9 +448,9 @@ class Client(_BaseClient):
         """
         if 'client' in kwargs:
             raise TypeError('Cannot pass client')
-        if 'dataset_id' in kwargs:
-            raise TypeError('Cannot pass dataset_id')
-        kwargs['dataset_id'] = self.project
+        if 'project' in kwargs:
+            raise TypeError('Cannot pass project')
+        kwargs['project'] = self.project
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Query(self, **kwargs)

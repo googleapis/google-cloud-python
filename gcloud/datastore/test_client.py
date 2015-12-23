@@ -769,7 +769,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
 
         self.assertRaises(TypeError,
-                          client.key, KIND, ID, dataset_id=self.PROJECT)
+                          client.key, KIND, ID, project=self.PROJECT)
 
     def test_key_wo_project(self):
         from gcloud.datastore import client as MUT
@@ -787,7 +787,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(key, _Dummy))
         self.assertEqual(key.args, (KIND, ID))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': None,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -808,7 +808,7 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': NAMESPACE,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -830,7 +830,7 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': NAMESPACE2,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -894,7 +894,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': None,
         }
         self.assertEqual(query.kwargs, expected_kwargs)
@@ -928,7 +928,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'kind': KIND,
             'namespace': NAMESPACE,
             'ancestor': ANCESTOR,
@@ -955,7 +955,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': NAMESPACE,
             'kind': KIND,
         }
@@ -978,7 +978,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.PROJECT,
+            'project': self.PROJECT,
             'namespace': NAMESPACE2,
             'kind': KIND,
         }
