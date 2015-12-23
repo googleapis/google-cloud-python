@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Convenience wrapper for invoking APIs/factories w/ a dataset ID."""
+"""Convenience wrapper for invoking APIs/factories w/ a project."""
 
 import os
 
@@ -35,18 +35,18 @@ _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
 
 
-def _get_production_dataset_id():
+def _get_production_project():
     """Gets the production application ID if it can be inferred."""
     return os.getenv(DATASET)
 
 
-def _get_gcd_dataset_id():
+def _get_gcd_project():
     """Gets the GCD application ID if it can be inferred."""
     return os.getenv(GCD_DATASET)
 
 
-def _determine_default_dataset_id(dataset_id=None):
-    """Determine default dataset ID explicitly or implicitly as fall-back.
+def _determine_default_project(project=None):
+    """Determine default project explicitly or implicitly as fall-back.
 
     In implicit case, supports four environments. In order of precedence, the
     implicit environments are:
@@ -56,28 +56,28 @@ def _determine_default_dataset_id(dataset_id=None):
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
-    :type dataset_id: string
-    :param dataset_id: Optional. The dataset ID to use as default.
+    :type project: string
+    :param project: Optional. The project to use as default.
 
     :rtype: string or ``NoneType``
-    :returns: Default dataset ID if it can be determined.
+    :returns: Default project if it can be determined.
     """
-    if dataset_id is None:
-        dataset_id = _get_production_dataset_id()
+    if project is None:
+        project = _get_production_project()
 
-    if dataset_id is None:
-        dataset_id = _get_gcd_dataset_id()
+    if project is None:
+        project = _get_gcd_project()
 
-    if dataset_id is None:
-        dataset_id = _app_engine_id()
+    if project is None:
+        project = _app_engine_id()
 
-    if dataset_id is None:
-        dataset_id = _compute_engine_id()
+    if project is None:
+        project = _compute_engine_id()
 
-    return dataset_id
+    return project
 
 
-def _extended_lookup(connection, dataset_id, key_pbs,
+def _extended_lookup(connection, project, key_pbs,
                      missing=None, deferred=None,
                      eventual=False, transaction_id=None):
     """Repeat lookup until all keys found (unless stop requested).
@@ -87,8 +87,8 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     :type connection: :class:`gcloud.datastore.connection.Connection`
     :param connection: The connection used to connect to datastore.
 
-    :type dataset_id: string
-    :param dataset_id: The ID of the dataset of which to make the request.
+    :type project: string
+    :param project: The project to make the request for.
 
     :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
@@ -130,7 +130,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
         loop_num += 1
 
         results_found, missing_found, deferred_found = connection.lookup(
-            dataset_id=dataset_id,
+            dataset_id=project,
             key_pbs=key_pbs,
             eventual=eventual,
             transaction_id=transaction_id,
@@ -156,7 +156,7 @@ def _extended_lookup(connection, dataset_id, key_pbs,
 
 
 class Client(_BaseClient):
-    """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
+    """Convenience wrapper for invoking APIs/factories w/ a project.
 
     :type project: string
     :param project: (optional) The project to pass to proxied API methods.
@@ -180,7 +180,7 @@ class Client(_BaseClient):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        project = _determine_default_dataset_id(project)
+        project = _determine_default_project(project)
         if project is None:
             raise EnvironmentError('Project could not be inferred.')
         self.project = project
@@ -281,8 +281,8 @@ class Client(_BaseClient):
 
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :returns: The requested entities.
-        :raises: :class:`ValueError` if one or more of ``keys`` has a dataset
-                 ID which does not match our dataset ID.
+        :raises: :class:`ValueError` if one or more of ``keys`` has a project
+                 which does not match our project.
         """
         if not keys:
             return []
@@ -296,7 +296,7 @@ class Client(_BaseClient):
 
         entity_pbs = _extended_lookup(
             connection=self.connection,
-            dataset_id=self.project,
+            project=self.project,
             key_pbs=[k.to_protobuf() for k in keys],
             missing=missing,
             deferred=deferred,
@@ -424,7 +424,7 @@ class Client(_BaseClient):
     def key(self, *path_args, **kwargs):
         """Proxy to :class:`gcloud.datastore.key.Key`.
 
-        Passes our ``dataset_id``.
+        Passes our ``project``.
         """
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
@@ -434,23 +434,17 @@ class Client(_BaseClient):
         return Key(*path_args, **kwargs)
 
     def batch(self):
-        """Proxy to :class:`gcloud.datastore.batch.Batch`.
-
-        Passes our ``dataset_id``.
-        """
+        """Proxy to :class:`gcloud.datastore.batch.Batch`."""
         return Batch(self)
 
     def transaction(self):
-        """Proxy to :class:`gcloud.datastore.transaction.Transaction`.
-
-        Passes our ``dataset_id``.
-        """
+        """Proxy to :class:`gcloud.datastore.transaction.Transaction`."""
         return Transaction(self)
 
     def query(self, **kwargs):
         """Proxy to :class:`gcloud.datastore.query.Query`.
 
-        Passes our ``dataset_id``.
+        Passes our ``project``.
         """
         if 'client' in kwargs:
             raise TypeError('Cannot pass client')
