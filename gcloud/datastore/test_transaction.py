@@ -31,7 +31,7 @@ class TestTransaction(unittest2.TestCase):
         connection = _Connection()
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
-        self.assertEqual(xact.dataset_id, _DATASET)
+        self.assertEqual(xact.project, _DATASET)
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)

@@ -73,11 +73,11 @@ class Batch(object):
         return self._client.current_batch
 
     @property
-    def dataset_id(self):
-        """Getter for dataset ID in which the batch will run.
+    def project(self):
+        """Getter for project in which the batch will run.
 
         :rtype: :class:`str`
-        :returns: The dataset ID in which the batch will run.
+        :returns: The project in which the batch will run.
         """
         return self._client.project
 
@@ -172,7 +172,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _dataset_ids_equal(self.dataset_id, entity.key.dataset_id):
+        if not _dataset_ids_equal(self.project, entity.key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         if entity.key.is_partial:
@@ -195,7 +195,7 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _dataset_ids_equal(self.dataset_id, key.dataset_id):
+        if not _dataset_ids_equal(self.project, key.dataset_id):
             raise ValueError("Key must be from same dataset as batch")
 
         key_pb = helpers._prepare_key_for_request(key.to_protobuf())
@@ -215,7 +215,7 @@ class Batch(object):
         context manager.
         """
         _, updated_keys = self.connection.commit(
-            self.dataset_id, self._commit_request, self._id)
+            self.project, self._commit_request, self._id)
         # If the back-end returns without error, we are guaranteed that
         # :meth:`Connection.commit` will return keys that match (length and
         # order) directly ``_partial_key_entities``.

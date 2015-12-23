@@ -33,7 +33,7 @@ class TestBatch(unittest2.TestCase):
         client = _Client(_DATASET, connection, _NAMESPACE)
         batch = self._makeOne(client)
 
-        self.assertEqual(batch.dataset_id, _DATASET)
+        self.assertEqual(batch.project, _DATASET)
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
