@@ -395,6 +395,50 @@ class TestColumnFamily(unittest2.TestCase):
         column_family2 = self._makeOne('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
 
+    def test_delete(self):
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated import empty_pb2
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        column_family_id = 'column-family-id'
+        timeout_seconds = 7
+        table_name = ('projects/' + project_id + '/zones/' + zone +
+                      '/clusters/' + cluster_id + '/tables/' + table_id)
+        column_family_name = table_name + '/columnFamilies/' + column_family_id
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        table = _Table(table_name, client=client)
+        column_family = self._makeOne(column_family_id, table)
+
+        # Create request_pb
+        request_pb = messages_pb2.DeleteColumnFamilyRequest(
+            name=column_family_name)
+
+        # Create response_pb
+        response_pb = empty_pb2.Empty()
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # delete() has no return value.
+
+        # Perform the method and check the result.
+        self.assertEqual(stub.results, (response_pb,))
+        result = column_family.delete()
+        self.assertEqual(stub.results, ())
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'DeleteColumnFamily',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
 
 class Test__gc_rule_from_pb(unittest2.TestCase):
 
@@ -471,7 +515,20 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
         self.assertEqual(MockProto.names, ['rule'])
 
 
+class _Cluster(object):
+
+    def __init__(self, client=None):
+        self._client = client
+
+
+class _Client(object):
+
+    def __init__(self, timeout_seconds=None):
+        self.timeout_seconds = timeout_seconds
+
+
 class _Table(object):
 
-    def __init__(self, name):
+    def __init__(self, name, client=None):
         self.name = name
+        self._cluster = _Cluster(client)

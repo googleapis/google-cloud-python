@@ -19,6 +19,8 @@ import datetime
 
 from gcloud._helpers import _total_seconds
 from gcloud.bigtable._generated import bigtable_table_data_pb2 as data_pb2
+from gcloud.bigtable._generated import (
+    bigtable_table_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import duration_pb2
 
 
@@ -193,6 +195,10 @@ class GCRuleIntersection(GarbageCollectionRule):
 class ColumnFamily(object):
     """Representation of a Google Cloud Bigtable Column Family.
 
+    We can use a :class:`ColumnFamily` to:
+
+    * :meth:`delete` itself
+
     :type column_family_id: str
     :param column_family_id: The ID of the column family. Must be of the
                              form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
@@ -237,6 +243,14 @@ class ColumnFamily(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def delete(self):
+        """Delete this column family."""
+        request_pb = messages_pb2.DeleteColumnFamilyRequest(name=self.name)
+        client = self._table._cluster._client
+        # We expect a `._generated.empty_pb2.Empty`
+        client._table_stub.DeleteColumnFamily(request_pb,
+                                              client.timeout_seconds)
 
 
 def _gc_rule_from_pb(gc_rule_pb):
