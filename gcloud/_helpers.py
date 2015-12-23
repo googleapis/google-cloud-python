@@ -188,11 +188,12 @@ def _get_production_project():
 def _determine_default_project(project=None):
     """Determine default project ID explicitly or implicitly as fall-back.
 
-    In implicit case, currently only supports enviroment variable but will
-    support App Engine, Compute Engine and other environments in the future.
+    In implicit case, supports three environments. In order of precedence, the
+    implicit environments are:
 
-    Local environment variable used is:
-    - GCLOUD_PROJECT
+    * GCLOUD_PROJECT environment variable
+    * Google App Engine application ID
+    * Google Compute Engine project ID (from metadata server)
 
     :type project: string
     :param project: Optional. The project name to use as default.
@@ -202,6 +203,12 @@ def _determine_default_project(project=None):
     """
     if project is None:
         project = _get_production_project()
+
+    if project is None:
+        project = _app_engine_id()
+
+    if project is None:
+        project = _compute_engine_id()
 
     return project
 

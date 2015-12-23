@@ -149,8 +149,8 @@ class TestJSONClient(unittest2.TestCase):
         CREDENTIALS = object()
         FUNC_CALLS = []
 
-        def mock_get_proj():
-            FUNC_CALLS.append('_get_production_project')
+        def mock_determine_proj(project):
+            FUNC_CALLS.append((project, '_determine_default_project'))
             return PROJECT
 
         def mock_get_credentials():
@@ -158,14 +158,15 @@ class TestJSONClient(unittest2.TestCase):
             return CREDENTIALS
 
         with _Monkey(client, get_credentials=mock_get_credentials,
-                     _get_production_project=mock_get_proj):
+                     _determine_default_project=mock_determine_proj):
             client_obj = self._makeOne()
 
         self.assertTrue(client_obj.project is PROJECT)
         self.assertTrue(isinstance(client_obj.connection, _MockConnection))
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
-        self.assertEqual(FUNC_CALLS,
-                         ['_get_production_project', 'get_credentials'])
+        self.assertEqual(
+            FUNC_CALLS,
+            [(None, '_determine_default_project'), 'get_credentials'])
 
     def test_ctor_missing_project(self):
         from gcloud._testing import _Monkey
@@ -173,14 +174,14 @@ class TestJSONClient(unittest2.TestCase):
 
         FUNC_CALLS = []
 
-        def mock_get_proj():
-            FUNC_CALLS.append('_get_production_project')
+        def mock_determine_proj(project):
+            FUNC_CALLS.append((project, '_determine_default_project'))
             return None
 
-        with _Monkey(client, _get_production_project=mock_get_proj):
+        with _Monkey(client, _determine_default_project=mock_determine_proj):
             self.assertRaises(ValueError, self._makeOne)
 
-        self.assertEqual(FUNC_CALLS, ['_get_production_project'])
+        self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 
     def test_ctor_w_invalid_project(self):
         CREDENTIALS = object()

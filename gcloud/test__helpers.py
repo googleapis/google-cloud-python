@@ -214,7 +214,8 @@ class Test__determine_default_project(unittest2.TestCase):
         from gcloud._helpers import _determine_default_project
         return _determine_default_project(project=project)
 
-    def _determine_default_helper(self, prod=None, project=None):
+    def _determine_default_helper(self, prod=None, gae=None, gce=None,
+                                  project=None):
         from gcloud._testing import _Monkey
         from gcloud import _helpers
 
@@ -224,8 +225,18 @@ class Test__determine_default_project(unittest2.TestCase):
             _callers.append('prod_mock')
             return prod
 
+        def gae_mock():
+            _callers.append('gae_mock')
+            return gae
+
+        def gce_mock():
+            _callers.append('gce_mock')
+            return gce
+
         patched_methods = {
             '_get_production_project': prod_mock,
+            '_app_engine_id': gae_mock,
+            '_compute_engine_id': gce_mock,
         }
 
         with _Monkey(_helpers, **patched_methods):
@@ -236,7 +247,7 @@ class Test__determine_default_project(unittest2.TestCase):
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers, ['prod_mock'])
+        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
 
     def test_explicit(self):
         PROJECT = object()
@@ -249,6 +260,18 @@ class Test__determine_default_project(unittest2.TestCase):
         project, callers = self._determine_default_helper(prod=PROJECT)
         self.assertEqual(project, PROJECT)
         self.assertEqual(callers, ['prod_mock'])
+
+    def test_gae(self):
+        PROJECT = object()
+        project, callers = self._determine_default_helper(gae=PROJECT)
+        self.assertEqual(project, PROJECT)
+        self.assertEqual(callers, ['prod_mock', 'gae_mock'])
+
+    def test_gce(self):
+        PROJECT = object()
+        project, callers = self._determine_default_helper(gce=PROJECT)
+        self.assertEqual(project, PROJECT)
+        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
 
 
 class Test__millis(unittest2.TestCase):
