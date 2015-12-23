@@ -395,6 +395,65 @@ class TestColumnFamily(unittest2.TestCase):
         column_family2 = self._makeOne('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
 
+    def _create_test_helper(self, gc_rule=None):
+        from gcloud.bigtable._generated import (
+            bigtable_table_data_pb2 as data_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        column_family_id = 'column-family-id'
+        timeout_seconds = 4
+        table_name = ('projects/' + project_id + '/zones/' + zone +
+                      '/clusters/' + cluster_id + '/tables/' + table_id)
+
+        client = _Client(timeout_seconds=timeout_seconds)
+        table = _Table(table_name, client=client)
+        column_family = self._makeOne(column_family_id, table, gc_rule=gc_rule)
+
+        # Create request_pb
+        if gc_rule is None:
+            column_family_pb = data_pb2.ColumnFamily()
+        else:
+            column_family_pb = data_pb2.ColumnFamily(gc_rule=gc_rule.to_pb())
+        request_pb = messages_pb2.CreateColumnFamilyRequest(
+            name=table_name,
+            column_family_id=column_family_id,
+            column_family=column_family_pb,
+        )
+
+        # Create response_pb
+        response_pb = data_pb2.ColumnFamily()
+
+        # Patch the stub used by the API method.
+        client._table_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # create() has no return value.
+
+        # Perform the method and check the result.
+        self.assertEqual(stub.results, (response_pb,))
+        result = column_family.create()
+        self.assertEqual(stub.results, ())
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'CreateColumnFamily',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+
+    def test_create(self):
+        self._create_test_helper(gc_rule=None)
+
+    def test_create_with_gc_rule(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+        gc_rule = MaxVersionsGCRule(1337)
+        self._create_test_helper(gc_rule=gc_rule)
+
     def _update_test_helper(self, gc_rule=None):
         from gcloud.bigtable._generated import (
             bigtable_table_data_pb2 as data_pb2)
