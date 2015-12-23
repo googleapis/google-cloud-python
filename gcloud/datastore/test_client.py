@@ -1008,8 +1008,8 @@ class _MockConnection(object):
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
 
-    def lookup(self, dataset_id, key_pbs, eventual=False, transaction_id=None):
-        self._lookup_cw.append((dataset_id, key_pbs, eventual, transaction_id))
+    def lookup(self, project, key_pbs, eventual=False, transaction_id=None):
+        self._lookup_cw.append((project, key_pbs, eventual, transaction_id))
         triple, self._lookup = self._lookup[0], self._lookup[1:]
         results, missing, deferred = triple
         return results, missing, deferred

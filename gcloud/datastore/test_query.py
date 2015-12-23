@@ -383,7 +383,7 @@ class TestIterator(unittest2.TestCase):
         qpb = _pb_from_query(query)
         qpb.offset = 0
         EXPECTED = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -410,7 +410,7 @@ class TestIterator(unittest2.TestCase):
         qpb.limit = 13
         qpb.offset = 29
         EXPECTED = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -444,7 +444,7 @@ class TestIterator(unittest2.TestCase):
         qpb.start_cursor = urlsafe_b64decode(self._START)
         qpb.end_cursor = urlsafe_b64decode(self._END)
         EXPECTED = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -478,7 +478,7 @@ class TestIterator(unittest2.TestCase):
         qpb = _pb_from_query(query)
         qpb.offset = 0
         EXPECTED = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -508,13 +508,13 @@ class TestIterator(unittest2.TestCase):
         qpb2.offset = 0
         qpb2.start_cursor = self._END
         EXPECTED1 = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb1,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
         }
         EXPECTED2 = {
-            'dataset_id': self._PROJECT,
+            'project': self._PROJECT,
             'query_pb': qpb2,
             'namespace': self._NAMESPACE,
             'transaction_id': None,

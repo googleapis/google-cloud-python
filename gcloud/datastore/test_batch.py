@@ -329,8 +329,8 @@ class _Connection(object):
         self._committed = []
         self._index_updates = 0
 
-    def commit(self, dataset_id, commit_request, transaction_id):
-        self._committed.append((dataset_id, commit_request, transaction_id))
+    def commit(self, project, commit_request, transaction_id):
+        self._committed.append((project, commit_request, transaction_id))
         return self._index_updates, self._completed_keys
 
 

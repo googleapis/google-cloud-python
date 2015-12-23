@@ -130,7 +130,7 @@ def _extended_lookup(connection, project, key_pbs,
         loop_num += 1
 
         results_found, missing_found, deferred_found = connection.lookup(
-            dataset_id=project,
+            project=project,
             key_pbs=key_pbs,
             eventual=eventual,
             transaction_id=transaction_id,

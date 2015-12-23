@@ -404,7 +404,7 @@ class Iterator(object):
 
         query_results = self._client.connection.run_query(
             query_pb=pb,
-            dataset_id=self._query.project,
+            project=self._query.project,
             namespace=self._query.namespace,
             transaction_id=transaction and transaction.id,
             )
