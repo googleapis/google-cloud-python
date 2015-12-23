@@ -62,11 +62,13 @@ class TestTable(unittest2.TestCase):
         table_id = 'table-id'
         table = self._makeOne(table_id, None)
         row_key = b'row_key'
-        row = table.row(row_key)
+        filter_ = object()
+        row = table.row(row_key, filter_=filter_)
 
         self.assertTrue(isinstance(row, Row))
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
+        self.assertEqual(row._filter, filter_)
 
     def test___eq__(self):
         table_id = 'table_id'

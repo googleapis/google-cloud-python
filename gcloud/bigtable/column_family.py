@@ -35,7 +35,7 @@ def _timedelta_to_duration_pb(timedelta_val):
     :type timedelta_val: :class:`datetime.timedelta`
     :param timedelta_val: A timedelta object.
 
-    :rtype: :class:`duration_pb2.Duration`
+    :rtype: :class:`.duration_pb2.Duration`
     :returns: A duration object equivalent to the time delta.
     """
     seconds_decimal = _total_seconds(timedelta_val)
@@ -144,7 +144,7 @@ class GCRuleUnion(GarbageCollectionRule):
     """Union of garbage collection rules.
 
     :type rules: list
-    :param rules: List of :class:`GarbageCollectionRule`,
+    :param rules: List of :class:`GarbageCollectionRule`.
     """
 
     def __init__(self, rules):

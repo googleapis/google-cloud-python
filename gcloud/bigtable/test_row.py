@@ -28,10 +28,12 @@ class TestRow(unittest2.TestCase):
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
+        filter_ = object()
 
-        row = self._makeOne(row_key, table)
+        row = self._makeOne(row_key, table, filter_=filter_)
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
+        self.assertTrue(row._filter is filter_)
 
     def test_constructor_with_unicode(self):
         row_key = u'row_key'
