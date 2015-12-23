@@ -16,6 +16,7 @@
 
 import os
 
+from gcloud._helpers import _has_field
 from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
@@ -401,7 +402,7 @@ def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
-    if key_pb.partition_id.HasField('dataset_id'):
+    if _has_field(key_pb.partition_id, 'dataset_id'):
         new_key_pb = _entity_pb2.Key()
         new_key_pb.CopyFrom(key_pb)
         new_key_pb.partition_id.ClearField('dataset_id')
