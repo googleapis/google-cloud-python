@@ -24,7 +24,7 @@ import six
 
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
-from gcloud.datastore import _entity_pb2
+from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
@@ -76,7 +76,7 @@ def find_true_dataset_id(dataset_id, connection):
 def _get_meaning(value_pb, is_list=False):
     """Get the meaning from a protobuf value.
 
-    :type value_pb: :class:`gcloud.datastore._entity_pb2.Value`
+    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :param value_pb: The protobuf value to be checked for an
                      associated meaning.
 
@@ -121,7 +121,7 @@ def entity_from_protobuf(pb):
     The protobuf should be one returned from the Cloud Datastore
     Protobuf API.
 
-    :type pb: :class:`gcloud.datastore._entity_pb2.Entity`
+    :type pb: :class:`gcloud.datastore._generated.entity_pb2.Entity`
     :param pb: The Protobuf representing the entity.
 
     :rtype: :class:`gcloud.datastore.entity.Entity`
@@ -173,7 +173,7 @@ def entity_to_protobuf(entity):
     :type entity: :class:`gcloud.datastore.entity.Entity`
     :param entity: The entity to be turned into a protobuf.
 
-    :rtype: :class:`gcloud.datastore._entity_pb2.Entity`
+    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Entity`
     :returns: The protobuf representing the entity.
     """
     entity_pb = _entity_pb2.Entity()
@@ -223,7 +223,7 @@ def key_from_protobuf(pb):
     The protobuf should be one returned from the Cloud Datastore
     Protobuf API.
 
-    :type pb: :class:`gcloud.datastore._entity_pb2.Key`
+    :type pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param pb: The Protobuf representing the key.
 
     :rtype: :class:`gcloud.datastore.key.Key`
@@ -317,7 +317,7 @@ def _get_value_from_value_pb(value_pb):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type value_pb: :class:`gcloud.datastore._entity_pb2.Value`
+    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :param value_pb: The Value Protobuf.
 
     :returns: The value provided by the Protobuf.
@@ -364,7 +364,7 @@ def _set_protobuf_value(value_pb, val):
     Some value types (entities, keys, lists) cannot be directly
     assigned; this function handles them correctly.
 
-    :type value_pb: :class:`gcloud.datastore._entity_pb2.Value`
+    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :param value_pb: The value protobuf to which the value is being assigned.
 
     :type val: :class:`datetime.datetime`, boolean, float, integer, string,
@@ -394,10 +394,10 @@ def _set_protobuf_value(value_pb, val):
 def _prepare_key_for_request(key_pb):
     """Add protobuf keys to a request object.
 
-    :type key_pb: :class:`gcloud.datastore._entity_pb2.Key`
+    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param key_pb: A key to be added to a request.
 
-    :rtype: :class:`gcloud.datastore._entity_pb2.Key`
+    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """

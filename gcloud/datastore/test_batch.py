@@ -26,7 +26,7 @@ class TestBatch(unittest2.TestCase):
         return self._getTargetClass()(client)
 
     def test_ctor(self):
-        from gcloud.datastore._datastore_pb2 import Mutation
+        from gcloud.datastore._generated import datastore_pb2
         _DATASET = 'DATASET'
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
@@ -37,7 +37,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
-        self.assertTrue(isinstance(batch.mutations, Mutation))
+        self.assertTrue(isinstance(batch.mutations, datastore_pb2.Mutation))
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -350,8 +350,8 @@ class _Key(object):
         return self._id is None
 
     def to_protobuf(self):
-        from gcloud.datastore import _entity_pb2
-        key = self._key = _entity_pb2.Key()
+        from gcloud.datastore._generated import entity_pb2
+        key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
         # key.partition_id.dataset_id = self.dataset_id
 

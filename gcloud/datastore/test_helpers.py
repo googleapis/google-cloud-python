@@ -22,12 +22,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         return entity_from_protobuf(val)
 
     def test_it(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
         _DATASET_ID = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
         prop_pb = entity_pb.property.add()
@@ -71,12 +71,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(key.id, _ID)
 
     def test_mismatched_value_indexed(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
         _DATASET_ID = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = _DATASET_ID
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
@@ -96,18 +96,18 @@ class Test_entity_from_protobuf(unittest2.TestCase):
             self._callFUT(entity_pb)
 
     def test_entity_no_key(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         entity = self._callFUT(entity_pb)
 
         self.assertEqual(entity.key, None)
         self.assertEqual(dict(entity), {})
 
     def test_entity_with_meaning(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         prop = entity_pb.property.add()
         prop.value.meaning = meaning = 9
         prop.value.string_value = val = u'something'
@@ -119,7 +119,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(entity._meanings, {name: (meaning, val)})
 
     def test_nested_entity_no_key(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
         DATASET_ID = 's~FOO'
         KIND = 'KIND'
@@ -127,12 +127,12 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         OUTSIDE_NAME = 'OBAR'
         INSIDE_VALUE = 1337
 
-        entity_inside = _entity_pb2.Entity()
+        entity_inside = entity_pb2.Entity()
         inside_prop = entity_inside.property.add()
         inside_prop.name = INSIDE_NAME
         inside_prop.value.integer_value = INSIDE_VALUE
 
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = DATASET_ID
         element = entity_pb.key.path_element.add()
         element.kind = KIND
@@ -175,15 +175,15 @@ class Test_entity_to_protobuf(unittest2.TestCase):
                 self.assertEqual(val1, val2)
 
     def test_empty(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
 
         entity = Entity()
         entity_pb = self._callFUT(entity)
-        self._compareEntityProto(entity_pb, _entity_pb2.Entity())
+        self._compareEntityProto(entity_pb, entity_pb2.Entity())
 
     def test_key_only(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
         from gcloud.datastore.key import Key
 
@@ -193,7 +193,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         entity = Entity(key=key)
         entity_pb = self._callFUT(entity)
 
-        expected_pb = _entity_pb2.Entity()
+        expected_pb = entity_pb2.Entity()
         expected_pb.key.partition_id.dataset_id = dataset_id
         path_elt = expected_pb.key.path_element.add()
         path_elt.kind = kind
@@ -202,7 +202,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         self._compareEntityProto(entity_pb, expected_pb)
 
     def test_simple_fields(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
 
         entity = Entity()
@@ -212,7 +212,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         entity[name2] = value2 = u'some-string'
         entity_pb = self._callFUT(entity)
 
-        expected_pb = _entity_pb2.Entity()
+        expected_pb = entity_pb2.Entity()
         prop1 = expected_pb.property.add()
         prop1.name = name1
         prop1.value.integer_value = value1
@@ -223,20 +223,20 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         self._compareEntityProto(entity_pb, expected_pb)
 
     def test_with_empty_list(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
 
         entity = Entity()
         entity['foo'] = []
         entity_pb = self._callFUT(entity)
 
-        self._compareEntityProto(entity_pb, _entity_pb2.Entity())
+        self._compareEntityProto(entity_pb, entity_pb2.Entity())
 
     def test_inverts_to_protobuf(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import entity_from_protobuf
 
-        original_pb = _entity_pb2.Entity()
+        original_pb = entity_pb2.Entity()
         # Add a key.
         original_pb.key.partition_id.dataset_id = dataset_id = 'DATASET'
         elem1 = original_pb.key.path_element.add()
@@ -259,7 +259,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         # Add a nested (entity) property.
         prop3 = original_pb.property.add()
         prop3.name = 'entity-baz'
-        sub_pb = _entity_pb2.Entity()
+        sub_pb = entity_pb2.Entity()
         sub_prop1 = sub_pb.property.add()
         sub_prop1.name = 'x'
         sub_prop1.value.double_value = 3.14
@@ -291,7 +291,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         self._compareEntityProto(original_pb, new_pb)
 
     def test_meaning_with_change(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
 
         entity = Entity()
@@ -300,7 +300,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         entity._meanings[name] = (9, 1337)
         entity_pb = self._callFUT(entity)
 
-        expected_pb = _entity_pb2.Entity()
+        expected_pb = entity_pb2.Entity()
         prop = expected_pb.property.add()
         prop.name = name
         prop.value.integer_value = value
@@ -317,8 +317,8 @@ class Test_key_from_protobuf(unittest2.TestCase):
         return key_from_protobuf(val)
 
     def _makePB(self, dataset_id=None, namespace=None, path=()):
-        from gcloud.datastore._entity_pb2 import Key
-        pb = Key()
+        from gcloud.datastore._generated import entity_pb2
+        pb = entity_pb2.Key()
         if dataset_id is not None:
             pb.partition_id.dataset_id = dataset_id
         if namespace is not None:
@@ -474,9 +474,9 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         return _get_value_from_value_pb(pb)
 
     def _makePB(self, attr_name, value):
-        from gcloud.datastore._entity_pb2 import Value
+        from gcloud.datastore._generated import entity_pb2
 
-        pb = Value()
+        pb = entity_pb2.Value()
         setattr(pb, attr_name, value)
         return pb
 
@@ -491,10 +491,10 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
-        from gcloud.datastore._entity_pb2 import Value
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.key import Key
 
-        pb = Value()
+        pb = entity_pb2.Value()
         expected = Key('KIND', 1234, dataset_id='DATASET').to_protobuf()
         pb.key_value.CopyFrom(expected)
         found = self._callFUT(pb)
@@ -521,10 +521,10 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(self._callFUT(pb), u'str')
 
     def test_entity(self):
-        from gcloud.datastore._entity_pb2 import Value
+        from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.entity import Entity
 
-        pb = Value()
+        pb = entity_pb2.Value()
         entity_pb = pb.entity_value
         entity_pb.key.path_element.add(kind='KIND')
         entity_pb.key.partition_id.dataset_id = 'DATASET'
@@ -536,9 +536,9 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(entity['foo'], 'Foo')
 
     def test_list(self):
-        from gcloud.datastore._entity_pb2 import Value
+        from gcloud.datastore._generated import entity_pb2
 
-        pb = Value()
+        pb = entity_pb2.Value()
         list_pb = pb.list_value
         item_pb = list_pb.add()
         item_pb.string_value = 'Foo'
@@ -548,9 +548,9 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertEqual(items, ['Foo', 'Bar'])
 
     def test_unknown(self):
-        from gcloud.datastore._entity_pb2 import Value
+        from gcloud.datastore._generated import entity_pb2
 
-        pb = Value()
+        pb = entity_pb2.Value()
         self.assertEqual(self._callFUT(pb), None)
 
 
@@ -562,9 +562,8 @@ class Test_set_protobuf_value(unittest2.TestCase):
         return _set_protobuf_value(value_pb, val)
 
     def _makePB(self):
-        from gcloud.datastore._entity_pb2 import Value
-
-        return Value()
+        from gcloud.datastore._generated import entity_pb2
+        return entity_pb2.Value()
 
     def test_datetime(self):
         import calendar
@@ -699,19 +698,19 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         return _prepare_key_for_request(key_pb)
 
     def test_prepare_dataset_id_valid(self):
-        from gcloud.datastore import _entity_pb2
-        key = _entity_pb2.Key()
+        from gcloud.datastore._generated import entity_pb2
+        key = entity_pb2.Key()
         key.partition_id.dataset_id = 'foo'
         new_key = self._callFUT(key)
         self.assertFalse(new_key is key)
 
-        key_without = _entity_pb2.Key()
+        key_without = entity_pb2.Key()
         new_key.ClearField('partition_id')
         self.assertEqual(new_key, key_without)
 
     def test_prepare_dataset_id_unset(self):
-        from gcloud.datastore import _entity_pb2
-        key = _entity_pb2.Key()
+        from gcloud.datastore._generated import entity_pb2
+        key = entity_pb2.Key()
         new_key = self._callFUT(key)
         self.assertTrue(new_key is key)
 
@@ -776,25 +775,25 @@ class Test__get_meaning(unittest2.TestCase):
         return _get_meaning(*args, **kwargs)
 
     def test_no_meaning(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         result = self._callFUT(value_pb)
         self.assertEqual(result, None)
 
     def test_single(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         value_pb.meaning = meaning = 22
         value_pb.string_value = u'hi'
         result = self._callFUT(value_pb)
         self.assertEqual(meaning, result)
 
     def test_empty_list_value(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         value_pb.list_value.add()
         value_pb.list_value.pop()
 
@@ -802,9 +801,9 @@ class Test__get_meaning(unittest2.TestCase):
         self.assertEqual(None, result)
 
     def test_list_value(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         meaning = 9
         sub_value_pb1 = value_pb.list_value.add()
         sub_value_pb2 = value_pb.list_value.add()
@@ -817,9 +816,9 @@ class Test__get_meaning(unittest2.TestCase):
         self.assertEqual(meaning, result)
 
     def test_list_value_disagreeing(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         meaning1 = 9
         meaning2 = 10
         sub_value_pb1 = value_pb.list_value.add()
@@ -834,9 +833,9 @@ class Test__get_meaning(unittest2.TestCase):
             self._callFUT(value_pb, is_list=True)
 
     def test_list_value_partially_unset(self):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
-        value_pb = _entity_pb2.Value()
+        value_pb = entity_pb2.Value()
         meaning1 = 9
         sub_value_pb1 = value_pb.list_value.add()
         sub_value_pb2 = value_pb.list_value.add()
@@ -858,7 +857,7 @@ class _Connection(object):
         self.from_missing = from_missing
 
     def lookup(self, dataset_id, key_pbs):
-        from gcloud.datastore import _entity_pb2
+        from gcloud.datastore._generated import entity_pb2
 
         # Store the arguments called with.
         self._called_dataset_id = dataset_id
@@ -866,7 +865,7 @@ class _Connection(object):
 
         key_pb, = key_pbs
 
-        response = _entity_pb2.Entity()
+        response = entity_pb2.Entity()
         response.key.CopyFrom(key_pb)
         response.key.partition_id.dataset_id = self.prefix + dataset_id
 

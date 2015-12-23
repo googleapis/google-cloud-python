@@ -17,7 +17,7 @@
 import base64
 
 from gcloud._helpers import _ensure_tuple_or_list
-from gcloud.datastore import _query_pb2
+from gcloud.datastore._generated import query_pb2 as _query_pb2
 from gcloud.datastore import helpers
 from gcloud.datastore.key import Key
 
@@ -456,7 +456,7 @@ def _pb_from_query(query):
     :type query: :class:`Query`
     :param query: The source query.
 
-    :rtype: :class:`gcloud.datastore._query_pb2.Query`
+    :rtype: :class:`gcloud.datastore._generated.query_pb2.Query`
     :returns: A protobuf that can be sent to the protobuf API.  N.b. that
               it does not contain "in-flight" fields for ongoing query
               executions (cursors, offset, limit).
