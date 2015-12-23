@@ -197,6 +197,7 @@ class ColumnFamily(object):
 
     We can use a :class:`ColumnFamily` to:
 
+    * :meth:`update` itself
     * :meth:`delete` itself
 
     :type column_family_id: str
@@ -243,6 +244,25 @@ class ColumnFamily(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def update(self):
+        """Update this column family.
+
+        .. note::
+
+            Only the GC rule can be updated. By changing the column family ID,
+            you will simply be referring to a different column family.
+        """
+        request_kwargs = {'name': self.name}
+        if self.gc_rule is not None:
+            request_kwargs['gc_rule'] = self.gc_rule.to_pb()
+        request_pb = data_pb2.ColumnFamily(**request_kwargs)
+        client = self._table._cluster._client
+        # We expect a `.data_pb2.ColumnFamily`. We ignore it since the only
+        # data it contains are the GC rule and the column family ID already
+        # stored on this instance.
+        client._table_stub.UpdateColumnFamily(request_pb,
+                                              client.timeout_seconds)
 
     def delete(self):
         """Delete this column family."""
