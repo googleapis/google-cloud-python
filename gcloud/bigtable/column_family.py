@@ -197,6 +197,7 @@ class ColumnFamily(object):
 
     We can use a :class:`ColumnFamily` to:
 
+    * :meth:`create` itself
     * :meth:`update` itself
     * :meth:`delete` itself
 
@@ -244,6 +245,24 @@ class ColumnFamily(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def create(self):
+        """Create this column family."""
+        if self.gc_rule is None:
+            column_family = data_pb2.ColumnFamily()
+        else:
+            column_family = data_pb2.ColumnFamily(gc_rule=self.gc_rule.to_pb())
+        request_pb = messages_pb2.CreateColumnFamilyRequest(
+            name=self._table.name,
+            column_family_id=self.column_family_id,
+            column_family=column_family,
+        )
+        client = self._table._cluster._client
+        # We expect a `.data_pb2.ColumnFamily`. We ignore it since the only
+        # data it contains are the GC rule and the column family ID already
+        # stored on this instance.
+        client._table_stub.CreateColumnFamily(request_pb,
+                                              client.timeout_seconds)
 
     def update(self):
         """Update this column family.
