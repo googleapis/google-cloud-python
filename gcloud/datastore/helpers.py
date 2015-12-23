@@ -60,7 +60,7 @@ def find_true_dataset_id(dataset_id, connection):
     # Create the bogus Key protobuf to be looked up and remove
     # the dataset ID so the backend won't complain.
     bogus_key_pb = Key('__MissingLookupKind', 1,
-                       dataset_id=dataset_id).to_protobuf()
+                       project=dataset_id).to_protobuf()
     bogus_key_pb.partition_id.ClearField('dataset_id')
 
     found_pbs, missing_pbs, _ = connection.lookup(dataset_id, [bogus_key_pb])
@@ -273,7 +273,7 @@ def key_from_protobuf(pb):
     if pb.partition_id.HasField('namespace'):
         namespace = pb.partition_id.namespace
 
-    return Key(*path_args, namespace=namespace, dataset_id=dataset_id)
+    return Key(*path_args, namespace=namespace, project=dataset_id)
 
 
 def _pb_attr_value(val):

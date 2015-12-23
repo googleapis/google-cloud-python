@@ -309,7 +309,7 @@ class TestClient(unittest2.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result()
-        key = Key('Kind', 1234, dataset_id=self.PROJECT)
+        key = Key('Kind', 1234, project=self.PROJECT)
         results = client.get_multi([key])
         self.assertEqual(results, [])
 
@@ -332,7 +332,7 @@ class TestClient(unittest2.TestCase):
         # Set missing entity on mock connection.
         client.connection._add_lookup_result(missing=[missed])
 
-        key = Key(KIND, ID, dataset_id=self.PROJECT)
+        key = Key(KIND, ID, project=self.PROJECT)
         missing = []
         entities = client.get_multi([key], missing=missing)
         self.assertEqual(entities, [])
@@ -344,7 +344,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = Key('Kind', 1234, dataset_id=self.PROJECT)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         missing = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, client.get_multi,
@@ -355,7 +355,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = Key('Kind', 1234, dataset_id=self.PROJECT)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         deferred = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, client.get_multi,
@@ -364,7 +364,7 @@ class TestClient(unittest2.TestCase):
     def test_get_multi_miss_w_deferred(self):
         from gcloud.datastore.key import Key
 
-        key = Key('Kind', 1234, dataset_id=self.PROJECT)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         # Set deferred entity on mock connection.
         creds = object()
@@ -382,9 +382,9 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.entity import Entity
         from gcloud.datastore.key import Key
 
-        key1 = Key('Kind', dataset_id=self.PROJECT)
+        key1 = Key('Kind', project=self.PROJECT)
         key1_pb = key1.to_protobuf()
-        key2 = Key('Kind', 2345, dataset_id=self.PROJECT)
+        key2 = Key('Kind', 2345, project=self.PROJECT)
         key2_pb = key2.to_protobuf()
 
         entity1_pb = entity_pb2.Entity()
@@ -406,11 +406,11 @@ class TestClient(unittest2.TestCase):
         # Check the actual contents on the response.
         self.assertTrue(isinstance(found[0], Entity))
         self.assertEqual(found[0].key.path, key1.path)
-        self.assertEqual(found[0].key.dataset_id, key1.dataset_id)
+        self.assertEqual(found[0].key.project, key1.project)
 
         self.assertTrue(isinstance(found[1], Entity))
         self.assertEqual(found[1].key.path, key2.path)
-        self.assertEqual(found[1].key.dataset_id, key2.dataset_id)
+        self.assertEqual(found[1].key.project, key2.project)
 
         cw = client.connection._lookup_cw
         self.assertEqual(len(cw), 2)
@@ -445,13 +445,13 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb])
 
-        key = Key(KIND, ID, dataset_id=self.PROJECT)
+        key = Key(KIND, ID, project=self.PROJECT)
         result, = client.get_multi([key])
         new_key = result.key
 
         # Check the returned value is as expected.
         self.assertFalse(new_key is key)
-        self.assertEqual(new_key.dataset_id, self.PROJECT)
+        self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
@@ -472,8 +472,8 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb1, entity_pb2])
 
-        key1 = Key(KIND, ID1, dataset_id=self.PROJECT)
-        key2 = Key(KIND, ID2, dataset_id=self.PROJECT)
+        key1 = Key(KIND, ID1, project=self.PROJECT)
+        key2 = Key(KIND, ID2, project=self.PROJECT)
         retrieved1, retrieved2 = client.get_multi([key1, key2])
 
         # Check values match.
@@ -491,8 +491,8 @@ class TestClient(unittest2.TestCase):
         # Make sure our IDs are actually different.
         self.assertNotEqual(PROJECT1, PROJECT2)
 
-        key1 = Key('KIND', 1234, dataset_id=PROJECT1)
-        key2 = Key('KIND', 1234, dataset_id=PROJECT2)
+        key1 = Key('KIND', 1234, project=PROJECT1)
+        key2 = Key('KIND', 1234, project=PROJECT2)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -522,9 +522,9 @@ class TestClient(unittest2.TestCase):
                                               entity_pb2,
                                               entity_pb3])
 
-        key1 = Key(KIND, ID1, dataset_id=PROJECT1)
-        key2 = Key(KIND, ID2, dataset_id=PROJECT2)
-        key3 = Key(KIND, ID3, dataset_id=PROJECT3)
+        key1 = Key(KIND, ID1, project=PROJECT1)
+        key2 = Key(KIND, ID2, project=PROJECT2)
+        key3 = Key(KIND, ID3, project=PROJECT3)
 
         retrieved_all = client.get_multi([key1, key2, key3])
         retrieved1, retrieved2, retrieved3 = retrieved_all
@@ -540,8 +540,8 @@ class TestClient(unittest2.TestCase):
         PROJECT1 = 'e~PROJECT'
         PROJECT2 = 's~PROJECT-ALT'
 
-        key1 = Key('KIND', 1234, dataset_id=PROJECT1)
-        key2 = Key('KIND', 1234, dataset_id=PROJECT2)
+        key1 = Key('KIND', 1234, project=PROJECT1)
+        key2 = Key('KIND', 1234, project=PROJECT2)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -565,7 +565,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb])
 
-        key = Key(KIND, ID, dataset_id=self.PROJECT)
+        key = Key(KIND, ID, project=self.PROJECT)
         deferred = []
         missing = []
         with _Monkey(_MUT, _MAX_LOOPS=-1):

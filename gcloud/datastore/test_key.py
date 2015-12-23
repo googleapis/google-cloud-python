@@ -35,7 +35,7 @@ class TestKey(unittest2.TestCase):
 
     def test_ctor_w_explicit_dataset_id_empty_path(self):
         _DATASET = 'DATASET'
-        self.assertRaises(ValueError, self._makeOne, dataset_id=_DATASET)
+        self.assertRaises(ValueError, self._makeOne, project=_DATASET)
 
     def test_ctor_parent(self):
         _PARENT_KIND = 'KIND1'
@@ -49,41 +49,41 @@ class TestKey(unittest2.TestCase):
             {'kind': _CHILD_KIND, 'id': _CHILD_ID},
         ]
         parent_key = self._makeOne(_PARENT_KIND, _PARENT_ID,
-                                   dataset_id=_PARENT_DATASET,
+                                   project=_PARENT_DATASET,
                                    namespace=_PARENT_NAMESPACE)
         key = self._makeOne(_CHILD_KIND, _CHILD_ID, parent=parent_key)
-        self.assertEqual(key.dataset_id, parent_key.dataset_id)
+        self.assertEqual(key.project, parent_key.project)
         self.assertEqual(key.namespace, parent_key.namespace)
         self.assertEqual(key.kind, _CHILD_KIND)
         self.assertEqual(key.path, _PATH)
         self.assertTrue(key.parent is parent_key)
 
     def test_ctor_partial_parent(self):
-        parent_key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        parent_key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         with self.assertRaises(ValueError):
             self._makeOne('KIND2', 1234, parent=parent_key)
 
     def test_ctor_parent_bad_type(self):
         with self.assertRaises(AttributeError):
             self._makeOne('KIND2', 1234, parent=('KIND1', 1234),
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
 
     def test_ctor_parent_bad_namespace(self):
         parent_key = self._makeOne('KIND', 1234, namespace='FOO',
-                                   dataset_id=self._DEFAULT_DATASET)
+                                   project=self._DEFAULT_DATASET)
         with self.assertRaises(ValueError):
             self._makeOne('KIND2', 1234, namespace='BAR', parent=parent_key,
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
 
     def test_ctor_parent_bad_dataset_id(self):
-        parent_key = self._makeOne('KIND', 1234, dataset_id='FOO')
+        parent_key = self._makeOne('KIND', 1234, project='FOO')
         with self.assertRaises(ValueError):
             self._makeOne('KIND2', 1234, parent=parent_key,
-                          dataset_id='BAR')
+                          project='BAR')
 
     def test_ctor_parent_empty_path(self):
         parent_key = self._makeOne('KIND', 1234,
-                                   dataset_id=self._DEFAULT_DATASET)
+                                   project=self._DEFAULT_DATASET)
         with self.assertRaises(ValueError):
             self._makeOne(parent=parent_key)
 
@@ -94,23 +94,23 @@ class TestKey(unittest2.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         key = self._makeOne(_KIND, _ID, namespace=_NAMESPACE,
-                            dataset_id=_DATASET)
-        self.assertEqual(key.dataset_id, _DATASET)
+                            project=_DATASET)
+        self.assertEqual(key.project, _DATASET)
         self.assertEqual(key.namespace, _NAMESPACE)
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.path, _PATH)
 
     def test_ctor_bad_kind(self):
         self.assertRaises(ValueError, self._makeOne, object(),
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
 
     def test_ctor_bad_id_or_name(self):
         self.assertRaises(ValueError, self._makeOne, 'KIND', object(),
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
         self.assertRaises(ValueError, self._makeOne, 'KIND', None,
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
         self.assertRaises(ValueError, self._makeOne, 'KIND', 10, 'KIND2', None,
-                          dataset_id=self._DEFAULT_DATASET)
+                          project=self._DEFAULT_DATASET)
 
     def test__clone(self):
         _DATASET = 'DATASET-ALT'
@@ -119,9 +119,9 @@ class TestKey(unittest2.TestCase):
         _ID = 1234
         _PATH = [{'kind': _KIND, 'id': _ID}]
         key = self._makeOne(_KIND, _ID, namespace=_NAMESPACE,
-                            dataset_id=_DATASET)
+                            project=_DATASET)
         clone = key._clone()
-        self.assertEqual(clone.dataset_id, _DATASET)
+        self.assertEqual(clone.project, _DATASET)
         self.assertEqual(clone.namespace, _NAMESPACE)
         self.assertEqual(clone.kind, _KIND)
         self.assertEqual(clone.path, _PATH)
@@ -136,12 +136,12 @@ class TestKey(unittest2.TestCase):
         _PATH = [{'kind': _KIND1, 'id': _ID1}, {'kind': _KIND2, 'id': _ID2}]
 
         parent = self._makeOne(_KIND1, _ID1, namespace=_NAMESPACE,
-                               dataset_id=_DATASET)
+                               project=_DATASET)
         key = self._makeOne(_KIND2, _ID2, parent=parent)
         self.assertTrue(key.parent is parent)
         clone = key._clone()
         self.assertTrue(clone.parent is key.parent)
-        self.assertEqual(clone.dataset_id, _DATASET)
+        self.assertEqual(clone.project, _DATASET)
         self.assertEqual(clone.namespace, _NAMESPACE)
         self.assertEqual(clone.path, _PATH)
 
@@ -149,15 +149,15 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _NAME = 'one'
-        key = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        key = self._makeOne(_KIND, _NAME, project=_DATASET)
         self.assertFalse(key == object())
         self.assertTrue(key != object())
 
     def test___eq_____ne___two_incomplete_keys_same_kind(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        key1 = self._makeOne(_KIND, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, project=_DATASET)
+        key2 = self._makeOne(_KIND, project=_DATASET)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -165,8 +165,8 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, project=_DATASET)
+        key2 = self._makeOne(_KIND, _ID, project=_DATASET)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -174,8 +174,8 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, _ID, project=_DATASET)
+        key2 = self._makeOne(_KIND, project=_DATASET)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -184,8 +184,8 @@ class TestKey(unittest2.TestCase):
         _KIND = 'KIND'
         _ID1 = 1234
         _ID2 = 2345
-        key1 = self._makeOne(_KIND, _ID1, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _ID2, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, _ID1, project=_DATASET)
+        key2 = self._makeOne(_KIND, _ID2, project=_DATASET)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -193,8 +193,8 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, _ID, project=_DATASET)
+        key2 = self._makeOne(_KIND, _ID, project=_DATASET)
         self.assertTrue(key1 == key2)
         self.assertFalse(key1 != key2)
 
@@ -203,8 +203,8 @@ class TestKey(unittest2.TestCase):
         _DATASET2 = 'DATASET2'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET1)
-        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET2)
+        key1 = self._makeOne(_KIND, _ID, project=_DATASET1)
+        key2 = self._makeOne(_KIND, _ID, project=_DATASET2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -214,9 +214,9 @@ class TestKey(unittest2.TestCase):
         _NAMESPACE2 = 'NAMESPACE2'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET,
+        key1 = self._makeOne(_KIND, _ID, project=_DATASET,
                              namespace=_NAMESPACE1)
-        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET,
+        key2 = self._makeOne(_KIND, _ID, project=_DATASET,
                              namespace=_NAMESPACE2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
@@ -226,8 +226,8 @@ class TestKey(unittest2.TestCase):
         _DATASET_W_PFX = 's~DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _ID, dataset_id=_DATASET_W_PFX)
+        key1 = self._makeOne(_KIND, _ID, project=_DATASET)
+        key2 = self._makeOne(_KIND, _ID, project=_DATASET_W_PFX)
         self.assertTrue(key1 == key2)
         self.assertFalse(key1 != key2)
 
@@ -236,8 +236,8 @@ class TestKey(unittest2.TestCase):
         _KIND = 'KIND'
         _NAME1 = 'one'
         _NAME2 = 'two'
-        key1 = self._makeOne(_KIND, _NAME1, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _NAME2, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, _NAME1, project=_DATASET)
+        key2 = self._makeOne(_KIND, _NAME2, project=_DATASET)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -245,8 +245,8 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _NAME = 'one'
-        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        key1 = self._makeOne(_KIND, _NAME, project=_DATASET)
+        key2 = self._makeOne(_KIND, _NAME, project=_DATASET)
         self.assertTrue(key1 == key2)
         self.assertFalse(key1 != key2)
 
@@ -255,8 +255,8 @@ class TestKey(unittest2.TestCase):
         _DATASET2 = 'DATASET2'
         _KIND = 'KIND'
         _NAME = 'one'
-        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET1)
-        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET2)
+        key1 = self._makeOne(_KIND, _NAME, project=_DATASET1)
+        key2 = self._makeOne(_KIND, _NAME, project=_DATASET2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
@@ -266,9 +266,9 @@ class TestKey(unittest2.TestCase):
         _NAMESPACE2 = 'NAMESPACE2'
         _KIND = 'KIND'
         _NAME = 'one'
-        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET,
+        key1 = self._makeOne(_KIND, _NAME, project=_DATASET,
                              namespace=_NAMESPACE1)
-        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET,
+        key2 = self._makeOne(_KIND, _NAME, project=_DATASET,
                              namespace=_NAMESPACE2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
@@ -278,15 +278,15 @@ class TestKey(unittest2.TestCase):
         _DATASET_W_PFX = 's~DATASET'
         _KIND = 'KIND'
         _NAME = 'one'
-        key1 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
-        key2 = self._makeOne(_KIND, _NAME, dataset_id=_DATASET_W_PFX)
+        key1 = self._makeOne(_KIND, _NAME, project=_DATASET)
+        key2 = self._makeOne(_KIND, _NAME, project=_DATASET_W_PFX)
         self.assertTrue(key1 == key2)
         self.assertFalse(key1 != key2)
 
     def test___hash___incomplete(self):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
-        key = self._makeOne(_KIND, dataset_id=_DATASET)
+        key = self._makeOne(_KIND, project=_DATASET)
         self.assertNotEqual(hash(key),
                             hash(_KIND) + hash(_DATASET) + hash(None))
 
@@ -294,7 +294,7 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _ID = 1234
-        key = self._makeOne(_KIND, _ID, dataset_id=_DATASET)
+        key = self._makeOne(_KIND, _ID, project=_DATASET)
         self.assertNotEqual(hash(key),
                             hash(_KIND) + hash(_ID) +
                             hash(_DATASET) + hash(None))
@@ -303,13 +303,13 @@ class TestKey(unittest2.TestCase):
         _DATASET = 'DATASET'
         _KIND = 'KIND'
         _NAME = 'NAME'
-        key = self._makeOne(_KIND, _NAME, dataset_id=_DATASET)
+        key = self._makeOne(_KIND, _NAME, project=_DATASET)
         self.assertNotEqual(hash(key),
                             hash(_KIND) + hash(_NAME) +
                             hash(_DATASET) + hash(None))
 
     def test_completed_key_on_partial_w_id(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         _ID = 1234
         new_key = key.completed_key(_ID)
         self.assertFalse(key is new_key)
@@ -317,7 +317,7 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(new_key.name, None)
 
     def test_completed_key_on_partial_w_name(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         _NAME = 'NAME'
         new_key = key.completed_key(_NAME)
         self.assertFalse(key is new_key)
@@ -325,17 +325,17 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(new_key.name, _NAME)
 
     def test_completed_key_on_partial_w_invalid(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         self.assertRaises(ValueError, key.completed_key, object())
 
     def test_completed_key_on_complete(self):
-        key = self._makeOne('KIND', 1234, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', 1234, project=self._DEFAULT_DATASET)
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
         from gcloud.datastore._generated import entity_pb2
         _KIND = 'KIND'
-        key = self._makeOne(_KIND, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne(_KIND, project=self._DEFAULT_DATASET)
         pb = key.to_protobuf()
         self.assertTrue(isinstance(pb, entity_pb2.Key))
 
@@ -354,14 +354,14 @@ class TestKey(unittest2.TestCase):
 
     def test_to_protobuf_w_explicit_dataset_id(self):
         _DATASET = 'DATASET-ALT'
-        key = self._makeOne('KIND', dataset_id=_DATASET)
+        key = self._makeOne('KIND', project=_DATASET)
         pb = key.to_protobuf()
         self.assertEqual(pb.partition_id.dataset_id, _DATASET)
 
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'
         key = self._makeOne('KIND', namespace=_NAMESPACE,
-                            dataset_id=self._DEFAULT_DATASET)
+                            project=self._DEFAULT_DATASET)
         pb = key.to_protobuf()
         self.assertEqual(pb.partition_id.namespace, _NAMESPACE)
 
@@ -371,7 +371,7 @@ class TestKey(unittest2.TestCase):
         _ID = 1234
         _NAME = 'NAME'
         key = self._makeOne(_PARENT, _NAME, _CHILD, _ID,
-                            dataset_id=self._DEFAULT_DATASET)
+                            project=self._DEFAULT_DATASET)
         pb = key.to_protobuf()
         elems = list(pb.path_element)
         self.assertEqual(len(elems), 2)
@@ -381,7 +381,7 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elems[1].id, _ID)
 
     def test_to_protobuf_w_no_kind(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         # Force the 'kind' to be unset. Maybe `to_protobuf` should fail
         # on this? The backend certainly will.
         key._path[-1].pop('kind')
@@ -389,44 +389,44 @@ class TestKey(unittest2.TestCase):
         self.assertFalse(pb.path_element[0].HasField('kind'))
 
     def test_is_partial_no_name_or_id(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         self.assertTrue(key.is_partial)
 
     def test_is_partial_w_id(self):
         _ID = 1234
-        key = self._makeOne('KIND', _ID, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', _ID, project=self._DEFAULT_DATASET)
         self.assertFalse(key.is_partial)
 
     def test_is_partial_w_name(self):
         _NAME = 'NAME'
-        key = self._makeOne('KIND', _NAME, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', _NAME, project=self._DEFAULT_DATASET)
         self.assertFalse(key.is_partial)
 
     def test_id_or_name_no_name_or_id(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         self.assertEqual(key.id_or_name, None)
 
     def test_id_or_name_no_name_or_id_child(self):
         key = self._makeOne('KIND1', 1234, 'KIND2',
-                            dataset_id=self._DEFAULT_DATASET)
+                            project=self._DEFAULT_DATASET)
         self.assertEqual(key.id_or_name, None)
 
     def test_id_or_name_w_id_only(self):
         _ID = 1234
-        key = self._makeOne('KIND', _ID, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', _ID, project=self._DEFAULT_DATASET)
         self.assertEqual(key.id_or_name, _ID)
 
     def test_id_or_name_w_name_only(self):
         _NAME = 'NAME'
-        key = self._makeOne('KIND', _NAME, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', _NAME, project=self._DEFAULT_DATASET)
         self.assertEqual(key.id_or_name, _NAME)
 
     def test_parent_default(self):
-        key = self._makeOne('KIND', dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', project=self._DEFAULT_DATASET)
         self.assertEqual(key.parent, None)
 
     def test_parent_explicit_top_level(self):
-        key = self._makeOne('KIND', 1234, dataset_id=self._DEFAULT_DATASET)
+        key = self._makeOne('KIND', 1234, project=self._DEFAULT_DATASET)
         self.assertEqual(key.parent, None)
 
     def test_parent_explicit_nested(self):
@@ -434,7 +434,7 @@ class TestKey(unittest2.TestCase):
         _PARENT_ID = 1234
         _PARENT_PATH = [{'kind': _PARENT_KIND, 'id': _PARENT_ID}]
         key = self._makeOne(_PARENT_KIND, _PARENT_ID, 'KIND2',
-                            dataset_id=self._DEFAULT_DATASET)
+                            project=self._DEFAULT_DATASET)
         self.assertEqual(key.parent.path, _PARENT_PATH)
 
     def test_parent_multiple_calls(self):
@@ -442,18 +442,18 @@ class TestKey(unittest2.TestCase):
         _PARENT_ID = 1234
         _PARENT_PATH = [{'kind': _PARENT_KIND, 'id': _PARENT_ID}]
         key = self._makeOne(_PARENT_KIND, _PARENT_ID, 'KIND2',
-                            dataset_id=self._DEFAULT_DATASET)
+                            project=self._DEFAULT_DATASET)
         parent = key.parent
         self.assertEqual(parent.path, _PARENT_PATH)
         new_parent = key.parent
         self.assertTrue(parent is new_parent)
 
 
-class Test__dataset_ids_equal(unittest2.TestCase):
+class Test__projects_equal(unittest2.TestCase):
 
     def _callFUT(self, dataset_id1, dataset_id2):
-        from gcloud.datastore.key import _dataset_ids_equal
-        return _dataset_ids_equal(dataset_id1, dataset_id2)
+        from gcloud.datastore.key import _projects_equal
+        return _projects_equal(dataset_id1, dataset_id2)
 
     def test_identical_prefixed(self):
         self.assertTrue(self._callFUT('s~foo', 's~foo'))

@@ -199,7 +199,7 @@ class _Entity(dict):
     def __init__(self):
         super(_Entity, self).__init__()
         from gcloud.datastore.key import Key
-        self.key = Key('KIND', dataset_id='DATASET')
+        self.key = Key('KIND', project='DATASET')
 
 
 class _Client(object):

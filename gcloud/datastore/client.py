@@ -23,8 +23,8 @@ from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
+from gcloud.datastore.key import _projects_equal
 from gcloud.datastore.key import Key
-from gcloud.datastore.key import _dataset_ids_equal
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
 from gcloud.environment_vars import DATASET
@@ -287,9 +287,9 @@ class Client(_BaseClient):
         if not keys:
             return []
 
-        ids = set(key.dataset_id for key in keys)
+        ids = set(key.project for key in keys)
         for current_id in ids:
-            if not _dataset_ids_equal(current_id, self.project):
+            if not _projects_equal(current_id, self.project):
                 raise ValueError('Keys do not match project')
 
         transaction = self.current_transaction
@@ -414,7 +414,7 @@ class Client(_BaseClient):
         incomplete_key_pbs = [incomplete_key_pb] * num_ids
 
         conn = self.connection
-        allocated_key_pbs = conn.allocate_ids(incomplete_key.dataset_id,
+        allocated_key_pbs = conn.allocate_ids(incomplete_key.project,
                                               incomplete_key_pbs)
         allocated_ids = [allocated_key_pb.path_element[-1].id
                          for allocated_key_pb in allocated_key_pbs]

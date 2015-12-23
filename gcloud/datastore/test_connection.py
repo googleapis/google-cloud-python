@@ -27,7 +27,7 @@ class TestConnection(unittest2.TestCase):
         path_args = ('Kind',)
         if id is not None:
             path_args += (id,)
-        return Key(*path_args, dataset_id=dataset_id).to_protobuf()
+        return Key(*path_args, project=dataset_id).to_protobuf()
 
     def _make_query_pb(self, kind):
         from gcloud.datastore._generated import query_pb2

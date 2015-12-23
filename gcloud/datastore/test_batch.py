@@ -348,8 +348,8 @@ class _Key(object):
     _id = 1234
     _stored = None
 
-    def __init__(self, dataset_id):
-        self.dataset_id = dataset_id
+    def __init__(self, project):
+        self.project = project
 
     @property
     def is_partial(self):
@@ -359,7 +359,7 @@ class _Key(object):
         from gcloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.dataset_id = self.dataset_id
+        # key.partition_id.dataset_id = self.project
 
         element = key.path_element.add()
         element.kind = self._kind
@@ -370,7 +370,7 @@ class _Key(object):
 
     def completed_key(self, new_id):
         assert self.is_partial
-        new_key = self.__class__(self.dataset_id)
+        new_key = self.__class__(self.project)
         new_key._id = new_id
         return new_key
 

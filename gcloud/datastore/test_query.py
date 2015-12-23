@@ -50,7 +50,7 @@ class TestQuery(unittest2.TestCase):
         _KIND = 'KIND'
         _NAMESPACE = 'OTHER_NAMESPACE'
         client = self._makeClient()
-        ancestor = Key('ANCESTOR', 123, dataset_id=_DATASET)
+        ancestor = Key('ANCESTOR', 123, project=_DATASET)
         FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
         PROJECTION = ['foo', 'bar', 'baz']
         ORDER = ['foo', 'bar']
@@ -145,7 +145,7 @@ class TestQuery(unittest2.TestCase):
     def test_ancestor_setter_w_key(self):
         from gcloud.datastore.key import Key
         _NAME = u'NAME'
-        key = Key('KIND', 123, dataset_id=self._DATASET)
+        key = Key('KIND', 123, project=self._DATASET)
         query = self._makeOne(self._makeClient())
         query.add_filter('name', '=', _NAME)
         query.ancestor = key
@@ -153,7 +153,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_ancestor_deleter_w_key(self):
         from gcloud.datastore.key import Key
-        key = Key('KIND', 123, dataset_id=self._DATASET)
+        key = Key('KIND', 123, project=self._DATASET)
         query = self._makeOne(client=self._makeClient(), ancestor=key)
         del query.ancestor
         self.assertTrue(query.ancestor is None)
@@ -200,13 +200,13 @@ class TestQuery(unittest2.TestCase):
     def test_add_filter___key__valid_key(self):
         from gcloud.datastore.key import Key
         query = self._makeOne(self._makeClient())
-        key = Key('Foo', dataset_id=self._DATASET)
+        key = Key('Foo', project=self._DATASET)
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
     def test_filter___key__not_equal_operator(self):
         from gcloud.datastore.key import Key
-        key = Key('Foo', dataset_id=self._DATASET)
+        key = Key('Foo', project=self._DATASET)
         query = self._makeOne(self._makeClient())
         query.add_filter('__key__', '<', key)
         self.assertEqual(query.filters, [('__key__', '<', key)])
@@ -561,7 +561,7 @@ class Test__pb_from_query(unittest2.TestCase):
         from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
-        ancestor = Key('Ancestor', 123, dataset_id='DATASET')
+        ancestor = Key('Ancestor', 123, project='DATASET')
         pb = self._callFUT(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
@@ -591,7 +591,7 @@ class Test__pb_from_query(unittest2.TestCase):
         from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
-        key = Key('Kind', 123, dataset_id='DATASET')
+        key = Key('Kind', 123, project='DATASET')
         query = _Query(filters=[('__key__', '=', key)])
         query.OPERATORS = {
             '=': query_pb2.PropertyFilter.EQUAL,
