@@ -182,9 +182,9 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.client import Client
         return Client
 
-    def _makeOne(self, dataset_id=DATASET_ID, namespace=None,
+    def _makeOne(self, project=DATASET_ID, namespace=None,
                  credentials=None, http=None):
-        return self._getTargetClass()(dataset_id=dataset_id,
+        return self._getTargetClass()(project=project,
                                       namespace=namespace,
                                       credentials=credentials,
                                       http=http)
@@ -212,7 +212,7 @@ class TestClient(unittest2.TestCase):
             with _Monkey(_base_client,
                          get_credentials=lambda: creds):
                 client = klass()
-        self.assertEqual(client.dataset_id, OTHER)
+        self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, None)
         self.assertTrue(isinstance(client.connection, _MockConnection))
         self.assertTrue(client.connection.credentials is creds)
@@ -225,11 +225,11 @@ class TestClient(unittest2.TestCase):
         NAMESPACE = 'namespace'
         creds = object()
         http = object()
-        client = self._makeOne(dataset_id=OTHER,
+        client = self._makeOne(project=OTHER,
                                namespace=NAMESPACE,
                                credentials=creds,
                                http=http)
-        self.assertEqual(client.dataset_id, OTHER)
+        self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertTrue(isinstance(client.connection, _MockConnection))
         self.assertTrue(client.connection.credentials is creds)

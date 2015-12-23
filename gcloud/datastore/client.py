@@ -158,8 +158,8 @@ def _extended_lookup(connection, dataset_id, key_pbs,
 class Client(_BaseClient):
     """Convenience wrapper for invoking APIs/factories w/ a dataset ID.
 
-    :type dataset_id: string
-    :param dataset_id: (optional) dataset ID to pass to proxied API methods.
+    :type project: string
+    :param project: (optional) The project to pass to proxied API methods.
 
     :type namespace: string
     :param namespace: (optional) namespace to pass to proxied API methods.
@@ -178,12 +178,12 @@ class Client(_BaseClient):
     """
     _connection_class = Connection
 
-    def __init__(self, dataset_id=None, namespace=None,
+    def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        dataset_id = _determine_default_dataset_id(dataset_id)
-        if dataset_id is None:
-            raise EnvironmentError('Dataset ID could not be inferred.')
-        self.dataset_id = dataset_id
+        project = _determine_default_dataset_id(project)
+        if project is None:
+            raise EnvironmentError('Project could not be inferred.')
+        self.project = project
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         super(Client, self).__init__(credentials, http)
@@ -289,14 +289,14 @@ class Client(_BaseClient):
 
         ids = set(key.dataset_id for key in keys)
         for current_id in ids:
-            if not _dataset_ids_equal(current_id, self.dataset_id):
-                raise ValueError('Keys do not match dataset ID')
+            if not _dataset_ids_equal(current_id, self.project):
+                raise ValueError('Keys do not match project')
 
         transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
             connection=self.connection,
-            dataset_id=self.dataset_id,
+            dataset_id=self.project,
             key_pbs=[k.to_protobuf() for k in keys],
             missing=missing,
             deferred=deferred,
@@ -428,7 +428,7 @@ class Client(_BaseClient):
         """
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
-        kwargs['dataset_id'] = self.dataset_id
+        kwargs['dataset_id'] = self.project
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Key(*path_args, **kwargs)
@@ -456,7 +456,7 @@ class Client(_BaseClient):
             raise TypeError('Cannot pass client')
         if 'dataset_id' in kwargs:
             raise TypeError('Cannot pass dataset_id')
-        kwargs['dataset_id'] = self.dataset_id
+        kwargs['dataset_id'] = self.project
         if 'namespace' not in kwargs:
             kwargs['namespace'] = self.namespace
         return Query(self, **kwargs)

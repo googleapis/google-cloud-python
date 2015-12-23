@@ -79,7 +79,7 @@ class Batch(object):
         :rtype: :class:`str`
         :returns: The dataset ID in which the batch will run.
         """
-        return self._client.dataset_id
+        return self._client.project
 
     @property
     def namespace(self):

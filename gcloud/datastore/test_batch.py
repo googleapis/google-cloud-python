@@ -377,8 +377,8 @@ class _Key(object):
 
 class _Client(object):
 
-    def __init__(self, dataset_id, connection, namespace=None):
-        self.dataset_id = dataset_id
+    def __init__(self, project, connection, namespace=None):
+        self.project = project
         self.connection = connection
         self.namespace = namespace
         self._batches = []
