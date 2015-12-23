@@ -27,11 +27,11 @@ class TestTransaction(unittest2.TestCase):
     def test_ctor_defaults(self):
         from gcloud.datastore._generated import datastore_pb2
 
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
-        self.assertEqual(xact.project, _DATASET)
+        self.assertEqual(xact.project, _PROJECT)
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
@@ -40,9 +40,9 @@ class TestTransaction(unittest2.TestCase):
 
     def test_current(self):
         from gcloud.datastore.test_client import _NoCommitBatch
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact1 = self._makeOne(client)
         xact2 = self._makeOne(client)
         self.assertTrue(xact1.current() is None)
@@ -65,22 +65,22 @@ class TestTransaction(unittest2.TestCase):
         self.assertTrue(xact2.current() is None)
 
     def test_begin(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun, _DATASET)
+        self.assertEqual(connection._begun, _PROJECT)
 
     def test_begin_tombstoned(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact.begin()
         self.assertEqual(xact.id, 234)
-        self.assertEqual(connection._begun, _DATASET)
+        self.assertEqual(connection._begun, _PROJECT)
 
         xact.rollback()
         self.assertEqual(xact.id, None)
@@ -88,34 +88,34 @@ class TestTransaction(unittest2.TestCase):
         self.assertRaises(ValueError, xact.begin)
 
     def test_rollback(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact.begin()
         xact.rollback()
         self.assertEqual(xact.id, None)
-        self.assertEqual(connection._rolled_back, (_DATASET, 234))
+        self.assertEqual(connection._rolled_back, (_PROJECT, 234))
 
     def test_commit_no_partial_keys(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact._commit_request = commit_request = object()
         xact.begin()
         xact.commit()
         self.assertEqual(connection._committed,
-                         (_DATASET, commit_request, 234))
+                         (_PROJECT, commit_request, 234))
         self.assertEqual(xact.id, None)
 
     def test_commit_w_partial_keys(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _KIND = 'KIND'
         _ID = 123
         connection = _Connection(234)
-        connection._completed_keys = [_make_key(_KIND, _ID, _DATASET)]
-        client = _Client(_DATASET, connection)
+        connection._completed_keys = [_make_key(_KIND, _ID, _PROJECT)]
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         entity = _Entity()
         xact.put(entity)
@@ -123,21 +123,21 @@ class TestTransaction(unittest2.TestCase):
         xact.begin()
         xact.commit()
         self.assertEqual(connection._committed,
-                         (_DATASET, commit_request, 234))
+                         (_PROJECT, commit_request, 234))
         self.assertEqual(xact.id, None)
         self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
 
     def test_context_manager_no_raise(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact._commit_request = commit_request = object()
         with xact:
             self.assertEqual(xact.id, 234)
-            self.assertEqual(connection._begun, _DATASET)
+            self.assertEqual(connection._begun, _PROJECT)
         self.assertEqual(connection._committed,
-                         (_DATASET, commit_request, 234))
+                         (_PROJECT, commit_request, 234))
         self.assertEqual(xact.id, None)
 
     def test_context_manager_w_raise(self):
@@ -145,31 +145,31 @@ class TestTransaction(unittest2.TestCase):
         class Foo(Exception):
             pass
 
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection(234)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         xact = self._makeOne(client)
         xact._mutation = object()
         try:
             with xact:
                 self.assertEqual(xact.id, 234)
-                self.assertEqual(connection._begun, _DATASET)
+                self.assertEqual(connection._begun, _PROJECT)
                 raise Foo()
         except Foo:
             self.assertEqual(xact.id, None)
-            self.assertEqual(connection._rolled_back, (_DATASET, 234))
+            self.assertEqual(connection._rolled_back, (_PROJECT, 234))
         self.assertEqual(connection._committed, None)
         self.assertEqual(xact.id, None)
 
 
-def _make_key(kind, id, dataset_id):
+def _make_key(kind, id_, project):
     from gcloud.datastore._generated import entity_pb2
 
     key = entity_pb2.Key()
-    key.partition_id.dataset_id = dataset_id
+    key.partition_id.dataset_id = project
     elem = key.path_element.add()
     elem.kind = kind
-    elem.id = id
+    elem.id = id_
     return key
 
 
@@ -182,15 +182,15 @@ class _Connection(object):
         self._completed_keys = []
         self._index_updates = 0
 
-    def begin_transaction(self, dataset_id):
-        self._begun = dataset_id
+    def begin_transaction(self, project):
+        self._begun = project
         return self._xact_id
 
-    def rollback(self, dataset_id, transaction_id):
-        self._rolled_back = dataset_id, transaction_id
+    def rollback(self, project, transaction_id):
+        self._rolled_back = project, transaction_id
 
-    def commit(self, dataset_id, commit_request, transaction_id):
-        self._committed = (dataset_id, commit_request, transaction_id)
+    def commit(self, project, commit_request, transaction_id):
+        self._committed = (project, commit_request, transaction_id)
         return self._index_updates, self._completed_keys
 
 
@@ -199,7 +199,7 @@ class _Entity(dict):
     def __init__(self):
         super(_Entity, self).__init__()
         from gcloud.datastore.key import Key
-        self.key = Key('KIND', project='DATASET')
+        self.key = Key('KIND', project='PROJECT')
 
 
 class _Client(object):
