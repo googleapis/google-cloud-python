@@ -28,11 +28,20 @@ class Row(object):
 
     :type table: :class:`Table <gcloud.bigtable.table.Table>`
     :param table: The table that owns the row.
+
+    :type filter_: :class:`RowFilter`
+    :param filter_: (Optional) Filter to be used for conditional mutations.
+                    If a filter is set, then the :class:`Row` will accumulate
+                    mutations for either a :data:`True` or :data:`False` state.
+                    When :meth:`commit`-ed, the mutations for the :data:`True`
+                    state will be applied if the filter matches any cells in
+                    the row, otherwise the :data:`False` state will be.
     """
 
-    def __init__(self, row_key, table):
+    def __init__(self, row_key, table, filter_=None):
         self._row_key = _to_bytes(row_key)
         self._table = table
+        self._filter = filter_
 
 
 class RowFilter(object):

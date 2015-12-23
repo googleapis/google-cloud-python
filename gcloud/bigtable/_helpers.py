@@ -19,13 +19,19 @@ protobuf objects.
 """
 
 
+import platform
+
 from grpc.beta import implementations
 
 
 # See https://gist.github.com/dhermes/bbc5b7be1932bfffae77
 # for appropriate values on other systems.
-# NOTE: Even this path is Unix specific.
-SSL_CERT_FILE = '/etc/ssl/certs/ca-certificates.crt'
+_PLAT_SYS = platform.system()
+SSL_CERT_FILE = None
+if _PLAT_SYS == 'Linux':
+    SSL_CERT_FILE = '/etc/ssl/certs/ca-certificates.crt'
+elif _PLAT_SYS == 'Darwin':  # pragma: NO COVER
+    SSL_CERT_FILE = '/usr/local/etc/openssl/cert.pem'
 
 
 class MetadataTransformer(object):
