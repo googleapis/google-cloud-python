@@ -25,7 +25,7 @@ class TestTransaction(unittest2.TestCase):
         return self._getTargetClass()(client, **kw)
 
     def test_ctor_defaults(self):
-        from gcloud.datastore._datastore_pb2 import Mutation
+        from gcloud.datastore._generated import datastore_pb2
 
         _DATASET = 'DATASET'
         connection = _Connection()
@@ -35,7 +35,7 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
-        self.assertTrue(isinstance(xact.mutations, Mutation))
+        self.assertTrue(isinstance(xact.mutations, datastore_pb2.Mutation))
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
@@ -160,9 +160,9 @@ class TestTransaction(unittest2.TestCase):
 
 
 def _make_key(kind, id, dataset_id):
-    from gcloud.datastore._entity_pb2 import Key
+    from gcloud.datastore._generated import entity_pb2
 
-    key = Key()
+    key = entity_pb2.Key()
     key.partition_id.dataset_id = dataset_id
     elem = key.path_element.add()
     elem.kind = kind

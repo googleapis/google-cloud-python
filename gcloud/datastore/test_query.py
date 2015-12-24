@@ -326,13 +326,13 @@ class TestIterator(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def _addQueryResults(self, connection, cursor=_END, more=False):
-        from gcloud.datastore import _entity_pb2
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import entity_pb2
+        from gcloud.datastore._generated import query_pb2
 
-        MORE = _query_pb2.QueryResultBatch.NOT_FINISHED
-        NO_MORE = _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
+        MORE = query_pb2.QueryResultBatch.NOT_FINISHED
+        NO_MORE = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
-        entity_pb = _entity_pb2.Entity()
+        entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.dataset_id = self._DATASET
         path_element = entity_pb.key.path_element.add()
         path_element.kind = self._KIND
@@ -531,7 +531,7 @@ class Test__pb_from_query(unittest2.TestCase):
         return _pb_from_query(query)
 
     def test_empty(self):
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import query_pb2
 
         pb = self._callFUT(_Query())
         self.assertEqual(list(pb.projection), [])
@@ -540,7 +540,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(pb.group_by), [])
         self.assertEqual(pb.filter.property_filter.property.name, '')
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, _query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
         self.assertEqual(list(cfilter.filter), [])
         self.assertEqual(pb.start_cursor, b'')
         self.assertEqual(pb.end_cursor, b'')
@@ -559,12 +559,12 @@ class Test__pb_from_query(unittest2.TestCase):
     def test_ancestor(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.helpers import _prepare_key_for_request
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import query_pb2
 
         ancestor = Key('Ancestor', 123, dataset_id='DATASET')
         pb = self._callFUT(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, _query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
@@ -572,15 +572,15 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(pfilter.value.key_value, ancestor_pb)
 
     def test_filter(self):
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import query_pb2
 
         query = _Query(filters=[('name', '=', u'John')])
         query.OPERATORS = {
-            '=': _query_pb2.PropertyFilter.EQUAL,
+            '=': query_pb2.PropertyFilter.EQUAL,
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, _query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, 'name')
@@ -589,16 +589,16 @@ class Test__pb_from_query(unittest2.TestCase):
     def test_filter_key(self):
         from gcloud.datastore.key import Key
         from gcloud.datastore.helpers import _prepare_key_for_request
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import query_pb2
 
         key = Key('Kind', 123, dataset_id='DATASET')
         query = _Query(filters=[('__key__', '=', key)])
         query.OPERATORS = {
-            '=': _query_pb2.PropertyFilter.EQUAL,
+            '=': query_pb2.PropertyFilter.EQUAL,
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, _query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
@@ -606,15 +606,15 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(pfilter.value.key_value, key_pb)
 
     def test_order(self):
-        from gcloud.datastore import _query_pb2
+        from gcloud.datastore._generated import query_pb2
 
         pb = self._callFUT(_Query(order=['a', '-b', 'c']))
         self.assertEqual([item.property.name for item in pb.order],
                          ['a', 'b', 'c'])
         self.assertEqual([item.direction for item in pb.order],
-                         [_query_pb2.PropertyOrder.ASCENDING,
-                          _query_pb2.PropertyOrder.DESCENDING,
-                          _query_pb2.PropertyOrder.ASCENDING])
+                         [query_pb2.PropertyOrder.ASCENDING,
+                          query_pb2.PropertyOrder.DESCENDING,
+                          query_pb2.PropertyOrder.ASCENDING])
 
     def test_group_by(self):
         pb = self._callFUT(_Query(group_by=['a', 'b', 'c']))

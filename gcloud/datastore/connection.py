@@ -19,8 +19,8 @@ import os
 from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
-from gcloud.datastore import _datastore_pb2
-from gcloud.datastore import _entity_pb2
+from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 
 
 class Connection(connection.Connection):
@@ -151,8 +151,8 @@ class Connection(connection.Connection):
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
         This method deals only with protobufs
-        (:class:`gcloud.datastore._entity_pb2.Key` and
-        :class:`gcloud.datastore._entity_pb2.Entity`) and is used
+        (:class:`gcloud.datastore._generated.entity_pb2.Key` and
+        :class:`gcloud.datastore._generated.entity_pb2.Entity`) and is used
         under the hood in :func:`gcloud.datastore.get`:
 
         >>> from gcloud import datastore
@@ -168,7 +168,8 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset to look up the keys.
 
-        :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
+        :type key_pbs: list of
+                       :class:`gcloud.datastore._generated.entity_pb2.Key`
         :param key_pbs: The keys to retrieve from the datastore.
 
         :type eventual: boolean
@@ -184,9 +185,9 @@ class Connection(connection.Connection):
         :rtype: tuple
         :returns: A triple of (``results``, ``missing``, ``deferred``) where
                   both ``results`` and ``missing`` are lists of
-                  :class:`gcloud.datastore._entity_pb2.Entity` and
+                  :class:`gcloud.datastore._generated.entity_pb2.Entity` and
                   ``deferred`` is a list of
-                  :class:`gcloud.datastore._entity_pb2.Key`.
+                  :class:`gcloud.datastore._generated.entity_pb2.Key`.
         """
         lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
@@ -239,7 +240,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID of the dataset over which to run the query.
 
-        :type query_pb: :class:`gcloud.datastore._query_pb2.Query`
+        :type query_pb: :class:`gcloud.datastore._generated.query_pb2.Query`
         :param query_pb: The Protobuf representing the query to run.
 
         :type namespace: string
@@ -279,7 +280,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :rtype: :class:`._datastore_pb2.BeginTransactionResponse`
+        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
         :returns': the result protobuf for the begin transaction request.
         """
         request = _datastore_pb2.BeginTransactionRequest()
@@ -297,7 +298,7 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type mutation_pb: :class:`._datastore_pb2.Mutation`
+        :type mutation_pb: :class:`._generated.datastore_pb2.Mutation`
         :param mutation_pb: The protobuf for the mutations being saved.
 
         :type transaction_id: string or None
@@ -307,8 +308,8 @@ class Connection(connection.Connection):
 
         :rtype: tuple
         :returns': The pair of the number of index updates and a list of
-                   :class:`._entity_pb2.Key` for each incomplete key that was
-                   completed in the commit.
+                   :class:`._generated.entity_pb2.Key` for each incomplete key
+                   that was completed in the commit.
         """
         request = _datastore_pb2.CommitRequest()
 
@@ -351,10 +352,11 @@ class Connection(connection.Connection):
         :param dataset_id: The ID of the dataset to which the transaction
                            belongs.
 
-        :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
+        :type key_pbs: list of
+                       :class:`gcloud.datastore._generated.entity_pb2.Key`
         :param key_pbs: The keys for which the backend should allocate IDs.
 
-        :rtype: list of :class:`gcloud.datastore._entity_pb2.Key`
+        :rtype: list of :class:`gcloud.datastore._generated.entity_pb2.Key`
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = _datastore_pb2.AllocateIdsRequest()
@@ -390,10 +392,10 @@ def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
       This is copied from `helpers` to avoid a cycle:
       _implicit_environ -> connection -> helpers -> key -> _implicit_environ
 
-    :type key_pb: :class:`gcloud.datastore._entity_pb2.Key`
+    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param key_pb: A key to be added to a request.
 
-    :rtype: :class:`gcloud.datastore._entity_pb2.Key`
+    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
@@ -411,7 +413,7 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :type request_field_pb: `RepeatedCompositeFieldContainer`
     :param request_field_pb: A repeated proto field that contains keys.
 
-    :type key_pbs: list of :class:`gcloud.datastore._entity_pb2.Key`
+    :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
@@ -422,13 +424,13 @@ def _add_keys_to_request(request_field_pb, key_pbs):
 def _parse_commit_response(commit_response_pb):
     """Extract response data from a commit response.
 
-    :type commit_response_pb: :class:`._datastore_pb2.CommitResponse`
+    :type commit_response_pb: :class:`._generated.datastore_pb2.CommitResponse`
     :param commit_response_pb: The protobuf response from a commit request.
 
     :rtype: tuple
     :returns': The pair of the number of index updates and a list of
-               :class:`._entity_pb2.Key` for each incomplete key that was
-               completed in the commit.
+               :class:`._generated.entity_pb2.Key` for each incomplete key
+               that was completed in the commit.
     """
     mut_result = commit_response_pb.mutation_result
     index_updates = mut_result.index_updates
