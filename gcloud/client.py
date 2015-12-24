@@ -16,7 +16,7 @@
 
 import six
 
-from gcloud._helpers import _get_production_project
+from gcloud._helpers import _determine_default_project
 from gcloud.connection import Connection
 from gcloud.credentials import get_credentials
 from gcloud.credentials import get_for_service_account_json
@@ -137,8 +137,7 @@ class _ClientProjectMixin(object):
     """
 
     def __init__(self, project=None):
-        if project is None:
-            project = _get_production_project()
+        project = _determine_default_project(project)
         if project is None:
             raise ValueError('Project was not passed and could not be '
                              'determined from the environment.')
