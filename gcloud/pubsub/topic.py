@@ -29,7 +29,7 @@ class Topic(object):
     Subscribers then receive those messages.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics
+    https://cloud.google.com/pubsub/reference/rest/v1/projects.topics
 
     :type name: string
     :param name: the name of the topic
@@ -119,7 +119,7 @@ class Topic(object):
         """API call:  create the topic via a PUT request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/create
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -132,7 +132,7 @@ class Topic(object):
         """API call:  test for the existence of the topic via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/get
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -161,7 +161,7 @@ class Topic(object):
         """API call:  publish a message to a topic via a POST request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/publish
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
 
         :type message: bytes
         :param message: the message payload
@@ -203,7 +203,7 @@ class Topic(object):
         """API call:  delete the topic via a DELETE request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/delete
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
