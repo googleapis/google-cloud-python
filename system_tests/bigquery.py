@@ -117,7 +117,6 @@ class TestBigQuery(unittest2.TestCase):
         self.to_delete.insert(0, table)
         self.assertTrue(table.exists())
         self.assertEqual(table.name, TABLE_NAME)
-        self.assertTrue(table._dataset is dataset)
 
     def test_list_tables(self):
         dataset = CLIENT.dataset(DATASET_NAME)
@@ -141,8 +140,8 @@ class TestBigQuery(unittest2.TestCase):
         all_tables, token = dataset.list_tables()
         self.assertTrue(token is None)
         created = [table for table in all_tables
-                   if table.name in tables_to_create and
-                   table._dataset.name == DATASET_NAME]
+                   if (table.name in tables_to_create and
+                       table.dataset_name == DATASET_NAME)]
         self.assertEqual(len(created), len(tables_to_create))
 
     def test_patch_table(self):
