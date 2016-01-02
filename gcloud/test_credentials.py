@@ -247,25 +247,29 @@ class Test__get_signature_bytes(unittest2.TestCase):
         from gcloud import credentials as MUT
 
         crypt = _Crypt()
-        pkcs_v1_5 = _PKCS1_v1_5()
-        rsa = _RSA()
-        sha256 = _SHA256()
+        load_result = object()
+        sign_result = object()
+        openssl_crypto = _OpenSSLCrypto(load_result, sign_result)
 
-        with _Monkey(MUT, crypt=crypt, RSA=rsa, PKCS1_v1_5=pkcs_v1_5,
-                     SHA256=sha256):
+        with _Monkey(MUT, crypt=crypt, crypto=openssl_crypto):
             result = self._callFUT(credentials, string_to_sign)
 
         if crypt._pkcs12_key_as_pem_called:
             self.assertEqual(crypt._private_key_text,
                              base64.b64encode(private_key_text))
             self.assertEqual(crypt._private_key_password, 'notasecret')
-        # sha256._string_to_sign is always bytes.
-        if isinstance(string_to_sign, six.binary_type):
-            self.assertEqual(sha256._string_to_sign, string_to_sign)
+            self.assertEqual(openssl_crypto._loaded,
+                             [(openssl_crypto.FILETYPE_PEM, _Crypt._KEY)])
         else:
-            self.assertEqual(sha256._string_to_sign,
-                             string_to_sign.encode('utf-8'))
-        self.assertEqual(result, b'DEADBEEF')
+            self.assertEqual(openssl_crypto._loaded,
+                             [(openssl_crypto.FILETYPE_PEM, private_key_text)])
+
+        if not isinstance(string_to_sign, six.binary_type):
+            string_to_sign = string_to_sign.encode('utf-8')
+        self.assertEqual(openssl_crypto._signed,
+                         [(load_result, string_to_sign, 'SHA256')])
+
+        self.assertEqual(result, sign_result)
 
     def test_p12_type(self):
         from oauth2client.client import SignedJwtAssertionCredentials
@@ -450,14 +454,19 @@ class Test__get_pem_key(unittest2.TestCase):
         credentials = client.SignedJwtAssertionCredentials(
             'dummy_service_account_name', PRIVATE_KEY, scopes)
         crypt = _Crypt()
-        rsa = _RSA()
-        with _Monkey(MUT, crypt=crypt, RSA=rsa):
+        load_result = object()
+        openssl_crypto = _OpenSSLCrypto(load_result, None)
+
+        with _Monkey(MUT, crypt=crypt, crypto=openssl_crypto):
             result = self._callFUT(credentials)
 
         self.assertEqual(crypt._private_key_text,
                          base64.b64encode(PRIVATE_KEY))
         self.assertEqual(crypt._private_key_password, 'notasecret')
-        self.assertEqual(result, 'imported:__PEM__')
+        self.assertEqual(result, load_result)
+        self.assertEqual(openssl_crypto._loaded,
+                         [(openssl_crypto.FILETYPE_PEM, _Crypt._KEY)])
+        self.assertEqual(openssl_crypto._signed, [])
 
     def test_service_account_via_json_key(self):
         from oauth2client import service_account
@@ -476,12 +485,16 @@ class Test__get_pem_key(unittest2.TestCase):
                 'dummy_service_account_id', 'dummy_service_account_email',
                 'dummy_private_key_id', PRIVATE_TEXT, scopes)
 
-        rsa = _RSA()
-        with _Monkey(MUT, RSA=rsa):
+        load_result = object()
+        openssl_crypto = _OpenSSLCrypto(load_result, None)
+
+        with _Monkey(MUT, crypto=openssl_crypto):
             result = self._callFUT(credentials)
 
-        expected = 'imported:%s' % (PRIVATE_TEXT,)
-        self.assertEqual(result, expected)
+        self.assertEqual(result, load_result)
+        self.assertEqual(openssl_crypto._loaded,
+                         [(openssl_crypto.FILETYPE_PEM, PRIVATE_TEXT)])
+        self.assertEqual(openssl_crypto._signed, [])
 
 
 class Test__get_expiration_seconds(unittest2.TestCase):
@@ -596,43 +609,32 @@ class _Client(object):
 class _Crypt(object):
 
     _pkcs12_key_as_pem_called = False
+    _KEY = '__PEM__'
 
     def pkcs12_key_as_pem(self, private_key_text, private_key_password):
         self._pkcs12_key_as_pem_called = True
         self._private_key_text = private_key_text
         self._private_key_password = private_key_password
-        return '__PEM__'
+        return self._KEY
 
 
-class _RSA(object):
+class _OpenSSLCrypto(object):
 
-    _imported = None
+    FILETYPE_PEM = object()
 
-    def importKey(self, pem):
-        self._imported = pem
-        return 'imported:%s' % pem
+    def __init__(self, load_result, sign_result):
+        self._loaded = []
+        self._load_result = load_result
+        self._signed = []
+        self._sign_result = sign_result
 
+    def load_privatekey(self, key_type, key_text):
+        self._loaded.append((key_type, key_text))
+        return self._load_result
 
-class _PKCS1_v1_5(object):
-
-    _pem_key = _signature_hash = None
-
-    def new(self, pem_key):
-        self._pem_key = pem_key
-        return self
-
-    def sign(self, signature_hash):
-        self._signature_hash = signature_hash
-        return b'DEADBEEF'
-
-
-class _SHA256(object):
-
-    _string_to_sign = None
-
-    def new(self, string_to_sign):
-        self._string_to_sign = string_to_sign
-        return self
+    def sign(self, pkey, to_sign, sign_algo):
+        self._signed.append((pkey, to_sign, sign_algo))
+        return self._sign_result
 
 
 class _AppIdentity(object):

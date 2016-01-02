@@ -19,9 +19,8 @@ import datetime
 import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
+from OpenSSL import crypto
+
 from oauth2client import client
 from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
@@ -148,19 +147,19 @@ def get_for_service_account_p12(client_email, private_key_path, scope=None):
 
 
 def _get_pem_key(credentials):
-    """Gets RSA key for a PEM payload from a credentials object.
+    """Gets private key for a PEM payload from a credentials object.
 
     :type credentials: :class:`client.SignedJwtAssertionCredentials`,
                        :class:`service_account._ServiceAccountCredentials`
-    :param credentials: The credentials used to create an RSA key
+    :param credentials: The credentials used to create a private key
                         for signing text.
 
-    :rtype: :class:`Crypto.PublicKey.RSA._RSAobj`
-    :returns: An RSA object used to sign text.
+    :rtype: :class:`OpenSSL.crypto.PKey`
+    :returns: A PKey object used to sign text.
     :raises: `TypeError` if `credentials` is the wrong type.
     """
     if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        # Take our PKCS12 (.p12) key and make it into a RSA key we can use.
+        # Take our PKCS12 (.p12) text and convert to PEM text.
         pem_text = crypt.pkcs12_key_as_pem(credentials.private_key,
                                            credentials.private_key_password)
     elif isinstance(credentials, service_account._ServiceAccountCredentials):
@@ -169,7 +168,7 @@ def _get_pem_key(credentials):
         raise TypeError((credentials,
                          'not a valid service account credentials type'))
 
-    return RSA.importKey(pem_text)
+    return crypto.load_privatekey(crypto.FILETYPE_PEM, pem_text)
 
 
 def _get_signature_bytes(credentials, string_to_sign):
@@ -179,7 +178,7 @@ def _get_signature_bytes(credentials, string_to_sign):
                        :class:`service_account._ServiceAccountCredentials`,
                        :class:`_GAECreds`
     :param credentials: The credentials used for signing text (typically
-                        involves the creation of an RSA key).
+                        involves the creation of a PKey).
 
     :type string_to_sign: string
     :param string_to_sign: The string to be signed by the credentials.
@@ -191,13 +190,11 @@ def _get_signature_bytes(credentials, string_to_sign):
         _, signed_bytes = app_identity.sign_blob(string_to_sign)
         return signed_bytes
     else:
-        pem_key = _get_pem_key(credentials)
-        # Sign the string with the RSA key.
-        signer = PKCS1_v1_5.new(pem_key)
+        # Sign the string with the PKey.
+        pkey = _get_pem_key(credentials)
         if not isinstance(string_to_sign, six.binary_type):
             string_to_sign = string_to_sign.encode('utf-8')
-        signature_hash = SHA256.new(string_to_sign)
-        return signer.sign(signature_hash)
+        return crypto.sign(pkey, string_to_sign, 'SHA256')
 
 
 def _get_service_account_name(credentials):
@@ -233,7 +230,7 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
 
     :type credentials: :class:`client.SignedJwtAssertionCredentials`,
                        :class:`service_account._ServiceAccountCredentials`
-    :param credentials: The credentials used to create an RSA key
+    :param credentials: The credentials used to create a private key
                         for signing text.
 
     :type expiration: int or long
