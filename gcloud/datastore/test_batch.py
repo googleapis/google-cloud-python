@@ -209,7 +209,7 @@ class TestBatch(unittest2.TestCase):
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutations, None)])
+                         [(_DATASET, batch._commit_request, None)])
 
     def test_commit_w_partial_key_entities(self):
         _DATASET = 'DATASET'
@@ -225,7 +225,7 @@ class TestBatch(unittest2.TestCase):
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutations, None)])
+                         [(_DATASET, batch._commit_request, None)])
         self.assertFalse(entity.key.is_partial)
         self.assertEqual(entity.key._id, _NEW_ID)
 
@@ -248,7 +248,7 @@ class TestBatch(unittest2.TestCase):
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch.mutations, None)])
+                         [(_DATASET, batch._commit_request, None)])
 
     def test_as_context_mgr_nested(self):
         _DATASET = 'DATASET'
@@ -280,8 +280,8 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(mutated_entity2.key, key2._key)
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch2.mutations, None),
-                          (_DATASET, batch1.mutations, None)])
+                         [(_DATASET, batch2._commit_request, None),
+                          (_DATASET, batch1._commit_request, None)])
 
     def test_as_context_mgr_w_error(self):
         _DATASET = 'DATASET'
@@ -329,8 +329,8 @@ class _Connection(object):
         self._committed = []
         self._index_updates = 0
 
-    def commit(self, dataset_id, mutation, transaction_id):
-        self._committed.append((dataset_id, mutation, transaction_id))
+    def commit(self, dataset_id, commit_request, transaction_id):
+        self._committed.append((dataset_id, commit_request, transaction_id))
         return self._index_updates, self._completed_keys
 
 

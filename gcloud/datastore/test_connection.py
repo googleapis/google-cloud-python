@@ -675,7 +675,8 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb2.CommitResponse()
-        mutation = datastore_pb2.Mutation()
+        req_pb = datastore_pb2.CommitRequest()
+        mutation = req_pb.mutation
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
@@ -700,7 +701,7 @@ class TestConnection(unittest2.TestCase):
             return expected_result
 
         with _Monkey(MUT, _parse_commit_response=mock_parse):
-            result = conn.commit(DATASET_ID, mutation, None)
+            result = conn.commit(DATASET_ID, req_pb, None)
 
         self.assertTrue(result is expected_result)
         cw = http._called_with
@@ -722,7 +723,8 @@ class TestConnection(unittest2.TestCase):
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
         rsp_pb = datastore_pb2.CommitResponse()
-        mutation = datastore_pb2.Mutation()
+        req_pb = datastore_pb2.CommitRequest()
+        mutation = req_pb.mutation
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
@@ -747,7 +749,7 @@ class TestConnection(unittest2.TestCase):
             return expected_result
 
         with _Monkey(MUT, _parse_commit_response=mock_parse):
-            result = conn.commit(DATASET_ID, mutation, b'xact')
+            result = conn.commit(DATASET_ID, req_pb, b'xact')
 
         self.assertTrue(result is expected_result)
         cw = http._called_with

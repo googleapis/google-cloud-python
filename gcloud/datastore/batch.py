@@ -60,11 +60,12 @@ class Batch(object):
     :type client: :class:`gcloud.datastore.client.Client`
     :param client: The client used to connect to datastore.
     """
+
     _id = None  # "protected" attribute, always None for non-transactions
 
     def __init__(self, client):
         self._client = client
-        self._mutation = _datastore_pb2.Mutation()
+        self._commit_request = _datastore_pb2.CommitRequest()
         self._partial_key_entities = []
 
     def current(self):
@@ -114,6 +115,9 @@ class Batch(object):
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
+        # We use ``upsert`` for entities with completed keys, rather than
+        # ``insert`` or ``update``, in order not to create race conditions
+        # based on prior existence / removal of the entity.
         return self.mutations.upsert.add()
 
     def _add_delete_key_pb(self):
@@ -129,17 +133,16 @@ class Batch(object):
     def mutations(self):
         """Getter for the changes accumulated by this batch.
 
-        Every batch is committed with a single Mutation
-        representing the 'work' to be done as part of the batch.
-        Inside a batch, calling :meth:`put` with an entity, or
-        :meth:`delete` with a key, builds up the mutation.
-        This getter returns the Mutation protobuf that
-        has been built-up so far.
+        Every batch is committed with a single commit request containing all
+        the work to be done as mutations. Inside a batch, calling :meth:`put`
+        with an entity, or :meth:`delete` with a key, builds up the request by
+        adding a new mutation. This getter returns the protobuf that has been
+        built-up so far.
 
         :rtype: :class:`gcloud.datastore._generated.datastore_pb2.Mutation`
         :returns: The Mutation protobuf to be sent in the commit request.
         """
-        return self._mutation
+        return self._commit_request.mutation
 
     def put(self, entity):
         """Remember an entity's state to be saved during :meth:`commit`.
@@ -156,8 +159,8 @@ class Batch(object):
            "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
 
         When an entity has a partial key, calling :meth:`commit` sends it as
-        an ``insert_auto_id`` mutation and the key is completed. On return, the
-        key for the ``entity`` passed in as updated to match the key ID
+        an ``insert_auto_id`` mutation and the key is completed. On return,
+        the key for the ``entity`` passed in is updated to match the key ID
         assigned by the server.
 
         :type entity: :class:`gcloud.datastore.entity.Entity`
@@ -212,11 +215,10 @@ class Batch(object):
         context manager.
         """
         _, updated_keys = self.connection.commit(
-            self.dataset_id, self.mutations, self._id)
+            self.dataset_id, self._commit_request, self._id)
         # If the back-end returns without error, we are guaranteed that
-        # the response's 'insert_auto_id_key' will match (length and order)
-        # the request's 'insert_auto_id` entities, which are derived from
-        # our '_partial_key_entities' (no partial success).
+        # :meth:`Connection.commit` will return keys that match (length and
+        # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys,
                                       self._partial_key_entities):
             new_id = new_key_pb.path_element[-1].id

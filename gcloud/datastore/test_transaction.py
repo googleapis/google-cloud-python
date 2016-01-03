@@ -102,10 +102,11 @@ class TestTransaction(unittest2.TestCase):
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
-        xact._mutation = mutation = object()
+        xact._commit_request = commit_request = object()
         xact.begin()
         xact.commit()
-        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
+        self.assertEqual(connection._committed,
+                         (_DATASET, commit_request, 234))
         self.assertEqual(xact.id, None)
 
     def test_commit_w_partial_keys(self):
@@ -118,10 +119,11 @@ class TestTransaction(unittest2.TestCase):
         xact = self._makeOne(client)
         entity = _Entity()
         xact.put(entity)
-        xact._mutation = mutation = object()
+        xact._commit_request = commit_request = object()
         xact.begin()
         xact.commit()
-        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
+        self.assertEqual(connection._committed,
+                         (_DATASET, commit_request, 234))
         self.assertEqual(xact.id, None)
         self.assertEqual(entity.key.path, [{'kind': _KIND, 'id': _ID}])
 
@@ -130,11 +132,12 @@ class TestTransaction(unittest2.TestCase):
         connection = _Connection(234)
         client = _Client(_DATASET, connection)
         xact = self._makeOne(client)
-        xact._mutation = mutation = object()
+        xact._commit_request = commit_request = object()
         with xact:
             self.assertEqual(xact.id, 234)
             self.assertEqual(connection._begun, _DATASET)
-        self.assertEqual(connection._committed, (_DATASET, mutation, 234))
+        self.assertEqual(connection._committed,
+                         (_DATASET, commit_request, 234))
         self.assertEqual(xact.id, None)
 
     def test_context_manager_w_raise(self):
@@ -186,8 +189,8 @@ class _Connection(object):
     def rollback(self, dataset_id, transaction_id):
         self._rolled_back = dataset_id, transaction_id
 
-    def commit(self, dataset_id, mutation, transaction_id):
-        self._committed = (dataset_id, mutation, transaction_id)
+    def commit(self, dataset_id, commit_request, transaction_id):
+        self._committed = (dataset_id, commit_request, transaction_id)
         return self._index_updates, self._completed_keys
 
 
