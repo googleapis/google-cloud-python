@@ -670,6 +670,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore import connection as MUT
+        from gcloud.datastore.helpers import _new_value_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -677,9 +678,8 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb2.Mutation()
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
-        prop = insert.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = u'Foo'
+        value_pb = _new_value_pb(insert, 'foo')
+        value_pb.string_value = u'Foo'
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -717,6 +717,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.datastore._generated import datastore_pb2
         from gcloud.datastore import connection as MUT
+        from gcloud.datastore.helpers import _new_value_pb
 
         DATASET_ID = 'DATASET'
         key_pb = self._make_key_pb(DATASET_ID)
@@ -724,9 +725,8 @@ class TestConnection(unittest2.TestCase):
         mutation = datastore_pb2.Mutation()
         insert = mutation.upsert.add()
         insert.key.CopyFrom(key_pb)
-        prop = insert.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = u'Foo'
+        value_pb = _new_value_pb(insert, 'foo')
+        value_pb.string_value = u'Foo'
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,

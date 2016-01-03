@@ -328,6 +328,7 @@ class TestIterator(unittest2.TestCase):
     def _addQueryResults(self, connection, cursor=_END, more=False):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore._generated import query_pb2
+        from gcloud.datastore.helpers import _new_value_pb
 
         MORE = query_pb2.QueryResultBatch.NOT_FINISHED
         NO_MORE = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
@@ -337,9 +338,8 @@ class TestIterator(unittest2.TestCase):
         path_element = entity_pb.key.path_element.add()
         path_element.kind = self._KIND
         path_element.id = _ID
-        prop = entity_pb.property.add()
-        prop.name = 'foo'
-        prop.value.string_value = u'Foo'
+        value_pb = _new_value_pb(entity_pb, 'foo')
+        value_pb.string_value = u'Foo'
         connection._results.append(
             ([entity_pb], cursor, MORE if more else NO_MORE))
 
