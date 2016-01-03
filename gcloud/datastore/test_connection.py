@@ -631,7 +631,6 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.BeginTransactionRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.isolation_level, rq_class.SERIALIZABLE)
 
     def test_commit_wo_transaction(self):
         from gcloud._testing import _Monkey
