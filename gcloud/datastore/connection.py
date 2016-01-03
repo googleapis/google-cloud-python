@@ -288,8 +288,6 @@ class Connection(connection.Connection):
         :returns: The serialized transaction that was begun.
         """
         request = _datastore_pb2.BeginTransactionRequest()
-        request.isolation_level = (
-            _datastore_pb2.BeginTransactionRequest.SERIALIZABLE)
         response = self._rpc(project, 'beginTransaction', request,
                              _datastore_pb2.BeginTransactionResponse)
         return response.transaction
