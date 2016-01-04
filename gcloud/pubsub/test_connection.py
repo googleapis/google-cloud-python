@@ -24,6 +24,51 @@ class TestConnection(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def test_default_url(self):
+        conn = self._makeOne()
+        klass = self._getTargetClass()
+        self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
+
+    def test_custom_url_from_env(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.environment_vars import PUBSUB_EMULATOR
+
+        HOST = object()
+        fake_environ = {PUBSUB_EMULATOR: HOST}
+
+        with _Monkey(os, getenv=fake_environ.get):
+            conn = self._makeOne()
+
+        klass = self._getTargetClass()
+        self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertEqual(conn.api_base_url, HOST)
+
+    def test_custom_url_from_constructor(self):
+        HOST = object()
+        conn = self._makeOne(api_base_url=HOST)
+
+        klass = self._getTargetClass()
+        self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertEqual(conn.api_base_url, HOST)
+
+    def test_custom_url_constructor_and_env(self):
+        import os
+        from gcloud._testing import _Monkey
+        from gcloud.environment_vars import PUBSUB_EMULATOR
+
+        HOST1 = object()
+        HOST2 = object()
+        fake_environ = {PUBSUB_EMULATOR: HOST1}
+
+        with _Monkey(os, getenv=fake_environ.get):
+            conn = self._makeOne(api_base_url=HOST2)
+
+        klass = self._getTargetClass()
+        self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
+        self.assertNotEqual(conn.api_base_url, HOST1)
+        self.assertEqual(conn.api_base_url, HOST2)
+
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeOne()
         URI = '/'.join([
@@ -44,3 +89,15 @@ class TestConnection(unittest2.TestCase):
                          '/'.join(['', conn.API_VERSION, 'foo']))
         parms = dict(parse_qsl(qs))
         self.assertEqual(parms['bar'], 'baz')
+
+    def test_build_api_url_w_base_url_override(self):
+        base_url1 = 'api-base-url1'
+        base_url2 = 'api-base-url2'
+        conn = self._makeOne(api_base_url=base_url1)
+        URI = '/'.join([
+            base_url2,
+            conn.API_VERSION,
+            'foo',
+        ])
+        self.assertEqual(
+            conn.build_api_url('/foo', api_base_url=base_url2), URI)

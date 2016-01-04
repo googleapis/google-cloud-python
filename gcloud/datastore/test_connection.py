@@ -56,7 +56,7 @@ class TestConnection(unittest2.TestCase):
         import os
         from gcloud._testing import _Monkey
         from gcloud.connection import API_BASE_URL
-        from gcloud.datastore.connection import GCD_HOST
+        from gcloud.environment_vars import GCD_HOST
 
         HOST = object()
         fake_environ = {GCD_HOST: HOST}
@@ -79,7 +79,7 @@ class TestConnection(unittest2.TestCase):
         import os
         from gcloud._testing import _Monkey
         from gcloud.connection import API_BASE_URL
-        from gcloud.datastore.connection import GCD_HOST
+        from gcloud.environment_vars import GCD_HOST
 
         HOST1 = object()
         HOST2 = object()
