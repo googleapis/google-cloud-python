@@ -70,10 +70,21 @@ class TestEntity(unittest2.TestCase):
 
     def test___eq_____ne___w_same_keys(self):
         from gcloud.datastore.key import Key
+
+        name = 'foo'
+        value = 42
+        meaning = 9
+
         key1 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
-        entity1 = self._makeOne(key=key1)
+        entity1 = self._makeOne(key=key1, exclude_from_indexes=(name,))
+        entity1[name] = value
+        entity1._meanings[name] = (meaning, value)
+
         key2 = Key(_KIND, _ID, dataset_id=_DATASET_ID)
-        entity2 = self._makeOne(key=key2)
+        entity2 = self._makeOne(key=key2, exclude_from_indexes=(name,))
+        entity2[name] = value
+        entity2._meanings[name] = (meaning, value)
+
         self.assertTrue(entity1 == entity2)
         self.assertFalse(entity1 != entity2)
 
@@ -139,6 +150,38 @@ class TestEntity(unittest2.TestCase):
         entity2['some_entity'] = sub2
         self.assertFalse(entity1 == entity2)
         self.assertTrue(entity1 != entity2)
+
+    def test__eq__same_value_different_exclude(self):
+        from gcloud.datastore.key import Key
+
+        name = 'foo'
+        value = 42
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+
+        entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity1[name] = value
+
+        entity2 = self._makeOne(key=key, exclude_from_indexes=())
+        entity2[name] = value
+
+        self.assertFalse(entity1 == entity2)
+
+    def test__eq__same_value_different_meanings(self):
+        from gcloud.datastore.key import Key
+
+        name = 'foo'
+        value = 42
+        meaning = 9
+        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+
+        entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity1[name] = value
+
+        entity2 = self._makeOne(key=key, exclude_from_indexes=(name,))
+        entity2[name] = value
+        entity2._meanings[name] = (meaning, value)
+
+        self.assertFalse(entity1 == entity2)
 
     def test___repr___no_key_empty(self):
         entity = self._makeOne()

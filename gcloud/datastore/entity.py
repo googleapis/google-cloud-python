@@ -98,6 +98,8 @@ class Entity(dict):
             return False
 
         return (self.key == other.key and
+                self._exclude_from_indexes == other._exclude_from_indexes and
+                self._meanings == other._meanings and
                 super(Entity, self).__eq__(other))
 
     def __ne__(self, other):
