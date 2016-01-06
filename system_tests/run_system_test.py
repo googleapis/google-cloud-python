@@ -18,13 +18,24 @@ import unittest2
 
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
+from system_tests import bigquery
+from system_tests import datastore
+from system_tests import pubsub
+from system_tests import storage
 from system_tests import system_test_utils
+
 
 REQUIREMENTS = {
     'datastore': ['dataset_id', 'credentials'],
     'storage': ['project', 'credentials'],
     'pubsub': ['project', 'credentials'],
     'bigquery': ['project', 'credentials'],
+}
+TEST_MODULES = {
+    'datastore': datastore,
+    'storage': storage,
+    'pubsub': pubsub,
+    'bigquery': bigquery,
 }
 
 
@@ -38,22 +49,26 @@ def get_parser():
 
 
 def run_module_tests(module_name):
+    # Make sure environ is set before running test.
+    requirements = REQUIREMENTS[module_name]
+    system_test_utils.check_environ(*requirements)
+
     suite = unittest2.TestSuite()
-    tests = unittest2.defaultTestLoader.loadTestsFromName(module_name)
+    test_mod = TEST_MODULES[module_name]
+    tests = unittest2.defaultTestLoader.loadTestsFromModule(test_mod)
     suite.addTest(tests)
-    return unittest2.TextTestRunner(verbosity=2).run(suite)
+
+    # Run tests.
+    test_result = unittest2.TextTestRunner(verbosity=2).run(suite)
+    # Exit if not successful.
+    if not test_result.wasSuccessful():
+        sys.exit(1)
 
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    # Make sure environ is set before running test.
-    requirements = REQUIREMENTS[args.package]
-    system_test_utils.check_environ(*requirements)
-
-    test_result = run_module_tests(args.package)
-    if not test_result.wasSuccessful():
-        sys.exit(1)
+    run_module_tests(args.package)
 
 
 if __name__ == '__main__':
