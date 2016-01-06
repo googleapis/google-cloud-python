@@ -36,8 +36,9 @@ IGNORED_FILES = [
     'docs/conf.py',
     'setup.py',
 ]
-PRODUCTION_RC = 'pylintrc_default'
-TEST_RC = 'pylintrc_reduced'
+SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
+PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
+TEST_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_reduced')
 TEST_DISABLED_MESSAGES = [
     'attribute-defined-outside-init',
     'exec-used',
