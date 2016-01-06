@@ -28,24 +28,30 @@ from gcloud.storage._helpers import _base64_md5hash
 
 
 HTTP = httplib2.Http()
-SHARED_BUCKETS = {}
-
 _helpers.PROJECT = TESTS_PROJECT
-CLIENT = storage.Client()
+
+
+class Config(object):
+    """Run-time configuration to be modified at set-up.
+
+    This is a mutable stand-in to allow test set-up to modify
+    global state.
+    """
+    CLIENT = None
+    TEST_BUCKET = None
 
 
 def setUpModule():
-    if 'test_bucket' not in SHARED_BUCKETS:
-        # %d rounds milliseconds to nearest integer.
-        bucket_name = 'new%d' % (1000 * time.time(),)
-        # In the **very** rare case the bucket name is reserved, this
-        # fails with a ConnectionError.
-        SHARED_BUCKETS['test_bucket'] = CLIENT.create_bucket(bucket_name)
+    Config.CLIENT = storage.Client()
+    # %d rounds milliseconds to nearest integer.
+    bucket_name = 'new%d' % (1000 * time.time(),)
+    # In the **very** rare case the bucket name is reserved, this
+    # fails with a ConnectionError.
+    Config.TEST_BUCKET = Config.CLIENT.create_bucket(bucket_name)
 
 
 def tearDownModule():
-    for bucket in SHARED_BUCKETS.values():
-        bucket.delete(force=True)
+    Config.TEST_BUCKET.delete(force=True)
 
 
 class TestStorageBuckets(unittest2.TestCase):
@@ -54,15 +60,15 @@ class TestStorageBuckets(unittest2.TestCase):
         self.case_buckets_to_delete = []
 
     def tearDown(self):
-        with CLIENT.batch():
+        with Config.CLIENT.batch():
             for bucket_name in self.case_buckets_to_delete:
-                CLIENT.bucket(bucket_name).delete()
+                Config.CLIENT.bucket(bucket_name).delete()
 
     def test_create_bucket(self):
         new_bucket_name = 'a-new-bucket'
         self.assertRaises(exceptions.NotFound,
-                          CLIENT.get_bucket, new_bucket_name)
-        created = CLIENT.create_bucket(new_bucket_name)
+                          Config.CLIENT.get_bucket, new_bucket_name)
+        created = Config.CLIENT.create_bucket(new_bucket_name)
         self.case_buckets_to_delete.append(new_bucket_name)
         self.assertEqual(created.name, new_bucket_name)
 
@@ -74,11 +80,11 @@ class TestStorageBuckets(unittest2.TestCase):
         ]
         created_buckets = []
         for bucket_name in buckets_to_create:
-            bucket = CLIENT.create_bucket(bucket_name)
+            bucket = Config.CLIENT.create_bucket(bucket_name)
             self.case_buckets_to_delete.append(bucket_name)
 
         # Retrieve the buckets.
-        all_buckets = CLIENT.list_buckets()
+        all_buckets = Config.CLIENT.list_buckets()
         created_buckets = [bucket for bucket in all_buckets
                            if bucket.name in buckets_to_create]
         self.assertEqual(len(created_buckets), len(buckets_to_create))
@@ -104,7 +110,7 @@ class TestStorageFiles(unittest2.TestCase):
         for file_data in cls.FILES.values():
             with open(file_data['path'], 'rb') as file_obj:
                 file_data['hash'] = _base64_md5hash(file_obj)
-        cls.bucket = SHARED_BUCKETS['test_bucket']
+        cls.bucket = Config.TEST_BUCKET
 
     def setUp(self):
         self.case_blobs_to_delete = []
@@ -330,7 +336,7 @@ class TestStorageSignURLs(TestStorageFiles):
         blob = self.bucket.blob('LogoToSign.jpg')
         expiration = int(time.time() + 5)
         signed_url = blob.generate_signed_url(expiration, method='GET',
-                                              client=CLIENT)
+                                              client=Config.CLIENT)
 
         response, content = HTTP.request(signed_url, method='GET')
         self.assertEqual(response.status, 200)
@@ -341,7 +347,7 @@ class TestStorageSignURLs(TestStorageFiles):
         expiration = int(time.time() + 283473274)
         signed_delete_url = blob.generate_signed_url(expiration,
                                                      method='DELETE',
-                                                     client=CLIENT)
+                                                     client=Config.CLIENT)
 
         response, content = HTTP.request(signed_delete_url, method='DELETE')
         self.assertEqual(response.status, 204)

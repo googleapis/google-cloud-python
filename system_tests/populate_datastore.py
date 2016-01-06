@@ -21,10 +21,6 @@ from gcloud.datastore import client
 from gcloud.environment_vars import TESTS_DATASET
 
 
-client.DATASET = TESTS_DATASET
-CLIENT = datastore.Client()
-
-
 ANCESTOR = ('Book', 'GoT')
 RICKARD = ANCESTOR + ('Character', 'Rickard')
 EDDARD = RICKARD + ('Character', 'Eddard')
@@ -84,12 +80,15 @@ CHARACTERS = [
 
 
 def add_characters():
-    with CLIENT.transaction() as xact:
+    # Update the environment variable used.
+    client.DATASET = TESTS_DATASET
+    datastore_client = datastore.Client()
+    with datastore_client.transaction() as xact:
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            entity = datastore.Entity(key=CLIENT.key(*key_path))
+            entity = datastore.Entity(key=datastore_client.key(*key_path))
             entity.update(character)
             xact.put(entity)
             print('Adding Character %s %s' % (character['name'],
