@@ -50,9 +50,6 @@ system_tests/local_test_setup
 # Make sure a generated file isn't accidentally committed.
 pylintrc_reduced
 
-# Travis build directories.
-gcloud-python-wheels/
-
 # Directories used for creating generated PB2 files
 generated_python/
 cloud-bigtable-client/

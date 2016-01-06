@@ -283,22 +283,18 @@ Python dependencies are specified in the ``tox.ini`` configuration.
 They are executed in the Travis build via ``tox -e {ENV}`` where
 ``{ENV}`` is the environment being tested.
 
-By enumerating all Python dependencies in the ``tox`` configuration,
-we can use our custom ``gcloud-python-wheels``
-`wheelhouse <https://github.com/GoogleCloudPlatform/gcloud-python-wheels>`__
-to speed up builds. This project builds and stores pre-built Python
-`wheels <http://pythonwheels.com>`__ for every Python dependency our library
-and tests have.
-
 If new ``tox`` environments are added to be run in a Travis build, they
-should either be:
+should be listed in ``[tox].envlist`` as a default environment.
 
-- listed in ``[tox].envlist`` as a default environment
+We speed up builds by using the Travis `caching feature`_.
 
-- added to the list in the
-  `Travis environment variable <http://docs.travis-ci.com/user/environment-variables/#Using-Settings>`__
-  ``EXTRA_TOX_ENVS``. This value is unencrypted in ``gcloud-python-wheels``
-  to make ongoing maintenance easier.
+.. _caching feature: https://docs.travis-ci.com/user/caching/#pip-cache
+
+We intentionally **do not** cache the ``.tox/`` directory. Instead, we
+allow the ``tox`` environments to be re-built for every build. This
+way, we'll always get the latest versions of our dependencies and any
+caching or wheel optimization to be done will be handled automatically
+by ``pip``.
 
 Supported Python Versions
 -------------------------

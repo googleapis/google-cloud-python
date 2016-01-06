@@ -21,8 +21,8 @@ set -ev
 ##############################################
 if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
        [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
+  echo "Building new docs on a merged commit."
   scripts/update_docs.sh
-  scripts/update_wheels_project.sh
 elif [[ -n "${TRAVIS_TAG}" ]]; then
   echo "Building new docs on a tag."
   scripts/update_docs.sh
