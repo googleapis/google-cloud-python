@@ -807,7 +807,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(list(request.key), [])
+        self.assertEqual(list(request.keys), [])
 
     def test_allocate_ids_non_empty(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -822,8 +822,8 @@ class TestConnection(unittest2.TestCase):
             self._make_key_pb(PROJECT, id=2345),
             ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
-        rsp_pb.key.add().CopyFrom(after_key_pbs[0])
-        rsp_pb.key.add().CopyFrom(after_key_pbs[1])
+        rsp_pb.keys.add().CopyFrom(after_key_pbs[0])
+        rsp_pb.keys.add().CopyFrom(after_key_pbs[1])
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
@@ -841,8 +841,8 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.AllocateIdsRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(len(request.key), len(before_key_pbs))
-        for key_before, key_after in zip(before_key_pbs, request.key):
+        self.assertEqual(len(request.keys), len(before_key_pbs))
+        for key_before, key_after in zip(before_key_pbs, request.keys):
             _compare_key_pb_after_request(self, key_before, key_after)
 
 
