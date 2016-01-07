@@ -29,9 +29,8 @@ class Test__new_value_pb(unittest2.TestCase):
         result = self._callFUT(entity_pb, name)
 
         self.assertTrue(isinstance(result, entity_pb2.Value))
-        self.assertEqual(len(entity_pb.property), 1)
-        self.assertEqual(entity_pb.property[0].name, name)
-        self.assertEqual(entity_pb.property[0].value, result)
+        self.assertEqual(len(entity_pb.properties), 1)
+        self.assertEqual(entity_pb.properties[name], result)
 
 
 class Test__property_tuples(unittest2.TestCase):
@@ -53,7 +52,8 @@ class Test__property_tuples(unittest2.TestCase):
 
         result = self._callFUT(entity_pb)
         self.assertTrue(isinstance(result, types.GeneratorType))
-        self.assertEqual(list(result), [(name1, val_pb1), (name2, val_pb2)])
+        self.assertEqual(sorted(result),
+                         sorted([(name1, val_pb1), (name2, val_pb2)]))
 
 
 class Test_entity_from_protobuf(unittest2.TestCase):
