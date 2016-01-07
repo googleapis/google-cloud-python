@@ -270,8 +270,8 @@ def key_from_protobuf(pb):
     if pb.partition_id.project_id:  # Simple field (string)
         project = pb.partition_id.project_id
     namespace = None
-    if pb.partition_id.namespace:  # Simple field (string)
-        namespace = pb.partition_id.namespace
+    if pb.partition_id.namespace_id:  # Simple field (string)
+        namespace = pb.partition_id.namespace_id
 
     return Key(*path_args, namespace=namespace, project=project)
 

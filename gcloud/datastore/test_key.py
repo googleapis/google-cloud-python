@@ -343,7 +343,7 @@ class TestKey(unittest2.TestCase):
         # Check partition ID.
         self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)
         # Unset values are False-y.
-        self.assertEqual(pb.partition_id.namespace, '')
+        self.assertEqual(pb.partition_id.namespace_id, '')
 
         # Check the element PB matches the partial key and kind.
         elem, = list(pb.path_element)
@@ -364,7 +364,7 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne('KIND', namespace=_NAMESPACE,
                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.namespace, _NAMESPACE)
+        self.assertEqual(pb.partition_id.namespace_id, _NAMESPACE)
 
     def test_to_protobuf_w_explicit_path(self):
         _PARENT = 'PARENT'
