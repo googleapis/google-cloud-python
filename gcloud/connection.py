@@ -171,8 +171,6 @@ class JSONConnection(Connection):
         :rtype: string
         :returns: The URL assembled from the pieces provided.
         """
-        api_base_url = api_base_url or cls.API_BASE_URL
-
         url = cls.API_URL_TEMPLATE.format(
             api_base_url=(api_base_url or cls.API_BASE_URL),
             api_version=(api_version or cls.API_VERSION),

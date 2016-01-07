@@ -37,7 +37,7 @@ class Connection(connection.Connection):
 
     :type api_base_url: string
     :param api_base_url: The base of the API call URL. Defaults to the value
-                         from :mod:`gcloud.connection`.
+                         :attr:`Connection.API_BASE_URL`.
     """
 
     API_BASE_URL = 'https://www.googleapis.com'
