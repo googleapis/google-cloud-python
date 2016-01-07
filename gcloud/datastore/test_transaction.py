@@ -167,7 +167,7 @@ def _make_key(kind, id_, project):
 
     key = entity_pb2.Key()
     key.partition_id.project_id = project
-    elem = key.path_element.add()
+    elem = key.path.add()
     elem.kind = kind
     elem.id = id_
     return key

@@ -243,7 +243,7 @@ class Batch(object):
         # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys,
                                       self._partial_key_entities):
-            new_id = new_key_pb.path_element[-1].id
+            new_id = new_key_pb.path[-1].id
             entity.key = entity.key.completed_key(new_id)
 
     def commit(self):

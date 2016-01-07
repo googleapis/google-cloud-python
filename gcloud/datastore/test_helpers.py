@@ -71,7 +71,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _ID = 1234
         entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.project_id = _PROJECT
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.path.add(kind=_KIND, id=_ID)
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
@@ -117,7 +117,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _ID = 1234
         entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.project_id = _PROJECT
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.path.add(kind=_KIND, id=_ID)
 
         list_val_pb = _new_value_pb(entity_pb, 'baz')
         list_pb = list_val_pb.list_value
@@ -172,7 +172,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
         entity_pb = entity_pb2.Entity()
         entity_pb.key.partition_id.project_id = PROJECT
-        element = entity_pb.key.path_element.add()
+        element = entity_pb.key.path.add()
         element.kind = KIND
 
         outside_val_pb = _new_value_pb(entity_pb, OUTSIDE_NAME)
@@ -234,7 +234,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         expected_pb = entity_pb2.Entity()
         expected_pb.key.partition_id.project_id = project
-        path_elt = expected_pb.key.path_element.add()
+        path_elt = expected_pb.key.path.add()
         path_elt.kind = kind
         path_elt.name = name
 
@@ -278,10 +278,10 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         original_pb = entity_pb2.Entity()
         # Add a key.
         original_pb.key.partition_id.project_id = project = 'PROJECT'
-        elem1 = original_pb.key.path_element.add()
+        elem1 = original_pb.key.path.add()
         elem1.kind = 'Family'
         elem1.id = 1234
-        elem2 = original_pb.key.path_element.add()
+        elem2 = original_pb.key.path.add()
         elem2.kind = 'King'
         elem2.name = 'Spades'
 
@@ -357,7 +357,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
         if namespace is not None:
             pb.partition_id.namespace_id = namespace
         for elem in path:
-            added = pb.path_element.add()
+            added = pb.path.add()
             added.kind = elem['kind']
             if 'id' in elem:
                 added.id = elem['id']
@@ -552,7 +552,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
 
         pb = entity_pb2.Value()
         entity_pb = pb.entity_value
-        entity_pb.key.path_element.add(kind='KIND')
+        entity_pb.key.path.add(kind='KIND')
         entity_pb.key.partition_id.project_id = 'PROJECT'
 
         value_pb = _new_value_pb(entity_pb, 'foo')
@@ -768,7 +768,7 @@ class Test_find_true_project(unittest2.TestCase):
 
         # Make sure just one.
         called_key_pb, = CONNECTION._called_key_pbs
-        path_element = called_key_pb.path_element
+        path_element = called_key_pb.path
         self.assertEqual(len(path_element), 1)
         self.assertEqual(path_element[0].kind, '__MissingLookupKind')
         self.assertEqual(path_element[0].id, 1)
@@ -789,7 +789,7 @@ class Test_find_true_project(unittest2.TestCase):
 
         # Make sure just one.
         called_key_pb, = CONNECTION._called_key_pbs
-        path_element = called_key_pb.path_element
+        path_element = called_key_pb.path
         self.assertEqual(len(path_element), 1)
         self.assertEqual(path_element[0].kind, '__MissingLookupKind')
         self.assertEqual(path_element[0].id, 1)
