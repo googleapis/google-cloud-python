@@ -342,7 +342,7 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(isinstance(pb, entity_pb2.Key))
 
         # Check partition ID.
-        self.assertEqual(pb.partition_id.dataset_id, self._DEFAULT_PROJECT)
+        self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)
         self.assertEqual(pb.partition_id.namespace, '')
         self.assertFalse(_has_field(pb.partition_id, 'namespace'))
 
@@ -358,7 +358,7 @@ class TestKey(unittest2.TestCase):
         _PROJECT = 'PROJECT-ALT'
         key = self._makeOne('KIND', project=_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, _PROJECT)
+        self.assertEqual(pb.partition_id.project_id, _PROJECT)
 
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'

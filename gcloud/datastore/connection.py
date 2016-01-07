@@ -402,10 +402,10 @@ def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
-    if _has_field(key_pb.partition_id, 'dataset_id'):
+    if _has_field(key_pb.partition_id, 'project_id'):
         new_key_pb = _entity_pb2.Key()
         new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('dataset_id')
+        new_key_pb.partition_id.ClearField('project_id')
         key_pb = new_key_pb
     return key_pb
 

@@ -901,7 +901,7 @@ class Http(object):
 
 def _compare_key_pb_after_request(test, key_before, key_after):
     from gcloud._helpers import _has_field
-    test.assertFalse(_has_field(key_after.partition_id, 'dataset_id'))
+    test.assertFalse(_has_field(key_after.partition_id, 'project_id'))
     test.assertEqual(key_before.partition_id.namespace,
                      key_after.partition_id.namespace)
     test.assertEqual(len(key_before.path_element),
