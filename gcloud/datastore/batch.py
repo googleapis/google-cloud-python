@@ -119,7 +119,8 @@ class Batch(object):
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
-        return self.mutations.insert_auto_id.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.insert
 
     def _add_complete_key_entity_pb(self):
         """Adds a new mutation for an entity with a completed key.
@@ -131,7 +132,8 @@ class Batch(object):
         # We use ``upsert`` for entities with completed keys, rather than
         # ``insert`` or ``update``, in order not to create race conditions
         # based on prior existence / removal of the entity.
-        return self.mutations.upsert.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.upsert
 
     def _add_delete_key_pb(self):
         """Adds a new mutation for a key to be deleted.
@@ -140,7 +142,8 @@ class Batch(object):
         :returns: The newly created key protobuf that will be
                   deleted when sent with a commit.
         """
-        return self.mutations.delete.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.delete
 
     @property
     def mutations(self):
@@ -152,10 +155,11 @@ class Batch(object):
         adding a new mutation. This getter returns the protobuf that has been
         built-up so far.
 
-        :rtype: :class:`gcloud.datastore._generated.datastore_pb2.Mutation`
-        :returns: The Mutation protobuf to be sent in the commit request.
+        :rtype: iterable
+        :returns: The list of :class:`._generated.datastore_pb2.Mutation`
+                  protobufs to be sent in the commit request.
         """
-        return self._commit_request.mutation
+        return self._commit_request.mutations
 
     def put(self, entity):
         """Remember an entity's state to be saved during :meth:`commit`.
@@ -172,7 +176,7 @@ class Batch(object):
            "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
 
         When an entity has a partial key, calling :meth:`commit` sends it as
-        an ``insert_auto_id`` mutation and the key is completed. On return,
+        an ``insert`` mutation and the key is completed. On return,
         the key for the ``entity`` passed in is updated to match the key ID
         assigned by the server.
 
