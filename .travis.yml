@@ -12,7 +12,7 @@ script:
   - tox -e lint
   - tox -e system-tests
   - tox -e system-tests3
-  - scripts/merge.sh
+  - scripts/update_docs.sh
 
 after_success:
   - tox -e coveralls
