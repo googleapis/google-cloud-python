@@ -48,7 +48,7 @@ coverage.xml
 system_tests/local_test_setup
 
 # Make sure a generated file isn't accidentally committed.
-pylintrc_reduced
+scripts/pylintrc_reduced
 
 # Directories used for creating generated PB2 files
 generated_python/
