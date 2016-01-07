@@ -347,7 +347,7 @@ class TestKey(unittest2.TestCase):
         self.assertFalse(_has_field(pb.partition_id, 'namespace'))
 
         # Check the element PB matches the partial key and kind.
-        elem, = list(pb.path_element)
+        elem, = list(pb.path)
         self.assertEqual(elem.kind, _KIND)
         self.assertEqual(elem.name, '')
         self.assertFalse(_has_field(elem, 'name'))
@@ -375,7 +375,7 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne(_PARENT, _NAME, _CHILD, _ID,
                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        elems = list(pb.path_element)
+        elems = list(pb.path)
         self.assertEqual(len(elems), 2)
         self.assertEqual(elems[0].kind, _PARENT)
         self.assertEqual(elems[0].name, _NAME)
@@ -390,7 +390,7 @@ class TestKey(unittest2.TestCase):
         # on this? The backend certainly will.
         key._path[-1].pop('kind')
         pb = key.to_protobuf()
-        self.assertFalse(_has_field(pb.path_element[0], 'kind'))
+        self.assertFalse(_has_field(pb.path[0], 'kind'))
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)

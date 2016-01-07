@@ -358,8 +358,8 @@ class TestConnection(unittest2.TestCase):
         (found,), missing, deferred = conn.lookup(PROJECT, [key_pb])
         self.assertEqual(len(missing), 0)
         self.assertEqual(len(deferred), 0)
-        self.assertEqual(found.key.path_element[0].kind, 'Kind')
-        self.assertEqual(found.key.path_element[0].id, 1234)
+        self.assertEqual(found.key.path[0].kind, 'Kind')
+        self.assertEqual(found.key.path[0].id, 1234)
         cw = http._called_with
         self._verifyProtobufCall(cw, URI, conn)
         rq_class = datastore_pb2.LookupRequest
@@ -859,7 +859,7 @@ class Test__parse_commit_response(unittest2.TestCase):
         index_updates = 1337
         keys = [
             entity_pb2.Key(
-                path_element=[
+                path=[
                     entity_pb2.Key.PathElement(
                         kind='Foo',
                         id=1234,
@@ -867,7 +867,7 @@ class Test__parse_commit_response(unittest2.TestCase):
                 ],
             ),
             entity_pb2.Key(
-                path_element=[
+                path=[
                     entity_pb2.Key.PathElement(
                         kind='Bar',
                         name='baz',
@@ -904,9 +904,9 @@ def _compare_key_pb_after_request(test, key_before, key_after):
     test.assertFalse(_has_field(key_after.partition_id, 'dataset_id'))
     test.assertEqual(key_before.partition_id.namespace,
                      key_after.partition_id.namespace)
-    test.assertEqual(len(key_before.path_element),
-                     len(key_after.path_element))
-    for elt1, elt2 in zip(key_before.path_element, key_after.path_element):
+    test.assertEqual(len(key_before.path),
+                     len(key_after.path))
+    for elt1, elt2 in zip(key_before.path, key_after.path):
         test.assertEqual(elt1, elt2)
 
 
@@ -919,4 +919,4 @@ class _PathElementProto(object):
 class _KeyProto(object):
 
     def __init__(self, id_):
-        self.path_element = [_PathElementProto(id_)]
+        self.path = [_PathElementProto(id_)]
