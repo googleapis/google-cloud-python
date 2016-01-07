@@ -478,7 +478,7 @@ def _pb_from_query(query):
             query.ancestor.to_protobuf())
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
-        ancestor_filter = composite_filter.filter.add().property_filter
+        ancestor_filter = composite_filter.filters.add().property_filter
         ancestor_filter.property.name = '__key__'
         ancestor_filter.op = _query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
@@ -487,7 +487,7 @@ def _pb_from_query(query):
         pb_op_enum = query.OPERATORS.get(operator)
 
         # Add the specific filter
-        property_filter = composite_filter.filter.add().property_filter
+        property_filter = composite_filter.filters.add().property_filter
         property_filter.property.name = property_name
         property_filter.op = pb_op_enum
 
@@ -499,7 +499,7 @@ def _pb_from_query(query):
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 
-    if not composite_filter.filter:
+    if not composite_filter.filters:
         pb.ClearField('filter')
 
     for prop in query.order:
