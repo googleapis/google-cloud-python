@@ -857,7 +857,7 @@ class Http(object):
 
 def _compare_key_pb_after_request(test, key_before, key_after):
     # Unset values are False-y.
-    test.assertEqual(key_after.partition_id.dataset_id, '')
+    test.assertEqual(key_after.partition_id.project_id, '')
     test.assertEqual(key_before.partition_id.namespace,
                      key_after.partition_id.namespace)
     test.assertEqual(len(key_before.path_element),

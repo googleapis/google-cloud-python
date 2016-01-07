@@ -240,7 +240,7 @@ class Key(object):
         :returns: The protobuf representing the key.
         """
         key = _entity_pb2.Key()
-        key.partition_id.dataset_id = self.project
+        key.partition_id.project_id = self.project
 
         if self.namespace:
             key.partition_id.namespace = self.namespace
