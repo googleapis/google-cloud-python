@@ -42,7 +42,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.filters, [])
         self.assertEqual(query.projection, [])
         self.assertEqual(query.order, [])
-        self.assertEqual(query.group_by, [])
+        self.assertEqual(query.distinct_on, [])
 
     def test_ctor_explicit(self):
         from gcloud.datastore.key import Key
@@ -54,7 +54,7 @@ class TestQuery(unittest2.TestCase):
         FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
         PROJECTION = ['foo', 'bar', 'baz']
         ORDER = ['foo', 'bar']
-        GROUP_BY = ['foo']
+        DISTINCT_ON = ['foo']
         query = self._makeOne(
             client,
             kind=_KIND,
@@ -64,7 +64,7 @@ class TestQuery(unittest2.TestCase):
             filters=FILTERS,
             projection=PROJECTION,
             order=ORDER,
-            group_by=GROUP_BY,
+            distinct_on=DISTINCT_ON,
             )
         self.assertTrue(query._client is client)
         self.assertEqual(query.project, _PROJECT)
@@ -74,7 +74,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.filters, FILTERS)
         self.assertEqual(query.projection, PROJECTION)
         self.assertEqual(query.order, ORDER)
-        self.assertEqual(query.group_by, GROUP_BY)
+        self.assertEqual(query.distinct_on, DISTINCT_ON)
 
     def test_ctor_bad_projection(self):
         BAD_PROJECTION = object()
@@ -86,10 +86,10 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(TypeError, self._makeOne, self._makeClient(),
                           order=BAD_ORDER)
 
-    def test_ctor_bad_group_by(self):
-        BAD_GROUP_BY = object()
+    def test_ctor_bad_distinct_on(self):
+        BAD_DISTINCT_ON = object()
         self.assertRaises(TypeError, self._makeOne, self._makeClient(),
-                          group_by=BAD_GROUP_BY)
+                          distinct_on=BAD_DISTINCT_ON)
 
     def test_ctor_bad_filters(self):
         FILTERS_CANT_UNPACK = [('one', 'two')]
@@ -284,29 +284,29 @@ class TestQuery(unittest2.TestCase):
         query.order = ['foo', '-bar']
         self.assertEqual(query.order, ['foo', '-bar'])
 
-    def test_group_by_setter_empty(self):
-        query = self._makeOne(self._makeClient(), group_by=['foo', 'bar'])
-        query.group_by = []
-        self.assertEqual(query.group_by, [])
+    def test_distinct_on_setter_empty(self):
+        query = self._makeOne(self._makeClient(), distinct_on=['foo', 'bar'])
+        query.distinct_on = []
+        self.assertEqual(query.distinct_on, [])
 
-    def test_group_by_setter_string(self):
+    def test_distinct_on_setter_string(self):
         query = self._makeOne(self._makeClient())
-        query.group_by = 'field1'
-        self.assertEqual(query.group_by, ['field1'])
+        query.distinct_on = 'field1'
+        self.assertEqual(query.distinct_on, ['field1'])
 
-    def test_group_by_setter_non_empty(self):
+    def test_distinct_on_setter_non_empty(self):
         query = self._makeOne(self._makeClient())
-        query.group_by = ['field1', 'field2']
-        self.assertEqual(query.group_by, ['field1', 'field2'])
+        query.distinct_on = ['field1', 'field2']
+        self.assertEqual(query.distinct_on, ['field1', 'field2'])
 
-    def test_group_by_multiple_calls(self):
-        _GROUP_BY1 = ['field1', 'field2']
-        _GROUP_BY2 = ['field3']
+    def test_distinct_on_multiple_calls(self):
+        _DISTINCT_ON1 = ['field1', 'field2']
+        _DISTINCT_ON2 = ['field3']
         query = self._makeOne(self._makeClient())
-        query.group_by = _GROUP_BY1
-        self.assertEqual(query.group_by, _GROUP_BY1)
-        query.group_by = _GROUP_BY2
-        self.assertEqual(query.group_by, _GROUP_BY2)
+        query.distinct_on = _DISTINCT_ON1
+        self.assertEqual(query.distinct_on, _DISTINCT_ON1)
+        query.distinct_on = _DISTINCT_ON2
+        self.assertEqual(query.distinct_on, _DISTINCT_ON2)
 
     def test_fetch_defaults_w_client_attr(self):
         connection = _Connection()
@@ -557,7 +557,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(pb.projection), [])
         self.assertEqual(list(pb.kind), [])
         self.assertEqual(list(pb.order), [])
-        self.assertEqual(list(pb.group_by), [])
+        self.assertEqual(list(pb.distinct_on), [])
         self.assertEqual(pb.filter.property_filter.property.name, '')
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.op,
@@ -637,9 +637,9 @@ class Test__pb_from_query(unittest2.TestCase):
                           query_pb2.PropertyOrder.DESCENDING,
                           query_pb2.PropertyOrder.ASCENDING])
 
-    def test_group_by(self):
-        pb = self._callFUT(_Query(group_by=['a', 'b', 'c']))
-        self.assertEqual([item.name for item in pb.group_by],
+    def test_distinct_on(self):
+        pb = self._callFUT(_Query(distinct_on=['a', 'b', 'c']))
+        self.assertEqual([item.name for item in pb.distinct_on],
                          ['a', 'b', 'c'])
 
 
@@ -654,7 +654,7 @@ class _Query(object):
                  filters=(),
                  projection=(),
                  order=(),
-                 group_by=()):
+                 distinct_on=()):
         self._client = client
         self.kind = kind
         self.project = project
@@ -663,7 +663,7 @@ class _Query(object):
         self.filters = filters
         self.projection = projection
         self.order = order
-        self.group_by = group_by
+        self.distinct_on = distinct_on
 
 
 class _Connection(object):

@@ -56,8 +56,8 @@ class Query(object):
     :param order:  field names used to order query results. Prepend '-'
                    to a field name to sort it in descending order.
 
-    :type group_by: sequence of string
-    :param group_by: field names used to group query results.
+    :type distinct_on: sequence of string
+    :param distinct_on: field names used to group query results.
 
     :raises: ValueError if ``project`` is not passed and no implicit
              default is set.
@@ -81,7 +81,7 @@ class Query(object):
                  filters=(),
                  projection=(),
                  order=(),
-                 group_by=()):
+                 distinct_on=()):
 
         self._client = client
         self._kind = kind
@@ -94,7 +94,7 @@ class Query(object):
             self.add_filter(property_name, operator, value)
         self._projection = _ensure_tuple_or_list('projection', projection)
         self._order = _ensure_tuple_or_list('order', order)
-        self._group_by = _ensure_tuple_or_list('group_by', group_by)
+        self._distinct_on = _ensure_tuple_or_list('distinct_on', distinct_on)
 
     @property
     def project(self):
@@ -287,15 +287,15 @@ class Query(object):
         self._order[:] = value
 
     @property
-    def group_by(self):
+    def distinct_on(self):
         """Names of fields used to group query results.
 
         :rtype: sequence of string
         """
-        return self._group_by[:]
+        return self._distinct_on[:]
 
-    @group_by.setter
-    def group_by(self, value):
+    @distinct_on.setter
+    def distinct_on(self, value):
         """Set fields used to group query results.
 
         :type value: string or sequence of strings
@@ -304,7 +304,7 @@ class Query(object):
         """
         if isinstance(value, str):
             value = [value]
-        self._group_by[:] = value
+        self._distinct_on[:] = value
 
     def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
               client=None):
@@ -527,7 +527,7 @@ def _pb_from_query(query):
             property_order.property.name = prop
             property_order.direction = property_order.ASCENDING
 
-    for group_by_name in query.group_by:
-        pb.group_by.add().name = group_by_name
+    for distinct_on_name in query.distinct_on:
+        pb.distinct_on.add().name = distinct_on_name
 
     return pb
