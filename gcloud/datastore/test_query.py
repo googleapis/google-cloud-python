@@ -560,7 +560,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(pb.group_by), [])
         self.assertEqual(pb.filter.property_filter.property.name, '')
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(list(cfilter.filter), [])
         self.assertEqual(pb.start_cursor, b'')
         self.assertEqual(pb.end_cursor, b'')
@@ -584,7 +584,7 @@ class Test__pb_from_query(unittest2.TestCase):
         ancestor = Key('Ancestor', 123, project='PROJECT')
         pb = self._callFUT(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
@@ -600,7 +600,7 @@ class Test__pb_from_query(unittest2.TestCase):
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, 'name')
@@ -618,7 +618,7 @@ class Test__pb_from_query(unittest2.TestCase):
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
         self.assertEqual(len(cfilter.filter), 1)
         pfilter = cfilter.filter[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
