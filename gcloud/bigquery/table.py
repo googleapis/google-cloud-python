@@ -847,7 +847,7 @@ class Table(object):
 
         # Base URL may change once we know simple vs. resumable.
         base_url = connection.API_BASE_URL + '/upload'
-        path = '/projects/%s/jobs' % self._dataset.project
+        path = '/projects/%s/jobs' % (self._dataset.project,)
         upload_url = connection.build_api_url(api_base_url=base_url, path=path)
 
         # Use apitools 'Upload' facility.
