@@ -293,16 +293,16 @@ class Connection(connection.Connection):
                              _datastore_pb2.BeginTransactionResponse)
         return response.transaction
 
-    def commit(self, dataset_id, mutation_pb, transaction_id):
-        """Commit dataset mutations in context of current transation (if any).
+    def commit(self, dataset_id, commit_request, transaction_id):
+        """Commit mutations in context of current transation (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
 
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :type mutation_pb: :class:`._generated.datastore_pb2.Mutation`
-        :param mutation_pb: The protobuf for the mutations being saved.
+        :type commit_request: :class:`._generated.datastore_pb2.CommitRequest`
+        :param commit_request: The protobuf with the mutations being committed.
 
         :type transaction_id: string or None
         :param transaction_id: The transaction ID returned from
@@ -315,6 +315,7 @@ class Connection(connection.Connection):
                    that was completed in the commit.
         """
         request = _datastore_pb2.CommitRequest()
+        request.CopyFrom(commit_request)
 
         if transaction_id:
             request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
@@ -322,7 +323,6 @@ class Connection(connection.Connection):
         else:
             request.mode = _datastore_pb2.CommitRequest.NON_TRANSACTIONAL
 
-        request.mutation.CopyFrom(mutation_pb)
         response = self._rpc(dataset_id, 'commit', request,
                              _datastore_pb2.CommitResponse)
         return _parse_commit_response(response)

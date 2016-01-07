@@ -625,9 +625,10 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(result is None)
 
         self.assertEqual(len(client.connection._commit_cw), 1)
-        dataset_id, mutation, transaction_id = client.connection._commit_cw[0]
+        (dataset_id,
+         commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(dataset_id, self.DATASET_ID)
-        inserts = list(mutation.insert_auto_id)
+        inserts = list(commit_req.mutation.insert_auto_id)
         self.assertEqual(len(inserts), 1)
         self.assertEqual(inserts[0].key, key.to_protobuf())
 
@@ -697,9 +698,10 @@ class TestClient(unittest2.TestCase):
         result = client.delete_multi([key])
         self.assertEqual(result, None)
         self.assertEqual(len(client.connection._commit_cw), 1)
-        dataset_id, mutation, transaction_id = client.connection._commit_cw[0]
+        (dataset_id,
+         commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(dataset_id, self.DATASET_ID)
-        self.assertEqual(list(mutation.delete), [key.to_protobuf()])
+        self.assertEqual(list(commit_req.mutation.delete), [key.to_protobuf()])
         self.assertTrue(transaction_id is None)
 
     def test_delete_multi_w_existing_batch(self):
@@ -1012,8 +1014,8 @@ class _MockConnection(object):
         results, missing, deferred = triple
         return results, missing, deferred
 
-    def commit(self, dataset_id, mutation, transaction_id):
-        self._commit_cw.append((dataset_id, mutation, transaction_id))
+    def commit(self, dataset_id, commit_request, transaction_id):
+        self._commit_cw.append((dataset_id, commit_request, transaction_id))
         response, self._commit = self._commit[0], self._commit[1:]
         return self._index_updates, response
 
