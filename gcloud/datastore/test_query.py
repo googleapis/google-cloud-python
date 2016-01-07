@@ -427,7 +427,7 @@ class TestIterator(unittest2.TestCase):
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
-        qpb.limit = 13
+        qpb.limit.value = 13
         qpb.offset = 29
         EXPECTED = {
             'project': self._PROJECT,
@@ -565,7 +565,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(cfilter.filters), [])
         self.assertEqual(pb.start_cursor, b'')
         self.assertEqual(pb.end_cursor, b'')
-        self.assertEqual(pb.limit, 0)
+        self.assertEqual(pb.limit.value, 0)
         self.assertEqual(pb.offset, 0)
 
     def test_projection(self):
