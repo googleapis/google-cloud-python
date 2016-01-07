@@ -269,7 +269,7 @@ class Connection(connection.Connection):
         response = self._rpc(project, 'runQuery', request,
                              _datastore_pb2.RunQueryResponse)
         return (
-            [e.entity for e in response.batch.entity_result],
+            [e.entity for e in response.batch.entity_results],
             response.batch.end_cursor,  # Assume response always has cursor.
             response.batch.more_results,
             response.batch.skipped_results,
