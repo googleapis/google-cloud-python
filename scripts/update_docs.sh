@@ -16,6 +16,19 @@
 
 set -ev
 
+#########################################
+# Only update docs if we are on Travis. #
+#########################################
+if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
+       [[ "${TRAVIS_PULL_REQUEST}" == "false" ]]; then
+  echo "Building new docs on a merged commit."
+elif [[ -n "${TRAVIS_TAG}" ]]; then
+  echo "Building new docs on a tag."
+else
+  echo "Not on Travis, doing nothing."
+  exit
+fi
+
 # Adding GitHub pages branch. `git submodule add` checks it
 # out at HEAD.
 GH_PAGES_DIR="ghpages"
