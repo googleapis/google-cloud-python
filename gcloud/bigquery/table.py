@@ -845,7 +845,7 @@ class Table(object):
         url_builder = _UrlBuilder()
         upload_config = _UploadConfig()
 
-        # Temporary URL, until we know simple vs. resumable.
+        # Base URL may change once we know simple vs. resumable.
         base_url = connection.API_BASE_URL + '/upload'
         path = '/projects/%s/jobs' % self._dataset.project
         upload_url = connection.build_api_url(api_base_url=base_url, path=path)
