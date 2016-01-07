@@ -80,7 +80,7 @@ class TestEntity(unittest2.TestCase):
         entity1[name] = value
         entity1._meanings[name] = (meaning, value)
 
-        key2 = Key(_KIND, _ID, project_PROJECT)
+        key2 = Key(_KIND, _ID, project=_PROJECT)
         entity2 = self._makeOne(key=key2, exclude_from_indexes=(name,))
         entity2[name] = value
         entity2._meanings[name] = (meaning, value)
@@ -156,7 +156,7 @@ class TestEntity(unittest2.TestCase):
 
         name = 'foo'
         value = 42
-        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        key = Key(_KIND, _ID, project=_PROJECT)
 
         entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
         entity1[name] = value
@@ -172,7 +172,7 @@ class TestEntity(unittest2.TestCase):
         name = 'foo'
         value = 42
         meaning = 9
-        key = Key(_KIND, _ID, dataset_id=_DATASET_ID)
+        key = Key(_KIND, _ID, project=_PROJECT)
 
         entity1 = self._makeOne(key=key, exclude_from_indexes=(name,))
         entity1[name] = value

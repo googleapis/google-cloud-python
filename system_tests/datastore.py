@@ -361,7 +361,7 @@ class TestDatastoreTransaction(TestDatastore):
     def test_failure_with_contention(self):
         contention_key = 'baz'
         # Fool the Client constructor to avoid creating a new connection.
-        local_client = datastore.Client(dataset_id=Config.CLIENT.project,
+        local_client = datastore.Client(project=Config.CLIENT.project,
                                         http=object())
         local_client.connection = Config.CLIENT.connection
 
