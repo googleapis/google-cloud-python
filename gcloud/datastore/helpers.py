@@ -124,9 +124,7 @@ def _new_value_pb(entity_pb, name):
     :rtype: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :returns: The new ``Value`` protobuf that was added to the entity.
     """
-    property_pb = entity_pb.property.add()
-    property_pb.name = name
-    return property_pb.value
+    return entity_pb.properties.get_or_create(name)
 
 
 def _property_tuples(entity_pb):
@@ -139,8 +137,7 @@ def _property_tuples(entity_pb):
     :returns: An iterator that yields tuples of a name and ``Value``
               corresponding to properties on the entity.
     """
-    for property_pb in entity_pb.property:
-        yield property_pb.name, property_pb.value
+    return six.iteritems(entity_pb.properties)
 
 
 def entity_from_protobuf(pb):
