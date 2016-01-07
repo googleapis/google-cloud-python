@@ -298,6 +298,31 @@ def _total_seconds(offset):
         return offset.total_seconds()
 
 
+def _rfc3339_to_datetime(dt_str):
+    """Convert a string to a native timestamp.
+
+    :type dt_str: str
+    :param dt_str: The string to convert.
+
+    :rtype: :class:`datetime.datetime`
+    :returns: The datetime object created from the string.
+    """
+    return datetime.datetime.strptime(
+        dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
+
+
+def _datetime_to_rfc3339(value):
+    """Convert a native timestamp to a string.
+
+    :type value: :class:`datetime.datetime`
+    :param value: The datetime object to be converted to a string.
+
+    :rtype: str
+    :returns: The string representing the datetime stamp.
+    """
+    return value.strftime(_RFC3339_MICROS)
+
+
 def _to_bytes(value, encoding='ascii'):
     """Converts a string value to bytes, if necessary.
 

@@ -14,12 +14,9 @@
 
 """Define API ResourceRecordSets."""
 
-import datetime
-
 import six
 
-from gcloud._helpers import UTC
-from gcloud._helpers import _RFC3339_MICROS
+from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.dns.resource_record_set import ResourceRecordSet
 
@@ -121,8 +118,7 @@ class Changes(object):
         """
         stamp = self._properties.get('startTime')
         if stamp is not None:
-            return datetime.datetime.strptime(stamp, _RFC3339_MICROS).replace(
-                tzinfo=UTC)
+            return _rfc3339_to_datetime(stamp)
 
     @property
     def additions(self):

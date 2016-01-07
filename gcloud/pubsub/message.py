@@ -15,10 +15,8 @@
 """Define API Topics."""
 
 import base64
-import datetime
 
-from gcloud._helpers import _RFC3339_MICROS
-from gcloud._helpers import UTC
+from gcloud._helpers import _rfc3339_to_datetime
 
 
 class Message(object):
@@ -56,7 +54,7 @@ class Message(object):
         Allows sorting messages in publication order (assuming consistent
         clocks across all publishers).
 
-        :rtype: datetime
+        :rtype: :class:`datetime.datetime`
         :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp
         :raises: ValueError if timestamp not in ``attributes``, or if it does
                  not match the RFC 3339 format.
@@ -64,8 +62,7 @@ class Message(object):
         stamp = self.attributes.get('timestamp')
         if stamp is None:
             raise ValueError('No timestamp')
-        return datetime.datetime.strptime(stamp, _RFC3339_MICROS).replace(
-            tzinfo=UTC)
+        return _rfc3339_to_datetime(stamp)
 
     @classmethod
     def from_api_repr(cls, api_repr):

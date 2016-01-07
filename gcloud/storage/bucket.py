@@ -14,13 +14,11 @@
 
 """Create / interact with gcloud storage buckets."""
 
-import datetime
 import copy
 
 import six
 
-from gcloud._helpers import _RFC3339_MICROS
-from gcloud._helpers import UTC
+from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.iterator import Iterator
 from gcloud.storage._helpers import _PropertyMixin
@@ -705,8 +703,7 @@ class Bucket(_PropertyMixin):
         """
         value = self._properties.get('timeCreated')
         if value is not None:
-            naive = datetime.datetime.strptime(value, _RFC3339_MICROS)
-            return naive.replace(tzinfo=UTC)
+            return _rfc3339_to_datetime(value)
 
     @property
     def versioning_enabled(self):

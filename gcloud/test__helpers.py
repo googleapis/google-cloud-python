@@ -405,6 +405,58 @@ class Test__total_seconds(unittest2.TestCase):
         self.assertEqual(result, 1.414)
 
 
+class Test__rfc3339_to_datetime(unittest2.TestCase):
+
+    def _callFUT(self, dt_str):
+        from gcloud._helpers import _rfc3339_to_datetime
+        return _rfc3339_to_datetime(dt_str)
+
+    def test_it(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        micros = 123456
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
+            year, month, day, hour, minute, seconds, micros)
+        result = self._callFUT(dt_str)
+        expected_result = datetime.datetime(
+            year, month, day, hour, minute, seconds, micros, UTC)
+        self.assertEqual(result, expected_result)
+
+
+class Test__datetime_to_rfc3339(unittest2.TestCase):
+
+    def _callFUT(self, value):
+        from gcloud._helpers import _datetime_to_rfc3339
+        return _datetime_to_rfc3339(value)
+
+    def test_it(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        micros = 123456
+
+        to_convert = datetime.datetime(
+            year, month, day, hour, minute, seconds, micros, UTC)
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
+            year, month, day, hour, minute, seconds, micros)
+        result = self._callFUT(to_convert)
+        self.assertEqual(result, dt_str)
+
+
 class Test__to_bytes(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):

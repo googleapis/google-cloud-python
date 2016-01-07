@@ -16,8 +16,8 @@
 
 import base64
 
+from gcloud._helpers import _datetime_to_rfc3339
 from gcloud._helpers import _NOW
-from gcloud._helpers import _RFC3339_MICROS
 from gcloud.exceptions import NotFound
 from gcloud.pubsub._helpers import topic_name_from_path
 from gcloud.pubsub.subscription import Subscription
@@ -155,7 +155,7 @@ class Topic(object):
         Helper method for ``publish``/``Batch.publish``.
         """
         if self.timestamp_messages and 'timestamp' not in attrs:
-            attrs['timestamp'] = _NOW().strftime(_RFC3339_MICROS)
+            attrs['timestamp'] = _datetime_to_rfc3339(_NOW())
 
     def publish(self, message, client=None, **attrs):
         """API call:  publish a message to a topic via a POST request

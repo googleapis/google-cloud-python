@@ -18,8 +18,8 @@ import datetime
 
 import six
 
-from gcloud._helpers import UTC
-from gcloud._helpers import _RFC3339_MICROS
+from gcloud._helpers import _datetime_to_rfc3339
+from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 
 
@@ -200,8 +200,7 @@ class Document(object):
             return NumberValue(value)
         if 'timestampValue' in resource:
             stamp = resource['timestampValue']
-            value = datetime.datetime.strptime(stamp, _RFC3339_MICROS)
-            value = value.replace(tzinfo=UTC)
+            value = _rfc3339_to_datetime(stamp)
             return TimestampValue(value)
         if 'geoValue' in resource:
             lat_long = resource['geoValue']
@@ -259,7 +258,7 @@ class Document(object):
         elif value.value_type == 'number':
             result['numberValue'] = value.number_value
         elif value.value_type == 'timestamp':
-            stamp = value.timestamp_value.strftime(_RFC3339_MICROS)
+            stamp = _datetime_to_rfc3339(value.timestamp_value)
             result['timestampValue'] = stamp
         elif value.value_type == 'geo':
             result['geoValue'] = '%s, %s' % value.geo_value
