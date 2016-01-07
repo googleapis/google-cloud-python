@@ -118,7 +118,6 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_large_file_write_from_stream(self):
         blob = self.bucket.blob('LargeFile')
-        self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['big']
         with open(file_data['path'], 'rb') as file_obj:
@@ -132,7 +131,6 @@ class TestStorageWriteFiles(TestStorageFiles):
 
     def test_small_file_write_from_filename(self):
         blob = self.bucket.blob('SmallFile')
-        self.assertEqual(blob._properties, {})
 
         file_data = self.FILES['simple']
         blob.upload_from_filename(file_data['path'])
