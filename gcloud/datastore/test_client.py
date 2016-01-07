@@ -909,7 +909,7 @@ class TestClient(unittest2.TestCase):
         FILTERS = [('PROPERTY', '==', 'VALUE')]
         PROJECTION = ['__key__']
         ORDER = ['PROPERTY']
-        GROUP_BY = ['GROUPBY']
+        DISTINCT_ON = ['DISTINCT_ON']
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -922,7 +922,7 @@ class TestClient(unittest2.TestCase):
                 filters=FILTERS,
                 projection=PROJECTION,
                 order=ORDER,
-                group_by=GROUP_BY,
+                distinct_on=DISTINCT_ON,
                 )
 
         self.assertTrue(isinstance(query, _Dummy))
@@ -935,7 +935,7 @@ class TestClient(unittest2.TestCase):
             'filters': FILTERS,
             'projection': PROJECTION,
             'order': ORDER,
-            'group_by': GROUP_BY,
+            'distinct_on': DISTINCT_ON,
         }
         self.assertEqual(query.kwargs, kwargs)
 

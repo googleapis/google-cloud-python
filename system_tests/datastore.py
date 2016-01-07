@@ -372,9 +372,9 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(new_entities[0]['name'], 'Sansa')
         self.assertEqual(new_entities[2]['name'], 'Arya')
 
-    def test_query_group_by(self):
+    def test_query_distinct_on(self):
         query = self._base_query()
-        query.group_by = ['alive']
+        query.distinct_on = ['alive']
 
         expected_matches = 2
         # We expect 2, but allow the query to get 1 extra.
