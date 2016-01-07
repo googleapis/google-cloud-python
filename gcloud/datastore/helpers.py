@@ -115,6 +115,37 @@ def _get_meaning(value_pb, is_list=False):
     return meaning
 
 
+def _new_value_pb(entity_pb, name):
+    """Add (by name) a new ``Value`` protobuf to an entity protobuf.
+
+    :type entity_pb: :class:`gcloud.datastore._generated.entity_pb2.Entity`
+    :param entity_pb: An entity protobuf to add a new property to.
+
+    :type name: string
+    :param name: The name of the new property.
+
+    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Value`
+    :returns: The new ``Value`` protobuf that was added to the entity.
+    """
+    property_pb = entity_pb.property.add()
+    property_pb.name = name
+    return property_pb.value
+
+
+def _property_tuples(entity_pb):
+    """Iterator of name, ``Value`` tuples from entity properties.
+
+    :type entity_pb: :class:`gcloud.datastore._generated.entity_pb2.Entity`
+    :param entity_pb: An entity protobuf to add a new property to.
+
+    :rtype: :class:`generator`
+    :returns: An iterator that yields tuples of a name and ``Value``
+              corresponding to properties on the entity.
+    """
+    for property_pb in entity_pb.property:
+        yield property_pb.name, property_pb.value
+
+
 def entity_from_protobuf(pb):
     """Factory method for creating an entity based on a protobuf.
 
@@ -135,22 +166,21 @@ def entity_from_protobuf(pb):
     entity_meanings = {}
     exclude_from_indexes = []
 
-    for property_pb in pb.property:
-        value = _get_value_from_value_pb(property_pb.value)
-        prop_name = property_pb.name
+    for prop_name, value_pb in _property_tuples(pb):
+        value = _get_value_from_value_pb(value_pb)
         entity_props[prop_name] = value
 
         # Check if the property has an associated meaning.
-        meaning = _get_meaning(property_pb.value,
-                               is_list=isinstance(value, list))
+        is_list = isinstance(value, list)
+        meaning = _get_meaning(value_pb, is_list=is_list)
         if meaning is not None:
             entity_meanings[prop_name] = (meaning, value)
 
-        # Check if property_pb.value was indexed. Lists need to be
-        # special-cased and we require all `indexed` values in a list agree.
-        if isinstance(value, list):
+        # Check if ``value_pb`` was indexed. Lists need to be special-cased
+        # and we require all ``indexed`` values in a list agree.
+        if is_list:
             indexed_values = set(value_pb.indexed
-                                 for value_pb in property_pb.value.list_value)
+                                 for value_pb in value_pb.list_value)
             if len(indexed_values) != 1:
                 raise ValueError('For a list_value, subvalues must either all '
                                  'be indexed or all excluded from indexes.')
@@ -158,7 +188,7 @@ def entity_from_protobuf(pb):
             if not indexed_values.pop():
                 exclude_from_indexes.append(prop_name)
         else:
-            if not property_pb.value.indexed:
+            if not value_pb.indexed:
                 exclude_from_indexes.append(prop_name)
 
     entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
@@ -186,19 +216,16 @@ def entity_to_protobuf(entity):
         if value_is_list and len(value) == 0:
             continue
 
-        prop = entity_pb.property.add()
-        # Set the name of the property.
-        prop.name = name
-
+        value_pb = _new_value_pb(entity_pb, name)
         # Set the appropriate value.
-        _set_protobuf_value(prop.value, value)
+        _set_protobuf_value(value_pb, value)
 
         # Add index information to protobuf.
         if name in entity.exclude_from_indexes:
             if not value_is_list:
-                prop.value.indexed = False
+                value_pb.indexed = False
 
-            for sub_value in prop.value.list_value:
+            for sub_value in value_pb.list_value:
                 sub_value.indexed = False
 
         # Add meaning information to protobuf.
@@ -209,10 +236,10 @@ def entity_to_protobuf(entity):
             if orig_value is value:
                 # For lists, we set meaning on each sub-element.
                 if value_is_list:
-                    for sub_value_pb in prop.value.list_value:
+                    for sub_value_pb in value_pb.list_value:
                         sub_value_pb.meaning = meaning
                 else:
-                    prop.value.meaning = meaning
+                    value_pb.meaning = meaning
 
     return entity_pb
 

@@ -94,6 +94,8 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch._partial_key_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
+        from gcloud.datastore.helpers import _property_tuples
+
         _DATASET = 'DATASET'
         _PROPERTIES = {
             'foo': 'bar',
@@ -112,17 +114,20 @@ class TestBatch(unittest2.TestCase):
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
-        props = dict([(prop.name, prop.value)
-                      for prop in mutated_entity.property])
-        self.assertTrue(props['foo'].indexed)
-        self.assertFalse(props['baz'].indexed)
-        self.assertTrue(props['spam'].indexed)
-        self.assertFalse(props['spam'].list_value[0].indexed)
-        self.assertFalse(props['spam'].list_value[1].indexed)
-        self.assertFalse(props['spam'].list_value[2].indexed)
-        self.assertFalse('frotz' in props)
+
+        prop_dict = dict(_property_tuples(mutated_entity))
+        self.assertEqual(len(prop_dict), 3)
+        self.assertTrue(prop_dict['foo'].indexed)
+        self.assertFalse(prop_dict['baz'].indexed)
+        self.assertTrue(prop_dict['spam'].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
+        self.assertFalse('frotz' in prop_dict)
 
     def test_put_entity_w_completed_key_prefixed_dataset_id(self):
+        from gcloud.datastore.helpers import _property_tuples
+
         _DATASET = 'DATASET'
         _PROPERTIES = {
             'foo': 'bar',
@@ -141,15 +146,16 @@ class TestBatch(unittest2.TestCase):
 
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
-        props = dict([(prop.name, prop.value)
-                      for prop in mutated_entity.property])
-        self.assertTrue(props['foo'].indexed)
-        self.assertFalse(props['baz'].indexed)
-        self.assertTrue(props['spam'].indexed)
-        self.assertFalse(props['spam'].list_value[0].indexed)
-        self.assertFalse(props['spam'].list_value[1].indexed)
-        self.assertFalse(props['spam'].list_value[2].indexed)
-        self.assertFalse('frotz' in props)
+
+        prop_dict = dict(_property_tuples(mutated_entity))
+        self.assertEqual(len(prop_dict), 3)
+        self.assertTrue(prop_dict['foo'].indexed)
+        self.assertFalse(prop_dict['baz'].indexed)
+        self.assertTrue(prop_dict['spam'].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
+        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
+        self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):
         _DATASET = 'DATASET'

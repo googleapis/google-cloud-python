@@ -17,6 +17,7 @@ import unittest2
 
 def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
     from gcloud.datastore._generated import entity_pb2
+    from gcloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.dataset_id = dataset_id
@@ -24,9 +25,8 @@ def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
     path_element.kind = kind
     path_element.id = integer_id
     if name is not None and str_val is not None:
-        prop = entity_pb.property.add()
-        prop.name = name
-        prop.value.string_value = str_val
+        value_pb = _new_value_pb(entity_pb, name)
+        value_pb.string_value = str_val
 
     return entity_pb
 
@@ -608,6 +608,7 @@ class TestClient(unittest2.TestCase):
         self.assertRaises(ValueError, client.put_multi, Entity())
 
     def test_put_multi_no_batch_w_partial_key(self):
+        from gcloud.datastore.helpers import _property_tuples
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_batch import _KeyPB
@@ -629,12 +630,16 @@ class TestClient(unittest2.TestCase):
         inserts = list(mutation.insert_auto_id)
         self.assertEqual(len(inserts), 1)
         self.assertEqual(inserts[0].key, key.to_protobuf())
-        properties = list(inserts[0].property)
-        self.assertEqual(properties[0].name, 'foo')
-        self.assertEqual(properties[0].value.string_value, u'bar')
+
+        prop_list = list(_property_tuples(inserts[0]))
+        self.assertTrue(len(prop_list), 1)
+        name, value_pb = prop_list[0]
+        self.assertEqual(name, 'foo')
+        self.assertEqual(value_pb.string_value, u'bar')
         self.assertTrue(transaction_id is None)
 
     def test_put_multi_existing_batch_w_completed_key(self):
+        from gcloud.datastore.helpers import _property_tuples
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_batch import _mutated_pb
@@ -650,9 +655,12 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(result, None)
         mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key.to_protobuf())
-        properties = list(mutated_entity.property)
-        self.assertEqual(properties[0].name, 'foo')
-        self.assertEqual(properties[0].value.string_value, u'bar')
+
+        prop_list = list(_property_tuples(mutated_entity))
+        self.assertTrue(len(prop_list), 1)
+        name, value_pb = prop_list[0]
+        self.assertEqual(name, 'foo')
+        self.assertEqual(value_pb.string_value, u'bar')
 
     def test_delete(self):
         _called_with = []
