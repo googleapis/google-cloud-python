@@ -27,10 +27,8 @@
 # DEFAULT:  ignore=CVS
 # NOTE: This path must be relative due to the use of
 #       os.walk in astroid.modutils.get_module_files.
-# RATIONALE:
-#   _datastore_v1_pb2.py:   protobuf-generated code.
-ignore =
-    _datastore_v1_pb2.py
+# RATIONALE: No files to ignore.
+ignore=
 
 # Pickle collected data for later comparisons.
 # DEFAULT:  persistent=yes
