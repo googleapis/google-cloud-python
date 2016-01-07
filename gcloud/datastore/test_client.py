@@ -612,6 +612,7 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_batch import _KeyPB
+        from gcloud.datastore.test_batch import _mutated_pb
 
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.PROJECT)
@@ -628,15 +629,16 @@ class TestClient(unittest2.TestCase):
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
-        inserts = list(commit_req.mutation.insert_auto_id)
-        self.assertEqual(len(inserts), 1)
-        self.assertEqual(inserts[0].key, key.to_protobuf())
 
-        prop_list = list(_property_tuples(inserts[0]))
+        mutated_entity = _mutated_pb(self, commit_req.mutations, 'insert')
+        self.assertEqual(mutated_entity.key, key.to_protobuf())
+
+        prop_list = list(_property_tuples(mutated_entity))
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
         self.assertEqual(name, 'foo')
         self.assertEqual(value_pb.string_value, u'bar')
+
         self.assertTrue(transaction_id is None)
 
     def test_put_multi_existing_batch_w_completed_key(self):
@@ -688,6 +690,7 @@ class TestClient(unittest2.TestCase):
 
     def test_delete_multi_no_batch(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _mutated_pb
 
         key = _Key(self.PROJECT)
 
@@ -701,7 +704,9 @@ class TestClient(unittest2.TestCase):
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
-        self.assertEqual(list(commit_req.mutation.delete), [key.to_protobuf()])
+
+        mutated_key = _mutated_pb(self, commit_req_pb.mutations, 'delete')
+        self.assertEqual(mutated_key, key.to_protobuf())
         self.assertTrue(transaction_id is None)
 
     def test_delete_multi_w_existing_batch(self):
