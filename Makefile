@@ -15,15 +15,25 @@ generate:
 	[ -d cloud-bigtable-client ] || git clone https://github.com/GoogleCloudPlatform/cloud-bigtable-client
 	cd cloud-bigtable-client && git pull origin master
 	mkdir -p $(GENERATED_DIR)
-	# Generate all *_pb2.py files.
+	# Generate all *_pb2.py files that require gRPC.
 	$(PROTOC_CMD) \
 	    --proto_path=$(PROTOS_DIR) \
-	    --plugin=protoc-gen-grpc=$(GRPC_PLUGIN) \
 	    --python_out=$(GENERATED_DIR) \
+	    --plugin=protoc-gen-grpc=$(GRPC_PLUGIN) \
 	    --grpc_out=$(GENERATED_DIR) \
-	    $(PROTOS_DIR)/google/bigtable/v1/*.proto \
-	    $(PROTOS_DIR)/google/bigtable/admin/cluster/v1/*.proto \
-	    $(PROTOS_DIR)/google/bigtable/admin/table/v1/*.proto
+	    $(PROTOS_DIR)/google/bigtable/v1/bigtable_service.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_service.proto
+	# Generate all *_pb2.py files that do not require gRPC.
+	$(PROTOC_CMD) \
+	    --proto_path=$(PROTOS_DIR) \
+	    --python_out=$(GENERATED_DIR) \
+	    $(PROTOS_DIR)/google/bigtable/v1/bigtable_data.proto \
+	    $(PROTOS_DIR)/google/bigtable/v1/bigtable_service_messages.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_data.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_service_messages.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_data.proto \
+	    $(PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_service_messages.proto
 	# Move the newly generated *_pb2.py files into our library.
 	mv $(GENERATED_DIR)/google/bigtable/v1/* $(FINAL_DIR)
 	mv $(GENERATED_DIR)/google/bigtable/admin/cluster/v1/* $(FINAL_DIR)

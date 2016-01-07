@@ -386,10 +386,4 @@ _sym_db.RegisterMessage(DeleteColumnFamilyRequest)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), b'\n\"com.google.bigtable.admin.table.v1B!BigtableTableServiceMessagesProtoP\001')
-import abc
-from grpc.beta import implementations as beta_implementations
-from grpc.early_adopter import implementations as early_adopter_implementations
-from grpc.framework.alpha import utilities as alpha_utilities
-from grpc.framework.common import cardinality
-from grpc.framework.interfaces.face import utilities as face_utilities
 # @@protoc_insertion_point(module_scope)
