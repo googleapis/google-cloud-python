@@ -560,7 +560,8 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(pb.group_by), [])
         self.assertEqual(pb.filter.property_filter.property.name, '')
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
+        self.assertEqual(cfilter.op,
+                         query_pb2.CompositeFilter.OPERATOR_UNSPECIFIED)
         self.assertEqual(list(cfilter.filters), [])
         self.assertEqual(pb.start_cursor, b'')
         self.assertEqual(pb.end_cursor, b'')
