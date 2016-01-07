@@ -67,7 +67,7 @@
   dns-usage
   Client <dns-client>
   dns-zone
-  dns-resource_record_set
+  dns-resource-record-set
   dns-changes
 
 .. toctree::
@@ -115,7 +115,7 @@ try installing the ``dev`` packages beforehand:
 
     $ sudo apt-get install python-dev libssl-dev
 
-If you want to install `gcloud-python` from source,
+If you want to install ``gcloud-python`` from source,
 you can clone the repository from GitHub:
 
 .. code-block:: console

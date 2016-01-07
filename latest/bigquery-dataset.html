@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datasets &mdash; gcloud 02c645f documentation</title>
+    <title>Datasets &mdash; gcloud 5fc0150 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '02c645f',
+        VERSION:     '5fc0150',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 02c645f documentation" href="index.html" />
+    <link rel="top" title="gcloud 5fc0150 documentation" href="index.html" />
     <link rel="next" title="Jobs" href="bigquery-job.html" />
     <link rel="prev" title="BigQuery Client" href="bigquery-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%205fc0150" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (02c645f)
+              Version History (5fc0150)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,9 +104,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>role</strong> (<em>string (one of 'OWNER', 'WRITER', 'READER').</em>) &#8211; role granted to the entity.</li>
-<li><strong>entity_type</strong> (<em>string (one of 'specialGroup', 'groupByEmail', or
-'userByEmail')</em>) &#8211; type of entity being granted the role.</li>
+<li><strong>role</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <p>Role granted to the entity. One of</p>
+<ul>
+<li><code class="docutils literal"><span class="pre">'OWNER'</span></code></li>
+<li><code class="docutils literal"><span class="pre">'WRITER'</span></code></li>
+<li><code class="docutils literal"><span class="pre">'READER'</span></code></li>
+</ul>
+</li>
+<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <p>Type of entity being granted the role. One of</p>
+<ul>
+<li><code class="docutils literal"><span class="pre">'specialGroup'</span></code></li>
+<li><code class="docutils literal"><span class="pre">'groupByEmail'</span></code></li>
+<li><code class="docutils literal"><span class="pre">'userByEmail'</span></code></li>
+</ul>
+</li>
 <li><strong>entity_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; ID of entity being granted the role.</li>
 </ul>
 </td>
@@ -157,7 +168,7 @@ for the dataset (which requires a project).</li>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/dataset.html#Dataset.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.dataset.Dataset.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the dataset via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/tables/insert">https://cloud.google.com/bigquery/reference/rest/v2/tables/insert</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/insert">https://cloud.google.com/bigquery/docs/reference/v2/tables/insert</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -222,7 +233,7 @@ for the dataset (which requires a project).</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/dataset.html#Dataset.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.dataset.Dataset.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the dataset via a DELETE request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/bigquery/reference/rest/v2/datasets/delete">https://cloud.google.com/bigquery/reference/rest/v2/datasets/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/tables/delete">https://cloud.google.com/bigquery/docs/reference/v2/tables/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -347,7 +358,7 @@ datasets.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>, plus a
-&#8220;next page token&#8221; string:  if not None, indicates that
+&#8220;next page token&#8221; string:  if not <code class="docutils literal"><span class="pre">None</span></code>, indicates that
 more tables can be retrieved with another call (pass that
 value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
 </td>
@@ -573,7 +584,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dns-resource_record_set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Cloud Search</span></p>
