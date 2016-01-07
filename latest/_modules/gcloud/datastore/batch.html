@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.batch &mdash; gcloud 5fc0150 documentation</title>
+    <title>gcloud.datastore.batch &mdash; gcloud 972e875 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '5fc0150',
+        VERSION:     '972e875',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 5fc0150 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 972e875 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%205fc0150" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%20972e875" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (5fc0150)
+              Version History (972e875)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -153,11 +153,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type client: :class:`gcloud.datastore.client.Client`</span>
 <span class="sd">    :param client: The client used to connect to datastore.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">_id</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># &quot;protected&quot; attribute, always None for non-transactions</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_commit_request</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">CommitRequest</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_partial_key_entities</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Batch.current"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -207,6 +208,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The newly created entity protobuf that will be</span>
 <span class="sd">                  updated and sent with a commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># We use ``upsert`` for entities with completed keys, rather than</span>
+        <span class="c"># ``insert`` or ``update``, in order not to create race conditions</span>
+        <span class="c"># based on prior existence / removal of the entity.</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutations</span><span class="o">.</span><span class="n">upsert</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_add_delete_key_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -222,17 +226,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Getter for the changes accumulated by this batch.</span>
 
-<span class="sd">        Every batch is committed with a single Mutation</span>
-<span class="sd">        representing the &#39;work&#39; to be done as part of the batch.</span>
-<span class="sd">        Inside a batch, calling :meth:`put` with an entity, or</span>
-<span class="sd">        :meth:`delete` with a key, builds up the mutation.</span>
-<span class="sd">        This getter returns the Mutation protobuf that</span>
-<span class="sd">        has been built-up so far.</span>
+<span class="sd">        Every batch is committed with a single commit request containing all</span>
+<span class="sd">        the work to be done as mutations. Inside a batch, calling :meth:`put`</span>
+<span class="sd">        with an entity, or :meth:`delete` with a key, builds up the request by</span>
+<span class="sd">        adding a new mutation. This getter returns the protobuf that has been</span>
+<span class="sd">        built-up so far.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore._generated.datastore_pb2.Mutation`</span>
 <span class="sd">        :returns: The Mutation protobuf to be sent in the commit request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit_request</span><span class="o">.</span><span class="n">mutation</span>
 
 <div class="viewcode-block" id="Batch.put"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remember an entity&#39;s state to be saved during :meth:`commit`.</span>
@@ -249,8 +252,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">           &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in Python3) map to &#39;blob_value&#39;.</span>
 
 <span class="sd">        When an entity has a partial key, calling :meth:`commit` sends it as</span>
-<span class="sd">        an ``insert_auto_id`` mutation and the key is completed. On return, the</span>
-<span class="sd">        key for the ``entity`` passed in as updated to match the key ID</span>
+<span class="sd">        an ``insert_auto_id`` mutation and the key is completed. On return,</span>
+<span class="sd">        the key for the ``entity`` passed in is updated to match the key ID</span>
 <span class="sd">        assigned by the server.</span>
 
 <span class="sd">        :type entity: :class:`gcloud.datastore.entity.Entity`</span>
@@ -305,11 +308,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        context manager.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">updated_keys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commit_request</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span>
         <span class="c"># If the back-end returns without error, we are guaranteed that</span>
-        <span class="c"># the response&#39;s &#39;insert_auto_id_key&#39; will match (length and order)</span>
-        <span class="c"># the request&#39;s &#39;insert_auto_id` entities, which are derived from</span>
-        <span class="c"># our &#39;_partial_key_entities&#39; (no partial success).</span>
+        <span class="c"># :meth:`Connection.commit` will return keys that match (length and</span>
+        <span class="c"># order) directly ``_partial_key_entities``.</span>
         <span class="k">for</span> <span class="n">new_key_pb</span><span class="p">,</span> <span class="n">entity</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">updated_keys</span><span class="p">,</span>
                                       <span class="bp">self</span><span class="o">.</span><span class="n">_partial_key_entities</span><span class="p">):</span>
             <span class="n">new_id</span> <span class="o">=</span> <span class="n">new_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
