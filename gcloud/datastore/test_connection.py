@@ -258,7 +258,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 1)
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
@@ -288,7 +288,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 1)
         _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.read_consistency,
@@ -330,7 +330,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 1)
         _compare_key_pb_after_request(self, key_pb, keys[0])
         self.assertEqual(request.read_options.transaction, TRANSACTION)
@@ -365,7 +365,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 1)
         _compare_key_pb_after_request(self, key_pb, keys[0])
 
@@ -395,7 +395,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 2)
         _compare_key_pb_after_request(self, key_pb1, keys[0])
         _compare_key_pb_after_request(self, key_pb2, keys[1])
@@ -431,7 +431,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 2)
         _compare_key_pb_after_request(self, key_pb1, keys[0])
         _compare_key_pb_after_request(self, key_pb2, keys[1])
@@ -469,7 +469,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.LookupRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        keys = list(request.key)
+        keys = list(request.keys)
         self.assertEqual(len(keys), 2)
         _compare_key_pb_after_request(self, key_pb1, keys[0])
         _compare_key_pb_after_request(self, key_pb2, keys[1])
