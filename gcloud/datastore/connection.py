@@ -264,7 +264,7 @@ class Connection(connection.Connection):
         _set_read_options(request, eventual, transaction_id)
 
         if namespace:
-            request.partition_id.namespace = namespace
+            request.partition_id.namespace_id = namespace
 
         request.query.CopyFrom(query_pb)
         response = self._rpc(project, 'runQuery', request,

@@ -358,7 +358,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
         if project is not None:
             pb.partition_id.project_id = project
         if namespace is not None:
-            pb.partition_id.namespace = namespace
+            pb.partition_id.namespace_id = namespace
         for elem in path:
             added = pb.path_element.add()
             added.kind = elem['kind']

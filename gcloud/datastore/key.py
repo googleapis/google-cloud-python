@@ -243,7 +243,7 @@ class Key(object):
         key.partition_id.project_id = self.project
 
         if self.namespace:
-            key.partition_id.namespace = self.namespace
+            key.partition_id.namespace_id = self.namespace
 
         for item in self.path:
             element = key.path_element.add()
