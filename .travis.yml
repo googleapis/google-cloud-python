@@ -1,13 +1,9 @@
 language: python
 sudo: false
 
-before_install:
-  - git clone https://github.com/GoogleCloudPlatform/gcloud-python-wheels
-        gcloud-python-wheels
-  - export WHEELHOUSE="$(pwd)/gcloud-python-wheels/wheelhouse/"
-
 install:
-  - scripts/custom_pip_install.sh tox
+  - pip install --upgrade pip
+  - pip install --upgrade tox
 
 script:
   - tox -e py26
@@ -32,3 +28,7 @@ deploy:
     # until this is fixed: https://github.com/travis-ci/travis-ci/issues/1675
     all_branches: true
   distributions: "sdist bdist_wheel"
+
+cache:
+  directories:
+    - ${HOME}/.cache/pip
