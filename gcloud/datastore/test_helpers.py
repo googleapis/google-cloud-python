@@ -80,18 +80,18 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         unindexed_val_pb.integer_value = 10
         unindexed_val_pb.exclude_from_indexes = True
 
-        list_val_pb1 = _new_value_pb(entity_pb, 'baz')
-        list_pb1 = list_val_pb1.list_value
+        array_val_pb1 = _new_value_pb(entity_pb, 'baz')
+        array_pb1 = array_val_pb1.array_value.values
 
-        unindexed_list_val_pb = list_pb1.add()
-        unindexed_list_val_pb.integer_value = 11
-        unindexed_list_val_pb.exclude_from_indexes = True
+        unindexed_array_val_pb = array_pb1.add()
+        unindexed_array_val_pb.integer_value = 11
+        unindexed_array_val_pb.exclude_from_indexes = True
 
-        list_val_pb2 = _new_value_pb(entity_pb, 'qux')
-        list_pb2 = list_val_pb2.list_value
+        array_val_pb2 = _new_value_pb(entity_pb, 'qux')
+        array_pb2 = array_val_pb2.array_value.values
 
-        indexed_list_val_pb = list_pb2.add()
-        indexed_list_val_pb.integer_value = 12
+        indexed_array_val_pb = array_pb2.add()
+        indexed_array_val_pb.integer_value = 12
 
         entity = self._callFUT(entity_pb)
         self.assertEqual(entity.kind, _KIND)
@@ -119,14 +119,14 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         entity_pb.key.partition_id.project_id = _PROJECT
         entity_pb.key.path.add(kind=_KIND, id=_ID)
 
-        list_val_pb = _new_value_pb(entity_pb, 'baz')
-        list_pb = list_val_pb.list_value
+        array_val_pb = _new_value_pb(entity_pb, 'baz')
+        array_pb = array_val_pb.array_value.values
 
-        unindexed_value_pb1 = list_pb.add()
+        unindexed_value_pb1 = array_pb.add()
         unindexed_value_pb1.integer_value = 10
         unindexed_value_pb1.exclude_from_indexes = True
 
-        unindexed_value_pb2 = list_pb.add()
+        unindexed_value_pb2 = array_pb.add()
         unindexed_value_pb2.integer_value = 11
 
         with self.assertRaises(ValueError):
@@ -305,14 +305,14 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         # Add a list property.
         val_pb4 = _new_value_pb(original_pb, 'list-quux')
-        list_val1 = val_pb4.list_value.add()
-        list_val1.exclude_from_indexes = True
-        list_val1.meaning = meaning = 22
-        list_val1.blob_value = b'\xe2\x98\x83'
-        list_val2 = val_pb4.list_value.add()
-        list_val2.exclude_from_indexes = True
-        list_val2.meaning = meaning
-        list_val2.blob_value = b'\xe2\x98\x85'
+        array_val1 = val_pb4.array_value.values.add()
+        array_val1.exclude_from_indexes = False
+        array_val1.meaning = meaning = 22
+        array_val1.blob_value = b'\xe2\x98\x83'
+        array_val2 = val_pb4.array_value.add()
+        array_val2.exclude_from_indexes = False
+        array_val2.meaning = meaning
+        array_val2.blob_value = b'\xe2\x98\x85'
 
         # Convert to the user-space Entity.
         entity = entity_from_protobuf(original_pb)
@@ -491,10 +491,10 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(name, 'entity_value')
         self.assertTrue(value is entity)
 
-    def test_list(self):
+    def test_array(self):
         values = ['a', 0, 3.14]
         name, value = self._callFUT(values)
-        self.assertEqual(name, 'list_value')
+        self.assertEqual(name, 'array_value')
         self.assertTrue(value is values)
 
     def test_object(self):
@@ -574,14 +574,14 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertTrue(isinstance(entity, Entity))
         self.assertEqual(entity['foo'], 'Foo')
 
-    def test_list(self):
+    def test_array(self):
         from gcloud.datastore._generated import entity_pb2
 
         pb = entity_pb2.Value()
-        list_pb = pb.list_value
-        item_pb = list_pb.add()
+        array_pb = pb.array_value.values
+        item_pb = array_pb.add()
         item_pb.string_value = 'Foo'
-        item_pb = list_pb.add()
+        item_pb = array_pb.add()
         item_pb.string_value = 'Bar'
         items = self._callFUT(pb)
         self.assertEqual(items, ['Foo', 'Bar'])
@@ -723,11 +723,11 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(list(prop_dict.keys()), [name])
         self.assertEqual(prop_dict[name].string_value, value)
 
-    def test_list(self):
+    def test_array(self):
         pb = self._makePB()
         values = [u'a', 0, 3.14]
         self._callFUT(pb, values)
-        marshalled = pb.list_value
+        marshalled = pb.array_value.values
         self.assertEqual(len(marshalled), len(values))
         self.assertEqual(marshalled[0].string_value, values[0])
         self.assertEqual(marshalled[1].integer_value, values[1])
@@ -836,23 +836,23 @@ class Test__get_meaning(unittest2.TestCase):
         result = self._callFUT(value_pb)
         self.assertEqual(meaning, result)
 
-    def test_empty_list_value(self):
+    def test_empty_array_value(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
-        value_pb.list_value.add()
-        value_pb.list_value.pop()
+        value_pb.array_value.values.add()
+        value_pb.array_value.values.pop()
 
         result = self._callFUT(value_pb, is_list=True)
         self.assertEqual(None, result)
 
-    def test_list_value(self):
+    def test_array_value(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning = 9
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = sub_value_pb2.meaning = meaning
         sub_value_pb1.string_value = u'hi'
@@ -861,14 +861,14 @@ class Test__get_meaning(unittest2.TestCase):
         result = self._callFUT(value_pb, is_list=True)
         self.assertEqual(meaning, result)
 
-    def test_list_value_disagreeing(self):
+    def test_array_value_disagreeing(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning1 = 9
         meaning2 = 10
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = meaning1
         sub_value_pb2.meaning = meaning2
@@ -878,13 +878,13 @@ class Test__get_meaning(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT(value_pb, is_list=True)
 
-    def test_list_value_partially_unset(self):
+    def test_array_value_partially_unset(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning1 = 9
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = meaning1
         sub_value_pb1.string_value = u'hi'

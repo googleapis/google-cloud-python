@@ -96,20 +96,20 @@ def _get_meaning(value_pb, is_list=False):
     if is_list:
         # An empty list will have no values, hence no shared meaning
         # set among them.
-        if len(value_pb.list_value) == 0:
+        if len(value_pb.array_value.values) == 0:
             return None
 
         # We check among all the meanings, some of which may be None,
         # the rest which may be enum/int values.
         all_meanings = set(_get_meaning(sub_value_pb)
-                           for sub_value_pb in value_pb.list_value)
+                           for sub_value_pb in value_pb.array_value.values)
         meaning = all_meanings.pop()
         # The value we popped off should have been unique. If not
         # then we can't handle a list with values that have more
         # than one meaning.
         if all_meanings:
             raise ValueError('Different meanings set on values '
-                             'within a list_value')
+                             'within an array_value')
     elif value_pb.meaning:  # Simple field (int32)
         meaning = value_pb.meaning
 
@@ -179,10 +179,11 @@ def entity_from_protobuf(pb):
         # in a list agree.
         if is_list:
             exclude_values = set(value_pb.exclude_from_indexes
-                                 for value_pb in value_pb.list_value)
+                                 for value_pb in value_pb.array_value.values)
             if len(exclude_values) != 1:
-                raise ValueError('For a list_value, subvalues must either all '
-                                 'be indexed or all excluded from indexes.')
+                raise ValueError('For an array_value, subvalues must either '
+                                 'all be indexed or all excluded from '
+                                 'indexes.')
 
             if exclude_values.pop():
                 exclude_from_indexes.append(prop_name)
@@ -224,7 +225,7 @@ def entity_to_protobuf(entity):
             if not value_is_list:
                 value_pb.exclude_from_indexes = True
 
-            for sub_value in value_pb.list_value:
+            for sub_value in value_pb.array_value.values:
                 sub_value.exclude_from_indexes = True
 
         # Add meaning information to protobuf.
@@ -235,7 +236,7 @@ def entity_to_protobuf(entity):
             if orig_value is value:
                 # For lists, we set meaning on each sub-element.
                 if value_is_list:
-                    for sub_value_pb in value_pb.list_value:
+                    for sub_value_pb in value_pb.array_value.values:
                         sub_value_pb.meaning = meaning
                 else:
                     value_pb.meaning = meaning
@@ -326,7 +327,7 @@ def _pb_attr_value(val):
     elif isinstance(val, Entity):
         name, value = 'entity', val
     elif isinstance(val, list):
-        name, value = 'list', val
+        name, value = 'array', val
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -374,9 +375,9 @@ def _get_value_from_value_pb(value_pb):
     elif value_pb.HasField('entity_value'):  # Message field (Entity)
         result = entity_from_protobuf(value_pb.entity_value)
 
-    elif value_pb.list_value:
+    elif value_pb.array_value.values:
         result = [_get_value_from_value_pb(value)
-                  for value in value_pb.list_value]
+                  for value in value_pb.array_value.values]
 
     return result
 
@@ -410,8 +411,8 @@ def _set_protobuf_value(value_pb, val):
     elif attr == 'entity_value':
         entity_pb = entity_to_protobuf(val)
         value_pb.entity_value.CopyFrom(entity_pb)
-    elif attr == 'list_value':
-        l_pb = value_pb.list_value
+    elif attr == 'array_value':
+        l_pb = value_pb.array_value.values
         for item in val:
             i_pb = l_pb.add()
             _set_protobuf_value(i_pb, item)
