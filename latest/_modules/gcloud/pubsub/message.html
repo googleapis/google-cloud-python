@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.message &mdash; gcloud dafc052 documentation</title>
+    <title>gcloud.pubsub.message &mdash; gcloud aa87ffe documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'dafc052',
+        VERSION:     'aa87ffe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud dafc052 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aa87ffe documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/message%0ARelease%3A%20dafc052" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/message%0ARelease%3A%20aa87ffe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (dafc052)
+              Version History (aa87ffe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -108,10 +108,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;Define API Topics.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_RFC3339_MICROS</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">UTC</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_rfc3339_to_datetime</span>
 
 
 <div class="viewcode-block" id="Message"><a class="viewcode-back" href="../../../pubsub-message.html#gcloud.pubsub.message.Message">[docs]</a><span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -149,7 +147,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        Allows sorting messages in publication order (assuming consistent</span>
 <span class="sd">        clocks across all publishers).</span>
 
-<span class="sd">        :rtype: datetime</span>
+<span class="sd">        :rtype: :class:`datetime.datetime`</span>
 <span class="sd">        :returns: timestamp (in UTC timezone) parsed from RFC 3339 timestamp</span>
 <span class="sd">        :raises: ValueError if timestamp not in ``attributes``, or if it does</span>
 <span class="sd">                 not match the RFC 3339 format.</span>
@@ -157,8 +155,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;timestamp&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">stamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;No timestamp&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">stamp</span><span class="p">,</span> <span class="n">_RFC3339_MICROS</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-            <span class="n">tzinfo</span><span class="o">=</span><span class="n">UTC</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Message.from_api_repr"><a class="viewcode-back" href="../../../pubsub-message.html#gcloud.pubsub.message.Message.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
