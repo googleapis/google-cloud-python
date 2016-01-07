@@ -699,51 +699,6 @@ class Table(object):
 
         return errors
 
-    @staticmethod
-    def _configure_job_metadata(metadata,  # pylint: disable=R0913
-                                allow_jagged_rows,
-                                allow_quoted_newlines,
-                                create_disposition,
-                                encoding,
-                                field_delimiter,
-                                ignore_unknown_values,
-                                max_bad_records,
-                                quote_character,
-                                skip_leading_rows,
-                                write_disposition):
-        """Helper for :meth:`upload_from_file`."""
-        load_config = metadata['configuration']['load']
-
-        if allow_jagged_rows is not None:
-            load_config['allowJaggedRows'] = allow_jagged_rows
-
-        if allow_quoted_newlines is not None:
-            load_config['allowQuotedNewlines'] = allow_quoted_newlines
-
-        if create_disposition is not None:
-            load_config['createDisposition'] = create_disposition
-
-        if encoding is not None:
-            load_config['encoding'] = encoding
-
-        if field_delimiter is not None:
-            load_config['fieldDelimiter'] = field_delimiter
-
-        if ignore_unknown_values is not None:
-            load_config['ignoreUnknownValues'] = ignore_unknown_values
-
-        if max_bad_records is not None:
-            load_config['maxBadRecords'] = max_bad_records
-
-        if quote_character is not None:
-            load_config['quote'] = quote_character
-
-        if skip_leading_rows is not None:
-            load_config['skipLeadingRows'] = skip_leading_rows
-
-        if write_disposition is not None:
-            load_config['writeDisposition'] = write_disposition
-
     def upload_from_file(self,  # pylint: disable=R0913,R0914
                          file_obj,
                          source_format,
@@ -877,12 +832,12 @@ class Table(object):
             }
         }
 
-        self._configure_job_metadata(metadata, allow_jagged_rows,
-                                     allow_quoted_newlines, create_disposition,
-                                     encoding, field_delimiter,
-                                     ignore_unknown_values, max_bad_records,
-                                     quote_character, skip_leading_rows,
-                                     write_disposition)
+        _configure_job_metadata(metadata, allow_jagged_rows,
+                                allow_quoted_newlines, create_disposition,
+                                encoding, field_delimiter,
+                                ignore_unknown_values, max_bad_records,
+                                quote_character, skip_leading_rows,
+                                write_disposition)
 
         upload = Upload(file_obj, content_type, total_bytes,
                         auto_transfer=False)
@@ -917,6 +872,51 @@ class Table(object):
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
         return client.job_from_resource(json.loads(response_content))
+
+
+def _configure_job_metadata(metadata,  # pylint: disable=R0913
+                            allow_jagged_rows,
+                            allow_quoted_newlines,
+                            create_disposition,
+                            encoding,
+                            field_delimiter,
+                            ignore_unknown_values,
+                            max_bad_records,
+                            quote_character,
+                            skip_leading_rows,
+                            write_disposition):
+    """Helper for :meth:`Table.upload_from_file`."""
+    load_config = metadata['configuration']['load']
+
+    if allow_jagged_rows is not None:
+        load_config['allowJaggedRows'] = allow_jagged_rows
+
+    if allow_quoted_newlines is not None:
+        load_config['allowQuotedNewlines'] = allow_quoted_newlines
+
+    if create_disposition is not None:
+        load_config['createDisposition'] = create_disposition
+
+    if encoding is not None:
+        load_config['encoding'] = encoding
+
+    if field_delimiter is not None:
+        load_config['fieldDelimiter'] = field_delimiter
+
+    if ignore_unknown_values is not None:
+        load_config['ignoreUnknownValues'] = ignore_unknown_values
+
+    if max_bad_records is not None:
+        load_config['maxBadRecords'] = max_bad_records
+
+    if quote_character is not None:
+        load_config['quote'] = quote_character
+
+    if skip_leading_rows is not None:
+        load_config['skipLeadingRows'] = skip_leading_rows
+
+    if write_disposition is not None:
+        load_config['writeDisposition'] = write_disposition
 
 
 def _parse_schema_resource(info):
