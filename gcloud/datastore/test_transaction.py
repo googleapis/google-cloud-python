@@ -166,7 +166,7 @@ def _make_key(kind, id_, project):
     from gcloud.datastore._generated import entity_pb2
 
     key = entity_pb2.Key()
-    key.partition_id.dataset_id = project
+    key.partition_id.project_id = project
     elem = key.path_element.add()
     elem.kind = kind
     elem.id = id_
