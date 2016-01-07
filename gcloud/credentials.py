@@ -46,38 +46,51 @@ def get_credentials():
     """Gets credentials implicitly from the current environment.
 
     .. note::
-      You should not need to use this function directly. Instead, use the
-      helper method :func:`gcloud.datastore.__init__.get_connection`
-      which uses this method under the hood.
+
+        You should not need to use this function directly. Instead, use a
+        helper method which uses this method under the hood.
 
     Checks environment in order of precedence:
 
     * Google App Engine (production and testing)
-    * Environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to
+    * Environment variable :envvar:`GOOGLE_APPLICATION_CREDENTIALS` pointing to
       a file with stored credentials information.
     * Stored "well known" file associated with ``gcloud`` command line tool.
     * Google Compute Engine production environment.
 
-    The file referred to in GOOGLE_APPLICATION_CREDENTIALS is expected to
-    contain information about credentials that are ready to use. This means
-    either service account information or user account information with
-    a ready-to-use refresh token::
+    The file referred to in :envvar:`GOOGLE_APPLICATION_CREDENTIALS` is
+    expected to contain information about credentials that are ready to use.
+    This means either service account information or user account information
+    with a ready-to-use refresh token:
 
-      {                                       {
-          'type': 'authorized_user',              'type': 'service_account',
-          'client_id': '...',                     'client_id': '...',
-          'client_secret': '...',       OR        'client_email': '...',
-          'refresh_token': '...,                  'private_key_id': '...',
-      }                                           'private_key': '...',
-                                              }
+    .. code:: json
+
+      {
+          'type': 'authorized_user',
+          'client_id': '...',
+          'client_secret': '...',
+          'refresh_token': '...'
+      }
+
+    or
+
+    .. code:: json
+
+      {
+          'type': 'service_account',
+          'client_id': '...',
+          'client_email': '...',
+          'private_key_id': '...',
+          'private_key': '...'
+      }
 
     The second of these is simply a JSON key downloaded from the Google APIs
     console. The first is a close cousin of the "client secrets" JSON file
-    used by ``oauth2client.clientsecrets`` but differs in formatting.
+    used by :mod:`oauth2client.clientsecrets` but differs in formatting.
 
     :rtype: :class:`oauth2client.client.GoogleCredentials`,
-            :class:`oauth2client.appengine.AppAssertionCredentials`,
-            :class:`oauth2client.gce.AppAssertionCredentials`,
+            :class:`oauth2client.contrib.appengine.AppAssertionCredentials`,
+            :class:`oauth2client.contrib.gce.AppAssertionCredentials`,
             :class:`oauth2client.service_account._ServiceAccountCredentials`
     :returns: A new credentials instance corresponding to the implicit
               environment.
@@ -119,7 +132,7 @@ def get_for_service_account_p12(client_email, private_key_path, scope=None):
 
     .. note::
       This method is not used by default, instead :func:`get_credentials`
-      is used. This method is intended to be used when the environments is
+      is used. This method is intended to be used when the environment is
       known explicitly and detecting the environment implicitly would be
       superfluous.
 
@@ -302,7 +315,8 @@ def generate_signed_url(credentials, resource, expiration,
     :param resource: A pointer to a specific resource
                      (typically, ``/bucket-name/path/to/blob.txt``).
 
-    :type expiration: int, long, datetime.datetime, datetime.timedelta
+    :type expiration: :class:`int`, :class:`long`, :class:`datetime.datetime`,
+                      :class:`datetime.timedelta`
     :param expiration: When the signed URL should expire.
 
     :type api_access_endpoint: string

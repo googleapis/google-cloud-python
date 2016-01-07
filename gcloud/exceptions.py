@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Custom exceptions for gcloud.storage package.
+"""Custom exceptions for :mod:`gcloud` package.
 
 See: https://cloud.google.com/storage/docs/json_api/v1/status-codes
 """
@@ -171,7 +171,7 @@ def make_exception(response, content, error_info=None, use_json=True):
     :param error_info: Optional string giving extra information about the
                        failed request.
 
-    :type use_json: boolean
+    :type use_json: bool
     :param use_json: Flag indicating if ``content`` is expected to be JSON.
 
     :rtype: instance of :class:`GCloudError`, or a concrete subclass.
@@ -213,7 +213,7 @@ def _walk_subclasses(klass):
 
 
 # Build the code->exception class mapping.
-for eklass in _walk_subclasses(GCloudError):
-    code = getattr(eklass, 'code', None)
+for _eklass in _walk_subclasses(GCloudError):
+    code = getattr(_eklass, 'code', None)
     if code is not None:
-        _HTTP_CODE_TO_EXCEPTION[code] = eklass
+        _HTTP_CODE_TO_EXCEPTION[code] = _eklass

@@ -23,12 +23,19 @@ from gcloud.bigquery.table import Table
 class AccessGrant(object):
     """Represent grant of an access role to an entity.
 
-    :type role: string (one of 'OWNER', 'WRITER', 'READER').
-    :param role: role granted to the entity.
+    :type role: string
+    :param role: Role granted to the entity. One of
 
-    :type entity_type: string (one of 'specialGroup', 'groupByEmail', or
-                       'userByEmail')
-    :param entity_type: type of entity being granted the role.
+                 * ``'OWNER'``
+                 * ``'WRITER'``
+                 * ``'READER'``
+
+    :type entity_type: string
+    :param entity_type: Type of entity being granted the role. One of
+
+                        * ``'specialGroup'``
+                        * ``'groupByEmail'``
+                        * ``'userByEmail'``
 
     :type entity_id: string
     :param entity_id: ID of entity being granted the role.
@@ -360,7 +367,7 @@ class Dataset(object):
         """API call:  create the dataset via a PUT request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/tables/insert
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/insert
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -465,7 +472,7 @@ class Dataset(object):
         """API call:  delete the dataset via a DELETE request
 
         See:
-        https://cloud.google.com/bigquery/reference/rest/v2/datasets/delete
+        https://cloud.google.com/bigquery/docs/reference/v2/tables/delete
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -491,7 +498,7 @@ class Dataset(object):
 
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.bigquery.table.Table`, plus a
-                  "next page token" string:  if not None, indicates that
+                  "next page token" string:  if not ``None``, indicates that
                   more tables can be retrieved with another call (pass that
                   value as ``page_token``).
         """

@@ -104,7 +104,7 @@ def valid_filename(filename):
 def is_production_filename(filename):
     """Checks if the file contains production code.
 
-    :rtype: boolean
+    :rtype: bool
     :returns: Boolean indicating production status.
     """
     return not ('demo' in filename or 'test' in filename)
@@ -127,7 +127,7 @@ def get_files_for_linting(allow_limited=True):
     ``GCLOUD_REMOTE_FOR_LINT`` and ``GCLOUD_BRANCH_FOR_LINT`` can be set to
     specify a remote branch to diff against.
 
-    :type allow_limited: boolean
+    :type allow_limited: bool
     :param allow_limited: Boolean indicating if a reduced set of files can
                           be used.
 
