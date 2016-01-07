@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.transaction &mdash; gcloud 22642cd documentation</title>
+    <title>gcloud.datastore.transaction &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/transaction%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/transaction%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -125,8 +125,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">      &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">      ...     datastore.put_multi([entity1, entity2])</span>
 
-<span class="sd">    Because it derives from :class:`Batch`, :class`Transaction` also provides</span>
-<span class="sd">    :meth:`put` and :meth:`delete` methods::</span>
+<span class="sd">    Because it derives from :class:`Batch &lt;.datastore.batch.Batch&gt;`,</span>
+<span class="sd">    :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods::</span>
 
 <span class="sd">      &gt;&gt;&gt; with datastore.Transaction() as xact:</span>
 <span class="sd">      ...     xact.put(entity1)</span>
@@ -153,15 +153,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">       ``entity`` won&#39;t have a complete Key until the transaction is</span>
 <span class="sd">       committed.</span>
 
-<span class="sd">       Once you exit the transaction (or call ``commit()``), the</span>
+<span class="sd">       Once you exit the transaction (or call :meth:`commit`), the</span>
 <span class="sd">       automatically generated ID will be assigned to the entity::</span>
 
 <span class="sd">         &gt;&gt;&gt; with datastore.Transaction():</span>
 <span class="sd">         ...     entity = datastore.Entity(key=Key(&#39;Thing&#39;))</span>
 <span class="sd">         ...     datastore.put(entity)</span>
-<span class="sd">         ...     assert entity.key.is_partial  # There is no ID on this key.</span>
+<span class="sd">         ...     print entity.key.is_partial  # There is no ID on this key.</span>
 <span class="sd">         ...</span>
-<span class="sd">         &gt;&gt;&gt; assert not entity.key.is_partial  # There *is* an ID.</span>
+<span class="sd">         True</span>
+<span class="sd">         &gt;&gt;&gt; print entity.key.is_partial  # There *is* an ID.</span>
+<span class="sd">         False</span>
 
 <span class="sd">    If you don&#39;t want to use the context manager you can initialize a</span>
 <span class="sd">    transaction manually::</span>
@@ -210,8 +212,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Transaction.current"><a class="viewcode-back" href="../../../datastore-transactions.html#gcloud.datastore.transaction.Transaction.current">[docs]</a>    <span class="k">def</span> <span class="nf">current</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the topmost transaction.</span>
 
-<span class="sd">        .. note:: if the topmost element on the stack is not a transaction,</span>
-<span class="sd">                  returns None.</span>
+<span class="sd">        .. note::</span>
+
+<span class="sd">            If the topmost element on the stack is not a transaction,</span>
+<span class="sd">            returns None.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.transaction.Transaction` or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>

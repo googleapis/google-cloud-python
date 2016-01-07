@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Batches &mdash; gcloud 22642cd documentation</title>
+    <title>Batches &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="index.html" />
     <link rel="next" title="Storage Client" href="storage-client.html" />
     <link rel="prev" title="Transactions" href="datastore-transactions.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-batches%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -105,7 +105,7 @@ in a single request to the Cloud Datastore API.</p>
 <p>An abstraction representing a collected group of updates / deletes.</p>
 <p>Used to build up a bulk mutuation.</p>
 <p>For example, the following snippet of code will put the two <code class="docutils literal"><span class="pre">save</span></code>
-operations and the delete operatiuon into the same mutation, and send
+operations and the <code class="docutils literal"><span class="pre">delete</span></code> operation into the same mutation, and send
 them to the server in a single API request:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">()</span>
@@ -115,8 +115,8 @@ them to the server in a single API request:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">batch</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>You can also use a batch as a context manager, in which case the
-<code class="docutils literal"><span class="pre">commit</span></code> will be called automatically if its block exits without
+<p>You can also use a batch as a context manager, in which case
+<a class="reference internal" href="#gcloud.datastore.batch.Batch.commit" title="gcloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> will be called automatically if its block exits without
 raising an exception:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity1</span><span class="p">)</span>
@@ -126,8 +126,8 @@ raising an exception:</p>
 </div>
 <p>By default, no updates will be sent if the block exits with an error:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
-<span class="gp">... </span>  <span class="n">do_some_work</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-<span class="gp">... </span>  <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span> <span class="c"># rolls back</span>
+<span class="gp">... </span>    <span class="n">do_some_work</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span>  <span class="c"># rolls back</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -195,7 +195,7 @@ context manager.</p>
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.delete">
 <code class="descname">delete</code><span class="sig-paren">(</span><em>key</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember a key to be deleted durring <code class="docutils literal"><span class="pre">commit</span></code>.</p>
+<dd><p>Remember a key to be deleted during <a class="reference internal" href="#gcloud.datastore.batch.Batch.commit" title="gcloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -215,8 +215,8 @@ context manager.</p>
 <dd><p>Getter for the changes accumulated by this batch.</p>
 <p>Every batch is committed with a single Mutation
 representing the &#8216;work&#8217; to be done as part of the batch.
-Inside a batch, calling <code class="docutils literal"><span class="pre">batch.put()</span></code> with an entity, or
-<code class="docutils literal"><span class="pre">batch.delete</span></code> with a key, builds up the mutation.
+Inside a batch, calling <a class="reference internal" href="#gcloud.datastore.batch.Batch.put" title="gcloud.datastore.batch.Batch.put"><code class="xref py py-meth docutils literal"><span class="pre">put()</span></code></a> with an entity, or
+<a class="reference internal" href="#gcloud.datastore.batch.Batch.delete" title="gcloud.datastore.batch.Batch.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> with a key, builds up the mutation.
 This getter returns the Mutation protobuf that
 has been built-up so far.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -250,7 +250,7 @@ has been built-up so far.</p>
 <dl class="method">
 <dt id="gcloud.datastore.batch.Batch.put">
 <code class="descname">put</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/batch.html#Batch.put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.batch.Batch.put" title="Permalink to this definition">#</a></dt>
-<dd><p>Remember an entity&#8217;s state to be saved during <code class="docutils literal"><span class="pre">commit</span></code>.</p>
+<dd><p>Remember an entity&#8217;s state to be saved during <a class="reference internal" href="#gcloud.datastore.batch.Batch.commit" title="gcloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Any existing properties for the entity will be replaced by those
@@ -264,7 +264,7 @@ the datastore.</p>
 Python3) map to &#8216;string_value&#8217; in the datastore;  values which are
 &#8220;bytes&#8221; (&#8216;str&#8217; in Python2, &#8216;bytes&#8217; in Python3) map to &#8216;blob_value&#8217;.</p>
 </div>
-<p>When an entity has a partial key, calling <code class="xref py py-meth docutils literal"><span class="pre">commit`()</span></code> sends it as
+<p>When an entity has a partial key, calling <a class="reference internal" href="#gcloud.datastore.batch.Batch.commit" title="gcloud.datastore.batch.Batch.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a> sends it as
 an <code class="docutils literal"><span class="pre">insert_auto_id</span></code> mutation and the key is completed. On return, the
 key for the <code class="docutils literal"><span class="pre">entity</span></code> passed in as updated to match the key ID
 assigned by the server.</p>

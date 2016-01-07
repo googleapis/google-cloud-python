@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud 22642cd documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -186,17 +186,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`</span>
 <span class="sd">    :param key_pbs: The keys to retrieve from the datastore.</span>
 
-<span class="sd">    :type missing: an empty list or None.</span>
-<span class="sd">    :param missing: If a list is passed, the key-only entity protobufs</span>
-<span class="sd">                    returned by the backend as &quot;missing&quot; will be copied</span>
-<span class="sd">                    into it.  Use only as a keyword param.</span>
+<span class="sd">    :type missing: list</span>
+<span class="sd">    :param missing: (Optional) If a list is passed, the key-only entity</span>
+<span class="sd">                    protobufs returned by the backend as &quot;missing&quot; will be</span>
+<span class="sd">                    copied into it.</span>
 
-<span class="sd">    :type deferred: an empty list or None.</span>
-<span class="sd">    :param deferred: If a list is passed, the key protobufs returned</span>
+<span class="sd">    :type deferred: list</span>
+<span class="sd">    :param deferred: (Optional) If a list is passed, the key protobufs returned</span>
 <span class="sd">                     by the backend as &quot;deferred&quot; will be copied into it.</span>
-<span class="sd">                     Use only as a keyword param.</span>
 
-<span class="sd">    :type eventual: boolean</span>
+<span class="sd">    :type eventual: bool</span>
 <span class="sd">    :param eventual: If False (the default), request ``STRONG`` read</span>
 <span class="sd">                     consistency.  If True, request ``EVENTUAL`` read</span>
 <span class="sd">                     consistency.</span>
@@ -340,15 +339,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type key: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :param key: The key to be retrieved from the datastore.</span>
 
-<span class="sd">        :type missing: an empty list or None.</span>
-<span class="sd">        :param missing: If a list is passed, the key-only entities returned</span>
-<span class="sd">                        by the backend as &quot;missing&quot; will be copied into it.</span>
-<span class="sd">                        Use only as a keyword param.</span>
+<span class="sd">        :type missing: list</span>
+<span class="sd">        :param missing: (Optional) If a list is passed, the key-only entities</span>
+<span class="sd">                        returned by the backend as &quot;missing&quot; will be copied</span>
+<span class="sd">                        into it.</span>
 
-<span class="sd">        :type deferred: an empty list or None.</span>
-<span class="sd">        :param deferred: If a list is passed, the keys returned</span>
+<span class="sd">        :type deferred: list</span>
+<span class="sd">        :param deferred: (Optional) If a list is passed, the keys returned</span>
 <span class="sd">                         by the backend as &quot;deferred&quot; will be copied into it.</span>
-<span class="sd">                         Use only as a keyword param.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``</span>
 <span class="sd">        :returns: The requested entity if it exists.</span>
@@ -364,20 +362,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type keys: list of :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :param keys: The keys to be retrieved from the datastore.</span>
 
-<span class="sd">        :type missing: an empty list or None.</span>
-<span class="sd">        :param missing: If a list is passed, the key-only entities returned</span>
-<span class="sd">                        by the backend as &quot;missing&quot; will be copied into it.</span>
-<span class="sd">                        Use only as a keyword param.</span>
+<span class="sd">        :type missing: list</span>
+<span class="sd">        :param missing: (Optional) If a list is passed, the key-only entities</span>
+<span class="sd">                        returned by the backend as &quot;missing&quot; will be copied</span>
+<span class="sd">                        into it. If the list is not empty, an error will occur.</span>
 
-<span class="sd">        :type deferred: an empty list or None.</span>
-<span class="sd">        :param deferred: If a list is passed, the keys returned</span>
+<span class="sd">        :type deferred: list</span>
+<span class="sd">        :param deferred: (Optional) If a list is passed, the keys returned</span>
 <span class="sd">                         by the backend as &quot;deferred&quot; will be copied into it.</span>
-<span class="sd">                         Use only as a keyword param.</span>
+<span class="sd">                         If the list is not empty, an error will occur.</span>
 
 <span class="sd">        :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: The requested entities.</span>
-<span class="sd">        :raises: ValueError if one or more of ``keys`` has a dataset ID which</span>
-<span class="sd">                 does not match our dataset ID.</span>
+<span class="sd">        :raises: :class:`ValueError` if one or more of ``keys`` has a dataset</span>
+<span class="sd">                 ID which does not match our dataset ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
@@ -431,7 +429,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type entities: list of :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :param entities: The entities to be saved to the datastore.</span>
 
-<span class="sd">        :raises: ValueError if ``entities`` is a single entity.</span>
+<span class="sd">        :raises: :class:`ValueError` if ``entities`` is a single entity.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entities</span><span class="p">,</span> <span class="n">Entity</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a sequence of entities&quot;</span><span class="p">)</span>
@@ -490,10 +488,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.allocate_ids"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client.allocate_ids">[docs]</a>    <span class="k">def</span> <span class="nf">allocate_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">incomplete_key</span><span class="p">,</span> <span class="n">num_ids</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Allocate a list of IDs from a partial key.</span>
 
-<span class="sd">        :type incomplete_key: A :class:`gcloud.datastore.key.Key`</span>
+<span class="sd">        :type incomplete_key: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :param incomplete_key: Partial key to use as base for allocated IDs.</span>
 
-<span class="sd">        :type num_ids: integer</span>
+<span class="sd">        :type num_ids: int</span>
 <span class="sd">        :param num_ids: The number of IDs to allocate.</span>
 
 <span class="sd">        :rtype: list of :class:`gcloud.datastore.key.Key`</span>

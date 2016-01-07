@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Queries &mdash; gcloud 22642cd documentation</title>
+    <title>Queries &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="index.html" />
     <link rel="next" title="Transactions" href="datastore-transactions.html" />
     <link rel="prev" title="Keys" href="datastore-keys.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-queries%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -174,7 +174,7 @@ default is set.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.query.Query.OPERATORS">
-<code class="descname">OPERATORS</code><em class="property"> = {'&gt;': 3, '&lt;': 1, '=': 5, '&gt;=': 4, '&lt;=': 2}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
+<code class="descname">OPERATORS</code><em class="property"> = {'&lt;=': 2, '&gt;=': 4, '&lt;': 1, '=': 5, '&gt;': 3}</em><a class="headerlink" href="#gcloud.datastore.query.Query.OPERATORS" title="Permalink to this definition">#</a></dt>
 <dd><p>Mapping of operator strings and their protobuf equivalents.</p>
 </dd></dl>
 
@@ -202,14 +202,15 @@ and operator is one of <code class="docutils literal"><span class="pre">OPERATOR
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>property_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A property name.</li>
 <li><strong>operator</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; One of <code class="docutils literal"><span class="pre">=</span></code>, <code class="docutils literal"><span class="pre">&lt;</span></code>, <code class="docutils literal"><span class="pre">&lt;=</span></code>, <code class="docutils literal"><span class="pre">&gt;</span></code>, <code class="docutils literal"><span class="pre">&gt;=</span></code>.</li>
-<li><strong>value</strong> (<em>integer, string, boolean, float, None, datetime</em>) &#8211; The value to filter on.</li>
+<li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">bool</span></code></a>,
+<a class="reference external" href="https://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>,
+:class`datetime.datetime`) &#8211; The value to filter on.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">operation</span></code> is not one of the
 specified values, or if a filter names <code class="docutils literal"><span class="pre">'__key__'</span></code> but
-passes invalid operator (<code class="docutils literal"><span class="pre">==</span></code> is required) or value (a key
-is required).</p>
+passes an invalid value (a key is required).</p>
 </td>
 </tr>
 </tbody>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.batch &mdash; gcloud 22642cd documentation</title>
+    <title>gcloud.datastore.batch &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/batch%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -125,7 +125,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    Used to build up a bulk mutuation.</span>
 
 <span class="sd">    For example, the following snippet of code will put the two ``save``</span>
-<span class="sd">    operations and the delete operatiuon into the same mutation, and send</span>
+<span class="sd">    operations and the ``delete`` operation into the same mutation, and send</span>
 <span class="sd">    them to the server in a single API request::</span>
 
 <span class="sd">      &gt;&gt;&gt; from gcloud.datastore.batch import Batch</span>
@@ -135,8 +135,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">      &gt;&gt;&gt; batch.delete(key3)</span>
 <span class="sd">      &gt;&gt;&gt; batch.commit()</span>
 
-<span class="sd">    You can also use a batch as a context manager, in which case the</span>
-<span class="sd">    ``commit`` will be called automatically if its block exits without</span>
+<span class="sd">    You can also use a batch as a context manager, in which case</span>
+<span class="sd">    :meth:`commit` will be called automatically if its block exits without</span>
 <span class="sd">    raising an exception::</span>
 
 <span class="sd">      &gt;&gt;&gt; with Batch() as batch:</span>
@@ -147,8 +147,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    By default, no updates will be sent if the block exits with an error::</span>
 
 <span class="sd">      &gt;&gt;&gt; with Batch() as batch:</span>
-<span class="sd">      ...   do_some_work(batch)</span>
-<span class="sd">      ...   raise Exception() # rolls back</span>
+<span class="sd">      ...     do_some_work(batch)</span>
+<span class="sd">      ...     raise Exception()  # rolls back</span>
 
 <span class="sd">    :type client: :class:`gcloud.datastore.client.Client`</span>
 <span class="sd">    :param client: The client used to connect to datastore.</span>
@@ -224,8 +224,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        Every batch is committed with a single Mutation</span>
 <span class="sd">        representing the &#39;work&#39; to be done as part of the batch.</span>
-<span class="sd">        Inside a batch, calling ``batch.put()`` with an entity, or</span>
-<span class="sd">        ``batch.delete`` with a key, builds up the mutation.</span>
+<span class="sd">        Inside a batch, calling :meth:`put` with an entity, or</span>
+<span class="sd">        :meth:`delete` with a key, builds up the mutation.</span>
 <span class="sd">        This getter returns the Mutation protobuf that</span>
 <span class="sd">        has been built-up so far.</span>
 
@@ -235,7 +235,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mutation</span>
 
 <div class="viewcode-block" id="Batch.put"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remember an entity&#39;s state to be saved during ``commit``.</span>
+        <span class="sd">&quot;&quot;&quot;Remember an entity&#39;s state to be saved during :meth:`commit`.</span>
 
 <span class="sd">        .. note::</span>
 <span class="sd">           Any existing properties for the entity will be replaced by those</span>
@@ -248,7 +248,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">           Python3) map to &#39;string_value&#39; in the datastore;  values which are</span>
 <span class="sd">           &quot;bytes&quot; (&#39;str&#39; in Python2, &#39;bytes&#39; in Python3) map to &#39;blob_value&#39;.</span>
 
-<span class="sd">        When an entity has a partial key, calling :meth:`commit`` sends it as</span>
+<span class="sd">        When an entity has a partial key, calling :meth:`commit` sends it as</span>
 <span class="sd">        an ``insert_auto_id`` mutation and the key is completed. On return, the</span>
 <span class="sd">        key for the ``entity`` passed in as updated to match the key ID</span>
 <span class="sd">        assigned by the server.</span>
@@ -274,7 +274,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">_assign_entity_to_pb</span><span class="p">(</span><span class="n">entity_pb</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Batch.delete"><a class="viewcode-back" href="../../../datastore-batches.html#gcloud.datastore.batch.Batch.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Remember a key to be deleted durring ``commit``.</span>
+        <span class="sd">&quot;&quot;&quot;Remember a key to be deleted during :meth:`commit`.</span>
 
 <span class="sd">        :type key: :class:`gcloud.datastore.key.Key`</span>
 <span class="sd">        :param key: the key to be deleted.</span>

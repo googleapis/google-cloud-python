@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.key &mdash; gcloud 22642cd documentation</title>
+    <title>gcloud.datastore.key &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -139,10 +139,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param path_args: May represent a partial (odd length) or full (even</span>
 <span class="sd">                      length) key path.</span>
 
-<span class="sd">    :type kwargs: dictionary</span>
+<span class="sd">    :type kwargs: dict</span>
 <span class="sd">    :param kwargs: Keyword arguments to be passed in.</span>
 
 <span class="sd">    Accepted keyword arguments are</span>
+
 <span class="sd">    * namespace (string): A namespace identifier for the key.</span>
 <span class="sd">    * dataset_id (string): The dataset ID associated with the key.</span>
 <span class="sd">    * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.</span>
@@ -168,7 +169,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        Completed keys compare equal if they have the same path, dataset ID,</span>
 <span class="sd">        and namespace.</span>
 
-<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: True if the keys compare equal, else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Key</span><span class="p">):</span>
@@ -189,7 +190,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        Completed keys compare equal if they have the same path, dataset ID,</span>
 <span class="sd">        and namespace.</span>
 
-<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: False if the keys compare equal, else True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
@@ -352,7 +353,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">is_partial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Boolean indicating if the key has an ID (or name).</span>
 
-<span class="sd">        :rtype: boolean</span>
+<span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: ``True`` if the last element of the key&#39;s path does not have</span>
 <span class="sd">                  an ``id`` or a ``name``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -530,7 +531,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type dataset_id2: string</span>
 <span class="sd">    :param dataset_id2: A dataset ID.</span>
 
-<span class="sd">    :rtype: boolean</span>
+<span class="sd">    :rtype: bool</span>
 <span class="sd">    :returns: Boolean indicating if the IDs are the same.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dataset_id1</span> <span class="o">==</span> <span class="n">dataset_id2</span><span class="p">:</span>

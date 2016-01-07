@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 22642cd documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -297,13 +297,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type operator: string</span>
 <span class="sd">        :param operator: One of ``=``, ``&lt;``, ``&lt;=``, ``&gt;``, ``&gt;=``.</span>
 
-<span class="sd">        :type value: integer, string, boolean, float, None, datetime</span>
+<span class="sd">        :type value: :class:`int`, :class:`str`, :class:`bool`,</span>
+<span class="sd">                     :class:`float`, :class:`NoneType`,</span>
+<span class="sd">                     :class`datetime.datetime`</span>
 <span class="sd">        :param value: The value to filter on.</span>
 
 <span class="sd">        :raises: :class:`ValueError` if ``operation`` is not one of the</span>
 <span class="sd">                 specified values, or if a filter names ``&#39;__key__&#39;`` but</span>
-<span class="sd">                 passes invalid operator (``==`` is required) or value (a key</span>
-<span class="sd">                 is required).</span>
+<span class="sd">                 passes an invalid value (a key is required).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">OPERATORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">error_message</span> <span class="o">=</span> <span class="s">&#39;Invalid expression: &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">operator</span><span class="p">,)</span>

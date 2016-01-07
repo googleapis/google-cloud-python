@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Keys &mdash; gcloud 22642cd documentation</title>
+    <title>Keys &mdash; gcloud 02c645f documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '22642cd',
+        VERSION:     '02c645f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22642cd documentation" href="index.html" />
+    <link rel="top" title="gcloud 02c645f documentation" href="index.html" />
     <link rel="next" title="Queries" href="datastore-queries.html" />
     <link rel="prev" title="Entities" href="datastore-entities.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-keys%0ARelease%3A%2022642cd" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-keys%0ARelease%3A%2002c645f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22642cd)
+              Version History (02c645f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -125,16 +125,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>path_args</strong> (<em>tuple of string and integer</em>) &#8211; May represent a partial (odd length) or full (even
 length) key path.</li>
-<li><strong>kwargs</strong> (<em>dictionary</em>) &#8211; Keyword arguments to be passed in.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Keyword arguments to be passed in.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>Accepted keyword arguments are
-* namespace (string): A namespace identifier for the key.
-* dataset_id (string): The dataset ID associated with the key.
-* parent (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>): The parent of the key.</p>
+<p>Accepted keyword arguments are</p>
+<ul class="simple">
+<li>namespace (string): A namespace identifier for the key.</li>
+<li>dataset_id (string): The dataset ID associated with the key.</li>
+<li>parent (<a class="reference internal" href="#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>): The parent of the key.</li>
+</ul>
 <p>The dataset ID argument is required unless it has been set implicitly.</p>
 <dl class="method">
 <dt id="gcloud.datastore.key.Key.completed_key">
@@ -231,7 +233,7 @@ or a <code class="docutils literal"><span class="pre">name</span></code>.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code> if the last element of the key&#8217;s path does not have
 an <code class="docutils literal"><span class="pre">id</span></code> or a <code class="docutils literal"><span class="pre">name</span></code>.</td>
