@@ -258,7 +258,7 @@ def key_from_protobuf(pb):
     :returns: a new `Key` instance
     """
     path_args = []
-    for element in pb.path_element:
+    for element in pb.path:
         path_args.append(element.kind)
         if element.id:  # Simple field (int64)
             path_args.append(element.id)
