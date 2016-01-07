@@ -22,9 +22,21 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
 
 
-_helpers.PROJECT = TESTS_PROJECT
-CLIENT = bigquery.Client()
 DATASET_NAME = 'system_tests_%012d' % (1000 * time.time(),)
+
+
+class Config(object):
+    """Run-time configuration to be modified at set-up.
+
+    This is a mutable stand-in to allow test set-up to modify
+    global state.
+    """
+    CLIENT = None
+
+
+def setUpModule():
+    _helpers.PROJECT = TESTS_PROJECT
+    Config.CLIENT = bigquery.Client()
 
 
 class TestBigQuery(unittest2.TestCase):
@@ -37,7 +49,7 @@ class TestBigQuery(unittest2.TestCase):
             doomed.delete()
 
     def test_create_dataset(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -45,18 +57,18 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(dataset.name, DATASET_NAME)
 
     def test_reload_dataset(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         dataset.friendly_name = 'Friendly'
         dataset.description = 'Description'
         dataset.create()
         self.to_delete.append(dataset)
-        other = CLIENT.dataset(DATASET_NAME)
+        other = Config.CLIENT.dataset(DATASET_NAME)
         other.reload()
         self.assertEqual(other.friendly_name, 'Friendly')
         self.assertEqual(other.description, 'Description')
 
     def test_patch_dataset(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -68,7 +80,7 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(dataset.description, 'Description')
 
     def test_update_dataset(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -90,20 +102,20 @@ class TestBigQuery(unittest2.TestCase):
             'newest%d' % (1000 * time.time(),),
         ]
         for dataset_name in datasets_to_create:
-            dataset = CLIENT.dataset(dataset_name)
+            dataset = Config.CLIENT.dataset(dataset_name)
             dataset.create()
             self.to_delete.append(dataset)
 
         # Retrieve the datasets.
-        all_datasets, token = CLIENT.list_datasets()
+        all_datasets, token = Config.CLIENT.list_datasets()
         self.assertTrue(token is None)
         created = [dataset for dataset in all_datasets
                    if dataset.name in datasets_to_create and
-                   dataset.project == CLIENT.project]
+                   dataset.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(datasets_to_create))
 
     def test_create_table(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -119,7 +131,7 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(table.name, TABLE_NAME)
 
     def test_list_tables(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -145,7 +157,7 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(len(created), len(tables_to_create))
 
     def test_patch_table(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -165,7 +177,7 @@ class TestBigQuery(unittest2.TestCase):
         self.assertEqual(table.description, 'Description')
 
     def test_update_table(self):
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -203,7 +215,7 @@ class TestBigQuery(unittest2.TestCase):
             ('Bhettye Rhubble', 27, None),
         ]
         ROW_IDS = range(len(ROWS))
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
@@ -270,7 +282,7 @@ class TestBigQuery(unittest2.TestCase):
 
         self.to_delete.insert(0, blob)
 
-        dataset = CLIENT.dataset(DATASET_NAME)
+        dataset = Config.CLIENT.dataset(DATASET_NAME)
         dataset.create()
         self.to_delete.append(dataset)
 
@@ -281,7 +293,7 @@ class TestBigQuery(unittest2.TestCase):
         table.create()
         self.to_delete.insert(0, table)
 
-        job = CLIENT.load_table_from_storage(
+        job = Config.CLIENT.load_table_from_storage(
             'bq_load_storage_test_%d' % (TIMESTAMP,), table, GS_URL)
         job.create_disposition = 'CREATE_NEVER'
         job.skip_leading_rows = 1
