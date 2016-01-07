@@ -408,23 +408,25 @@ class Test__pb_attr_value(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
 
-        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375)  # No zone.
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, micros)  # No zone.
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         name, value = self._callFUT(naive)
-        self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        self.assertEqual(name, 'timestamp_value')
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_datetime_w_zone(self):
         import calendar
         import datetime
         from gcloud._helpers import UTC
 
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         name, value = self._callFUT(utc)
-        self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        self.assertEqual(name, 'timestamp_value')
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_key(self):
         from gcloud.datastore.key import Key
@@ -509,10 +511,13 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         import calendar
         import datetime
         from gcloud._helpers import UTC
+        from gcloud.datastore._generated import entity_pb2
 
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
-        micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
-        pb = self._makePB('timestamp_microseconds_value', micros)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        pb = entity_pb2.Value()
+        pb.timestamp_value.seconds = calendar.timegm(utc.timetuple())
+        pb.timestamp_value.nanos = 1000 * micros
         self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
@@ -597,11 +602,12 @@ class Test_set_protobuf_value(unittest2.TestCase):
         from gcloud._helpers import UTC
 
         pb = self._makePB()
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         self._callFUT(pb, utc)
-        value = pb.timestamp_microseconds_value
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        value = pb.timestamp_value
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_key(self):
         from gcloud.datastore.key import Key
