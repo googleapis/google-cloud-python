@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud f220a36 documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud f284923 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'f220a36',
+        VERSION:     'f284923',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud f220a36 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud f284923 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20f220a36" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20f284923" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f220a36)
+              Version History (f284923)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -116,7 +116,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="sd">&quot;&quot;&quot;Subscriptions receive messages published to their topics.</span>
 
 <span class="sd">    See:</span>
-<span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions</span>
+<span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions</span>
 
 <span class="sd">    :type name: string</span>
 <span class="sd">    :param name: the name of the subscription</span>
@@ -196,7 +196,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  create the subscription via a PUT request</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</span>
 
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
@@ -217,7 +217,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
@@ -235,7 +235,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  sync local subscription configuration via a GET request</span>
 
 <span class="sd">        See</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
@@ -251,7 +251,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  update the push endpoint for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type push_endpoint: string</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
@@ -276,7 +276,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  retrieve messages for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</span>
 
 <span class="sd">        :type return_immediately: boolean</span>
 <span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
@@ -308,7 +308,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
 <span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
@@ -326,7 +326,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  update acknowledgement deadline for a retrieved message.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</span>
 
 <span class="sd">        :type ack_id: string</span>
 <span class="sd">        :param ack_id: ack ID of message being updated</span>
@@ -348,7 +348,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;API call:  delete the subscription via a DELETE request.</span>
 
 <span class="sd">        See:</span>
-<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</span>
 
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>

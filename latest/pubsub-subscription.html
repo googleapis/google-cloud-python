@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Subscriptions &mdash; gcloud f220a36 documentation</title>
+    <title>Subscriptions &mdash; gcloud f284923 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f220a36',
+        VERSION:     'f284923',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f220a36 documentation" href="index.html" />
+    <link rel="top" title="gcloud f284923 documentation" href="index.html" />
     <link rel="next" title="Message" href="pubsub-message.html" />
     <link rel="prev" title="Topics" href="pubsub-topic.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%20f220a36" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%20f284923" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f220a36)
+              Version History (f284923)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -100,7 +100,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Subscriptions receive messages published to their topics.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -122,7 +122,7 @@ If not set, the application must pull messages.</li>
 <code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -143,7 +143,7 @@ If not set, the application must pull messages.</li>
 <code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  create the subscription via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -160,7 +160,7 @@ If not set, the application must pull messages.</li>
 <code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  delete the subscription via a DELETE request.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -177,7 +177,7 @@ If not set, the application must pull messages.</li>
 <code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  test existence of the subscription via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -221,7 +221,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_id</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -243,7 +243,7 @@ the subscription will have a newly-created topic.</li>
 <code class="descname">modify_push_configuration</code><span class="sig-paren">(</span><em>push_endpoint</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_push_configuration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_push_configuration" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update the push endpoint for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -272,7 +272,7 @@ messages.</li>
 <code class="descname">pull</code><span class="sig-paren">(</span><em>return_immediately=False</em>, <em>max_messages=1</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.pull" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  retrieve messages for the subscription.</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -305,7 +305,7 @@ is an instance of <a class="reference internal" href="pubsub-message.html#gcloud
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  sync local subscription configuration via a GET request</p>
 <p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
