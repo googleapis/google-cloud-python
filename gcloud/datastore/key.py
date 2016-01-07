@@ -46,10 +46,11 @@ class Key(object):
     :param path_args: May represent a partial (odd length) or full (even
                       length) key path.
 
-    :type kwargs: dictionary
+    :type kwargs: dict
     :param kwargs: Keyword arguments to be passed in.
 
     Accepted keyword arguments are
+
     * namespace (string): A namespace identifier for the key.
     * dataset_id (string): The dataset ID associated with the key.
     * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.
@@ -75,7 +76,7 @@ class Key(object):
         Completed keys compare equal if they have the same path, dataset ID,
         and namespace.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: True if the keys compare equal, else False.
         """
         if not isinstance(other, Key):
@@ -96,7 +97,7 @@ class Key(object):
         Completed keys compare equal if they have the same path, dataset ID,
         and namespace.
 
-        :rtype: boolean
+        :rtype: bool
         :returns: False if the keys compare equal, else True.
         """
         return not self.__eq__(other)
@@ -259,7 +260,7 @@ class Key(object):
     def is_partial(self):
         """Boolean indicating if the key has an ID (or name).
 
-        :rtype: boolean
+        :rtype: bool
         :returns: ``True`` if the last element of the key's path does not have
                   an ``id`` or a ``name``.
         """
@@ -437,7 +438,7 @@ def _dataset_ids_equal(dataset_id1, dataset_id2):
     :type dataset_id2: string
     :param dataset_id2: A dataset ID.
 
-    :rtype: boolean
+    :rtype: bool
     :returns: Boolean indicating if the IDs are the same.
     """
     if dataset_id1 == dataset_id2:

@@ -32,8 +32,8 @@ class Transaction(Batch):
       >>> with datastore.Transaction():
       ...     datastore.put_multi([entity1, entity2])
 
-    Because it derives from :class:`Batch`, :class`Transaction` also provides
-    :meth:`put` and :meth:`delete` methods::
+    Because it derives from :class:`Batch <.datastore.batch.Batch>`,
+    :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods::
 
       >>> with datastore.Transaction() as xact:
       ...     xact.put(entity1)
@@ -60,15 +60,17 @@ class Transaction(Batch):
        ``entity`` won't have a complete Key until the transaction is
        committed.
 
-       Once you exit the transaction (or call ``commit()``), the
+       Once you exit the transaction (or call :meth:`commit`), the
        automatically generated ID will be assigned to the entity::
 
          >>> with datastore.Transaction():
          ...     entity = datastore.Entity(key=Key('Thing'))
          ...     datastore.put(entity)
-         ...     assert entity.key.is_partial  # There is no ID on this key.
+         ...     print entity.key.is_partial  # There is no ID on this key.
          ...
-         >>> assert not entity.key.is_partial  # There *is* an ID.
+         True
+         >>> print entity.key.is_partial  # There *is* an ID.
+         False
 
     If you don't want to use the context manager you can initialize a
     transaction manually::
@@ -117,8 +119,10 @@ class Transaction(Batch):
     def current(self):
         """Return the topmost transaction.
 
-        .. note:: if the topmost element on the stack is not a transaction,
-                  returns None.
+        .. note::
+
+            If the topmost element on the stack is not a transaction,
+            returns None.
 
         :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
         """
