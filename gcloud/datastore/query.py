@@ -396,7 +396,7 @@ class Iterator(object):
             pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
 
         if self._limit is not None:
-            pb.limit = self._limit
+            pb.limit.value = self._limit
 
         pb.offset = self._offset
 
