@@ -48,7 +48,7 @@ class Client(JSONClient):
         """List topics for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -85,10 +85,10 @@ class Client(JSONClient):
         """List subscriptions for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/list
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
 
         and (where ``topic_name`` is passed):
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/topics/subscriptions/list
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,

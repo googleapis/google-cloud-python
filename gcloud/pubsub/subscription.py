@@ -23,7 +23,7 @@ class Subscription(object):
     """Subscriptions receive messages published to their topics.
 
     See:
-    https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions
+    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions
 
     :type name: string
     :param name: the name of the subscription
@@ -103,7 +103,7 @@ class Subscription(object):
         """API call:  create the subscription via a PUT request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/create
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -124,7 +124,7 @@ class Subscription(object):
         """API call:  test existence of the subscription via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -142,7 +142,7 @@ class Subscription(object):
         """API call:  sync local subscription configuration via a GET request
 
         See
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/get
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -158,7 +158,7 @@ class Subscription(object):
         """API call:  update the push endpoint for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type push_endpoint: string
         :param push_endpoint: URL to which messages will be pushed by the
@@ -183,7 +183,7 @@ class Subscription(object):
         """API call:  retrieve messages for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/pull
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull
 
         :type return_immediately: boolean
         :param return_immediately: if True, the back-end returns even if no
@@ -215,7 +215,7 @@ class Subscription(object):
         """API call:  acknowledge retrieved messages for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
@@ -233,7 +233,7 @@ class Subscription(object):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/acknowledge
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
 
         :type ack_id: string
         :param ack_id: ack ID of message being updated
@@ -255,7 +255,7 @@ class Subscription(object):
         """API call:  delete the subscription via a DELETE request.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1beta2/projects/subscriptions/delete
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
