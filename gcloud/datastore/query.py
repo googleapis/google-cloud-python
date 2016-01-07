@@ -204,13 +204,14 @@ class Query(object):
         :type operator: string
         :param operator: One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
 
-        :type value: integer, string, boolean, float, None, datetime
+        :type value: :class:`int`, :class:`str`, :class:`bool`,
+                     :class:`float`, :class:`NoneType`,
+                     :class`datetime.datetime`
         :param value: The value to filter on.
 
         :raises: :class:`ValueError` if ``operation`` is not one of the
                  specified values, or if a filter names ``'__key__'`` but
-                 passes invalid operator (``==`` is required) or value (a key
-                 is required).
+                 passes an invalid value (a key is required).
         """
         if self.OPERATORS.get(operator) is None:
             error_message = 'Invalid expression: "%s"' % (operator,)

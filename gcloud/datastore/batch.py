@@ -32,7 +32,7 @@ class Batch(object):
     Used to build up a bulk mutuation.
 
     For example, the following snippet of code will put the two ``save``
-    operations and the delete operatiuon into the same mutation, and send
+    operations and the ``delete`` operation into the same mutation, and send
     them to the server in a single API request::
 
       >>> from gcloud.datastore.batch import Batch
@@ -42,8 +42,8 @@ class Batch(object):
       >>> batch.delete(key3)
       >>> batch.commit()
 
-    You can also use a batch as a context manager, in which case the
-    ``commit`` will be called automatically if its block exits without
+    You can also use a batch as a context manager, in which case
+    :meth:`commit` will be called automatically if its block exits without
     raising an exception::
 
       >>> with Batch() as batch:
@@ -54,8 +54,8 @@ class Batch(object):
     By default, no updates will be sent if the block exits with an error::
 
       >>> with Batch() as batch:
-      ...   do_some_work(batch)
-      ...   raise Exception() # rolls back
+      ...     do_some_work(batch)
+      ...     raise Exception()  # rolls back
 
     :type client: :class:`gcloud.datastore.client.Client`
     :param client: The client used to connect to datastore.
@@ -131,8 +131,8 @@ class Batch(object):
 
         Every batch is committed with a single Mutation
         representing the 'work' to be done as part of the batch.
-        Inside a batch, calling ``batch.put()`` with an entity, or
-        ``batch.delete`` with a key, builds up the mutation.
+        Inside a batch, calling :meth:`put` with an entity, or
+        :meth:`delete` with a key, builds up the mutation.
         This getter returns the Mutation protobuf that
         has been built-up so far.
 
@@ -142,7 +142,7 @@ class Batch(object):
         return self._mutation
 
     def put(self, entity):
-        """Remember an entity's state to be saved during ``commit``.
+        """Remember an entity's state to be saved during :meth:`commit`.
 
         .. note::
            Any existing properties for the entity will be replaced by those
@@ -155,7 +155,7 @@ class Batch(object):
            Python3) map to 'string_value' in the datastore;  values which are
            "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
 
-        When an entity has a partial key, calling :meth:`commit`` sends it as
+        When an entity has a partial key, calling :meth:`commit` sends it as
         an ``insert_auto_id`` mutation and the key is completed. On return, the
         key for the ``entity`` passed in as updated to match the key ID
         assigned by the server.
@@ -181,7 +181,7 @@ class Batch(object):
         _assign_entity_to_pb(entity_pb, entity)
 
     def delete(self, key):
-        """Remember a key to be deleted durring ``commit``.
+        """Remember a key to be deleted during :meth:`commit`.
 
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: the key to be deleted.

@@ -93,17 +93,16 @@ def _extended_lookup(connection, dataset_id, key_pbs,
     :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`
     :param key_pbs: The keys to retrieve from the datastore.
 
-    :type missing: an empty list or None.
-    :param missing: If a list is passed, the key-only entity protobufs
-                    returned by the backend as "missing" will be copied
-                    into it.  Use only as a keyword param.
+    :type missing: list
+    :param missing: (Optional) If a list is passed, the key-only entity
+                    protobufs returned by the backend as "missing" will be
+                    copied into it.
 
-    :type deferred: an empty list or None.
-    :param deferred: If a list is passed, the key protobufs returned
+    :type deferred: list
+    :param deferred: (Optional) If a list is passed, the key protobufs returned
                      by the backend as "deferred" will be copied into it.
-                     Use only as a keyword param.
 
-    :type eventual: boolean
+    :type eventual: bool
     :param eventual: If False (the default), request ``STRONG`` read
                      consistency.  If True, request ``EVENTUAL`` read
                      consistency.
@@ -247,15 +246,14 @@ class Client(_BaseClient):
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: The key to be retrieved from the datastore.
 
-        :type missing: an empty list or None.
-        :param missing: If a list is passed, the key-only entities returned
-                        by the backend as "missing" will be copied into it.
-                        Use only as a keyword param.
+        :type missing: list
+        :param missing: (Optional) If a list is passed, the key-only entities
+                        returned by the backend as "missing" will be copied
+                        into it.
 
-        :type deferred: an empty list or None.
-        :param deferred: If a list is passed, the keys returned
+        :type deferred: list
+        :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
-                         Use only as a keyword param.
 
         :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
@@ -271,20 +269,20 @@ class Client(_BaseClient):
         :type keys: list of :class:`gcloud.datastore.key.Key`
         :param keys: The keys to be retrieved from the datastore.
 
-        :type missing: an empty list or None.
-        :param missing: If a list is passed, the key-only entities returned
-                        by the backend as "missing" will be copied into it.
-                        Use only as a keyword param.
+        :type missing: list
+        :param missing: (Optional) If a list is passed, the key-only entities
+                        returned by the backend as "missing" will be copied
+                        into it. If the list is not empty, an error will occur.
 
-        :type deferred: an empty list or None.
-        :param deferred: If a list is passed, the keys returned
+        :type deferred: list
+        :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
-                         Use only as a keyword param.
+                         If the list is not empty, an error will occur.
 
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :returns: The requested entities.
-        :raises: ValueError if one or more of ``keys`` has a dataset ID which
-                 does not match our dataset ID.
+        :raises: :class:`ValueError` if one or more of ``keys`` has a dataset
+                 ID which does not match our dataset ID.
         """
         if not keys:
             return []
@@ -338,7 +336,7 @@ class Client(_BaseClient):
         :type entities: list of :class:`gcloud.datastore.entity.Entity`
         :param entities: The entities to be saved to the datastore.
 
-        :raises: ValueError if ``entities`` is a single entity.
+        :raises: :class:`ValueError` if ``entities`` is a single entity.
         """
         if isinstance(entities, Entity):
             raise ValueError("Pass a sequence of entities")
@@ -397,10 +395,10 @@ class Client(_BaseClient):
     def allocate_ids(self, incomplete_key, num_ids):
         """Allocate a list of IDs from a partial key.
 
-        :type incomplete_key: A :class:`gcloud.datastore.key.Key`
+        :type incomplete_key: :class:`gcloud.datastore.key.Key`
         :param incomplete_key: Partial key to use as base for allocated IDs.
 
-        :type num_ids: integer
+        :type num_ids: int
         :param num_ids: The number of IDs to allocate.
 
         :rtype: list of :class:`gcloud.datastore.key.Key`

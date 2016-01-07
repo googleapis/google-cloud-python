@@ -36,8 +36,8 @@ class Connection(connection.Connection):
     :param http: An optional HTTP object to make requests.
 
     :type api_base_url: string
-    :param api_base_url: The base of the API call URL. Defaults to the value
-                         :attr:`Connection.API_BASE_URL`.
+    :param api_base_url: The base of the API call URL. Defaults to
+                         :attr:`API_BASE_URL`.
     """
 
     API_BASE_URL = 'https://www.googleapis.com'
@@ -129,7 +129,7 @@ class Connection(connection.Connection):
                            usually your project name in the cloud console.
 
         :type method: string
-        :param method: The API method to call (ie, runQuery, lookup, ...).
+        :param method: The API method to call (e.g. 'runQuery', 'lookup').
 
         :type base_url: string
         :param base_url: The base URL where the API lives.
@@ -150,17 +150,19 @@ class Connection(connection.Connection):
 
         Maps the ``DatastoreService.Lookup`` protobuf RPC.
 
-        This method deals only with protobufs
-        (:class:`gcloud.datastore._generated.entity_pb2.Key` and
-        :class:`gcloud.datastore._generated.entity_pb2.Entity`) and is used
-        under the hood in :func:`gcloud.datastore.get`:
+        This uses mostly protobufs
+        (:class:`gcloud.datastore._generated.entity_pb2.Key` as input and
+        :class:`gcloud.datastore._generated.entity_pb2.Entity` as output). It
+        is used under the hood in
+        :meth:`Client.get() <.datastore.client.Client.get>`:
 
         >>> from gcloud import datastore
-        >>> key = datastore.Key('MyKind', 1234, dataset_id='dataset-id')
-        >>> datastore.get(key)
+        >>> client = datastore.Client(dataset_id='dataset-id')
+        >>> key = client.key('MyKind', 1234)
+        >>> client.get(key)
         [<Entity object>]
 
-        Using the ``connection`` class directly:
+        Using a :class:`Connection` directly:
 
         >>> connection.lookup('dataset-id', [key.to_protobuf()])
         [<Entity protobuf>]
@@ -172,10 +174,10 @@ class Connection(connection.Connection):
                        :class:`gcloud.datastore._generated.entity_pb2.Key`
         :param key_pbs: The keys to retrieve from the datastore.
 
-        :type eventual: boolean
+        :type eventual: bool
         :param eventual: If False (the default), request ``STRONG`` read
-                        consistency.  If True, request ``EVENTUAL`` read
-                        consistency.
+                         consistency.  If True, request ``EVENTUAL`` read
+                         consistency.
 
         :type transaction_id: string
         :param transaction_id: If passed, make the request in the scope of
@@ -218,21 +220,22 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
-
         >>> query = datastore.Query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
-        Using the query's ``fetch_page`` method...
+        Using the query iterator's
+        :meth:`next_page() <.datastore.query.Iterator.next_page>` method:
 
-        >>> entities, cursor, more_results = query.fetch_page()
+        >>> query_iter = query.fetch()
+        >>> entities, more_results, cursor = query_iter.next_page()
         >>> entities
         [<list of Entity unmarshalled from protobuf>]
-        >>> cursor
-        <string containing cursor where fetch stopped>
         >>> more_results
         <boolean of more results>
+        >>> cursor
+        <string containing cursor where fetch stopped>
 
-        Under the hood this is doing...
+        Under the hood this is doing:
 
         >>> connection.run_query('dataset-id', query.to_protobuf())
         [<list of Entity Protobufs>], cursor, more_results, skipped_results
@@ -246,7 +249,7 @@ class Connection(connection.Connection):
         :type namespace: string
         :param namespace: The namespace over which to run the query.
 
-        :type eventual: boolean
+        :type eventual: bool
         :param eventual: If False (the default), request ``STRONG`` read
                          consistency.  If True, request ``EVENTUAL`` read
                          consistency.
@@ -280,8 +283,8 @@ class Connection(connection.Connection):
         :type dataset_id: string
         :param dataset_id: The ID dataset to which the transaction applies.
 
-        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
-        :returns': the result protobuf for the begin transaction request.
+        :rtype: bytes
+        :returns: The serialized transaction that was begun.
         """
         request = _datastore_pb2.BeginTransactionRequest()
         request.isolation_level = (
