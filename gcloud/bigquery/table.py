@@ -967,8 +967,7 @@ def _build_schema_resource(fields):
 
 
 class _UploadConfig(object):
-    """Faux message FBO apitools' 'configure_request'.
-    """
+    """Faux message FBO apitools' 'configure_request'."""
     accept = ['*/*']
     max_size = None
     resumable_multipart = True
