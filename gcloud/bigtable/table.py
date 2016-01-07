@@ -192,9 +192,10 @@ class Table(object):
     def list_column_families(self):
         """List the column families owned by this table.
 
-        :rtype: dictionary with string as keys and
-                :class:`.column_family.ColumnFamily` as values
-        :returns: List of column families attached to this table.
+        :rtype: dict
+        :returns: Dictionary of column families attached to this table. Keys
+                  are strings (column family names) and values are
+                  :class:`.column_family.ColumnFamily` instances.
         :raises: :class:`ValueError <exceptions.ValueError>` if the column
                  family name from the response does not agree with the computed
                  name from the column family ID.

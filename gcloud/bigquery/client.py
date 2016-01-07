@@ -151,11 +151,15 @@ class Client(JSONClient):
 
         :type state_filter: string
         :param state_filter: if passed, include only jobs matching the given
-                             state.  One of "done", "pending", or "running".
+                             state.  One of
+
+                             * ``"done"``
+                             * ``"pending"``
+                             * ``"running"``
 
         :rtype: tuple, (list, str)
         :returns: list of job instances, plus a "next page token" string:
-                  if the token is not None, indicates that more jobs can be
+                  if the token is not ``None``, indicates that more jobs can be
                   retrieved with another call, passing that value as
                   ``page_token``).
         """

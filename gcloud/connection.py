@@ -124,15 +124,18 @@ class JSONConnection(Connection):
     """A connection to a Google JSON-based API.
 
     These APIs are discovery based. For reference:
+
         https://developers.google.com/discovery/
 
-    This defines :meth:`Connection.api_request` for making a generic JSON
+    This defines :meth:`api_request` for making a generic JSON
     API request and API requests are created elsewhere.
 
     The class constants
-    * ``API_BASE_URL``
-    * ``API_VERSION``
-    * ``API_URL_TEMPLATE``
+
+    * :attr:`API_BASE_URL`
+    * :attr:`API_VERSION`
+    * :attr:`API_URL_TEMPLATE`
+
     must be updated by subclasses.
     """
 
@@ -303,12 +306,12 @@ class JSONConnection(Connection):
                             latest API version supported by
                             gcloud-python.
 
-        :type expect_json: boolean
+        :type expect_json: bool
         :param expect_json: If True, this method will try to parse the
                             response as JSON and raise an exception if
                             that cannot be done.  Default is True.
 
-        :type _target_object: object or :class:`NoneType`
+        :type _target_object: :class:`object` or :class:`NoneType`
         :param _target_object: Protected argument to be used by library
                                callers. This can allow custom behavior, for
                                example, to defer an HTTP request and complete
