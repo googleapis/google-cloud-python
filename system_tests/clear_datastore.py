@@ -14,15 +14,14 @@
 
 """Script to populate datastore with system test data."""
 
+from __future__ import print_function
+
+import os
+
 from six.moves import input
 
 from gcloud import datastore
-from gcloud.datastore import client
 from gcloud.environment_vars import TESTS_DATASET
-
-
-client.DATASET = TESTS_DATASET
-CLIENT = datastore.Client()
 
 
 FETCH_MAX = 20
@@ -34,11 +33,15 @@ ALL_KINDS = [
     'Post',
 ]
 TRANSACTION_MAX_GROUPS = 5
+if os.getenv('GCLOUD_NO_PRINT') == 'true':
+    PRINT_FUNC = lambda msg: None
+else:
+    PRINT_FUNC = print
 
 
-def fetch_keys(kind, fetch_max=FETCH_MAX, query=None, cursor=None):
+def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = CLIENT.query(kind=kind, projection=['__key__'])
+        query = client.query(kind=kind, projection=['__key__'])
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
@@ -53,46 +56,48 @@ def get_ancestors(entities):
     return list(set(key_roots))
 
 
-def remove_kind(kind):
+def remove_kind(kind, client):
     results = []
 
-    query, curr_results, cursor = fetch_keys(kind)
+    query, curr_results, cursor = fetch_keys(kind, client)
     results.extend(curr_results)
     while curr_results:
-        query, curr_results, cursor = fetch_keys(kind, query=query,
-                                                 cursor=cursor)
+        query, curr_results, cursor = fetch_keys(
+            kind, client, query=query, cursor=cursor)
         results.extend(curr_results)
 
     if not results:
         return
 
     delete_outside_transaction = False
-    with CLIENT.transaction():
+    with client.transaction():
         # Now that we have all results, we seek to delete.
-        print('Deleting keys:')
-        print(results)
+        PRINT_FUNC('Deleting keys:')
+        PRINT_FUNC(results)
 
         ancestors = get_ancestors(results)
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
             delete_outside_transaction = True
         else:
-            CLIENT.delete_multi([result.key for result in results])
+            client.delete_multi([result.key for result in results])
 
     if delete_outside_transaction:
-        CLIENT.delete_multi([result.key for result in results])
+        client.delete_multi([result.key for result in results])
 
 
-def remove_all_entities():
-    print('This command will remove all entities for the following kinds:')
-    print('\n'.join(['- ' + val for val in ALL_KINDS]))
-    response = input('Is this OK [y/n]? ')
-    if response.lower() != 'y':
-        print('Doing nothing.')
-        return
-
+def remove_all_entities(client=None):
+    if client is None:
+        # Get a client that uses the test dataset.
+        client = datastore.Client(dataset_id=TESTS_DATASET)
     for kind in ALL_KINDS:
-        remove_kind(kind)
+        remove_kind(kind, client)
 
 
 if __name__ == '__main__':
-    remove_all_entities()
+    PRINT_FUNC('This command will remove all entities for the following kinds:')
+    PRINT_FUNC('\n'.join(['- ' + val for val in ALL_KINDS]))
+    response = input('Is this OK [y/n]? ')
+    if response.lower() == 'y':
+        remove_all_entities()
+    else:
+        PRINT_FUNC('Doing nothing.')

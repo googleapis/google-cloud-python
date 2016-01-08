@@ -13,16 +13,23 @@
 # limitations under the License.
 
 import datetime
+import os
+
 import unittest2
 
 from gcloud._helpers import UTC
 from gcloud import datastore
 from gcloud.datastore import client
+from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import TESTS_DATASET
 from gcloud.exceptions import Conflict
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
+from system_tests import clear_datastore
 from system_tests import populate_datastore
+
+
+EMULATOR_DATASET = os.getenv(GCD_DATASET)
 
 
 class Config(object):
@@ -35,8 +42,17 @@ class Config(object):
 
 
 def setUpModule():
-    client.DATASET = TESTS_DATASET
-    Config.CLIENT = datastore.Client()
+    if EMULATOR_DATASET is None:
+        client.DATASET = TESTS_DATASET
+        Config.CLIENT = datastore.Client()
+    else:
+        Config.CLIENT = datastore.Client(dataset_id=EMULATOR_DATASET)
+        populate_datastore.add_characters(client=Config.CLIENT)
+
+
+def tearDownModule():
+    if EMULATOR_DATASET is not None:
+        clear_datastore.remove_all_entities(client=Config.CLIENT)
 
 
 class TestDatastore(unittest2.TestCase):
@@ -271,7 +287,13 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(catelyn_stark_dict,
                          {'name': 'Catelyn', 'family': 'Stark'})
 
-        catelyn_tully_entity = entities[3]
+        if EMULATOR_DATASET is None:
+            catelyn_tully_entity = entities[3]
+            sansa_entity = entities[8]
+        else:
+            catelyn_tully_entity = entities[8]
+            sansa_entity = entities[7]
+
         catelyn_tully_dict = dict(catelyn_tully_entity)
         self.assertEqual(catelyn_tully_dict,
                          {'name': 'Catelyn', 'family': 'Tully'})
@@ -279,7 +301,6 @@ class TestDatastoreQuery(TestDatastore):
         # Check both Catelyn keys are the same.
         self.assertEqual(catelyn_stark_entity.key, catelyn_tully_entity.key)
 
-        sansa_entity = entities[8]
         sansa_dict = dict(sansa_entity)
         self.assertEqual(sansa_dict, {'name': 'Sansa', 'family': 'Stark'})
 

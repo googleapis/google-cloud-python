@@ -14,12 +14,21 @@
 
 """Script to populate datastore with system test data."""
 
+
+from __future__ import print_function
+
+import os
+
 from six.moves import zip
 
 from gcloud import datastore
-from gcloud.datastore import client
 from gcloud.environment_vars import TESTS_DATASET
 
+
+if os.getenv('GCLOUD_NO_PRINT') == 'true':
+    PRINT_FUNC = lambda msg: None
+else:
+    PRINT_FUNC = print
 
 ANCESTOR = ('Book', 'GoT')
 RICKARD = ANCESTOR + ('Character', 'Rickard')
@@ -79,20 +88,20 @@ CHARACTERS = [
 ]
 
 
-def add_characters():
-    # Update the environment variable used.
-    client.DATASET = TESTS_DATASET
-    datastore_client = datastore.Client()
-    with datastore_client.transaction() as xact:
+def add_characters(client=None):
+    if client is None:
+        # Get a client that uses the test dataset.
+        client = datastore.Client(dataset_id=TESTS_DATASET)
+    with client.transaction() as xact:
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))
-            entity = datastore.Entity(key=datastore_client.key(*key_path))
+            entity = datastore.Entity(key=client.key(*key_path))
             entity.update(character)
             xact.put(entity)
-            print('Adding Character %s %s' % (character['name'],
-                                              character['family']))
+            PRINT_FUNC('Adding Character %s %s' % (character['name'],
+                                                   character['family']))
 
 
 if __name__ == '__main__':
