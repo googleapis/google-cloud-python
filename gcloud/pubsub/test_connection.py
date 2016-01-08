@@ -34,7 +34,7 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.environment_vars import PUBSUB_EMULATOR
 
-        HOST = object()
+        HOST = 'localhost:8187'
         fake_environ = {PUBSUB_EMULATOR: HOST}
 
         with _Monkey(os, getenv=fake_environ.get):
@@ -42,7 +42,7 @@ class TestConnection(unittest2.TestCase):
 
         klass = self._getTargetClass()
         self.assertNotEqual(conn.api_base_url, klass.API_BASE_URL)
-        self.assertEqual(conn.api_base_url, HOST)
+        self.assertEqual(conn.api_base_url, 'http://' + HOST)
 
     def test_custom_url_from_constructor(self):
         HOST = object()
