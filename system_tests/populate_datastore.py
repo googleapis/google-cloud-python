@@ -25,11 +25,6 @@ from gcloud import datastore
 from gcloud.environment_vars import TESTS_DATASET
 
 
-if os.getenv('GCLOUD_NO_PRINT') == 'true':
-    PRINT_FUNC = lambda msg: None
-else:
-    PRINT_FUNC = print
-
 ANCESTOR = ('Book', 'GoT')
 RICKARD = ANCESTOR + ('Character', 'Rickard')
 EDDARD = RICKARD + ('Character', 'Eddard')
@@ -88,6 +83,11 @@ CHARACTERS = [
 ]
 
 
+def print_func(message):
+    if os.getenv('GCLOUD_NO_PRINT') != 'true':
+        print(message)
+
+
 def add_characters(client=None):
     if client is None:
         # Get a client that uses the test dataset.
@@ -100,7 +100,7 @@ def add_characters(client=None):
             entity = datastore.Entity(key=client.key(*key_path))
             entity.update(character)
             xact.put(entity)
-            PRINT_FUNC('Adding Character %s %s' % (character['name'],
+            print_func('Adding Character %s %s' % (character['name'],
                                                    character['family']))
 
 

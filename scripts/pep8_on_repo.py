@@ -21,6 +21,7 @@ This runs pep8 as a script via subprocess but only runs it on the
 
 import os
 import subprocess
+import sys
 
 
 def main():
@@ -32,7 +33,8 @@ def main():
     python_files = python_files.strip().split()
 
     pep8_command = ['pep8'] + python_files
-    subprocess.call(pep8_command)
+    status_code = subprocess.call(pep8_command)
+    sys.exit(status_code)
 
 
 if __name__ == '__main__':

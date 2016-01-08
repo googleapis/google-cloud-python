@@ -33,10 +33,11 @@ ALL_KINDS = [
     'Post',
 ]
 TRANSACTION_MAX_GROUPS = 5
-if os.getenv('GCLOUD_NO_PRINT') == 'true':
-    PRINT_FUNC = lambda msg: None
-else:
-    PRINT_FUNC = print
+
+
+def print_func(message):
+    if os.getenv('GCLOUD_NO_PRINT') != 'true':
+        print(message)
 
 
 def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
@@ -72,8 +73,8 @@ def remove_kind(kind, client):
     delete_outside_transaction = False
     with client.transaction():
         # Now that we have all results, we seek to delete.
-        PRINT_FUNC('Deleting keys:')
-        PRINT_FUNC(results)
+        print_func('Deleting keys:')
+        print_func(results)
 
         ancestors = get_ancestors(results)
         if len(ancestors) > TRANSACTION_MAX_GROUPS:
@@ -94,10 +95,11 @@ def remove_all_entities(client=None):
 
 
 if __name__ == '__main__':
-    PRINT_FUNC('This command will remove all entities for the following kinds:')
-    PRINT_FUNC('\n'.join(['- ' + val for val in ALL_KINDS]))
+    print_func('This command will remove all entities for '
+               'the following kinds:')
+    print_func('\n'.join(['- ' + val for val in ALL_KINDS]))
     response = input('Is this OK [y/n]? ')
     if response.lower() == 'y':
         remove_all_entities()
     else:
-        PRINT_FUNC('Doing nothing.')
+        print_func('Doing nothing.')
