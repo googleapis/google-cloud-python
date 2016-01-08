@@ -33,8 +33,8 @@ class TestChanges(unittest2.TestCase):
         self.WHEN = _NOW().replace(tzinfo=UTC)
 
     def _makeResource(self):
-        from gcloud._helpers import _RFC3339_MICROS
-        when_str = self.WHEN.strftime(_RFC3339_MICROS)
+        from gcloud._helpers import _datetime_to_rfc3339
+        when_str = _datetime_to_rfc3339(self.WHEN)
         return {
             'kind': 'dns#change',
             'id': self.CHANGES_NAME,
@@ -55,12 +55,10 @@ class TestChanges(unittest2.TestCase):
         }
 
     def _verifyResourceProperties(self, changes, resource, zone):
-        import datetime
+        from gcloud._helpers import _rfc3339_to_datetime
         from gcloud._helpers import UTC
-        from gcloud._helpers import _RFC3339_MICROS
         self.assertEqual(changes.name, resource['id'])
-        started = datetime.datetime.strptime(
-            resource['startTime'], _RFC3339_MICROS).replace(tzinfo=UTC)
+        started = _rfc3339_to_datetime(resource['startTime'])
         self.assertEqual(changes.started, started)
         self.assertEqual(changes.status, resource['status'])
 
