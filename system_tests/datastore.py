@@ -269,6 +269,7 @@ class TestDatastoreQuery(TestDatastore):
     def test_projection_query(self):
         filtered_query = self._base_query()
         filtered_query.projection = ['name', 'family']
+        filtered_query.order = ['name', 'family']
 
         # NOTE: There are 9 responses because of Catelyn. She has both
         #       Stark and Tully as her families, hence occurs twice in
@@ -279,6 +280,9 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
         arya_entity = entities[0]
+        catelyn_tully_entity = entities[3]
+        sansa_entity = entities[8]
+
         arya_dict = dict(arya_entity)
         self.assertEqual(arya_dict, {'name': 'Arya', 'family': 'Stark'})
 
@@ -286,13 +290,6 @@ class TestDatastoreQuery(TestDatastore):
         catelyn_stark_dict = dict(catelyn_stark_entity)
         self.assertEqual(catelyn_stark_dict,
                          {'name': 'Catelyn', 'family': 'Stark'})
-
-        if EMULATOR_DATASET is None:
-            catelyn_tully_entity = entities[3]
-            sansa_entity = entities[8]
-        else:
-            catelyn_tully_entity = entities[8]
-            sansa_entity = entities[7]
 
         catelyn_tully_dict = dict(catelyn_tully_entity)
         self.assertEqual(catelyn_tully_dict,
