@@ -26,9 +26,6 @@ import os
 import subprocess
 import sys
 
-from system_tests.run_system_test import run_module_tests
-
-
 MODULES = (
     'datastore',
     'storage',
@@ -36,8 +33,8 @@ MODULES = (
     'bigquery',
 )
 SCRIPTS_DIR = os.path.dirname(__file__)
-ENCRYPTED_KEYFILE = os.path.abspath(
-    os.path.join(SCRIPTS_DIR, '..', 'system_tests', 'key.json.enc'))
+ROOT_DIR = os.path.abspath(os.path.join(SCRIPTS_DIR, '..'))
+ENCRYPTED_KEYFILE = os.path.join(ROOT_DIR, 'system_tests', 'key.json.enc')
 
 
 def check_environment():
@@ -105,6 +102,9 @@ def prepare_to_run():
 def main():
     """Run all the system tests if necessary."""
     prepare_to_run()
+
+    sys.path.append(ROOT_DIR)
+    from system_tests.run_system_test import run_module_tests
     for module in MODULES:
         run_module_tests(module)
 
