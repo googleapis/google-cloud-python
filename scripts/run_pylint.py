@@ -21,6 +21,8 @@ demo/test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
 
+from __future__ import print_function
+
 import ConfigParser
 import copy
 import os
@@ -212,7 +214,7 @@ def lint_fileset(filenames, rcfile, description):
         if status_code != 0:
             error_message = ('Pylint failed on %s with '
                              'status %d.' % (description, status_code))
-            print >> sys.stderr, error_message
+            print(error_message, file=sys.stderr)
             sys.exit(status_code)
     else:
         print 'Skipping %s, no files to lint.' % (description,)
@@ -230,7 +232,7 @@ def main():
             raise
 
         message = 'Restricted lint failed, expanding to full fileset.'
-        print >> sys.stderr, message
+        print(message, file=sys.stderr)
         all_files, _ = get_files_for_linting(allow_limited=False)
         library_files, non_library_files, _ = get_python_files(
             all_files=all_files)
