@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud 0c74a59 documentation</title>
+    <title>Datastore Client &mdash; gcloud ce7d573 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0c74a59',
+        VERSION:     'ce7d573',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 0c74a59 documentation" href="index.html" />
+    <link rel="top" title="gcloud ce7d573 documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%200c74a59" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20ce7d573" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (0c74a59)
+              Version History (ce7d573)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -93,18 +93,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         
   <div class="section" id="module-gcloud.datastore.client">
 <span id="datastore-client"></span><h1>Datastore Client<a class="headerlink" href="#module-gcloud.datastore.client" title="Permalink to this headline">#</a></h1>
-<p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
+<p>Convenience wrapper for invoking APIs/factories w/ a project.</p>
 <dl class="class">
 <dt id="gcloud.datastore.client.Client">
-<em class="property">class </em><code class="descclassname">gcloud.datastore.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>dataset_id=None</em>, <em>namespace=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.datastore.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>namespace=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.client.Client</span></code></a></p>
-<p>Convenience wrapper for invoking APIs/factories w/ a dataset ID.</p>
+<p>Convenience wrapper for invoking APIs/factories w/ a project.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (optional) dataset ID to pass to proxied API methods.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (optional) The project to pass to proxied API methods.</li>
 <li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; (optional) namespace to pass to proxied API methods.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v1.5.2)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
@@ -152,7 +152,6 @@ partial key.</p>
 <dt id="gcloud.datastore.client.Client.batch">
 <code class="descname">batch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.batch" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-batches.html#gcloud.datastore.batch.Batch" title="gcloud.datastore.batch.Batch"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.batch.Batch</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -283,8 +282,8 @@ If the list is not empty, an error will occur.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The requested entities.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a dataset
-ID which does not match our dataset ID.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if one or more of <code class="docutils literal"><span class="pre">keys</span></code> has a project
+which does not match our project.</p>
 </td>
 </tr>
 </tbody>
@@ -295,7 +294,7 @@ ID which does not match our dataset ID.</p>
 <dt id="gcloud.datastore.client.Client.key">
 <code class="descname">key</code><span class="sig-paren">(</span><em>*path_args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.key" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -338,14 +337,13 @@ entity or multiple entities in a commit request.</p>
 <dt id="gcloud.datastore.client.Client.query">
 <code class="descname">query</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.query" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-queries.html#gcloud.datastore.query.Query" title="gcloud.datastore.query.Query"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.query.Query</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
+<p>Passes our <code class="docutils literal"><span class="pre">project</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gcloud.datastore.client.Client.transaction">
 <code class="descname">transaction</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Proxy to <a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>.</p>
-<p>Passes our <code class="docutils literal"><span class="pre">dataset_id</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -382,7 +380,7 @@ in method arguments, however should be capable of returning advanced types.</p>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{dataset_id}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{project}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
 </dd></dl>
 
@@ -400,7 +398,7 @@ in method arguments, however should be capable of returning advanced types.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.allocate_ids">
-<code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.allocate_ids" title="Permalink to this definition">#</a></dt>
+<code class="descname">allocate_ids</code><span class="sig-paren">(</span><em>project</em>, <em>key_pbs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.allocate_ids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.allocate_ids" title="Permalink to this definition">#</a></dt>
 <dd><p>Obtain backend-generated IDs for a set of keys.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.AllocateIds</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -408,8 +406,7 @@ in method arguments, however should be capable of returning advanced types.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to which the transaction
-belongs.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction belongs.</li>
 <li><strong>key_pbs</strong> (list of
 <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The keys for which the backend should allocate IDs.</li>
 </ul>
@@ -427,14 +424,14 @@ belongs.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.begin_transaction">
-<code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>dataset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">#</a></dt>
+<code class="descname">begin_transaction</code><span class="sig-paren">(</span><em>project</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.begin_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.begin_transaction" title="Permalink to this definition">#</a></dt>
 <dd><p>Begin a transaction.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.BeginTransaction</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID dataset to which the transaction applies.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction applies.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bytes</td>
 </tr>
@@ -446,7 +443,7 @@ belongs.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.build_api_url">
-<code class="descname">build_api_url</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
+<code class="descname">build_api_url</code><span class="sig-paren">(</span><em>project</em>, <em>method</em>, <em>base_url=None</em>, <em>api_version=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.build_api_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.build_api_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Construct the URL for a particular API call.</p>
 <p>This method is used internally to come up with the URL to use when
 making RPCs to the Cloud Datastore API.</p>
@@ -455,7 +452,7 @@ making RPCs to the Cloud Datastore API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to connect to. This is
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to connect to. This is
 usually your project name in the cloud console.</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The API method to call (e.g. &#8216;runQuery&#8217;, &#8216;lookup&#8217;).</li>
 <li><strong>base_url</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base URL where the API lives.
@@ -471,7 +468,7 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>commit_request</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
+<code class="descname">commit</code><span class="sig-paren">(</span><em>project</em>, <em>commit_request</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit mutations in context of current transation (if any).</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Commit</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -479,7 +476,7 @@ You shouldn&#8217;t have to provide this.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID dataset to which the transaction applies.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction applies.</li>
 <li><strong>commit_request</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.datastore_pb2.CommitRequest</span></code>) &#8211; The protobuf with the mutations being committed.</li>
 <li><strong>transaction_id</strong> (<em>string or None</em>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.  Non-transactional
@@ -501,8 +498,8 @@ that was completed in the commit.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.lookup">
-<code class="descname">lookup</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>key_pbs</em>, <em>eventual=False</em>, <em>transaction_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
-<dd><p>Lookup keys from a dataset in the Cloud Datastore.</p>
+<code class="descname">lookup</code><span class="sig-paren">(</span><em>project</em>, <em>key_pbs</em>, <em>eventual=False</em>, <em>transaction_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.lookup" title="Permalink to this definition">#</a></dt>
+<dd><p>Lookup keys from a project in the Cloud Datastore.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Lookup</span></code> protobuf RPC.</p>
 <p>This uses mostly protobufs
 (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.entity_pb2.Key</span></code> as input and
@@ -510,14 +507,14 @@ that was completed in the commit.</p>
 is used under the hood in
 <a class="reference internal" href="#gcloud.datastore.client.Client.get" title="gcloud.datastore.client.Client.get"><code class="xref py py-meth docutils literal"><span class="pre">Client.get()</span></code></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="s">&#39;dataset-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;project&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s">&#39;MyKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="go">[&lt;Entity object&gt;]</span>
 </pre></div>
 </div>
 <p>Using a <a class="reference internal" href="#gcloud.datastore.connection.Connection" title="gcloud.datastore.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a> directly:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()])</span>
 <span class="go">[&lt;Entity protobuf&gt;]</span>
 </pre></div>
 </div>
@@ -526,7 +523,7 @@ is used under the hood in
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to look up the keys.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to look up the keys in.</li>
 <li><strong>key_pbs</strong> (list of
 <code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The keys to retrieve from the datastore.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If False (the default), request <code class="docutils literal"><span class="pre">STRONG</span></code> read
@@ -554,7 +551,7 @@ both <code class="docutils literal"><span class="pre">results</span></code> and 
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.rollback">
-<code class="descname">rollback</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">#</a></dt>
+<code class="descname">rollback</code><span class="sig-paren">(</span><em>project</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.rollback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.rollback" title="Permalink to this definition">#</a></dt>
 <dd><p>Rollback the connection&#8217;s existing transaction.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Rollback</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -562,8 +559,7 @@ both <code class="docutils literal"><span class="pre">results</span></code> and 
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset to which the transaction
-belongs.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction belongs.</li>
 <li><strong>transaction_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.</li>
 </ul>
@@ -575,7 +571,7 @@ belongs.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.run_query">
-<code class="descname">run_query</code><span class="sig-paren">(</span><em>dataset_id</em>, <em>query_pb</em>, <em>namespace=None</em>, <em>eventual=False</em>, <em>transaction_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">#</a></dt>
+<code class="descname">run_query</code><span class="sig-paren">(</span><em>project</em>, <em>query_pb</em>, <em>namespace=None</em>, <em>eventual=False</em>, <em>transaction_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.run_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.run_query" title="Permalink to this definition">#</a></dt>
 <dd><p>Run a query on the Cloud Datastore.</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.RunQuery</span></code> protobuf RPC.</p>
 <p>Given a Query protobuf, sends a <code class="docutils literal"><span class="pre">runQuery</span></code> request to the
@@ -603,7 +599,7 @@ uses this method to fetch data:</p>
 </pre></div>
 </div>
 <p>Under the hood this is doing:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s">&#39;dataset-id&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">connection</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s">&#39;project&#39;</span><span class="p">,</span> <span class="n">query</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
 <span class="go">[&lt;list of Entity Protobufs&gt;], cursor, more_results, skipped_results</span>
 </pre></div>
 </div>
@@ -612,7 +608,7 @@ uses this method to fetch data:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>dataset_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of the dataset over which to run the query.</li>
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project over which to run the query.</li>
 <li><strong>query_pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.query_pb2.Query</span></code>) &#8211; The Protobuf representing the query to run.</li>
 <li><strong>namespace</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The namespace over which to run the query.</li>
 <li><strong>eventual</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If False (the default), request <code class="docutils literal"><span class="pre">STRONG</span></code> read
