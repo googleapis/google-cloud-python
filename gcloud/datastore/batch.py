@@ -63,10 +63,23 @@ class Batch(object):
 
     _id = None  # "protected" attribute, always None for non-transactions
 
+    _INITIAL = 0
+    """Enum value for _INITIAL status of batch/transaction."""
+
+    _IN_PROGRESS = 1
+    """Enum value for _IN_PROGRESS status of batch/transaction."""
+
+    _ABORTED = 2
+    """Enum value for _ABORTED status of batch/transaction."""
+
+    _FINISHED = 3
+    """Enum value for _FINISHED status of batch/transaction."""
+
     def __init__(self, client):
         self._client = client
         self._commit_request = _datastore_pb2.CommitRequest()
         self._partial_key_entities = []
+        self._status = self._INITIAL
 
     def current(self):
         """Return the topmost batch / transaction, or None."""
@@ -202,18 +215,26 @@ class Batch(object):
         self._add_delete_key_pb().CopyFrom(key_pb)
 
     def begin(self):
-        """No-op
+        """Begins a batch.
+
+        This method is called automatically when entering a with
+        statement, however it can be called explicitly if you don't want
+        to use a context manager.
 
         Overridden by :class:`gcloud.datastore.transaction.Transaction`.
-        """
 
-    def commit(self):
+        :raises: :class:`ValueError` if the batch has already begun.
+        """
+        if self._status != self._INITIAL:
+            raise ValueError('Batch already started previously.')
+        self._status = self._IN_PROGRESS
+
+    def _commit(self):
         """Commits the batch.
 
-        This is called automatically upon exiting a with statement,
-        however it can be called explicitly if you don't want to use a
-        context manager.
+        This is called by :meth:`commit`.
         """
+        # NOTE: ``self._commit_request`` will be modified.
         _, updated_keys = self.connection.commit(
             self.project, self._commit_request, self._id)
         # If the back-end returns without error, we are guaranteed that
@@ -224,12 +245,26 @@ class Batch(object):
             new_id = new_key_pb.path_element[-1].id
             entity.key = entity.key.completed_key(new_id)
 
+    def commit(self):
+        """Commits the batch.
+
+        This is called automatically upon exiting a with statement,
+        however it can be called explicitly if you don't want to use a
+        context manager.
+        """
+        try:
+            self._commit()
+        finally:
+            self._status = self._FINISHED
+
     def rollback(self):
-        """No-op
+        """Rolls back the current batch.
+
+        Marks the batch as aborted (can't be used again).
 
         Overridden by :class:`gcloud.datastore.transaction.Transaction`.
         """
-        pass
+        self._status = self._ABORTED
 
     def __enter__(self):
         self._client._push_batch(self)

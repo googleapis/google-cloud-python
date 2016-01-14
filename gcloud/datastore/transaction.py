@@ -90,22 +90,9 @@ class Transaction(Batch):
     :param client: the client used to connect to datastore.
     """
 
-    _INITIAL = 0
-    """Enum value for _INITIAL status of transaction."""
-
-    _IN_PROGRESS = 1
-    """Enum value for _IN_PROGRESS status of transaction."""
-
-    _ABORTED = 2
-    """Enum value for _ABORTED status of transaction."""
-
-    _FINISHED = 3
-    """Enum value for _FINISHED status of transaction."""
-
     def __init__(self, client):
         super(Transaction, self).__init__(client)
         self._id = None
-        self._status = self._INITIAL
 
     @property
     def id(self):
@@ -139,9 +126,7 @@ class Transaction(Batch):
 
         :raises: :class:`ValueError` if the transaction has already begun.
         """
-        if self._status != self._INITIAL:
-            raise ValueError('Transaction already started previously.')
-        self._status = self._IN_PROGRESS
+        super(Transaction, self).begin()
         self._id = self.connection.begin_transaction(self.project)
 
     def rollback(self):
@@ -155,7 +140,7 @@ class Transaction(Batch):
         try:
             self.connection.rollback(self.project, self._id)
         finally:
-            self._status = self._ABORTED
+            super(Transaction, self).rollback()
             # Clear our own ID in case this gets accidentally reused.
             self._id = None
 
@@ -173,6 +158,5 @@ class Transaction(Batch):
         try:
             super(Transaction, self).commit()
         finally:
-            self._status = self._FINISHED
             # Clear our own ID in case this gets accidentally reused.
             self._id = None

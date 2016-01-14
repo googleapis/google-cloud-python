@@ -37,6 +37,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
+        self.assertEqual(batch._status, batch._INITIAL)
         self.assertTrue(isinstance(batch.mutations, datastore_pb2.Mutation))
         self.assertEqual(batch._partial_key_entities, [])
 
@@ -200,13 +201,39 @@ class TestBatch(unittest2.TestCase):
         mutated_key = _mutated_pb(self, batch.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
 
+    def test_begin(self):
+        _PROJECT = 'PROJECT'
+        client = _Client(_PROJECT, None)
+        batch = self._makeOne(client)
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.begin()
+        self.assertEqual(batch._status, batch._IN_PROGRESS)
+
+    def test_begin_fail(self):
+        _PROJECT = 'PROJECT'
+        client = _Client(_PROJECT, None)
+        batch = self._makeOne(client)
+        batch._status = batch._IN_PROGRESS
+        with self.assertRaises(ValueError):
+            batch.begin()
+
+    def test_rollback(self):
+        _PROJECT = 'PROJECT'
+        client = _Client(_PROJECT, None)
+        batch = self._makeOne(client)
+        self.assertEqual(batch._status, batch._INITIAL)
+        batch.rollback()
+        self.assertEqual(batch._status, batch._ABORTED)
+
     def test_commit(self):
         _PROJECT = 'PROJECT'
         connection = _Connection()
         client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
 
+        self.assertEqual(batch._status, batch._INITIAL)
         batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
 
         self.assertEqual(connection._committed,
                          [(_PROJECT, batch._commit_request, None)])
@@ -222,7 +249,9 @@ class TestBatch(unittest2.TestCase):
         key._id = None
         batch._partial_key_entities.append(entity)
 
+        self.assertEqual(batch._status, batch._INITIAL)
         batch.commit()
+        self.assertEqual(batch._status, batch._FINISHED)
 
         self.assertEqual(connection._committed,
                          [(_PROJECT, batch._commit_request, None)])
