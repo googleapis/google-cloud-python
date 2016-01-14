@@ -66,11 +66,11 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        _DATASET_ID = 'DATASET'
+        _PROJECT = 'PROJECT'
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
+        entity_pb.key.partition_id.dataset_id = _PROJECT
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
         value_pb = _new_value_pb(entity_pb, 'foo')
@@ -104,7 +104,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
         # Also check the key.
         key = entity.key
-        self.assertEqual(key.dataset_id, _DATASET_ID)
+        self.assertEqual(key.project, _PROJECT)
         self.assertEqual(key.namespace, None)
         self.assertEqual(key.kind, _KIND)
         self.assertEqual(key.id, _ID)
@@ -113,11 +113,11 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        _DATASET_ID = 'DATASET'
+        _PROJECT = 'PROJECT'
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _DATASET_ID
+        entity_pb.key.partition_id.dataset_id = _PROJECT
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
         list_val_pb = _new_value_pb(entity_pb, 'baz')
@@ -162,7 +162,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        DATASET_ID = 's~FOO'
+        PROJECT = 's~FOO'
         KIND = 'KIND'
         INSIDE_NAME = 'IFOO'
         OUTSIDE_NAME = 'OBAR'
@@ -173,7 +173,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         inside_val_pb.integer_value = INSIDE_VALUE
 
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = DATASET_ID
+        entity_pb.key.partition_id.dataset_id = PROJECT
         element = entity_pb.key.path_element.add()
         element.kind = KIND
 
@@ -181,7 +181,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         outside_val_pb.entity_value.CopyFrom(entity_inside)
 
         entity = self._callFUT(entity_pb)
-        self.assertEqual(entity.key.dataset_id, DATASET_ID)
+        self.assertEqual(entity.key.project, PROJECT)
         self.assertEqual(entity.key.flat_path, (KIND,))
         self.assertEqual(len(entity), 1)
 
@@ -229,13 +229,13 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         kind, name = 'PATH', 'NAME'
-        dataset_id = 'DATASET'
-        key = Key(kind, name, dataset_id=dataset_id)
+        project = 'PROJECT'
+        key = Key(kind, name, project=project)
         entity = Entity(key=key)
         entity_pb = self._callFUT(entity)
 
         expected_pb = entity_pb2.Entity()
-        expected_pb.key.partition_id.dataset_id = dataset_id
+        expected_pb.key.partition_id.dataset_id = project
         path_elt = expected_pb.key.path_element.add()
         path_elt.kind = kind
         path_elt.name = name
@@ -279,7 +279,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         original_pb = entity_pb2.Entity()
         # Add a key.
-        original_pb.key.partition_id.dataset_id = dataset_id = 'DATASET'
+        original_pb.key.partition_id.dataset_id = project = 'PROJECT'
         elem1 = original_pb.key.path_element.add()
         elem1.kind = 'Family'
         elem1.id = 1234
@@ -321,8 +321,8 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         # Convert the user-space Entity back to a protobuf.
         new_pb = self._callFUT(entity)
 
-        # NOTE: entity_to_protobuf() strips the dataset_id so we "cheat".
-        new_pb.key.partition_id.dataset_id = dataset_id
+        # NOTE: entity_to_protobuf() strips the project so we "cheat".
+        new_pb.key.partition_id.dataset_id = project
         self._compareEntityProto(original_pb, new_pb)
 
     def test_meaning_with_change(self):
@@ -351,11 +351,11 @@ class Test_key_from_protobuf(unittest2.TestCase):
 
         return key_from_protobuf(val)
 
-    def _makePB(self, dataset_id=None, namespace=None, path=()):
+    def _makePB(self, project=None, namespace=None, path=()):
         from gcloud.datastore._generated import entity_pb2
         pb = entity_pb2.Key()
-        if dataset_id is not None:
-            pb.partition_id.dataset_id = dataset_id
+        if project is not None:
+            pb.partition_id.dataset_id = project
         if namespace is not None:
             pb.partition_id.namespace = namespace
         for elem in path:
@@ -368,19 +368,19 @@ class Test_key_from_protobuf(unittest2.TestCase):
         return pb
 
     def test_wo_namespace_in_pb(self):
-        _DATASET = 'DATASET'
-        pb = self._makePB(path=[{'kind': 'KIND'}], dataset_id=_DATASET)
+        _PROJECT = 'PROJECT'
+        pb = self._makePB(path=[{'kind': 'KIND'}], project=_PROJECT)
         key = self._callFUT(pb)
-        self.assertEqual(key.dataset_id, _DATASET)
+        self.assertEqual(key.project, _PROJECT)
         self.assertEqual(key.namespace, None)
 
     def test_w_namespace_in_pb(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _NAMESPACE = 'NAMESPACE'
         pb = self._makePB(path=[{'kind': 'KIND'}], namespace=_NAMESPACE,
-                          dataset_id=_DATASET)
+                          project=_PROJECT)
         key = self._callFUT(pb)
-        self.assertEqual(key.dataset_id, _DATASET)
+        self.assertEqual(key.project, _PROJECT)
         self.assertEqual(key.namespace, _NAMESPACE)
 
     def test_w_nested_path_in_pb(self):
@@ -389,7 +389,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
             {'kind': 'CHILD', 'id': 1234},
             {'kind': 'GRANDCHILD', 'id': 5678},
         ]
-        pb = self._makePB(path=_PATH, dataset_id='DATASET')
+        pb = self._makePB(path=_PATH, project='PROJECT')
         key = self._callFUT(pb)
         self.assertEqual(key.path, _PATH)
 
@@ -431,7 +431,7 @@ class Test__pb_attr_value(unittest2.TestCase):
     def test_key(self):
         from gcloud.datastore.key import Key
 
-        key = Key('PATH', 1234, dataset_id='DATASET')
+        key = Key('PATH', 1234, project='PROJECT')
         name, value = self._callFUT(key)
         self.assertEqual(name, 'key_value')
         self.assertEqual(value, key.to_protobuf())
@@ -530,7 +530,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         pb = entity_pb2.Value()
-        expected = Key('KIND', 1234, dataset_id='DATASET').to_protobuf()
+        expected = Key('KIND', 1234, project='PROJECT').to_protobuf()
         pb.key_value.CopyFrom(expected)
         found = self._callFUT(pb)
         self.assertEqual(found.to_protobuf(), expected)
@@ -563,7 +563,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         pb = entity_pb2.Value()
         entity_pb = pb.entity_value
         entity_pb.key.path_element.add(kind='KIND')
-        entity_pb.key.partition_id.dataset_id = 'DATASET'
+        entity_pb.key.partition_id.dataset_id = 'PROJECT'
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
@@ -617,7 +617,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         from gcloud.datastore.key import Key
 
         pb = self._makePB()
-        key = Key('KIND', 1234, dataset_id='DATASET')
+        key = Key('KIND', 1234, project='PROJECT')
         self._callFUT(pb, key)
         value = pb.key_value
         self.assertEqual(value, key.to_protobuf())
@@ -707,7 +707,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         name = 'foo'
         value = u'Foo'
         pb = self._makePB()
-        key = Key('KIND', 123, dataset_id='DATASET')
+        key = Key('KIND', 123, project='PROJECT')
         entity = Entity(key=key)
         entity[name] = value
         self._callFUT(pb, entity)
@@ -737,7 +737,7 @@ class Test__prepare_key_for_request(unittest2.TestCase):
 
         return _prepare_key_for_request(key_pb)
 
-    def test_prepare_dataset_id_valid(self):
+    def test_prepare_project_valid(self):
         from gcloud.datastore._generated import entity_pb2
         key = entity_pb2.Key()
         key.partition_id.dataset_id = 'foo'
@@ -748,31 +748,31 @@ class Test__prepare_key_for_request(unittest2.TestCase):
         new_key.ClearField('partition_id')
         self.assertEqual(new_key, key_without)
 
-    def test_prepare_dataset_id_unset(self):
+    def test_prepare_project_unset(self):
         from gcloud.datastore._generated import entity_pb2
         key = entity_pb2.Key()
         new_key = self._callFUT(key)
         self.assertTrue(new_key is key)
 
 
-class Test_find_true_dataset_id(unittest2.TestCase):
+class Test_find_true_project(unittest2.TestCase):
 
-    def _callFUT(self, dataset_id, connection):
-        from gcloud.datastore.helpers import find_true_dataset_id
-        return find_true_dataset_id(dataset_id, connection)
+    def _callFUT(self, project, connection):
+        from gcloud.datastore.helpers import find_true_project
+        return find_true_project(project, connection)
 
     def test_prefixed(self):
-        PREFIXED = 's~DATASET'
+        PREFIXED = 's~PROJECT'
         result = self._callFUT(PREFIXED, object())
         self.assertEqual(PREFIXED, result)
 
     def test_unprefixed_bogus_key_miss(self):
-        UNPREFIXED = 'DATASET'
+        UNPREFIXED = 'PROJECT'
         PREFIX = 's~'
         CONNECTION = _Connection(PREFIX, from_missing=False)
         result = self._callFUT(UNPREFIXED, CONNECTION)
 
-        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+        self.assertEqual(CONNECTION._called_project, UNPREFIXED)
 
         self.assertEqual(len(CONNECTION._lookup_result), 1)
 
@@ -788,12 +788,12 @@ class Test_find_true_dataset_id(unittest2.TestCase):
         self.assertEqual(result, PREFIXED)
 
     def test_unprefixed_bogus_key_hit(self):
-        UNPREFIXED = 'DATASET'
+        UNPREFIXED = 'PROJECT'
         PREFIX = 'e~'
         CONNECTION = _Connection(PREFIX, from_missing=True)
         result = self._callFUT(UNPREFIXED, CONNECTION)
 
-        self.assertEqual(CONNECTION._called_dataset_id, UNPREFIXED)
+        self.assertEqual(CONNECTION._called_project, UNPREFIXED)
         self.assertEqual(CONNECTION._lookup_result, [])
 
         # Make sure just one.
@@ -890,24 +890,24 @@ class Test__get_meaning(unittest2.TestCase):
 
 class _Connection(object):
 
-    _called_dataset_id = _called_key_pbs = _lookup_result = None
+    _called_project = _called_key_pbs = _lookup_result = None
 
     def __init__(self, prefix, from_missing=False):
         self.prefix = prefix
         self.from_missing = from_missing
 
-    def lookup(self, dataset_id, key_pbs):
+    def lookup(self, project, key_pbs):
         from gcloud.datastore._generated import entity_pb2
 
         # Store the arguments called with.
-        self._called_dataset_id = dataset_id
+        self._called_project = project
         self._called_key_pbs = key_pbs
 
         key_pb, = key_pbs
 
         response = entity_pb2.Entity()
         response.key.CopyFrom(key_pb)
-        response.key.partition_id.dataset_id = self.prefix + dataset_id
+        response.key.partition_id.dataset_id = self.prefix + project
 
         missing = []
         deferred = []

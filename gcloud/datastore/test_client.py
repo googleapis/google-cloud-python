@@ -15,12 +15,12 @@
 import unittest2
 
 
-def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
+def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
     from gcloud.datastore._generated import entity_pb2
     from gcloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
-    entity_pb.key.partition_id.dataset_id = dataset_id
+    entity_pb.key.partition_id.dataset_id = project
     path_element = entity_pb.key.path_element.add()
     path_element.kind = kind
     path_element.id = integer_id
@@ -31,11 +31,11 @@ def _make_entity_pb(dataset_id, kind, integer_id, name=None, str_val=None):
     return entity_pb
 
 
-class Test__get_production_dataset_id(unittest2.TestCase):
+class Test__get_production_project(unittest2.TestCase):
 
     def _callFUT(self):
-        from gcloud.datastore.client import _get_production_dataset_id
-        return _get_production_dataset_id()
+        from gcloud.datastore.client import _get_production_project
+        return _get_production_project()
 
     def test_no_value(self):
         import os
@@ -43,26 +43,26 @@ class Test__get_production_dataset_id(unittest2.TestCase):
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
-            dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            project = self._callFUT()
+            self.assertEqual(project, None)
 
     def test_value_set(self):
         import os
         from gcloud._testing import _Monkey
         from gcloud.datastore.client import DATASET
 
-        MOCK_DATASET_ID = object()
-        environ = {DATASET: MOCK_DATASET_ID}
+        MOCK_PROJECT = object()
+        environ = {DATASET: MOCK_PROJECT}
         with _Monkey(os, getenv=environ.get):
-            dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+            project = self._callFUT()
+            self.assertEqual(project, MOCK_PROJECT)
 
 
-class Test__get_gcd_dataset_id(unittest2.TestCase):
+class Test__get_gcd_project(unittest2.TestCase):
 
     def _callFUT(self):
-        from gcloud.datastore.client import _get_gcd_dataset_id
-        return _get_gcd_dataset_id()
+        from gcloud.datastore.client import _get_gcd_project
+        return _get_gcd_project()
 
     def test_no_value(self):
         import os
@@ -70,29 +70,29 @@ class Test__get_gcd_dataset_id(unittest2.TestCase):
 
         environ = {}
         with _Monkey(os, getenv=environ.get):
-            dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, None)
+            project = self._callFUT()
+            self.assertEqual(project, None)
 
     def test_value_set(self):
         import os
         from gcloud._testing import _Monkey
         from gcloud.datastore.client import GCD_DATASET
 
-        MOCK_DATASET_ID = object()
-        environ = {GCD_DATASET: MOCK_DATASET_ID}
+        MOCK_PROJECT = object()
+        environ = {GCD_DATASET: MOCK_PROJECT}
         with _Monkey(os, getenv=environ.get):
-            dataset_id = self._callFUT()
-            self.assertEqual(dataset_id, MOCK_DATASET_ID)
+            project = self._callFUT()
+            self.assertEqual(project, MOCK_PROJECT)
 
 
-class Test__determine_default_dataset_id(unittest2.TestCase):
+class Test__determine_default_project(unittest2.TestCase):
 
-    def _callFUT(self, dataset_id=None):
-        from gcloud.datastore.client import _determine_default_dataset_id
-        return _determine_default_dataset_id(dataset_id=dataset_id)
+    def _callFUT(self, project=None):
+        from gcloud.datastore.client import _determine_default_project
+        return _determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gcd=None, gae=None,
-                                  gce=None, dataset_id=None):
+                                  gce=None, project=None):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client
 
@@ -115,59 +115,59 @@ class Test__determine_default_dataset_id(unittest2.TestCase):
             return gce
 
         patched_methods = {
-            '_get_production_dataset_id': prod_mock,
-            '_get_gcd_dataset_id': gcd_mock,
+            '_get_production_project': prod_mock,
+            '_get_gcd_project': gcd_mock,
             '_app_engine_id': gae_mock,
             '_compute_engine_id': gce_mock,
         }
 
         with _Monkey(client, **patched_methods):
-            returned_dataset_id = self._callFUT(dataset_id)
+            returned_project = self._callFUT(project)
 
-        return returned_dataset_id, _callers
+        return returned_project, _callers
 
     def test_no_value(self):
-        dataset_id, callers = self._determine_default_helper()
-        self.assertEqual(dataset_id, None)
+        project, callers = self._determine_default_helper()
+        self.assertEqual(project, None)
         self.assertEqual(callers,
                          ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
 
     def test_explicit(self):
-        DATASET_ID = object()
-        dataset_id, callers = self._determine_default_helper(
-            dataset_id=DATASET_ID)
-        self.assertEqual(dataset_id, DATASET_ID)
+        PROJECT = object()
+        project, callers = self._determine_default_helper(
+            project=PROJECT)
+        self.assertEqual(project, PROJECT)
         self.assertEqual(callers, [])
 
     def test_prod(self):
-        DATASET_ID = object()
-        dataset_id, callers = self._determine_default_helper(prod=DATASET_ID)
-        self.assertEqual(dataset_id, DATASET_ID)
+        PROJECT = object()
+        project, callers = self._determine_default_helper(prod=PROJECT)
+        self.assertEqual(project, PROJECT)
         self.assertEqual(callers, ['prod_mock'])
 
     def test_gcd(self):
-        DATASET_ID = object()
-        dataset_id, callers = self._determine_default_helper(gcd=DATASET_ID)
-        self.assertEqual(dataset_id, DATASET_ID)
+        PROJECT = object()
+        project, callers = self._determine_default_helper(gcd=PROJECT)
+        self.assertEqual(project, PROJECT)
         self.assertEqual(callers, ['prod_mock', 'gcd_mock'])
 
     def test_gae(self):
-        DATASET_ID = object()
-        dataset_id, callers = self._determine_default_helper(gae=DATASET_ID)
-        self.assertEqual(dataset_id, DATASET_ID)
+        PROJECT = object()
+        project, callers = self._determine_default_helper(gae=PROJECT)
+        self.assertEqual(project, PROJECT)
         self.assertEqual(callers, ['prod_mock', 'gcd_mock', 'gae_mock'])
 
     def test_gce(self):
-        DATASET_ID = object()
-        dataset_id, callers = self._determine_default_helper(gce=DATASET_ID)
-        self.assertEqual(dataset_id, DATASET_ID)
+        PROJECT = object()
+        project, callers = self._determine_default_helper(gce=PROJECT)
+        self.assertEqual(project, PROJECT)
         self.assertEqual(callers,
                          ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
 
 
 class TestClient(unittest2.TestCase):
 
-    DATASET_ID = 'DATASET'
+    PROJECT = 'PROJECT'
 
     def setUp(self):
         KLASS = self._getTargetClass()
@@ -182,14 +182,14 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.client import Client
         return Client
 
-    def _makeOne(self, dataset_id=DATASET_ID, namespace=None,
+    def _makeOne(self, project=PROJECT, namespace=None,
                  credentials=None, http=None):
-        return self._getTargetClass()(dataset_id=dataset_id,
+        return self._getTargetClass()(project=project,
                                       namespace=namespace,
                                       credentials=credentials,
                                       http=http)
 
-    def test_ctor_w_dataset_id_no_environ(self):
+    def test_ctor_w_project_no_environ(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client as _MUT
 
@@ -208,11 +208,11 @@ class TestClient(unittest2.TestCase):
 
         klass = self._getTargetClass()
         with _Monkey(_MUT,
-                     _determine_default_dataset_id=lambda x: x or OTHER):
+                     _determine_default_project=lambda x: x or OTHER):
             with _Monkey(_base_client,
                          get_credentials=lambda: creds):
                 client = klass()
-        self.assertEqual(client.dataset_id, OTHER)
+        self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, None)
         self.assertTrue(isinstance(client.connection, _MockConnection))
         self.assertTrue(client.connection.credentials is creds)
@@ -225,11 +225,11 @@ class TestClient(unittest2.TestCase):
         NAMESPACE = 'namespace'
         creds = object()
         http = object()
-        client = self._makeOne(dataset_id=OTHER,
+        client = self._makeOne(project=OTHER,
                                namespace=NAMESPACE,
                                credentials=creds,
                                http=http)
-        self.assertEqual(client.dataset_id, OTHER)
+        self.assertEqual(client.project, OTHER)
         self.assertEqual(client.namespace, NAMESPACE)
         self.assertTrue(isinstance(client.connection, _MockConnection))
         self.assertTrue(client.connection.credentials is creds)
@@ -309,7 +309,7 @@ class TestClient(unittest2.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result()
-        key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
+        key = Key('Kind', 1234, project=self.PROJECT)
         results = client.get_multi([key])
         self.assertEqual(results, [])
 
@@ -322,7 +322,7 @@ class TestClient(unittest2.TestCase):
 
         # Make a missing entity pb to be returned from mock backend.
         missed = entity_pb2.Entity()
-        missed.key.partition_id.dataset_id = self.DATASET_ID
+        missed.key.partition_id.dataset_id = self.PROJECT
         path_element = missed.key.path_element.add()
         path_element.kind = KIND
         path_element.id = ID
@@ -332,7 +332,7 @@ class TestClient(unittest2.TestCase):
         # Set missing entity on mock connection.
         client.connection._add_lookup_result(missing=[missed])
 
-        key = Key(KIND, ID, dataset_id=self.DATASET_ID)
+        key = Key(KIND, ID, project=self.PROJECT)
         missing = []
         entities = client.get_multi([key], missing=missing)
         self.assertEqual(entities, [])
@@ -344,7 +344,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         missing = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, client.get_multi,
@@ -355,7 +355,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         deferred = ['this', 'list', 'is', 'not', 'empty']
         self.assertRaises(ValueError, client.get_multi,
@@ -364,7 +364,7 @@ class TestClient(unittest2.TestCase):
     def test_get_multi_miss_w_deferred(self):
         from gcloud.datastore.key import Key
 
-        key = Key('Kind', 1234, dataset_id=self.DATASET_ID)
+        key = Key('Kind', 1234, project=self.PROJECT)
 
         # Set deferred entity on mock connection.
         creds = object()
@@ -382,9 +382,9 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.entity import Entity
         from gcloud.datastore.key import Key
 
-        key1 = Key('Kind', dataset_id=self.DATASET_ID)
+        key1 = Key('Kind', project=self.PROJECT)
         key1_pb = key1.to_protobuf()
-        key2 = Key('Kind', 2345, dataset_id=self.DATASET_ID)
+        key2 = Key('Kind', 2345, project=self.PROJECT)
         key2_pb = key2.to_protobuf()
 
         entity1_pb = entity_pb2.Entity()
@@ -406,17 +406,17 @@ class TestClient(unittest2.TestCase):
         # Check the actual contents on the response.
         self.assertTrue(isinstance(found[0], Entity))
         self.assertEqual(found[0].key.path, key1.path)
-        self.assertEqual(found[0].key.dataset_id, key1.dataset_id)
+        self.assertEqual(found[0].key.project, key1.project)
 
         self.assertTrue(isinstance(found[1], Entity))
         self.assertEqual(found[1].key.path, key2.path)
-        self.assertEqual(found[1].key.dataset_id, key2.dataset_id)
+        self.assertEqual(found[1].key.project, key2.project)
 
         cw = client.connection._lookup_cw
         self.assertEqual(len(cw), 2)
 
         ds_id, k_pbs, eventual, tid = cw[0]
-        self.assertEqual(ds_id, self.DATASET_ID)
+        self.assertEqual(ds_id, self.PROJECT)
         self.assertEqual(len(k_pbs), 2)
         self.assertEqual(key1_pb, k_pbs[0])
         self.assertEqual(key2_pb, k_pbs[1])
@@ -424,7 +424,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(tid is None)
 
         ds_id, k_pbs, eventual, tid = cw[1]
-        self.assertEqual(ds_id, self.DATASET_ID)
+        self.assertEqual(ds_id, self.PROJECT)
         self.assertEqual(len(k_pbs), 1)
         self.assertEqual(key2_pb, k_pbs[0])
         self.assertFalse(eventual)
@@ -438,25 +438,25 @@ class TestClient(unittest2.TestCase):
         PATH = [{'kind': KIND, 'id': ID}]
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.DATASET_ID, KIND, ID, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb])
 
-        key = Key(KIND, ID, dataset_id=self.DATASET_ID)
+        key = Key(KIND, ID, project=self.PROJECT)
         result, = client.get_multi([key])
         new_key = result.key
 
         # Check the returned value is as expected.
         self.assertFalse(new_key is key)
-        self.assertEqual(new_key.dataset_id, self.DATASET_ID)
+        self.assertEqual(new_key.project, self.PROJECT)
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
 
-    def test_get_multi_hit_multiple_keys_same_dataset(self):
+    def test_get_multi_hit_multiple_keys_same_project(self):
         from gcloud.datastore.key import Key
 
         KIND = 'Kind'
@@ -464,16 +464,16 @@ class TestClient(unittest2.TestCase):
         ID2 = 2345
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb1 = _make_entity_pb(self.DATASET_ID, KIND, ID1)
-        entity_pb2 = _make_entity_pb(self.DATASET_ID, KIND, ID2)
+        entity_pb1 = _make_entity_pb(self.PROJECT, KIND, ID1)
+        entity_pb2 = _make_entity_pb(self.PROJECT, KIND, ID2)
 
         # Make a connection to return the entity pbs.
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb1, entity_pb2])
 
-        key1 = Key(KIND, ID1, dataset_id=self.DATASET_ID)
-        key2 = Key(KIND, ID2, dataset_id=self.DATASET_ID)
+        key1 = Key(KIND, ID1, project=self.PROJECT)
+        key2 = Key(KIND, ID2, project=self.PROJECT)
         retrieved1, retrieved2 = client.get_multi([key1, key2])
 
         # Check values match.
@@ -482,17 +482,17 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(retrieved2.key.path, key2.path)
         self.assertEqual(dict(retrieved2), {})
 
-    def test_get_multi_hit_multiple_keys_different_dataset(self):
+    def test_get_multi_hit_multiple_keys_different_project(self):
         from gcloud.datastore.key import Key
 
-        DATASET_ID1 = 'DATASET'
-        DATASET_ID2 = 'DATASET-ALT'
+        PROJECT1 = 'PROJECT'
+        PROJECT2 = 'PROJECT-ALT'
 
         # Make sure our IDs are actually different.
-        self.assertNotEqual(DATASET_ID1, DATASET_ID2)
+        self.assertNotEqual(PROJECT1, PROJECT2)
 
-        key1 = Key('KIND', 1234, dataset_id=DATASET_ID1)
-        key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
+        key1 = Key('KIND', 1234, project=PROJECT1)
+        key2 = Key('KIND', 1234, project=PROJECT2)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -503,18 +503,18 @@ class TestClient(unittest2.TestCase):
     def test_get_multi_diff_prefixes(self):
         from gcloud.datastore.key import Key
 
-        DATASET_ID1 = 'DATASET'
-        DATASET_ID2 = 'e~DATASET'
-        DATASET_ID3 = 's~DATASET'
+        PROJECT1 = 'PROJECT'
+        PROJECT2 = 'e~PROJECT'
+        PROJECT3 = 's~PROJECT'
         KIND = 'Kind'
         ID1 = 1234
         ID2 = 2345
         ID3 = 3456
 
         # Make found entity pbs to be returned from mock backend.
-        entity_pb1 = _make_entity_pb(DATASET_ID1, KIND, ID1)
-        entity_pb2 = _make_entity_pb(DATASET_ID2, KIND, ID2)
-        entity_pb3 = _make_entity_pb(DATASET_ID3, KIND, ID3)
+        entity_pb1 = _make_entity_pb(PROJECT1, KIND, ID1)
+        entity_pb2 = _make_entity_pb(PROJECT2, KIND, ID2)
+        entity_pb3 = _make_entity_pb(PROJECT3, KIND, ID3)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -522,9 +522,9 @@ class TestClient(unittest2.TestCase):
                                               entity_pb2,
                                               entity_pb3])
 
-        key1 = Key(KIND, ID1, dataset_id=DATASET_ID1)
-        key2 = Key(KIND, ID2, dataset_id=DATASET_ID2)
-        key3 = Key(KIND, ID3, dataset_id=DATASET_ID3)
+        key1 = Key(KIND, ID1, project=PROJECT1)
+        key2 = Key(KIND, ID2, project=PROJECT2)
+        key3 = Key(KIND, ID3, project=PROJECT3)
 
         retrieved_all = client.get_multi([key1, key2, key3])
         retrieved1, retrieved2, retrieved3 = retrieved_all
@@ -534,14 +534,14 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(retrieved2.key.path, key2.path)
         self.assertEqual(retrieved3.key.path, key3.path)
 
-    def test_get_multi_diff_datasets_w_prefix(self):
+    def test_get_multi_diff_projects_w_prefix(self):
         from gcloud.datastore.key import Key
 
-        DATASET_ID1 = 'e~DATASET'
-        DATASET_ID2 = 's~DATASET-ALT'
+        PROJECT1 = 'e~PROJECT'
+        PROJECT2 = 's~PROJECT-ALT'
 
-        key1 = Key('KIND', 1234, dataset_id=DATASET_ID1)
-        key2 = Key('KIND', 1234, dataset_id=DATASET_ID2)
+        key1 = Key('KIND', 1234, project=PROJECT1)
+        key2 = Key('KIND', 1234, project=PROJECT2)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -558,14 +558,14 @@ class TestClient(unittest2.TestCase):
         ID = 1234
 
         # Make a found entity pb to be returned from mock backend.
-        entity_pb = _make_entity_pb(self.DATASET_ID, KIND, ID, 'foo', 'Foo')
+        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
 
         # Make a connection to return the entity pb.
         creds = object()
         client = self._makeOne(credentials=creds)
         client.connection._add_lookup_result([entity_pb])
 
-        key = Key(KIND, ID, dataset_id=self.DATASET_ID)
+        key = Key(KIND, ID, project=self.PROJECT)
         deferred = []
         missing = []
         with _Monkey(_MUT, _MAX_LOOPS=-1):
@@ -614,7 +614,7 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _KeyPB
 
         entity = _Entity(foo=u'bar')
-        key = entity.key = _Key(self.DATASET_ID)
+        key = entity.key = _Key(self.PROJECT)
         key._id = None
 
         creds = object()
@@ -625,9 +625,9 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(result is None)
 
         self.assertEqual(len(client.connection._commit_cw), 1)
-        (dataset_id,
+        (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
-        self.assertEqual(dataset_id, self.DATASET_ID)
+        self.assertEqual(project, self.PROJECT)
         inserts = list(commit_req.mutation.insert_auto_id)
         self.assertEqual(len(inserts), 1)
         self.assertEqual(inserts[0].key, key.to_protobuf())
@@ -648,7 +648,7 @@ class TestClient(unittest2.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
         entity = _Entity(foo=u'bar')
-        key = entity.key = _Key(self.DATASET_ID)
+        key = entity.key = _Key(self.PROJECT)
 
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.put_multi([entity])
@@ -689,7 +689,7 @@ class TestClient(unittest2.TestCase):
     def test_delete_multi_no_batch(self):
         from gcloud.datastore.test_batch import _Key
 
-        key = _Key(self.DATASET_ID)
+        key = _Key(self.PROJECT)
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -698,9 +698,9 @@ class TestClient(unittest2.TestCase):
         result = client.delete_multi([key])
         self.assertEqual(result, None)
         self.assertEqual(len(client.connection._commit_cw), 1)
-        (dataset_id,
+        (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
-        self.assertEqual(dataset_id, self.DATASET_ID)
+        self.assertEqual(project, self.PROJECT)
         self.assertEqual(list(commit_req.mutation.delete), [key.to_protobuf()])
         self.assertTrue(transaction_id is None)
 
@@ -710,7 +710,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = _Key(self.DATASET_ID)
+        key = _Key(self.PROJECT)
 
         with _NoCommitBatch(client) as CURR_BATCH:
             result = client.delete_multi([key])
@@ -726,7 +726,7 @@ class TestClient(unittest2.TestCase):
 
         creds = object()
         client = self._makeOne(credentials=creds)
-        key = _Key(self.DATASET_ID)
+        key = _Key(self.PROJECT)
 
         with _NoCommitTransaction(client) as CURR_XACT:
             result = client.delete_multi([key])
@@ -741,7 +741,7 @@ class TestClient(unittest2.TestCase):
 
         NUM_IDS = 2
 
-        INCOMPLETE_KEY = _Key(self.DATASET_ID)
+        INCOMPLETE_KEY = _Key(self.PROJECT)
         INCOMPLETE_KEY._id = None
 
         creds = object()
@@ -758,10 +758,10 @@ class TestClient(unittest2.TestCase):
         creds = object()
         client = self._makeOne(credentials=creds)
 
-        COMPLETE_KEY = _Key(self.DATASET_ID)
+        COMPLETE_KEY = _Key(self.PROJECT)
         self.assertRaises(ValueError, client.allocate_ids, COMPLETE_KEY, 2)
 
-    def test_key_w_dataset_id(self):
+    def test_key_w_project(self):
         KIND = 'KIND'
         ID = 1234
 
@@ -769,9 +769,9 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(credentials=creds)
 
         self.assertRaises(TypeError,
-                          client.key, KIND, ID, dataset_id=self.DATASET_ID)
+                          client.key, KIND, ID, project=self.PROJECT)
 
-    def test_key_wo_dataset_id(self):
+    def test_key_wo_project(self):
         from gcloud.datastore import client as MUT
         from gcloud._testing import _Monkey
 
@@ -787,7 +787,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(key, _Dummy))
         self.assertEqual(key.args, (KIND, ID))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': None,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -808,7 +808,7 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': NAMESPACE,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -830,7 +830,7 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(isinstance(key, _Dummy))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': NAMESPACE2,
         }
         self.assertEqual(key.kwargs, expected_kwargs)
@@ -872,14 +872,14 @@ class TestClient(unittest2.TestCase):
 
         self.assertRaises(TypeError, client.query, kind=KIND, client=other)
 
-    def test_query_w_dataset_id(self):
+    def test_query_w_project(self):
         KIND = 'KIND'
 
         creds = object()
         client = self._makeOne(credentials=creds)
 
         self.assertRaises(TypeError,
-                          client.query, kind=KIND, dataset_id=self.DATASET_ID)
+                          client.query, kind=KIND, project=self.PROJECT)
 
     def test_query_w_defaults(self):
         from gcloud.datastore import client as MUT
@@ -894,7 +894,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': None,
         }
         self.assertEqual(query.kwargs, expected_kwargs)
@@ -928,7 +928,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'kind': KIND,
             'namespace': NAMESPACE,
             'ancestor': ANCESTOR,
@@ -955,7 +955,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': NAMESPACE,
             'kind': KIND,
         }
@@ -978,7 +978,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(query, _Dummy))
         self.assertEqual(query.args, (client,))
         expected_kwargs = {
-            'dataset_id': self.DATASET_ID,
+            'project': self.PROJECT,
             'namespace': NAMESPACE2,
             'kind': KIND,
         }
@@ -1008,20 +1008,20 @@ class _MockConnection(object):
     def _add_lookup_result(self, results=(), missing=(), deferred=()):
         self._lookup.append((list(results), list(missing), list(deferred)))
 
-    def lookup(self, dataset_id, key_pbs, eventual=False, transaction_id=None):
-        self._lookup_cw.append((dataset_id, key_pbs, eventual, transaction_id))
+    def lookup(self, project, key_pbs, eventual=False, transaction_id=None):
+        self._lookup_cw.append((project, key_pbs, eventual, transaction_id))
         triple, self._lookup = self._lookup[0], self._lookup[1:]
         results, missing, deferred = triple
         return results, missing, deferred
 
-    def commit(self, dataset_id, commit_request, transaction_id):
-        self._commit_cw.append((dataset_id, commit_request, transaction_id))
+    def commit(self, project, commit_request, transaction_id):
+        self._commit_cw.append((project, commit_request, transaction_id))
         response, self._commit = self._commit[0], self._commit[1:]
         return self._index_updates, response
 
-    def allocate_ids(self, dataset_id, key_pbs):
+    def allocate_ids(self, project, key_pbs):
         from gcloud.datastore.test_connection import _KeyProto
-        self._alloc_cw.append((dataset_id, key_pbs))
+        self._alloc_cw.append((project, key_pbs))
         num_pbs = len(key_pbs)
         return [_KeyProto(i) for i in list(range(num_pbs))]
 

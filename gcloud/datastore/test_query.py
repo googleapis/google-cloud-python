@@ -17,7 +17,7 @@ import unittest2
 
 class TestQuery(unittest2.TestCase):
 
-    _DATASET = 'DATASET'
+    _PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
         from gcloud.datastore.query import Query
@@ -29,13 +29,13 @@ class TestQuery(unittest2.TestCase):
     def _makeClient(self, connection=None):
         if connection is None:
             connection = _Connection()
-        return _Client(self._DATASET, connection)
+        return _Client(self._PROJECT, connection)
 
     def test_ctor_defaults(self):
         client = self._makeClient()
         query = self._makeOne(client)
         self.assertTrue(query._client is client)
-        self.assertEqual(query.dataset_id, client.dataset_id)
+        self.assertEqual(query.project, client.project)
         self.assertEqual(query.kind, None)
         self.assertEqual(query.namespace, client.namespace)
         self.assertEqual(query.ancestor, None)
@@ -46,11 +46,11 @@ class TestQuery(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         from gcloud.datastore.key import Key
-        _DATASET = 'OTHER_DATASET'
+        _PROJECT = 'OTHER_PROJECT'
         _KIND = 'KIND'
         _NAMESPACE = 'OTHER_NAMESPACE'
         client = self._makeClient()
-        ancestor = Key('ANCESTOR', 123, dataset_id=_DATASET)
+        ancestor = Key('ANCESTOR', 123, project=_PROJECT)
         FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
         PROJECTION = ['foo', 'bar', 'baz']
         ORDER = ['foo', 'bar']
@@ -58,7 +58,7 @@ class TestQuery(unittest2.TestCase):
         query = self._makeOne(
             client,
             kind=_KIND,
-            dataset_id=_DATASET,
+            project=_PROJECT,
             namespace=_NAMESPACE,
             ancestor=ancestor,
             filters=FILTERS,
@@ -67,7 +67,7 @@ class TestQuery(unittest2.TestCase):
             group_by=GROUP_BY,
             )
         self.assertTrue(query._client is client)
-        self.assertEqual(query.dataset_id, _DATASET)
+        self.assertEqual(query.project, _PROJECT)
         self.assertEqual(query.kind, _KIND)
         self.assertEqual(query.namespace, _NAMESPACE)
         self.assertEqual(query.ancestor.path, ancestor.path)
@@ -130,7 +130,7 @@ class TestQuery(unittest2.TestCase):
         query = self._makeOne(self._makeClient(), kind=_KIND_BEFORE)
         self.assertEqual(query.kind, _KIND_BEFORE)
         query.kind = _KIND_AFTER
-        self.assertEqual(query.dataset_id, self._DATASET)
+        self.assertEqual(query.project, self._PROJECT)
         self.assertEqual(query.kind, _KIND_AFTER)
 
     def test_ancestor_setter_w_non_key(self):
@@ -145,7 +145,7 @@ class TestQuery(unittest2.TestCase):
     def test_ancestor_setter_w_key(self):
         from gcloud.datastore.key import Key
         _NAME = u'NAME'
-        key = Key('KIND', 123, dataset_id=self._DATASET)
+        key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(self._makeClient())
         query.add_filter('name', '=', _NAME)
         query.ancestor = key
@@ -153,7 +153,7 @@ class TestQuery(unittest2.TestCase):
 
     def test_ancestor_deleter_w_key(self):
         from gcloud.datastore.key import Key
-        key = Key('KIND', 123, dataset_id=self._DATASET)
+        key = Key('KIND', 123, project=self._PROJECT)
         query = self._makeOne(client=self._makeClient(), ancestor=key)
         del query.ancestor
         self.assertTrue(query.ancestor is None)
@@ -200,13 +200,13 @@ class TestQuery(unittest2.TestCase):
     def test_add_filter___key__valid_key(self):
         from gcloud.datastore.key import Key
         query = self._makeOne(self._makeClient())
-        key = Key('Foo', dataset_id=self._DATASET)
+        key = Key('Foo', project=self._PROJECT)
         query.add_filter('__key__', '=', key)
         self.assertEqual(query.filters, [('__key__', '=', key)])
 
     def test_filter___key__not_equal_operator(self):
         from gcloud.datastore.key import Key
-        key = Key('Foo', dataset_id=self._DATASET)
+        key = Key('Foo', project=self._PROJECT)
         query = self._makeOne(self._makeClient())
         query.add_filter('__key__', '<', key)
         self.assertEqual(query.filters, [('__key__', '<', key)])
@@ -311,7 +311,7 @@ class TestQuery(unittest2.TestCase):
 
 
 class TestIterator(unittest2.TestCase):
-    _DATASET = 'DATASET'
+    _PROJECT = 'PROJECT'
     _NAMESPACE = 'NAMESPACE'
     _KIND = 'KIND'
     _ID = 123
@@ -334,7 +334,7 @@ class TestIterator(unittest2.TestCase):
         NO_MORE = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = self._DATASET
+        entity_pb.key.partition_id.dataset_id = self._PROJECT
         path_element = entity_pb.key.path_element.add()
         path_element.kind = self._KIND
         path_element.id = _ID
@@ -346,7 +346,7 @@ class TestIterator(unittest2.TestCase):
     def _makeClient(self, connection=None):
         if connection is None:
             connection = _Connection()
-        return _Client(self._DATASET, connection)
+        return _Client(self._PROJECT, connection)
 
     def test_ctor_defaults(self):
         connection = _Connection()
@@ -368,7 +368,7 @@ class TestIterator(unittest2.TestCase):
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client)
         entities, more_results, cursor = iterator.next_page()
@@ -383,7 +383,7 @@ class TestIterator(unittest2.TestCase):
         qpb = _pb_from_query(query)
         qpb.offset = 0
         EXPECTED = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -394,7 +394,7 @@ class TestIterator(unittest2.TestCase):
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client, 13, 29)
         entities, more_results, cursor = iterator.next_page()
@@ -410,7 +410,7 @@ class TestIterator(unittest2.TestCase):
         qpb.limit = 13
         qpb.offset = 29
         EXPECTED = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -423,7 +423,7 @@ class TestIterator(unittest2.TestCase):
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=self._END, more=True)
         iterator = self._makeOne(query, client)
         iterator._start_cursor = self._START
@@ -444,7 +444,7 @@ class TestIterator(unittest2.TestCase):
         qpb.start_cursor = urlsafe_b64decode(self._START)
         qpb.end_cursor = urlsafe_b64decode(self._END)
         EXPECTED = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -454,7 +454,7 @@ class TestIterator(unittest2.TestCase):
     def test_next_page_w_cursors_w_bogus_more(self):
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=self._END, more=True)
         epb, cursor, _ = connection._results.pop()
         connection._results.append((epb, cursor, 4))  # invalid enum
@@ -465,7 +465,7 @@ class TestIterator(unittest2.TestCase):
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection)
         iterator = self._makeOne(query, client)
         entities = list(iterator)
@@ -478,7 +478,7 @@ class TestIterator(unittest2.TestCase):
         qpb = _pb_from_query(query)
         qpb.offset = 0
         EXPECTED = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -489,7 +489,7 @@ class TestIterator(unittest2.TestCase):
         from gcloud.datastore.query import _pb_from_query
         connection = _Connection()
         client = self._makeClient(connection)
-        query = _Query(client, self._KIND, self._DATASET, self._NAMESPACE)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=self._END, more=True)
         self._addQueryResults(connection)
         iterator = self._makeOne(query, client)
@@ -508,13 +508,13 @@ class TestIterator(unittest2.TestCase):
         qpb2.offset = 0
         qpb2.start_cursor = self._END
         EXPECTED1 = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb1,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
         }
         EXPECTED2 = {
-            'dataset_id': self._DATASET,
+            'project': self._PROJECT,
             'query_pb': qpb2,
             'namespace': self._NAMESPACE,
             'transaction_id': None,
@@ -561,7 +561,7 @@ class Test__pb_from_query(unittest2.TestCase):
         from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
-        ancestor = Key('Ancestor', 123, dataset_id='DATASET')
+        ancestor = Key('Ancestor', 123, project='PROJECT')
         pb = self._callFUT(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
         self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
@@ -591,7 +591,7 @@ class Test__pb_from_query(unittest2.TestCase):
         from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
-        key = Key('Kind', 123, dataset_id='DATASET')
+        key = Key('Kind', 123, project='PROJECT')
         query = _Query(filters=[('__key__', '=', key)])
         query.OPERATORS = {
             '=': query_pb2.PropertyFilter.EQUAL,
@@ -627,7 +627,7 @@ class _Query(object):
     def __init__(self,
                  client=object(),
                  kind=None,
-                 dataset_id=None,
+                 project=None,
                  namespace=None,
                  ancestor=None,
                  filters=(),
@@ -636,7 +636,7 @@ class _Query(object):
                  group_by=()):
         self._client = client
         self.kind = kind
-        self.dataset_id = dataset_id
+        self.project = project
         self.namespace = namespace
         self.ancestor = ancestor
         self.filters = filters
@@ -663,8 +663,8 @@ class _Connection(object):
 
 class _Client(object):
 
-    def __init__(self, dataset_id, connection, namespace=None):
-        self.dataset_id = dataset_id
+    def __init__(self, project, connection, namespace=None):
+        self.project = project
         self.connection = connection
         self.namespace = namespace
 

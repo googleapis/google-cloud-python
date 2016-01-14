@@ -20,7 +20,7 @@
 from gcloud import datastore
 from gcloud.datastore import demo
 
-client = datastore.Client(dataset_id=demo.DATASET_ID)
+client = datastore.Client(project=demo.PROJECT)
 
 # Let's create a new entity of type "Thing" and name it 'Toy':
 key = client.key('Thing')

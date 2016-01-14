@@ -34,9 +34,9 @@ class Query(object):
     :type kind: string
     :param kind: The kind to query.
 
-    :type dataset_id: string
-    :param dataset_id: The ID of the dataset to query.  If not passed,
-                       uses the client's value.
+    :type project: string
+    :param project: The project associated with the query.  If not passed,
+                    uses the client's value.
 
     :type namespace: string or None
     :param namespace: The namespace to which to restrict results.  If not
@@ -59,7 +59,7 @@ class Query(object):
     :type group_by: sequence of string
     :param group_by: field names used to group query results.
 
-    :raises: ValueError if ``dataset_id`` is not passed and no implicit
+    :raises: ValueError if ``project`` is not passed and no implicit
              default is set.
     """
 
@@ -75,7 +75,7 @@ class Query(object):
     def __init__(self,
                  client,
                  kind=None,
-                 dataset_id=None,
+                 project=None,
                  namespace=None,
                  ancestor=None,
                  filters=(),
@@ -85,7 +85,7 @@ class Query(object):
 
         self._client = client
         self._kind = kind
-        self._dataset_id = dataset_id or client.dataset_id
+        self._project = project or client.project
         self._namespace = namespace or client.namespace
         self._ancestor = ancestor
         self._filters = []
@@ -97,12 +97,12 @@ class Query(object):
         self._group_by = _ensure_tuple_or_list('group_by', group_by)
 
     @property
-    def dataset_id(self):
-        """Get the dataset ID for this Query.
+    def project(self):
+        """Get the project for this Query.
 
         :rtype: str
         """
-        return self._dataset_id or self._client.dataset_id
+        return self._project or self._client.project
 
     @property
     def namespace(self):
@@ -404,7 +404,7 @@ class Iterator(object):
 
         query_results = self._client.connection.run_query(
             query_pb=pb,
-            dataset_id=self._query.dataset_id,
+            project=self._query.project,
             namespace=self._query.namespace,
             transaction_id=transaction and transaction.id,
             )

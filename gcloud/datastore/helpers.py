@@ -33,37 +33,37 @@ __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
-def find_true_dataset_id(dataset_id, connection):
-    """Find the true (unaliased) dataset ID.
+def find_true_project(project, connection):
+    """Find the true (unaliased) project.
 
     If the given ID already has a 's~' or 'e~' prefix, does nothing.
     Otherwise, looks up a bogus Key('__MissingLookupKind', 1) and reads the
-    true prefixed dataset ID from the response (either from found or from
+    true prefixed project from the response (either from found or from
     missing).
 
     For some context, see:
       github.com/GoogleCloudPlatform/gcloud-python/pull/528
       github.com/GoogleCloudPlatform/google-cloud-datastore/issues/59
 
-    :type dataset_id: string
-    :param dataset_id: The dataset ID to un-alias / prefix.
+    :type project: string
+    :param project: The project to un-alias / prefix.
 
     :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: A connection provided to connection to the dataset.
+    :param connection: A connection provided to connect to the project.
 
     :rtype: string
-    :returns: The true / prefixed / un-aliased dataset ID.
+    :returns: The true / prefixed / un-aliased project.
     """
-    if dataset_id.startswith('s~') or dataset_id.startswith('e~'):
-        return dataset_id
+    if project.startswith('s~') or project.startswith('e~'):
+        return project
 
     # Create the bogus Key protobuf to be looked up and remove
-    # the dataset ID so the backend won't complain.
+    # the project so the backend won't complain.
     bogus_key_pb = Key('__MissingLookupKind', 1,
-                       dataset_id=dataset_id).to_protobuf()
+                       project=project).to_protobuf()
     bogus_key_pb.partition_id.ClearField('dataset_id')
 
-    found_pbs, missing_pbs, _ = connection.lookup(dataset_id, [bogus_key_pb])
+    found_pbs, missing_pbs, _ = connection.lookup(project, [bogus_key_pb])
     # By not passing in `deferred`, lookup will continue until
     # all results are `found` or `missing`.
     all_pbs = missing_pbs + found_pbs
@@ -266,14 +266,14 @@ def key_from_protobuf(pb):
         if element.HasField('name'):
             path_args.append(element.name)
 
-    dataset_id = None
+    project = None
     if pb.partition_id.HasField('dataset_id'):
-        dataset_id = pb.partition_id.dataset_id
+        project = pb.partition_id.dataset_id
     namespace = None
     if pb.partition_id.HasField('namespace'):
         namespace = pb.partition_id.namespace
 
-    return Key(*path_args, namespace=namespace, dataset_id=dataset_id)
+    return Key(*path_args, namespace=namespace, project=project)
 
 
 def _pb_attr_value(val):
@@ -431,7 +431,7 @@ def _prepare_key_for_request(key_pb):
     if key_pb.partition_id.HasField('dataset_id'):
         # We remove the dataset_id from the protobuf. This is because
         # the backend fails a request if the key contains un-prefixed
-        # dataset ID. The backend fails because requests to
+        # project. The backend fails because requests to
         #     /datastore/.../datasets/foo/...
         # and
         #     /datastore/.../datasets/s~foo/...

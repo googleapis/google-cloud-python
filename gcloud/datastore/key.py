@@ -52,19 +52,19 @@ class Key(object):
     Accepted keyword arguments are
 
     * namespace (string): A namespace identifier for the key.
-    * dataset_id (string): The dataset ID associated with the key.
+    * project (string): The project associated with the key.
     * parent (:class:`gcloud.datastore.key.Key`): The parent of the key.
 
-    The dataset ID argument is required unless it has been set implicitly.
+    The project argument is required unless it has been set implicitly.
     """
 
     def __init__(self, *path_args, **kwargs):
         self._flat_path = path_args
         parent = self._parent = kwargs.get('parent')
         self._namespace = kwargs.get('namespace')
-        dataset_id = kwargs.get('dataset_id')
-        self._dataset_id = _validate_dataset_id(dataset_id, parent)
-        # _flat_path, _parent, _namespace and _dataset_id must be set before
+        project = kwargs.get('project')
+        self._project = _validate_project(project, parent)
+        # _flat_path, _parent, _namespace and _project must be set before
         # _combine_args() is called.
         self._path = self._combine_args()
 
@@ -73,7 +73,7 @@ class Key(object):
 
         Incomplete keys never compare equal to any other key.
 
-        Completed keys compare equal if they have the same path, dataset ID,
+        Completed keys compare equal if they have the same path, project,
         and namespace.
 
         :rtype: bool
@@ -86,7 +86,7 @@ class Key(object):
             return False
 
         return (self.flat_path == other.flat_path and
-                _dataset_ids_equal(self.dataset_id, other.dataset_id) and
+                _projects_equal(self.project, other.project) and
                 self.namespace == other.namespace)
 
     def __ne__(self, other):
@@ -94,7 +94,7 @@ class Key(object):
 
         Incomplete keys never compare equal to any other key.
 
-        Completed keys compare equal if they have the same path, dataset ID,
+        Completed keys compare equal if they have the same path, project,
         and namespace.
 
         :rtype: bool
@@ -109,7 +109,7 @@ class Key(object):
         :returns: a hash of the key's state.
         """
         return (hash(self.flat_path) +
-                hash(self.dataset_id) +
+                hash(self.project) +
                 hash(self.namespace))
 
     @staticmethod
@@ -161,7 +161,7 @@ class Key(object):
         """Sets protected data by combining raw data set from the constructor.
 
         If a ``_parent`` is set, updates the ``_flat_path`` and sets the
-        ``_namespace`` and ``_dataset_id`` if not already set.
+        ``_namespace`` and ``_project`` if not already set.
 
         :rtype: :class:`list` of :class:`dict`
         :returns: A list of key parts with kind and ID or name set.
@@ -180,10 +180,10 @@ class Key(object):
                     self._namespace != self._parent.namespace):
                 raise ValueError('Child namespace must agree with parent\'s.')
             self._namespace = self._parent.namespace
-            if (self._dataset_id is not None and
-                    self._dataset_id != self._parent.dataset_id):
-                raise ValueError('Child dataset ID must agree with parent\'s.')
-            self._dataset_id = self._parent.dataset_id
+            if (self._project is not None and
+                    self._project != self._parent.project):
+                raise ValueError('Child project must agree with parent\'s.')
+            self._project = self._parent.project
 
         return child_path
 
@@ -197,7 +197,7 @@ class Key(object):
         :returns: A new ``Key`` instance with the same data as the current one.
         """
         cloned_self = self.__class__(*self.flat_path,
-                                     dataset_id=self.dataset_id,
+                                     project=self.project,
                                      namespace=self.namespace)
         # If the current parent has already been set, we re-use
         # the same instance
@@ -240,7 +240,7 @@ class Key(object):
         :returns: The protobuf representing the key.
         """
         key = _entity_pb2.Key()
-        key.partition_id.dataset_id = self.dataset_id
+        key.partition_id.dataset_id = self.project
 
         if self.namespace:
             key.partition_id.namespace = self.namespace
@@ -333,19 +333,19 @@ class Key(object):
         return self.id or self.name
 
     @property
-    def dataset_id(self):
-        """Dataset ID getter.
+    def project(self):
+        """Project getter.
 
         :rtype: string
-        :returns: The key's dataset ID.
+        :returns: The key's project.
         """
-        return self._dataset_id
+        return self._project
 
     def _make_parent(self):
         """Creates a parent key for the current path.
 
         Extracts all but the last element in the key path and creates a new
-        key, while still matching the namespace and the dataset ID.
+        key, while still matching the namespace and the project.
 
         :rtype: :class:`gcloud.datastore.key.Key` or :class:`NoneType`
         :returns: A new ``Key`` instance, whose path consists of all but the
@@ -357,7 +357,7 @@ class Key(object):
         else:
             parent_args = self.flat_path[:-2]
         if parent_args:
-            return self.__class__(*parent_args, dataset_id=self.dataset_id,
+            return self.__class__(*parent_args, project=self.project,
                                   namespace=self.namespace)
 
     @property
@@ -375,39 +375,39 @@ class Key(object):
         return self._parent
 
     def __repr__(self):
-        return '<Key%s, dataset=%s>' % (self.path, self.dataset_id)
+        return '<Key%s, project=%s>' % (self.path, self.project)
 
 
-def _validate_dataset_id(dataset_id, parent):
-    """Ensure the dataset ID is set appropriately.
+def _validate_project(project, parent):
+    """Ensure the project is set appropriately.
 
     If ``parent`` is passed, skip the test (it will be checked / fixed up
     later).
 
-    If ``dataset_id`` is unset, attempt to infer the ID from the environment.
+    If ``project`` is unset, attempt to infer the project from the environment.
 
-    :type dataset_id: string
-    :param dataset_id: A dataset ID.
+    :type project: string
+    :param project: A project.
 
     :type parent: :class:`gcloud.datastore.key.Key` or ``NoneType``
     :param parent: The parent of the key or ``None``.
 
     :rtype: string
-    :returns: The ``dataset_id`` passed in, or implied from the environment.
-    :raises: :class:`ValueError` if ``dataset_id`` is ``None`` and no dataset
+    :returns: The ``project`` passed in, or implied from the environment.
+    :raises: :class:`ValueError` if ``project`` is ``None`` and no project
              can be inferred from the parent.
     """
     if parent is None:
-        if dataset_id is None:
-            raise ValueError("A Key must have a dataset ID set.")
+        if project is None:
+            raise ValueError("A Key must have a project set.")
 
-    return dataset_id
+    return project
 
 
-def _dataset_ids_equal(dataset_id1, dataset_id2):
-    """Compares two dataset IDs for fuzzy equality.
+def _projects_equal(project1, project2):
+    """Compares two projects for fuzzy equality.
 
-    Each may be prefixed or unprefixed (but not null, since dataset ID
+    Each may be prefixed or unprefixed (but not null, since project
     is required on a key). The only allowed prefixes are 's~' and 'e~'.
 
     Two identical prefixed match
@@ -432,25 +432,25 @@ def _dataset_ids_equal(dataset_id1, dataset_id2):
     (Ties are resolved since 'foo' can only be an alias for one of
     s~foo or e~foo in the backend.)
 
-    :type dataset_id1: string
-    :param dataset_id1: A dataset ID.
+    :type project1: string
+    :param project1: A project.
 
-    :type dataset_id2: string
-    :param dataset_id2: A dataset ID.
+    :type project2: string
+    :param project2: A project.
 
     :rtype: bool
-    :returns: Boolean indicating if the IDs are the same.
+    :returns: Boolean indicating if the projects are the same.
     """
-    if dataset_id1 == dataset_id2:
+    if project1 == project2:
         return True
 
-    if dataset_id1.startswith('s~') or dataset_id1.startswith('e~'):
-        # If `dataset_id1` is prefixed and not matching, then the only way
-        # they can match is if `dataset_id2` is unprefixed.
-        return dataset_id1[2:] == dataset_id2
-    elif dataset_id2.startswith('s~') or dataset_id2.startswith('e~'):
-        # Here we know `dataset_id1` is unprefixed and `dataset_id2`
+    if project1.startswith('s~') or project1.startswith('e~'):
+        # If `project1` is prefixed and not matching, then the only way
+        # they can match is if `project2` is unprefixed.
+        return project1[2:] == project2
+    elif project2.startswith('s~') or project2.startswith('e~'):
+        # Here we know `project1` is unprefixed and `project2`
         # is prefixed.
-        return dataset_id1 == dataset_id2[2:]
+        return project1 == project2[2:]
 
     return False

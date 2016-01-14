@@ -27,13 +27,13 @@ class TestBatch(unittest2.TestCase):
 
     def test_ctor(self):
         from gcloud.datastore._generated import datastore_pb2
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _NAMESPACE = 'NAMESPACE'
         connection = _Connection()
-        client = _Client(_DATASET, connection, _NAMESPACE)
+        client = _Client(_PROJECT, connection, _NAMESPACE)
         batch = self._makeOne(client)
 
-        self.assertEqual(batch.dataset_id, _DATASET)
+        self.assertEqual(batch.project, _PROJECT)
         self.assertEqual(batch.connection, connection)
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
@@ -41,9 +41,9 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch1 = self._makeOne(client)
         batch2 = self._makeOne(client)
         self.assertTrue(batch1.current() is None)
@@ -60,17 +60,17 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(batch2.current() is None)
 
     def test_put_entity_wo_key(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
 
         self.assertRaises(ValueError, batch.put, _Entity())
 
-    def test_put_entity_w_key_wrong_dataset_id(self):
-        _DATASET = 'DATASET'
+    def test_put_entity_w_key_wrong_project(self):
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         entity = _Entity()
         entity.key = _Key('OTHER')
@@ -78,13 +78,13 @@ class TestBatch(unittest2.TestCase):
         self.assertRaises(ValueError, batch.put, entity)
 
     def test_put_entity_w_partial_key(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_DATASET)
+        key = entity.key = _Key(_PROJECT)
         key._id = None
 
         batch.put(entity)
@@ -96,7 +96,7 @@ class TestBatch(unittest2.TestCase):
     def test_put_entity_w_completed_key(self):
         from gcloud.datastore.helpers import _property_tuples
 
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {
             'foo': 'bar',
             'baz': 'qux',
@@ -104,11 +104,11 @@ class TestBatch(unittest2.TestCase):
             'frotz': [],  # will be ignored
             }
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key(_DATASET)
+        key = entity.key = _Key(_PROJECT)
 
         batch.put(entity)
 
@@ -125,10 +125,10 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(prop_dict['spam'].list_value[2].indexed)
         self.assertFalse('frotz' in prop_dict)
 
-    def test_put_entity_w_completed_key_prefixed_dataset_id(self):
+    def test_put_entity_w_completed_key_prefixed_project(self):
         from gcloud.datastore.helpers import _property_tuples
 
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {
             'foo': 'bar',
             'baz': 'qux',
@@ -136,11 +136,11 @@ class TestBatch(unittest2.TestCase):
             'frotz': [],  # will be ignored
             }
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         entity = _Entity(_PROPERTIES)
         entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key('s~' + _DATASET)
+        key = entity.key = _Key('s~' + _PROJECT)
 
         batch.put(entity)
 
@@ -158,42 +158,42 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
-        key = _Key(_DATASET)
+        key = _Key(_PROJECT)
         key._id = None
 
         self.assertRaises(ValueError, batch.delete, key)
 
-    def test_delete_w_key_wrong_dataset_id(self):
-        _DATASET = 'DATASET'
+    def test_delete_w_key_wrong_project(self):
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         key = _Key('OTHER')
 
         self.assertRaises(ValueError, batch.delete, key)
 
     def test_delete_w_completed_key(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
-        key = _Key(_DATASET)
+        key = _Key(_PROJECT)
 
         batch.delete(key)
 
         mutated_key = _mutated_pb(self, batch.mutations, 'delete')
         self.assertEqual(mutated_key, key._key)
 
-    def test_delete_w_completed_key_w_prefixed_dataset_id(self):
-        _DATASET = 'DATASET'
+    def test_delete_w_completed_key_w_prefixed_project(self):
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
-        key = _Key('s~' + _DATASET)
+        key = _Key('s~' + _PROJECT)
 
         batch.delete(key)
 
@@ -201,42 +201,42 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(mutated_key, key._key)
 
     def test_commit(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         connection = _Connection()
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
 
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch._commit_request, None)])
+                         [(_PROJECT, batch._commit_request, None)])
 
     def test_commit_w_partial_key_entities(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _NEW_ID = 1234
         connection = _Connection(_NEW_ID)
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         entity = _Entity({})
-        key = entity.key = _Key(_DATASET)
+        key = entity.key = _Key(_PROJECT)
         key._id = None
         batch._partial_key_entities.append(entity)
 
         batch.commit()
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch._commit_request, None)])
+                         [(_PROJECT, batch._commit_request, None)])
         self.assertFalse(entity.key.is_partial)
         self.assertEqual(entity.key._id, _NEW_ID)
 
     def test_as_context_mgr_wo_error(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_DATASET)
+        key = entity.key = _Key(_PROJECT)
 
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         self.assertEqual(list(client._batches), [])
 
         with self._makeOne(client) as batch:
@@ -248,18 +248,18 @@ class TestBatch(unittest2.TestCase):
         mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
         self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch._commit_request, None)])
+                         [(_PROJECT, batch._commit_request, None)])
 
     def test_as_context_mgr_nested(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity1 = _Entity(_PROPERTIES)
-        key1 = entity1.key = _Key(_DATASET)
+        key1 = entity1.key = _Key(_PROJECT)
         entity2 = _Entity(_PROPERTIES)
-        key2 = entity2.key = _Key(_DATASET)
+        key2 = entity2.key = _Key(_PROJECT)
 
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         self.assertEqual(list(client._batches), [])
 
         with self._makeOne(client) as batch1:
@@ -280,17 +280,17 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(mutated_entity2.key, key2._key)
 
         self.assertEqual(connection._committed,
-                         [(_DATASET, batch2._commit_request, None),
-                          (_DATASET, batch1._commit_request, None)])
+                         [(_PROJECT, batch2._commit_request, None),
+                          (_PROJECT, batch1._commit_request, None)])
 
     def test_as_context_mgr_w_error(self):
-        _DATASET = 'DATASET'
+        _PROJECT = 'PROJECT'
         _PROPERTIES = {'foo': 'bar'}
         connection = _Connection()
         entity = _Entity(_PROPERTIES)
-        key = entity.key = _Key(_DATASET)
+        key = entity.key = _Key(_PROJECT)
 
-        client = _Client(_DATASET, connection)
+        client = _Client(_PROJECT, connection)
         self.assertEqual(list(client._batches), [])
 
         try:
@@ -329,8 +329,8 @@ class _Connection(object):
         self._committed = []
         self._index_updates = 0
 
-    def commit(self, dataset_id, commit_request, transaction_id):
-        self._committed.append((dataset_id, commit_request, transaction_id))
+    def commit(self, project, commit_request, transaction_id):
+        self._committed.append((project, commit_request, transaction_id))
         return self._index_updates, self._completed_keys
 
 
@@ -348,8 +348,8 @@ class _Key(object):
     _id = 1234
     _stored = None
 
-    def __init__(self, dataset_id):
-        self.dataset_id = dataset_id
+    def __init__(self, project):
+        self.project = project
 
     @property
     def is_partial(self):
@@ -359,7 +359,7 @@ class _Key(object):
         from gcloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.dataset_id = self.dataset_id
+        # key.partition_id.dataset_id = self.project
 
         element = key.path_element.add()
         element.kind = self._kind
@@ -370,15 +370,15 @@ class _Key(object):
 
     def completed_key(self, new_id):
         assert self.is_partial
-        new_key = self.__class__(self.dataset_id)
+        new_key = self.__class__(self.project)
         new_key._id = new_id
         return new_key
 
 
 class _Client(object):
 
-    def __init__(self, dataset_id, connection, namespace=None):
-        self.dataset_id = dataset_id
+    def __init__(self, project, connection, namespace=None):
+        self.project = project
         self.connection = connection
         self.namespace = namespace
         self._batches = []

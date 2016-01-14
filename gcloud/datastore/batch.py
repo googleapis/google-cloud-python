@@ -22,7 +22,7 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from gcloud.datastore import helpers
-from gcloud.datastore.key import _dataset_ids_equal
+from gcloud.datastore.key import _projects_equal
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 
 
@@ -73,13 +73,13 @@ class Batch(object):
         return self._client.current_batch
 
     @property
-    def dataset_id(self):
-        """Getter for dataset ID in which the batch will run.
+    def project(self):
+        """Getter for project in which the batch will run.
 
         :rtype: :class:`str`
-        :returns: The dataset ID in which the batch will run.
+        :returns: The project in which the batch will run.
         """
-        return self._client.dataset_id
+        return self._client.project
 
     @property
     def namespace(self):
@@ -167,13 +167,13 @@ class Batch(object):
         :param entity: the entity to be saved.
 
         :raises: ValueError if entity has no key assigned, or if the key's
-                 ``dataset_id`` does not match ours.
+                 ``project`` does not match ours.
         """
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _dataset_ids_equal(self.dataset_id, entity.key.dataset_id):
-            raise ValueError("Key must be from same dataset as batch")
+        if not _projects_equal(self.project, entity.key.project):
+            raise ValueError("Key must be from same project as batch")
 
         if entity.key.is_partial:
             entity_pb = self._add_partial_key_entity_pb()
@@ -190,13 +190,13 @@ class Batch(object):
         :param key: the key to be deleted.
 
         :raises: ValueError if key is not complete, or if the key's
-                 ``dataset_id`` does not match ours.
+                 ``project`` does not match ours.
         """
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _dataset_ids_equal(self.dataset_id, key.dataset_id):
-            raise ValueError("Key must be from same dataset as batch")
+        if not _projects_equal(self.project, key.project):
+            raise ValueError("Key must be from same project as batch")
 
         key_pb = helpers._prepare_key_for_request(key.to_protobuf())
         self._add_delete_key_pb().CopyFrom(key_pb)
@@ -215,7 +215,7 @@ class Batch(object):
         context manager.
         """
         _, updated_keys = self.connection.commit(
-            self.dataset_id, self._commit_request, self._id)
+            self.project, self._commit_request, self._id)
         # If the back-end returns without error, we are guaranteed that
         # :meth:`Connection.commit` will return keys that match (length and
         # order) directly ``_partial_key_entities``.

@@ -142,7 +142,7 @@ class Transaction(Batch):
         if self._status != self._INITIAL:
             raise ValueError('Transaction already started previously.')
         self._status = self._IN_PROGRESS
-        self._id = self.connection.begin_transaction(self.dataset_id)
+        self._id = self.connection.begin_transaction(self.project)
 
     def rollback(self):
         """Rolls back the current transaction.
@@ -153,7 +153,7 @@ class Transaction(Batch):
         - Sets the current transaction's ID to None.
         """
         try:
-            self.connection.rollback(self.dataset_id, self._id)
+            self.connection.rollback(self.project, self._id)
         finally:
             self._status = self._ABORTED
             # Clear our own ID in case this gets accidentally reused.
