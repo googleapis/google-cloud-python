@@ -18,8 +18,7 @@ These are *not* part of the API.
 """
 
 import base64
-
-from Crypto.Hash import MD5
+from hashlib import md5
 
 
 class _PropertyMixin(object):
@@ -168,7 +167,7 @@ def _base64_md5hash(buffer_object):
     :param buffer_object: Buffer containing bytes used to compute an MD5
                           hash (as base64).
     """
-    hash_obj = MD5.new()
+    hash_obj = md5()
     _write_buffer_to_hash(buffer_object, hash_obj)
     digest_bytes = hash_obj.digest()
     return base64.b64encode(digest_bytes)

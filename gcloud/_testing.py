@@ -20,6 +20,8 @@ class _Monkey(object):
 
     def __init__(self, module, **kw):
         self.module = module
+        if len(kw) == 0:  # pragma: NO COVER
+            raise ValueError('_Monkey was used with nothing to monkey-patch')
         self.to_restore = dict([(key, getattr(module, key)) for key in kw])
         for key, value in kw.items():
             setattr(module, key, value)

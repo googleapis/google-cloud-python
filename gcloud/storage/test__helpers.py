@@ -158,13 +158,13 @@ class Test__base64_md5hash(unittest2.TestCase):
         BUFFER = _Buffer([b'', BYTES_TO_SIGN])
         MD5 = _MD5(DIGEST_VAL)
 
-        with _Monkey(MUT, base64=BASE64, MD5=MD5):
+        with _Monkey(MUT, base64=BASE64, md5=MD5):
             SIGNED_CONTENT = self._callFUT(BUFFER)
 
         self.assertEqual(BUFFER._block_sizes, [8192, 8192])
         self.assertTrue(SIGNED_CONTENT is DIGEST_VAL)
         self.assertEqual(BASE64._called_b64encode, [DIGEST_VAL])
-        self.assertEqual(MD5._new_called, [None])
+        self.assertEqual(MD5._called, [None])
         self.assertEqual(MD5.hash_obj.num_digest_calls, 1)
         self.assertEqual(MD5.hash_obj._blocks, [BYTES_TO_SIGN])
 
@@ -200,10 +200,10 @@ class _MD5(object):
 
     def __init__(self, digest_val):
         self.hash_obj = _MD5Hash(digest_val)
-        self._new_called = []
+        self._called = []
 
-    def new(self, data=None):
-        self._new_called.append(data)
+    def __call__(self, data=None):
+        self._called.append(data)
         return self.hash_obj
 
 
