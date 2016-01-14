@@ -33,7 +33,7 @@ GCD_DATASET = 'DATASTORE_DATASET'
 GCD_HOST = 'DATASTORE_HOST'
 """Environment variable defining host for GCD dataset server."""
 
-PUBSUB_EMULATOR = 'PUBSUB_HOST'
+PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 """Environment variable defining host for Pub/Sub emulator."""
 
 TESTS_DATASET = 'GCLOUD_TESTS_DATASET_ID'

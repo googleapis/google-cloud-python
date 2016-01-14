@@ -51,8 +51,11 @@ class Connection(base_connection.JSONConnection):
     def __init__(self, credentials=None, http=None, api_base_url=None):
         super(Connection, self).__init__(credentials=credentials, http=http)
         if api_base_url is None:
-            api_base_url = os.getenv(PUBSUB_EMULATOR,
-                                     self.__class__.API_BASE_URL)
+            emulator_host = os.getenv(PUBSUB_EMULATOR)
+            if emulator_host is None:
+                api_base_url = self.__class__.API_BASE_URL
+            else:
+                api_base_url = 'http://' + emulator_host
         self.api_base_url = api_base_url
 
     def build_api_url(self, path, query_params=None,
