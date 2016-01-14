@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud 9f92042 documentation</title>
+    <title>Datastore Client &mdash; gcloud 592c8e8 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '9f92042',
+        VERSION:     '592c8e8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 9f92042 documentation" href="index.html" />
+    <link rel="top" title="gcloud 592c8e8 documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%209f92042" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20592c8e8" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (9f92042)
+              Version History (592c8e8)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -468,29 +468,37 @@ You shouldn&#8217;t have to provide this.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.connection.Connection.commit">
-<code class="descname">commit</code><span class="sig-paren">(</span><em>project</em>, <em>commit_request</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
+<code class="descname">commit</code><span class="sig-paren">(</span><em>project</em>, <em>request</em>, <em>transaction_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/connection.html#Connection.commit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.connection.Connection.commit" title="Permalink to this definition">#</a></dt>
 <dd><p>Commit mutations in context of current transation (if any).</p>
 <p>Maps the <code class="docutils literal"><span class="pre">DatastoreService.Commit</span></code> protobuf RPC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The project to which the transaction applies.</li>
-<li><strong>commit_request</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.datastore_pb2.CommitRequest</span></code>) &#8211; The protobuf with the mutations being committed.</li>
+<li><strong>request</strong> (<code class="xref py py-class docutils literal"><span class="pre">_generated.datastore_pb2.CommitRequest</span></code>) &#8211; The protobuf with the mutations being committed.</li>
 <li><strong>transaction_id</strong> (<em>string or None</em>) &#8211; The transaction ID returned from
 <a class="reference internal" href="#gcloud.datastore.connection.Connection.begin_transaction" title="gcloud.datastore.connection.Connection.begin_transaction"><code class="xref py py-meth docutils literal"><span class="pre">begin_transaction()</span></code></a>.  Non-transactional
 batches must pass <code class="docutils literal"><span class="pre">None</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></p>
-</td>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method will mutate <code class="docutils literal"><span class="pre">request</span></code> before using it.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns&#8217;:</th><td class="field-body"><p class="first last">The pair of the number of index updates and a list of
+<tr class="field-even field"><th class="field-name">Returns&#8217;:</th><td class="field-body">The pair of the number of index updates and a list of
 <code class="xref py py-class docutils literal"><span class="pre">_generated.entity_pb2.Key</span></code> for each incomplete key
-that was completed in the commit.</p>
-</td>
+that was completed in the commit.</td>
 </tr>
 </tbody>
 </table>
