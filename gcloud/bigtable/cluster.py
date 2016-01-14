@@ -15,12 +15,11 @@
 """User friendly container for Google Cloud Bigtable Cluster."""
 
 
-import datetime
 import re
 
 from google.longrunning import operations_pb2
 
-from gcloud._helpers import _EPOCH
+from gcloud._helpers import _pb_timestamp_to_datetime
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
@@ -90,24 +89,6 @@ def _prepare_create_request(cluster):
             display_name=cluster.display_name,
             serve_nodes=cluster.serve_nodes,
         ),
-    )
-
-
-def _pb_timestamp_to_datetime(timestamp):
-    """Convert a Timestamp protobuf to a datetime object.
-
-    :type timestamp: :class:`google.protobuf.timestamp_pb2.Timestamp`
-    :param timestamp: A Google returned timestamp protobuf.
-
-    :rtype: :class:`datetime.datetime`
-    :returns: A UTC datetime object converted from a protobuf timestamp.
-    """
-    return (
-        _EPOCH +
-        datetime.timedelta(
-            seconds=timestamp.seconds,
-            microseconds=(timestamp.nanos / 1000.0),
-        )
     )
 
 
