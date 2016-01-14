@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud ce7d573 documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 481b467 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ce7d573',
+        VERSION:     '481b467',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ce7d573 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 481b467 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%20ce7d573" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%20481b467" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ce7d573)
+              Version History (481b467)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,7 +104,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c"># See the License for the specific language governing permissions and</span>
 <span class="c"># limitations under the License.</span>
-<span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a project.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a dataset ID.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -116,8 +116,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_projects_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_dataset_ids_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
 <span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">DATASET</span>
@@ -128,18 +128,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;Maximum number of iterations to wait for deferred keys.&quot;&quot;&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_get_production_project</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_get_production_dataset_id</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Gets the production application ID if it can be inferred.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DATASET</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_gcd_project</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">_get_gcd_dataset_id</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Gets the GCD application ID if it can be inferred.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">GCD_DATASET</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_determine_default_project</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Determine default project explicitly or implicitly as fall-back.</span>
+<span class="k">def</span> <span class="nf">_determine_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine default dataset ID explicitly or implicitly as fall-back.</span>
 
 <span class="sd">    In implicit case, supports four environments. In order of precedence, the</span>
 <span class="sd">    implicit environments are:</span>
@@ -149,28 +149,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    * Google App Engine application ID</span>
 <span class="sd">    * Google Compute Engine project ID (from metadata server)</span>
 
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: Optional. The project to use as default.</span>
+<span class="sd">    :type dataset_id: string</span>
+<span class="sd">    :param dataset_id: Optional. The dataset ID to use as default.</span>
 
 <span class="sd">    :rtype: string or ``NoneType``</span>
-<span class="sd">    :returns: Default project if it can be determined.</span>
+<span class="sd">    :returns: Default dataset ID if it can be determined.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_get_production_project</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_get_production_dataset_id</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_get_gcd_project</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_get_gcd_dataset_id</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_app_engine_id</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_app_engine_id</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_compute_engine_id</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_compute_engine_id</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="n">project</span>
+    <span class="k">return</span> <span class="n">dataset_id</span>
 
 
-<span class="k">def</span> <span class="nf">_extended_lookup</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_extended_lookup</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="n">dataset_id</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
                      <span class="n">missing</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">deferred</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                      <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Repeat lookup until all keys found (unless stop requested).</span>
@@ -180,8 +180,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type connection: :class:`gcloud.datastore.connection.Connection`</span>
 <span class="sd">    :param connection: The connection used to connect to datastore.</span>
 
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: The project to make the request for.</span>
+<span class="sd">    :type dataset_id: string</span>
+<span class="sd">    :param dataset_id: The ID of the dataset of which to make the request.</span>
 
 <span class="sd">    :type key_pbs: list of :class:`gcloud.datastore._generated.entity_pb2.Key`</span>
 <span class="sd">    :param key_pbs: The keys to retrieve from the datastore.</span>
@@ -223,7 +223,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">loop_num</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">results_found</span><span class="p">,</span> <span class="n">missing_found</span><span class="p">,</span> <span class="n">deferred_found</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span>
-            <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="n">dataset_id</span><span class="p">,</span>
             <span class="n">key_pbs</span><span class="o">=</span><span class="n">key_pbs</span><span class="p">,</span>
             <span class="n">eventual</span><span class="o">=</span><span class="n">eventual</span><span class="p">,</span>
             <span class="n">transaction_id</span><span class="o">=</span><span class="n">transaction_id</span><span class="p">,</span>
@@ -249,10 +249,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">_BaseClient</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a project.</span>
+    <span class="sd">&quot;&quot;&quot;Convenience wrapper for invoking APIs/factories w/ a dataset ID.</span>
 
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: (optional) The project to pass to proxied API methods.</span>
+<span class="sd">    :type dataset_id: string</span>
+<span class="sd">    :param dataset_id: (optional) dataset ID to pass to proxied API methods.</span>
 
 <span class="sd">    :type namespace: string</span>
 <span class="sd">    :param namespace: (optional) namespace to pass to proxied API methods.</span>
@@ -271,12 +271,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_determine_default_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Project could not be inferred.&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+        <span class="n">dataset_id</span> <span class="o">=</span> <span class="n">_determine_default_dataset_id</span><span class="p">(</span><span class="n">dataset_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dataset_id</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s">&#39;Dataset ID could not be inferred.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span> <span class="o">=</span> <span class="n">dataset_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_batch_stack</span> <span class="o">=</span> <span class="n">_LocalStack</span><span class="p">()</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="p">)</span>
@@ -374,22 +374,22 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :rtype: list of :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">        :returns: The requested entities.</span>
-<span class="sd">        :raises: :class:`ValueError` if one or more of ``keys`` has a project</span>
-<span class="sd">                 which does not match our project.</span>
+<span class="sd">        :raises: :class:`ValueError` if one or more of ``keys`` has a dataset</span>
+<span class="sd">                 ID which does not match our dataset ID.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keys</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">project</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">dataset_id</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">current_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">_projects_equal</span><span class="p">(</span><span class="n">current_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match project&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">_dataset_ids_equal</span><span class="p">(</span><span class="n">current_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Keys do not match dataset ID&#39;</span><span class="p">)</span>
 
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transaction</span>
 
         <span class="n">entity_pbs</span> <span class="o">=</span> <span class="n">_extended_lookup</span><span class="p">(</span>
             <span class="n">connection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">,</span>
-            <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+            <span class="n">dataset_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
             <span class="n">key_pbs</span><span class="o">=</span><span class="p">[</span><span class="n">k</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">],</span>
             <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
             <span class="n">deferred</span><span class="o">=</span><span class="n">deferred</span><span class="p">,</span>
@@ -507,7 +507,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">incomplete_key_pbs</span> <span class="o">=</span> <span class="p">[</span><span class="n">incomplete_key_pb</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_ids</span>
 
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+        <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
                                               <span class="n">incomplete_key_pbs</span><span class="p">)</span>
         <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
                          <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">allocated_key_pbs</span><span class="p">]</span>
@@ -517,33 +517,39 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.key"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client.key">[docs]</a>    <span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.key.Key`.</span>
 
-<span class="sd">        Passes our ``project``.</span>
+<span class="sd">        Passes our ``dataset_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Cannot pass project&#39;</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">if</span> <span class="s">&#39;dataset_id&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Cannot pass dataset_id&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span>
         <span class="k">if</span> <span class="s">&#39;namespace&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="k">return</span> <span class="n">Key</span><span class="p">(</span><span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.batch"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.batch.Batch`.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.batch.Batch`.</span>
+
+<span class="sd">        Passes our ``dataset_id``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.transaction"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client.transaction">[docs]</a>    <span class="k">def</span> <span class="nf">transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.transaction.Transaction`.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.transaction.Transaction`.</span>
+
+<span class="sd">        Passes our ``dataset_id``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Proxy to :class:`gcloud.datastore.query.Query`.</span>
 
-<span class="sd">        Passes our ``project``.</span>
+<span class="sd">        Passes our ``dataset_id``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s">&#39;client&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Cannot pass client&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s">&#39;project&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Cannot pass project&#39;</span><span class="p">)</span>
-        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;project&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span>
+        <span class="k">if</span> <span class="s">&#39;dataset_id&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&#39;Cannot pass dataset_id&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;dataset_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_id</span>
         <span class="k">if</span> <span class="s">&#39;namespace&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;namespace&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span>
         <span class="k">return</span> <span class="n">Query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
