@@ -14,12 +14,13 @@
 
 import datetime
 import os
+import time
 
 import unittest2
 
 from gcloud._helpers import UTC
 from gcloud import datastore
-from gcloud.datastore import client
+from gcloud.datastore import client as client_mod
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import TESTS_DATASET
 from gcloud.exceptions import Conflict
@@ -29,6 +30,8 @@ from system_tests import clear_datastore
 from system_tests import populate_datastore
 
 
+# Isolated namespace so concurrent test runs don't collide.
+TEST_NAMESPACE = 'ns%d' % (1000 * time.time(),)
 EMULATOR_DATASET = os.getenv(GCD_DATASET)
 
 
@@ -41,18 +44,22 @@ class Config(object):
     CLIENT = None
 
 
+def clone_client(client):
+    # Fool the Client constructor to avoid creating a new connection.
+    cloned_client = datastore.Client(project=client.project,
+                                     namespace=client.namespace,
+                                     http=object())
+    cloned_client.connection = client.connection
+    return cloned_client
+
+
 def setUpModule():
     if EMULATOR_DATASET is None:
-        client.DATASET = TESTS_DATASET
-        Config.CLIENT = datastore.Client()
+        client_mod.DATASET = TESTS_DATASET
+        Config.CLIENT = datastore.Client(namespace=TEST_NAMESPACE)
     else:
-        Config.CLIENT = datastore.Client(project=EMULATOR_DATASET)
-        populate_datastore.add_characters(client=Config.CLIENT)
-
-
-def tearDownModule():
-    if EMULATOR_DATASET is not None:
-        clear_datastore.remove_all_entities(client=Config.CLIENT)
+        Config.CLIENT = datastore.Client(project=EMULATOR_DATASET,
+                                         namespace=TEST_NAMESPACE)
 
 
 class TestDatastore(unittest2.TestCase):
@@ -87,7 +94,6 @@ class TestDatastoreSave(TestDatastore):
 
     @classmethod
     def setUpClass(cls):
-        super(TestDatastoreSave, cls).setUpClass()
         cls.PARENT = Config.CLIENT.key('Blog', 'PizzaMan')
 
     def _get_post(self, id_or_name=None, post_content=None):
@@ -194,13 +200,32 @@ class TestDatastoreQuery(TestDatastore):
 
     @classmethod
     def setUpClass(cls):
-        super(TestDatastoreQuery, cls).setUpClass()
+        cls.CLIENT = clone_client(Config.CLIENT)
+        # Remove the namespace from the cloned client, since these
+        # query tests rely on the entities to be already stored and indexed,
+        # hence ``TEST_NAMESPACE`` set at runtime can't be used.
+        cls.CLIENT.namespace = None
+
+        # In the emulator, re-populating the datastore is cheap.
+        if EMULATOR_DATASET is not None:
+            # Populate the datastore with the cloned client.
+            populate_datastore.add_characters(client=cls.CLIENT)
+
         cls.CHARACTERS = populate_datastore.CHARACTERS
-        cls.ANCESTOR_KEY = Config.CLIENT.key(*populate_datastore.ANCESTOR)
+        # Use the client for this test instead of the global.
+        cls.ANCESTOR_KEY = cls.CLIENT.key(*populate_datastore.ANCESTOR)
+
+    @classmethod
+    def tearDownClass(cls):
+        # In the emulator, destroy the query entities.
+        if EMULATOR_DATASET is not None:
+            # Use the client for this test instead of the global.
+            clear_datastore.remove_all_entities(client=cls.CLIENT)
 
     def _base_query(self):
-        return Config.CLIENT.query(kind='Character',
-                                   ancestor=self.ANCESTOR_KEY)
+        # Use the client for this test instead of the global.
+        return self.CLIENT.query(kind='Character',
+                                 ancestor=self.ANCESTOR_KEY)
 
     def test_limit_queries(self):
         limit = 5
@@ -245,7 +270,8 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(len(entities), expected_matches)
 
     def test_query___key___filter(self):
-        rickard_key = Config.CLIENT.key(*populate_datastore.RICKARD)
+        # Use the client for this test instead of the global.
+        rickard_key = self.CLIENT.key(*populate_datastore.RICKARD)
 
         query = self._base_query()
         query.add_filter('__key__', '=', rickard_key)
@@ -377,11 +403,8 @@ class TestDatastoreTransaction(TestDatastore):
         self.assertEqual(retrieved_entity, entity)
 
     def test_failure_with_contention(self):
-        contention_key = 'baz'
-        # Fool the Client constructor to avoid creating a new connection.
-        local_client = datastore.Client(project=Config.CLIENT.project,
-                                        http=object())
-        local_client.connection = Config.CLIENT.connection
+        contention_prop_name = 'baz'
+        local_client = clone_client(Config.CLIENT)
 
         # Insert an entity which will be retrieved in a transaction
         # and updated outside it with a contentious value.
@@ -396,10 +419,10 @@ class TestDatastoreTransaction(TestDatastore):
                 entity_in_txn = local_client.get(key)
 
                 # Update the original entity outside the transaction.
-                orig_entity[contention_key] = u'outside'
+                orig_entity[contention_prop_name] = u'outside'
                 Config.CLIENT.put(orig_entity)
 
                 # Try to update the entity which we already updated outside the
                 # transaction.
-                entity_in_txn[contention_key] = u'inside'
+                entity_in_txn[contention_prop_name] = u'inside'
                 txn.put(entity_in_txn)
