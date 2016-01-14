@@ -46,7 +46,7 @@ def setUpModule():
         client.DATASET = TESTS_DATASET
         Config.CLIENT = datastore.Client()
     else:
-        Config.CLIENT = datastore.Client(dataset_id=EMULATOR_DATASET)
+        Config.CLIENT = datastore.Client(project=EMULATOR_DATASET)
         populate_datastore.add_characters(client=Config.CLIENT)
 
 

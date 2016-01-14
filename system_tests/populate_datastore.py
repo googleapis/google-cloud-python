@@ -91,7 +91,7 @@ def print_func(message):
 def add_characters(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client(dataset_id=TESTS_DATASET)
+        client = datastore.Client(project=TESTS_DATASET)
     with client.transaction() as xact:
         for key_path, character in zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
