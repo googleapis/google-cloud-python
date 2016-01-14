@@ -30,6 +30,31 @@ class TestAccessGrant(unittest2.TestCase):
         self.assertEqual(grant.entity_type, 'userByEmail')
         self.assertEqual(grant.entity_id, 'phred@example.com')
 
+    def test_ctor_bad_entity_type(self):
+        with self.assertRaises(ValueError):
+            self._makeOne(None, 'unknown', None)
+
+    def test_ctor_view_with_role(self):
+        role = 'READER'
+        entity_type = 'view'
+        with self.assertRaises(ValueError):
+            self._makeOne(role, entity_type, None)
+
+    def test_ctor_view_success(self):
+        role = None
+        entity_type = 'view'
+        entity_id = object()
+        grant = self._makeOne(role, entity_type, entity_id)
+        self.assertEqual(grant.role, role)
+        self.assertEqual(grant.entity_type, entity_type)
+        self.assertEqual(grant.entity_id, entity_id)
+
+    def test_ctor_nonview_without_role(self):
+        role = None
+        entity_type = 'userByEmail'
+        with self.assertRaises(ValueError):
+            self._makeOne(role, entity_type, None)
+
 
 class TestDataset(unittest2.TestCase):
     PROJECT = 'project'
@@ -249,39 +274,27 @@ class TestDataset(unittest2.TestCase):
         self._verifyResourceProperties(dataset, RESOURCE)
 
     def test__parse_access_grants_w_unknown_entity_type(self):
-        USER_EMAIL = 'phred@example.com'
-        GROUP_EMAIL = 'group-name@lists.example.com'
-        RESOURCE = {
-            'access': [
-                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'role': 'WRITER', 'groupByEmail': GROUP_EMAIL},
-                {'role': 'READER', 'specialGroup': 'projectReaders'},
-                {'role': 'READER', 'unknown': 'UNKNOWN'}]
-        }
+        ACCESS = [
+            {'role': 'READER', 'unknown': 'UNKNOWN'},
+        ]
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client=client)
-        grants = dataset._parse_access_grants(RESOURCE['access'])
-        self._verifyAccessGrants(grants, RESOURCE)
+        with self.assertRaises(ValueError):
+            dataset._parse_access_grants(ACCESS)
 
-    def test__parse_access_grants_w_multiple_entity_types(self):
-        # Hypothetical case:  we don't know that the back-end will ever
-        # return such structures, but they are logical.  See:
-        # https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
+    def test__parse_access_grants_w_extra_keys(self):
         USER_EMAIL = 'phred@example.com'
-        OTHER_EMAIL = 'bharney@example.com'
-        GROUP_EMAIL = 'group-name@lists.example.com'
-        RESOURCE = {
-            'access': [
-                {'role': 'OWNER', 'userByEmail': USER_EMAIL},
-                {'role': 'WRITER', 'groupByEmail': GROUP_EMAIL},
-                {'role': 'READER',
-                 'specialGroup': 'projectReaders',
-                 'userByEmail': OTHER_EMAIL}]
-        }
+        ACCESS = [
+            {
+                'role': 'READER',
+                'specialGroup': 'projectReaders',
+                'userByEmail': USER_EMAIL,
+            },
+        ]
         client = _Client(self.PROJECT)
         dataset = self._makeOne(self.DS_NAME, client=client)
-        grants = dataset._parse_access_grants(RESOURCE['access'])
-        self._verifyAccessGrants(grants, RESOURCE)
+        with self.assertRaises(ValueError):
+            dataset._parse_access_grants(ACCESS)
 
     def test_create_w_bound_client(self):
         PATH = 'projects/%s/datasets' % self.PROJECT
@@ -320,11 +333,19 @@ class TestDataset(unittest2.TestCase):
         dataset = self._makeOne(self.DS_NAME, client=CLIENT1)
         dataset.friendly_name = TITLE
         dataset.description = DESCRIPTION
+        VIEW = {
+            'projectId': 'my-proj',
+            'datasetId': 'starry-skies',
+            'tableId': 'northern-hemisphere',
+        }
         dataset.access_grants = [
             AccessGrant('OWNER', 'userByEmail', USER_EMAIL),
             AccessGrant('OWNER', 'groupByEmail', GROUP_EMAIL),
+            AccessGrant('READER', 'domain', 'foo.com'),
             AccessGrant('READER', 'specialGroup', 'projectReaders'),
-            AccessGrant('WRITER', 'specialGroup', 'projectWriters')]
+            AccessGrant('WRITER', 'specialGroup', 'projectWriters'),
+            AccessGrant(None, 'view', VIEW),
+        ]
 
         dataset.create(client=CLIENT2)
 
@@ -334,15 +355,20 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         SENT = {
-            'datasetReference':
-                {'projectId': self.PROJECT, 'datasetId': self.DS_NAME},
+            'datasetReference': {
+                'projectId': self.PROJECT,
+                'datasetId': self.DS_NAME,
+            },
             'description': DESCRIPTION,
             'friendlyName': TITLE,
             'access': [
                 {'role': 'OWNER', 'userByEmail': USER_EMAIL},
                 {'role': 'OWNER', 'groupByEmail': GROUP_EMAIL},
+                {'role': 'READER', 'domain': 'foo.com'},
                 {'role': 'READER', 'specialGroup': 'projectReaders'},
-                {'role': 'WRITER', 'specialGroup': 'projectWriters'}],
+                {'role': 'WRITER', 'specialGroup': 'projectWriters'},
+                {'view': VIEW},
+            ],
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(dataset, RESOURCE)

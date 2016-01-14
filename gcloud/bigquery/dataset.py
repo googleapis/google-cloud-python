@@ -23,6 +23,14 @@ from gcloud.bigquery.table import Table
 class AccessGrant(object):
     """Represent grant of an access role to an entity.
 
+    Every entry in the access list will have exactly one of
+    ``userByEmail``, ``groupByEmail``, ``domain``, ``specialGroup`` or
+    ``view`` set. And if anything but ``view`` is set, it'll also have a
+    ``role`` specified. ``role`` is omitted for a ``view``, since
+    ``view`` s are always read-only.
+
+    See https://cloud.google.com/bigquery/docs/reference/v2/datasets.
+
     :type role: string
     :param role: Role granted to the entity. One of
 
@@ -30,17 +38,38 @@ class AccessGrant(object):
                  * ``'WRITER'``
                  * ``'READER'``
 
+                 May also be ``None`` if the ``entity_type`` is ``view``.
+
     :type entity_type: string
     :param entity_type: Type of entity being granted the role. One of
-
-                        * ``'specialGroup'``
-                        * ``'groupByEmail'``
-                        * ``'userByEmail'``
+                        :attr:`ENTITY_TYPES`.
 
     :type entity_id: string
     :param entity_id: ID of entity being granted the role.
+
+    :raises: :class:`ValueError` if the ``entity_type`` is not among
+             :attr:`ENTITY_TYPES`, or if a ``view`` has ``role`` set or
+             a non ``view`` **does not** have a ``role`` set.
     """
+
+    ENTITY_TYPES = frozenset(['userByEmail', 'groupByEmail', 'domain',
+                              'specialGroup', 'view'])
+    """Allowed entity types."""
+
     def __init__(self, role, entity_type, entity_id):
+        if entity_type not in self.ENTITY_TYPES:
+            message = 'Entity type %r not among: %s' % (
+                entity_type, ', '.join(self.ENTITY_TYPES))
+            raise ValueError(message)
+        if entity_type == 'view':
+            if role is not None:
+                raise ValueError('Role must be None for a view. Received '
+                                 'role: %r' % (role,))
+        else:
+            if role is None:
+                raise ValueError('Role must be set for entity '
+                                 'type %r' % (entity_type,))
+
         self.role = role
         self.entity_type = entity_type
         self.entity_id = entity_id
@@ -297,22 +326,26 @@ class Dataset(object):
     def _parse_access_grants(access):
         """Parse a resource fragment into a set of access grants.
 
+        ``role`` augments the entity type and present **unless** the entity
+        type is ``view``.
+
         :type access: list of mappings
         :param access: each mapping represents a single access grant
 
         :rtype: list of :class:`AccessGrant`
         :returns: a list of parsed grants
+        :raises: :class:`ValueError` if a grant in ``access`` has more keys
+                 than ``role`` and one additional key.
         """
         result = []
         for grant in access:
             grant = grant.copy()
-            role = grant.pop('role')
-            # Hypothetical case:  we don't know that the back-end will ever
-            # return such structures, but they are logical.  See:
-            # https://github.com/GoogleCloudPlatform/gcloud-python/pull/1046#discussion_r36687769
-            for entity_type, entity_id in sorted(grant.items()):
-                result.append(
-                    AccessGrant(role, entity_type, entity_id))
+            role = grant.pop('role', None)
+            entity_type, entity_id = grant.popitem()
+            if len(grant) != 0:
+                raise ValueError('Grant has unexpected keys remaining.', grant)
+            result.append(
+                AccessGrant(role, entity_type, entity_id))
         return result
 
     def _set_properties(self, api_response):
@@ -335,7 +368,9 @@ class Dataset(object):
         """Generate a resource fragment for dataset's access grants."""
         result = []
         for grant in self.access_grants:
-            info = {'role': grant.role, grant.entity_type: grant.entity_id}
+            info = {grant.entity_type: grant.entity_id}
+            if grant.role is not None:
+                info['role'] = grant.role
             result.append(info)
         return result
 
