@@ -293,7 +293,7 @@ class Connection(connection.Connection):
                              _datastore_pb2.BeginTransactionResponse)
         return response.transaction
 
-    def commit(self, project, commit_request, transaction_id):
+    def commit(self, project, request, transaction_id):
         """Commit mutations in context of current transation (if any).
 
         Maps the ``DatastoreService.Commit`` protobuf RPC.
@@ -301,22 +301,23 @@ class Connection(connection.Connection):
         :type project: string
         :param project: The project to which the transaction applies.
 
-        :type commit_request: :class:`._generated.datastore_pb2.CommitRequest`
-        :param commit_request: The protobuf with the mutations being committed.
+        :type request: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request: The protobuf with the mutations being committed.
 
         :type transaction_id: string or None
         :param transaction_id: The transaction ID returned from
                                :meth:`begin_transaction`.  Non-transactional
                                batches must pass ``None``.
 
+        .. note::
+
+            This method will mutate ``request`` before using it.
+
         :rtype: tuple
         :returns': The pair of the number of index updates and a list of
                    :class:`._generated.entity_pb2.Key` for each incomplete key
                    that was completed in the commit.
         """
-        request = _datastore_pb2.CommitRequest()
-        request.CopyFrom(commit_request)
-
         if transaction_id:
             request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
             request.transaction = transaction_id
