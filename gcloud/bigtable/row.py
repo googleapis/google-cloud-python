@@ -663,6 +663,74 @@ class ApplyLabelFilter(RowFilter):
         return data_pb2.RowFilter(apply_label_transformer=self.label)
 
 
+class _FilterCombination(RowFilter):
+    """Chain of row filters.
+
+    Sends rows through several filters in sequence. The filters are "chained"
+    together to process a row. After the first filter is applied, the second
+    is applied to the filtered output and so on for subsequent filters.
+
+    :type filters: list
+    :param filters: List of :class:`RowFilter`
+    """
+
+    def __init__(self, filters=None):
+        if filters is None:
+            filters = []
+        self.filters = filters
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.filters == self.filters
+
+
+class RowFilterChain(_FilterCombination):
+    """Chain of row filters.
+
+    Sends rows through several filters in sequence. The filters are "chained"
+    together to process a row. After the first filter is applied, the second
+    is applied to the filtered output and so on for subsequent filters.
+
+    :type filters: list
+    :param filters: List of :class:`RowFilter`
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        chain = data_pb2.RowFilter.Chain(
+            filters=[row_filter.to_pb() for row_filter in self.filters])
+        return data_pb2.RowFilter(chain=chain)
+
+
+class RowFilterUnion(_FilterCombination):
+    """Union of row filters.
+
+    Sends rows through several filters simultaneously, then
+    merges / interleaves all the filtered results together.
+
+    If multiple cells are produced with the same column and timestamp,
+    they will all appear in the output row in an unspecified mutual order.
+
+    :type filters: list
+    :param filters: List of :class:`RowFilter`
+    """
+
+    def to_pb(self):
+        """Converts the row filter to a protobuf.
+
+        :rtype: :class:`.data_pb2.RowFilter`
+        :returns: The converted current object.
+        """
+        interleave = data_pb2.RowFilter.Interleave(
+            filters=[row_filter.to_pb() for row_filter in self.filters])
+        return data_pb2.RowFilter(interleave=interleave)
+
+
 class ConditionalRowFilter(RowFilter):
     """Conditional row filter which exhibits ternary behavior.
 

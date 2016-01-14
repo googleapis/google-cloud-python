@@ -781,6 +781,149 @@ class TestApplyLabelFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
+class Test_FilterCombination(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import _FilterCombination
+        return _FilterCombination
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor_defaults(self):
+        row_filter = self._makeOne()
+        self.assertEqual(row_filter.filters, [])
+
+    def test_constructor_explicit(self):
+        filters = object()
+        row_filter = self._makeOne(filters=filters)
+        self.assertTrue(row_filter.filters is filters)
+
+    def test___eq__(self):
+        filters = object()
+        row_filter1 = self._makeOne(filters=filters)
+        row_filter2 = self._makeOne(filters=filters)
+        self.assertEqual(row_filter1, row_filter2)
+
+    def test___eq__type_differ(self):
+        filters = object()
+        row_filter1 = self._makeOne(filters=filters)
+        row_filter2 = object()
+        self.assertNotEqual(row_filter1, row_filter2)
+
+
+class TestRowFilterChain(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import RowFilterChain
+        return RowFilterChain
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter1_pb = row_filter1.to_pb()
+
+        row_filter2 = RowSampleFilter(0.25)
+        row_filter2_pb = row_filter2.to_pb()
+
+        row_filter3 = self._makeOne(filters=[row_filter1, row_filter2])
+        filter_pb = row_filter3.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            chain=data_pb2.RowFilter.Chain(
+                filters=[row_filter1_pb, row_filter2_pb],
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+    def test_to_pb_nested(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import CellsRowLimitFilter
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter2 = RowSampleFilter(0.25)
+
+        row_filter3 = self._makeOne(filters=[row_filter1, row_filter2])
+        row_filter3_pb = row_filter3.to_pb()
+
+        row_filter4 = CellsRowLimitFilter(11)
+        row_filter4_pb = row_filter4.to_pb()
+
+        row_filter5 = self._makeOne(filters=[row_filter3, row_filter4])
+        filter_pb = row_filter5.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            chain=data_pb2.RowFilter.Chain(
+                filters=[row_filter3_pb, row_filter4_pb],
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+
+class TestRowFilterUnion(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import RowFilterUnion
+        return RowFilterUnion
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_to_pb(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter1_pb = row_filter1.to_pb()
+
+        row_filter2 = RowSampleFilter(0.25)
+        row_filter2_pb = row_filter2.to_pb()
+
+        row_filter3 = self._makeOne(filters=[row_filter1, row_filter2])
+        filter_pb = row_filter3.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            interleave=data_pb2.RowFilter.Interleave(
+                filters=[row_filter1_pb, row_filter2_pb],
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+    def test_to_pb_nested(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable.row import CellsRowLimitFilter
+        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row import StripValueTransformerFilter
+
+        row_filter1 = StripValueTransformerFilter(True)
+        row_filter2 = RowSampleFilter(0.25)
+
+        row_filter3 = self._makeOne(filters=[row_filter1, row_filter2])
+        row_filter3_pb = row_filter3.to_pb()
+
+        row_filter4 = CellsRowLimitFilter(11)
+        row_filter4_pb = row_filter4.to_pb()
+
+        row_filter5 = self._makeOne(filters=[row_filter3, row_filter4])
+        filter_pb = row_filter5.to_pb()
+
+        expected_pb = data_pb2.RowFilter(
+            interleave=data_pb2.RowFilter.Interleave(
+                filters=[row_filter3_pb, row_filter4_pb],
+            ),
+        )
+        self.assertEqual(filter_pb, expected_pb)
+
+
 class TestConditionalRowFilter(unittest2.TestCase):
 
     def _getTargetClass(self):
