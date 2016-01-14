@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datasets &mdash; gcloud ffee6e7 documentation</title>
+    <title>Datasets &mdash; gcloud aca137f documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ffee6e7',
+        VERSION:     'aca137f',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffee6e7 documentation" href="index.html" />
+    <link rel="top" title="gcloud aca137f documentation" href="index.html" />
     <link rel="next" title="Jobs" href="bigquery-job.html" />
     <link rel="prev" title="BigQuery Client" href="bigquery-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%20ffee6e7" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%20aca137f" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffee6e7)
+              Version History (aca137f)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -99,31 +99,44 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <em class="property">class </em><code class="descclassname">gcloud.bigquery.dataset.</code><code class="descname">AccessGrant</code><span class="sig-paren">(</span><em>role</em>, <em>entity_type</em>, <em>entity_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigquery/dataset.html#AccessGrant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigquery.dataset.AccessGrant" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Represent grant of an access role to an entity.</p>
+<p>Every entry in the access list will have exactly one of
+<code class="docutils literal"><span class="pre">userByEmail</span></code>, <code class="docutils literal"><span class="pre">groupByEmail</span></code>, <code class="docutils literal"><span class="pre">domain</span></code>, <code class="docutils literal"><span class="pre">specialGroup</span></code> or
+<code class="docutils literal"><span class="pre">view</span></code> set. And if anything but <code class="docutils literal"><span class="pre">view</span></code> is set, it&#8217;ll also have a
+<code class="docutils literal"><span class="pre">role</span></code> specified. <code class="docutils literal"><span class="pre">role</span></code> is omitted for a <code class="docutils literal"><span class="pre">view</span></code>, since
+<code class="docutils literal"><span class="pre">view</span></code> s are always read-only.</p>
+<p>See <a class="reference external" href="https://cloud.google.com/bigquery/docs/reference/v2/datasets">https://cloud.google.com/bigquery/docs/reference/v2/datasets</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>role</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <p>Role granted to the entity. One of</p>
 <ul>
 <li><code class="docutils literal"><span class="pre">'OWNER'</span></code></li>
 <li><code class="docutils literal"><span class="pre">'WRITER'</span></code></li>
 <li><code class="docutils literal"><span class="pre">'READER'</span></code></li>
 </ul>
+<p>May also be <code class="docutils literal"><span class="pre">None</span></code> if the <code class="docutils literal"><span class="pre">entity_type</span></code> is <code class="docutils literal"><span class="pre">view</span></code>.</p>
 </li>
-<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <p>Type of entity being granted the role. One of</p>
-<ul>
-<li><code class="docutils literal"><span class="pre">'specialGroup'</span></code></li>
-<li><code class="docutils literal"><span class="pre">'groupByEmail'</span></code></li>
-<li><code class="docutils literal"><span class="pre">'userByEmail'</span></code></li>
-</ul>
-</li>
+<li><strong>entity_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Type of entity being granted the role. One of
+<a class="reference internal" href="#gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES"><code class="xref py py-attr docutils literal"><span class="pre">ENTITY_TYPES</span></code></a>.</li>
 <li><strong>entity_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; ID of entity being granted the role.</li>
 </ul>
 </td>
 </tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the <code class="docutils literal"><span class="pre">entity_type</span></code> is not among
+<a class="reference internal" href="#gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES"><code class="xref py py-attr docutils literal"><span class="pre">ENTITY_TYPES</span></code></a>, or if a <code class="docutils literal"><span class="pre">view</span></code> has <code class="docutils literal"><span class="pre">role</span></code> set or
+a non <code class="docutils literal"><span class="pre">view</span></code> <strong>does not</strong> have a <code class="docutils literal"><span class="pre">role</span></code> set.</p>
+</td>
+</tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES">
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['groupByEmail', 'specialGroup', 'domain', 'view', 'userByEmail'])</em><a class="headerlink" href="#gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<dd><p>Allowed entity types.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
