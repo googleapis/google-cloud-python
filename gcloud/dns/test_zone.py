@@ -32,9 +32,18 @@ class TestManagedZone(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
 
-        self.WHEN_TS = 1437767599.006
-        self.WHEN = datetime.datetime.utcfromtimestamp(self.WHEN_TS).replace(
-            tzinfo=UTC)
+        year = 2015
+        month = 7
+        day = 24
+        hour = 19
+        minute = 53
+        seconds = 19
+        micros = 6000
+
+        self.WHEN_STR = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
+            year, month, day, hour, minute, seconds, micros)
+        self.WHEN = datetime.datetime(
+            year, month, day, hour, minute, seconds, micros, tzinfo=UTC)
         self.ZONE_ID = 12345
 
     def _makeResource(self):
@@ -44,7 +53,7 @@ class TestManagedZone(unittest2.TestCase):
             'dnsName': self.DNS_NAME,
             'description': self.DESCRIPTION,
             'id': self.ZONE_ID,
-            'creationTime': self.WHEN_TS * 1000,
+            'creationTime': self.WHEN_STR,
             'nameServers': [
                 'ns-cloud1.googledomains.com',
                 'ns-cloud2.googledomains.com',
@@ -440,7 +449,7 @@ class TestManagedZone(unittest2.TestCase):
                          {'maxResults': 3, 'pageToken': TOKEN})
 
     def test_list_changes_defaults(self):
-        from gcloud._helpers import _RFC3339_MICROS
+        from gcloud._helpers import _datetime_to_rfc3339
         from gcloud.dns.changes import Changes
         from gcloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
@@ -462,7 +471,7 @@ class TestManagedZone(unittest2.TestCase):
                 'kind': 'dns#change',
                 'id': CHANGES_NAME,
                 'status': 'pending',
-                'startTime': self.WHEN.strftime(_RFC3339_MICROS),
+                'startTime': _datetime_to_rfc3339(self.WHEN),
                 'additions': [
                     {'kind': 'dns#resourceRecordSet',
                      'name': NAME_1,
@@ -516,7 +525,7 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_changes_explicit(self):
-        from gcloud._helpers import _RFC3339_MICROS
+        from gcloud._helpers import _datetime_to_rfc3339
         from gcloud.dns.changes import Changes
         from gcloud.dns.resource_record_set import ResourceRecordSet
         self._setUpConstants()
@@ -537,7 +546,7 @@ class TestManagedZone(unittest2.TestCase):
                 'kind': 'dns#change',
                 'id': CHANGES_NAME,
                 'status': 'pending',
-                'startTime': self.WHEN.strftime(_RFC3339_MICROS),
+                'startTime': _datetime_to_rfc3339(self.WHEN),
                 'additions': [
                     {'kind': 'dns#resourceRecordSet',
                      'name': NAME_1,

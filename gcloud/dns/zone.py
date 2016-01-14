@@ -15,7 +15,7 @@
 """Define API ManagedZones."""
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
 from gcloud.dns.changes import Changes
 from gcloud.dns.resource_record_set import ResourceRecordSet
@@ -92,10 +92,7 @@ class ManagedZone(object):
         :rtype: ``datetime.datetime``, or ``NoneType``
         :returns: the creation time (None until set from the server).
         """
-        creation_time = self._properties.get('creationTime')
-        if creation_time is not None:
-            # creation_time will be in milliseconds.
-            return _datetime_from_microseconds(1000.0 * creation_time)
+        return self._properties.get('creationTime')
 
     @property
     def name_servers(self):
@@ -215,7 +212,8 @@ class ManagedZone(object):
         self._properties.clear()
         cleaned = api_response.copy()
         if 'creationTime' in cleaned:
-            cleaned['creationTime'] = float(cleaned['creationTime'])
+            cleaned['creationTime'] = _rfc3339_to_datetime(
+                cleaned['creationTime'])
         self._properties.update(cleaned)
 
     def _build_resource(self):
