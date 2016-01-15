@@ -123,6 +123,36 @@ class Row(object):
             else:
                 return self._false_pb_mutations
 
+    def increment_cell_value(self, column_family_id, column, int_value):
+        """Increments a value in an existing cell.
+        Assumes the value in the cell is stored as a 64 bit integer
+        serialized to bytes.
+        .. note::
+            This method adds a read-modify rule protobuf to the accumulated
+            read-modify rules on this :class:`Row`, but does not make an API
+            request. To actually send an API request (with the rules) to the
+            Google Cloud Bigtable API, call :meth:`commit_modifications`.
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+        :type int_value: int
+        :param int_value: The value to increment the existing value in the cell
+                          by. If the targeted cell is unset, it will be treated
+                          as containing a zero. Otherwise, the targeted cell
+                          must contain an 8-byte value (interpreted as a 64-bit
+                          big-endian signed integer), or the entire request
+                          will fail.
+        """
+        column = _to_bytes(column)
+        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
+                                               column_qualifier=column,
+                                               increment_amount=int_value)
+        self._rule_pb_list.append(rule_pb)
+
 
 class RowFilter(object):
     """Basic filter to apply to cells in a row.
