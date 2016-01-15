@@ -23,6 +23,16 @@ from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 class Row(object):
     """Representation of a Google Cloud Bigtable Row.
 
+    .. note::
+
+        A :class:`Row` accumulates mutations locally via the :meth:`set_cell`,
+        :meth:`delete`, :meth:`delete_cell` and :meth:`delete_cells` methods.
+        To actually send these mutations to the Google Cloud Bigtable API, you
+        must call :meth:`commit`. If a ``filter_`` is set on the :class:`Row`,
+        the mutations must have an associated state: :data:`True` or
+        :data:`False`. The mutations will be applied conditionally, based on
+        whether the filter matches any cells in the :class:`Row` or not.
+
     :type row_key: bytes
     :param row_key: The key for the current row.
 
@@ -43,6 +53,14 @@ class Row(object):
         self._table = table
         self._filter = filter_
         self._rule_pb_list = []
+        if self._filter is None:
+            self._pb_mutations = []
+            self._true_pb_mutations = None
+            self._false_pb_mutations = None
+        else:
+            self._pb_mutations = None
+            self._true_pb_mutations = []
+            self._false_pb_mutations = []
 
     def append_cell_value(self, column_family_id, column, value):
         """Appends a value to an existing cell.
@@ -74,6 +92,36 @@ class Row(object):
                                                column_qualifier=column,
                                                append_value=value)
         self._rule_pb_list.append(rule_pb)
+
+    def _get_mutations(self, state=None):
+        """Gets the list of mutations for a given state.
+
+        If the state is :data`None` but there is a filter set, then we've
+        reached an invalid state. Similarly if no filter is set but the
+        state is not :data:`None`.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+
+        :rtype: list
+        :returns: The list to add new mutations to (for the current state).
+        :raises: :class:`ValueError <exceptions.ValueError>`
+        """
+        if state is None:
+            if self._filter is not None:
+                raise ValueError('A filter is set on the current row, but no '
+                                 'state given for the mutation')
+            return self._pb_mutations
+        else:
+            if self._filter is None:
+                raise ValueError('No filter was set on the current row, but a '
+                                 'state was given for the mutation')
+            if state:
+                return self._true_pb_mutations
+            else:
+                return self._false_pb_mutations
 
 
 class RowFilter(object):
