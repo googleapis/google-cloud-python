@@ -45,13 +45,18 @@ def get_parser():
     parser.add_argument('--package', dest='package',
                         choices=REQUIREMENTS.keys(),
                         default='datastore', help='Package to be tested.')
+    parser.add_argument(
+        '--ignore-requirements',
+        dest='ignore_requirements', action='store_true',
+        help='Ignore the credentials requirement for the test.')
     return parser
 
 
-def run_module_tests(module_name):
-    # Make sure environ is set before running test.
-    requirements = REQUIREMENTS[module_name]
-    system_test_utils.check_environ(*requirements)
+def run_module_tests(module_name, ignore_requirements=False):
+    if not ignore_requirements:
+        # Make sure environ is set before running test.
+        requirements = REQUIREMENTS[module_name]
+        system_test_utils.check_environ(*requirements)
 
     suite = unittest2.TestSuite()
     test_mod = TEST_MODULES[module_name]
@@ -68,7 +73,8 @@ def run_module_tests(module_name):
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    run_module_tests(args.package)
+    run_module_tests(args.package,
+                     ignore_requirements=args.ignore_requirements)
 
 
 if __name__ == '__main__':

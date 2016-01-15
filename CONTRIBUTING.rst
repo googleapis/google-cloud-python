@@ -233,7 +233,8 @@ Running System Tests
    $ DATASTORE_HOST=http://localhost:8471 \
    >   DATASTORE_DATASET=gcloud-settings-app-id \
    >   GCLOUD_NO_PRINT=true \
-   >   python system_tests/run_system_test.py --package=datastore
+   >   python system_tests/run_system_test.py \
+   >   --package=datastore --ignore-requirements
 
   and after completion stop the emulator::
 
