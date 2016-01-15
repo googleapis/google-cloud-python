@@ -49,6 +49,23 @@ class TestRow(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(row_key, None)
 
+    def test_append_cell_value(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        table = object()
+        row_key = b'row_key'
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._rule_pb_list, [])
+
+        column = b'column'
+        column_family_id = u'column_family_id'
+        value = b'bytes-val'
+        row.append_cell_value(column_family_id, column, value)
+        expected_pb = data_pb2.ReadModifyWriteRule(
+            family_name=column_family_id, column_qualifier=column,
+            append_value=value)
+        self.assertEqual(row._rule_pb_list, [expected_pb])
+
 
 class Test_BoolFilter(unittest2.TestCase):
 
