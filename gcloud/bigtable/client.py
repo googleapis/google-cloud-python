@@ -35,7 +35,7 @@ from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import bigtable_service_pb2
 from gcloud.bigtable._generated import bigtable_table_service_pb2
-from gcloud.bigtable._generated import operations_pb2
+from gcloud.bigtable._generated import operations_grpc_pb2
 from gcloud.bigtable._helpers import make_stub
 from gcloud.bigtable.cluster import Cluster
 from gcloud.client import _ClientFactoryMixin
@@ -63,7 +63,7 @@ DATA_API_HOST = 'bigtable.googleapis.com'
 DATA_API_PORT = 443
 """Data API request port."""
 
-OPERATIONS_STUB_FACTORY = operations_pb2.beta_create_Operations_stub
+OPERATIONS_STUB_FACTORY = operations_grpc_pb2.beta_create_Operations_stub
 
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/cloud-bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""

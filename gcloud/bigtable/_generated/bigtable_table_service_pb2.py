@@ -11,10 +11,10 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from gcloud.bigtable._generated import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from gcloud.bigtable._generated import bigtable_table_data_pb2 as google_dot_bigtable_dot_admin_dot_table_dot_v1_dot_bigtable__table__data__pb2
 from gcloud.bigtable._generated import bigtable_table_service_messages_pb2 as google_dot_bigtable_dot_admin_dot_table_dot_v1_dot_bigtable__table__service__messages__pb2
-from gcloud.bigtable._generated import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -117,15 +117,15 @@ def early_adopter_create_BigtableTableService_server(servicer, port, private_key
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   method_service_descriptions = {
     "CreateColumnFamily": alpha_utilities.unary_unary_service_description(
       servicer.CreateColumnFamily,
@@ -140,12 +140,12 @@ def early_adopter_create_BigtableTableService_server(servicer, port, private_key
     "DeleteColumnFamily": alpha_utilities.unary_unary_service_description(
       servicer.DeleteColumnFamily,
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.DeleteColumnFamilyRequest.FromString,
-      gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+      google.protobuf.empty_pb2.Empty.SerializeToString,
     ),
     "DeleteTable": alpha_utilities.unary_unary_service_description(
       servicer.DeleteTable,
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.DeleteTableRequest.FromString,
-      gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+      google.protobuf.empty_pb2.Empty.SerializeToString,
     ),
     "GetTable": alpha_utilities.unary_unary_service_description(
       servicer.GetTable,
@@ -160,7 +160,7 @@ def early_adopter_create_BigtableTableService_server(servicer, port, private_key
     "RenameTable": alpha_utilities.unary_unary_service_description(
       servicer.RenameTable,
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.RenameTableRequest.FromString,
-      gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+      google.protobuf.empty_pb2.Empty.SerializeToString,
     ),
     "UpdateColumnFamily": alpha_utilities.unary_unary_service_description(
       servicer.UpdateColumnFamily,
@@ -177,15 +177,15 @@ def early_adopter_create_BigtableTableService_stub(host, port, metadata_transfor
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   method_invocation_descriptions = {
     "CreateColumnFamily": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.CreateColumnFamilyRequest.SerializeToString,
@@ -197,11 +197,11 @@ def early_adopter_create_BigtableTableService_stub(host, port, metadata_transfor
     ),
     "DeleteColumnFamily": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.DeleteColumnFamilyRequest.SerializeToString,
-      gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+      google.protobuf.empty_pb2.Empty.FromString,
     ),
     "DeleteTable": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.DeleteTableRequest.SerializeToString,
-      gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+      google.protobuf.empty_pb2.Empty.FromString,
     ),
     "GetTable": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.GetTableRequest.SerializeToString,
@@ -213,7 +213,7 @@ def early_adopter_create_BigtableTableService_stub(host, port, metadata_transfor
     ),
     "RenameTable": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_service_messages_pb2.RenameTableRequest.SerializeToString,
-      gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+      google.protobuf.empty_pb2.Empty.FromString,
     ),
     "UpdateColumnFamily": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_table_data_pb2.ColumnFamily.SerializeToString,
@@ -294,15 +294,15 @@ def beta_create_BigtableTableService_server(servicer, pool=None, pool_size=None,
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   request_deserializers = {
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateColumnFamily'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.CreateColumnFamilyRequest.FromString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateTable'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.CreateTableRequest.FromString,
@@ -316,11 +316,11 @@ def beta_create_BigtableTableService_server(servicer, pool=None, pool_size=None,
   response_serializers = {
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateColumnFamily'): gcloud.bigtable._generated.bigtable_table_data_pb2.ColumnFamily.SerializeToString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateTable'): gcloud.bigtable._generated.bigtable_table_data_pb2.Table.SerializeToString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteColumnFamily'): gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteTable'): gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteColumnFamily'): google.protobuf.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteTable'): google.protobuf.empty_pb2.Empty.SerializeToString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'GetTable'): gcloud.bigtable._generated.bigtable_table_data_pb2.Table.SerializeToString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'ListTables'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.ListTablesResponse.SerializeToString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'RenameTable'): gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'RenameTable'): google.protobuf.empty_pb2.Empty.SerializeToString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'UpdateColumnFamily'): gcloud.bigtable._generated.bigtable_table_data_pb2.ColumnFamily.SerializeToString,
   }
   method_implementations = {
@@ -344,15 +344,15 @@ def beta_create_BigtableTableService_stub(channel, host=None, metadata_transform
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_data_pb2
   import gcloud.bigtable._generated.bigtable_table_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   request_serializers = {
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateColumnFamily'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.CreateColumnFamilyRequest.SerializeToString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateTable'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.CreateTableRequest.SerializeToString,
@@ -366,11 +366,11 @@ def beta_create_BigtableTableService_stub(channel, host=None, metadata_transform
   response_deserializers = {
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateColumnFamily'): gcloud.bigtable._generated.bigtable_table_data_pb2.ColumnFamily.FromString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'CreateTable'): gcloud.bigtable._generated.bigtable_table_data_pb2.Table.FromString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteColumnFamily'): gcloud.bigtable._generated.empty_pb2.Empty.FromString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteTable'): gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteColumnFamily'): google.protobuf.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'DeleteTable'): google.protobuf.empty_pb2.Empty.FromString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'GetTable'): gcloud.bigtable._generated.bigtable_table_data_pb2.Table.FromString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'ListTables'): gcloud.bigtable._generated.bigtable_table_service_messages_pb2.ListTablesResponse.FromString,
-    ('google.bigtable.admin.table.v1.BigtableTableService', 'RenameTable'): gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.table.v1.BigtableTableService', 'RenameTable'): google.protobuf.empty_pb2.Empty.FromString,
     ('google.bigtable.admin.table.v1.BigtableTableService', 'UpdateColumnFamily'): gcloud.bigtable._generated.bigtable_table_data_pb2.ColumnFamily.FromString,
   }
   cardinalities = {

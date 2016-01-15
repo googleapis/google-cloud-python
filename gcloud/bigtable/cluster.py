@@ -18,13 +18,14 @@
 import datetime
 import re
 
+from google.longrunning import operations_pb2
+
 from gcloud._helpers import _EPOCH
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
 from gcloud.bigtable._generated import (
     bigtable_table_service_messages_pb2 as table_messages_pb2)
-from gcloud.bigtable._generated import operations_pb2
 from gcloud.bigtable.table import Table
 
 
@@ -95,7 +96,7 @@ def _prepare_create_request(cluster):
 def _pb_timestamp_to_datetime(timestamp):
     """Convert a Timestamp protobuf to a datetime object.
 
-    :type timestamp: :class:`._generated.timestamp_pb2.Timestamp`
+    :type timestamp: :class:`google.protobuf.timestamp_pb2.Timestamp`
     :param timestamp: A Google returned timestamp protobuf.
 
     :rtype: :class:`datetime.datetime`
@@ -113,7 +114,7 @@ def _pb_timestamp_to_datetime(timestamp):
 def _parse_pb_any_to_native(any_val, expected_type=None):
     """Convert a serialized "google.protobuf.Any" value to actual type.
 
-    :type any_val: :class:`gcloud.bigtable._generated.any_pb2.Any`
+    :type any_val: :class:`google.protobuf.any_pb2.Any`
     :param any_val: A serialized protobuf value container.
 
     :type expected_type: str
@@ -135,7 +136,7 @@ def _parse_pb_any_to_native(any_val, expected_type=None):
 def _process_operation(operation_pb):
     """Processes a create protobuf response.
 
-    :type operation_pb: :class:`operations_pb2.Operation`
+    :type operation_pb: :class:`google.longrunning.operations_pb2.Operation`
     :param operation_pb: The long-running operation response from a
                          Create/Update/Undelete cluster request.
 
@@ -213,7 +214,7 @@ class Operation(object):
         operation_name = ('operations/' + self._cluster.name +
                           '/operations/%d' % (self.op_id,))
         request_pb = operations_pb2.GetOperationRequest(name=operation_name)
-        # We expect a `._generated.operations_pb2.Operation`.
+        # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._cluster._client._operations_stub.GetOperation(
             request_pb, self._cluster._client.timeout_seconds)
 
@@ -394,7 +395,7 @@ class Cluster(object):
                   create operation.
         """
         request_pb = _prepare_create_request(self)
-        # We expect an `operations_pb2.Operation`.
+        # We expect a `google.longrunning.operations_pb2.Operation`.
         cluster_pb = self._client._cluster_stub.CreateCluster(
             request_pb, self._client.timeout_seconds)
 
@@ -458,7 +459,7 @@ class Cluster(object):
           permanently deleted.
         """
         request_pb = messages_pb2.DeleteClusterRequest(name=self.name)
-        # We expect a `._generated.empty_pb2.Empty`
+        # We expect a `google.protobuf.empty_pb2.Empty`
         self._client._cluster_stub.DeleteCluster(
             request_pb, self._client.timeout_seconds)
 
@@ -488,7 +489,7 @@ class Cluster(object):
                   undelete operation.
         """
         request_pb = messages_pb2.UndeleteClusterRequest(name=self.name)
-        # We expect a `._generated.operations_pb2.Operation`
+        # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb2 = self._client._cluster_stub.UndeleteCluster(
             request_pb, self._client.timeout_seconds)
 

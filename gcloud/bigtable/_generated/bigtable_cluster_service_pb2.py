@@ -11,11 +11,11 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from gcloud.bigtable._generated import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as google_dot_bigtable_dot_admin_dot_cluster_dot_v1_dot_bigtable__cluster__data__pb2
 from gcloud.bigtable._generated import bigtable_cluster_service_messages_pb2 as google_dot_bigtable_dot_admin_dot_cluster_dot_v1_dot_bigtable__cluster__service__messages__pb2
-from gcloud.bigtable._generated import operations_pb2 as google_dot_longrunning_dot_operations__pb2
-from gcloud.bigtable._generated import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -115,9 +115,9 @@ def early_adopter_create_BigtableClusterService_server(servicer, port, private_k
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.operations_pb2
+  import google.longrunning.operations_pb2
   method_service_descriptions = {
     "CreateCluster": alpha_utilities.unary_unary_service_description(
       servicer.CreateCluster,
@@ -127,7 +127,7 @@ def early_adopter_create_BigtableClusterService_server(servicer, port, private_k
     "DeleteCluster": alpha_utilities.unary_unary_service_description(
       servicer.DeleteCluster,
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.DeleteClusterRequest.FromString,
-      gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+      google.protobuf.empty_pb2.Empty.SerializeToString,
     ),
     "GetCluster": alpha_utilities.unary_unary_service_description(
       servicer.GetCluster,
@@ -147,7 +147,7 @@ def early_adopter_create_BigtableClusterService_server(servicer, port, private_k
     "UndeleteCluster": alpha_utilities.unary_unary_service_description(
       servicer.UndeleteCluster,
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.UndeleteClusterRequest.FromString,
-      gcloud.bigtable._generated.operations_pb2.Operation.SerializeToString,
+      google.longrunning.operations_pb2.Operation.SerializeToString,
     ),
     "UpdateCluster": alpha_utilities.unary_unary_service_description(
       servicer.UpdateCluster,
@@ -168,9 +168,9 @@ def early_adopter_create_BigtableClusterService_stub(host, port, metadata_transf
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.operations_pb2
+  import google.longrunning.operations_pb2
   method_invocation_descriptions = {
     "CreateCluster": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.CreateClusterRequest.SerializeToString,
@@ -178,7 +178,7 @@ def early_adopter_create_BigtableClusterService_stub(host, port, metadata_transf
     ),
     "DeleteCluster": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.DeleteClusterRequest.SerializeToString,
-      gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+      google.protobuf.empty_pb2.Empty.FromString,
     ),
     "GetCluster": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.GetClusterRequest.SerializeToString,
@@ -194,7 +194,7 @@ def early_adopter_create_BigtableClusterService_stub(host, port, metadata_transf
     ),
     "UndeleteCluster": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.UndeleteClusterRequest.SerializeToString,
-      gcloud.bigtable._generated.operations_pb2.Operation.FromString,
+      google.longrunning.operations_pb2.Operation.FromString,
     ),
     "UpdateCluster": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.SerializeToString,
@@ -272,9 +272,9 @@ def beta_create_BigtableClusterService_server(servicer, pool=None, pool_size=Non
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.operations_pb2
+  import google.longrunning.operations_pb2
   request_deserializers = {
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'CreateCluster'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.CreateClusterRequest.FromString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.DeleteClusterRequest.FromString,
@@ -286,11 +286,11 @@ def beta_create_BigtableClusterService_server(servicer, pool=None, pool_size=Non
   }
   response_serializers = {
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'CreateCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.SerializeToString,
-    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): google.protobuf.empty_pb2.Empty.SerializeToString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'GetCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.SerializeToString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'ListClusters'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.ListClustersResponse.SerializeToString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'ListZones'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.ListZonesResponse.SerializeToString,
-    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UndeleteCluster'): gcloud.bigtable._generated.operations_pb2.Operation.SerializeToString,
+    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UndeleteCluster'): google.longrunning.operations_pb2.Operation.SerializeToString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UpdateCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.SerializeToString,
   }
   method_implementations = {
@@ -317,9 +317,9 @@ def beta_create_BigtableClusterService_stub(channel, host=None, metadata_transfo
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_data_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2
-  import gcloud.bigtable._generated.operations_pb2
+  import google.longrunning.operations_pb2
   request_serializers = {
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'CreateCluster'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.CreateClusterRequest.SerializeToString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.DeleteClusterRequest.SerializeToString,
@@ -331,11 +331,11 @@ def beta_create_BigtableClusterService_stub(channel, host=None, metadata_transfo
   }
   response_deserializers = {
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'CreateCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.FromString,
-    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'DeleteCluster'): google.protobuf.empty_pb2.Empty.FromString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'GetCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.FromString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'ListClusters'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.ListClustersResponse.FromString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'ListZones'): gcloud.bigtable._generated.bigtable_cluster_service_messages_pb2.ListZonesResponse.FromString,
-    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UndeleteCluster'): gcloud.bigtable._generated.operations_pb2.Operation.FromString,
+    ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UndeleteCluster'): google.longrunning.operations_pb2.Operation.FromString,
     ('google.bigtable.admin.cluster.v1.BigtableClusterService', 'UpdateCluster'): gcloud.bigtable._generated.bigtable_cluster_data_pb2.Cluster.FromString,
   }
   cardinalities = {

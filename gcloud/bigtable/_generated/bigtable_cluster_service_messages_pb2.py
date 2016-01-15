@@ -12,7 +12,7 @@ _sym_db = _symbol_database.Default()
 
 
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as google_dot_bigtable_dot_admin_dot_cluster_dot_v1_dot_bigtable__cluster__data__pb2
-from gcloud.bigtable._generated import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
