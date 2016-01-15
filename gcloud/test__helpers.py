@@ -546,9 +546,9 @@ class Test__has_field(unittest2.TestCase):
         self.assertTrue(self._callFUT(cluster_pb, 'serve_nodes'))
 
     def test_unset_message_field(self):
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
         cluster_pb = data_pb2.Cluster()
         # Check that no fields are attached to the protobuf message.
         self.assertEqual(len(cluster_pb._fields), 0)
@@ -561,9 +561,9 @@ class Test__has_field(unittest2.TestCase):
         self.assertFalse(self._callFUT(cluster_pb, 'delete_time'))
 
     def test_set_message_field(self):
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
 
         timestamp = Timestamp()
         cluster_pb = data_pb2.Cluster(delete_time=timestamp)
