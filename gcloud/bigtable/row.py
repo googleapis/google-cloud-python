@@ -62,6 +62,36 @@ class Row(object):
             self._true_pb_mutations = []
             self._false_pb_mutations = []
 
+    def _get_mutations(self, state=None):
+        """Gets the list of mutations for a given state.
+
+        If the state is :data`None` but there is a filter set, then we've
+        reached an invalid state. Similarly if no filter is set but the
+        state is not :data:`None`.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+
+        :rtype: list
+        :returns: The list to add new mutations to (for the current state).
+        :raises: :class:`ValueError <exceptions.ValueError>`
+        """
+        if state is None:
+            if self._filter is not None:
+                raise ValueError('A filter is set on the current row, but no '
+                                 'state given for the mutation')
+            return self._pb_mutations
+        else:
+            if self._filter is None:
+                raise ValueError('No filter was set on the current row, but a '
+                                 'state was given for the mutation')
+            if state:
+                return self._true_pb_mutations
+            else:
+                return self._false_pb_mutations
+
     def append_cell_value(self, column_family_id, column, value):
         """Appends a value to an existing cell.
 
@@ -92,36 +122,6 @@ class Row(object):
                                                column_qualifier=column,
                                                append_value=value)
         self._rule_pb_list.append(rule_pb)
-
-    def _get_mutations(self, state=None):
-        """Gets the list of mutations for a given state.
-
-        If the state is :data`None` but there is a filter set, then we've
-        reached an invalid state. Similarly if no filter is set but the
-        state is not :data:`None`.
-
-        :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
-
-        :rtype: list
-        :returns: The list to add new mutations to (for the current state).
-        :raises: :class:`ValueError <exceptions.ValueError>`
-        """
-        if state is None:
-            if self._filter is not None:
-                raise ValueError('A filter is set on the current row, but no '
-                                 'state given for the mutation')
-            return self._pb_mutations
-        else:
-            if self._filter is None:
-                raise ValueError('No filter was set on the current row, but a '
-                                 'state was given for the mutation')
-            if state:
-                return self._true_pb_mutations
-            else:
-                return self._false_pb_mutations
 
     def increment_cell_value(self, column_family_id, column, int_value):
         """Increments a value in an existing cell.
