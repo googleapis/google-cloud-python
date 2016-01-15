@@ -42,6 +42,38 @@ class Row(object):
         self._row_key = _to_bytes(row_key)
         self._table = table
         self._filter = filter_
+        self._rule_pb_list = []
+
+    def append_cell_value(self, column_family_id, column, value):
+        """Appends a value to an existing cell.
+
+        .. note::
+
+            This method adds a read-modify rule protobuf to the accumulated
+            read-modify rules on this :class:`Row`, but does not make an API
+            request. To actually send an API request (with the rules) to the
+            Google Cloud Bigtable API, call :meth:`commit_modifications`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type value: bytes
+        :param value: The value to append to the existing value in the cell. If
+                      the targeted cell is unset, it will be treated as
+                      containing the empty string.
+        """
+        column = _to_bytes(column)
+        value = _to_bytes(value)
+        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
+                                               column_qualifier=column,
+                                               append_value=value)
+        self._rule_pb_list.append(rule_pb)
 
 
 class RowFilter(object):
