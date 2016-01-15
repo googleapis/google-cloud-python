@@ -78,21 +78,20 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
         unindexed_val_pb = _new_value_pb(entity_pb, 'bar')
         unindexed_val_pb.integer_value = 10
-        unindexed_val_pb.indexed = False
+        unindexed_val_pb.exclude_from_indexes = True
 
         list_val_pb1 = _new_value_pb(entity_pb, 'baz')
         list_pb1 = list_val_pb1.list_value
 
         unindexed_list_val_pb = list_pb1.add()
         unindexed_list_val_pb.integer_value = 11
-        unindexed_list_val_pb.indexed = False
+        unindexed_list_val_pb.exclude_from_indexes = True
 
         list_val_pb2 = _new_value_pb(entity_pb, 'qux')
         list_pb2 = list_val_pb2.list_value
 
         indexed_list_val_pb = list_pb2.add()
         indexed_list_val_pb.integer_value = 12
-        indexed_list_val_pb.indexed = True
 
         entity = self._callFUT(entity_pb)
         self.assertEqual(entity.kind, _KIND)
@@ -125,11 +124,10 @@ class Test_entity_from_protobuf(unittest2.TestCase):
 
         unindexed_value_pb1 = list_pb.add()
         unindexed_value_pb1.integer_value = 10
-        unindexed_value_pb1.indexed = False
+        unindexed_value_pb1.exclude_from_indexes = True
 
         unindexed_value_pb2 = list_pb.add()
         unindexed_value_pb2.integer_value = 11
-        unindexed_value_pb2.indexed = True
 
         with self.assertRaises(ValueError):
             self._callFUT(entity_pb)
@@ -290,7 +288,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         # Add an integer property.
         val_pb1 = _new_value_pb(original_pb, 'foo')
         val_pb1.integer_value = 1337
-        val_pb1.indexed = False
+        val_pb1.exclude_from_indexes = True
         # Add a string property.
         val_pb2 = _new_value_pb(original_pb, 'bar')
         val_pb2.string_value = u'hello'
@@ -308,11 +306,11 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         # Add a list property.
         val_pb4 = _new_value_pb(original_pb, 'list-quux')
         list_val1 = val_pb4.list_value.add()
-        list_val1.indexed = False
+        list_val1.exclude_from_indexes = True
         list_val1.meaning = meaning = 22
         list_val1.blob_value = b'\xe2\x98\x83'
         list_val2 = val_pb4.list_value.add()
-        list_val2.indexed = False
+        list_val2.exclude_from_indexes = True
         list_val2.meaning = meaning
         list_val2.blob_value = b'\xe2\x98\x85'
 

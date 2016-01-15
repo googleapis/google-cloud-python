@@ -118,12 +118,12 @@ class TestBatch(unittest2.TestCase):
 
         prop_dict = dict(_property_tuples(mutated_entity))
         self.assertEqual(len(prop_dict), 3)
-        self.assertTrue(prop_dict['foo'].indexed)
-        self.assertFalse(prop_dict['baz'].indexed)
-        self.assertTrue(prop_dict['spam'].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
+        self.assertFalse(prop_dict['foo'].exclude_from_indexes)
+        self.assertTrue(prop_dict['baz'].exclude_from_indexes)
+        self.assertFalse(prop_dict['spam'].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_put_entity_w_completed_key_prefixed_project(self):
@@ -150,12 +150,12 @@ class TestBatch(unittest2.TestCase):
 
         prop_dict = dict(_property_tuples(mutated_entity))
         self.assertEqual(len(prop_dict), 3)
-        self.assertTrue(prop_dict['foo'].indexed)
-        self.assertFalse(prop_dict['baz'].indexed)
-        self.assertTrue(prop_dict['spam'].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
+        self.assertFalse(prop_dict['foo'].exclude_from_indexes)
+        self.assertTrue(prop_dict['baz'].exclude_from_indexes)
+        self.assertFalse(prop_dict['spam'].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
+        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):
