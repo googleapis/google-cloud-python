@@ -23,22 +23,11 @@ import glob
 
 IMPORT_TEMPLATE = 'import %s'
 IMPORT_FROM_TEMPLATE = 'from %s import '
-PROTOBUF_IMPORT_TEMPLATE = 'from google.protobuf import %s '
-REPLACE_PROTOBUF_IMPORT_TEMPLATE = 'from gcloud.bigtable._generated import %s '
 REPLACEMENTS = {
-    'google.api': 'gcloud.bigtable._generated',
     'google.bigtable.admin.cluster.v1': 'gcloud.bigtable._generated',
     'google.bigtable.admin.table.v1': 'gcloud.bigtable._generated',
     'google.bigtable.v1': 'gcloud.bigtable._generated',
-    'google.longrunning': 'gcloud.bigtable._generated',
-    'google.rpc': 'gcloud.bigtable._generated',
 }
-GOOGLE_PROTOBUF_CUSTOM = (
-    'any_pb2',
-    'duration_pb2',
-    'empty_pb2',
-    'timestamp_pb2',
-)
 
 
 def transform_old_to_new(line, old_module, new_module,
@@ -107,11 +96,9 @@ def transform_old_to_new(line, old_module, new_module,
 def transform_line(line):
     """Transforms an import line in a PB2 module.
 
-    If the line is not an import of one of the packages in
-    ``REPLACEMENTS`` or ``GOOGLE_PROTOBUF_CUSTOM``, does nothing and returns
-    the original. Otherwise it replaces the package matched with our local
-    package or directly rewrites the custom ``google.protobuf`` import
-    statement.
+    If the line is not an import of one of the packages in ``REPLACEMENTS``,
+    does nothing and returns the original. Otherwise it replaces the package
+    matched with our local package.
 
     :type line: str
     :param line: The line to be transformed.
@@ -121,26 +108,6 @@ def transform_line(line):
     """
     for old_module, new_module in REPLACEMENTS.iteritems():
         result = transform_old_to_new(line, old_module, new_module)
-        if result is not None:
-            return result
-
-    for custom_protobuf_module in GOOGLE_PROTOBUF_CUSTOM:
-        # We don't use the "from * import" check in transform_old_to_new
-        # because part of `google.protobuf` comes from the installed
-        # `protobuf` library.
-        import_from_statement = PROTOBUF_IMPORT_TEMPLATE % (
-            custom_protobuf_module,)
-        if line.startswith(import_from_statement):
-            new_import_from_statement = REPLACE_PROTOBUF_IMPORT_TEMPLATE % (
-                custom_protobuf_module,)
-            # Only replace the first instance of the import statement.
-            return line.replace(import_from_statement,
-                                new_import_from_statement, 1)
-
-        old_module = 'google.protobuf.' + custom_protobuf_module
-        new_module = 'gcloud.bigtable._generated.' + custom_protobuf_module
-        result = transform_old_to_new(line, old_module, new_module,
-                                      ignore_import_from=True)
         if result is not None:
             return result
 

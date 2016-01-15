@@ -11,8 +11,8 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from gcloud.bigtable._generated import operations_pb2 as google_dot_longrunning_dot_operations__pb2
-from gcloud.bigtable._generated import duration_pb2 as google_dot_protobuf_dot_duration__pb2
+from google.longrunning import operations_pb2 as google_dot_longrunning_dot_operations__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(

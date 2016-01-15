@@ -148,9 +148,9 @@ class TestTable(unittest2.TestCase):
         self._create_test_helper(initial_split_keys)
 
     def test_rename(self):
+        from google.protobuf import empty_pb2
         from gcloud.bigtable._generated import (
             bigtable_table_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -252,9 +252,9 @@ class TestTable(unittest2.TestCase):
                 column_family_name=column_family_name)
 
     def test_delete(self):
+        from google.protobuf import empty_pb2
         from gcloud.bigtable._generated import (
             bigtable_table_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'

@@ -11,10 +11,10 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from gcloud.bigtable._generated import annotations_pb2 as google_dot_api_dot_annotations__pb2
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from gcloud.bigtable._generated import bigtable_data_pb2 as google_dot_bigtable_dot_v1_dot_bigtable__data__pb2
 from gcloud.bigtable._generated import bigtable_service_messages_pb2 as google_dot_bigtable_dot_v1_dot_bigtable__service__messages__pb2
-from gcloud.bigtable._generated import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -94,7 +94,7 @@ def early_adopter_create_BigtableService_server(servicer, port, private_key=None
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
@@ -108,7 +108,7 @@ def early_adopter_create_BigtableService_server(servicer, port, private_key=None
     "MutateRow": alpha_utilities.unary_unary_service_description(
       servicer.MutateRow,
       gcloud.bigtable._generated.bigtable_service_messages_pb2.MutateRowRequest.FromString,
-      gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+      google.protobuf.empty_pb2.Empty.SerializeToString,
     ),
     "ReadModifyWriteRow": alpha_utilities.unary_unary_service_description(
       servicer.ReadModifyWriteRow,
@@ -133,7 +133,7 @@ def early_adopter_create_BigtableService_stub(host, port, metadata_transformer=N
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
@@ -145,7 +145,7 @@ def early_adopter_create_BigtableService_stub(host, port, metadata_transformer=N
     ),
     "MutateRow": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_service_messages_pb2.MutateRowRequest.SerializeToString,
-      gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+      google.protobuf.empty_pb2.Empty.FromString,
     ),
     "ReadModifyWriteRow": alpha_utilities.unary_unary_invocation_description(
       gcloud.bigtable._generated.bigtable_service_messages_pb2.ReadModifyWriteRowRequest.SerializeToString,
@@ -209,7 +209,7 @@ def beta_create_BigtableService_server(servicer, pool=None, pool_size=None, defa
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
@@ -223,7 +223,7 @@ def beta_create_BigtableService_server(servicer, pool=None, pool_size=None, defa
   }
   response_serializers = {
     ('google.bigtable.v1.BigtableService', 'CheckAndMutateRow'): gcloud.bigtable._generated.bigtable_service_messages_pb2.CheckAndMutateRowResponse.SerializeToString,
-    ('google.bigtable.v1.BigtableService', 'MutateRow'): gcloud.bigtable._generated.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.v1.BigtableService', 'MutateRow'): google.protobuf.empty_pb2.Empty.SerializeToString,
     ('google.bigtable.v1.BigtableService', 'ReadModifyWriteRow'): gcloud.bigtable._generated.bigtable_data_pb2.Row.SerializeToString,
     ('google.bigtable.v1.BigtableService', 'ReadRows'): gcloud.bigtable._generated.bigtable_service_messages_pb2.ReadRowsResponse.SerializeToString,
     ('google.bigtable.v1.BigtableService', 'SampleRowKeys'): gcloud.bigtable._generated.bigtable_service_messages_pb2.SampleRowKeysResponse.SerializeToString,
@@ -244,7 +244,7 @@ def beta_create_BigtableService_stub(channel, host=None, metadata_transformer=No
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
-  import gcloud.bigtable._generated.empty_pb2
+  import google.protobuf.empty_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
   import gcloud.bigtable._generated.bigtable_service_messages_pb2
@@ -258,7 +258,7 @@ def beta_create_BigtableService_stub(channel, host=None, metadata_transformer=No
   }
   response_deserializers = {
     ('google.bigtable.v1.BigtableService', 'CheckAndMutateRow'): gcloud.bigtable._generated.bigtable_service_messages_pb2.CheckAndMutateRowResponse.FromString,
-    ('google.bigtable.v1.BigtableService', 'MutateRow'): gcloud.bigtable._generated.empty_pb2.Empty.FromString,
+    ('google.bigtable.v1.BigtableService', 'MutateRow'): google.protobuf.empty_pb2.Empty.FromString,
     ('google.bigtable.v1.BigtableService', 'ReadModifyWriteRow'): gcloud.bigtable._generated.bigtable_data_pb2.Row.FromString,
     ('google.bigtable.v1.BigtableService', 'ReadRows'): gcloud.bigtable._generated.bigtable_service_messages_pb2.ReadRowsResponse.FromString,
     ('google.bigtable.v1.BigtableService', 'SampleRowKeys'): gcloud.bigtable._generated.bigtable_service_messages_pb2.SampleRowKeysResponse.FromString,

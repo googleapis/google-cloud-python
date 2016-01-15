@@ -84,7 +84,7 @@ class TestOperation(unittest2.TestCase):
 
     def _finished_helper(self, done):
         import datetime
-        from gcloud.bigtable._generated import operations_pb2
+        from google.longrunning import operations_pb2
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable.cluster import Cluster
 
@@ -353,10 +353,10 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(cluster.display_name, display_name)
 
     def test_create(self):
+        from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import operations_pb2
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -415,10 +415,10 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(process_operation_called, [current_op])
 
     def test_update(self):
+        from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import operations_pb2
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -476,9 +476,9 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(process_operation_called, [current_op])
 
     def test_delete(self):
+        from google.protobuf import empty_pb2
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
         project = 'PROJECT'
@@ -514,10 +514,10 @@ class TestCluster(unittest2.TestCase):
         )])
 
     def test_undelete(self):
+        from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated import operations_pb2
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -694,8 +694,8 @@ class Test__pb_timestamp_to_datetime(unittest2.TestCase):
 
     def test_it(self):
         import datetime
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud._helpers import UTC
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
 
         # Epoch is midnight on January 1, 1970 ...
         dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
@@ -714,8 +714,8 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         return _parse_pb_any_to_native(any_val, expected_type=expected_type)
 
     def test_with_known_type_url(self):
+        from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import any_pb2
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable import cluster as MUT
 
@@ -736,12 +736,12 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         self.assertEqual(result, cell)
 
     def test_with_create_cluster_metadata(self):
-        from gcloud.bigtable._generated import any_pb2
+        from google.protobuf import any_pb2
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
 
         type_url = ('type.googleapis.com/' +
                     messages_pb2._CREATECLUSTERMETADATA.full_name)
@@ -766,12 +766,12 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         self.assertEqual(result, metadata)
 
     def test_with_update_cluster_metadata(self):
-        from gcloud.bigtable._generated import any_pb2
+        from google.protobuf import any_pb2
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
 
         type_url = ('type.googleapis.com/' +
                     messages_pb2._UPDATECLUSTERMETADATA.full_name)
@@ -793,12 +793,12 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         self.assertEqual(result, metadata)
 
     def test_with_undelete_cluster_metadata(self):
-        from gcloud.bigtable._generated import any_pb2
+        from google.protobuf import any_pb2
+        from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated.timestamp_pb2 import Timestamp
 
         type_url = ('type.googleapis.com/' +
                     messages_pb2._UNDELETECLUSTERMETADATA.full_name)
@@ -815,8 +815,8 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         self.assertEqual(result, metadata)
 
     def test_unknown_type_url(self):
+        from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import any_pb2
         from gcloud.bigtable import cluster as MUT
 
         fake_type_url_map = {}
@@ -826,8 +826,8 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
                 self._callFUT(any_val)
 
     def test_disagreeing_type_url(self):
+        from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import any_pb2
         from gcloud.bigtable import cluster as MUT
 
         type_url1 = 'foo'
@@ -846,10 +846,10 @@ class Test__process_operation(unittest2.TestCase):
         return _process_operation(operation_pb)
 
     def test_it(self):
+        from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._generated import operations_pb2
         from gcloud.bigtable import cluster as MUT
 
         project = 'PROJECT'
@@ -891,9 +891,9 @@ class Test__process_operation(unittest2.TestCase):
         self.assertEqual(ts_to_dt_called, [request_metadata.request_time])
 
     def test_op_name_parsing_failure(self):
+        from google.longrunning import operations_pb2
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import operations_pb2
 
         current_op = operations_pb2.Operation(name='invalid')
         cluster = data_pb2.Cluster(current_operation=current_op)
