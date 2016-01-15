@@ -15,6 +15,9 @@
 """Google Cloud Bigtable HappyBase connection module."""
 
 
+import six
+
+
 # Constants reproduced here for HappyBase compatibility, though values
 # are all null.
 COMPAT_MODES = None
@@ -96,6 +99,16 @@ class Connection(object):
         if protocol is not DEFAULT_PROTOCOL:
             raise ValueError('Protocol cannot be set for gcloud '
                              'HappyBase module')
+
+        if table_prefix is not None:
+            if not isinstance(table_prefix, six.string_types):
+                raise TypeError('table_prefix must be a string', 'received',
+                                table_prefix, type(table_prefix))
+
+        if not isinstance(table_prefix_separator, six.string_types):
+            raise TypeError('table_prefix_separator must be a string',
+                            'received', table_prefix_separator,
+                            type(table_prefix_separator))
 
         self.timeout = timeout
         self.autoconnect = autoconnect

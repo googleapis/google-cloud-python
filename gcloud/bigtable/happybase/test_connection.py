@@ -68,3 +68,17 @@ class TestConnection(unittest2.TestCase):
     def test_constructor_with_protocol(self):
         with self.assertRaises(ValueError):
             self._makeOne(protocol=object())
+
+    def test_constructor_non_string_prefix(self):
+        table_prefix = object()
+
+        with self.assertRaises(TypeError):
+            self._makeOne(autoconnect=False,
+                          table_prefix=table_prefix)
+
+    def test_constructor_non_string_prefix_separator(self):
+        table_prefix_separator = object()
+
+        with self.assertRaises(TypeError):
+            self._makeOne(autoconnect=False,
+                          table_prefix_separator=table_prefix_separator)
