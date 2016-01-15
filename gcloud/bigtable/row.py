@@ -62,6 +62,36 @@ class Row(object):
             self._true_pb_mutations = []
             self._false_pb_mutations = []
 
+    def _get_mutations(self, state=None):
+        """Gets the list of mutations for a given state.
+
+        If the state is :data`None` but there is a filter set, then we've
+        reached an invalid state. Similarly if no filter is set but the
+        state is not :data:`None`.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+
+        :rtype: list
+        :returns: The list to add new mutations to (for the current state).
+        :raises: :class:`ValueError <exceptions.ValueError>`
+        """
+        if state is None:
+            if self._filter is not None:
+                raise ValueError('A filter is set on the current row, but no '
+                                 'state given for the mutation')
+            return self._pb_mutations
+        else:
+            if self._filter is None:
+                raise ValueError('No filter was set on the current row, but a '
+                                 'state was given for the mutation')
+            if state:
+                return self._true_pb_mutations
+            else:
+                return self._false_pb_mutations
+
     def append_cell_value(self, column_family_id, column, value):
         """Appends a value to an existing cell.
 
@@ -93,35 +123,35 @@ class Row(object):
                                                append_value=value)
         self._rule_pb_list.append(rule_pb)
 
-    def _get_mutations(self, state=None):
-        """Gets the list of mutations for a given state.
-
-        If the state is :data`None` but there is a filter set, then we've
-        reached an invalid state. Similarly if no filter is set but the
-        state is not :data:`None`.
-
-        :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
-
-        :rtype: list
-        :returns: The list to add new mutations to (for the current state).
-        :raises: :class:`ValueError <exceptions.ValueError>`
+    def increment_cell_value(self, column_family_id, column, int_value):
+        """Increments a value in an existing cell.
+        Assumes the value in the cell is stored as a 64 bit integer
+        serialized to bytes.
+        .. note::
+            This method adds a read-modify rule protobuf to the accumulated
+            read-modify rules on this :class:`Row`, but does not make an API
+            request. To actually send an API request (with the rules) to the
+            Google Cloud Bigtable API, call :meth:`commit_modifications`.
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+        :type int_value: int
+        :param int_value: The value to increment the existing value in the cell
+                          by. If the targeted cell is unset, it will be treated
+                          as containing a zero. Otherwise, the targeted cell
+                          must contain an 8-byte value (interpreted as a 64-bit
+                          big-endian signed integer), or the entire request
+                          will fail.
         """
-        if state is None:
-            if self._filter is not None:
-                raise ValueError('A filter is set on the current row, but no '
-                                 'state given for the mutation')
-            return self._pb_mutations
-        else:
-            if self._filter is None:
-                raise ValueError('No filter was set on the current row, but a '
-                                 'state was given for the mutation')
-            if state:
-                return self._true_pb_mutations
-            else:
-                return self._false_pb_mutations
+        column = _to_bytes(column)
+        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
+                                               column_qualifier=column,
+                                               increment_amount=int_value)
+        self._rule_pb_list.append(rule_pb)
 
 
 class RowFilter(object):
