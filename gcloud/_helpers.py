@@ -23,6 +23,7 @@ from threading import local as Local
 import socket
 import sys
 
+from google.protobuf import timestamp_pb2
 import six
 from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
 
@@ -352,6 +353,39 @@ def _to_bytes(value, encoding='ascii'):
         return result
     else:
         raise TypeError('%r could not be converted to bytes' % (value,))
+
+
+def _pb_timestamp_to_datetime(timestamp):
+    """Convert a Timestamp protobuf to a datetime object.
+
+    :type timestamp: :class:`google.protobuf.timestamp_pb2.Timestamp`
+    :param timestamp: A Google returned timestamp protobuf.
+
+    :rtype: :class:`datetime.datetime`
+    :returns: A UTC datetime object converted from a protobuf timestamp.
+    """
+    return (
+        _EPOCH +
+        datetime.timedelta(
+            seconds=timestamp.seconds,
+            microseconds=(timestamp.nanos / 1000.0),
+        )
+    )
+
+
+def _datetime_to_pb_timestamp(when):
+    """Convert a datetime object to a Timestamp protobuf.
+
+    :type when: :class:`datetime.datetime`
+    :param when: the datetime to convert
+
+    :rtype: :class:`google.protobuf.timestamp_pb2.Timestamp`
+    :returns: A timestamp protobuf corresponding to the object.
+    """
+    ms_value = _microseconds_from_datetime(when)
+    seconds, micros = divmod(ms_value, 10**6)
+    nanos = micros * 10**3
+    return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
 try:

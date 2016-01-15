@@ -484,6 +484,48 @@ class Test__to_bytes(unittest2.TestCase):
         self.assertRaises(TypeError, self._callFUT, value)
 
 
+class Test__pb_timestamp_to_datetime(unittest2.TestCase):
+
+    def _callFUT(self, timestamp):
+        from gcloud._helpers import _pb_timestamp_to_datetime
+        return _pb_timestamp_to_datetime(timestamp)
+
+    def test_it(self):
+        import datetime
+        from google.protobuf.timestamp_pb2 import Timestamp
+        from gcloud._helpers import UTC
+
+        # Epoch is midnight on January 1, 1970 ...
+        dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
+                                     minute=1, second=1, microsecond=1234,
+                                     tzinfo=UTC)
+        # ... so 1 minute and 1 second after is 61 seconds and 1234
+        # microseconds is 1234000 nanoseconds.
+        timestamp = Timestamp(seconds=61, nanos=1234000)
+        self.assertEqual(self._callFUT(timestamp), dt_stamp)
+
+
+class Test__datetime_to_pb_timestamp(unittest2.TestCase):
+
+    def _callFUT(self, when):
+        from gcloud._helpers import _datetime_to_pb_timestamp
+        return _datetime_to_pb_timestamp(when)
+
+    def test_it(self):
+        import datetime
+        from google.protobuf.timestamp_pb2 import Timestamp
+        from gcloud._helpers import UTC
+
+        # Epoch is midnight on January 1, 1970 ...
+        dt_stamp = datetime.datetime(1970, month=1, day=1, hour=0,
+                                     minute=1, second=1, microsecond=1234,
+                                     tzinfo=UTC)
+        # ... so 1 minute and 1 second after is 61 seconds and 1234
+        # microseconds is 1234000 nanoseconds.
+        timestamp = Timestamp(seconds=61, nanos=1234000)
+        self.assertEqual(self._callFUT(dt_stamp), timestamp)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):
