@@ -49,6 +49,46 @@ class TestRow(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(row_key, None)
 
+    def _get_mutations_helper(self, filter_=None, state=None):
+        row_key = b'row_key'
+        row = self._makeOne(row_key, None, filter_=filter_)
+        # Mock the mutations with unique objects so we can compare.
+        row._pb_mutations = no_bool = object()
+        row._true_pb_mutations = true_mutations = object()
+        row._false_pb_mutations = false_mutations = object()
+
+        mutations = row._get_mutations(state)
+        return (no_bool, true_mutations, false_mutations), mutations
+
+    def test__get_mutations_no_filter(self):
+        (no_bool, _, _), mutations = self._get_mutations_helper()
+        self.assertTrue(mutations is no_bool)
+
+    def test__get_mutations_no_filter_bad_state(self):
+        state = object()  # State should be null when no filter.
+        with self.assertRaises(ValueError):
+            self._get_mutations_helper(state=state)
+
+    def test__get_mutations_with_filter_true_state(self):
+        filter_ = object()
+        state = True
+        (_, true_filter, _), mutations = self._get_mutations_helper(
+            filter_=filter_, state=state)
+        self.assertTrue(mutations is true_filter)
+
+    def test__get_mutations_with_filter_false_state(self):
+        filter_ = object()
+        state = False
+        (_, _, false_filter), mutations = self._get_mutations_helper(
+            filter_=filter_, state=state)
+        self.assertTrue(mutations is false_filter)
+
+    def test__get_mutations_with_filter_bad_state(self):
+        filter_ = object()
+        state = None
+        with self.assertRaises(ValueError):
+            self._get_mutations_helper(filter_=filter_, state=state)
+
     def test_append_cell_value(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 
