@@ -212,8 +212,14 @@ Running System Tests
    $ python system_tests/clear_datastore.py
 
 - System tests can also be run against local `emulators`_ that mock
-  the production services. For example, to run the system tests
-  with the ``datastore`` emulator, first start the emulator and
+  the production services. To run the system tests with the
+  ``datastore`` emulator::
+
+   $ tox -e datastore-emulator
+
+  This also requires that the ``gcloud`` command line tool is
+  installed. If you'd like to run them directly (outside of a
+  ``tox`` environment), first start the emulator and
   take note of the process ID::
 
    $ gcloud beta emulators datastore start &
