@@ -242,6 +242,28 @@ Running System Tests
 
 .. _emulators: https://cloud.google.com/sdk/gcloud/reference/beta/emulators/
 
+- To run the ``pubsub`` system tests with an emulator, first start the
+  emulator and take note of the process ID::
+
+   $ gcloud beta emulators pubsub start &
+   [1] 44444
+
+  then determine the environment variables needed to interact with
+  the emulator::
+
+   $ gcloud beta emulators pubsub env-init
+    export PUBSUB_EMULATOR_HOST=localhost:8897
+
+  using these environment variables run the emulator::
+
+   $ DATASTORE_HOST=http://localhost:8897 \
+   >   python system_tests/run_system_test.py \
+   >   --package=pubsub
+
+  and after completion stop the emulator::
+
+   $ kill 44444
+
 Test Coverage
 -------------
 
