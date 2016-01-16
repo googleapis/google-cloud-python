@@ -225,7 +225,8 @@ class JSONConnection(Connection):
         else:
             content_length = 0
 
-        headers['Content-Length'] = content_length
+        # NOTE: str is intended, bytes are sufficient for headers.
+        headers['Content-Length'] = str(content_length)
 
         if content_type:
             headers['Content-Type'] = content_type

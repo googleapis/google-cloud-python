@@ -163,7 +163,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
@@ -181,7 +181,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], {})
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'Content-Type': 'application/json',
             'User-Agent': conn.USER_AGENT,
         }
@@ -200,7 +200,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'X-Foo': 'foo',
             'User-Agent': conn.USER_AGENT,
         }
@@ -225,7 +225,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
@@ -274,7 +274,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
@@ -301,7 +301,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], DATAJ)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': len(DATAJ),
+            'Content-Length': str(len(DATAJ)),
             'Content-Type': 'application/json',
             'User-Agent': conn.USER_AGENT,
         }
@@ -345,7 +345,7 @@ class TestJSONConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], None)
         expected_headers = {
             'Accept-Encoding': 'gzip',
-            'Content-Length': 0,
+            'Content-Length': '0',
             'User-Agent': conn.USER_AGENT,
         }
         self.assertEqual(http._called_with['headers'], expected_headers)
