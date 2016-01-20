@@ -20,6 +20,7 @@ import re
 from google.longrunning import operations_pb2
 
 from gcloud._helpers import _pb_timestamp_to_datetime
+from gcloud._helpers import _get_pb_property_value
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
@@ -45,30 +46,6 @@ _TYPE_URL_MAP = {
     _UPDATE_CREATE_METADATA: messages_pb2.UpdateClusterMetadata,
     _UNDELETE_CREATE_METADATA: messages_pb2.UndeleteClusterMetadata,
 }
-
-
-def _get_pb_property_value(message_pb, property_name):
-    """Return a message field value.
-
-    :type message_pb: :class:`google.protobuf.message.Message`
-    :param message_pb: The message to check for ``property_name``.
-
-    :type property_name: str
-    :param property_name: The property value to check against.
-
-    :rtype: object
-    :returns: The value of ``property_name`` set on ``message_pb``.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the result returned
-             from the ``message_pb`` does not contain the ``property_name``
-             value.
-    """
-    # Make sure `property_name` is set on the response.
-    # NOTE: As of proto3, HasField() only works for message fields, not for
-    #       singular (non-message) fields.
-    all_fields = set([field.name for field in message_pb._fields])
-    if property_name not in all_fields:
-        raise ValueError('Message does not contain %s.' % (property_name,))
-    return getattr(message_pb, property_name)
 
 
 def _prepare_create_request(cluster):

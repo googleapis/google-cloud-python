@@ -198,6 +198,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         return entity_to_protobuf(entity)
 
     def _compareEntityProto(self, entity_pb1, entity_pb2):
+        from gcloud._helpers import _has_field
         from gcloud.datastore.helpers import _property_tuples
 
         self.assertEqual(entity_pb1.key, entity_pb2.key)
@@ -208,7 +209,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
             name1, val1 = pair1
             name2, val2 = pair2
             self.assertEqual(name1, name2)
-            if val1.HasField('entity_value'):
+            if _has_field(val1, 'entity_value'):
                 self.assertEqual(val1.meaning, val2.meaning)
                 self._compareEntityProto(val1.entity_value,
                                          val2.entity_value)
@@ -767,6 +768,8 @@ class Test_find_true_project(unittest2.TestCase):
         self.assertEqual(PREFIXED, result)
 
     def test_unprefixed_bogus_key_miss(self):
+        from gcloud._helpers import _has_field
+
         UNPREFIXED = 'PROJECT'
         PREFIX = 's~'
         CONNECTION = _Connection(PREFIX, from_missing=False)
@@ -782,12 +785,14 @@ class Test_find_true_project(unittest2.TestCase):
         self.assertEqual(len(path_element), 1)
         self.assertEqual(path_element[0].kind, '__MissingLookupKind')
         self.assertEqual(path_element[0].id, 1)
-        self.assertFalse(path_element[0].HasField('name'))
+        self.assertFalse(_has_field(path_element[0], 'name'))
 
         PREFIXED = PREFIX + UNPREFIXED
         self.assertEqual(result, PREFIXED)
 
     def test_unprefixed_bogus_key_hit(self):
+        from gcloud._helpers import _has_field
+
         UNPREFIXED = 'PROJECT'
         PREFIX = 'e~'
         CONNECTION = _Connection(PREFIX, from_missing=True)
@@ -802,7 +807,7 @@ class Test_find_true_project(unittest2.TestCase):
         self.assertEqual(len(path_element), 1)
         self.assertEqual(path_element[0].kind, '__MissingLookupKind')
         self.assertEqual(path_element[0].id, 1)
-        self.assertFalse(path_element[0].HasField('name'))
+        self.assertFalse(_has_field(path_element[0], 'name'))
 
         PREFIXED = PREFIX + UNPREFIXED
         self.assertEqual(result, PREFIXED)

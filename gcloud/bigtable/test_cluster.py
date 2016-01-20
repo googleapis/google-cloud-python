@@ -631,28 +631,6 @@ class TestCluster(unittest2.TestCase):
             self._list_tables_helper(table_id, table_name=bad_table_name)
 
 
-class Test__get_pb_property_value(unittest2.TestCase):
-
-    def _callFUT(self, message_pb, property_name):
-        from gcloud.bigtable.cluster import _get_pb_property_value
-        return _get_pb_property_value(message_pb, property_name)
-
-    def test_it(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        serve_nodes = 119
-        cluster_pb = data_pb2.Cluster(serve_nodes=serve_nodes)
-        result = self._callFUT(cluster_pb, 'serve_nodes')
-        self.assertEqual(result, serve_nodes)
-
-    def test_with_value_unset_on_pb(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        cluster_pb = data_pb2.Cluster()
-        with self.assertRaises(ValueError):
-            self._callFUT(cluster_pb, 'serve_nodes')
-
-
 class Test__prepare_create_request(unittest2.TestCase):
 
     def _callFUT(self, cluster):
