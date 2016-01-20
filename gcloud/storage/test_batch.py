@@ -115,7 +115,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
-            ('Content-Length', 0),
+            ('Content-Length', '0'),
         ]
         solo_request, = batch._requests
         self.assertEqual(solo_request[0], 'GET')
@@ -140,7 +140,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
-            ('Content-Length', 10),
+            ('Content-Length', '10'),
         ]
         solo_request, = batch._requests
         self.assertEqual(solo_request[0], 'POST')
@@ -165,7 +165,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
-            ('Content-Length', 10),
+            ('Content-Length', '10'),
         ]
         solo_request, = batch._requests
         self.assertEqual(solo_request[0], 'PATCH')
@@ -190,7 +190,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(http._requests, [])
         EXPECTED_HEADERS = [
             ('Accept-Encoding', 'gzip'),
-            ('Content-Length', 0),
+            ('Content-Length', '0'),
         ]
         solo_request, = batch._requests
         self.assertEqual(solo_request[0], 'DELETE')

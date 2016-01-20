@@ -29,6 +29,7 @@ from gcloud.exceptions import Conflict
 # repository root is the current directory.
 from system_tests import clear_datastore
 from system_tests import populate_datastore
+from system_tests.system_test_utils import EmulatorCreds
 
 
 # Isolated namespace so concurrent test runs don't collide.
@@ -45,18 +46,6 @@ class Config(object):
     CLIENT = None
 
 
-class _EmulatorCreds(object):
-    """A mock credential object.
-
-    Used to avoid unnecessary token refreshing or reliance on the network
-    while an emulator is running.
-    """
-
-    @staticmethod
-    def create_scoped_required():
-        return False
-
-
 def clone_client(client):
     # Fool the Client constructor to avoid creating a new connection.
     cloned_client = datastore.Client(project=client.project,
@@ -71,7 +60,7 @@ def setUpModule():
         client_mod.DATASET = TESTS_DATASET
         Config.CLIENT = datastore.Client(namespace=TEST_NAMESPACE)
     else:
-        credentials = _EmulatorCreds()
+        credentials = EmulatorCreds()
         http = httplib2.Http()  # Un-authorized.
         Config.CLIENT = datastore.Client(project=EMULATOR_DATASET,
                                          namespace=TEST_NAMESPACE,

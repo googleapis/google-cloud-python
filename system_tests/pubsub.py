@@ -12,13 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import time
 
+import httplib2
 import unittest2
 
 from gcloud import _helpers
+from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
+from system_tests.system_test_utils import EmulatorCreds
 
 
 DEFAULT_TOPIC_NAME = 'subscribe-me%d' % (1000 * time.time(),)
@@ -35,7 +39,13 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = pubsub.Client()
+    if os.getenv(PUBSUB_EMULATOR) is None:
+        Config.CLIENT = pubsub.Client()
+    else:
+        credentials = EmulatorCreds()
+        http = httplib2.Http()  # Un-authorized.
+        Config.CLIENT = pubsub.Client(credentials=credentials,
+                                      http=http)
 
 
 class TestPubsub(unittest2.TestCase):

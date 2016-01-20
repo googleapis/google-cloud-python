@@ -34,6 +34,18 @@ Missing variables: %s
 """
 
 
+class EmulatorCreds(object):
+    """A mock credential object.
+
+    Used to avoid unnecessary token refreshing or reliance on the network
+    while an emulator is running.
+    """
+
+    @staticmethod
+    def create_scoped_required():
+        return False
+
+
 def check_environ(*requirements):
 
     missing = []
