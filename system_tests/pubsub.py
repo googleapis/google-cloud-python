@@ -21,6 +21,9 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
 
 
+DEFAULT_TOPIC_NAME = 'subscribe-me%d' % (1000 * time.time(),)
+
+
 class Config(object):
     """Run-time configuration to be modified at set-up.
 
@@ -45,13 +48,13 @@ class TestPubsub(unittest2.TestCase):
             doomed.delete()
 
     def test_create_topic(self):
-        TOPIC_NAME = 'a-new-topic'
-        topic = Config.CLIENT.topic(TOPIC_NAME)
+        topic_name = 'a-new-topic%d' % (1000 * time.time(),)
+        topic = Config.CLIENT.topic(topic_name)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
         self.assertTrue(topic.exists())
-        self.assertEqual(topic.name, TOPIC_NAME)
+        self.assertEqual(topic.name, topic_name)
 
     def test_list_topics(self):
         topics_to_create = [
@@ -72,8 +75,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(len(created), len(topics_to_create))
 
     def test_create_subscription_defaults(self):
-        TOPIC_NAME = 'subscribe-me'
-        topic = Config.CLIENT.topic(TOPIC_NAME)
+        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -87,8 +89,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_create_subscription_w_ack_deadline(self):
-        TOPIC_NAME = 'subscribe-me'
-        topic = Config.CLIENT.topic(TOPIC_NAME)
+        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -103,8 +104,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions(self):
-        TOPIC_NAME = 'subscribe-me'
-        topic = Config.CLIENT.topic(TOPIC_NAME)
+        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
@@ -122,12 +122,12 @@ class TestPubsub(unittest2.TestCase):
         all_subscriptions, _ = Config.CLIENT.list_subscriptions()
         created = [subscription for subscription in all_subscriptions
                    if subscription.name in subscriptions_to_create and
-                   subscription.topic.name == TOPIC_NAME]
+                   subscription.topic.name == DEFAULT_TOPIC_NAME]
         self.assertEqual(len(created), len(subscriptions_to_create))
 
     def test_message_pull_mode_e2e(self):
-        TOPIC_NAME = 'subscribe-me'
-        topic = Config.CLIENT.topic(TOPIC_NAME, timestamp_messages=True)
+        topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME,
+                                    timestamp_messages=True)
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
