@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud ffe5869 documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -91,19 +91,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <section class="content">
         
   <h1>Source code for gcloud.pubsub.subscription</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="c"># you may not use this file except in compliance with the License.</span>
-<span class="c"># You may obtain a copy of the License at</span>
-<span class="c">#</span>
-<span class="c">#     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="c">#</span>
-<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
-<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="c"># See the License for the specific language governing permissions and</span>
-<span class="c"># limitations under the License.</span>
+<span class="c1"># Copyright 2015 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Define API Subscriptions.&quot;&quot;&quot;</span>
 
@@ -158,24 +158,24 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">topics</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">topic_path</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;topic&#39;</span><span class="p">]</span>
+        <span class="n">topic_path</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">]</span>
         <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># NOTE: This duplicates behavior from Topic.from_api_repr to avoid</span>
-            <span class="c">#       an import cycle.</span>
+            <span class="c1"># NOTE: This duplicates behavior from Topic.from_api_repr to avoid</span>
+            <span class="c1">#       an import cycle.</span>
             <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">topic_path</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
             <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="p">[</span><span class="n">topic_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">topic_name</span><span class="p">)</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-        <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
-        <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushEndpoint&#39;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
+        <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the subscription&#39;s APIs&quot;&quot;&quot;</span>
         <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">project</span>
-        <span class="k">return</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/subscriptions/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/subscriptions/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
@@ -202,16 +202,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;topic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;topic&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s">&#39;pushConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;pushEndpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">}</span>
 
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
@@ -225,7 +225,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -242,10 +242,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
-        <span class="n">push_config</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pushEndpoint&#39;</span><span class="p">)</span></div>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
+        <span class="n">push_config</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.modify_push_configuration"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_push_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">modify_push_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update the push endpoint for the subscription.</span>
@@ -264,11 +264,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;pushConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">push_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">config</span><span class="p">[</span><span class="s">&#39;pushEndpoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">push_endpoint</span>
+            <span class="n">config</span><span class="p">[</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">push_endpoint</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:modifyPushConfig&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:modifyPushConfig&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span></div>
 
@@ -297,12 +297,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  is an instance of :class:`gcloud.pubsub.message.Message`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;returnImmediately&#39;</span><span class="p">:</span> <span class="n">return_immediately</span><span class="p">,</span>
-                <span class="s">&#39;maxMessages&#39;</span><span class="p">:</span> <span class="n">max_messages</span><span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;returnImmediately&#39;</span><span class="p">:</span> <span class="n">return_immediately</span><span class="p">,</span>
+                <span class="s1">&#39;maxMessages&#39;</span><span class="p">:</span> <span class="n">max_messages</span><span class="p">}</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:pull&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;ackId&#39;</span><span class="p">],</span> <span class="n">Message</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">&#39;message&#39;</span><span class="p">]))</span>
-                <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;receivedMessages&#39;</span><span class="p">,</span> <span class="p">())]</span></div>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:pull&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;ackId&#39;</span><span class="p">],</span> <span class="n">Message</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
+                <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;receivedMessages&#39;</span><span class="p">,</span> <span class="p">())]</span></div>
 
 <div class="viewcode-block" id="Subscription.acknowledge"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
@@ -318,9 +318,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ackIds&#39;</span><span class="p">:</span> <span class="n">ack_ids</span><span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ackIds&#39;</span><span class="p">:</span> <span class="n">ack_ids</span><span class="p">}</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:acknowledge&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:acknowledge&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.modify_ack_deadline"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update acknowledgement deadline for a retrieved message.</span>
@@ -339,9 +339,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;ackIds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ack_id</span><span class="p">],</span> <span class="s">&#39;ackDeadlineSeconds&#39;</span><span class="p">:</span> <span class="n">ack_deadline</span><span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ackIds&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ack_id</span><span class="p">],</span> <span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">:</span> <span class="n">ack_deadline</span><span class="p">}</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">:modifyAckDeadline&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:modifyAckDeadline&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,),</span>
             <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -355,7 +355,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Keys &mdash; gcloud ffe5869 documentation</title>
+    <title>Keys &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="index.html" />
     <link rel="next" title="Queries" href="datastore-queries.html" />
     <link rel="prev" title="Entities" href="datastore-entities.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-keys%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-keys%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -100,21 +100,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>An immutable representation of a datastore Key.</p>
 <p>To create a basic key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;EntityKind&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;EntityKind&#39;, &#39;name&#39;: &#39;foo&#39;}]&gt;</span>
 </pre></div>
 </div>
 <p>To create a key with a parent:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Child&#39;</span><span class="p">,</span> <span class="mi">1234</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent_key</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;, &#39;id&#39;: 1234}]&gt;</span>
 </pre></div>
 </div>
 <p>To create a partial key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s">&#39;Parent&#39;</span><span class="p">,</span> <span class="s">&#39;foo&#39;</span><span class="p">,</span> <span class="s">&#39;Child&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;Parent&#39;</span><span class="p">,</span> <span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="s1">&#39;Child&#39;</span><span class="p">)</span>
 <span class="go">&lt;Key[{&#39;kind&#39;: &#39;Parent&#39;, &#39;name&#39;: &#39;foo&#39;}, {&#39;kind&#39;: &#39;Child&#39;}]&gt;</span>
 </pre></div>
 </div>

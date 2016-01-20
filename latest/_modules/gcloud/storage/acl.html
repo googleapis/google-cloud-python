@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.acl &mdash; gcloud ffe5869 documentation</title>
+    <title>gcloud.storage.acl &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/acl%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -91,19 +91,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <section class="content">
         
   <h1>Source code for gcloud.storage.acl</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="c"># you may not use this file except in compliance with the License.</span>
-<span class="c"># You may obtain a copy of the License at</span>
-<span class="c">#</span>
-<span class="c">#     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="c">#</span>
-<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
-<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="c"># See the License for the specific language governing permissions and</span>
-<span class="c"># limitations under the License.</span>
+<span class="c1"># Copyright 2014 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Manipulate access control lists that Cloud Storage provides.</span>
 
@@ -186,9 +186,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       entity types (like &#39;allUsers&#39;) this is optional.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s">&#39;READER&#39;</span>
-    <span class="n">WRITER_ROLE</span> <span class="o">=</span> <span class="s">&#39;WRITER&#39;</span>
-    <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s">&#39;OWNER&#39;</span>
+    <span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;READER&#39;</span>
+    <span class="n">WRITER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;WRITER&#39;</span>
+    <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;OWNER&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
@@ -199,11 +199,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;{acl.type}-{acl.identifier}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s1">&#39;{acl.type}-{acl.identifier}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acl</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;&lt;ACL Entity: {acl} ({roles})&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">acl</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;ACL Entity: {acl} ({roles})&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">acl</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">get_roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the list of roles permitted by this entity.</span>
@@ -258,17 +258,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL">[docs]</a><span class="k">class</span> <span class="nc">ACL</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Container class representing a list of access controls.&quot;&quot;&quot;</span>
 
-    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;acl&#39;</span>
-    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s">&#39;predefinedAcl&#39;</span>
+    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s1">&#39;acl&#39;</span>
+    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s1">&#39;predefinedAcl&#39;</span>
 
     <span class="n">_PREDEFINED_ACLS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">([</span>
-        <span class="s">&#39;private&#39;</span><span class="p">,</span>
-        <span class="s">&#39;project-private&#39;</span><span class="p">,</span>
-        <span class="s">&#39;public-read&#39;</span><span class="p">,</span>
-        <span class="s">&#39;public-read-write&#39;</span><span class="p">,</span>
-        <span class="s">&#39;authenticated-read&#39;</span><span class="p">,</span>
-        <span class="s">&#39;bucket-owner-read&#39;</span><span class="p">,</span>
-        <span class="s">&#39;bucket-owner-full-control&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;private&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;project-private&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;public-read&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;public-read-write&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;authenticated-read&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bucket-owner-read&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;bucket-owner-full-control&#39;</span><span class="p">,</span>
     <span class="p">])</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
 <span class="sd">    https://cloud.google.com/storage/docs/access-control#predefined-acl</span>
@@ -276,8 +276,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="n">loaded</span> <span class="o">=</span> <span class="bp">False</span>
 
-    <span class="c"># Subclasses must override to provide these attributes (typically,</span>
-    <span class="c"># as properties).</span>
+    <span class="c1"># Subclasses must override to provide these attributes (typically,</span>
+    <span class="c1"># as properties).</span>
     <span class="n">reload_path</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">save_path</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -300,7 +300,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">get_roles</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">role</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="p">{</span><span class="s">&#39;entity&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="s">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">}</span>
+                    <span class="k">yield</span> <span class="p">{</span><span class="s1">&#39;entity&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">entity</span><span class="p">),</span> <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">role</span><span class="p">}</span>
 
 <div class="viewcode-block" id="ACL.entity_from_dict"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.entity_from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">entity_from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_dict</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build an _ACLEntity object from a dictionary of data.</span>
@@ -315,22 +315,22 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity constructed from the dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entity</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s">&#39;entity&#39;</span><span class="p">]</span>
-        <span class="n">role</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s">&#39;role&#39;</span><span class="p">]</span>
+        <span class="n">entity</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s1">&#39;entity&#39;</span><span class="p">]</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">entity_dict</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">entity</span> <span class="o">==</span> <span class="s">&#39;allUsers&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entity</span> <span class="o">==</span> <span class="s1">&#39;allUsers&#39;</span><span class="p">:</span>
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 
-        <span class="k">elif</span> <span class="n">entity</span> <span class="o">==</span> <span class="s">&#39;allAuthenticatedUsers&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">entity</span> <span class="o">==</span> <span class="s1">&#39;allAuthenticatedUsers&#39;</span><span class="p">:</span>
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_authenticated</span><span class="p">()</span>
 
-        <span class="k">elif</span> <span class="s">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
-            <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;-&#39;</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">:</span>
+            <span class="n">entity_type</span><span class="p">,</span> <span class="n">identifier</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="n">entity_type</span><span class="o">=</span><span class="n">entity_type</span><span class="p">,</span>
                                  <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">_ACLEntity</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Invalid dictionary: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">entity_dict</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid dictionary: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">entity_dict</span><span class="p">)</span>
 
         <span class="n">entity</span><span class="o">.</span><span class="n">grant</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">entity</span></div>
@@ -408,7 +408,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this user.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ACL.group"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a group Entity.</span>
@@ -419,7 +419,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An Entity corresponding to this group.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;group&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">identifier</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ACL.domain"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.domain">[docs]</a>    <span class="k">def</span> <span class="nf">domain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">domain</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for a domain Entity.</span>
@@ -430,7 +430,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity corresponding to this domain.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;domain&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s1">&#39;domain&#39;</span><span class="p">,</span> <span class="n">identifier</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ACL.all"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for an Entity representing all users.</span>
@@ -438,7 +438,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;allUsers&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s1">&#39;allUsers&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ACL.all_authenticated"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.all_authenticated">[docs]</a>    <span class="k">def</span> <span class="nf">all_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory method for an Entity representing all authenticated users.</span>
@@ -446,7 +446,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`_ACLEntity`</span>
 <span class="sd">        :returns: An entity representing all authenticated users.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s">&#39;allAuthenticatedUsers&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span><span class="s1">&#39;allAuthenticatedUsers&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ACL.get_entities"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ACL.get_entities">[docs]</a>    <span class="k">def</span> <span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a list of all Entity objects.</span>
@@ -488,9 +488,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="bp">self</span><span class="o">.</span><span class="n">entities</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-        <span class="n">found</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loaded</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">found</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_entity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_from_dict</span><span class="p">(</span><span class="n">entry</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acl</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
@@ -509,7 +509,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the ACL&#39;s parent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;projection&#39;</span><span class="p">:</span> <span class="s">&#39;full&#39;</span><span class="p">}</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="s1">&#39;full&#39;</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">predefined</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">acl</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">query_params</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_PREDEFINED_QUERY_PARAM</span><span class="p">]</span> <span class="o">=</span> <span class="n">predefined</span>
@@ -517,7 +517,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_path</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span>
             <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">acl</span><span class="p">)},</span>
             <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
@@ -559,7 +559,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       to the ``client`` stored on the ACL&#39;s parent.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">predefined</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PREDEFINED_ACLS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid predefined ACL: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">predefined</span><span class="p">,))</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid predefined ACL: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">predefined</span><span class="p">,))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_save</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">predefined</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></div>
 
@@ -597,7 +597,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reload_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the path for GET API requests for this ACL.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_URL_PATH_ELEM</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">save_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -608,8 +608,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="DefaultObjectACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.DefaultObjectACL">[docs]</a><span class="k">class</span> <span class="nc">DefaultObjectACL</span><span class="p">(</span><span class="n">BucketACL</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class representing the default object ACL for a bucket.&quot;&quot;&quot;</span>
 
-    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s">&#39;defaultObjectAcl&#39;</span>
-    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s">&#39;predefinedDefaultObjectAcl&#39;</span></div>
+    <span class="n">_URL_PATH_ELEM</span> <span class="o">=</span> <span class="s1">&#39;defaultObjectAcl&#39;</span>
+    <span class="n">_PREDEFINED_QUERY_PARAM</span> <span class="o">=</span> <span class="s1">&#39;predefinedDefaultObjectAcl&#39;</span></div>
 
 
 <div class="viewcode-block" id="ObjectACL"><a class="viewcode-back" href="../../../storage-acl.html#gcloud.storage.acl.ObjectACL">[docs]</a><span class="k">class</span> <span class="nc">ObjectACL</span><span class="p">(</span><span class="n">ACL</span><span class="p">):</span>
@@ -631,7 +631,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reload_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the path for GET API requests for this ACL.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/acl&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">path</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">save_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

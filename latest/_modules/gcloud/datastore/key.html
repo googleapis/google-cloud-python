@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.key &mdash; gcloud ffe5869 documentation</title>
+    <title>gcloud.datastore.key &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/key%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -91,19 +91,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <section class="content">
         
   <h1>Source code for gcloud.datastore.key</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2014 Google Inc. All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="c"># you may not use this file except in compliance with the License.</span>
-<span class="c"># You may obtain a copy of the License at</span>
-<span class="c">#</span>
-<span class="c">#     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="c">#</span>
-<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
-<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="c"># See the License for the specific language governing permissions and</span>
-<span class="c"># limitations under the License.</span>
+<span class="c1"># Copyright 2014 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Create / interact with gcloud datastore keys.&quot;&quot;&quot;</span>
 
@@ -153,12 +153,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">path_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">=</span> <span class="n">path_args</span>
-        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;parent&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;namespace&#39;</span><span class="p">)</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;project&#39;</span><span class="p">)</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parent&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;namespace&#39;</span><span class="p">)</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="n">_validate_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-        <span class="c"># _flat_path, _parent, _namespace and _project must be set before</span>
-        <span class="c"># _combine_args() is called.</span>
+        <span class="c1"># _flat_path, _parent, _namespace and _project must be set before</span>
+        <span class="c1"># _combine_args() is called.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_combine_args</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -221,11 +221,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 a string or an integer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Key path must not be empty.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Key path must not be empty.&#39;</span><span class="p">)</span>
 
         <span class="n">kind_list</span> <span class="o">=</span> <span class="n">path_args</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">id_or_name_list</span> <span class="o">=</span> <span class="n">path_args</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
-        <span class="c"># Dummy sentinel value to pad incomplete key to even length path.</span>
+        <span class="c1"># Dummy sentinel value to pad incomplete key to even length path.</span>
         <span class="n">partial_ending</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_args</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">id_or_name_list</span> <span class="o">+=</span> <span class="p">(</span><span class="n">partial_ending</span><span class="p">,)</span>
@@ -234,17 +234,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">id_or_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kind_list</span><span class="p">,</span> <span class="n">id_or_name_list</span><span class="p">):</span>
             <span class="n">curr_key_part</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-                <span class="n">curr_key_part</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kind</span>
+                <span class="n">curr_key_part</span><span class="p">[</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kind</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s">&#39;Kind was not a string.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="s1">&#39;Kind was not a string.&#39;</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-                <span class="n">curr_key_part</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
+                <span class="n">curr_key_part</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
-                <span class="n">curr_key_part</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
+                <span class="n">curr_key_part</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
             <span class="k">elif</span> <span class="n">id_or_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">partial_ending</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span>
-                                 <span class="s">&#39;ID/name was not a string or integer.&#39;</span><span class="p">)</span>
+                                 <span class="s1">&#39;ID/name was not a string or integer.&#39;</span><span class="p">)</span>
 
             <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curr_key_part</span><span class="p">)</span>
 
@@ -264,18 +264,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Parent key must be complete.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Parent key must be complete.&#39;</span><span class="p">)</span>
 
-            <span class="c"># We know that _parent.path() will return a copy.</span>
+            <span class="c1"># We know that _parent.path() will return a copy.</span>
             <span class="n">child_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="n">child_path</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">flat_path</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flat_path</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">namespace</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Child namespace must agree with parent</span><span class="se">\&#39;</span><span class="s">s.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Child namespace must agree with parent</span><span class="se">\&#39;</span><span class="s1">s.&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">namespace</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">project</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Child project must agree with parent</span><span class="se">\&#39;</span><span class="s">s.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Child project must agree with parent</span><span class="se">\&#39;</span><span class="s1">s.&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">project</span>
 
         <span class="k">return</span> <span class="n">child_path</span>
@@ -292,8 +292,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">cloned_self</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">flat_path</span><span class="p">,</span>
                                      <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
                                      <span class="n">namespace</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
-        <span class="c"># If the current parent has already been set, we re-use</span>
-        <span class="c"># the same instance</span>
+        <span class="c1"># If the current parent has already been set, we re-use</span>
+        <span class="c1"># the same instance</span>
         <span class="n">cloned_self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
         <span class="k">return</span> <span class="n">cloned_self</span>
 
@@ -310,16 +310,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 ``id_or_name`` is not a string or integer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_partial</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Only a partial key can be completed.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Only a partial key can be completed.&#39;</span><span class="p">)</span>
 
         <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s">&#39;name&#39;</span>
+            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s1">&#39;name&#39;</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
-            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s">&#39;id&#39;</span>
+            <span class="n">id_or_name_key</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">id_or_name</span><span class="p">,</span>
-                             <span class="s">&#39;ID/name was not a string or integer.&#39;</span><span class="p">)</span>
+                             <span class="s1">&#39;ID/name was not a string or integer.&#39;</span><span class="p">)</span>
 
         <span class="n">new_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clone</span><span class="p">()</span>
         <span class="n">new_key</span><span class="o">.</span><span class="n">_path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">id_or_name_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_or_name</span>
@@ -340,12 +340,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
             <span class="n">element</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">path_element</span><span class="o">.</span><span class="n">add</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s">&#39;kind&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
-                <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;kind&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">kind</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;id&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">key</span></div>
 
@@ -395,7 +395,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The kind of the current key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">&#39;kind&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;kind&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -404,7 +404,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: integer</span>
 <span class="sd">        :returns: The (integer) ID of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -413,7 +413,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: The (string) name of the key.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">id_or_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -468,7 +468,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;&lt;Key</span><span class="si">%s</span><span class="s">, project=</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Key</span><span class="si">%s</span><span class="s1">, project=</span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_validate_project</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
@@ -492,7 +492,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;A Key must have a project set.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;A Key must have a project set.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">project</span>
 
@@ -537,13 +537,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">if</span> <span class="n">project1</span> <span class="o">==</span> <span class="n">project2</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">True</span>
 
-    <span class="k">if</span> <span class="n">project1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">project1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;e~&#39;</span><span class="p">):</span>
-        <span class="c"># If `project1` is prefixed and not matching, then the only way</span>
-        <span class="c"># they can match is if `project2` is unprefixed.</span>
+    <span class="k">if</span> <span class="n">project1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">project1</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;e~&#39;</span><span class="p">):</span>
+        <span class="c1"># If `project1` is prefixed and not matching, then the only way</span>
+        <span class="c1"># they can match is if `project2` is unprefixed.</span>
         <span class="k">return</span> <span class="n">project1</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="o">==</span> <span class="n">project2</span>
-    <span class="k">elif</span> <span class="n">project2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">project2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;e~&#39;</span><span class="p">):</span>
-        <span class="c"># Here we know `project1` is unprefixed and `project2`</span>
-        <span class="c"># is prefixed.</span>
+    <span class="k">elif</span> <span class="n">project2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;s~&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">project2</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;e~&#39;</span><span class="p">):</span>
+        <span class="c1"># Here we know `project1` is unprefixed and `project2`</span>
+        <span class="c1"># is prefixed.</span>
         <span class="k">return</span> <span class="n">project1</span> <span class="o">==</span> <span class="n">project2</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
 
     <span class="k">return</span> <span class="bp">False</span>

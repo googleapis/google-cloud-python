@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud ffe5869 documentation</title>
+    <title>Authentication &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -101,7 +101,7 @@ authentication should &#8220;just work&#8221;.</p>
 </li>
 <li><p class="first"><strong>If you&#8217;re developing locally</strong>,
 the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>gcloud auth login
+<div class="highlight-bash"><div class="highlight"><pre>$ gcloud auth login
 </pre></div>
 </div>
 </li>
@@ -110,7 +110,7 @@ the easiest way to authenticate is using the <a class="reference external" href=
 <li><p class="first"><strong>If you&#8217;re running your application elsewhere</strong>,
 you should download a <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> JSON keyfile
 and point to it using an environment variable:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
+<div class="highlight-bash"><div class="highlight"><pre>$ <span class="nb">export</span> <span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -195,7 +195,7 @@ and
 factories are provided to create a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
 service account credentials.</p>
 <p>For example, with a JSON keyfile:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">

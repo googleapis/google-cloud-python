@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud ffe5869 documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -91,19 +91,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <section class="content">
         
   <h1>Source code for gcloud.bigquery.table</h1><div class="highlight"><pre>
-<span class="c"># Copyright 2015 Google Inc. All rights reserved.</span>
-<span class="c">#</span>
-<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="c"># you may not use this file except in compliance with the License.</span>
-<span class="c"># You may obtain a copy of the License at</span>
-<span class="c">#</span>
-<span class="c">#     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="c">#</span>
-<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
-<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="c"># See the License for the specific language governing permissions and</span>
-<span class="c"># limitations under the License.</span>
+<span class="c1"># Copyright 2015 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
 
@@ -141,7 +141,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type fields: list of :class:`SchemaField`, or None</span>
 <span class="sd">    :param fields: subfields (requires ``field_type`` of &#39;RECORD&#39;).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;NULLABLE&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;NULLABLE&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">field_type</span> <span class="o">=</span> <span class="n">field_type</span>
@@ -172,7 +172,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span> <span class="o">=</span> <span class="n">dataset</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c"># Let the @property do validation.</span>
+        <span class="c1"># Let the @property do validation.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
 
     <span class="nd">@property</span>
@@ -200,7 +200,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string</span>
 <span class="sd">        :returns: the path based on project and dataste name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">/tables/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -222,7 +222,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 any item in the sequence is not a SchemaField</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">SchemaField</span><span class="p">)</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">value</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Schema items must be fields&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -232,9 +232,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: ``datetime.datetime``, or ``NoneType``</span>
 <span class="sd">        :returns: the creation time (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">creation_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;creationTime&#39;</span><span class="p">)</span>
+        <span class="n">creation_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;creationTime&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">creation_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># creation_time will be in milliseconds.</span>
+            <span class="c1"># creation_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1000.0</span> <span class="o">*</span> <span class="n">creation_time</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -244,7 +244,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: the ETag (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;etag&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">modified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -253,9 +253,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: ``datetime.datetime``, or ``NoneType``</span>
 <span class="sd">        :returns: the modification time (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">modified_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;lastModifiedTime&#39;</span><span class="p">)</span>
+        <span class="n">modified_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">modified_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># modified_time will be in milliseconds.</span>
+            <span class="c1"># modified_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1000.0</span> <span class="o">*</span> <span class="n">modified_time</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -265,7 +265,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: integer, or ``NoneType``</span>
 <span class="sd">        :returns: the byte count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">num_bytes_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;numBytes&#39;</span><span class="p">)</span>
+        <span class="n">num_bytes_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numBytes&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_bytes_as_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_bytes_as_str</span><span class="p">)</span>
 
@@ -276,7 +276,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: integer, or ``NoneType``</span>
 <span class="sd">        :returns: the row count (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">num_rows_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;numRows&#39;</span><span class="p">)</span>
+        <span class="n">num_rows_as_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;numRows&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_rows_as_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_rows_as_str</span><span class="p">)</span>
 
@@ -287,7 +287,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;selfLink&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -296,7 +296,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: the ID (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">table_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -307,7 +307,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -316,7 +316,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: The description as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
 
     <span class="nd">@description.setter</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -328,8 +328,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">expires</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -338,9 +338,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: ``datetime.datetime``, or ``NoneType``</span>
 <span class="sd">        :returns: the expiration time, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">expiration_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;expirationTime&#39;</span><span class="p">)</span>
+        <span class="n">expiration_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">expiration_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># expiration_time will be in milliseconds.</span>
+            <span class="c1"># expiration_time will be in milliseconds.</span>
             <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1000.0</span> <span class="o">*</span> <span class="n">expiration_time</span><span class="p">)</span>
 
     <span class="nd">@expires.setter</span>
@@ -351,8 +351,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param value: the new expiration time, or None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -361,7 +361,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: The name as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;friendlyName&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
 
     <span class="nd">@friendly_name.setter</span>
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -373,8 +373,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -383,7 +383,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: The location as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;location&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
 
     <span class="nd">@location.setter</span>
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -395,8 +395,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string, or None&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -405,9 +405,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: string, or ``NoneType``</span>
 <span class="sd">        :returns: The query as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;view&#39;</span><span class="p">)</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;query&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">view</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;query&#39;</span><span class="p">)</span>
 
     <span class="nd">@view_query.setter</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -419,13 +419,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: ValueError for invalid value types.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a string&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;query&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a string&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
 
     <span class="nd">@view_query.deleter</span>
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete SQL query defining the table as a view.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;view&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Table.from_api_repr"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
@@ -440,11 +440,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.bigquery.table.Table`</span>
 <span class="sd">        :returns: Table parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="s">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;tableReference&#39;</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s">&#39;Resource lacks required identity information:&#39;</span>
-                           <span class="s">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
-        <span class="n">table_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;tableReference&#39;</span><span class="p">][</span><span class="s">&#39;tableId&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;tableReference&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
+                <span class="s1">&#39;tableId&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required identity information:&#39;</span>
+                           <span class="s1">&#39;[&quot;tableReference&quot;][&quot;tableId&quot;]&#39;</span><span class="p">)</span>
+        <span class="n">table_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;tableReference&#39;</span><span class="p">][</span><span class="s1">&#39;tableId&#39;</span><span class="p">]</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">table_name</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
         <span class="n">table</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">table</span></div>
@@ -471,41 +471,41 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">cleaned</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">schema</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="p">()})</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="n">cleaned</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">()})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s">&#39;creationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
-            <span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;creationTime&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="s">&#39;lastModifiedTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
-            <span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;lastModifiedTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;lastModifiedTime&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="s">&#39;expirationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
-            <span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s">&#39;expirationTime&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;creationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+            <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;creationTime&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;lastModifiedTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+            <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;lastModifiedTime&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s1">&#39;expirationTime&#39;</span> <span class="ow">in</span> <span class="n">cleaned</span><span class="p">:</span>
+            <span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cleaned</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">cleaned</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a resource for ``create`` or ``update``.&quot;&quot;&quot;</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s">&#39;tableReference&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
-                <span class="s">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
-            <span class="s">&#39;schema&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)},</span>
+            <span class="s1">&#39;tableReference&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">},</span>
+            <span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)},</span>
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expires</span><span class="p">)</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">friendly_name</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">resource</span><span class="p">[</span><span class="s">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">view</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">view</span><span class="p">[</span><span class="s">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">view</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view_query</span>
 
         <span class="k">return</span> <span class="n">resource</span>
 
@@ -520,10 +520,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;/projects/</span><span class="si">%s</span><span class="s">/datasets/</span><span class="si">%s</span><span class="s">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/datasets/</span><span class="si">%s</span><span class="s1">/tables&#39;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.exists"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -539,8 +539,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                          <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="s">&#39;id&#39;</span><span class="p">})</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                                          <span class="n">query_params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="s1">&#39;id&#39;</span><span class="p">})</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -559,7 +559,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.patch"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.patch">[docs]</a>    <span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -606,33 +606,33 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expires</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="ow">and</span>
                     <span class="n">expires</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pass a datetime, or None&quot;</span><span class="p">)</span>
+            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;expirationTime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_millis_from_datetime</span><span class="p">(</span><span class="n">expires</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
 
         <span class="k">if</span> <span class="n">friendly_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">friendly_name</span>
+            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">friendly_name</span>
 
         <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
-            <span class="n">partial</span><span class="p">[</span><span class="s">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+            <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
         <span class="k">if</span> <span class="n">view_query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">view_query</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;query&#39;</span><span class="p">:</span> <span class="n">view_query</span><span class="p">}</span>
+                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;view&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="n">view_query</span><span class="p">}</span>
 
         <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">_MARKER</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">partial</span><span class="p">[</span><span class="s">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)}</span>
+                <span class="n">partial</span><span class="p">[</span><span class="s1">&#39;schema&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">schema</span><span class="p">)}</span>
 
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">)</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PATCH&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">partial</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.update"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -647,7 +647,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.delete"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -661,7 +661,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Table.fetch_data"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.fetch_data">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  fetch the table data via a GET request</span>
@@ -699,17 +699,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
 
         <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">params</span><span class="p">[</span><span class="s">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;GET&#39;</span><span class="p">,</span>
-                                                 <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">/data&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                                                 <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/data&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                                  <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;totalRows&#39;</span><span class="p">)</span>
-        <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;pageToken&#39;</span><span class="p">)</span>
-        <span class="n">rows_data</span> <span class="o">=</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+        <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+        <span class="n">rows_data</span> <span class="o">=</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">rows_data</span><span class="p">,</span> <span class="n">total_rows</span><span class="p">,</span> <span class="n">page_token</span></div>
 
@@ -749,40 +749,40 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">rows_info</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;rows&#39;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="n">rows_info</span><span class="p">}</span>
 
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
             <span class="n">row_info</span> <span class="o">=</span> <span class="p">{}</span>
 
             <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s">&#39;TIMESTAMP&#39;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="c"># BigQuery stores TIMESTAMP data internally as a</span>
-                    <span class="c"># UNIX timestamp with microsecond precision.</span>
-                    <span class="c"># Specifies the number of seconds since the epoch.</span>
+                <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span> <span class="o">==</span> <span class="s1">&#39;TIMESTAMP&#39;</span> <span class="ow">and</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="c1"># BigQuery stores TIMESTAMP data internally as a</span>
+                    <span class="c1"># UNIX timestamp with microsecond precision.</span>
+                    <span class="c1"># Specifies the number of seconds since the epoch.</span>
                     <span class="n">value</span> <span class="o">=</span> <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
                 <span class="n">row_info</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;json&#39;</span><span class="p">:</span> <span class="n">row_info</span><span class="p">}</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="p">:</span> <span class="n">row_info</span><span class="p">}</span>
             <span class="k">if</span> <span class="n">row_ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">info</span><span class="p">[</span><span class="s">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_ids</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
             <span class="n">rows_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">skip_invalid_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s">&#39;skipInvalidRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_invalid_rows</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;skipInvalidRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_invalid_rows</span>
 
         <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
-            <span class="n">method</span><span class="o">=</span><span class="s">&#39;POST&#39;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">/insertAll&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/insertAll&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;insertErrors&#39;</span><span class="p">,</span> <span class="p">()):</span>
-            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&#39;index&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s">&#39;index&#39;</span><span class="p">]),</span>
-                           <span class="s">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s">&#39;errors&#39;</span><span class="p">]})</span>
+        <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;insertErrors&#39;</span><span class="p">,</span> <span class="p">()):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]),</span>
+                           <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]})</span>
 
         <span class="k">return</span> <span class="n">errors</span></div></div>
 
@@ -797,15 +797,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: a list of parsed fields, or ``None`` if no &quot;fields&quot; key is</span>
 <span class="sd">                present in ``info``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="s">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;fields&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">None</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">&#39;fields&#39;</span><span class="p">]:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
-        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mode&#39;</span><span class="p">,</span> <span class="s">&#39;NULLABLE&#39;</span><span class="p">)</span>
-        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;description&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">r_field</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">r_field</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="s1">&#39;NULLABLE&#39;</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">r_field</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
         <span class="n">sub_fields</span> <span class="o">=</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="n">r_field</span><span class="p">)</span>
         <span class="n">schema</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">SchemaField</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">field_type</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">sub_fields</span><span class="p">))</span>
@@ -823,13 +823,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
-        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
-                <span class="s">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">field_type</span><span class="p">,</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">description</span>
         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">info</span><span class="p">[</span><span class="s">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
+            <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
         <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span>
 </pre></div>

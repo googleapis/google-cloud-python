@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud ffe5869 documentation</title>
+    <title>Using the API &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="index.html" />
     <link rel="next" title="DNS Client" href="dns-client.html" />
     <link rel="prev" title="Projects" href="resource-manager-project.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-usage%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-usage%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -120,7 +120,7 @@ environment variables, GAE, or GCE).</p>
 <code class="docutils literal"><span class="pre">classmethod</span></code> factories:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -130,10 +130,10 @@ environment variables, GAE, or GCE).</p>
 <p>Query the quotas for a given project:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">quotas</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">quotas</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quotas</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">quotas</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">quotas</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
 <span class="go">managedZones: 10000</span>
 <span class="go">resourceRecordsPerRrset: 100</span>
 <span class="go">rrsetsPerManagedZone: 10000</span>
@@ -156,14 +156,14 @@ via the API:  it must be managed using the Google Developer Console.</p>
 suffix and has a set of name servers that accept and responds to queries:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s">&#39;acme-co&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&#39;Acme Company zone&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                   <span class="n">dns_name</span><span class="o">=</span><span class="s">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Acme Company zone&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">dns_name</span><span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -171,8 +171,8 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 <p>List the zones for a given project:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zones</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_zones</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zones</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_zones</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">zone</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">zones</span><span class="p">]</span>
 <span class="go">[&#39;acme-co&#39;]</span>
 </pre></div>
@@ -184,9 +184,9 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 <p>Each managed zone exposes a read-only set of resource records:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s">&#39;acme-co&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">ttl</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">)</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
 <span class="go">[(&#39;example.com.&#39;, &#39;SOA&#39;, 21600, [&#39;ns-cloud1.googlecomains.com dns-admin.google.com 1 21600 3600 1209600 300&#39;])]</span>
 </pre></div>
@@ -199,10 +199,10 @@ be an opaque string if there are more resources than can be returned in a
 single request.  To enumerate them all, repeat calling
 <code class="docutils literal"><span class="pre">zone.list_resource_record_sets()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until
 the token is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c"># API request</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c"># API request</span>
+<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
 <span class="gp">... </span>    <span class="n">records</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">next_batch</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -215,25 +215,25 @@ bundling additions to or deletions from the set.</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s">&#39;acme-co&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">ResourceRecord</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;www.example.com&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;CNAME&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">ResourceRecord</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;www.example.com&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;CNAME&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">change</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">change_request</span><span class="p">(</span><span class="n">additions</span><span class="o">=</span><span class="p">[</span><span class="n">record</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">change</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">change</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s">&#39;done&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Waiting for change to complete&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>  <span class="c"># or whatever interval is appropriate</span>
-<span class="gp">... </span>    <span class="n">change</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">change</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">change</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Waiting for change to complete&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>  <span class="c1"># or whatever interval is appropriate</span>
+<span class="gp">... </span>    <span class="n">change</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>List changes made to the resource record set for a given zone:</p>
 <blockquote>
 <div><div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">dns</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s">&#39;acme-co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -244,10 +244,10 @@ an opaque string if there are more changes than can be returned in a
 single request.  To enumerate them all, repeat calling
 <code class="docutils literal"><span class="pre">zone.list_changes()</span></code>, passing the <code class="docutils literal"><span class="pre">page_token</span></code>, until the token
 is <code class="docutils literal"><span class="pre">None</span></code>.  E.g.:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c"># API request</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">next_batch</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c"># API request</span>
+<span class="gp">... </span>        <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>  <span class="c1"># API request</span>
 <span class="gp">... </span>    <span class="n">changes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">next_batch</span><span class="p">)</span>
 </pre></div>
 </div>

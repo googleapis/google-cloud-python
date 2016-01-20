@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud ffe5869 documentation</title>
+    <title>Using the API &mdash; gcloud fad4337 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'ffe5869',
+        VERSION:     'fad4337',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud ffe5869 documentation" href="index.html" />
+    <link rel="top" title="gcloud fad4337 documentation" href="index.html" />
     <link rel="next" title="Search Client" href="search-client.html" />
     <link rel="prev" title="Change Sets" href="dns-changes.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+search-usage%0ARelease%3A%20ffe5869" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+search-usage%0ARelease%3A%20fad4337" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (ffe5869)
+              Version History (fad4337)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -121,11 +121,11 @@ create an instance of <a class="reference internal" href="search-client.html#gcl
 <h2>Indexes<a class="headerlink" href="#indexes" title="Permalink to this headline">#</a></h2>
 <p>Indexes are searchable collections of documents.</p>
 <p>List all indexes in the client&#8217;s project:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">indexes</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_indexes</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">indexes</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_indexes</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indexes</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">field_names</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">fields</span><span class="p">])</span>
-<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s">&#39;- </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">field_names</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">field_names</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">index</span><span class="o">.</span><span class="n">fields</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;- </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">field_names</span><span class="p">)</span>
 <span class="go">index-name</span>
 <span class="go">- field-1, field-2</span>
 <span class="go">another-index-name</span>
@@ -133,7 +133,7 @@ create an instance of <a class="reference internal" href="search-client.html#gcl
 </pre></div>
 </div>
 <p>Create a new index:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;new-index-name&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;new-index-name&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -146,39 +146,39 @@ they are derived from the documents which are created &#8220;within&#8221; them.
 <h2>Documents<a class="headerlink" href="#documents" title="Permalink to this headline">#</a></h2>
 <p>Create a document instance, which is not yet added to its index on
 the server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;index-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s">&#39;document-1&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;index-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;document-1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">rank</span>
 <span class="go">None</span>
 </pre></div>
 </div>
 <p>Add one or more fields to the document:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s">&#39;fieldname&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">&#39;string&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="s1">&#39;fieldname&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Save the document into the index:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">rank</span>      <span class="c"># set by the server</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">rank</span>      <span class="c1"># set by the server</span>
 <span class="go">1443648166</span>
 </pre></div>
 </div>
 <p>List all documents in an index:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">documents</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">list_documents</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">documents</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">list_documents</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">document</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
 <span class="go">[&#39;document-1&#39;]</span>
 </pre></div>
 </div>
 <p>Delete a document from its index:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s">&#39;to-be-deleted&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;to-be-deleted&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c"># API call</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API clal</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API clal</span>
 <span class="go">False</span>
 </pre></div>
 </div>
@@ -186,13 +186,13 @@ the server:</p>
 <p class="first admonition-title">Note</p>
 <p>To update a document in place after manipulating its fields or rank, just
 recreate it:  E.g.:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s">&#39;document-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c"># API call</span>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;document-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API call</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="mi">12345</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s">&#39;field-name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">&#39;christina aguilera&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field-name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;christina aguilera&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API call</span>
 </pre></div>
 </div>
 </div>
@@ -219,11 +219,11 @@ tags, and treating the rest of the content like Text.</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">search</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;index-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s">&#39;document-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s">&#39;field-name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">tokenization</span><span class="o">=</span><span class="s">&#39;atom&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Britney</span> <span class="n">Spears</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span><span class="s">&#39;, tokenization=&#39;</span><span class="n">html</span><span class="s">&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;index-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">document</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;document-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">field</span><span class="p">(</span><span class="s1">&#39;field-name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">tokenization</span><span class="o">=</span><span class="s1">&#39;atom&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">field</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Britney</span> <span class="n">Spears</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span><span class="s1">&#39;, tokenization=&#39;</span><span class="n">html</span><span class="s1">&#39;)</span>
 </pre></div>
 </div>
 </div>
@@ -233,9 +233,9 @@ tags, and treating the rest of the content like Text.</li>
 issuing a search query:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">search</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;index-id&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;britney spears&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">matching_documents</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>  <span class="c"># API call</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">index</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;index-id&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;britney spears&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matching_documents</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># API call</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">document</span> <span class="ow">in</span> <span class="n">matching_documents</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="go">[&#39;document-id&#39;]</span>
@@ -245,13 +245,13 @@ issuing a search query:</p>
 document was created.  See:
 <a class="reference external" href="https://cloud.google.com/search/reference/rest/v1/projects/indexes/documents#resource_representation.google.cloudsearch.v1.Document.rank">https://cloud.google.com/search/reference/rest/v1/projects/indexes/documents#resource_representation.google.cloudsearch.v1.Document.rank</a></p>
 <p>To sort differently, use the <code class="docutils literal"><span class="pre">order_by</span></code> parameter:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ordered</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;field1&#39;</span><span class="p">,</span> <span class="s">&#39;-field2&#39;</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ordered</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;-field2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Note that the <code class="docutils literal"><span class="pre">-</span></code> character before <code class="docutils literal"><span class="pre">field2</span></code> means that this query will
 be sorted ascending by <code class="docutils literal"><span class="pre">field1</span></code> and then descending by <code class="docutils literal"><span class="pre">field2</span></code>.</p>
 <p>To limit the fields to be returned in the match, use the <code class="docutils literal"><span class="pre">fields</span></code> paramater:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">projected</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;field1&#39;</span><span class="p">,</span> <span class="s">&#39;field2&#39;</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">projected</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;britney spears&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
