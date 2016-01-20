@@ -30,7 +30,6 @@ DOCS_DIR = os.path.join(BASE_DIR, 'docs')
 OBJECT_INVENTORY_RELPATH = os.path.join('_build', 'html', 'objects.inv')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
-    'gcloud.bigquery.query',
     'gcloud.bigtable.client',
     'gcloud.bigtable.cluster',
     'gcloud.bigtable.column_family',

@@ -154,12 +154,12 @@ def get_files_for_linting(allow_limited=True):
     if diff_base is not None and allow_limited:
         result = subprocess.check_output(['git', 'diff', '--name-only',
                                           diff_base])
-        print 'Using files changed relative to %s:' % (diff_base,)
-        print '-' * 60
-        print result.rstrip('\n')  # Don't print trailing newlines.
-        print '-' * 60
+        print('Using files changed relative to %s:' % (diff_base,))
+        print('-' * 60)
+        print(result.rstrip('\n'))  # Don't print trailing newlines.
+        print('-' * 60)
     else:
-        print 'Diff base not specified, listing all files in repository.'
+        print('Diff base not specified, listing all files in repository.')
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
@@ -217,7 +217,7 @@ def lint_fileset(filenames, rcfile, description):
             print(error_message, file=sys.stderr)
             sys.exit(status_code)
     else:
-        print 'Skipping %s, no files to lint.' % (description,)
+        print('Skipping %s, no files to lint.' % (description,))
 
 
 def main():
