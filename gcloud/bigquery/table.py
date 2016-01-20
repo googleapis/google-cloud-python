@@ -632,7 +632,9 @@ class Table(object):
         https://cloud.google.com/bigquery/docs/reference/v2/tabledata/insertAll
 
         :type rows: list of tuples
-        :param rows: row data to be inserted
+        :param rows: Row data to be inserted. Each tuple should contain data
+                     for each schema field on the current table and in the
+                     same order as the schema fields.
 
         :type row_ids: list of string
         :param row_ids: Unique ids, one per row being inserted.  If not
