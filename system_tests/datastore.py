@@ -32,11 +32,6 @@ from system_tests import populate_datastore
 from system_tests.system_test_utils import EmulatorCreds
 
 
-# Isolated namespace so concurrent test runs don't collide.
-TEST_NAMESPACE = 'ns%d' % (1000 * time.time(),)
-EMULATOR_DATASET = os.getenv(GCD_DATASET)
-
-
 class Config(object):
     """Run-time configuration to be modified at set-up.
 
@@ -56,14 +51,17 @@ def clone_client(client):
 
 
 def setUpModule():
-    if EMULATOR_DATASET is None:
+    emulator_dataset = os.getenv(GCD_DATASET)
+    # Isolated namespace so concurrent test runs don't collide.
+    test_namespace = 'ns%d' % (1000 * time.time(),)
+    if emulator_dataset is None:
         client_mod.DATASET = TESTS_DATASET
-        Config.CLIENT = datastore.Client(namespace=TEST_NAMESPACE)
+        Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()
         http = httplib2.Http()  # Un-authorized.
-        Config.CLIENT = datastore.Client(project=EMULATOR_DATASET,
-                                         namespace=TEST_NAMESPACE,
+        Config.CLIENT = datastore.Client(project=emulator_dataset,
+                                         namespace=test_namespace,
                                          credentials=credentials,
                                          http=http)
 
@@ -209,11 +207,11 @@ class TestDatastoreQuery(TestDatastore):
         cls.CLIENT = clone_client(Config.CLIENT)
         # Remove the namespace from the cloned client, since these
         # query tests rely on the entities to be already stored and indexed,
-        # hence ``TEST_NAMESPACE`` set at runtime can't be used.
+        # hence ``test_namespace`` set at runtime can't be used.
         cls.CLIENT.namespace = None
 
         # In the emulator, re-populating the datastore is cheap.
-        if EMULATOR_DATASET is not None:
+        if os.getenv(GCD_DATASET) is not None:
             # Populate the datastore with the cloned client.
             populate_datastore.add_characters(client=cls.CLIENT)
 
@@ -224,7 +222,7 @@ class TestDatastoreQuery(TestDatastore):
     @classmethod
     def tearDownClass(cls):
         # In the emulator, destroy the query entities.
-        if EMULATOR_DATASET is not None:
+        if os.getenv(GCD_DATASET) is not None:
             # Use the client for this test instead of the global.
             clear_datastore.remove_all_entities(client=cls.CLIENT)
 

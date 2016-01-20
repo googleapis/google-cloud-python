@@ -25,11 +25,11 @@ import subprocess
 
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import GCD_HOST
+from system_tests.run_system_test import run_module_tests
 
 
 _START_CMD = ('gcloud', 'beta', 'emulators', 'datastore', 'start')
 _ENV_INIT_CMD = ('gcloud', 'beta', 'emulators', 'datastore', 'env-init')
-_HOST_VAR_NAME = 'DATASTORE_HOST'
 _DATASET_PREFIX = 'export ' + GCD_DATASET + '='
 _HOST_LINE_PREFIX = 'export ' + GCD_HOST + '='
 
@@ -50,8 +50,6 @@ def main():
         os.environ[GCD_DATASET] = dataset
         os.environ[GCD_HOST] = host
         os.environ['GCLOUD_NO_PRINT'] = 'true'
-        # Delay import until after environment variables are set.
-        from system_tests.run_system_test import run_module_tests
         run_module_tests('datastore',
                          ignore_requirements=True)
     finally:
