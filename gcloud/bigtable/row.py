@@ -48,6 +48,9 @@ class Row(object):
                     the row, otherwise the :data:`False` state will be.
     """
 
+    ALL_COLUMNS = object()
+    """Sentinel value used to indicate all columns in a column family."""
+
     def __init__(self, row_key, table, filter_=None):
         self._row_key = _to_bytes(row_key)
         self._table = table
@@ -125,20 +128,26 @@ class Row(object):
 
     def increment_cell_value(self, column_family_id, column, int_value):
         """Increments a value in an existing cell.
+
         Assumes the value in the cell is stored as a 64 bit integer
         serialized to bytes.
+
         .. note::
+
             This method adds a read-modify rule protobuf to the accumulated
             read-modify rules on this :class:`Row`, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit_modifications`.
+
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
                                  Must be of the form
                                  ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
         :type column: bytes
         :param column: The column within the column family where the cell
                        is located.
+
         :type int_value: int
         :param int_value: The value to increment the existing value in the cell
                           by. If the targeted cell is unset, it will be treated
@@ -152,6 +161,119 @@ class Row(object):
                                                column_qualifier=column,
                                                increment_amount=int_value)
         self._rule_pb_list.append(rule_pb)
+
+    def delete(self, state=None):
+        """Deletes this row from the table.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            :class:`Row`, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+        """
+        mutation_val = data_pb2.Mutation.DeleteFromRow()
+        mutation_pb = data_pb2.Mutation(delete_from_row=mutation_val)
+        self._get_mutations(state).append(mutation_pb)
+
+    def delete_cell(self, column_family_id, column, time_range=None,
+                    state=None):
+        """Deletes cell in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            :class:`Row`, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family that will have a
+                       cell deleted.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+        """
+        self.delete_cells(column_family_id, [column], time_range=time_range,
+                          state=state)
+
+    def delete_cells(self, column_family_id, columns, time_range=None,
+                     state=None):
+        """Deletes cells in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            :class:`Row`, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type columns: :class:`list` of :class:`str` /
+                       :func:`unicode <unicode>`, or :class:`object`
+        :param columns: The columns within the column family that will have
+                        cells deleted. If :attr:`Row.ALL_COLUMNS` is used then
+                        the entire column family will be deleted from the row.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+        """
+        mutations_list = self._get_mutations(state)
+        if columns is self.ALL_COLUMNS:
+            mutation_val = data_pb2.Mutation.DeleteFromFamily(
+                family_name=column_family_id,
+            )
+            mutation_pb = data_pb2.Mutation(delete_from_family=mutation_val)
+            mutations_list.append(mutation_pb)
+        else:
+            delete_kwargs = {}
+            if time_range is not None:
+                delete_kwargs['time_range'] = time_range.to_pb()
+
+            to_append = []
+            for column in columns:
+                column = _to_bytes(column)
+                # time_range will never change if present, but the rest of
+                # delete_kwargs will
+                delete_kwargs.update(
+                    family_name=column_family_id,
+                    column_qualifier=column,
+                )
+                mutation_val = data_pb2.Mutation.DeleteFromColumn(
+                    **delete_kwargs)
+                mutation_pb = data_pb2.Mutation(
+                    delete_from_column=mutation_val)
+                to_append.append(mutation_pb)
+
+            # We don't add the mutations until all columns have been
+            # processed without error.
+            mutations_list.extend(to_append)
 
 
 class RowFilter(object):

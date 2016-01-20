@@ -123,6 +123,177 @@ class TestRow(unittest2.TestCase):
             increment_amount=int_value)
         self.assertEqual(row._rule_pb_list, [expected_pb])
 
+    def test_delete(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        row_key = b'row_key'
+        row = self._makeOne(row_key, object())
+        self.assertEqual(row._pb_mutations, [])
+        row.delete()
+
+        expected_pb = data_pb2.Mutation(
+            delete_from_row=data_pb2.Mutation.DeleteFromRow(),
+        )
+        self.assertEqual(row._pb_mutations, [expected_pb])
+
+    def test_delete_cell(self):
+        klass = self._getTargetClass()
+
+        class MockRow(klass):
+
+            def __init__(self, *args, **kwargs):
+                super(MockRow, self).__init__(*args, **kwargs)
+                self._args = []
+                self._kwargs = []
+
+            # Replace the called method with one that logs arguments.
+            def delete_cells(self, *args, **kwargs):
+                self._args.append(args)
+                self._kwargs.append(kwargs)
+
+        row_key = b'row_key'
+        column = b'column'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        mock_row = MockRow(row_key, table)
+        # Make sure no values are set before calling the method.
+        self.assertEqual(mock_row._pb_mutations, [])
+        self.assertEqual(mock_row._args, [])
+        self.assertEqual(mock_row._kwargs, [])
+
+        # Actually make the request against the mock class.
+        time_range = object()
+        mock_row.delete_cell(column_family_id, column, time_range=time_range)
+        self.assertEqual(mock_row._pb_mutations, [])
+        self.assertEqual(mock_row._args, [(column_family_id, [column])])
+        self.assertEqual(mock_row._kwargs, [{
+            'state': None,
+            'time_range': time_range,
+        }])
+
+    def test_delete_cells_non_iterable(self):
+        row_key = b'row_key'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        columns = object()  # Not iterable
+        with self.assertRaises(TypeError):
+            row.delete_cells(column_family_id, columns)
+
+    def test_delete_cells_all_columns(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        row_key = b'row_key'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        klass = self._getTargetClass()
+        self.assertEqual(row._pb_mutations, [])
+        row.delete_cells(column_family_id, klass.ALL_COLUMNS)
+
+        expected_pb = data_pb2.Mutation(
+            delete_from_family=data_pb2.Mutation.DeleteFromFamily(
+                family_name=column_family_id,
+            ),
+        )
+        self.assertEqual(row._pb_mutations, [expected_pb])
+
+    def test_delete_cells_no_columns(self):
+        row_key = b'row_key'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        columns = []
+        self.assertEqual(row._pb_mutations, [])
+        row.delete_cells(column_family_id, columns)
+        self.assertEqual(row._pb_mutations, [])
+
+    def _delete_cells_helper(self, time_range=None):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        row_key = b'row_key'
+        column = b'column'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        columns = [column]
+        self.assertEqual(row._pb_mutations, [])
+        row.delete_cells(column_family_id, columns, time_range=time_range)
+
+        expected_pb = data_pb2.Mutation(
+            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+                family_name=column_family_id,
+                column_qualifier=column,
+            ),
+        )
+        if time_range is not None:
+            expected_pb.delete_from_column.time_range.CopyFrom(
+                time_range.to_pb())
+        self.assertEqual(row._pb_mutations, [expected_pb])
+
+    def test_delete_cells_no_time_range(self):
+        self._delete_cells_helper()
+
+    def test_delete_cells_with_time_range(self):
+        import datetime
+        from gcloud._helpers import _EPOCH
+        from gcloud.bigtable.row import TimestampRange
+
+        microseconds = 30871000  # Makes sure already milliseconds granularity
+        start = _EPOCH + datetime.timedelta(microseconds=microseconds)
+        time_range = TimestampRange(start=start)
+        self._delete_cells_helper(time_range=time_range)
+
+    def test_delete_cells_with_bad_column(self):
+        # This makes sure a failure on one of the columns doesn't leave
+        # the row's mutations in a bad state.
+        row_key = b'row_key'
+        column = b'column'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        columns = [column, object()]
+        self.assertEqual(row._pb_mutations, [])
+        with self.assertRaises(TypeError):
+            row.delete_cells(column_family_id, columns)
+        self.assertEqual(row._pb_mutations, [])
+
+    def test_delete_cells_with_string_columns(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        row_key = b'row_key'
+        column_family_id = u'column_family_id'
+        column1 = u'column1'
+        column1_bytes = b'column1'
+        column2 = u'column2'
+        column2_bytes = b'column2'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        columns = [column1, column2]
+        self.assertEqual(row._pb_mutations, [])
+        row.delete_cells(column_family_id, columns)
+
+        expected_pb1 = data_pb2.Mutation(
+            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+                family_name=column_family_id,
+                column_qualifier=column1_bytes,
+            ),
+        )
+        expected_pb2 = data_pb2.Mutation(
+            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+                family_name=column_family_id,
+                column_qualifier=column2_bytes,
+            ),
+        )
+        self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
+
 
 class Test_BoolFilter(unittest2.TestCase):
 
