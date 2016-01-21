@@ -126,9 +126,16 @@ class Client(JSONClient):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         topics = {}
-        subscriptions = [Subscription.from_api_repr(resource, self,
-                                                    topics=topics)
-                         for resource in resp['subscriptions']]
+        subscriptions = []
+        for resource in resp['subscriptions']:
+            if 'topic' in resource and len(resource['topic'].split('/')) == 4:
+                subscriptions.append(Subscription.from_api_repr(resource, self, topics=topics))
+            elif topic_name and len(resource.split('/')) == 4:
+                subscription_name = resource.split('/')[3]
+                subscriptions.append(Subscription(
+                    name=subscription_name,
+                    topic=self.topic(topic_name)
+                ))
         return subscriptions, resp.get('nextPageToken')
 
     def topic(self, name, timestamp_messages=False):
