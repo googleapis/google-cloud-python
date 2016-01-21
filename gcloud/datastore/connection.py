@@ -41,18 +41,17 @@ class Connection(connection.Connection):
                          :attr:`API_BASE_URL`.
     """
 
-    API_BASE_URL = 'https://www.googleapis.com'
+    API_BASE_URL = 'https://datastore.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta2'
+    API_VERSION = 'v1beta3'
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = ('{api_base}/datastore/{api_version}'
-                        '/datasets/{project}/{method}')
+    API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                        '/{project}:{method}')
     """A template for the URL of a particular API call."""
 
-    SCOPE = ('https://www.googleapis.com/auth/datastore',
-             'https://www.googleapis.com/auth/userinfo.email')
+    SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(self, credentials=None, http=None, api_base_url=None):
