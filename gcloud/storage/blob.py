@@ -150,16 +150,20 @@ class Blob(_PropertyMixin):
             quoted_name=quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET',
-                            client=None, credentials=None):
+                            client=None, credentials=None,
+                            response_type=None, response_disposition=None,
+                            generation=None):
         """Generates a signed URL for this blob.
 
         .. note::
-          If you are on Google Compute Engine, you can't generate a signed URL.
-          Follow
-          https://github.com/GoogleCloudPlatform/gcloud-python/issues/922
-          for updates on this. If you'd like to be able to generate a signed
-          URL from GCE, you can use a standard service account from a JSON
-          file rather than a GCE service account.
+
+            If you are on Google Compute Engine, you can't generate a signed
+            URL. Follow `Issue 922`_ for updates on this. If you'd like to
+            be able to generate a signed URL from GCE, you can use a standard
+            service account from a JSON file rather than a GCE service account.
+
+        .. _Issue 922: https://github.com/GoogleCloudPlatform/\
+                       gcloud-python/issues/922
 
         If you have a blob that you want to allow access to for a set
         amount of time, you can use this method to generate a URL that
@@ -172,18 +176,37 @@ class Blob(_PropertyMixin):
         :type expiration: int, long, datetime.datetime, datetime.timedelta
         :param expiration: When the signed URL should expire.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: Optional. The client to use.  If not passed, falls back
+        :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
         :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                            :class:`NoneType`
-        :param credentials: The OAuth2 credentials to use to sign the URL.
+        :param credentials: (Optional) The OAuth2 credentials to use to sign
+                            the URL. Defaults to the credentials stored on the
+                            client used.
 
-        :rtype: string
+        :type response_type: str
+        :param response_type: (Optional) Content type of responses to requests
+                              for the signed URL. Used to over-ride the content
+                              type of the underlying blob/object.
+
+        :type response_disposition: str
+        :param response_disposition: (Optional) Content disposition of
+                                     responses to requests for the signed URL.
+                                     For example, to enable the signed URL
+                                     to initiate a file of ``blog.png``, use
+                                     the value
+                                     ``'attachment; filename=blob.png'``.
+
+        :type generation: str
+        :param generation: (Optional) A value that indicates which generation
+                           of the resource to fetch.
+
+        :rtype: str
         :returns: A signed URL you can use to access the resource
                   until expiration.
         """
@@ -198,7 +221,10 @@ class Blob(_PropertyMixin):
         return generate_signed_url(
             credentials, resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
-            expiration=expiration, method=method)
+            expiration=expiration, method=method,
+            response_type=response_type,
+            response_disposition=response_disposition,
+            generation=generation)
 
     def exists(self, client=None):
         """Determines whether or not this blob exists.

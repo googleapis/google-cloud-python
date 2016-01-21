@@ -146,6 +146,9 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': PATH,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
@@ -180,6 +183,9 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': '/name/parent%2Fchild',
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
@@ -208,6 +214,9 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'POST',
             'resource': PATH,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
         }
         self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
