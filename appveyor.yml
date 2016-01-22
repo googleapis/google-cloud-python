@@ -73,6 +73,9 @@ install:
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
+  # Make sure OpenSSL libs are available.
+  - "SET LIB=C:\OpenSSL-Win32\lib;%LIB%"
+
   # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
