@@ -92,6 +92,7 @@ install:
   - "%CMD_IN_ENV% pip install wheel"
   - "%CMD_IN_ENV% pip install nose"
   - "%CMD_IN_ENV% pip install unittest2"
+  - "%CMD_IN_ENV% pip install cryptography"
 
 build_script:
   # Build the compiled extension
