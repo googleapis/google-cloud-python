@@ -43,16 +43,16 @@ We support:
 
 -  `Python 2.6`_
 -  `Python 2.7`_
--  `Python 3.3`_
 -  `Python 3.4`_
+-  `Python 3.5`_
 
 For more information, see `Supported Python Versions`_ in
 ``CONTRIBUTING``.
 
 .. _Python 2.6: https://docs.python.org/2.6/
 .. _Python 2.7: https://docs.python.org/2.7/
-.. _Python 3.3: https://docs.python.org/3.3/
 .. _Python 3.4: https://docs.python.org/3.4/
+.. _Python 3.5: https://docs.python.org/3.5/
 .. _Supported Python Versions: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst#supported-python-versions
 
 Example Applications
