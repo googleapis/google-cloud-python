@@ -612,9 +612,24 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_tables_empty(self):
+        from gcloud.bigquery.table import Table
+
+        conn = _Connection({})
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = self._makeOne(self.DS_NAME, client=client)
+        tables, token = dataset.list_tables()
+        self.assertEqual(tables, [])
+        self.assertEqual(token, None)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        self.assertEqual(req['path'], '/%s' % PATH)
+
     def test_list_tables_defaults(self):
         from gcloud.bigquery.table import Table
-        conn = _Connection({})
+
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
@@ -657,7 +672,7 @@ class TestDataset(unittest2.TestCase):
 
     def test_list_tables_explicit(self):
         from gcloud.bigquery.table import Table
-        conn = _Connection({})
+
         TABLE_1 = 'table_one'
         TABLE_2 = 'table_two'
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
