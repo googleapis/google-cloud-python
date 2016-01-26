@@ -391,7 +391,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket = self._makeOne(client=client, name=NAME)
 
         # Make the Bucket refuse to delete with 2 objects.
-        bucket._MAX_OBJECTS_FOR_ITERATION = 1
+        bucket.MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.delete, force=True)
         self.assertEqual(connection._deleted_buckets, [])
 
@@ -921,7 +921,7 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
         self.assertEqual(kw[1]['method'], 'GET')
         self.assertEqual(kw[1]['path'], '/b/%s/o' % NAME)
-        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
+        max_results = bucket.MAX_OBJECTS_FOR_ITERATION + 1
         self.assertEqual(kw[1]['query_params'],
                          {'maxResults': max_results, 'projection': 'full'})
 
@@ -947,7 +947,7 @@ class Test_Bucket(unittest2.TestCase):
         bucket.default_object_acl.loaded = True
 
         # Make the Bucket refuse to make_public with 2 objects.
-        bucket._MAX_OBJECTS_FOR_ITERATION = 1
+        bucket.MAX_OBJECTS_FOR_ITERATION = 1
         self.assertRaises(ValueError, bucket.make_public, recursive=True)
 
 

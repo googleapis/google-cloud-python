@@ -81,10 +81,10 @@ class Bucket(_PropertyMixin):
     """
     _iterator_class = _BlobIterator
 
-    _MAX_OBJECTS_FOR_ITERATION = 256
+    MAX_OBJECTS_FOR_ITERATION = 256
     """Maximum number of existing objects allowed in iteration.
 
-    This is used in Bucket.delete() and Bucket.make_public().
+    This is used in :meth:`delete` and :meth:`make_public`.
     """
 
     _STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'DURABLE_REDUCED_AVAILABILITY')
@@ -336,15 +336,15 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         if force:
             blobs = list(self.list_blobs(
-                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                max_results=self.MAX_OBJECTS_FOR_ITERATION + 1,
                 client=client))
-            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+            if len(blobs) > self.MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     'Refusing to delete bucket with more than '
                     '%d objects. If you actually want to delete '
                     'this bucket, please delete the objects '
                     'yourself before calling Bucket.delete().'
-                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                ) % (self.MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             # Ignore 404 errors on delete.
@@ -810,15 +810,15 @@ class Bucket(_PropertyMixin):
         if recursive:
             blobs = list(self.list_blobs(
                 projection='full',
-                max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
+                max_results=self.MAX_OBJECTS_FOR_ITERATION + 1,
                 client=client))
-            if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
+            if len(blobs) > self.MAX_OBJECTS_FOR_ITERATION:
                 message = (
                     'Refusing to make public recursively with more than '
                     '%d objects. If you actually want to make every object '
                     'in this bucket public, please do it on the objects '
                     'yourself.'
-                ) % (self._MAX_OBJECTS_FOR_ITERATION,)
+                ) % (self.MAX_OBJECTS_FOR_ITERATION,)
                 raise ValueError(message)
 
             for blob in blobs:
