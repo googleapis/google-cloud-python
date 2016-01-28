@@ -135,6 +135,13 @@ class TestBigQuery(unittest2.TestCase):
         self.assertFalse(dataset.exists())
         dataset.create()
         self.to_delete.append(dataset)
+
+        # Retrieve tables before any are created for the dataset.
+        all_tables, token = dataset.list_tables()
+        self.assertEqual(all_tables, [])
+        self.assertEqual(token, None)
+
+        # Insert some tables to be listed.
         tables_to_create = [
             'new%d' % (1000 * time.time(),),
             'newer%d' % (1000 * time.time(),),
