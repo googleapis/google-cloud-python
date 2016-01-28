@@ -88,7 +88,7 @@ class Client(JSONClient):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         datasets = [Dataset.from_api_repr(resource, self)
-                    for resource in resp['datasets']]
+                    for resource in resp.get('datasets', ())]
         return datasets, resp.get('nextPageToken')
 
     def dataset(self, dataset_name):

@@ -74,27 +74,11 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
-    def test_list_datasets_explicit(self):
-        from gcloud.bigquery.dataset import Dataset
+    def test_list_datasets_explicit_response_missing_datasets_key(self):
         PROJECT = 'PROJECT'
-        DATASET_1 = 'dataset_one'
-        DATASET_2 = 'dataset_two'
         PATH = 'projects/%s/datasets' % PROJECT
         TOKEN = 'TOKEN'
-        DATA = {
-            'datasets': [
-                {'kind': 'bigquery#dataset',
-                 'id': '%s:%s' % (PROJECT, DATASET_1),
-                 'datasetReference': {'datasetId': DATASET_1,
-                                      'projectId': PROJECT},
-                 'friendlyName': None},
-                {'kind': 'bigquery#dataset',
-                 'id': '%s:%s' % (PROJECT, DATASET_2),
-                 'datasetReference': {'datasetId': DATASET_2,
-                                      'projectId': PROJECT},
-                 'friendlyName': 'Two'},
-            ]
-        }
+        DATA = {}
         creds = _Credentials()
         client = self._makeOne(PROJECT, creds)
         conn = client.connection = _Connection(DATA)
@@ -102,11 +86,7 @@ class TestClient(unittest2.TestCase):
         datasets, token = client.list_datasets(
             include_all=True, max_results=3, page_token=TOKEN)
 
-        self.assertEqual(len(datasets), len(DATA['datasets']))
-        for found, expected in zip(datasets, DATA['datasets']):
-            self.assertTrue(isinstance(found, Dataset))
-            self.assertEqual(found.dataset_id, expected['id'])
-            self.assertEqual(found.friendly_name, expected['friendlyName'])
+        self.assertEqual(len(datasets), 0)
         self.assertEqual(token, None)
 
         self.assertEqual(len(conn._requested), 1)
