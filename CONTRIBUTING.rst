@@ -222,7 +222,7 @@ Running System Tests
   ``tox`` environment), first start the emulator and
   take note of the process ID::
 
-   $ gcloud beta emulators datastore start &
+   $ gcloud beta emulators datastore start 2>&1 > log.txt &
    [1] 33333
 
   then determine the environment variables needed to interact with
@@ -242,9 +242,10 @@ Running System Tests
    >   python system_tests/run_system_test.py \
    >   --package=datastore --ignore-requirements
 
-  and after completion stop the emulator::
+  and after completion stop the emulator and any child
+  processes it spawned::
 
-   $ kill 33333
+   $ kill -- -33333
 
 .. _emulators: https://cloud.google.com/sdk/gcloud/reference/beta/emulators/
 
@@ -255,24 +256,25 @@ Running System Tests
   If you'd like to run them directly (outside of a ``tox`` environment), first
   start the emulator and take note of the process ID::
 
-   $ gcloud beta emulators pubsub start &
+   $ gcloud beta emulators pubsub start 2>&1 > log.txt &
    [1] 44444
 
   then determine the environment variables needed to interact with
   the emulator::
 
    $ gcloud beta emulators pubsub env-init
-    export PUBSUB_EMULATOR_HOST=localhost:8897
+   export PUBSUB_EMULATOR_HOST=localhost:8897
 
   using these environment variables run the emulator::
 
-   $ PUBSUB_EMULATOR_HOST=http://localhost:8897 \
+   $ PUBSUB_EMULATOR_HOST=localhost:8897 \
    >   python system_tests/run_system_test.py \
    >   --package=pubsub
 
-  and after completion stop the emulator::
+  and after completion stop the emulator and any child
+  processes it spawned::
 
-   $ kill 44444
+   $ kill -- -44444
 
 Test Coverage
 -------------
