@@ -24,37 +24,37 @@ environment:
       PYTHON_VERSION: "2.6.6"
       PYTHON_ARCH: "64"
 
-    # Python 2.7.10 is the latest Python 2.7 with a Windows installer
-    # Python 2.7.10 is the overall latest
-    # https://www.python.org/ftp/python/2.7.10/
+    # Python 2.7.11 is the latest Python 2.7 with a Windows installer
+    # Python 2.7.11 is the overall latest
+    # https://www.python.org/ftp/python/2.7.11/
     - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.10"
+      PYTHON_VERSION: "2.7.11"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.10"
+      PYTHON_VERSION: "2.7.11"
       PYTHON_ARCH: "64"
 
-    # Python 3.3.5 is the latest Python 3.3 with a Windows installer
-    # Python 3.3.6 is the overall latest
-    # https://www.python.org/ftp/python/3.3.5/
-    - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.5"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.5"
-      PYTHON_ARCH: "64"
-
-    # Python 3.4.3 is the latest Python 3.4 with a Windows installer
-    # Python 3.4.3 is the overall latest
-    # https://www.python.org/ftp/python/3.4.3/
+    # Python 3.4.4 is the latest Python 3.4 with a Windows installer
+    # Python 3.4.4 is the overall latest
+    # https://www.python.org/ftp/python/3.4.4/
     - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.3"
+      PYTHON_VERSION: "3.4.4"
       PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.3"
+      PYTHON_VERSION: "3.4.4"
+      PYTHON_ARCH: "64"
+
+    # Python 3.5.1 is the latest Python 3.5 with a Windows installer
+    # Python 3.5.1 is the overall latest
+    # https://www.python.org/ftp/python/3.5.1/
+    - PYTHON: "C:\\Python35"
+      PYTHON_VERSION: "3.5.1"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python35-x64"
+      PYTHON_VERSION: "3.5.1"
       PYTHON_ARCH: "64"
 
 install:
@@ -85,10 +85,7 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - "%CMD_IN_ENV% pip install wheel"
-  - "%CMD_IN_ENV% pip install nose"
-  - "%CMD_IN_ENV% pip install unittest2"
-  - "%CMD_IN_ENV% pip install cryptography"
+  - "%CMD_IN_ENV% pip install wheel nose unittest2 cryptography"
 
 build_script:
   # Build the compiled extension
