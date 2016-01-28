@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Shared Core Modules &mdash; gcloud 7b08a59 documentation</title>
+    <title>Shared Core Modules &mdash; gcloud 2c94475 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '7b08a59',
+        VERSION:     '2c94475',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7b08a59 documentation" href="index.html" />
+    <link rel="top" title="gcloud 2c94475 documentation" href="index.html" />
     <link rel="next" title="Authentication" href="gcloud-auth.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%207b08a59" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%202c94475" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7b08a59)
+              Version History (2c94475)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -305,16 +305,16 @@ and the credentials created by the factory.</p>
 <p>A simple wrapper around the OAuth2 credentials library.</p>
 <dl class="function">
 <dt id="gcloud.credentials.generate_signed_url">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.credentials.</code><code class="descname">generate_signed_url</code><span class="sig-paren">(</span><em>credentials</em>, <em>resource</em>, <em>expiration</em>, <em>api_access_endpoint=''</em>, <em>method='GET'</em>, <em>content_md5=None</em>, <em>content_type=None</em>, <em>response_type=None</em>, <em>response_disposition=None</em>, <em>generation=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#generate_signed_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.generate_signed_url" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate signed URL to provide query-string auth&#8217;n to a resource.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you are on Google Compute Engine, you can&#8217;t generate a signed URL.
-Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/922">https://github.com/GoogleCloudPlatform/gcloud-python/issues/922</a>
-for updates on this. If you&#8217;d like to be able to generate a signed URL
-from GCE, you can use a standard service account from a JSON file
-rather than a GCE service account.</p>
+Follow <a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/922">Issue 922</a> for updates on this. If you&#8217;d like to be able to
+generate a signed URL from GCE, you can use a standard service account
+from a JSON file rather than a GCE service account.</p>
 </div>
+<p>See headers <a class="reference external" href="https://cloud.google.com/storage/docs/reference-headers">reference</a> for more details on optional arguments.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -326,12 +326,20 @@ sign text.</li>
 (typically, <code class="docutils literal"><span class="pre">/bucket-name/path/to/blob.txt</span></code>).</li>
 <li><strong>expiration</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/library/functions.html#long" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">long</span></code></a>, <a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>,
 <a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.timedelta" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.timedelta</span></code></a>) &#8211; When the signed URL should expire.</li>
-<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional URI base. Defaults to empty string.</li>
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
-<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The MD5 hash of the object referenced by
+<li><strong>api_access_endpoint</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Optional URI base. Defaults to empty string.</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The HTTP verb that will be used when requesting the URL.
+Defaults to <code class="docutils literal"><span class="pre">'GET'</span></code>.</li>
+<li><strong>content_md5</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The MD5 hash of the object referenced by
 <code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The content type of the object referenced by
-<code class="docutils literal"><span class="pre">resource</span></code>.</li>
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The content type of the object referenced
+by <code class="docutils literal"><span class="pre">resource</span></code>.</li>
+<li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content type of responses to requests for
+the signed URL. Used to over-ride the content type of
+the underlying resource.</li>
+<li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content disposition of responses to
+requests for the signed URL.</li>
+<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) A value that indicates which generation of
+the resource to fetch.</li>
 </ul>
 </td>
 </tr>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 7b08a59 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 2c94475 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7b08a59',
+        VERSION:     '2c94475',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7b08a59 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 2c94475 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%207b08a59" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%202c94475" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7b08a59)
+              Version History (2c94475)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -243,16 +243,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                            <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                            <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">response_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">response_disposition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                            <span class="n">generation</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">          If you are on Google Compute Engine, you can&#39;t generate a signed URL.</span>
-<span class="sd">          Follow</span>
-<span class="sd">          https://github.com/GoogleCloudPlatform/gcloud-python/issues/922</span>
-<span class="sd">          for updates on this. If you&#39;d like to be able to generate a signed</span>
-<span class="sd">          URL from GCE, you can use a standard service account from a JSON</span>
-<span class="sd">          file rather than a GCE service account.</span>
+
+<span class="sd">            If you are on Google Compute Engine, you can&#39;t generate a signed</span>
+<span class="sd">            URL. Follow `Issue 922`_ for updates on this. If you&#39;d like to</span>
+<span class="sd">            be able to generate a signed URL from GCE, you can use a standard</span>
+<span class="sd">            service account from a JSON file rather than a GCE service account.</span>
+
+<span class="sd">        .. _Issue 922: https://github.com/GoogleCloudPlatform/\</span>
+<span class="sd">                       gcloud-python/issues/922</span>
 
 <span class="sd">        If you have a blob that you want to allow access to for a set</span>
 <span class="sd">        amount of time, you can use this method to generate a URL that</span>
@@ -265,18 +269,37 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type expiration: int, long, datetime.datetime, datetime.timedelta</span>
 <span class="sd">        :param expiration: When the signed URL should expire.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The HTTP verb that will be used when requesting the URL.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
-<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">        :param client: (Optional) The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 
 <span class="sd">        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or</span>
 <span class="sd">                           :class:`NoneType`</span>
-<span class="sd">        :param credentials: The OAuth2 credentials to use to sign the URL.</span>
+<span class="sd">        :param credentials: (Optional) The OAuth2 credentials to use to sign</span>
+<span class="sd">                            the URL. Defaults to the credentials stored on the</span>
+<span class="sd">                            client used.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :type response_type: str</span>
+<span class="sd">        :param response_type: (Optional) Content type of responses to requests</span>
+<span class="sd">                              for the signed URL. Used to over-ride the content</span>
+<span class="sd">                              type of the underlying blob/object.</span>
+
+<span class="sd">        :type response_disposition: str</span>
+<span class="sd">        :param response_disposition: (Optional) Content disposition of</span>
+<span class="sd">                                     responses to requests for the signed URL.</span>
+<span class="sd">                                     For example, to enable the signed URL</span>
+<span class="sd">                                     to initiate a file of ``blog.png``, use</span>
+<span class="sd">                                     the value</span>
+<span class="sd">                                     ``&#39;attachment; filename=blob.png&#39;``.</span>
+
+<span class="sd">        :type generation: str</span>
+<span class="sd">        :param generation: (Optional) A value that indicates which generation</span>
+<span class="sd">                           of the resource to fetch.</span>
+
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -291,7 +314,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">generate_signed_url</span><span class="p">(</span>
             <span class="n">credentials</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span>
             <span class="n">api_access_endpoint</span><span class="o">=</span><span class="n">_API_ACCESS_ENDPOINT</span><span class="p">,</span>
-            <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
+            <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+            <span class="n">response_type</span><span class="o">=</span><span class="n">response_type</span><span class="p">,</span>
+            <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span>
+            <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
