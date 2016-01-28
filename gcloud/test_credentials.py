@@ -187,7 +187,8 @@ class Test_generate_signed_url(unittest2.TestCase):
         from gcloud.credentials import generate_signed_url
         return generate_signed_url(*args, **kwargs)
 
-    def test_w_expiration_int(self):
+    def _generate_helper(self, response_type=None, response_disposition=None,
+                         generation=None):
         import base64
         from six.moves.urllib.parse import parse_qs
         from six.moves.urllib.parse import urlsplit
@@ -209,20 +210,43 @@ class Test_generate_signed_url(unittest2.TestCase):
 
         with _Monkey(MUT, _get_signed_query_params=_get_signed_query_params):
             url = self._callFUT(CREDENTIALS, RESOURCE, 1000,
-                                api_access_endpoint=ENDPOINT)
+                                api_access_endpoint=ENDPOINT,
+                                response_type=response_type,
+                                response_disposition=response_disposition,
+                                generation=generation)
 
         scheme, netloc, path, qs, frag = urlsplit(url)
         self.assertEqual(scheme, 'http')
         self.assertEqual(netloc, 'api.example.com')
         self.assertEqual(path, RESOURCE)
         params = parse_qs(qs)
-        self.assertEqual(len(params), 3)
         # In Py3k, parse_qs gives us text values:
-        self.assertEqual(params['Signature'], [SIGNED.decode('ascii')])
-        self.assertEqual(params['Expires'], ['1000'])
-        self.assertEqual(params['GoogleAccessId'],
+        self.assertEqual(params.pop('Signature'), [SIGNED.decode('ascii')])
+        self.assertEqual(params.pop('Expires'), ['1000'])
+        self.assertEqual(params.pop('GoogleAccessId'),
                          [_Credentials.service_account_name])
+        if response_type is not None:
+            self.assertEqual(params.pop('response-content-type'),
+                             [response_type])
+        if response_disposition is not None:
+            self.assertEqual(params.pop('response-content-disposition'),
+                             [response_disposition])
+        if generation is not None:
+            self.assertEqual(params.pop('generation'), [generation])
+        # Make sure we have checked them all.
+        self.assertEqual(len(params), 0)
         self.assertEqual(frag, '')
+
+    def test_w_expiration_int(self):
+        self._generate_helper()
+
+    def test_w_custom_fields(self):
+        response_type = 'text/plain'
+        response_disposition = 'attachment; filename=blob.png'
+        generation = '123'
+        self._generate_helper(response_type=response_type,
+                              response_disposition=response_disposition,
+                              generation=generation)
 
 
 class Test__get_signature_bytes(unittest2.TestCase):

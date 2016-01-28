@@ -294,15 +294,22 @@ def _get_expiration_seconds(expiration):
 def generate_signed_url(credentials, resource, expiration,
                         api_access_endpoint='',
                         method='GET', content_md5=None,
-                        content_type=None):
+                        content_type=None, response_type=None,
+                        response_disposition=None, generation=None):
     """Generate signed URL to provide query-string auth'n to a resource.
 
     .. note::
-      If you are on Google Compute Engine, you can't generate a signed URL.
-      Follow https://github.com/GoogleCloudPlatform/gcloud-python/issues/922
-      for updates on this. If you'd like to be able to generate a signed URL
-      from GCE, you can use a standard service account from a JSON file
-      rather than a GCE service account.
+
+        If you are on Google Compute Engine, you can't generate a signed URL.
+        Follow `Issue 922`_ for updates on this. If you'd like to be able to
+        generate a signed URL from GCE, you can use a standard service account
+        from a JSON file rather than a GCE service account.
+
+    See headers `reference`_ for more details on optional arguments.
+
+    .. _Issue 922: https://github.com/GoogleCloudPlatform/\
+                   gcloud-python/issues/922
+    .. _reference: https://cloud.google.com/storage/docs/reference-headers
 
     :type credentials: :class:`oauth2client.appengine.AppAssertionCredentials`
     :param credentials: Credentials object with an associated private key to
@@ -316,19 +323,33 @@ def generate_signed_url(credentials, resource, expiration,
                       :class:`datetime.timedelta`
     :param expiration: When the signed URL should expire.
 
-    :type api_access_endpoint: string
+    :type api_access_endpoint: str
     :param api_access_endpoint: Optional URI base. Defaults to empty string.
 
-    :type method: string
+    :type method: str
     :param method: The HTTP verb that will be used when requesting the URL.
+                   Defaults to ``'GET'``.
 
-    :type content_md5: string
-    :param content_md5: The MD5 hash of the object referenced by
+    :type content_md5: str
+    :param content_md5: (Optional) The MD5 hash of the object referenced by
                         ``resource``.
 
-    :type content_type: string
-    :param content_type: The content type of the object referenced by
-                         ``resource``.
+    :type content_type: str
+    :param content_type: (Optional) The content type of the object referenced
+                         by ``resource``.
+
+    :type response_type: str
+    :param response_type: (Optional) Content type of responses to requests for
+                          the signed URL. Used to over-ride the content type of
+                          the underlying resource.
+
+    :type response_disposition: str
+    :param response_disposition: (Optional) Content disposition of responses to
+                                 requests for the signed URL.
+
+    :type generation: str
+    :param generation: (Optional) A value that indicates which generation of
+                       the resource to fetch.
 
     :rtype: string
     :returns: A signed URL you can use to access the resource
@@ -348,6 +369,12 @@ def generate_signed_url(credentials, resource, expiration,
     query_params = _get_signed_query_params(credentials,
                                             expiration,
                                             string_to_sign)
+    if response_type is not None:
+        query_params['response-content-type'] = response_type
+    if response_disposition is not None:
+        query_params['response-content-disposition'] = response_disposition
+    if generation is not None:
+        query_params['generation'] = generation
 
     # Return the built URL.
     return '{endpoint}{resource}?{querystring}'.format(
