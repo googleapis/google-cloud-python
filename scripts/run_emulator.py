@@ -23,6 +23,8 @@ import argparse
 import os
 import subprocess
 
+import psutil
+
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import GCD_HOST
 from gcloud.environment_vars import PUBSUB_EMULATOR
@@ -33,6 +35,8 @@ PACKAGE_INFO = {
     'datastore': (GCD_DATASET, GCD_HOST),
     'pubsub': (PUBSUB_EMULATOR,)
 }
+_DS_READY_LINE = '[datastore] INFO: Dev App Server is now running\n'
+_PS_READY_LINE_PREFIX = '[pubsub] INFO: Server started, listening on '
 
 
 def get_parser():
@@ -73,6 +77,66 @@ def get_env_init_command(package):
     return ('gcloud', 'beta', 'emulators', package, 'env-init')
 
 
+def datastore_wait_ready(popen):
+    """Wait until the datastore emulator is ready to use.
+
+    :type popen: :class:`subprocess.Popen`
+    :param popen: An open subprocess to interact with.
+    """
+    emulator_ready = False
+    while not emulator_ready:
+        emulator_ready = popen.stderr.readline() == _DS_READY_LINE
+
+
+def pubsub_wait_ready(popen):
+    """Wait until the pubsub emulator is ready to use.
+
+    :type popen: :class:`subprocess.Popen`
+    :param popen: An open subprocess to interact with.
+    """
+    emulator_ready = False
+    while not emulator_ready:
+        emulator_ready = popen.stderr.readline().startswith(
+            _PS_READY_LINE_PREFIX)
+
+
+def wait_ready(package, popen):
+    """Wait until the emulator is ready to use.
+
+    :type package: str
+    :param package: The package to check if ready.
+
+    :type popen: :class:`subprocess.Popen`
+    :param popen: An open subprocess to interact with.
+
+    :raises: :class:`KeyError` if the ``package`` is not among
+             ``datastore``, ``pubsub``.
+    """
+    if package == 'datastore':
+        datastore_wait_ready(popen)
+    elif package == 'pubsub':
+        pubsub_wait_ready(popen)
+    else:
+        raise KeyError('')
+
+
+def cleanup(pid):
+    """Cleanup a process (including all of its children).
+
+    :type pid: int
+    :param pid: Process ID.
+    """
+    proc = psutil.Process(pid)
+    for child_proc in proc.children(recursive=True):
+        try:
+            child_proc.kill()
+            child_proc.terminate()
+        except psutil.NoSuchProcess:
+            pass
+    proc.terminate()
+    proc.kill()
+
+
 def run_tests_in_emulator(package):
     """Spawn an emulator instance and run the system tests.
 
@@ -87,9 +151,14 @@ def run_tests_in_emulator(package):
     proc_start = subprocess.Popen(start_command, stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
     try:
+        wait_ready(package, proc_start)
         env_init_command = get_env_init_command(package)
-        env_lines = subprocess.check_output(
-            env_init_command).strip().split('\n')
+        proc_env = subprocess.Popen(env_init_command, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        env_status = proc_env.wait()
+        if env_status != 0:
+            raise RuntimeError(env_status, proc_env.stderr.read())
+        env_lines = proc_env.stdout.read().strip().split('\n')
         # Set environment variables before running the system tests.
         for env_var in env_vars:
             line_prefix = 'export ' + env_var + '='
@@ -99,10 +168,7 @@ def run_tests_in_emulator(package):
         run_module_tests(package,
                          ignore_requirements=True)
     finally:
-        # NOTE: This is mostly defensive. Since ``proc_start`` will be spawned
-        #       by this current process, it should be killed when this process
-        #       exits whether or not we kill it.
-        proc_start.kill()
+        cleanup(proc_start.pid)
 
 
 def main():
