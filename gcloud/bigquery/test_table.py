@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 # Copyright 2015 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -1286,6 +1287,208 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_upload_from_file_size_failure(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        file_obj = object()
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        with self.assertRaises(ValueError):
+            table.upload_from_file(file_obj, 'CSV', size=None)
+
+    def _upload_from_file_helper(self, **kw):
+        import csv
+        import datetime
+        from six.moves.http_client import OK
+        from gcloud._helpers import UTC
+        from gcloud._testing import _NamedTemporaryFile
+        from gcloud.bigquery.table import SchemaField
+
+        WHEN_TS = 1437767599.006
+        WHEN = datetime.datetime.utcfromtimestamp(WHEN_TS).replace(
+            tzinfo=UTC)
+        PATH = 'projects/%s/jobs' % (self.PROJECT,)
+        response = {'status': OK}
+        conn = _Connection(
+            (response, b'{}'),
+        )
+        client = _Client(project=self.PROJECT, connection=conn)
+        expected_job = object()
+        if 'client' in kw:
+            kw['client']._job = expected_job
+        else:
+            client._job = expected_job
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        joined = SchemaField('joined', 'TIMESTAMP', mode='NULLABLE')
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
+                              schema=[full_name, age, joined])
+        ROWS = [
+            ('Phred Phlyntstone', 32, WHEN),
+            ('Bharney Rhubble', 33, WHEN + datetime.timedelta(seconds=1)),
+            ('Wylma Phlyntstone', 29, WHEN + datetime.timedelta(seconds=2)),
+            ('Bhettye Rhubble', 27, None),
+        ]
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, 'w') as file_obj:
+                writer = csv.writer(file_obj)
+                writer.writerow(('full_name', 'age', 'joined'))
+                writer.writerows(ROWS)
+
+            with open(temp.name, 'rb') as file_obj:
+                BODY = file_obj.read()
+                explicit_size = kw.pop('_explicit_size', False)
+                if explicit_size:
+                    kw['size'] = len(BODY)
+                job = table.upload_from_file(
+                    file_obj, 'CSV', rewind=True, **kw)
+
+        self.assertTrue(job is expected_job)
+        return conn.http._requested, PATH, BODY
+
+    def test_upload_from_file_w_bound_client_multipart(self):
+        from email.parser import Parser
+        import json
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+
+        requested, PATH, BODY = self._upload_from_file_helper()
+
+        self.assertEqual(len(requested), 1)
+        req = requested[0]
+        self.assertEqual(req['method'], 'POST')
+        uri = req['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/%s' % PATH)
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'multipart'})
+
+        parser = Parser()
+        ctype, boundary = [x.strip()
+                           for x in req['headers']['content-type'].split(';')]
+        self.assertEqual(ctype, 'multipart/related')
+        self.assertTrue(boundary.startswith('boundary="=='))
+        self.assertTrue(boundary.endswith('=="'))
+
+        divider = '--' + boundary[len('boundary="'):-1]
+        chunks = req['body'].split(divider)[1:-1]  # discard prolog / epilog
+        self.assertEqual(len(chunks), 2)
+
+        text_msg = parser.parsestr(chunks[0].strip())
+        self.assertEqual(dict(text_msg._headers),
+                         {'Content-Type': 'application/json',
+                          'MIME-Version': '1.0'})
+        metadata = json.loads(text_msg._payload)
+        load_config = metadata['configuration']['load']
+        DESTINATION_TABLE = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.TABLE_NAME,
+        }
+        self.assertEqual(load_config['destinationTable'], DESTINATION_TABLE)
+        self.assertEqual(load_config['sourceFormat'], 'CSV')
+
+        app_msg = parser.parsestr(chunks[1].strip())
+        self.assertEqual(dict(app_msg._headers),
+                         {'Content-Type': 'application/octet-stream',
+                          'Content-Transfer-Encoding': 'binary',
+                          'MIME-Version': '1.0'})
+        body = BODY.decode('ascii')
+        body_lines = [line.strip() for line in body.splitlines()]
+        payload_lines = app_msg._payload.splitlines()
+        self.assertEqual(payload_lines, body_lines)
+
+    # pylint: disable=R0915
+    def test_upload_from_file_w_explicit_client_resumable(self):
+        import json
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud._testing import _Monkey
+        from gcloud.bigquery import table as MUT
+
+        UPLOAD_PATH = 'https://example.com/upload/test'
+        initial_response = {'status': OK, 'location': UPLOAD_PATH}
+        upload_response = {'status': OK}
+        conn = _Connection(
+            (initial_response, b'{}'),
+            (upload_response, b'{}'),
+        )
+        client = _Client(project=self.PROJECT, connection=conn)
+
+        class _UploadConfig(object):
+            accept = ['*/*']
+            max_size = None
+            resumable_multipart = True
+            resumable_path = u'/upload/bigquery/v2/projects/{project}/jobs'
+            simple_multipart = True
+            simple_path = u''  # force resumable
+
+        with _Monkey(MUT, _UploadConfig=_UploadConfig):
+            orig_requested, PATH, BODY = self._upload_from_file_helper(
+                allow_jagged_rows=False,
+                allow_quoted_newlines=False,
+                create_disposition='CREATE_IF_NEEDED',
+                encoding='utf8',
+                field_delimiter=',',
+                ignore_unknown_values=False,
+                max_bad_records=0,
+                quote_character='"',
+                skip_leading_rows=1,
+                write_disposition='WRITE_APPEND',
+                client=client,
+                _explicit_size=True)
+
+        self.assertEqual(len(orig_requested), 0)
+
+        requested = conn.http._requested
+        self.assertEqual(len(requested), 2)
+        req = requested[0]
+        self.assertEqual(req['method'], 'POST')
+        uri = req['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/%s' % PATH)
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable'})
+
+        self.assertEqual(req['headers']['content-type'], 'application/json')
+        metadata = json.loads(req['body'])
+        load_config = metadata['configuration']['load']
+        DESTINATION_TABLE = {
+            'projectId': self.PROJECT,
+            'datasetId': self.DS_NAME,
+            'tableId': self.TABLE_NAME,
+        }
+        self.assertEqual(load_config['destinationTable'], DESTINATION_TABLE)
+        self.assertEqual(load_config['sourceFormat'], 'CSV')
+        self.assertEqual(load_config['allowJaggedRows'], False)
+        self.assertEqual(load_config['allowQuotedNewlines'], False)
+        self.assertEqual(load_config['createDisposition'], 'CREATE_IF_NEEDED')
+        self.assertEqual(load_config['encoding'], 'utf8')
+        self.assertEqual(load_config['fieldDelimiter'], ',')
+        self.assertEqual(load_config['ignoreUnknownValues'], False)
+        self.assertEqual(load_config['maxBadRecords'], 0)
+        self.assertEqual(load_config['quote'], '"')
+        self.assertEqual(load_config['skipLeadingRows'], 1)
+        self.assertEqual(load_config['writeDisposition'], 'WRITE_APPEND')
+
+        req = requested[1]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['uri'], UPLOAD_PATH)
+        headers = req['headers']
+        length = len(BODY)
+        self.assertEqual(headers['Content-Type'], 'application/octet-stream')
+        self.assertEqual(headers['Content-Range'],
+                         'bytes 0-%d/%d' % (length - 1, length))
+        self.assertEqual(headers['content-length'], '%d' % (length,))
+        self.assertEqual(req['body'], BODY)
+
 
 class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
 
@@ -1401,6 +1604,9 @@ class _Client(object):
         self.project = project
         self.connection = connection
 
+    def job_from_resource(self, resource):  # pylint: disable=W0613
+        return self._job
+
 
 class _Dataset(object):
 
@@ -1418,11 +1624,37 @@ class _Dataset(object):
         return self._client.project
 
 
-class _Connection(object):
+class _Responder(object):
 
     def __init__(self, *responses):
-        self._responses = responses
+        self._responses = responses[:]
         self._requested = []
+
+    def _respond(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
+
+
+class _HTTP(_Responder):
+
+    connections = {}  # For google-apitools debugging.
+
+    def request(self, uri, method, headers, body, **kw):
+        if hasattr(body, 'read'):
+            body = body.read()
+        return self._respond(uri=uri, method=method, headers=headers,
+                             body=body, **kw)
+
+
+class _Connection(_Responder):
+
+    API_BASE_URL = 'http://example.com'
+    USER_AGENT = 'testing 1.2.3'
+
+    def __init__(self, *responses):
+        super(_Connection, self).__init__(*responses)
+        self.http = _HTTP(*responses)
 
     def api_request(self, **kw):
         from gcloud.exceptions import NotFound
@@ -1434,3 +1666,13 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
+
+    def build_api_url(self, path, query_params=None,
+                      api_base_url=API_BASE_URL):
+        from six.moves.urllib.parse import urlencode
+        from six.moves.urllib.parse import urlsplit
+        from six.moves.urllib.parse import urlunsplit
+        # Mimic the build_api_url interface.
+        qs = urlencode(query_params or {})
+        scheme, netloc, _, _, _ = urlsplit(api_base_url)
+        return urlunsplit((scheme, netloc, path, qs, ''))
