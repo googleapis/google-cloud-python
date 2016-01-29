@@ -47,10 +47,9 @@ class TestConnection(unittest2.TestCase):
                          conn.USER_AGENT)
 
     def test_default_url(self):
-        from gcloud.connection import API_BASE_URL
-
+        klass = self._getTargetClass()
         conn = self._makeOne()
-        self.assertEqual(conn.api_base_url, API_BASE_URL)
+        self.assertEqual(conn.api_base_url, klass.API_BASE_URL)
 
     def test_custom_url_from_env(self):
         import os
@@ -143,11 +142,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            METHOD,
+            'projects',
+            PROJECT + ':' + METHOD,
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(conn._request(PROJECT, METHOD, DATA), 'CONTENT')
@@ -189,11 +186,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            METHOD,
+            'projects',
+            PROJECT + ':' + METHOD,
         ])
         http = conn._http = Http({'status': '200'}, 'CONTENT')
         response = conn._rpc(PROJECT, METHOD, ReqPB(), RspPB)
@@ -208,11 +203,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            METHOD,
+            'projects',
+            PROJECT + ':' + METHOD,
         ])
         self.assertEqual(conn.build_api_url(PROJECT, METHOD), URI)
 
@@ -224,11 +217,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             BASE,
-            'datastore',
             VER,
-            'datasets',
-            PROJECT,
-            METHOD,
+            'projects',
+            PROJECT + ':' + METHOD,
         ])
         self.assertEqual(conn.build_api_url(PROJECT, METHOD, BASE, VER),
                          URI)
@@ -242,11 +233,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb])
@@ -271,11 +260,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb],
@@ -313,11 +300,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb],
@@ -348,11 +333,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         (found,), missing, deferred = conn.lookup(PROJECT, [key_pb])
@@ -379,11 +362,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         found, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
@@ -414,11 +395,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
@@ -448,11 +427,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'lookup',
+            'projects',
+            PROJECT + ':lookup',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         result, missing, deferred = conn.lookup(PROJECT, [key_pb1, key_pb2])
@@ -490,11 +467,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'runQuery',
+            'projects',
+            PROJECT + ':runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(PROJECT, q_pb,
@@ -531,11 +506,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'runQuery',
+            'projects',
+            PROJECT + ':runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(
@@ -589,11 +562,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'runQuery',
+            'projects',
+            PROJECT + ':runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs, end, more, skipped = conn.run_query(PROJECT, q_pb)
@@ -624,11 +595,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'runQuery',
+            'projects',
+            PROJECT + ':runQuery',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         pbs = conn.run_query(PROJECT, q_pb, 'NS')[0]
@@ -651,11 +620,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'beginTransaction',
+            'projects',
+            PROJECT + ':beginTransaction',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.begin_transaction(PROJECT), TRANSACTION)
@@ -683,11 +650,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'commit',
+            'projects',
+            PROJECT + ':commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
 
@@ -731,11 +696,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'commit',
+            'projects',
+            PROJECT + ':commit',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
 
@@ -770,11 +733,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'rollback',
+            'projects',
+            PROJECT + ':rollback',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.rollback(PROJECT, TRANSACTION), None)
@@ -793,11 +754,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'allocateIds',
+            'projects',
+            PROJECT + ':allocateIds',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.allocate_ids(PROJECT, []), [])
@@ -826,11 +785,9 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne()
         URI = '/'.join([
             conn.api_base_url,
-            'datastore',
             conn.API_VERSION,
-            'datasets',
-            PROJECT,
-            'allocateIds',
+            'projects',
+            PROJECT + ':allocateIds',
         ])
         http = conn._http = Http({'status': '200'}, rsp_pb.SerializeToString())
         self.assertEqual(conn.allocate_ids(PROJECT, before_key_pbs),
