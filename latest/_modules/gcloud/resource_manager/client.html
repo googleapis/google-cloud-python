@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.resource_manager.client &mdash; gcloud 57f03a0 documentation</title>
+    <title>gcloud.resource_manager.client &mdash; gcloud 3c239ef documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '57f03a0',
+        VERSION:     '3c239ef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 57f03a0 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 3c239ef documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/client%0ARelease%3A%2057f03a0" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/client%0ARelease%3A%203c239ef" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (57f03a0)
+              Version History (3c239ef)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -140,36 +140,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
-
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Client.from_service_account_json"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.from_service_account_json">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_json</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to retrieve JSON credentials while creating client.</span>
-
-<span class="sd">        The behavior from the parent class is disabled here since the Resource</span>
-<span class="sd">        Manager API can only use credentials from a user account, not a</span>
-<span class="sd">        service account.</span>
-
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;A service account cannot be used with the &#39;</span>
-                                  <span class="s1">&#39;Resource Manager API. Only user &#39;</span>
-                                  <span class="s1">&#39;credentials can be used.&#39;</span><span class="p">)</span></div>
-
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Client.from_service_account_p12"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.from_service_account_p12">[docs]</a>    <span class="k">def</span> <span class="nf">from_service_account_p12</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to retrieve P12 credentials while creating client.</span>
-
-<span class="sd">        The behavior from the parent class is disabled here since the Resource</span>
-<span class="sd">        Manager API can only use credentials from a user account, not a</span>
-<span class="sd">        service account.</span>
-
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;A service account cannot be used with the &#39;</span>
-                                  <span class="s1">&#39;Resource Manager API. Only user &#39;</span>
-                                  <span class="s1">&#39;credentials can be used.&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Client.new_project"><a class="viewcode-back" href="../../../resource-manager-client.html#gcloud.resource_manager.client.Client.new_project">[docs]</a>    <span class="k">def</span> <span class="nf">new_project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a :class:`.Project` bound to the current client.</span>
