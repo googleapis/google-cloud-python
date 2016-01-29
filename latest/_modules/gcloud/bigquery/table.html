@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud 3c239ef documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud 2095a06 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '3c239ef',
+        VERSION:     '2095a06',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3c239ef documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 2095a06 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%203c239ef" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%202095a06" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3c239ef)
+              Version History (2095a06)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -108,6 +108,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;Define API Datasets.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
 
@@ -115,6 +117,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_millis_from_datetime</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="kn">import</span> <span class="n">make_api_request</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="kn">import</span> <span class="n">RESUMABLE_UPLOAD</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="kn">import</span> <span class="n">Upload</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigquery._helpers</span> <span class="kn">import</span> <span class="n">_rows_from_json</span>
 
 
@@ -786,7 +792,226 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;index&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">error</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]),</span>
                            <span class="s1">&#39;errors&#39;</span><span class="p">:</span> <span class="n">error</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]})</span>
 
-        <span class="k">return</span> <span class="n">errors</span></div></div>
+        <span class="k">return</span> <span class="n">errors</span></div>
+
+<div class="viewcode-block" id="Table.upload_from_file"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.Table.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="c1"># pylint: disable=R0913,R0914</span>
+                         <span class="n">file_obj</span><span class="p">,</span>
+                         <span class="n">source_format</span><span class="p">,</span>
+                         <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                         <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                         <span class="n">allow_jagged_rows</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">allow_quoted_newlines</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">create_disposition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">field_delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">max_bad_records</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">quote_character</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">skip_leading_rows</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">write_disposition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                         <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Upload the contents of this table from a file-like object.</span>
+
+<span class="sd">        The content type of the upload will either be</span>
+<span class="sd">        - The value passed in to the function (if any)</span>
+<span class="sd">        - ``text/csv``.</span>
+
+<span class="sd">        :type file_obj: file</span>
+<span class="sd">        :param file_obj: A file handle open for reading.</span>
+
+<span class="sd">        :type source_format: string</span>
+<span class="sd">        :param source_format: one of &#39;CSV&#39; or &#39;NEWLINE_DELIMITED_JSON&#39;.</span>
+<span class="sd">                              job configuration option; see</span>
+<span class="sd">                              :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type rewind: boolean</span>
+<span class="sd">        :param rewind: If True, seek to the beginning of the file handle before</span>
+<span class="sd">                       writing the file to Cloud Storage.</span>
+
+<span class="sd">        :type size: int</span>
+<span class="sd">        :param size: The number of bytes to read from the file handle.</span>
+<span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
+<span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
+<span class="sd">                     filesystem this won&#39;t be possible.)</span>
+
+<span class="sd">        :type num_retries: integer</span>
+<span class="sd">        :param num_retries: Number of upload retries. Defaults to 6.</span>
+
+<span class="sd">        :type allow_jagged_rows: boolean</span>
+<span class="sd">        :param allow_jagged_rows: job configuration option;  see</span>
+<span class="sd">                                  :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type allow_quoted_newlines: boolean</span>
+<span class="sd">        :param allow_quoted_newlines: job configuration option; see</span>
+<span class="sd">                                      :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type create_disposition: string</span>
+<span class="sd">        :param create_disposition: job configuration option; see</span>
+<span class="sd">                                   :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type encoding: string</span>
+<span class="sd">        :param encoding: job configuration option; see</span>
+<span class="sd">                         :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type field_delimiter: string</span>
+<span class="sd">        :param field_delimiter: job configuration option; see</span>
+<span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type ignore_unknown_values: boolean</span>
+<span class="sd">        :param ignore_unknown_values: job configuration option; see</span>
+<span class="sd">                                      :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type max_bad_records: integer</span>
+<span class="sd">        :param max_bad_records: job configuration option; see</span>
+<span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type quote_character: string</span>
+<span class="sd">        :param quote_character: job configuration option; see</span>
+<span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type skip_leading_rows: integer</span>
+<span class="sd">        :param skip_leading_rows: job configuration option; see</span>
+<span class="sd">                                  :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type write_disposition: string</span>
+<span class="sd">        :param write_disposition: job configuration option; see</span>
+<span class="sd">                                  :meth:`gcloud.bigquery.job.LoadJob`</span>
+
+<span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
+<span class="sd">                       to the ``client`` stored on the current dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`</span>
+<span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
+<span class="sd">                  querying status)</span>
+<span class="sd">        :raises: :class:`ValueError` if size is not passed in and can not be</span>
+<span class="sd">                 determined</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="s1">&#39;application/octet-stream&#39;</span>
+
+        <span class="c1"># Rewind the file if desired.</span>
+        <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
+            <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+
+        <span class="c1"># Get the basic stats about the file.</span>
+        <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span>
+        <span class="k">if</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="s1">&#39;fileno&#39;</span><span class="p">):</span>
+                <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;total bytes could not be determined. Please &#39;</span>
+                                 <span class="s1">&#39;pass an explicit size.&#39;</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Accept&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;Accept-Encoding&#39;</span><span class="p">:</span> <span class="s1">&#39;gzip, deflate&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
+            <span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;load&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;sourceFormat&#39;</span><span class="p">:</span> <span class="n">source_format</span><span class="p">,</span>
+                    <span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_schema</span><span class="p">),</span>
+                    <span class="p">},</span>
+                    <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                        <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="s1">&#39;tableId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="n">allow_jagged_rows</span><span class="p">,</span>
+                                <span class="n">allow_quoted_newlines</span><span class="p">,</span> <span class="n">create_disposition</span><span class="p">,</span>
+                                <span class="n">encoding</span><span class="p">,</span> <span class="n">field_delimiter</span><span class="p">,</span>
+                                <span class="n">ignore_unknown_values</span><span class="p">,</span> <span class="n">max_bad_records</span><span class="p">,</span>
+                                <span class="n">quote_character</span><span class="p">,</span> <span class="n">skip_leading_rows</span><span class="p">,</span>
+                                <span class="n">write_disposition</span><span class="p">)</span>
+
+        <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
+                        <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+        <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">()</span>
+        <span class="n">upload_config</span> <span class="o">=</span> <span class="n">_UploadConfig</span><span class="p">()</span>
+
+        <span class="c1"># Base URL may change once we know simple vs. resumable.</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/jobs&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">upload_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="c1"># Use apitools &#39;Upload&#39; facility.</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">upload_url</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span>
+                          <span class="n">body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">metadata</span><span class="p">))</span>
+
+        <span class="n">upload</span><span class="o">.</span><span class="n">configure_request</span><span class="p">(</span><span class="n">upload_config</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">url_builder</span><span class="p">)</span>
+        <span class="n">query_params</span> <span class="o">=</span> <span class="n">url_builder</span><span class="o">.</span><span class="n">query_params</span>
+        <span class="n">base_url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">API_BASE_URL</span> <span class="o">+</span> <span class="s1">&#39;/upload&#39;</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span><span class="n">api_base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+                                               <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                                               <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+        <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
+            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
+                                             <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
+        <span class="n">response_content</span> <span class="o">=</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response_content</span><span class="p">,</span>
+                          <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  Python3</span>
+            <span class="n">response_content</span> <span class="o">=</span> <span class="n">response_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">job_from_resource</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_configure_job_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span>  <span class="c1"># pylint: disable=R0913</span>
+                            <span class="n">allow_jagged_rows</span><span class="p">,</span>
+                            <span class="n">allow_quoted_newlines</span><span class="p">,</span>
+                            <span class="n">create_disposition</span><span class="p">,</span>
+                            <span class="n">encoding</span><span class="p">,</span>
+                            <span class="n">field_delimiter</span><span class="p">,</span>
+                            <span class="n">ignore_unknown_values</span><span class="p">,</span>
+                            <span class="n">max_bad_records</span><span class="p">,</span>
+                            <span class="n">quote_character</span><span class="p">,</span>
+                            <span class="n">skip_leading_rows</span><span class="p">,</span>
+                            <span class="n">write_disposition</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper for :meth:`Table.upload_from_file`.&quot;&quot;&quot;</span>
+    <span class="n">load_config</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="s1">&#39;load&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">allow_jagged_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;allowJaggedRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_jagged_rows</span>
+
+    <span class="k">if</span> <span class="n">allow_quoted_newlines</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;allowQuotedNewlines&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_quoted_newlines</span>
+
+    <span class="k">if</span> <span class="n">create_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;createDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_disposition</span>
+
+    <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;encoding&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">encoding</span>
+
+    <span class="k">if</span> <span class="n">field_delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;fieldDelimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_delimiter</span>
+
+    <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
+
+    <span class="k">if</span> <span class="n">max_bad_records</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;maxBadRecords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_bad_records</span>
+
+    <span class="k">if</span> <span class="n">quote_character</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;quote&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">quote_character</span>
+
+    <span class="k">if</span> <span class="n">skip_leading_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;skipLeadingRows&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">skip_leading_rows</span>
+
+    <span class="k">if</span> <span class="n">write_disposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">load_config</span><span class="p">[</span><span class="s1">&#39;writeDisposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">write_disposition</span>
 
 
 <span class="k">def</span> <span class="nf">_parse_schema_resource</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
@@ -834,6 +1059,23 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">info</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_schema_resource</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">)</span>
         <span class="n">infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">infos</span>
+
+
+<span class="k">class</span> <span class="nc">_UploadConfig</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Faux message FBO apitools&#39; &#39;configure_request&#39;.&quot;&quot;&quot;</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*/*&#39;</span><span class="p">]</span>
+    <span class="n">max_size</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">resumable_multipart</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">resumable_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/bigquery/v2/projects/{project}/jobs&#39;</span>
+    <span class="n">simple_multipart</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">simple_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/bigquery/v2/projects/{project}/jobs&#39;</span>
+
+
+<span class="k">class</span> <span class="nc">_UrlBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Faux builder FBO apitools&#39; &#39;configure_request&#39;&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 </pre></div>
 
       </section><!-- end of .content -->

@@ -224,6 +224,21 @@ Update all writable metadata for a table
    ...     SchemaField(name='age', type='int', mode='required)]
    >>> table.update()  # API request
 
+Upload table data from a file:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> dataset = client.dataset('dataset_name')
+   >>> table = dataset.table(name='person_ages')
+   >>> table.schema = [
+   ...     SchemaField(name='full_name', type='string', mode='required'),
+   ...     SchemaField(name='age', type='int', mode='required)]
+   >>> with open('person_ages.csv', 'rb') as csv_file:
+   ...     table.upload_from_file(csv_file, CSV,
+   ...                            create_disposition='CREATE_IF_NEEDED')
+
 Get rows from a table's data:
 
 .. doctest::
@@ -263,7 +278,7 @@ List jobs for a project:
 
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
-   >>> jobs = client.jobs()  # API request
+   >>> jobs, token = client.list_jobs()  # API request
    >>> [(job.job_id, job.type, job.created, job.state) for job in jobs]
    ['e3344fba-09df-4ae0-8337-fddee34b3840', 'insert', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
