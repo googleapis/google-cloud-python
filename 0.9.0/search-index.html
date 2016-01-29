@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Indexes &mdash; gcloud 0.9.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud 0.9.0 documentation" href="index.html" />
+    <link rel="next" title="Documents" href="search-document.html" />
+    <link rel="prev" title="Search Client" href="search-client.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
+              <img src="_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
+              Java
+            </a>
+          </li>
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+search-index%0ARelease%3A%200.9.0" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (0.9.0)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.search.index">
+<span id="indexes"></span><h1>Indexes<a class="headerlink" href="#module-gcloud.search.index" title="Permalink to this headline">#</a></h1>
+<p>Define API Indexes.</p>
+<dl class="class">
+<dt id="gcloud.search.index.Index">
+<em class="property">class </em><code class="descclassname">gcloud.search.index.</code><code class="descname">Index</code><span class="sig-paren">(</span><em>name</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/search/index.html#Index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.search.index.Index" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Indexes are containers for documents.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/search/reference/rest/v1/indexes">https://cloud.google.com/search/reference/rest/v1/indexes</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the index</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
+for the index (which requires a project).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.atom_fields">
+<code class="descname">atom_fields</code><a class="headerlink" href="#gcloud.search.index.Index.atom_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of atom fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of atom fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.date_fields">
+<code class="descname">date_fields</code><a class="headerlink" href="#gcloud.search.index.Index.date_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of date fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of date fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.search.index.Index.document">
+<code class="descname">document</code><span class="sig-paren">(</span><em>name</em>, <em>rank=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/search/index.html#Index.document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.search.index.Index.document" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct a document bound to this index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the document.</li>
+<li><strong>rank</strong> (<em>integer</em>) &#8211; Rank of the document (defaults to a server-assigned
+value based on timestamp).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="search-document.html#gcloud.search.document.Document" title="gcloud.search.document.Document"><code class="xref py py-class docutils literal"><span class="pre">gcloud.search.document.Document</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a new <code class="docutils literal"><span class="pre">Document</span></code> instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="gcloud.search.index.Index.from_api_repr">
+<em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/search/index.html#Index.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.search.index.Index.from_api_repr" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory:  construct an index given its API representation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; index resource representation returned from the API</li>
+<li><strong>client</strong> (<a class="reference internal" href="dns-client.html#gcloud.dns.client.Client" title="gcloud.dns.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.client.Client</span></code></a>) &#8211; Client which holds credentials and project
+configuration for the index.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.index.Index</span></code></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Index parsed from <code class="docutils literal"><span class="pre">resource</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.geo_fields">
+<code class="descname">geo_fields</code><a class="headerlink" href="#gcloud.search.index.Index.geo_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of geo fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of geo fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.html_fields">
+<code class="descname">html_fields</code><a class="headerlink" href="#gcloud.search.index.Index.html_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of html fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of html fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.search.index.Index.list_documents">
+<code class="descname">list_documents</code><span class="sig-paren">(</span><em>max_results=None</em>, <em>page_token=None</em>, <em>view=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/search/index.html#Index.list_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.search.index.Index.list_documents" title="Permalink to this definition">#</a></dt>
+<dd><p>List documents created within this index.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/search/reference/rest/v1/projects/indexes/documents/list">https://cloud.google.com/search/reference/rest/v1/projects/indexes/documents/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of indexes to return, If not
+passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of indexes. If
+not passed, the API will return the first page of
+indexes.</li>
+<li><strong>view</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; One of &#8216;ID_ONLY&#8217; (return only the document ID; the
+default) or &#8216;FULL&#8217; (return the full resource
+representation for the document, including field
+values)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.document.Document</span></code>, plus a
+&#8220;next page token&#8221; string:  if the token is not None,
+indicates that more indexes can be retrieved with another
+call (pass that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.number_fields">
+<code class="descname">number_fields</code><a class="headerlink" href="#gcloud.search.index.Index.number_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of number fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of number fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.path">
+<code class="descname">path</code><a class="headerlink" href="#gcloud.search.index.Index.path" title="Permalink to this definition">#</a></dt>
+<dd><p>URL path for the index&#8217;s APIs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the path based on project and dataste name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.project">
+<code class="descname">project</code><a class="headerlink" href="#gcloud.search.index.Index.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project bound to the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the project (derived from the client).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.search.index.Index.search">
+<code class="descname">search</code><span class="sig-paren">(</span><em>query</em>, <em>max_results=None</em>, <em>page_token=None</em>, <em>field_expressions=None</em>, <em>order_by=None</em>, <em>matched_count_accuracy=None</em>, <em>scorer=None</em>, <em>scorer_size=None</em>, <em>return_fields=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/search/index.html#Index.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.search.index.Index.search" title="Permalink to this definition">#</a></dt>
+<dd><p>Search documents created within this index.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/search/reference/rest/v1/projects/indexes/search">https://cloud.google.com/search/reference/rest/v1/projects/indexes/search</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; query string (see <a class="reference external" href="https://cloud.google.com/search/query">https://cloud.google.com/search/query</a>).</li>
+<li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of indexes to return, If not
+passed, defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of indexes. If
+not passed, the API will return the first page of
+indexes.</li>
+<li><strong>field_expressions</strong> (dict, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; mapping of field name -&gt; expression
+for use in &#8216;order_by&#8217; or &#8216;return_fields&#8217;</li>
+<li><strong>order_by</strong> (sequence of string, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; list of field names (plus optional &#8216; desc&#8217; suffix)
+specifying ordering of results.</li>
+<li><strong>matched_count_accuracy</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; minimum accuracy for matched count
+returned</li>
+<li><strong>return_fields</strong> (sequence of string, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; list of field names to be returned.</li>
+<li><strong>scorer</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; name of scorer function (e.g., &#8220;generic&#8221;).</li>
+<li><strong>scorer_size</strong> (integer or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; max number of top results pass to scorer function.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str, int)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.dns.document.Document</span></code>, plus a
+&#8220;next page token&#8221; string, and a &#8220;matched count&#8221;.  If the
+token is not None, indicates that more indexes can be
+retrieved with another call (pass that value as
+<code class="docutils literal"><span class="pre">page_token</span></code>).  The &#8220;matched count&#8221; indicates the total
+number of documents matching the query string.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.search.index.Index.text_fields">
+<code class="descname">text_fields</code><a class="headerlink" href="#gcloud.search.index.Index.text_fields" title="Permalink to this definition">#</a></dt>
+<dd><p>Names of text fields in the index.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of string, or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">names of text fields in the index, or None if no
+resource information is available.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <p class="caption"><span class="caption-text">gcloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Search</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="search-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-client.html">Client</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Indexes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-document.html">Documents</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+</ul>
+
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>
