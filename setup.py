@@ -12,8 +12,10 @@ with open(os.path.join(here, 'README.rst')) as f:
 
 
 REQUIREMENTS = [
-    'httplib2 >= 0.9.1',
+    'google-gax',
     'googleapis-common-protos',
+    'grpc-google-logging-v2',
+    'httplib2 >= 0.9.1',
     'oauth2client >= 1.4.6',
     'protobuf >= 3.0.0b2',
     'pyOpenSSL',
