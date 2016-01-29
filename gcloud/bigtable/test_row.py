@@ -89,6 +89,69 @@ class TestRow(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._get_mutations_helper(filter_=filter_, state=state)
 
+    def _set_cell_helper(self, column=None, column_bytes=None,
+                         value=b'foobar', timestamp=None,
+                         timestamp_micros=-1):
+        import six
+        import struct
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        row_key = b'row_key'
+        column_family_id = u'column_family_id'
+        if column is None:
+            column = b'column'
+        table = object()
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._pb_mutations, [])
+        row.set_cell(column_family_id, column,
+                     value, timestamp=timestamp)
+
+        if isinstance(value, six.integer_types):
+            value = struct.pack('>q', value)
+        expected_pb = data_pb2.Mutation(
+            set_cell=data_pb2.Mutation.SetCell(
+                family_name=column_family_id,
+                column_qualifier=column_bytes or column,
+                timestamp_micros=timestamp_micros,
+                value=value,
+            ),
+        )
+        self.assertEqual(row._pb_mutations, [expected_pb])
+
+    def test_set_cell(self):
+        self._set_cell_helper()
+
+    def test_set_cell_with_string_column(self):
+        column_bytes = b'column'
+        column_non_bytes = u'column'
+        self._set_cell_helper(column=column_non_bytes,
+                              column_bytes=column_bytes)
+
+    def test_set_cell_with_integer_value(self):
+        value = 1337
+        self._set_cell_helper(value=value)
+
+    def test_set_cell_with_non_bytes_value(self):
+        row_key = b'row_key'
+        column = b'column'
+        column_family_id = u'column_family_id'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        value = object()  # Not bytes
+        with self.assertRaises(TypeError):
+            row.set_cell(column_family_id, column, value)
+
+    def test_set_cell_with_non_null_timestamp(self):
+        import datetime
+        from gcloud._helpers import _EPOCH
+
+        microseconds = 898294371
+        millis_granularity = microseconds - (microseconds % 1000)
+        timestamp = _EPOCH + datetime.timedelta(microseconds=microseconds)
+        self._set_cell_helper(timestamp=timestamp,
+                              timestamp_micros=millis_granularity)
+
     def test_append_cell_value(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 

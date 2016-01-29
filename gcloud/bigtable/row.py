@@ -15,9 +15,16 @@
 """User friendly container for Google Cloud Bigtable Row."""
 
 
+import struct
+
+import six
+
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
 from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+
+_PACK_I64 = struct.Struct('>q').pack
 
 
 class Row(object):
@@ -94,6 +101,65 @@ class Row(object):
                 return self._true_pb_mutations
             else:
                 return self._false_pb_mutations
+
+    def set_cell(self, column_family_id, column, value, timestamp=None,
+                 state=None):
+        """Sets a value in this row.
+
+        The cell is determined by the ``row_key`` of the :class:`Row` and the
+        ``column``. The ``column`` must be in an existing
+        :class:`.column_family.ColumnFamily` (as determined by
+        ``column_family_id``).
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            :class:`Row`, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type value: bytes or :class:`int`
+        :param value: The value to set in the cell. If an integer is used,
+                      will be interpreted as a 64-bit big-endian signed
+                      integer (8 bytes).
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (Optional) The timestamp of the operation.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Unset if the mutation is not conditional,
+                      otherwise :data:`True` or :data:`False`.
+        """
+        column = _to_bytes(column)
+        if isinstance(value, six.integer_types):
+            value = _PACK_I64(value)
+        value = _to_bytes(value)
+        if timestamp is None:
+            # Use -1 for current Bigtable server time.
+            timestamp_micros = -1
+        else:
+            timestamp_micros = _microseconds_from_datetime(timestamp)
+            # Truncate to millisecond granularity.
+            timestamp_micros -= (timestamp_micros % 1000)
+
+        mutation_val = data_pb2.Mutation.SetCell(
+            family_name=column_family_id,
+            column_qualifier=column,
+            timestamp_micros=timestamp_micros,
+            value=value,
+        )
+        mutation_pb = data_pb2.Mutation(set_cell=mutation_val)
+        self._get_mutations(state).append(mutation_pb)
 
     def append_cell_value(self, column_family_id, column, value):
         """Appends a value to an existing cell.
