@@ -550,7 +550,7 @@ class Dataset(object):
         resp = connection.api_request(method='GET', path=path,
                                       query_params=params)
         tables = [Table.from_api_repr(resource, self)
-                  for resource in resp['tables']]
+                  for resource in resp.get('tables', ())]
         return tables, resp.get('nextPageToken')
 
     def table(self, name, schema=()):

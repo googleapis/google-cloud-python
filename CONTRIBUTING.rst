@@ -222,7 +222,7 @@ Running System Tests
   ``tox`` environment), first start the emulator and
   take note of the process ID::
 
-   $ gcloud beta emulators datastore start &
+   $ gcloud beta emulators datastore start 2>&1 > log.txt &
    [1] 33333
 
   then determine the environment variables needed to interact with
@@ -242,33 +242,39 @@ Running System Tests
    >   python system_tests/run_system_test.py \
    >   --package=datastore --ignore-requirements
 
-  and after completion stop the emulator::
+  and after completion stop the emulator and any child
+  processes it spawned::
 
-   $ kill 33333
+   $ kill -- -33333
 
 .. _emulators: https://cloud.google.com/sdk/gcloud/reference/beta/emulators/
 
-- To run the ``pubsub`` system tests with an emulator, first start the
-  emulator and take note of the process ID::
+- To run the system tests with the ``pubsub`` emulator::
 
-   $ gcloud beta emulators pubsub start &
+   $ tox -e pubsub-emulator
+
+  If you'd like to run them directly (outside of a ``tox`` environment), first
+  start the emulator and take note of the process ID::
+
+   $ gcloud beta emulators pubsub start 2>&1 > log.txt &
    [1] 44444
 
   then determine the environment variables needed to interact with
   the emulator::
 
    $ gcloud beta emulators pubsub env-init
-    export PUBSUB_EMULATOR_HOST=localhost:8897
+   export PUBSUB_EMULATOR_HOST=localhost:8897
 
   using these environment variables run the emulator::
 
-   $ DATASTORE_HOST=http://localhost:8897 \
+   $ PUBSUB_EMULATOR_HOST=localhost:8897 \
    >   python system_tests/run_system_test.py \
    >   --package=pubsub
 
-  and after completion stop the emulator::
+  and after completion stop the emulator and any child
+  processes it spawned::
 
-   $ kill 44444
+   $ kill -- -44444
 
 Test Coverage
 -------------
@@ -362,13 +368,13 @@ We support:
 
 -  `Python 2.6`_
 -  `Python 2.7`_
--  `Python 3.3`_
 -  `Python 3.4`_
+-  `Python 3.5`_
 
 .. _Python 2.6: https://docs.python.org/2.6/
 .. _Python 2.7: https://docs.python.org/2.7/
-.. _Python 3.3: https://docs.python.org/3.3/
 .. _Python 3.4: https://docs.python.org/3.4/
+.. _Python 3.5: https://docs.python.org/3.5/
 
 Supported versions can be found in our ``tox.ini`` `config`_.
 
@@ -385,13 +391,14 @@ We may `drop 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
 
 We also explicitly decided to support Python 3 beginning with version
-3.3. Reasons for this include:
+3.4. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
--  Taking the lead of prominent open-source `projects`_
+-  Taking the lead of `prominent`_ open-source `projects`_
 -  `Unicode literal support`_ which allows for a cleaner codebase that
    works in both Python 2 and Python 3
 
+.. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
 .. _drop 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
