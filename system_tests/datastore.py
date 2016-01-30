@@ -273,12 +273,12 @@ class TestDatastoreQuery(TestDatastore):
         entities = list(filtered_query.fetch(limit=expected_matches + 1))
         self.assertEqual(len(entities), expected_matches)
 
-    def test_query___key___filter(self):
+    def test_query_key_filter(self):
         # Use the client for this test instead of the global.
         rickard_key = self.CLIENT.key(*populate_datastore.RICKARD)
 
         query = self._base_query()
-        query.add_filter('__key__', '=', rickard_key)
+        query.key_filter(rickard_key)
         expected_matches = 1
         # We expect 1, but allow the query to get 1 extra.
         entities = list(query.fetch(limit=expected_matches + 1))

@@ -248,6 +248,18 @@ class Query(object):
         """Set the projection to include only keys."""
         self._projection[:] = ['__key__']
 
+    def key_filter(self, key, operator='='):
+        """Filter on a key.
+
+        :type key: :class:`gcloud.datastore.key.Key`
+        :param key: The key to filter on.
+
+        :type operator: string
+        :param operator: (Optional) One of ``=``, ``<``, ``<=``, ``>``, ``>=``.
+                         Defaults to ``=``.
+        """
+        self.add_filter('__key__', operator, key)
+
     @property
     def order(self):
         """Names of fields used to sort query results.
