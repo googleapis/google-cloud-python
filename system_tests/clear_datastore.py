@@ -42,7 +42,8 @@ def print_func(message):
 
 def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = client.query(kind=kind, projection=['__key__'])
+        query = client.query(kind=kind)
+        query.keys_only()
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
