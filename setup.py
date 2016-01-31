@@ -22,7 +22,7 @@ REQUIREMENTS = [
 
 setup(
     name='gcloud',
-    version='0.8.1',
+    version='0.8.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',
