@@ -17,6 +17,7 @@
 import copy
 
 import six
+from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
 from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
@@ -202,7 +203,7 @@ class Bucket(_PropertyMixin):
 
         return self.path_helper(self.name)
 
-    def get_blob(self, blob_name, client=None):
+    def get_blob(self, blob_name, client=None, generation=None):
         """Get a blob object by name.
 
         This will return None if the blob doesn't exist::
@@ -214,6 +215,8 @@ class Bucket(_PropertyMixin):
           <Blob: my-bucket, /path/to/blob.txt>
           >>> print bucket.get_blob('/does-not-exist.txt')
           None
+          >>> print bucket.get_blob('/path/to/versioned_blob.txt', generation=generation_id)
+          <Blob: my-bucket, /path/to/versioned_blob.txt>
 
         :type blob_name: string
         :param blob_name: The name of the blob to retrieve.
@@ -222,14 +225,21 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: int
+        :param generation: Optional. The generation id to retrieve in a bucket
+                           that supports versioning.
+
         :rtype: :class:`gcloud.storage.blob.Blob` or None
         :returns: The blob object if it exists, otherwise None.
         """
         client = self._require_client(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
+            path = blob.path
+            if generation is not None:
+                path = blob.path + '?generation=' + quote(str(generation), safe='')
             response = client.connection.api_request(
-                method='GET', path=blob.path, _target_object=blob)
+                method='GET', path=path, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -357,7 +367,7 @@ class Bucket(_PropertyMixin):
         client.connection.api_request(method='DELETE', path=self.path,
                                       _target_object=None)
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None, generation=None):
         """Deletes a blob from the current bucket.
 
         If the blob isn't found (backend 404), raises a
@@ -384,6 +394,10 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type generation: int
+        :param generation: Optional. The generation of this object to delete.
+                           Only works on buckets with versioning enabled.
+
         :raises: :class:`gcloud.exceptions.NotFound` (to suppress
                  the exception, call ``delete_blobs``, passing a no-op
                  ``on_error`` callback, e.g.::
@@ -392,6 +406,9 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
+        if generation is not None:
+            blob_path = blob_path + '?generation=' + quote(str(generation), safe='')
+
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
@@ -423,7 +440,12 @@ class Bucket(_PropertyMixin):
                 blob_name = blob
                 if not isinstance(blob_name, six.string_types):
                     blob_name = blob.name
-                self.delete_blob(blob_name, client=client)
+
+                generation = None
+                if hasattr(blob,'generation'):
+                    generation = blob.generation
+
+                self.delete_blob(blob_name, client=client, generation=generation)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)
