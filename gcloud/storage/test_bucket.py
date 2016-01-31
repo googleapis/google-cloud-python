@@ -238,6 +238,34 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
 
+    def test_get_blob_miss_w_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name-w-version'
+        GENERATION = 999
+        connection = _Connection({'name': BLOB_NAME, 'generation': 1})
+        client = _Client(connection)
+        bucket = self._makeOne(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
+        self.assertTrue(blob, None)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
+
+    def test_get_blob_hit_w_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name-w-version'
+        GENERATION = 999
+        connection = _Connection({'name': BLOB_NAME, 'generation': GENERATION})
+        client = _Client(connection)
+        bucket = self._makeOne(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
+        self.assertEqual(blob.generation, GENERATION)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%s' % (NAME, BLOB_NAME, GENERATION))
+
     def test_list_blobs_defaults(self):
         NAME = 'name'
         connection = _Connection({'items': []})
@@ -418,6 +446,32 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['path'], '/b/%s/o/%s' % (NAME, BLOB_NAME))
+
+    def test_delete_blob_miss_w_generation(self):
+        from gcloud.exceptions import NotFound
+        NAME = 'name'
+        BLOB_NAME = 'blob_name'
+        GENERATION = 1
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = self._makeOne(client=client, name=NAME)
+        self.assertRaises(NotFound, bucket.delete_blob, BLOB_NAME, generation=GENERATION)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'DELETE')
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
+
+    def test_delete_blob_hit_w_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        GENERATION = 999
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._makeOne(client=client, name=NAME)
+        result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
+        self.assertTrue(result is None)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'DELETE')
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
 
     def test_delete_blobs_empty(self):
         NAME = 'name'
