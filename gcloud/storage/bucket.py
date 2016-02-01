@@ -215,7 +215,9 @@ class Bucket(_PropertyMixin):
           <Blob: my-bucket, /path/to/blob.txt>
           >>> print bucket.get_blob('/does-not-exist.txt')
           None
-          >>> print bucket.get_blob('/path/to/versioned_blob.txt', generation=generation_id)
+          >>> print bucket.get_blob(
+          ... '/path/to/versioned_blob.txt',
+          ... generation=generation_id)
           <Blob: my-bucket, /path/to/versioned_blob.txt>
 
         :type blob_name: string
@@ -237,7 +239,8 @@ class Bucket(_PropertyMixin):
         try:
             path = blob.path
             if generation is not None:
-                path = blob.path + '?generation=' + quote(str(generation), safe='')
+                path = (blob.path + '?generation=' +
+                        quote(str(generation), safe=''))
             response = client.connection.api_request(
                 method='GET', path=path, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
@@ -407,7 +410,8 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
         if generation is not None:
-            blob_path = blob_path + '?generation=' + quote(str(generation), safe='')
+            blob_path = (blob_path + '?generation=' +
+                         quote(str(generation), safe=''))
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
@@ -442,10 +446,11 @@ class Bucket(_PropertyMixin):
                     blob_name = blob.name
 
                 generation = None
-                if hasattr(blob,'generation'):
+                if hasattr(blob, 'generation'):
                     generation = blob.generation
 
-                self.delete_blob(blob_name, client=client, generation=generation)
+                self.delete_blob(blob_name, client=client,
+                                 generation=generation)
             except NotFound:
                 if on_error is not None:
                     on_error(blob)
