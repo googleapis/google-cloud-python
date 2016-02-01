@@ -249,7 +249,8 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(blob, None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' %
+                         (NAME, BLOB_NAME, GENERATION))
 
     def test_get_blob_hit_w_generation(self):
         NAME = 'name'
@@ -264,7 +265,8 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(blob.generation, GENERATION)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
-        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%s' % (NAME, BLOB_NAME, GENERATION))
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%s' %
+                         (NAME, BLOB_NAME, GENERATION))
 
     def test_list_blobs_defaults(self):
         NAME = 'name'
@@ -455,10 +457,12 @@ class Test_Bucket(unittest2.TestCase):
         connection = _Connection()
         client = _Client(connection)
         bucket = self._makeOne(client=client, name=NAME)
-        self.assertRaises(NotFound, bucket.delete_blob, BLOB_NAME, generation=GENERATION)
+        self.assertRaises(NotFound, bucket.delete_blob,
+                          BLOB_NAME, generation=GENERATION)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
-        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' %
+                         (NAME, BLOB_NAME, GENERATION))
 
     def test_delete_blob_hit_w_generation(self):
         NAME = 'name'
@@ -471,7 +475,8 @@ class Test_Bucket(unittest2.TestCase):
         self.assertTrue(result is None)
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
-        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' % (NAME, BLOB_NAME, GENERATION))
+        self.assertEqual(kw['path'], '/b/%s/o/%s?generation=%d' %
+                         (NAME, BLOB_NAME, GENERATION))
 
     def test_delete_blobs_empty(self):
         NAME = 'name'
