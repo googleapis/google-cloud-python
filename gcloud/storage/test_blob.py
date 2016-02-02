@@ -1129,7 +1129,8 @@ class _Bucket(object):
         self._copied = []
         self._deleted = []
 
-    def delete_blob(self, blob_name, client=None):
+    def delete_blob(self, blob_name, client=None,
+                    generation=None):  # pylint: disable=W0613
         del self._blobs[blob_name]
         self._deleted.append((blob_name, client))
 
