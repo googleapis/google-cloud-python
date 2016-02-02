@@ -240,7 +240,8 @@ class Blob(_PropertyMixin):
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
-            query_params = {'fields': 'name'}
+            query_params = {'fields': 'name', 'generation': self.generation}
+
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
             client.connection.api_request(method='GET', path=self.path,
@@ -266,7 +267,8 @@ class Blob(_PropertyMixin):
                  (propagated from
                  :meth:`gcloud.storage.bucket.Bucket.delete_blob`).
         """
-        return self.bucket.delete_blob(self.name, client=client)
+        return self.bucket.delete_blob(self.name, client=client,
+                                       generation=self.generation)
 
     def download_to_file(self, file_obj, client=None):
         """Download the contents of this blob into a file-like object.

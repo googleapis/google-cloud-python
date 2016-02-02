@@ -17,7 +17,6 @@
 import copy
 
 import six
-from six.moves.urllib.parse import quote  # pylint: disable=F0401
 
 from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.exceptions import NotFound
@@ -237,12 +236,10 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         blob = Blob(bucket=self, name=blob_name)
         try:
-            path = blob.path
-            if generation is not None:
-                path = (blob.path + '?generation=' +
-                        quote(str(generation), safe=''))
+            query_params = {'generation': generation}
             response = client.connection.api_request(
-                method='GET', path=path, _target_object=blob)
+                method='GET', path=blob.path,
+                query_params=query_params, target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -409,15 +406,14 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         blob_path = Blob.path_helper(self.path, blob_name)
-        if generation is not None:
-            blob_path = (blob_path + '?generation=' +
-                         quote(str(generation), safe=''))
+        query_params = {'generation': generation}
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
         client.connection.api_request(method='DELETE', path=blob_path,
-                                      _target_object=None)
+                                      query_params=query_params,
+                                      target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
