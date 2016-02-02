@@ -82,6 +82,27 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'pageSize': SIZE, 'pageToken': TOKEN1})
 
+    def test_list_topics_missing_key(self):
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        RETURNED = {}
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        topics, next_page_token = CLIENT_OBJ.list_topics()
+        # Test values are correct.
+        self.assertEqual(len(topics), 0)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
     def test_list_subscriptions_no_paging(self):
         from gcloud.pubsub.subscription import Subscription
         PROJECT = 'PROJECT'
