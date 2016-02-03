@@ -266,6 +266,20 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['query_params'], {'generation': GENERATION})
 
+    def test_get_blob_hit_w_none_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name-wo-version'
+        GENERATION = None
+        connection = _Connection({'name': BLOB_NAME})
+        client = _Client(connection)
+        bucket = self._makeOne(name=NAME)
+        blob = bucket.get_blob(BLOB_NAME, client=client, generation=GENERATION)
+        self.assertTrue(blob.bucket is bucket)
+        self.assertEqual(blob.name, BLOB_NAME)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertNotIn('generation', kw['query_params'])
+
     def test_list_blobs_defaults(self):
         NAME = 'name'
         connection = _Connection({'items': []})
@@ -473,6 +487,19 @@ class Test_Bucket(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'DELETE')
         self.assertEqual(kw['query_params'], {'generation': GENERATION})
+
+    def test_delete_blob_hit_w_none_generation(self):
+        NAME = 'name'
+        BLOB_NAME = 'blob-name'
+        GENERATION = None
+        connection = _Connection({})
+        client = _Client(connection)
+        bucket = self._makeOne(client=client, name=NAME)
+        result = bucket.delete_blob(BLOB_NAME, generation=GENERATION)
+        self.assertTrue(result is None)
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'DELETE')
+        self.assertNotIn('generation', kw['query_params'])
 
     def test_delete_blobs_empty(self):
         NAME = 'name'

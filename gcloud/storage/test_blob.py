@@ -257,6 +257,22 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['query_params']['generation'], GENERATION)
 
+    def test_exists_hit_w_none_generation(self):
+        from six.moves.http_client import OK
+        BLOB_NAME = 'blob-name'
+        GENERATION = None
+        found_response = {'status': OK}
+        connection = _Connection(found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        self.assertTrue(blob.exists())
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertNotIn('generation', kw['query_params'])
+
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
@@ -287,6 +303,24 @@ class Test_Blob(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertEqual(kw['query_params']['generation'], GENERATION)
+
+    def test_delete_w_none_generation(self):
+        from six.moves.http_client import NOT_FOUND
+        BLOB_NAME = 'blob-name'
+        GENERATION = None
+        not_found_response = {'status': NOT_FOUND}
+        connection = _Connection(not_found_response)
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties={'generation': GENERATION})
+        bucket._blobs[BLOB_NAME] = 1
+        blob.delete()
+        self.assertFalse(blob.exists())
+        self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'GET')
+        self.assertNotIn('generation', kw['query_params'])
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
