@@ -239,7 +239,7 @@ class Bucket(_PropertyMixin):
             query_params = {'generation': generation}
             response = client.connection.api_request(
                 method='GET', path=blob.path,
-                query_params=query_params, target_object=blob)
+                query_params=query_params, _target_object=blob)
             # NOTE: We assume response.get('name') matches `blob_name`.
             blob._set_properties(response)
             # NOTE: This will not fail immediately in a batch. However, when
@@ -413,7 +413,7 @@ class Bucket(_PropertyMixin):
         # in a batch request).
         client.connection.api_request(method='DELETE', path=blob_path,
                                       query_params=query_params,
-                                      target_object=None)
+                                      _target_object=None)
 
     def delete_blobs(self, blobs, on_error=None, client=None):
         """Deletes a list of blobs from the current bucket.
