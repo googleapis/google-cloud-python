@@ -240,7 +240,9 @@ class Blob(_PropertyMixin):
         try:
             # We only need the status code (200 or not) so we seek to
             # minimize the returned payload.
-            query_params = {'fields': 'name', 'generation': self.generation}
+            query_params = {'fields': 'name'}
+            if self.generation is not None:
+                query_params['generation'] = self.generation
 
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
