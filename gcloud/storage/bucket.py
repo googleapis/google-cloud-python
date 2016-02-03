@@ -458,7 +458,7 @@ class Bucket(_PropertyMixin):
                     raise
 
     def copy_blob(self, blob, destination_bucket, new_name=None,
-                  client=None):
+                  client=None, versions=False):
         """Copy the given blob to the given bucket, optionally with a new name.
 
         :type blob: :class:`gcloud.storage.blob.Blob`
@@ -475,16 +475,32 @@ class Bucket(_PropertyMixin):
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type versions: boolean
+        :param versions: Optional. Copy each version.
+
         :rtype: :class:`gcloud.storage.blob.Blob`
         :returns: The new Blob.
         """
         client = self._require_client(client)
         if new_name is None:
             new_name = blob.name
+
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + '/copyTo' + new_blob.path
-        copy_result = client.connection.api_request(
-            method='POST', path=api_path, _target_object=new_blob)
+        query_params = {}
+
+        # TODO(tsinha): Support multi-page results from list_blobs
+        if versions == True:
+            blob_versions = list(self.list_blobs(prefix=blob.name, versions=True, fields='name,generation,updated'))
+            for blob_version in blob_versions:
+                copy_result = client.connection.api_request(
+                    method='POST', path=api_path,
+                    query_params={'sourceGeneration': blob_version.generation},
+                    _target_object=new_blob)
+        else:
+            copy_result = client.connection.api_request(
+                method='POST', path=api_path, _target_object=new_blob)
+
         new_blob._set_properties(copy_result)
         return new_blob
 
@@ -513,7 +529,7 @@ class Bucket(_PropertyMixin):
         :rtype: :class:`Blob`
         :returns: The newly-renamed blob.
         """
-        new_blob = self.copy_blob(blob, self, new_name, client=client)
+        new_blob = self.copy_blob(blob, self, new_name, client=client, versions=True)
         blob.delete(client=client)
         return new_blob
 
