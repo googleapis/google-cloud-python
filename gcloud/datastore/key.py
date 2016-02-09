@@ -246,7 +246,7 @@ class Key(object):
             key.partition_id.namespace = self.namespace
 
         for item in self.path:
-            element = key.path_element.add()
+            element = key.path.add()
             if 'kind' in item:
                 element.kind = item['kind']
             if 'id' in item:

@@ -21,7 +21,7 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
 
     entity_pb = entity_pb2.Entity()
     entity_pb.key.partition_id.dataset_id = project
-    path_element = entity_pb.key.path_element.add()
+    path_element = entity_pb.key.path.add()
     path_element.kind = kind
     path_element.id = integer_id
     if name is not None and str_val is not None:
@@ -323,7 +323,7 @@ class TestClient(unittest2.TestCase):
         # Make a missing entity pb to be returned from mock backend.
         missed = entity_pb2.Entity()
         missed.key.partition_id.dataset_id = self.PROJECT
-        path_element = missed.key.path_element.add()
+        path_element = missed.key.path.add()
         path_element.kind = KIND
         path_element.id = ID
 
