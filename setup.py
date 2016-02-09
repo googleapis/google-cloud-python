@@ -15,6 +15,7 @@ REQUIREMENTS = [
     'google-gax',
     'googleapis-common-protos',
     'grpc-google-logging-v2',
+    'grpc-google-monitoring-v3',
     'httplib2 >= 0.9.1',
     'oauth2client >= 1.4.6',
     'protobuf >= 3.0.0b2',
