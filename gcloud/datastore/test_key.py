@@ -342,9 +342,9 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(isinstance(pb, entity_pb2.Key))
 
         # Check partition ID.
-        self.assertEqual(pb.partition_id.dataset_id, self._DEFAULT_PROJECT)
-        self.assertEqual(pb.partition_id.namespace, '')
-        self.assertFalse(_has_field(pb.partition_id, 'namespace'))
+        self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)
+        self.assertEqual(pb.partition_id.namespace_id, '')
+        self.assertFalse(_has_field(pb.partition_id, 'namespace_id'))
 
         # Check the element PB matches the partial key and kind.
         elem, = list(pb.path_element)
@@ -358,14 +358,14 @@ class TestKey(unittest2.TestCase):
         _PROJECT = 'PROJECT-ALT'
         key = self._makeOne('KIND', project=_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, _PROJECT)
+        self.assertEqual(pb.partition_id.project_id, _PROJECT)
 
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'
         key = self._makeOne('KIND', namespace=_NAMESPACE,
                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.namespace, _NAMESPACE)
+        self.assertEqual(pb.partition_id.namespace_id, _NAMESPACE)
 
     def test_to_protobuf_w_explicit_path(self):
         _PARENT = 'PARENT'

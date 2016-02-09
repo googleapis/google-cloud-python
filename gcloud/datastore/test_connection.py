@@ -508,7 +508,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb2.ReadOptions.EVENTUAL)
@@ -549,7 +549,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb2.ReadOptions.DEFAULT)
@@ -606,7 +606,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace, '')
+        self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
 
     def test_run_query_w_namespace_nonempty_result(self):
@@ -638,7 +638,7 @@ class TestConnection(unittest2.TestCase):
         rq_class = datastore_pb2.RunQueryRequest
         request = rq_class()
         request.ParseFromString(cw['body'])
-        self.assertEqual(request.partition_id.namespace, 'NS')
+        self.assertEqual(request.partition_id.namespace_id, 'NS')
         self.assertEqual(request.query, q_pb)
 
     def test_begin_transaction(self):
@@ -901,9 +901,9 @@ class Http(object):
 
 def _compare_key_pb_after_request(test, key_before, key_after):
     from gcloud._helpers import _has_field
-    test.assertFalse(_has_field(key_after.partition_id, 'dataset_id'))
-    test.assertEqual(key_before.partition_id.namespace,
-                     key_after.partition_id.namespace)
+    test.assertFalse(_has_field(key_after.partition_id, 'project_id'))
+    test.assertEqual(key_before.partition_id.namespace_id,
+                     key_after.partition_id.namespace_id)
     test.assertEqual(len(key_before.path_element),
                      len(key_after.path_element))
     for elt1, elt2 in zip(key_before.path_element, key_after.path_element):
