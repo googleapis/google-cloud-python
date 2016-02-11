@@ -1,0 +1,20 @@
+{
+  "lang": "python",
+  "friendlyLang": "Python",
+  "markdown": "python",
+  "versions": [
+    "v0.9.0",
+    "v0.8.0",
+    "v0.7.1",
+    "v0.7.0",
+    "v0.6.0",
+    "v0.5.0",
+    "master"
+  ],
+  "content": "json",
+  "home": "home.html",
+  "package": {
+    "title": "PyPI",
+    "href": "https://pypi.python.org/pypi/gcloud"
+  }
+}
