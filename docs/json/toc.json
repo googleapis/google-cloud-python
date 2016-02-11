@@ -1,0 +1,179 @@
+{
+  "guides": [{
+    "title": "Authentication",
+    "id": "authentication",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/authentication/readme.md",
+    "contents": [
+      "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/readme.md",
+      "authentication.md"
+    ]
+  }, {
+    "title": "FAQ",
+    "id": "faq",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/faq/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/faq/readme.md"
+  }, {
+    "title": "Troubleshooting",
+    "id": "troubleshooting",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/troubleshooting/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/troubleshooting/readme.md"
+  }, {
+    "title": "Contributing",
+    "id": "contributing",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/contributing/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/contributing/readme.md"
+  }],
+  "services": [{
+    "title": "gcloud",
+    "id": "gcloud",
+    "contents": "index.json"
+  }, {
+    "title": "Datastore",
+    "id": "datastore",
+    "contents": "datastore/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "datastore/client.json",
+    }, {
+      "title": "Entities",
+      "id": "entities",
+      "contents": "datastore/entities.json",
+    }, {
+      "title": "Keys",
+      "id": "keys",
+      "contents": "datastore/keys.json",
+    }, {
+      "title": "Queries",
+      "id": "queries",
+      "contents": "datastore/queries.json",
+    }, {
+      "title": "Transactions",
+      "id": "transactions",
+      "contents": "datastore/transactions.json",
+    }, {
+      "title": "Batches",
+      "id": "batches",
+      "contents": "datastore/batches.json",
+    }]
+  }, {
+    "title": "Storage",
+    "id": "storage",
+    "contents": "storage/storage.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "storage/client.json",
+    }, {
+      "title": "Blobs / Objects",
+      "id": "objects",
+      "contents": "storage/objects.json",
+    }, {
+      "title": "Buckets",
+      "id": "buckets",
+      "contents": "storage/buckets.json",
+    }, {
+      "title": "ACL",
+      "id": "acl",
+      "contents": "storage/acl.json",
+    }]
+  }, {
+    "title": "Pub/Sub",
+    "implemented": ">=0.5.0",
+    "id": "pubsub",
+    "contents": "pubsub/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "pubsub/client.json",
+    }, {
+      "title": "Topics",
+      "id": "topics",
+      "contents": "pubsub/topics.json",
+    }, {
+      "title": "Subscriptions",
+      "id": "subscriptions",
+      "contents": "pubsub/subscriptions.json",
+    }, {
+      "title": "Message",
+      "id": "message",
+      "contents": "pubsub/message.json",
+    }]
+  }, {
+    "title": "BigQuery",
+    "implemented": ">=0.7.0",
+    "id": "bigquery",
+    "contents": "bigquery/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "bigquery/client.json",
+    }, {
+      "title": "Datasets",
+      "id": "datasets",
+      "contents": "bigquery/datasets.json",
+    }, {
+      "title": "Jobs",
+      "id": "jobs",
+      "contents": "bigquery/jobs.json",
+    }, {
+      "title": "Tables",
+      "id": "tables",
+      "contents": "bigquery/tables.json",
+    }]
+  }, {
+    "title": "Resource Manager",
+    "implemented": ">=0.8.0",
+    "id": "resource-manager",
+    "contents": "resource-manager/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "resource-manager/client.json",
+    }, {
+      "title": "Projects",
+      "id": "projects",
+      "contents": "resource-manager/projects.json",
+    }]
+  }, {
+    "title": "DNS",
+    "implemented": ">=0.8.0",
+    "id": "dns",
+    "contents": "dns/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "dns/client.json",
+    }, {
+      "title": "Managed Zones",
+      "id": "managed-zones",
+      "contents": "dns/managed-zones.json",
+    }, {
+      "title": "Resource Record Sets",
+      "id": "resource-record-sets",
+      "contents": "dns/resource-record-sets.json",
+    }, {
+      "title": "Change Sets",
+      "id": "change-sets",
+      "contents": "dns/change-sets.json",
+    }]
+  }, {
+    "title": "Cloud Search",
+    "implemented": ">=0.8.0",
+    "id": "cloud-search",
+    "contents": "cloud-search/index.json",
+    "nav": [{
+      "title": "Client",
+      "id": "client",
+      "contents": "cloud-search/client.json",
+    }, {
+      "title": "Indexes",
+      "id": "indexes",
+      "contents": "cloud-search/indexes.json",
+    }, {
+      "title": "Documents",
+      "id": "documents",
+      "contents": "cloud-search/documents.json",
+    }]
+  }],
+}
