@@ -17,6 +17,7 @@
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 
 
@@ -41,7 +42,7 @@ def get_pb2_contents_with_grpc():
     generated_path = os.path.join(temp_dir, 'google', 'datastore',
                                   'v1beta3', 'datastore_pb2.py')
     try:
-        subprocess.check_output([
+        return_code = subprocess.call([
             PROTOC_CMD,
             '--proto_path',
             PROTOS_DIR,
@@ -53,6 +54,8 @@ def get_pb2_contents_with_grpc():
             temp_dir,
             PROTO_PATH,
         ])
+        if return_code != 0:
+            sys.exit(return_code)
         with open(generated_path, 'rb') as file_obj:
             return file_obj.readlines()
     finally:
@@ -69,7 +72,7 @@ def get_pb2_contents_without_grpc():
     generated_path = os.path.join(temp_dir, 'google', 'datastore',
                                   'v1beta3', 'datastore_pb2.py')
     try:
-        subprocess.check_output([
+        return_code = subprocess.call([
             PROTOC_CMD,
             '--proto_path',
             PROTOS_DIR,
@@ -77,6 +80,8 @@ def get_pb2_contents_without_grpc():
             temp_dir,
             PROTO_PATH,
         ])
+        if return_code != 0:
+            sys.exit(return_code)
         with open(generated_path, 'rb') as file_obj:
             return file_obj.readlines()
     finally:
