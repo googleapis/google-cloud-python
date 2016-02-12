@@ -20,7 +20,6 @@ import re
 from google.longrunning import operations_pb2
 
 from gcloud._helpers import _pb_timestamp_to_datetime
-from gcloud._helpers import _get_pb_property_value
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_pb2)
@@ -240,8 +239,12 @@ class Cluster(object):
         return Table(table_id, self)
 
     def _update_from_pb(self, cluster_pb):
-        self.display_name = _get_pb_property_value(cluster_pb, 'display_name')
-        self.serve_nodes = _get_pb_property_value(cluster_pb, 'serve_nodes')
+        if not cluster_pb.display_name:  # Simple field (string)
+            raise ValueError('Cluster protobuf does not contain display_name')
+        if not cluster_pb.serve_nodes:  # Simple field (int32)
+            raise ValueError('Cluster protobuf does not contain serve_nodes')
+        self.display_name = cluster_pb.display_name
+        self.serve_nodes = cluster_pb.serve_nodes
 
     @classmethod
     def from_pb(cls, cluster_pb, client):
