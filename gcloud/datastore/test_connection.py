@@ -589,7 +589,7 @@ class TestConnection(unittest2.TestCase):
         entity = entity_pb2.Entity()
         q_pb = self._make_query_pb(KIND)
         rsp_pb = datastore_pb2.RunQueryResponse()
-        rsp_pb.batch.entity_result.add(entity=entity)
+        rsp_pb.batch.entity_results.add(entity=entity)
         rsp_pb.batch.entity_result_type = 1  # FULL
         rsp_pb.batch.more_results = 3  # NO_MORE_RESULTS
         conn = self._makeOne()
