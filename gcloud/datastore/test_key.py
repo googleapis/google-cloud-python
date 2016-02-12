@@ -333,7 +333,6 @@ class TestKey(unittest2.TestCase):
         self.assertRaises(ValueError, key.completed_key, 5678)
 
     def test_to_protobuf_defaults(self):
-        from gcloud._helpers import _has_field
         from gcloud.datastore._generated import entity_pb2
 
         _KIND = 'KIND'
@@ -343,16 +342,16 @@ class TestKey(unittest2.TestCase):
 
         # Check partition ID.
         self.assertEqual(pb.partition_id.dataset_id, self._DEFAULT_PROJECT)
+        # Unset values are False-y.
         self.assertEqual(pb.partition_id.namespace, '')
-        self.assertFalse(_has_field(pb.partition_id, 'namespace'))
 
         # Check the element PB matches the partial key and kind.
         elem, = list(pb.path_element)
         self.assertEqual(elem.kind, _KIND)
+        # Unset values are False-y.
         self.assertEqual(elem.name, '')
-        self.assertFalse(_has_field(elem, 'name'))
+        # Unset values are False-y.
         self.assertEqual(elem.id, 0)
-        self.assertFalse(_has_field(elem, 'id'))
 
     def test_to_protobuf_w_explicit_project(self):
         _PROJECT = 'PROJECT-ALT'
@@ -383,14 +382,13 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(elems[1].id, _ID)
 
     def test_to_protobuf_w_no_kind(self):
-        from gcloud._helpers import _has_field
-
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
         # Force the 'kind' to be unset. Maybe `to_protobuf` should fail
         # on this? The backend certainly will.
         key._path[-1].pop('kind')
         pb = key.to_protobuf()
-        self.assertFalse(_has_field(pb.path_element[0], 'kind'))
+        # Unset values are False-y.
+        self.assertEqual(pb.path_element[0].kind, '')
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
