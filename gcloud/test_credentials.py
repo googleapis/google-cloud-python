@@ -350,6 +350,21 @@ class Test__get_signature_bytes(unittest2.TestCase):
         self.assertEqual(signed_bytes, STRING_TO_SIGN)
         self.assertEqual(APP_IDENTITY._strings_signed, [STRING_TO_SIGN])
 
+    def test_without_pyopenssl(self):
+        from gcloud._testing import _Monkey
+        from gcloud import credentials as credentials_mod
+
+        mock_called = []
+        credentials = object()
+
+        def mock_pem_key(local_creds):
+            mock_called.append(local_creds)
+
+        with _Monkey(credentials_mod, crypto=None, _get_pem_key=mock_pem_key):
+            with self.assertRaises(EnvironmentError):
+                self._callFUT(credentials, b'STRING_TO_SIGN')
+            self.assertEqual(mock_called, [credentials])
+
 
 class Test__get_service_account_name(unittest2.TestCase):
 
@@ -519,6 +534,25 @@ class Test__get_pem_key(unittest2.TestCase):
         self.assertEqual(openssl_crypto._loaded,
                          [(openssl_crypto.FILETYPE_PEM, PRIVATE_TEXT)])
         self.assertEqual(openssl_crypto._signed, [])
+
+    def test_without_pyopenssl(self):
+        from oauth2client import service_account
+        from gcloud._testing import _Monkey
+        from gcloud import credentials as credentials_mod
+
+        PRIVATE_TEXT = 'dummy_private_key_pkcs8_text'
+
+        def _get_private_key(private_key_pkcs8_text):
+            return private_key_pkcs8_text
+
+        with _Monkey(service_account, _get_private_key=_get_private_key):
+            credentials = service_account._ServiceAccountCredentials(
+                'dummy_service_account_id', 'dummy_service_account_email',
+                'dummy_private_key_id', PRIVATE_TEXT, '')
+
+        with _Monkey(credentials_mod, crypto=None):
+            with self.assertRaises(EnvironmentError):
+                self._callFUT(credentials)
 
 
 class Test__get_expiration_seconds(unittest2.TestCase):

@@ -207,6 +207,53 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(table.table_id, table_id)
         self.assertEqual(table._cluster, cluster)
 
+    def test__update_from_pb_success(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+
+        display_name = 'display_name'
+        serve_nodes = 8
+        cluster_pb = data_pb2.Cluster(
+            display_name=display_name,
+            serve_nodes=serve_nodes,
+        )
+
+        cluster = self._makeOne(None, None, None)
+        self.assertEqual(cluster.display_name, None)
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.display_name, display_name)
+        self.assertEqual(cluster.serve_nodes, serve_nodes)
+
+    def test__update_from_pb_no_display_name(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+
+        cluster_pb = data_pb2.Cluster(serve_nodes=331)
+        cluster = self._makeOne(None, None, None)
+        self.assertEqual(cluster.display_name, None)
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        with self.assertRaises(ValueError):
+            cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.display_name, None)
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+
+    def test__update_from_pb_no_serve_nodes(self):
+        from gcloud.bigtable._generated import (
+            bigtable_cluster_data_pb2 as data_pb2)
+        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+
+        cluster_pb = data_pb2.Cluster(display_name='name')
+        cluster = self._makeOne(None, None, None)
+        self.assertEqual(cluster.display_name, None)
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        with self.assertRaises(ValueError):
+            cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.display_name, None)
+        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+
     def test_from_pb_success(self):
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)

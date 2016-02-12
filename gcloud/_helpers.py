@@ -388,49 +388,6 @@ def _datetime_to_pb_timestamp(when):
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
-def _has_field(message_pb, property_name):
-    """Determine if a field is set on a protobuf.
-
-    :type message_pb: :class:`google.protobuf.message.Message`
-    :param message_pb: The message to check for ``property_name``.
-
-    :type property_name: str
-    :param property_name: The property value to check against.
-
-    :rtype: bool
-    :returns: Flag indicating if ``property_name`` is set on ``message_pb``.
-    """
-    # NOTE: As of proto3, HasField() only works for message fields, not for
-    #       singular (non-message) fields. First try to use HasField and
-    #       if it fails (with a ValueError) we manually consult the fields.
-    try:
-        return message_pb.HasField(property_name)
-    except ValueError:
-        all_fields = set([field.name for field in message_pb._fields])
-        return property_name in all_fields
-
-
-def _get_pb_property_value(message_pb, property_name):
-    """Return a message field value.
-
-    :type message_pb: :class:`google.protobuf.message.Message`
-    :param message_pb: The message to check for ``property_name``.
-
-    :type property_name: str
-    :param property_name: The property value to check against.
-
-    :rtype: object
-    :returns: The value of ``property_name`` set on ``message_pb``.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the result returned
-             from the ``message_pb`` does not contain the ``property_name``
-             value.
-    """
-    if _has_field(message_pb, property_name):
-        return getattr(message_pb, property_name)
-    else:
-        raise ValueError('Message does not contain %s.' % (property_name,))
-
-
 try:
     from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
 except ImportError:

@@ -23,7 +23,6 @@ from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
 from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _has_field
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
@@ -110,7 +109,7 @@ def _get_meaning(value_pb, is_list=False):
         if all_meanings:
             raise ValueError('Different meanings set on values '
                              'within a list_value')
-    elif _has_field(value_pb, 'meaning'):
+    elif value_pb.meaning:  # Simple field (int32)
         meaning = value_pb.meaning
 
     return meaning
@@ -160,7 +159,7 @@ def entity_from_protobuf(pb):
     :returns: The entity derived from the protobuf.
     """
     key = None
-    if _has_field(pb, 'key'):
+    if pb.HasField('key'):  # Message field (Key)
         key = key_from_protobuf(pb.key)
 
     entity_props = {}
@@ -260,18 +259,18 @@ def key_from_protobuf(pb):
     path_args = []
     for element in pb.path_element:
         path_args.append(element.kind)
-        if _has_field(element, 'id'):
+        if element.id:  # Simple field (int64)
             path_args.append(element.id)
         # This is safe: we expect proto objects returned will only have
         # one of `name` or `id` set.
-        if _has_field(element, 'name'):
+        if element.name:  # Simple field (string)
             path_args.append(element.name)
 
     project = None
-    if _has_field(pb.partition_id, 'dataset_id'):
+    if pb.partition_id.dataset_id:  # Simple field (string)
         project = pb.partition_id.dataset_id
     namespace = None
-    if _has_field(pb.partition_id, 'namespace'):
+    if pb.partition_id.namespace:  # Simple field (string)
         namespace = pb.partition_id.namespace
 
     return Key(*path_args, namespace=namespace, project=project)
@@ -351,29 +350,30 @@ def _get_value_from_value_pb(value_pb):
     :returns: The value provided by the Protobuf.
     """
     result = None
-    if _has_field(value_pb, 'timestamp_microseconds_value'):
+    # Simple field (int64)
+    if value_pb.HasField('timestamp_microseconds_value'):
         microseconds = value_pb.timestamp_microseconds_value
         result = _datetime_from_microseconds(microseconds)
 
-    elif _has_field(value_pb, 'key_value'):
+    elif value_pb.HasField('key_value'):  # Message field (Key)
         result = key_from_protobuf(value_pb.key_value)
 
-    elif _has_field(value_pb, 'boolean_value'):
+    elif value_pb.HasField('boolean_value'):  # Simple field (bool)
         result = value_pb.boolean_value
 
-    elif _has_field(value_pb, 'double_value'):
+    elif value_pb.HasField('double_value'):  # Simple field (double)
         result = value_pb.double_value
 
-    elif _has_field(value_pb, 'integer_value'):
+    elif value_pb.HasField('integer_value'):  # Simple field (int64)
         result = value_pb.integer_value
 
-    elif _has_field(value_pb, 'string_value'):
+    elif value_pb.HasField('string_value'):  # Simple field (string)
         result = value_pb.string_value
 
-    elif _has_field(value_pb, 'blob_value'):
+    elif value_pb.HasField('blob_value'):  # Simple field (bytes)
         result = value_pb.blob_value
 
-    elif _has_field(value_pb, 'entity_value'):
+    elif value_pb.HasField('entity_value'):  # Message field (Entity)
         result = entity_from_protobuf(value_pb.entity_value)
 
     elif value_pb.list_value:
@@ -429,7 +429,7 @@ def _prepare_key_for_request(key_pb):
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
-    if _has_field(key_pb.partition_id, 'dataset_id'):
+    if key_pb.partition_id.dataset_id:  # Simple field (string)
         # We remove the dataset_id from the protobuf. This is because
         # the backend fails a request if the key contains un-prefixed
         # project. The backend fails because requests to

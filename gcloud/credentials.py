@@ -19,7 +19,12 @@ import datetime
 import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
-from OpenSSL import crypto
+try:
+    from OpenSSL import crypto
+except ImportError:  # pragma: NO COVER
+    # pyOpenSSL can't be installed on App Engine, but it will not
+    # be needed there since app_identity is used.
+    crypto = None
 
 from oauth2client import client
 from oauth2client.client import _get_application_default_credential_from_file
@@ -170,6 +175,7 @@ def _get_pem_key(credentials):
     :rtype: :class:`OpenSSL.crypto.PKey`
     :returns: A PKey object used to sign text.
     :raises: `TypeError` if `credentials` is the wrong type.
+             `EnvironmentError` if `crypto` did not import successfully.
     """
     if isinstance(credentials, client.SignedJwtAssertionCredentials):
         # Take our PKCS12 (.p12) text and convert to PEM text.
@@ -181,6 +187,9 @@ def _get_pem_key(credentials):
         raise TypeError((credentials,
                          'not a valid service account credentials type'))
 
+    if crypto is None:
+        raise EnvironmentError(
+            'pyOpenSSL must be installed to load a private key')
     return crypto.load_privatekey(crypto.FILETYPE_PEM, pem_text)
 
 
@@ -198,6 +207,7 @@ def _get_signature_bytes(credentials, string_to_sign):
 
     :rtype: bytes
     :returns: Signed bytes produced by the credentials.
+    :raises: `EnvironmentError` if `crypto` did not import successfully.
     """
     if isinstance(credentials, _GAECreds):
         _, signed_bytes = app_identity.sign_blob(string_to_sign)
@@ -207,6 +217,10 @@ def _get_signature_bytes(credentials, string_to_sign):
         pkey = _get_pem_key(credentials)
         if not isinstance(string_to_sign, six.binary_type):
             string_to_sign = string_to_sign.encode('utf-8')
+        if crypto is None:
+            raise EnvironmentError(
+                'pyOpenSSL must be installed to sign content using a '
+                'private key')
         return crypto.sign(pkey, string_to_sign, 'SHA256')
 
 
