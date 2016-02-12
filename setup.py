@@ -22,7 +22,7 @@ REQUIREMENTS = [
 
 setup(
     name='gcloud',
-    version='0.8.0',
+    version='0.9.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',
@@ -36,7 +36,7 @@ setup(
     zip_safe=False,
     install_requires=REQUIREMENTS,
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -45,6 +45,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet',
     ]
 )

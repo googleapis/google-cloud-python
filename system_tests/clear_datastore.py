@@ -42,7 +42,8 @@ def print_func(message):
 
 def fetch_keys(kind, client, fetch_max=FETCH_MAX, query=None, cursor=None):
     if query is None:
-        query = client.query(kind=kind, projection=['__key__'])
+        query = client.query(kind=kind)
+        query.keys_only()
 
     iterator = query.fetch(limit=fetch_max, start_cursor=cursor)
 
@@ -89,7 +90,7 @@ def remove_kind(kind, client):
 def remove_all_entities(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client(project=TESTS_DATASET)
+        client = datastore.Client(project=os.getenv(TESTS_DATASET))
     for kind in ALL_KINDS:
         remove_kind(kind, client)
 

@@ -24,13 +24,6 @@ class TestConnection(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_constructor_with_assertion(self):
-        from oauth2client.client import AssertionCredentials
-
-        credentials = AssertionCredentials(None)
-        with self.assertRaises(TypeError):
-            self._makeOne(credentials=credentials)
-
     def test_build_api_url_no_extra_query_params(self):
         conn = self._makeOne()
         URI = '/'.join([

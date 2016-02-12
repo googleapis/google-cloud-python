@@ -244,6 +244,26 @@ class TestQuery(unittest2.TestCase):
         query.keys_only()
         self.assertEqual(query.projection, ['__key__'])
 
+    def test_key_filter_defaults(self):
+        from gcloud.datastore.key import Key
+
+        client = self._makeClient()
+        query = self._makeOne(client)
+        self.assertEqual(query.filters, [])
+        key = Key('Kind', 1234, project='project')
+        query.key_filter(key)
+        self.assertEqual(query.filters, [('__key__', '=', key)])
+
+    def test_key_filter_explicit(self):
+        from gcloud.datastore.key import Key
+
+        client = self._makeClient()
+        query = self._makeOne(client)
+        self.assertEqual(query.filters, [])
+        key = Key('Kind', 1234, project='project')
+        query.key_filter(key, operator='>')
+        self.assertEqual(query.filters, [('__key__', '>', key)])
+
     def test_order_setter_empty(self):
         query = self._makeOne(self._makeClient(), order=['foo', '-bar'])
         query.order = []

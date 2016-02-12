@@ -15,8 +15,6 @@
 """Create / interact with gcloud.resource_manager connections."""
 
 
-from oauth2client.client import AssertionCredentials
-
 from gcloud import connection as base_connection
 
 
@@ -42,12 +40,3 @@ class Connection(base_connection.JSONConnection):
 
     SCOPE = ('https://www.googleapis.com/auth/cloud-platform',)
     """The scopes required for authenticating as a Resouce Manager consumer."""
-
-    def __init__(self, credentials=None, http=None):
-        if isinstance(credentials, AssertionCredentials):
-            message = ('credentials (%r) inherits from '
-                       'AppAssertionCredentials. Only user credentials can be '
-                       'used with the Resource Manager API. ' % (credentials,))
-            raise TypeError(message)
-
-        super(Connection, self).__init__(credentials=credentials, http=http)

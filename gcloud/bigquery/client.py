@@ -102,20 +102,18 @@ class Client(JSONClient):
         """
         return Dataset(dataset_name, client=self)
 
-    def _job_from_resource(self, resource):
+    def job_from_resource(self, resource):
         """Detect correct job type from resource and instantiate.
-
-        Helper for :meth:`list_jobs`.
 
         :type resource: dict
         :param resource: one job resource from API response
 
         :rtype; One of:
                 :class:`gcloud.bigquery.job.LoadTableFromStorageJob`,
-                :class:`gcloud.bigquery.job.CopyJob,
-                :class:`gcloud.bigquery.job.ExtractTableToStorageJob,
-                :class:`gcloud.bigquery.job.QueryJob,
-                :class:`gcloud.bigquery.job.RunSyncQueryJob
+                :class:`gcloud.bigquery.job.CopyJob`,
+                :class:`gcloud.bigquery.job.ExtractTableToStorageJob`,
+                :class:`gcloud.bigquery.job.QueryJob`,
+                :class:`gcloud.bigquery.job.RunSyncQueryJob`
         :returns: the job instance, constructed via the resource
         """
         config = resource['configuration']
@@ -180,8 +178,7 @@ class Client(JSONClient):
         path = '/projects/%s/jobs' % (self.project,)
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
-        jobs = [self._job_from_resource(resource)
-                for resource in resp['jobs']]
+        jobs = [self.job_from_resource(resource) for resource in resp['jobs']]
         return jobs, resp.get('nextPageToken')
 
     def load_table_from_storage(self, job_name, destination, *source_uris):
