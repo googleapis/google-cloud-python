@@ -126,29 +126,37 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(connection.table_prefix_separator,
                          table_prefix_separator)
 
-    def test_constructor_with_host(self):
-        with self.assertRaises(ValueError):
-            self._makeOne(host=object())
+    def test_constructor_with_unknown_argument(self):
+        cluster = _Cluster()
+        with self.assertRaises(TypeError):
+            self._makeOne(cluster=cluster, unknown='foo')
 
-    def test_constructor_with_port(self):
-        with self.assertRaises(ValueError):
-            self._makeOne(port=object())
+    def test_constructor_with_legacy_args(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
 
-    def test_constructor_with_compat(self):
-        with self.assertRaises(ValueError):
-            self._makeOne(compat=object())
+        warned = []
 
-    def test_constructor_with_transport(self):
-        with self.assertRaises(ValueError):
-            self._makeOne(transport=object())
+        def mock_warn(msg):
+            warned.append(msg)
 
-    def test_constructor_with_protocol(self):
-        with self.assertRaises(ValueError):
-            self._makeOne(protocol=object())
+        cluster = _Cluster()
+        with _Monkey(MUT, _WARN=mock_warn):
+            self._makeOne(cluster=cluster, host=object(),
+                          port=object(), compat=object(),
+                          transport=object(), protocol=object())
+
+        self.assertEqual(len(warned), 1)
+        self.assertIn('host', warned[0])
+        self.assertIn('port', warned[0])
+        self.assertIn('compat', warned[0])
+        self.assertIn('transport', warned[0])
+        self.assertIn('protocol', warned[0])
 
     def test_constructor_with_timeout_and_cluster(self):
+        cluster = _Cluster()
         with self.assertRaises(ValueError):
-            self._makeOne(cluster=object(), timeout=object())
+            self._makeOne(cluster=cluster, timeout=object())
 
     def test_constructor_non_string_prefix(self):
         table_prefix = object()
