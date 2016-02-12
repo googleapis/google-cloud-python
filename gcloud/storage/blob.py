@@ -149,10 +149,10 @@ class Blob(_PropertyMixin):
             bucket_name=self.bucket.name,
             quoted_name=quote(self.name, safe=''))
 
-    def generate_signed_url(self, expiration, method='GET',
-                            client=None, credentials=None,
-                            response_type=None, response_disposition=None,
-                            generation=None):
+    def generate_signed_url(self, expiration, method='GET', client=None,
+                            content_type="application/octet-stream",
+                            credentials=None, response_type=None,
+                            response_disposition=None, generation=None):
         """Generates a signed URL for this blob.
 
         .. note::
@@ -182,6 +182,11 @@ class Blob(_PropertyMixin):
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
+
+        :type content_type: str
+        :param content_type: (Optional) The content type of the object
+                             referenced by ``resource``, defaults to
+                             ``application/octet-stream``.
 
         :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                            :class:`NoneType`
@@ -222,6 +227,7 @@ class Blob(_PropertyMixin):
             credentials, resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method,
+            content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
             generation=generation)
