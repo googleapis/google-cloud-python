@@ -25,7 +25,9 @@ if [[ "${TRAVIS_BRANCH}" == "master" ]] && \
 elif [[ -n "${TRAVIS_TAG}" ]]; then
   echo "Building new docs on a tag."
 else
-  echo "Not on Travis, doing nothing."
+  echo "No docs to update for a new tag or merged commit on Travis."
+  echo "Verifying docs build successfully."
+  tox -e docs
   exit
 fi
 

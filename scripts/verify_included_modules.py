@@ -38,7 +38,14 @@ IGNORED_MODULES = frozenset([
     'gcloud.bigtable.table',
     'gcloud.datastore.demo.demo',
     'gcloud.demo',
+    'gcloud.iterator',
     'gcloud.storage.demo.demo',
+    'gcloud.streaming.buffered_stream',
+    'gcloud.streaming.exceptions',
+    'gcloud.streaming.http_wrapper',
+    'gcloud.streaming.stream_slice',
+    'gcloud.streaming.transfer',
+    'gcloud.streaming.util',
 ])
 
 
