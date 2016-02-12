@@ -192,7 +192,7 @@ class Connection(connection.Connection):
         """
         lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
-        _add_keys_to_request(lookup_request.key, key_pbs)
+        _add_keys_to_request(lookup_request.keys, key_pbs)
 
         lookup_response = self._rpc(project, 'lookup', lookup_request,
                                     _datastore_pb2.LookupResponse)
@@ -359,11 +359,11 @@ class Connection(connection.Connection):
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = _datastore_pb2.AllocateIdsRequest()
-        _add_keys_to_request(request.key, key_pbs)
+        _add_keys_to_request(request.keys, key_pbs)
         # Nothing to do with this response, so just execute the method.
         response = self._rpc(project, 'allocateIds', request,
                              _datastore_pb2.AllocateIdsResponse)
-        return list(response.key)
+        return list(response.keys)
 
 
 def _set_read_options(request, eventual, transaction_id):
