@@ -346,7 +346,7 @@ class _PathElementPB(object):
 class _KeyPB(object):
 
     def __init__(self, id):
-        self.path_element = [_PathElementPB(id)]
+        self.path = [_PathElementPB(id)]
 
 
 class _Connection(object):
@@ -390,7 +390,7 @@ class _Key(object):
         # Don't assign it, because it will just get ripped out
         # key.partition_id.project_id = self.project
 
-        element = key.path_element.add()
+        element = key.path.add()
         element.kind = self._kind
         if self._id is not None:
             element.id = self._id
