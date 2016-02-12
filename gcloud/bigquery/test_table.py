@@ -1397,9 +1397,9 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                          {'Content-Type': 'application/octet-stream',
                           'Content-Transfer-Encoding': 'binary',
                           'MIME-Version': '1.0'})
-        body = BODY.decode('ascii')
+        body = BODY.decode('ascii').rstrip()
         body_lines = [line.strip() for line in body.splitlines()]
-        payload_lines = app_msg._payload.splitlines()
+        payload_lines = app_msg._payload.rstrip().splitlines()
         self.assertEqual(payload_lines, body_lines)
 
     # pylint: disable=R0915
