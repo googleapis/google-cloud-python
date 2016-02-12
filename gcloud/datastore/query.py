@@ -483,25 +483,25 @@ def _pb_from_query(query):
         pb.kind.add().name = query.kind
 
     composite_filter = pb.filter.composite_filter
-    composite_filter.operator = _query_pb2.CompositeFilter.AND
+    composite_filter.op = _query_pb2.CompositeFilter.AND
 
     if query.ancestor:
         ancestor_pb = helpers._prepare_key_for_request(
             query.ancestor.to_protobuf())
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
-        ancestor_filter = composite_filter.filter.add().property_filter
+        ancestor_filter = composite_filter.filters.add().property_filter
         ancestor_filter.property.name = '__key__'
-        ancestor_filter.operator = _query_pb2.PropertyFilter.HAS_ANCESTOR
+        ancestor_filter.op = _query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
     for property_name, operator, value in query.filters:
         pb_op_enum = query.OPERATORS.get(operator)
 
         # Add the specific filter
-        property_filter = composite_filter.filter.add().property_filter
+        property_filter = composite_filter.filters.add().property_filter
         property_filter.property.name = property_name
-        property_filter.operator = pb_op_enum
+        property_filter.op = pb_op_enum
 
         # Set the value to filter on based on the type.
         if property_name == '__key__':
@@ -511,7 +511,7 @@ def _pb_from_query(query):
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 
-    if not composite_filter.filter:
+    if not composite_filter.filters:
         pb.ClearField('filter')
 
     for prop in query.order:

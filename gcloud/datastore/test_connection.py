@@ -524,8 +524,9 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(request.partition_id.namespace_id, '')
         self.assertEqual(request.query, q_pb)
-        self.assertEqual(request.read_options.read_consistency,
-                         datastore_pb2.ReadOptions.DEFAULT)
+        self.assertEqual(
+            request.read_options.read_consistency,
+            datastore_pb2.ReadOptions.READ_CONSISTENCY_UNSPECIFIED)
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_run_query_w_eventual_and_transaction(self):
