@@ -53,3 +53,4 @@ scripts/pylintrc_reduced
 # Directories used for creating generated PB2 files
 generated_python/
 cloud-bigtable-client/
+googleapis-pb/
