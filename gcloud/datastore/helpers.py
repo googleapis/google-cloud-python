@@ -61,7 +61,7 @@ def find_true_project(project, connection):
     # the project so the backend won't complain.
     bogus_key_pb = Key('__MissingLookupKind', 1,
                        project=project).to_protobuf()
-    bogus_key_pb.partition_id.ClearField('dataset_id')
+    bogus_key_pb.partition_id.ClearField('project_id')
 
     found_pbs, missing_pbs, _ = connection.lookup(project, [bogus_key_pb])
     # By not passing in `deferred`, lookup will continue until
@@ -70,7 +70,7 @@ def find_true_project(project, connection):
     # We only asked for one, so should only receive one.
     returned_pb, = all_pbs
 
-    return returned_pb.key.partition_id.dataset_id
+    return returned_pb.key.partition_id.project_id
 
 
 def _get_meaning(value_pb, is_list=False):
@@ -267,11 +267,11 @@ def key_from_protobuf(pb):
             path_args.append(element.name)
 
     project = None
-    if pb.partition_id.dataset_id:  # Simple field (string)
-        project = pb.partition_id.dataset_id
+    if pb.partition_id.project_id:  # Simple field (string)
+        project = pb.partition_id.project_id
     namespace = None
-    if pb.partition_id.namespace:  # Simple field (string)
-        namespace = pb.partition_id.namespace
+    if pb.partition_id.namespace_id:  # Simple field (string)
+        namespace = pb.partition_id.namespace_id
 
     return Key(*path_args, namespace=namespace, project=project)
 
@@ -429,18 +429,18 @@ def _prepare_key_for_request(key_pb):
     :returns: A key which will be added to a request. It will be the
               original if nothing needs to be changed.
     """
-    if key_pb.partition_id.dataset_id:  # Simple field (string)
-        # We remove the dataset_id from the protobuf. This is because
+    if key_pb.partition_id.project_id:  # Simple field (string)
+        # We remove the project_id from the protobuf. This is because
         # the backend fails a request if the key contains un-prefixed
         # project. The backend fails because requests to
-        #     /datastore/.../datasets/foo/...
+        #     /v1beta3/projects/foo:...
         # and
-        #     /datastore/.../datasets/s~foo/...
+        #     /v1beta3/projects/s~foo:...
         # both go to the datastore given by 's~foo'. So if the key
-        # protobuf in the request body has dataset_id='foo', the
+        # protobuf in the request body has project_id='foo', the
         # backend will reject since 'foo' != 's~foo'.
         new_key_pb = _entity_pb2.Key()
         new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('dataset_id')
+        new_key_pb.partition_id.ClearField('project_id')
         key_pb = new_key_pb
     return key_pb

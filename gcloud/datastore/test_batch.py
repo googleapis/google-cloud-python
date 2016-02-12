@@ -388,7 +388,7 @@ class _Key(object):
         from gcloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.dataset_id = self.project
+        # key.partition_id.project_id = self.project
 
         element = key.path_element.add()
         element.kind = self._kind

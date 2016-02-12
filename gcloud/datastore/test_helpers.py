@@ -70,7 +70,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _PROJECT
+        entity_pb.key.partition_id.project_id = _PROJECT
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
         value_pb = _new_value_pb(entity_pb, 'foo')
@@ -117,7 +117,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _PROJECT
+        entity_pb.key.partition_id.project_id = _PROJECT
         entity_pb.key.path_element.add(kind=_KIND, id=_ID)
 
         list_val_pb = _new_value_pb(entity_pb, 'baz')
@@ -173,7 +173,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         inside_val_pb.integer_value = INSIDE_VALUE
 
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = PROJECT
+        entity_pb.key.partition_id.project_id = PROJECT
         element = entity_pb.key.path_element.add()
         element.kind = KIND
 
@@ -235,7 +235,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         entity_pb = self._callFUT(entity)
 
         expected_pb = entity_pb2.Entity()
-        expected_pb.key.partition_id.dataset_id = project
+        expected_pb.key.partition_id.project_id = project
         path_elt = expected_pb.key.path_element.add()
         path_elt.kind = kind
         path_elt.name = name
@@ -279,7 +279,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         original_pb = entity_pb2.Entity()
         # Add a key.
-        original_pb.key.partition_id.dataset_id = project = 'PROJECT'
+        original_pb.key.partition_id.project_id = project = 'PROJECT'
         elem1 = original_pb.key.path_element.add()
         elem1.kind = 'Family'
         elem1.id = 1234
@@ -322,7 +322,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         new_pb = self._callFUT(entity)
 
         # NOTE: entity_to_protobuf() strips the project so we "cheat".
-        new_pb.key.partition_id.dataset_id = project
+        new_pb.key.partition_id.project_id = project
         self._compareEntityProto(original_pb, new_pb)
 
     def test_meaning_with_change(self):
@@ -355,9 +355,9 @@ class Test_key_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         pb = entity_pb2.Key()
         if project is not None:
-            pb.partition_id.dataset_id = project
+            pb.partition_id.project_id = project
         if namespace is not None:
-            pb.partition_id.namespace = namespace
+            pb.partition_id.namespace_id = namespace
         for elem in path:
             added = pb.path_element.add()
             added.kind = elem['kind']
@@ -563,7 +563,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         pb = entity_pb2.Value()
         entity_pb = pb.entity_value
         entity_pb.key.path_element.add(kind='KIND')
-        entity_pb.key.partition_id.dataset_id = 'PROJECT'
+        entity_pb.key.partition_id.project_id = 'PROJECT'
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
@@ -740,7 +740,7 @@ class Test__prepare_key_for_request(unittest2.TestCase):
     def test_prepare_project_valid(self):
         from gcloud.datastore._generated import entity_pb2
         key = entity_pb2.Key()
-        key.partition_id.dataset_id = 'foo'
+        key.partition_id.project_id = 'foo'
         new_key = self._callFUT(key)
         self.assertFalse(new_key is key)
 
@@ -909,7 +909,7 @@ class _Connection(object):
 
         response = entity_pb2.Entity()
         response.key.CopyFrom(key_pb)
-        response.key.partition_id.dataset_id = self.prefix + project
+        response.key.partition_id.project_id = self.prefix + project
 
         missing = []
         deferred = []

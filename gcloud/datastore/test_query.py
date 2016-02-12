@@ -354,7 +354,7 @@ class TestIterator(unittest2.TestCase):
         NO_MORE = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = self._PROJECT
+        entity_pb.key.partition_id.project_id = self._PROJECT
         path_element = entity_pb.key.path_element.add()
         path_element.kind = self._KIND
         path_element.id = _ID
