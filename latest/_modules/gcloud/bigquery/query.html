@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gcloud.bigquery.query &mdash; gcloud d56ea3d documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/css/normalize.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     'd56ea3d',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="gcloud d56ea3d documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="../../../_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
+              <img src="../../../_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
+              Java
+            </a>
+          </li>
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="../../../_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="../../../_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="../../../_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/query%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (d56ea3d)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <h1>Source code for gcloud.bigquery.query</h1><div class="highlight"><pre>
+<span class="c1"># Copyright 2015 Google Inc. All rights reserved.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;Define API Queries.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.bigquery._helpers</span> <span class="kn">import</span> <span class="n">_TypedProperty</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigquery._helpers</span> <span class="kn">import</span> <span class="n">_rows_from_json</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigquery.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigquery.job</span> <span class="kn">import</span> <span class="n">QueryJob</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigquery.table</span> <span class="kn">import</span> <span class="n">_parse_schema_resource</span>
+
+
+<span class="k">class</span> <span class="nc">_SyncQueryConfiguration</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;User-settable configuration options for synchronous query jobs.</span>
+
+<span class="sd">    Values which are ``None`` -&gt; server defaults.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_default_dataset</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_max_results</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_timeout_ms</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_preserve_nulls</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_use_query_cache</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<div class="viewcode-block" id="QueryResults"><a class="viewcode-back" href="../../../bigquery-query.html#gcloud.bigquery.query.QueryResults">[docs]</a><span class="k">class</span> <span class="nc">QueryResults</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Synchronous job: query tables.</span>
+
+<span class="sd">    :type query: string</span>
+<span class="sd">    :param query: SQL query string</span>
+
+<span class="sd">    :type client: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">    :param client: A client which holds credentials and project configuration</span>
+<span class="sd">                   for the dataset (which requires a project).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configuration</span> <span class="o">=</span> <span class="n">_SyncQueryConfiguration</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project bound to the job.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: the project (derived from the client).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
+
+    <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current dataset.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.client.Client`</span>
+<span class="sd">        :returns: The client passed in or the currently bound client.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
+        <span class="k">return</span> <span class="n">client</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cache_hit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query results served from cache.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#cacheHit</span>
+
+<span class="sd">        :rtype: boolean or ``NoneType``</span>
+<span class="sd">        :returns: True if the query results were served from cache (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cacheHit&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Server completed query.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobComplete</span>
+
+<span class="sd">        :rtype: boolean or ``NoneType``</span>
+<span class="sd">        :returns: True if the query completed on the server (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobComplete&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Errors generated by the query.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#errors</span>
+
+<span class="sd">        :rtype: list of mapping, or ``NoneType``</span>
+<span class="sd">        :returns: Mappings describing errors generated on the server (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;errors&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Job name, generated by the back-end.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#jobReference</span>
+
+<span class="sd">        :rtype: list of mapping, or ``NoneType``</span>
+<span class="sd">        :returns: Mappings describing errors generated on the server (None</span>
+<span class="sd">                  until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobReference&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobId&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Job instance used to run the query.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.bigquery.job.QueryJob`, or ``NoneType``</span>
+<span class="sd">        :returns: Job instance used to run the query (None until</span>
+<span class="sd">                  ``jobReference`` property is set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">job_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;jobReference&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">job_ref</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">QueryJob</span><span class="p">(</span><span class="n">job_ref</span><span class="p">[</span><span class="s1">&#39;jobId&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">page_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Token for fetching next bach of results.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#pageToken</span>
+
+<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :returns: Token generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of rows returned by the query</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalRows</span>
+
+<span class="sd">        :rtype: integer, or ``NoneType``</span>
+<span class="sd">        :returns: Count generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">total_bytes_processed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Total number of bytes processed by the query</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#totalBytesProcessed</span>
+
+<span class="sd">        :rtype: integer, or ``NoneType``</span>
+<span class="sd">        :returns: Count generated on the server (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalBytesProcessed&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Query results.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#rows</span>
+
+<span class="sd">        :rtype: list of tuples of row values, or ``NoneType``</span>
+<span class="sd">        :returns: fields describing the schema (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">schema</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Schema for query results.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#schema</span>
+
+<span class="sd">        :rtype: list of :class:`SchemaField`, or ``NoneType``</span>
+<span class="sd">        :returns: fields describing the schema (None until set by the server).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_parse_schema_resource</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;schema&#39;</span><span class="p">,</span> <span class="p">{}))</span>
+
+    <span class="n">default_dataset</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;default_dataset&#39;</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;max_results&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">preserve_nulls</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;preserve_nulls&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#preserveNulls</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">timeout_ms</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;timeout_ms&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">use_query_cache</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;use_query_cache&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update properties from resource in body of ``api_response``</span>
+
+<span class="sd">        :type api_response: httplib2.Response</span>
+<span class="sd">        :param api_response: response returned from an API call</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_build_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a resource for :meth:`begin`.&quot;&quot;&quot;</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;defaultDataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
+                <span class="s1">&#39;datasetId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_dataset</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_results</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">preserve_nulls</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;preserveNulls&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">preserve_nulls</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;timeoutMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_ms</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;useQueryCache&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span>
+
+        <span class="k">return</span> <span class="n">resource</span>
+
+<div class="viewcode-block" id="QueryResults.run"><a class="viewcode-back" href="../../../bigquery-query.html#gcloud.bigquery.query.QueryResults.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  run the query via a POST request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/query</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/queries&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">api_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_resource</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">api_response</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QueryResults.fetch_data"><a class="viewcode-back" href="../../../bigquery-query.html#gcloud.bigquery.query.QueryResults.fetch_data">[docs]</a>    <span class="k">def</span> <span class="nf">fetch_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">start_index</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                   <span class="n">timeout_ms</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  fetch a page of query result data via a GET request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs/getQueryResults</span>
+
+<span class="sd">        :type max_results: integer or ``NoneType``</span>
+<span class="sd">        :param max_results: maximum number of rows to return.</span>
+
+<span class="sd">        :type page_token: string or ``NoneType``</span>
+<span class="sd">        :param page_token: token representing a cursor into the table&#39;s rows.</span>
+
+<span class="sd">        :type start_index: integer or ``NoneType``</span>
+<span class="sd">        :param start_index: zero-based index of starting row</span>
+
+<span class="sd">        :type timeout_ms: integer or ``NoneType``</span>
+<span class="sd">        :param timeout_ms: timeout, in milliseconds, to wait for query to</span>
+<span class="sd">                           complete</span>
+
+<span class="sd">        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current dataset.</span>
+
+<span class="sd">        :rtype: tuple</span>
+<span class="sd">        :returns: ``(row_data, total_rows, page_token)``, where ``row_data``</span>
+<span class="sd">                  is a list of tuples, one per result row, containing only</span>
+<span class="sd">                  the values;  ``total_rows`` is a count of the total number</span>
+<span class="sd">                  of rows in the table;  and ``page_token`` is an opaque</span>
+<span class="sd">                  string which can be used to fetch the next batch of rows</span>
+<span class="sd">                  (``None`` if no further batches can be fetched).</span>
+<span class="sd">        :raises: ValueError if the query has not yet been executed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Query not yet executed:  call &#39;run()&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
+
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
+
+        <span class="k">if</span> <span class="n">start_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;startIndex&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_index</span>
+
+        <span class="k">if</span> <span class="n">timeout_ms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;timeoutMs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeout_ms</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/queries/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                                                 <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                                                 <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+        <span class="n">total_rows</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;totalRows&#39;</span><span class="p">)</span>
+        <span class="n">page_token</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pageToken&#39;</span><span class="p">)</span>
+        <span class="n">rows_data</span> <span class="o">=</span> <span class="n">_rows_from_json</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rows_data</span><span class="p">,</span> <span class="n">total_rows</span><span class="p">,</span> <span class="n">page_token</span></div></div>
+</pre></div>
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <p class="caption"><span class="caption-text">gcloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-auth.html">Authentication</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-message.html">Message</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigquery-query.html">Query</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Search</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../search-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../search-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../search-index.html">Indexes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../search-document.html">Documents</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+</ul>
+
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="../../../_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="../../../_static/js/plugins.js"></script>
+    <script src="../../../_static/js/main.js"></script>
+  
+  </body>
+</html>

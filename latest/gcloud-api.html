@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Shared Core Modules &mdash; gcloud b30d3f4 documentation</title>
+    <title>Shared Core Modules &mdash; gcloud d56ea3d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b30d3f4',
+        VERSION:     'd56ea3d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b30d3f4 documentation" href="index.html" />
+    <link rel="top" title="gcloud d56ea3d documentation" href="index.html" />
     <link rel="next" title="Authentication" href="gcloud-auth.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20b30d3f4" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b30d3f4)
+              Version History (d56ea3d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -987,6 +987,60 @@ failed request.</li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-gcloud.environment_vars">
+<span id="environment-variables"></span><h2>Environment Variables<a class="headerlink" href="#module-gcloud.environment_vars" title="Permalink to this headline">#</a></h2>
+<p>Comprehensive list of environment variables used in gcloud.</p>
+<p>These enable many types of implicit behavior in both production
+and tests.</p>
+<dl class="data">
+<dt id="gcloud.environment_vars.CREDENTIALS">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">CREDENTIALS</code><em class="property"> = 'GOOGLE_APPLICATION_CREDENTIALS'</em><a class="headerlink" href="#gcloud.environment_vars.CREDENTIALS" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining location of Google credentials.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.DATASET">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">DATASET</code><em class="property"> = 'GCLOUD_DATASET_ID'</em><a class="headerlink" href="#gcloud.environment_vars.DATASET" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining default dataset ID.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.GCD_DATASET">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">GCD_DATASET</code><em class="property"> = 'DATASTORE_DATASET'</em><a class="headerlink" href="#gcloud.environment_vars.GCD_DATASET" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining default dataset ID under GCD.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.GCD_HOST">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">GCD_HOST</code><em class="property"> = 'DATASTORE_HOST'</em><a class="headerlink" href="#gcloud.environment_vars.GCD_HOST" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for GCD dataset server.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.PROJECT">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">PROJECT</code><em class="property"> = 'GCLOUD_PROJECT'</em><a class="headerlink" href="#gcloud.environment_vars.PROJECT" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining default project.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.PUBSUB_EMULATOR">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">PUBSUB_EMULATOR</code><em class="property"> = 'PUBSUB_EMULATOR_HOST'</em><a class="headerlink" href="#gcloud.environment_vars.PUBSUB_EMULATOR" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining host for Pub/Sub emulator.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.TESTS_DATASET">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">TESTS_DATASET</code><em class="property"> = 'GCLOUD_TESTS_DATASET_ID'</em><a class="headerlink" href="#gcloud.environment_vars.TESTS_DATASET" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining dataset ID for tests.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="gcloud.environment_vars.TESTS_PROJECT">
+<code class="descclassname">gcloud.environment_vars.</code><code class="descname">TESTS_PROJECT</code><em class="property"> = 'GCLOUD_TESTS_PROJECT_ID'</em><a class="headerlink" href="#gcloud.environment_vars.TESTS_PROJECT" title="Permalink to this definition">#</a></dt>
+<dd><p>Environment variable defining project for tests.</p>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -1005,6 +1059,7 @@ failed request.</li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>
@@ -1012,6 +1067,7 @@ failed request.</li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul>
@@ -1028,6 +1084,7 @@ failed request.</li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Resource Manager</span></p>
 <ul>

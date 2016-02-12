@@ -17,6 +17,7 @@
   datastore-queries
   datastore-transactions
   datastore-batches
+  datastore-helpers
 
 .. toctree::
   :maxdepth: 0
@@ -27,6 +28,7 @@
   storage-blobs
   storage-buckets
   storage-acl
+  storage-batch
 
 .. toctree::
   :maxdepth: 0
@@ -49,6 +51,7 @@
   bigquery-dataset
   bigquery-job
   bigquery-table
+  bigquery-query
 
 .. toctree::
   :maxdepth: 0

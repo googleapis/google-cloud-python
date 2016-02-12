@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started &mdash; gcloud d56ea3d documentation</title>
+    <title>Helpers &mdash; gcloud d56ea3d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -22,8 +22,9 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud d56ea3d documentation" href="#" />
-    <link rel="next" title="Shared Core Modules" href="gcloud-api.html" /> 
+    <link rel="top" title="gcloud d56ea3d documentation" href="index.html" />
+    <link rel="next" title="Storage Client" href="storage-client.html" />
+    <link rel="prev" title="Batches" href="datastore-batches.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -65,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+index%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-helpers%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,77 +91,50 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="toctree-wrapper compound" id="gcloud">
-</div>
-<div class="toctree-wrapper compound" id="datastore">
-</div>
-<div class="toctree-wrapper compound" id="storage">
-</div>
-<div class="toctree-wrapper compound" id="pub-sub">
-</div>
-<div class="toctree-wrapper compound" id="bigquery">
-</div>
-<div class="toctree-wrapper compound" id="resource-manager">
-</div>
-<div class="toctree-wrapper compound" id="dns">
-</div>
-<div class="toctree-wrapper compound" id="cloud-search">
-</div>
-<div class="toctree-wrapper compound" id="external-links">
-</div>
-<div class="section" id="getting-started">
-<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<p>The <code class="docutils literal"><span class="pre">gcloud</span></code> library is <code class="docutils literal"><span class="pre">pip</span></code> install-able:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> pip install gcloud
-</pre></div>
-</div>
-<p>If you have trouble installing
-<code class="docutils literal"><span class="pre">pycrypto</span></code> or <code class="docutils literal"><span class="pre">pyopenssl</span></code>
-(and you&#8217;re on Ubuntu),
-you can try install the precompiled packages:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-crypto python-openssl
-</pre></div>
-</div>
-<p>If you want to install everything with <code class="docutils literal"><span class="pre">pip</span></code>,
-try installing the <code class="docutils literal"><span class="pre">dev</span></code> packages beforehand:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-dev libssl-dev
-</pre></div>
-</div>
-<p>If you want to install <code class="docutils literal"><span class="pre">gcloud-python</span></code> from source,
-you can clone the repository from GitHub:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-<span class="gp">$</span> <span class="nb">cd</span> gcloud-python
-<span class="gp">$</span> python setup.py install
-</pre></div>
-</div>
-<hr class="docutils" />
-<div class="section" id="cloud-datastore">
-<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+  <div class="section" id="module-gcloud.datastore.helpers">
+<span id="helpers"></span><h1>Helpers<a class="headerlink" href="#module-gcloud.datastore.helpers" title="Permalink to this headline">#</a></h1>
+<p>Helper functions for dealing with Cloud Datastore&#8217;s Protobuf API.</p>
+<p>The non-private functions are part of the API.</p>
+<dl class="function">
+<dt id="gcloud.datastore.helpers.entity_from_protobuf">
+<code class="descclassname">gcloud.datastore.helpers.</code><code class="descname">entity_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#entity_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.entity_from_protobuf" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for creating an entity based on a protobuf.</p>
+<p>The protobuf should be one returned from the Cloud Datastore
+Protobuf API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.entity_pb2.Entity</span></code>) &#8211; The Protobuf representing the entity.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-entities.html#gcloud.datastore.entity.Entity" title="gcloud.datastore.entity.Entity"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.entity.Entity</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The entity derived from the protobuf.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">)</span>
+<dl class="function">
+<dt id="gcloud.datastore.helpers.key_from_protobuf">
+<code class="descclassname">gcloud.datastore.helpers.</code><code class="descname">key_from_protobuf</code><span class="sig-paren">(</span><em>pb</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/helpers.html#key_from_protobuf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.helpers.key_from_protobuf" title="Permalink to this definition">#</a></dt>
+<dd><p>Factory method for creating a key based on a protobuf.</p>
+<p>The protobuf should be one returned from the Cloud Datastore
+Protobuf API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pb</strong> (<code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore._generated.entity_pb2.Key</span></code>) &#8211; The Protobuf representing the key.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="datastore-keys.html#gcloud.datastore.key.Key" title="gcloud.datastore.key.Key"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.key.Key</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a new <cite>Key</cite> instance</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Your name&#39;</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="cloud-storage">
-<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
-
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">)</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="s1">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s1">&#39;this is test content!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 </div>
 
 
@@ -172,14 +146,14 @@ you can clone the repository from GitHub:</p>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
-<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Helpers</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
 <ul>

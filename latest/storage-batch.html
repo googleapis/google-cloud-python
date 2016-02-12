@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting started &mdash; gcloud d56ea3d documentation</title>
+    <title>Batches &mdash; gcloud d56ea3d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -22,8 +22,9 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud d56ea3d documentation" href="#" />
-    <link rel="next" title="Shared Core Modules" href="gcloud-api.html" /> 
+    <link rel="top" title="gcloud d56ea3d documentation" href="index.html" />
+    <link rel="next" title="Using the API" href="pubsub-usage.html" />
+    <link rel="prev" title="ACL" href="storage-acl.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -65,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+index%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-batch%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,77 +91,81 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="toctree-wrapper compound" id="gcloud">
-</div>
-<div class="toctree-wrapper compound" id="datastore">
-</div>
-<div class="toctree-wrapper compound" id="storage">
-</div>
-<div class="toctree-wrapper compound" id="pub-sub">
-</div>
-<div class="toctree-wrapper compound" id="bigquery">
-</div>
-<div class="toctree-wrapper compound" id="resource-manager">
-</div>
-<div class="toctree-wrapper compound" id="dns">
-</div>
-<div class="toctree-wrapper compound" id="cloud-search">
-</div>
-<div class="toctree-wrapper compound" id="external-links">
-</div>
-<div class="section" id="getting-started">
-<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">#</a></h1>
-<p>The <code class="docutils literal"><span class="pre">gcloud</span></code> library is <code class="docutils literal"><span class="pre">pip</span></code> install-able:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> pip install gcloud
-</pre></div>
-</div>
-<p>If you have trouble installing
-<code class="docutils literal"><span class="pre">pycrypto</span></code> or <code class="docutils literal"><span class="pre">pyopenssl</span></code>
-(and you&#8217;re on Ubuntu),
-you can try install the precompiled packages:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-crypto python-openssl
-</pre></div>
-</div>
-<p>If you want to install everything with <code class="docutils literal"><span class="pre">pip</span></code>,
-try installing the <code class="docutils literal"><span class="pre">dev</span></code> packages beforehand:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> sudo apt-get install python-dev libssl-dev
-</pre></div>
-</div>
-<p>If you want to install <code class="docutils literal"><span class="pre">gcloud-python</span></code> from source,
-you can clone the repository from GitHub:</p>
-<div class="highlight-console"><div class="highlight"><pre><span class="gp">$</span> git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
-<span class="gp">$</span> <span class="nb">cd</span> gcloud-python
-<span class="gp">$</span> python setup.py install
-</pre></div>
-</div>
-<hr class="docutils" />
-<div class="section" id="cloud-datastore">
-<h2>Cloud Datastore<a class="headerlink" href="#cloud-datastore" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed, schemaless database for storing non-relational data.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+  <div class="section" id="module-gcloud.storage.batch">
+<span id="batches"></span><h1>Batches<a class="headerlink" href="#module-gcloud.storage.batch" title="Permalink to this headline">#</a></h1>
+<p>Batch updates / deletes of storage buckets / blobs.</p>
+<p>See: <a class="reference external" href="https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch">https://cloud.google.com/storage/docs/json_api/v1/how-tos/batch</a></p>
+<dl class="class">
+<dt id="gcloud.storage.batch.Batch">
+<em class="property">class </em><code class="descclassname">gcloud.storage.batch.</code><code class="descname">Batch</code><span class="sig-paren">(</span><em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/batch.html#Batch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.batch.Batch" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="storage-client.html#gcloud.storage.connection.Connection" title="gcloud.storage.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.connection.Connection</span></code></a></p>
+<p>Proxy an underlying connection, batching up change operations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a>) &#8211; The client to use for making connections.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.storage.batch.Batch.current">
+<code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/batch.html#Batch.current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.batch.Batch.current" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the topmost batch, or None.</p>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">key</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="s1">&#39;Person&#39;</span><span class="p">)</span>
+<dl class="method">
+<dt id="gcloud.storage.batch.Batch.finish">
+<code class="descname">finish</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/batch.html#Batch.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.batch.Batch.finish" title="Permalink to this definition">#</a></dt>
+<dd><p>Submit a single <cite>multipart/mixed</cite> request w/ deferred requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of tuples</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">one <code class="docutils literal"><span class="pre">(headers,</span> <span class="pre">payload)</span></code> tuple per deferred request.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
-<span class="n">entity</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Entity</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Your name&#39;</span>
-<span class="n">entity</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
-<span class="n">client</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="cloud-storage">
-<h2>Cloud Storage<a class="headerlink" href="#cloud-storage" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">storage</span>
+</dd></dl>
 
-<span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;&lt;your-bucket-name&gt;&#39;</span><span class="p">)</span>
-<span class="n">blob</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="s1">&#39;my-test-file.txt&#39;</span><span class="p">)</span>
-<span class="n">blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="s1">&#39;this is test content!&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+<dl class="class">
+<dt id="gcloud.storage.batch.MIMEApplicationHTTP">
+<em class="property">class </em><code class="descclassname">gcloud.storage.batch.</code><code class="descname">MIMEApplicationHTTP</code><span class="sig-paren">(</span><em>method</em>, <em>uri</em>, <em>headers</em>, <em>body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/batch.html#MIMEApplicationHTTP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.batch.MIMEApplicationHTTP" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/email.mime.html#email.mime.application.MIMEApplication" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">email.mime.application.MIMEApplication</span></code></a></p>
+<p>MIME type for <code class="docutils literal"><span class="pre">application/http</span></code>.</p>
+<p>Constructs payload from headers and body</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; HTTP method</li>
+<li><strong>uri</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; URI for HTTP request</li>
+<li><strong>headers</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; HTTP headers</li>
+<li><strong>body</strong> (<em>text or None</em>) &#8211; HTTP payload</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="gcloud.storage.batch.NoContent">
+<em class="property">class </em><code class="descclassname">gcloud.storage.batch.</code><code class="descname">NoContent</code><a class="reference internal" href="_modules/gcloud/storage/batch.html#NoContent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.batch.NoContent" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Emulate an HTTP &#8216;204 No Content&#8217; response.</p>
+<dl class="attribute">
+<dt id="gcloud.storage.batch.NoContent.status">
+<code class="descname">status</code><em class="property"> = 204</em><a class="headerlink" href="#gcloud.storage.batch.NoContent.status" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -182,12 +187,12 @@ you can clone the repository from GitHub:</p>
 <li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Storage</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Batches</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Pub/Sub</span></p>
 <ul>

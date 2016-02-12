@@ -33,3 +33,11 @@ Exceptions
   :members:
   :undoc-members:
   :show-inheritance:
+
+Environment Variables
+~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: gcloud.environment_vars
+  :members:
+  :undoc-members:
+  :show-inheritance:
