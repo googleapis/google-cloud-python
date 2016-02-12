@@ -176,19 +176,20 @@ def entity_from_protobuf(pb):
         if meaning is not None:
             entity_meanings[prop_name] = (meaning, value)
 
-        # Check if ``value_pb`` was indexed. Lists need to be special-cased
-        # and we require all ``indexed`` values in a list agree.
+        # Check if ``value_pb`` was excluded from index. Lists need to be
+        # special-cased and we require all ``exclude_from_indexes`` values
+        # in a list agree.
         if is_list:
-            indexed_values = set(value_pb.indexed
+            exclude_values = set(value_pb.exclude_from_indexes
                                  for value_pb in value_pb.list_value)
-            if len(indexed_values) != 1:
+            if len(exclude_values) != 1:
                 raise ValueError('For a list_value, subvalues must either all '
                                  'be indexed or all excluded from indexes.')
 
-            if not indexed_values.pop():
+            if exclude_values.pop():
                 exclude_from_indexes.append(prop_name)
         else:
-            if not value_pb.indexed:
+            if value_pb.exclude_from_indexes:
                 exclude_from_indexes.append(prop_name)
 
     entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
@@ -223,10 +224,10 @@ def entity_to_protobuf(entity):
         # Add index information to protobuf.
         if name in entity.exclude_from_indexes:
             if not value_is_list:
-                value_pb.indexed = False
+                value_pb.exclude_from_indexes = True
 
             for sub_value in value_pb.list_value:
-                sub_value.indexed = False
+                sub_value.exclude_from_indexes = True
 
         # Add meaning information to protobuf.
         if name in entity._meanings:
