@@ -489,6 +489,25 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(name, 'array_value')
         self.assertTrue(value is values)
 
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore.helpers import GeoPoint
+
+        lat = 42.42
+        lng = 99.0007
+        geo_pt = GeoPoint(latitude=lat, longitude=lng)
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        name, value = self._callFUT(geo_pt)
+        self.assertEqual(name, 'geo_point_value')
+        self.assertEqual(value, geo_pt_pb)
+
+    def test_null(self):
+        from google.protobuf import struct_pb2
+
+        name, value = self._callFUT(None)
+        self.assertEqual(name, 'null_value')
+        self.assertEqual(value, struct_pb2.NULL_VALUE)
+
     def test_object(self):
         self.assertRaises(ValueError, self._callFUT, object())
 
@@ -578,11 +597,34 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         items = self._callFUT(pb)
         self.assertEqual(items, ['Foo', 'Bar'])
 
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore._generated import entity_pb2
+        from gcloud.datastore.helpers import GeoPoint
+
+        lat = -3.14
+        lng = 13.37
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        pb = entity_pb2.Value(geo_point_value=geo_pt_pb)
+        result = self._callFUT(pb)
+        self.assertIsInstance(result, GeoPoint)
+        self.assertEqual(result.latitude, lat)
+        self.assertEqual(result.longitude, lng)
+
+    def test_null(self):
+        from google.protobuf import struct_pb2
+        from gcloud.datastore._generated import entity_pb2
+
+        pb = entity_pb2.Value(null_value=struct_pb2.NULL_VALUE)
+        result = self._callFUT(pb)
+        self.assertIsNone(result)
+
     def test_unknown(self):
         from gcloud.datastore._generated import entity_pb2
 
         pb = entity_pb2.Value()
-        self.assertEqual(self._callFUT(pb), None)
+        with self.assertRaises(ValueError):
+            self._callFUT(pb)
 
 
 class Test_set_protobuf_value(unittest2.TestCase):
@@ -619,23 +661,9 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(value, key.to_protobuf())
 
     def test_none(self):
-        from gcloud.datastore.entity import Entity
-
-        entity = Entity()
         pb = self._makePB()
-
-        self._callFUT(pb, False)
-        self._callFUT(pb, 3.1415926)
-        self._callFUT(pb, 42)
-        self._callFUT(pb, (1 << 63) - 1)
-        self._callFUT(pb, 'str')
-        self._callFUT(pb, b'str')
-        self._callFUT(pb, u'str')
-        self._callFUT(pb, entity)
-        self._callFUT(pb, [u'a', 0, 3.14])
-
         self._callFUT(pb, None)
-        self.assertEqual(len(pb.ListFields()), 0)
+        self.assertEqual(pb.WhichOneof('value_type'), 'null_value')
 
     def test_bool(self):
         pb = self._makePB()
@@ -724,6 +752,18 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(marshalled[0].string_value, values[0])
         self.assertEqual(marshalled[1].integer_value, values[1])
         self.assertEqual(marshalled[2].double_value, values[2])
+
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore.helpers import GeoPoint
+
+        pb = self._makePB()
+        lat = 9.11
+        lng = 3.337
+        geo_pt = GeoPoint(latitude=lat, longitude=lng)
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        self._callFUT(pb, geo_pt)
+        self.assertEqual(pb.geo_point_value, geo_pt_pb)
 
 
 class Test__prepare_key_for_request(unittest2.TestCase):
@@ -884,6 +924,60 @@ class Test__get_meaning(unittest2.TestCase):
 
         with self.assertRaises(ValueError):
             self._callFUT(value_pb, is_list=True)
+
+
+class TestGeoPoint(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.datastore.helpers import GeoPoint
+        return GeoPoint
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        lat = 81.2
+        lng = 359.9999
+        geo_pt = self._makeOne(lat, lng)
+        self.assertEqual(geo_pt.latitude, lat)
+        self.assertEqual(geo_pt.longitude, lng)
+
+    def test_to_protobuf(self):
+        from google.type import latlng_pb2
+
+        lat = 0.0001
+        lng = 20.03
+        geo_pt = self._makeOne(lat, lng)
+        result = geo_pt.to_protobuf()
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        self.assertEqual(result, geo_pt_pb)
+
+    def test___eq__(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = self._makeOne(lat, lng)
+        self.assertEqual(geo_pt1, geo_pt2)
+
+    def test___eq__type_differ(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = object()
+        self.assertNotEqual(geo_pt1, geo_pt2)
+
+    def test___ne__same_value(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = self._makeOne(lat, lng)
+        comparison_val = (geo_pt1 != geo_pt2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        geo_pt1 = self._makeOne(0.0, 1.0)
+        geo_pt2 = self._makeOne(2.0, 3.0)
+        self.assertNotEqual(geo_pt1, geo_pt2)
 
 
 class _Connection(object):

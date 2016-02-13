@@ -19,6 +19,8 @@ The non-private functions are part of the API.
 
 import datetime
 
+from google.protobuf import struct_pb2
+from google.type import latlng_pb2
 import six
 
 from gcloud._helpers import _datetime_to_pb_timestamp
@@ -323,6 +325,10 @@ def _pb_attr_value(val):
         name, value = 'entity', val
     elif isinstance(val, list):
         name, value = 'array', val
+    elif isinstance(val, GeoPoint):
+        name, value = 'geo_point', val.to_protobuf()
+    elif val is None:
+        name, value = 'null', struct_pb2.NULL_VALUE
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -343,8 +349,9 @@ def _get_value_from_value_pb(value_pb):
     :param value_pb: The Value Protobuf.
 
     :returns: The value provided by the Protobuf.
+    :raises: :class:`ValueError <exceptions.ValueError>` if no value type
+             has been set.
     """
-    result = None
     value_type = value_pb.WhichOneof('value_type')
 
     if value_type == 'timestamp_value':
@@ -375,6 +382,16 @@ def _get_value_from_value_pb(value_pb):
         result = [_get_value_from_value_pb(value)
                   for value in value_pb.array_value.values]
 
+    elif value_type == 'geo_point_value':
+        result = GeoPoint(value_pb.geo_point_value.latitude,
+                          value_pb.geo_point_value.longitude)
+
+    elif value_type == 'null_value':
+        result = None
+
+    else:
+        raise ValueError('Value protobuf did not have any value set')
+
     return result
 
 
@@ -395,10 +412,6 @@ def _set_protobuf_value(value_pb, val):
                :class:`gcloud.datastore.entity.Entity`
     :param val: The value to be assigned.
     """
-    if val is None:
-        value_pb.Clear()
-        return
-
     attr, val = _pb_attr_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
@@ -412,6 +425,8 @@ def _set_protobuf_value(value_pb, val):
         for item in val:
             i_pb = l_pb.add()
             _set_protobuf_value(i_pb, item)
+    elif attr == 'geo_point_value':
+        value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
 
@@ -441,3 +456,47 @@ def _prepare_key_for_request(key_pb):
         new_key_pb.partition_id.ClearField('project_id')
         key_pb = new_key_pb
     return key_pb
+
+
+class GeoPoint(object):
+    """Simple container for a geo point value.
+
+    :type latitude: float
+    :param latitude: Latitude of a point.
+
+    :type longitude: float
+    :param longitude: Longitude of a point.
+    """
+
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+
+    def to_protobuf(self):
+        """Convert the current object to protobuf.
+
+        :rtype: :class:`google.type.latlng_pb2.LatLng`.
+        :returns: The current point as a protobuf.
+        """
+        return latlng_pb2.LatLng(latitude=self.latitude,
+                                 longitude=self.longitude)
+
+    def __eq__(self, other):
+        """Compare two geo points for equality.
+
+        :rtype: boolean
+        :returns: True if the points compare equal, else False.
+        """
+        if not isinstance(other, GeoPoint):
+            return False
+
+        return (self.latitude == other.latitude and
+                self.longitude == other.longitude)
+
+    def __ne__(self, other):
+        """Compare two geo points for inequality.
+
+        :rtype: boolean
+        :returns: False if the points compare equal, else True.
+        """
+        return not self.__eq__(other)
