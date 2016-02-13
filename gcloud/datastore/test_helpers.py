@@ -309,7 +309,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         array_val1.exclude_from_indexes = False
         array_val1.meaning = meaning = 22
         array_val1.blob_value = b'\xe2\x98\x83'
-        array_val2 = val_pb4.array_value.add()
+        array_val2 = val_pb4.array_value.values.add()
         array_val2.exclude_from_indexes = False
         array_val2.meaning = meaning
         array_val2.blob_value = b'\xe2\x98\x85'

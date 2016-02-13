@@ -16,7 +16,6 @@
 
 import os
 
-from gcloud._helpers import _has_field
 from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
@@ -435,5 +434,5 @@ def _parse_commit_response(commit_response_pb):
     mut_results = commit_response_pb.mutation_results
     index_updates = commit_response_pb.index_updates
     completed_keys = [mut_result.key for mut_result in mut_results
-                      if _has_field(mut_result, 'key')]
+                      if mut_result.HasField('key')]  # Message field (Key)
     return index_updates, completed_keys
