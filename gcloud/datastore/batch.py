@@ -22,7 +22,6 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from gcloud.datastore import helpers
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 
 
@@ -189,7 +188,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _projects_equal(self.project, entity.key.project):
+        if self.project != entity.key.project:
             raise ValueError("Key must be from same project as batch")
 
         if entity.key.is_partial:
@@ -212,10 +211,10 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _projects_equal(self.project, key.project):
+        if self.project != key.project:
             raise ValueError("Key must be from same project as batch")
 
-        key_pb = helpers._prepare_key_for_request(key.to_protobuf())
+        key_pb = key.to_protobuf()
         self._add_delete_key_pb().CopyFrom(key_pb)
 
     def begin(self):
@@ -297,6 +296,5 @@ def _assign_entity_to_pb(entity_pb, entity):
     :param entity: The entity being updated within the batch / transaction.
     """
     bare_entity_pb = helpers.entity_to_protobuf(entity)
-    key_pb = helpers._prepare_key_for_request(bare_entity_pb.key)
-    bare_entity_pb.key.CopyFrom(key_pb)
+    bare_entity_pb.key.CopyFrom(bare_entity_pb.key)
     entity_pb.CopyFrom(bare_entity_pb)

@@ -456,55 +456,6 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             client.get_multi([key1, key2])
 
-    def test_get_multi_diff_prefixes(self):
-        from gcloud.datastore.key import Key
-
-        PROJECT1 = 'PROJECT'
-        PROJECT2 = 'e~PROJECT'
-        PROJECT3 = 's~PROJECT'
-        KIND = 'Kind'
-        ID1 = 1234
-        ID2 = 2345
-        ID3 = 3456
-
-        # Make found entity pbs to be returned from mock backend.
-        entity_pb1 = _make_entity_pb(PROJECT1, KIND, ID1)
-        entity_pb2 = _make_entity_pb(PROJECT2, KIND, ID2)
-        entity_pb3 = _make_entity_pb(PROJECT3, KIND, ID3)
-
-        creds = object()
-        client = self._makeOne(credentials=creds)
-        client.connection._add_lookup_result([entity_pb1,
-                                              entity_pb2,
-                                              entity_pb3])
-
-        key1 = Key(KIND, ID1, project=PROJECT1)
-        key2 = Key(KIND, ID2, project=PROJECT2)
-        key3 = Key(KIND, ID3, project=PROJECT3)
-
-        retrieved_all = client.get_multi([key1, key2, key3])
-        retrieved1, retrieved2, retrieved3 = retrieved_all
-
-        # Check values & keys match.
-        self.assertEqual(retrieved1.key.path, key1.path)
-        self.assertEqual(retrieved2.key.path, key2.path)
-        self.assertEqual(retrieved3.key.path, key3.path)
-
-    def test_get_multi_diff_projects_w_prefix(self):
-        from gcloud.datastore.key import Key
-
-        PROJECT1 = 'e~PROJECT'
-        PROJECT2 = 's~PROJECT-ALT'
-
-        key1 = Key('KIND', 1234, project=PROJECT1)
-        key2 = Key('KIND', 1234, project=PROJECT2)
-
-        creds = object()
-        client = self._makeOne(credentials=creds)
-
-        with self.assertRaises(ValueError):
-            client.get_multi([key1, key2])
-
     def test_get_multi_max_loops(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client as _MUT

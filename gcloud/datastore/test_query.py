@@ -579,7 +579,6 @@ class Test__pb_from_query(unittest2.TestCase):
 
     def test_ancestor(self):
         from gcloud.datastore.key import Key
-        from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
         ancestor = Key('Ancestor', 123, project='PROJECT')
@@ -589,7 +588,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(len(cfilter.filters), 1)
         pfilter = cfilter.filters[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
-        ancestor_pb = _prepare_key_for_request(ancestor.to_protobuf())
+        ancestor_pb = ancestor.to_protobuf()
         self.assertEqual(pfilter.value.key_value, ancestor_pb)
 
     def test_filter(self):
@@ -609,7 +608,6 @@ class Test__pb_from_query(unittest2.TestCase):
 
     def test_filter_key(self):
         from gcloud.datastore.key import Key
-        from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
         key = Key('Kind', 123, project='PROJECT')
@@ -623,7 +621,7 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(len(cfilter.filters), 1)
         pfilter = cfilter.filters[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
-        key_pb = _prepare_key_for_request(key.to_protobuf())
+        key_pb = key.to_protobuf()
         self.assertEqual(pfilter.value.key_value, key_pb)
 
     def test_order(self):
