@@ -22,7 +22,6 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from gcloud.datastore import helpers
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 
 
@@ -190,7 +189,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _projects_equal(self.project, entity.key.project):
+        if self.project != entity.key.project:
             raise ValueError("Key must be from same project as batch")
 
         if entity.key.is_partial:
@@ -213,7 +212,7 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _projects_equal(self.project, key.project):
+        if self.project != key.project:
             raise ValueError("Key must be from same project as batch")
 
         key_pb = key.to_protobuf()

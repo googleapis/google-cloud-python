@@ -23,7 +23,6 @@ from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
@@ -278,7 +277,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         ids = set(key.project for key in keys)
         for current_id in ids:
-            if not _projects_equal(current_id, self.project):
+            if current_id != self.project:
                 raise ValueError('Keys do not match project')
 
         transaction = self.current_transaction

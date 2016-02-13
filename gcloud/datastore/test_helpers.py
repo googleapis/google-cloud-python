@@ -160,7 +160,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 's~FOO'
+        PROJECT = 'FOO'
         KIND = 'KIND'
         INSIDE_NAME = 'IFOO'
         OUTSIDE_NAME = 'OBAR'
