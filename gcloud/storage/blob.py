@@ -150,7 +150,7 @@ class Blob(_PropertyMixin):
             quoted_name=quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET',
-                            content_type='application/octet-stream',
+                            content_type=None,
                             generation=None, response_disposition=None,
                             response_type=None, client=None, credentials=None):
         """Generates a signed URL for this blob.
@@ -181,8 +181,7 @@ class Blob(_PropertyMixin):
 
         :type content_type: str
         :param content_type: (Optional) The content type of the object
-                             referenced by ``resource``, defaults to
-                             ``application/octet-stream``.
+                             referenced by ``resource``.
 
         :type generation: str
         :param generation: (Optional) A value that indicates which generation
