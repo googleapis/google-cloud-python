@@ -249,7 +249,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 1)
-        _compare_key_pb_after_request(self, key_pb, keys[0])
+        self.assertEqual(key_pb, keys[0])
 
     def test_lookup_single_key_empty_response_w_eventual(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -277,7 +277,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 1)
-        _compare_key_pb_after_request(self, key_pb, keys[0])
+        self.assertEqual(key_pb, keys[0])
         self.assertEqual(request.read_options.read_consistency,
                          datastore_pb2.ReadOptions.EVENTUAL)
         self.assertEqual(request.read_options.transaction, b'')
@@ -317,7 +317,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 1)
-        _compare_key_pb_after_request(self, key_pb, keys[0])
+        self.assertEqual(key_pb, keys[0])
         self.assertEqual(request.read_options.transaction, TRANSACTION)
 
     def test_lookup_single_key_nonempty_response(self):
@@ -350,7 +350,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 1)
-        _compare_key_pb_after_request(self, key_pb, keys[0])
+        self.assertEqual(key_pb, keys[0])
 
     def test_lookup_multiple_keys_empty_response(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -378,8 +378,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 2)
-        _compare_key_pb_after_request(self, key_pb1, keys[0])
-        _compare_key_pb_after_request(self, key_pb2, keys[1])
+        self.assertEqual(key_pb1, keys[0])
+        self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_missing(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -412,8 +412,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 2)
-        _compare_key_pb_after_request(self, key_pb1, keys[0])
-        _compare_key_pb_after_request(self, key_pb2, keys[1])
+        self.assertEqual(key_pb1, keys[0])
+        self.assertEqual(key_pb2, keys[1])
 
     def test_lookup_multiple_keys_w_deferred(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -448,8 +448,8 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         keys = list(request.keys)
         self.assertEqual(len(keys), 2)
-        _compare_key_pb_after_request(self, key_pb1, keys[0])
-        _compare_key_pb_after_request(self, key_pb2, keys[1])
+        self.assertEqual(key_pb1, keys[0])
+        self.assertEqual(key_pb2, keys[1])
 
     def test_run_query_w_eventual_no_transaction(self):
         from gcloud.datastore._generated import datastore_pb2
@@ -800,7 +800,7 @@ class TestConnection(unittest2.TestCase):
         request.ParseFromString(cw['body'])
         self.assertEqual(len(request.keys), len(before_key_pbs))
         for key_before, key_after in zip(before_key_pbs, request.keys):
-            _compare_key_pb_after_request(self, key_before, key_after)
+            self.assertEqual(key_before, key_after)
 
 
 class Test__parse_commit_response(unittest2.TestCase):
@@ -854,17 +854,6 @@ class Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
-
-
-def _compare_key_pb_after_request(test, key_before, key_after):
-    # Unset values are False-y.
-    test.assertEqual(key_after.partition_id.project_id, '')
-    test.assertEqual(key_before.partition_id.namespace_id,
-                     key_after.partition_id.namespace_id)
-    test.assertEqual(len(key_before.path),
-                     len(key_after.path))
-    for elt1, elt2 in zip(key_before.path, key_after.path):
-        test.assertEqual(elt1, elt2)
 
 
 class _PathElementProto(object):

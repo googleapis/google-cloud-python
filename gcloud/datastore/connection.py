@@ -20,7 +20,6 @@ from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
-from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 
 
 class Connection(connection.Connection):
@@ -385,28 +384,6 @@ def _set_read_options(request, eventual, transaction_id):
         opts.transaction = transaction_id
 
 
-def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
-    """Add protobuf keys to a request object.
-
-    .. note::
-      This is copied from `helpers` to avoid a cycle:
-      _implicit_environ -> connection -> helpers -> key -> _implicit_environ
-
-    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :param key_pb: A key to be added to a request.
-
-    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :returns: A key which will be added to a request. It will be the
-              original if nothing needs to be changed.
-    """
-    if key_pb.partition_id.project_id:  # Simple field (string)
-        new_key_pb = _entity_pb2.Key()
-        new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('project_id')
-        key_pb = new_key_pb
-    return key_pb
-
-
 def _add_keys_to_request(request_field_pb, key_pbs):
     """Add protobuf keys to a request object.
 
@@ -417,7 +394,6 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
-        key_pb = _prepare_key_for_request(key_pb)
         request_field_pb.add().CopyFrom(key_pb)
 
 

@@ -216,7 +216,7 @@ class Batch(object):
         if not _projects_equal(self.project, key.project):
             raise ValueError("Key must be from same project as batch")
 
-        key_pb = helpers._prepare_key_for_request(key.to_protobuf())
+        key_pb = key.to_protobuf()
         self._add_delete_key_pb().CopyFrom(key_pb)
 
     def begin(self):
@@ -298,6 +298,5 @@ def _assign_entity_to_pb(entity_pb, entity):
     :param entity: The entity being updated within the batch / transaction.
     """
     bare_entity_pb = helpers.entity_to_protobuf(entity)
-    key_pb = helpers._prepare_key_for_request(bare_entity_pb.key)
-    bare_entity_pb.key.CopyFrom(key_pb)
+    bare_entity_pb.key.CopyFrom(bare_entity_pb.key)
     entity_pb.CopyFrom(bare_entity_pb)
