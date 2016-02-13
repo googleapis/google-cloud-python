@@ -123,9 +123,10 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(prop_dict['foo'].exclude_from_indexes)
         self.assertTrue(prop_dict['baz'].exclude_from_indexes)
         self.assertFalse(prop_dict['spam'].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
+        spam_values = prop_dict['spam'].array_value.values
+        self.assertTrue(spam_values[0].exclude_from_indexes)
+        self.assertTrue(spam_values[1].exclude_from_indexes)
+        self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_put_entity_w_completed_key_prefixed_project(self):
@@ -155,9 +156,10 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(prop_dict['foo'].exclude_from_indexes)
         self.assertTrue(prop_dict['baz'].exclude_from_indexes)
         self.assertFalse(prop_dict['spam'].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
+        spam_values = prop_dict['spam'].array_value.values
+        self.assertTrue(spam_values[0].exclude_from_indexes)
+        self.assertTrue(spam_values[1].exclude_from_indexes)
+        self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):

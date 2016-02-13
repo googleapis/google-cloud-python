@@ -705,7 +705,7 @@ class TestClient(unittest2.TestCase):
          commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
 
-        mutated_key = _mutated_pb(self, commit_req_pb.mutations, 'delete')
+        mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
         self.assertEqual(mutated_key, key.to_protobuf())
         self.assertTrue(transaction_id is None)
 
