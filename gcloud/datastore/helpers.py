@@ -349,32 +349,33 @@ def _get_value_from_value_pb(value_pb):
     :returns: The value provided by the Protobuf.
     """
     result = None
-    # Message field (google.protobuf.Timestamp)
-    if value_pb.HasField('timestamp_value'):
+    value_type = value_pb.WhichOneof('value_type')
+
+    if value_type == 'timestamp_value':
         result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
 
-    elif value_pb.HasField('key_value'):  # Message field (Key)
+    elif value_type == 'key_value':
         result = key_from_protobuf(value_pb.key_value)
 
-    elif value_pb.HasField('boolean_value'):  # Simple field (bool)
+    elif value_type == 'boolean_value':
         result = value_pb.boolean_value
 
-    elif value_pb.HasField('double_value'):  # Simple field (double)
+    elif value_type == 'double_value':
         result = value_pb.double_value
 
-    elif value_pb.HasField('integer_value'):  # Simple field (int64)
+    elif value_type == 'integer_value':
         result = value_pb.integer_value
 
-    elif value_pb.HasField('string_value'):  # Simple field (string)
+    elif value_type == 'string_value':
         result = value_pb.string_value
 
-    elif value_pb.HasField('blob_value'):  # Simple field (bytes)
+    elif value_type == 'blob_value':
         result = value_pb.blob_value
 
-    elif value_pb.HasField('entity_value'):  # Message field (Entity)
+    elif value_type == 'entity_value':
         result = entity_from_protobuf(value_pb.entity_value)
 
-    elif value_pb.array_value.values:
+    elif value_type == 'array_value':
         result = [_get_value_from_value_pb(value)
                   for value in value_pb.array_value.values]
 
