@@ -486,8 +486,7 @@ def _pb_from_query(query):
     composite_filter.op = _query_pb2.CompositeFilter.AND
 
     if query.ancestor:
-        ancestor_pb = helpers._prepare_key_for_request(
-            query.ancestor.to_protobuf())
+        ancestor_pb = query.ancestor.to_protobuf()
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
         ancestor_filter = composite_filter.filters.add().property_filter
@@ -506,8 +505,7 @@ def _pb_from_query(query):
         # Set the value to filter on based on the type.
         if property_name == '__key__':
             key_pb = value.to_protobuf()
-            property_filter.value.key_value.CopyFrom(
-                helpers._prepare_key_for_request(key_pb))
+            property_filter.value.key_value.CopyFrom(key_pb)
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 

@@ -35,46 +35,6 @@ __all__ = ('entity_from_protobuf', 'key_from_protobuf')
 INT_VALUE_CHECKER = Int64ValueChecker()
 
 
-def find_true_project(project, connection):
-    """Find the true (unaliased) project.
-
-    If the given ID already has a 's~' or 'e~' prefix, does nothing.
-    Otherwise, looks up a bogus Key('__MissingLookupKind', 1) and reads the
-    true prefixed project from the response (either from found or from
-    missing).
-
-    For some context, see:
-      github.com/GoogleCloudPlatform/gcloud-python/pull/528
-      github.com/GoogleCloudPlatform/google-cloud-datastore/issues/59
-
-    :type project: string
-    :param project: The project to un-alias / prefix.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: A connection provided to connect to the project.
-
-    :rtype: string
-    :returns: The true / prefixed / un-aliased project.
-    """
-    if project.startswith('s~') or project.startswith('e~'):
-        return project
-
-    # Create the bogus Key protobuf to be looked up and remove
-    # the project so the backend won't complain.
-    bogus_key_pb = Key('__MissingLookupKind', 1,
-                       project=project).to_protobuf()
-    bogus_key_pb.partition_id.ClearField('project_id')
-
-    found_pbs, missing_pbs, _ = connection.lookup(project, [bogus_key_pb])
-    # By not passing in `deferred`, lookup will continue until
-    # all results are `found` or `missing`.
-    all_pbs = missing_pbs + found_pbs
-    # We only asked for one, so should only receive one.
-    returned_pb, = all_pbs
-
-    return returned_pb.key.partition_id.project_id
-
-
 def _get_meaning(value_pb, is_list=False):
     """Get the meaning from a protobuf value.
 
@@ -433,33 +393,6 @@ def _set_protobuf_value(value_pb, val):
         value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
-
-
-def _prepare_key_for_request(key_pb):
-    """Add protobuf keys to a request object.
-
-    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :param key_pb: A key to be added to a request.
-
-    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :returns: A key which will be added to a request. It will be the
-              original if nothing needs to be changed.
-    """
-    if key_pb.partition_id.project_id:  # Simple field (string)
-        # We remove the project_id from the protobuf. This is because
-        # the backend fails a request if the key contains un-prefixed
-        # project. The backend fails because requests to
-        #     /v1beta3/projects/foo:...
-        # and
-        #     /v1beta3/projects/s~foo:...
-        # both go to the datastore given by 's~foo'. So if the key
-        # protobuf in the request body has project_id='foo', the
-        # backend will reject since 'foo' != 's~foo'.
-        new_key_pb = _entity_pb2.Key()
-        new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('project_id')
-        key_pb = new_key_pb
-    return key_pb
 
 
 class GeoPoint(object):
