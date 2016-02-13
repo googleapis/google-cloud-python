@@ -16,8 +16,7 @@
 import os
 
 from gcloud._helpers import _LocalStack
-from gcloud._helpers import _app_engine_id
-from gcloud._helpers import _compute_engine_id
+from gcloud._helpers import _determine_default_project as _base_default_project
 from gcloud.client import Client as _BaseClient
 from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
@@ -27,17 +26,11 @@ from gcloud.datastore.key import _projects_equal
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-from gcloud.environment_vars import DATASET
 from gcloud.environment_vars import GCD_DATASET
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
-
-
-def _get_production_project():
-    """Gets the production application ID if it can be inferred."""
-    return os.getenv(DATASET)
 
 
 def _get_gcd_project():
@@ -51,8 +44,8 @@ def _determine_default_project(project=None):
     In implicit case, supports four environments. In order of precedence, the
     implicit environments are:
 
-    * GCLOUD_DATASET_ID environment variable
-    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
+    * GCLOUD_PROJECT environment variable
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
@@ -63,16 +56,10 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
-        project = _get_production_project()
-
-    if project is None:
         project = _get_gcd_project()
 
     if project is None:
-        project = _app_engine_id()
-
-    if project is None:
-        project = _compute_engine_id()
+        project = _base_default_project(project=project)
 
     return project
 
@@ -180,7 +167,7 @@ class Client(_BaseClient):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        project = _determine_default_project(project)
+        project = _determine_default_project(project=project)
         if project is None:
             raise EnvironmentError('Project could not be inferred.')
         self.project = project

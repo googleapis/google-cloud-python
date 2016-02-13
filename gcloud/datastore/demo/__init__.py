@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import os
-from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 
 __all__ = ['PROJECT']
 
-PROJECT = os.getenv(TESTS_DATASET)
+PROJECT = os.getenv(TESTS_PROJECT)
