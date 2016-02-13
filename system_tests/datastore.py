@@ -22,6 +22,7 @@ import unittest2
 from gcloud._helpers import UTC
 from gcloud import datastore
 from gcloud.datastore import client as client_mod
+from gcloud.datastore.helpers import GeoPoint
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import TESTS_DATASET
 from gcloud.exceptions import Conflict
@@ -177,6 +178,32 @@ class TestDatastoreSave(TestDatastore):
         query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
+
+    def test_all_value_types(self):
+        key = Config.CLIENT.key('TestPanObject', 1234)
+        entity = datastore.Entity(key=key)
+        entity['timestamp'] = datetime.datetime(2014, 9, 9, tzinfo=UTC)
+        key_stored = Config.CLIENT.key('SavedKey', 'right-here')
+        entity['key'] = key_stored
+        entity['truthy'] = True
+        entity['float'] = 2.718281828
+        entity['int'] = 3735928559
+        entity['words'] = u'foo'
+        entity['blob'] = b'seekretz'
+        entity_stored = datastore.Entity(key=key_stored)
+        entity_stored['hi'] = 'bye'
+        entity['nested'] = entity_stored
+        entity['items'] = [1, 2, 3]
+        entity['geo'] = GeoPoint(1.0, 2.0)
+        entity['nothing_here'] = None
+
+        # Store the entity.
+        self.case_entities_to_delete.append(entity)
+        Config.CLIENT.put(entity)
+
+        # Check the original and retrieved are the the same.
+        retrieved_entity = Config.CLIENT.get(entity.key)
+        self.assertEqual(retrieved_entity, entity)
 
 
 class TestDatastoreSaveKeys(TestDatastore):
