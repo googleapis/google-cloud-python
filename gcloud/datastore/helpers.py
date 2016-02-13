@@ -22,8 +22,9 @@ import datetime
 from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import _datetime_to_pb_timestamp
+from gcloud._helpers import _has_field
+from gcloud._helpers import _pb_timestamp_to_datetime
 from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
@@ -307,8 +308,8 @@ def _pb_attr_value(val):
     """
 
     if isinstance(val, datetime.datetime):
-        name = 'timestamp_microseconds'
-        value = _microseconds_from_datetime(val)
+        name = 'timestamp'
+        value = _datetime_to_pb_timestamp(val)
     elif isinstance(val, Key):
         name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
@@ -348,10 +349,9 @@ def _get_value_from_value_pb(value_pb):
     :returns: The value provided by the Protobuf.
     """
     result = None
-    # Simple field (int64)
-    if value_pb.HasField('timestamp_microseconds_value'):
-        microseconds = value_pb.timestamp_microseconds_value
-        result = _datetime_from_microseconds(microseconds)
+    # Message field (google.protobuf.Timestamp)
+    if value_pb.HasField('timestamp_value'):
+        result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
 
     elif value_pb.HasField('key_value'):  # Message field (Key)
         result = key_from_protobuf(value_pb.key_value)
@@ -405,6 +405,8 @@ def _set_protobuf_value(value_pb, val):
     attr, val = _pb_attr_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
+    elif attr == 'timestamp_value':
+        value_pb.timestamp_value.CopyFrom(val)
     elif attr == 'entity_value':
         entity_pb = entity_to_protobuf(val)
         value_pb.entity_value.CopyFrom(entity_pb)
