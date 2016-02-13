@@ -17,13 +17,11 @@ import os
 import sys
 
 from gcloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
-from gcloud.environment_vars import TESTS_DATASET
 from gcloud.environment_vars import TESTS_PROJECT
 
 
 # From shell environ. May be None.
 PROJECT_ID = os.getenv(TESTS_PROJECT)
-DATASET_ID = os.getenv(TESTS_DATASET)
 CREDENTIALS = os.getenv(TEST_CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
@@ -46,21 +44,14 @@ class EmulatorCreds(object):
         return False
 
 
-def check_environ(*requirements):
-
+def check_environ():
     missing = []
 
-    if 'dataset_id' in requirements:
-        if DATASET_ID is None:
-            missing.append(TESTS_DATASET)
+    if PROJECT_ID is None:
+        missing.append(TESTS_PROJECT)
 
-    if 'project' in requirements:
-        if PROJECT_ID is None:
-            missing.append(TESTS_PROJECT)
-
-    if 'credentials' in requirements:
-        if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
-            missing.append(TEST_CREDENTIALS)
+    if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
+        missing.append(TEST_CREDENTIALS)
 
     if missing:
         print(ENVIRON_ERROR_MSG % ', '.join(missing), file=sys.stderr)

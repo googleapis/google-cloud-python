@@ -74,10 +74,6 @@ load-plugins=pylint.extensions.check_docs
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
 #                  ancestor = Query().filter(*order_props)
-# - method-hidden: Decorating a method in a class (e.g. in _DefaultsContainer)
-#                      @_lazy_property_deco
-#                      def dataset_id():
-#                          ...
 # - redefined-variable-type: This error is overzealous and complains at e.g.
 #                      if some_prop:
 #                          return int(value)
@@ -100,7 +96,6 @@ disable =
     redefined-builtin,
     similarities,
     star-args,
-    method-hidden,
     redefined-variable-type,
     wrong-import-position,
 

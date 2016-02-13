@@ -19,12 +19,12 @@ import time
 import httplib2
 import unittest2
 
+from gcloud import _helpers
 from gcloud._helpers import UTC
 from gcloud import datastore
-from gcloud.datastore import client as client_mod
 from gcloud.datastore.helpers import GeoPoint
 from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 from gcloud.exceptions import Conflict
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
@@ -56,7 +56,7 @@ def setUpModule():
     # Isolated namespace so concurrent test runs don't collide.
     test_namespace = 'ns%d' % (1000 * time.time(),)
     if emulator_dataset is None:
-        client_mod.DATASET = TESTS_DATASET
+        _helpers.PROJECT = TESTS_PROJECT
         Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()
