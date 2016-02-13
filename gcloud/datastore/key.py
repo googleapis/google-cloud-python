@@ -86,7 +86,7 @@ class Key(object):
             return False
 
         return (self.flat_path == other.flat_path and
-                _projects_equal(self.project, other.project) and
+                self.project == other.project and
                 self.namespace == other.namespace)
 
     def __ne__(self, other):
@@ -402,55 +402,3 @@ def _validate_project(project, parent):
             raise ValueError("A Key must have a project set.")
 
     return project
-
-
-def _projects_equal(project1, project2):
-    """Compares two projects for fuzzy equality.
-
-    Each may be prefixed or unprefixed (but not null, since project
-    is required on a key). The only allowed prefixes are 's~' and 'e~'.
-
-    Two identical prefixed match
-
-      >>> 's~foo' == 's~foo'
-      >>> 'e~bar' == 'e~bar'
-
-    while non-identical prefixed don't
-
-      >>> 's~foo' != 's~bar'
-      >>> 's~foo' != 'e~foo'
-
-    As for non-prefixed, they can match other non-prefixed or
-    prefixed:
-
-      >>> 'foo' == 'foo'
-      >>> 'foo' == 's~foo'
-      >>> 'foo' == 'e~foo'
-      >>> 'foo' != 'bar'
-      >>> 'foo' != 's~bar'
-
-    (Ties are resolved since 'foo' can only be an alias for one of
-    s~foo or e~foo in the backend.)
-
-    :type project1: string
-    :param project1: A project.
-
-    :type project2: string
-    :param project2: A project.
-
-    :rtype: bool
-    :returns: Boolean indicating if the projects are the same.
-    """
-    if project1 == project2:
-        return True
-
-    if project1.startswith('s~') or project1.startswith('e~'):
-        # If `project1` is prefixed and not matching, then the only way
-        # they can match is if `project2` is unprefixed.
-        return project1[2:] == project2
-    elif project2.startswith('s~') or project2.startswith('e~'):
-        # Here we know `project1` is unprefixed and `project2`
-        # is prefixed.
-        return project1 == project2[2:]
-
-    return False

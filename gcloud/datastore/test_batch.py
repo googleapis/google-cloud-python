@@ -129,39 +129,6 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
-    def test_put_entity_w_completed_key_prefixed_project(self):
-        from gcloud.datastore.helpers import _property_tuples
-
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {
-            'foo': 'bar',
-            'baz': 'qux',
-            'spam': [1, 2, 3],
-            'frotz': [],  # will be ignored
-            }
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
-        entity = _Entity(_PROPERTIES)
-        entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key('s~' + _PROJECT)
-
-        batch.put(entity)
-
-        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
-        self.assertEqual(mutated_entity.key, key._key)
-
-        prop_dict = dict(_property_tuples(mutated_entity))
-        self.assertEqual(len(prop_dict), 3)
-        self.assertFalse(prop_dict['foo'].exclude_from_indexes)
-        self.assertTrue(prop_dict['baz'].exclude_from_indexes)
-        self.assertFalse(prop_dict['spam'].exclude_from_indexes)
-        spam_values = prop_dict['spam'].array_value.values
-        self.assertTrue(spam_values[0].exclude_from_indexes)
-        self.assertTrue(spam_values[1].exclude_from_indexes)
-        self.assertTrue(spam_values[2].exclude_from_indexes)
-        self.assertFalse('frotz' in prop_dict)
-
     def test_delete_w_partial_key(self):
         _PROJECT = 'PROJECT'
         connection = _Connection()
@@ -187,18 +154,6 @@ class TestBatch(unittest2.TestCase):
         client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         key = _Key(_PROJECT)
-
-        batch.delete(key)
-
-        mutated_key = _mutated_pb(self, batch.mutations, 'delete')
-        self.assertEqual(mutated_key, key._key)
-
-    def test_delete_w_completed_key_w_prefixed_project(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
-        key = _Key('s~' + _PROJECT)
 
         batch.delete(key)
 
