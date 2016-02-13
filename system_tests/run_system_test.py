@@ -25,12 +25,6 @@ from system_tests import storage
 from system_tests import system_test_utils
 
 
-REQUIREMENTS = {
-    'datastore': ['dataset_id', 'credentials'],
-    'storage': ['project', 'credentials'],
-    'pubsub': ['project', 'credentials'],
-    'bigquery': ['project', 'credentials'],
-}
 TEST_MODULES = {
     'datastore': datastore,
     'storage': storage,
@@ -43,7 +37,7 @@ def get_parser():
     parser = argparse.ArgumentParser(
         description='GCloud test runner against actual project.')
     parser.add_argument('--package', dest='package',
-                        choices=REQUIREMENTS.keys(),
+                        choices=TEST_MODULES.keys(),
                         default='datastore', help='Package to be tested.')
     parser.add_argument(
         '--ignore-requirements',
@@ -55,8 +49,7 @@ def get_parser():
 def run_module_tests(module_name, ignore_requirements=False):
     if not ignore_requirements:
         # Make sure environ is set before running test.
-        requirements = REQUIREMENTS[module_name]
-        system_test_utils.check_environ(*requirements)
+        system_test_utils.check_environ()
 
     suite = unittest2.TestSuite()
     test_mod = TEST_MODULES[module_name]

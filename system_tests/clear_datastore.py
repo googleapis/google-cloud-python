@@ -21,7 +21,7 @@ import os
 from six.moves import input
 
 from gcloud import datastore
-from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 
 
 FETCH_MAX = 20
@@ -90,7 +90,7 @@ def remove_kind(kind, client):
 def remove_all_entities(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client(project=os.getenv(TESTS_DATASET))
+        client = datastore.Client(project=os.getenv(TESTS_PROJECT))
     for kind in ALL_KINDS:
         remove_kind(kind, client)
 

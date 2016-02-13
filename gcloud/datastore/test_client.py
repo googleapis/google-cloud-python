@@ -31,33 +31,6 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
     return entity_pb
 
 
-class Test__get_production_project(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore.client import _get_production_project
-        return _get_production_project()
-
-    def test_no_value(self):
-        import os
-        from gcloud._testing import _Monkey
-
-        environ = {}
-        with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
-            self.assertEqual(project, None)
-
-    def test_value_set(self):
-        import os
-        from gcloud._testing import _Monkey
-        from gcloud.datastore.client import DATASET
-
-        MOCK_PROJECT = object()
-        environ = {DATASET: MOCK_PROJECT}
-        with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
-            self.assertEqual(project, MOCK_PROJECT)
-
-
 class Test__get_gcd_project(unittest2.TestCase):
 
     def _callFUT(self):
@@ -88,81 +61,58 @@ class Test__get_gcd_project(unittest2.TestCase):
 class Test__determine_default_project(unittest2.TestCase):
 
     def _callFUT(self, project=None):
-        from gcloud.datastore.client import _determine_default_project
+        from gcloud.datastore.client import (
+            _determine_default_project)
         return _determine_default_project(project=project)
 
-    def _determine_default_helper(self, prod=None, gcd=None, gae=None,
-                                  gce=None, project=None):
+    def _determine_default_helper(self, gcd=None, fallback=None,
+                                  project_called=None):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client
 
         _callers = []
 
-        def prod_mock():
-            _callers.append('prod_mock')
-            return prod
-
         def gcd_mock():
             _callers.append('gcd_mock')
             return gcd
 
-        def gae_mock():
-            _callers.append('gae_mock')
-            return gae
-
-        def gce_mock():
-            _callers.append('gce_mock')
-            return gce
+        def fallback_mock(project=None):
+            _callers.append(('fallback_mock', project))
+            return fallback
 
         patched_methods = {
-            '_get_production_project': prod_mock,
             '_get_gcd_project': gcd_mock,
-            '_app_engine_id': gae_mock,
-            '_compute_engine_id': gce_mock,
+            '_base_default_project': fallback_mock,
         }
 
         with _Monkey(client, **patched_methods):
-            returned_project = self._callFUT(project)
+            returned_project = self._callFUT(project_called)
 
         return returned_project, _callers
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers,
-                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
     def test_explicit(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(
-            project=PROJECT)
+            project_called=PROJECT)
         self.assertEqual(project, PROJECT)
         self.assertEqual(callers, [])
-
-    def test_prod(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(prod=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock'])
 
     def test_gcd(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(gcd=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gcd_mock'])
+        self.assertEqual(callers, ['gcd_mock'])
 
-    def test_gae(self):
+    def test_fallback(self):
         PROJECT = object()
-        project, callers = self._determine_default_helper(gae=PROJECT)
+        project, callers = self._determine_default_helper(fallback=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gcd_mock', 'gae_mock'])
-
-    def test_gce(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(gce=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers,
-                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
 
 class TestClient(unittest2.TestCase):
@@ -195,7 +145,7 @@ class TestClient(unittest2.TestCase):
 
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
-        with _Monkey(_MUT, _compute_engine_id=lambda: None):
+        with _Monkey(_MUT, _base_default_project=lambda project: None):
             self.assertRaises(EnvironmentError, self._makeOne, None)
 
     def test_ctor_w_implicit_inputs(self):
@@ -205,10 +155,15 @@ class TestClient(unittest2.TestCase):
 
         OTHER = 'other'
         creds = object()
+        default_called = []
+
+        def fallback_mock(project):
+            default_called.append(project)
+            return project or OTHER
 
         klass = self._getTargetClass()
         with _Monkey(_MUT,
-                     _determine_default_project=lambda x: x or OTHER):
+                     _determine_default_project=fallback_mock):
             with _Monkey(_base_client,
                          get_credentials=lambda: creds):
                 client = klass()
@@ -219,6 +174,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection.http is None)
         self.assertTrue(client.current_batch is None)
         self.assertTrue(client.current_transaction is None)
+        self.assertEqual(default_called, [None])
 
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
