@@ -38,7 +38,9 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertTrue(isinstance(batch.mutations, datastore_pb2.Mutation))
+        self.assertTrue(isinstance(batch._commit_request,
+                                   datastore_pb2.CommitRequest))
+        self.assertTrue(batch.mutations is batch._commit_request.mutations)
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -90,7 +92,7 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        mutated_entity = _mutated_pb(self, batch.mutations, 'insert_auto_id')
+        mutated_entity = _mutated_pb(self, batch.mutations, 'insert')
         self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(batch._partial_key_entities, [entity])
 
@@ -121,9 +123,10 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(prop_dict['foo'].exclude_from_indexes)
         self.assertTrue(prop_dict['baz'].exclude_from_indexes)
         self.assertFalse(prop_dict['spam'].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
+        spam_values = prop_dict['spam'].array_value.values
+        self.assertTrue(spam_values[0].exclude_from_indexes)
+        self.assertTrue(spam_values[1].exclude_from_indexes)
+        self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_put_entity_w_completed_key_prefixed_project(self):
@@ -153,9 +156,10 @@ class TestBatch(unittest2.TestCase):
         self.assertFalse(prop_dict['foo'].exclude_from_indexes)
         self.assertTrue(prop_dict['baz'].exclude_from_indexes)
         self.assertFalse(prop_dict['spam'].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[0].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[1].exclude_from_indexes)
-        self.assertTrue(prop_dict['spam'].list_value[2].exclude_from_indexes)
+        spam_values = prop_dict['spam'].array_value.values
+        self.assertTrue(spam_values[0].exclude_from_indexes)
+        self.assertTrue(spam_values[1].exclude_from_indexes)
+        self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):
@@ -424,20 +428,18 @@ class _Client(object):
             return self._batches[0]
 
 
-def _assert_num_mutations(test_case, mutation_pb, num_mutations):
-    total_mutations = (len(mutation_pb.upsert) +
-                       len(mutation_pb.update) +
-                       len(mutation_pb.insert) +
-                       len(mutation_pb.insert_auto_id) +
-                       len(mutation_pb.delete))
-    test_case.assertEqual(total_mutations, num_mutations)
+def _assert_num_mutations(test_case, mutation_pb_list, num_mutations):
+    test_case.assertEqual(len(mutation_pb_list), num_mutations)
 
 
-def _mutated_pb(test_case, mutation_pb, mutation_type):
+def _mutated_pb(test_case, mutation_pb_list, mutation_type):
     # Make sure there is only one mutation.
-    _assert_num_mutations(test_case, mutation_pb, 1)
+    _assert_num_mutations(test_case, mutation_pb_list, 1)
 
-    mutated_pbs = getattr(mutation_pb, mutation_type, [])
-    # Make sure we have exactly one protobuf.
-    test_case.assertEqual(len(mutated_pbs), 1)
-    return mutated_pbs[0]
+    # We grab the only mutation.
+    mutated_pb = mutation_pb_list[0]
+    # Then check if it is the correct type.
+    test_case.assertEqual(mutated_pb.WhichOneof('operation'),
+                          mutation_type)
+
+    return getattr(mutated_pb, mutation_type)

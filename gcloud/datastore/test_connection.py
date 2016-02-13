@@ -643,8 +643,8 @@ class TestConnection(unittest2.TestCase):
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
-        mutation = req_pb.mutation
-        insert = mutation.upsert.add()
+        mutation = req_pb.mutations.add()
+        insert = mutation.upsert
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
@@ -675,7 +675,7 @@ class TestConnection(unittest2.TestCase):
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'')
-        self.assertEqual(request.mutation, mutation)
+        self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.NON_TRANSACTIONAL)
         self.assertEqual(_parsed, [rsp_pb])
 
@@ -689,8 +689,8 @@ class TestConnection(unittest2.TestCase):
         key_pb = self._make_key_pb(PROJECT)
         rsp_pb = datastore_pb2.CommitResponse()
         req_pb = datastore_pb2.CommitRequest()
-        mutation = req_pb.mutation
-        insert = mutation.upsert.add()
+        mutation = req_pb.mutations.add()
+        insert = mutation.upsert
         insert.key.CopyFrom(key_pb)
         value_pb = _new_value_pb(insert, 'foo')
         value_pb.string_value = u'Foo'
@@ -721,7 +721,7 @@ class TestConnection(unittest2.TestCase):
         request = rq_class()
         request.ParseFromString(cw['body'])
         self.assertEqual(request.transaction, b'xact')
-        self.assertEqual(request.mutation, mutation)
+        self.assertEqual(list(request.mutations), [mutation])
         self.assertEqual(request.mode, rq_class.TRANSACTIONAL)
         self.assertEqual(_parsed, [rsp_pb])
 
@@ -833,10 +833,10 @@ class Test__parse_commit_response(unittest2.TestCase):
             ),
         ]
         response = datastore_pb2.CommitResponse(
-            mutation_result=datastore_pb2.MutationResult(
-                index_updates=index_updates,
-                insert_auto_id_key=keys,
-            ),
+            mutation_results=[
+                datastore_pb2.MutationResult(key=key) for key in keys
+            ],
+            index_updates=index_updates,
         )
         result = self._callFUT(response)
         self.assertEqual(result, (index_updates, keys))

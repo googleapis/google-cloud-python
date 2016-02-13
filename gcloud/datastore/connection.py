@@ -431,7 +431,8 @@ def _parse_commit_response(commit_response_pb):
                :class:`._generated.entity_pb2.Key` for each incomplete key
                that was completed in the commit.
     """
-    mut_result = commit_response_pb.mutation_result
-    index_updates = mut_result.index_updates
-    completed_keys = list(mut_result.insert_auto_id_key)
+    mut_results = commit_response_pb.mutation_results
+    index_updates = commit_response_pb.index_updates
+    completed_keys = [mut_result.key for mut_result in mut_results
+                      if mut_result.HasField('key')]  # Message field (Key)
     return index_updates, completed_keys

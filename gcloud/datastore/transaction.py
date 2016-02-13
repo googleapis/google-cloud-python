@@ -24,7 +24,7 @@ class Transaction(Batch):
     or none succeed (transactionally).
 
     For example, the following snippet of code will put the two ``save``
-    operations (either ``insert_auto_id`` or ``upsert``) into the same
+    operations (either ``insert`` or ``upsert``) into the same
     mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore

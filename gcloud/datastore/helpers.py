@@ -23,7 +23,6 @@ from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
 from gcloud._helpers import _datetime_to_pb_timestamp
-from gcloud._helpers import _has_field
 from gcloud._helpers import _pb_timestamp_to_datetime
 from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
