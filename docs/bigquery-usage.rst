@@ -279,8 +279,8 @@ List jobs for a project:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.job_id, job.type, job.created, job.state) for job in jobs]
-   ['e3344fba-09df-4ae0-8337-fddee34b3840', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
+   >>> [(job.nme, job.type, job.created, job.state) for job in jobs]
+   ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -331,8 +331,8 @@ Background a query, loading the results into a table:
    >>> job = client.run_async_query('fullname-age-query-job', query)
    >>> job.destination_table = table
    >>> job.write_disposition= 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.name
+   'fullname-age-query-job'
    >>> job.type
    'query'
    >>> job.created
@@ -412,8 +412,8 @@ the job locally:
    >>> job.source_format = 'CSV'
    >>> job.skip_leading_rows = 1  # count of skipped header rows
    >>> job.write_disposition = 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.name
+   'load-from-storage-job'
    >>> job.type
    'load'
    >>> job.created
@@ -469,8 +469,8 @@ located on Google Cloud Storage.  First, create the job locally:
    ... job.destination_format = 'CSV'
    ... job.print_header = True
    ... job.write_disposition = 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.name
+   'extract-person-ages-job'
    >>> job.type
    'extract'
    >>> job.created
@@ -523,8 +523,8 @@ First, create the job locally:
    >>> destination_table = dataset.table(name='person_ages_copy')
    >>> job = client.copy_table(
    ...     'copy-table-job', destination_table, source_table)
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
+   >>> job.name
+   'copy-table-job'
    >>> job.type
    'copy'
    >>> job.created
