@@ -1535,6 +1535,92 @@ class TestConditionalRowFilter(unittest2.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
 
+class Test__parse_rmw_row_response(unittest2.TestCase):
+
+    def _callFUT(self, row_response):
+        from gcloud.bigtable.row import _parse_rmw_row_response
+        return _parse_rmw_row_response(row_response)
+
+    def test_it(self):
+        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        col_fam1 = u'col-fam-id'
+        col_fam2 = u'col-fam-id2'
+        col_name1 = b'col-name1'
+        col_name2 = b'col-name2'
+        col_name3 = b'col-name3-but-other-fam'
+        cell_val1 = b'cell-val'
+        cell_val2 = b'cell-val-newer'
+        cell_val3 = b'altcol-cell-val'
+        cell_val4 = b'foo'
+
+        microseconds = 1000871
+        timestamp = _datetime_from_microseconds(microseconds)
+        expected_output = {
+            col_fam1: {
+                col_name1: [
+                    (cell_val1, timestamp),
+                    (cell_val2, timestamp),
+                ],
+                col_name2: [
+                    (cell_val3, timestamp),
+                ],
+            },
+            col_fam2: {
+                col_name3: [
+                    (cell_val4, timestamp),
+                ],
+            },
+        }
+        sample_input = data_pb2.Row(
+            families=[
+                data_pb2.Family(
+                    name=col_fam1,
+                    columns=[
+                        data_pb2.Column(
+                            qualifier=col_name1,
+                            cells=[
+                                data_pb2.Cell(
+                                    value=cell_val1,
+                                    timestamp_micros=microseconds,
+                                ),
+                                data_pb2.Cell(
+                                    value=cell_val2,
+                                    timestamp_micros=microseconds,
+                                ),
+                            ],
+                        ),
+                        data_pb2.Column(
+                            qualifier=col_name2,
+                            cells=[
+                                data_pb2.Cell(
+                                    value=cell_val3,
+                                    timestamp_micros=microseconds,
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+                data_pb2.Family(
+                    name=col_fam2,
+                    columns=[
+                        data_pb2.Column(
+                            qualifier=col_name3,
+                            cells=[
+                                data_pb2.Cell(
+                                    value=cell_val4,
+                                    timestamp_micros=microseconds,
+                                ),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        )
+        self.assertEqual(expected_output, self._callFUT(sample_input))
+
+
 class Test__parse_family_pb(unittest2.TestCase):
 
     def _callFUT(self, family_pb):

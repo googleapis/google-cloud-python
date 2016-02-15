@@ -1195,6 +1195,46 @@ class ConditionalRowFilter(RowFilter):
         return data_pb2.RowFilter(condition=condition)
 
 
+def _parse_rmw_row_response(row_response):
+    """Parses the response to a ``ReadModifyWriteRow`` request.
+
+    :type row_response: :class:`.data_pb2.Row`
+    :param row_response: The response row (with only modified cells) from a
+                         ``ReadModifyWriteRow`` request.
+
+    :rtype: dict
+    :returns: The new contents of all modified cells. Returned as a
+              dictionary of column families, each of which holds a
+              dictionary of columns. Each column contains a list of cells
+              modified. Each cell is represented with a two-tuple with the
+              value (in bytes) and the timestamp for the cell. For example:
+
+              .. code:: python
+
+                  {
+                      u'col-fam-id': {
+                          b'col-name1': [
+                              (b'cell-val', datetime.datetime(...)),
+                              (b'cell-val-newer', datetime.datetime(...)),
+                          ],
+                          b'col-name2': [
+                              (b'altcol-cell-val', datetime.datetime(...)),
+                          ],
+                      },
+                      u'col-fam-id2': {
+                          b'col-name3-but-other-fam': [
+                              (b'foo', datetime.datetime(...)),
+                          ],
+                      },
+                  }
+    """
+    result = {}
+    for column_family in row_response.families:
+        column_family_id, curr_family = _parse_family_pb(column_family)
+        result[column_family_id] = curr_family
+    return result
+
+
 def _parse_family_pb(family_pb):
     """Parses a Family protobuf into a dictionary.
 
