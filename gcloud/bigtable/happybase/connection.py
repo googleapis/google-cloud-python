@@ -53,7 +53,7 @@ def _get_cluster(timeout=None):
     :rtype: :class:`gcloud.bigtable.cluster.Cluster`
     :returns: The unique cluster owned by the project inferred from
               the environment.
-    :raises: :class:`ValueError <exceptions.ValueError>` if their is a failed
+    :raises: :class:`ValueError <exceptions.ValueError>` if there is a failed
              zone or any number of clusters other than one.
     """
     client_kwargs = {'admin': True}
