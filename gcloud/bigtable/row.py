@@ -19,6 +19,7 @@ import struct
 
 import six
 
+from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
 from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
@@ -1192,3 +1193,41 @@ class ConditionalRowFilter(RowFilter):
             condition_kwargs['false_filter'] = self.false_filter.to_pb()
         condition = data_pb2.RowFilter.Condition(**condition_kwargs)
         return data_pb2.RowFilter(condition=condition)
+
+
+def _parse_family_pb(family_pb):
+    """Parses a Family protobuf into a dictionary.
+
+    :type family_pb: :class:`._generated.bigtable_data_pb2.Family`
+    :param family_pb: A protobuf
+
+    :rtype: tuple
+    :returns: A string and dictionary. The string is the name of the
+              column family and the dictionary has column names (within the
+              family) as keys and cell lists as values. Each cell is
+              represented with a two-tuple with the value (in bytes) and the
+              timestamp for the cell. For example:
+
+              .. code:: python
+
+                  {
+                      b'col-name1': [
+                          (b'cell-val', datetime.datetime(...)),
+                          (b'cell-val-newer', datetime.datetime(...)),
+                      ],
+                      b'col-name2': [
+                          (b'altcol-cell-val', datetime.datetime(...)),
+                      ],
+                  }
+    """
+    result = {}
+    for column in family_pb.columns:
+        result[column.qualifier] = cells = []
+        for cell in column.cells:
+            val_pair = (
+                cell.value,
+                _datetime_from_microseconds(cell.timestamp_micros),
+            )
+            cells.append(val_pair)
+
+    return family_pb.name, result
