@@ -389,7 +389,7 @@ def _datetime_to_pb_timestamp(when):
 
 
 try:
-    from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
+    from pytz import UTC  # pylint: disable=unused-import,wrong-import-order
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
 
