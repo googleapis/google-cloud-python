@@ -156,15 +156,6 @@ class _AsyncJob(_BaseJob):
         return self._properties.get('etag')
 
     @property
-    def job_id(self):
-        """ID for the job resource.
-
-        :rtype: string, or ``NoneType``
-        :returns: the ID (None until set from the server).
-        """
-        return self._properties.get('id')
-
-    @property
     def self_link(self):
         """URL for the job resource.
 

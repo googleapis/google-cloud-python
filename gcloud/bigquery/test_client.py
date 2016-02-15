@@ -233,7 +233,7 @@ class TestClient(unittest2.TestCase):
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
             self.assertTrue(isinstance(found, JOB_TYPES[name]))
-            self.assertEqual(found.job_id, expected['id'])
+            self.assertEqual(found.name, name)
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
@@ -285,7 +285,7 @@ class TestClient(unittest2.TestCase):
         for found, expected in zip(jobs, DATA['jobs']):
             name = expected['jobReference']['jobId']
             self.assertTrue(isinstance(found, JOB_TYPES[name]))
-            self.assertEqual(found.job_id, expected['id'])
+            self.assertEqual(found.name, name)
         self.assertEqual(token, TOKEN)
 
         self.assertEqual(len(conn._requested), 1)
