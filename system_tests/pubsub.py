@@ -118,6 +118,9 @@ class TestPubsub(unittest2.TestCase):
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
+        empty, _ = Config.CLIENT.list_subscriptions(
+            topic_name=DEFAULT_TOPIC_NAME)
+        self.assertEqual(len(empty), 0)
         subscriptions_to_create = [
             'new%d' % (1000 * time.time(),),
             'newer%d' % (1000 * time.time(),),
