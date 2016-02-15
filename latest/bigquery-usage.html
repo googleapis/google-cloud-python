@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud 6337db6 documentation</title>
+    <title>Using the API &mdash; gcloud 02c5689 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '6337db6',
+        VERSION:     '02c5689',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 6337db6 documentation" href="index.html" />
+    <link rel="top" title="gcloud 02c5689 documentation" href="index.html" />
     <link rel="next" title="BigQuery Client" href="bigquery-client.html" />
     <link rel="prev" title="Message" href="pubsub-message.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%206337db6" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%2002c5689" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (6337db6)
+              Version History (02c5689)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -328,8 +328,8 @@ dataset will have the value as their expiration period.</li>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">jobs</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_jobs</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">created</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
-<span class="go">[&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;, &#39;insert&#39;, (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;), &#39;done&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">job</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">job_type</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">created</span><span class="p">,</span> <span class="n">job</span><span class="o">.</span><span class="n">state</span><span class="p">)</span> <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">jobs</span><span class="p">]</span>
+<span class="go">[&#39;load-table-job&#39;, &#39;load&#39;, (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=&lt;UTC&gt;), &#39;done&#39;)]</span>
 </pre></div>
 </div>
 <div class="section" id="querying-data-synchronous">
@@ -375,9 +375,9 @@ will be <code class="docutils literal"><span class="pre">False</span></code>:  w
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_async_query</span><span class="p">(</span><span class="s1">&#39;fullname-age-query-job&#39;</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">table</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span><span class="o">=</span> <span class="s1">&#39;truncate&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
-<span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;fullname-age-query-job&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
 <span class="go">&#39;query&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">None</span>
@@ -450,9 +450,9 @@ the job locally:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">source_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">skip_leading_rows</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># count of skipped header rows</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;truncate&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
-<span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;load-from-storage-job&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
 <span class="go">&#39;load&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">None</span>
@@ -503,10 +503,10 @@ located on Google Cloud Storage.  First, create the job locally:</p>
 <span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">destination_format</span> <span class="o">=</span> <span class="s1">&#39;CSV&#39;</span>
 <span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">print_header</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="gp">... </span><span class="n">job</span><span class="o">.</span><span class="n">write_disposition</span> <span class="o">=</span> <span class="s1">&#39;truncate&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
-<span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
-<span class="go">&#39;load&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;extract-person-ages-job&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
+<span class="go">&#39;extract&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">None</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">state</span>
@@ -552,9 +552,9 @@ is submitted to the BigQuery back-end.</li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">destination_table</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person_ages_copy&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">copy_table</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="s1">&#39;copy-table-job&#39;</span><span class="p">,</span> <span class="n">destination_table</span><span class="p">,</span> <span class="n">source_table</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_id</span>
-<span class="go">&#39;e3344fba-09df-4ae0-8337-fddee34b3840&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">type</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;copy-table-job&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">job_type</span>
 <span class="go">&#39;copy&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">job</span><span class="o">.</span><span class="n">created</span>
 <span class="go">None</span>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.job &mdash; gcloud 6337db6 documentation</title>
+    <title>gcloud.bigquery.job &mdash; gcloud 02c5689 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '6337db6',
+        VERSION:     '02c5689',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 6337db6 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02c5689 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%206337db6" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/job%0ARelease%3A%2002c5689" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (6337db6)
+              Version History (02c5689)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -222,6 +222,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">job_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Type of job</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: one of &#39;load&#39;, &#39;copy&#39;, &#39;extract&#39;, &#39;query&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the job&#39;s APIs.</span>
 
@@ -238,15 +247,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: the ETag (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">job_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;ID for the job resource.</span>
-
-<span class="sd">        :rtype: string, or ``NoneType``</span>
-<span class="sd">        :returns: the ID (None until set from the server).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -381,10 +381,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                            <span class="s1">&#39;[&quot;jobReference&quot;][&quot;jobId&quot;]&#39;</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jobReference&#39;</span><span class="p">][</span><span class="s1">&#39;jobId&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;configuration&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span> <span class="ow">or</span>
-                <span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]):</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Resource lacks required configuration: &#39;</span>
-                           <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">)</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="n">cls</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+                           <span class="s1">&#39;[&quot;configuration&quot;][&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="n">cls</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span>
 
     <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -496,7 +496,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_schema</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s1">&#39;load&#39;</span>
+    <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;load&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">source_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="p">()):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LoadTableFromStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -661,7 +661,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;sourceUris&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_uris</span><span class="p">,</span>
                     <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
@@ -671,7 +671,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -740,7 +740,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
+    <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;copy&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">sources</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">CopyJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -780,7 +780,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;sourceTables&#39;</span><span class="p">:</span> <span class="n">source_refs</span><span class="p">,</span>
                     <span class="s1">&#39;destinationTable&#39;</span><span class="p">:</span> <span class="p">{</span>
                         <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
@@ -790,7 +790,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">resource</span>
@@ -856,7 +856,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s1">&#39;extract&#39;</span>
+    <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;extract&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">destination_uris</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ExtractTableToStorageJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -910,13 +910,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;sourceTable&#39;</span><span class="p">:</span> <span class="n">source_ref</span><span class="p">,</span>
                     <span class="s1">&#39;destinationUris&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination_uris</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">resource</span>
@@ -978,7 +978,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: A client which holds credentials and project configuration</span>
 <span class="sd">                   for the dataset (which requires a project).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">_CONFIG_KEY</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
+    <span class="n">_JOB_TYPE</span> <span class="o">=</span> <span class="s1">&#39;query&#39;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">QueryJob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span>
@@ -1065,12 +1065,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s1">&#39;jobId&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">},</span>
             <span class="s1">&#39;configuration&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">:</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s1">&#39;query&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_CONFIG_KEY</span><span class="p">]</span>
+        <span class="n">configuration</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;configuration&#39;</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">_JOB_TYPE</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_populate_config_resource</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">resource</span>
