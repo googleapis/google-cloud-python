@@ -81,10 +81,20 @@ class TestConnection(unittest2.TestCase):
 
     def test_constructor_defaults(self):
         cluster = _Cluster()  # Avoid implicit environ check.
+        self.assertEqual(cluster._client.start_calls, 0)
         connection = self._makeOne(cluster=cluster)
+        self.assertEqual(cluster._client.start_calls, 1)
+        self.assertEqual(cluster._client.stop_calls, 0)
 
-        self.assertTrue(connection.autoconnect)
         self.assertEqual(connection._cluster, cluster)
+        self.assertEqual(connection.table_prefix, None)
+        self.assertEqual(connection.table_prefix_separator, '_')
+
+    def test_constructor_no_autoconnect(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        self.assertEqual(cluster._client.start_calls, 0)
+        self.assertEqual(cluster._client.stop_calls, 0)
         self.assertEqual(connection.table_prefix, None)
         self.assertEqual(connection.table_prefix_separator, '_')
 
@@ -121,7 +131,6 @@ class TestConnection(unittest2.TestCase):
             table_prefix=table_prefix,
             table_prefix_separator=table_prefix_separator,
             cluster=cluster)
-        self.assertFalse(connection.autoconnect)
         self.assertEqual(connection.table_prefix, table_prefix)
         self.assertEqual(connection.table_prefix_separator,
                          table_prefix_separator)
@@ -171,6 +180,39 @@ class TestConnection(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(autoconnect=False,
                           table_prefix_separator=table_prefix_separator)
+
+    def test_open(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        self.assertEqual(cluster._client.start_calls, 0)
+        connection.open()
+        self.assertEqual(cluster._client.start_calls, 1)
+        self.assertEqual(cluster._client.stop_calls, 0)
+
+    def test_close(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        self.assertEqual(cluster._client.stop_calls, 0)
+        connection.close()
+        self.assertEqual(cluster._client.stop_calls, 1)
+        self.assertEqual(cluster._client.start_calls, 0)
+
+    def test___del__good_initialization(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        self.assertEqual(cluster._client.stop_calls, 0)
+        connection.__del__()
+        self.assertEqual(cluster._client.stop_calls, 1)
+
+    def test___del__bad_initialization(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        # Fake that initialization failed.
+        del connection._initialized
+
+        self.assertEqual(cluster._client.stop_calls, 0)
+        connection.__del__()
+        self.assertEqual(cluster._client.stop_calls, 0)
 
 
 class _Client(object):

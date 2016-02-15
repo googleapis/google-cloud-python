@@ -140,7 +140,6 @@ class Connection(object):
                             'received', table_prefix_separator,
                             type(table_prefix_separator))
 
-        self.autoconnect = autoconnect
         self.table_prefix = table_prefix
         self.table_prefix_separator = table_prefix_separator
 
@@ -151,6 +150,11 @@ class Connection(object):
                 raise ValueError('Timeout cannot be used when an existing '
                                  'cluster is passed')
             self._cluster = cluster.copy()
+
+        if autoconnect:
+            self.open()
+
+        self._initialized = True
 
     @staticmethod
     def _handle_legacy_args(arguments_dict):
@@ -174,3 +178,30 @@ class Connection(object):
         if arguments_dict:
             unexpected_names = arguments_dict.keys()
             raise TypeError('Received unexpected arguments', unexpected_names)
+
+    def open(self):
+        """Open the underlying transport to Cloud Bigtable.
+
+        This method opens the underlying HTTP/2 gRPC connection using a
+        :class:`.Client` bound to the :class:`.Cluster` owned by
+        this connection.
+        """
+        self._cluster._client.start()
+
+    def close(self):
+        """Close the underlying transport to Cloud Bigtable.
+
+        This method closes the underlying HTTP/2 gRPC connection using a
+        :class:`.Client` bound to the :class:`.Cluster` owned by
+        this connection.
+        """
+        self._cluster._client.stop()
+
+    def __del__(self):
+        try:
+            self._initialized
+        except AttributeError:
+            # Failure from constructor
+            return
+        else:
+            self.close()
