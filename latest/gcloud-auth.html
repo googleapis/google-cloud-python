@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud d56ea3d documentation</title>
+    <title>Authentication &mdash; gcloud 4d94911 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'd56ea3d',
+        VERSION:     '4d94911',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud d56ea3d documentation" href="index.html" />
+    <link rel="top" title="gcloud 4d94911 documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20d56ea3d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%204d94911" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d56ea3d)
+              Version History (4d94911)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -101,7 +101,7 @@ authentication should &#8220;just work&#8221;.</p>
 </li>
 <li><p class="first"><strong>If you&#8217;re developing locally</strong>,
 the easiest way to authenticate is using the <a class="reference external" href="http://cloud.google.com/sdk">Google Cloud SDK</a>:</p>
-<div class="highlight-bash"><div class="highlight"><pre>$ gcloud auth login
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ gcloud auth login
 </pre></div>
 </div>
 </li>
@@ -110,7 +110,7 @@ the easiest way to authenticate is using the <a class="reference external" href=
 <li><p class="first"><strong>If you&#8217;re running your application elsewhere</strong>,
 you should download a <a class="reference external" href="https://cloud.google.com/storage/docs/authentication#generating-a-private-key">service account</a> JSON keyfile
 and point to it using an environment variable:</p>
-<div class="highlight-bash"><div class="highlight"><pre>$ <span class="nb">export</span> <span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">GOOGLE_APPLICATION_CREDENTIALS</span><span class="o">=</span><span class="s2">&quot;/path/to/keyfile.json&quot;</span>
 </pre></div>
 </div>
 </li>
@@ -121,7 +121,7 @@ and point to it using an environment variable:</p>
 <p>Every package uses a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
 as a base for interacting with an API.
 For example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">datastore</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">datastore</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -161,14 +161,14 @@ from different projects</li>
 environment.
 After creation,
 you can pass it directly to a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="google-app-engine-environment">
 <h3>Google App Engine Environment<a class="headerlink" href="#google-app-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create <code class="xref py py-class docutils literal"><span class="pre">credentials</span></code>
 just for Google App Engine:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.appengine</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.appengine</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
 </pre></div>
 </div>
@@ -177,7 +177,7 @@ just for Google App Engine:</p>
 <h3>Google Compute Engine Environment<a class="headerlink" href="#google-compute-engine-environment" title="Permalink to this headline">#</a></h3>
 <p>To create <code class="xref py py-class docutils literal"><span class="pre">credentials</span></code>
 just for Google Compute Engine:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.gce</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.gce</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
 </pre></div>
 </div>
@@ -195,7 +195,7 @@ and
 factories are provided to create a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
 service account credentials.</p>
 <p>For example, with a JSON keyfile:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -220,7 +220,7 @@ getting started with the <code class="docutils literal"><span class="pre">gcloud
 <p>The simplest way to use credentials from a user account is via
 Application Default Credentials using <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
 (as mentioned above):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">GoogleCredentials</span>
+<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">GoogleCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">GoogleCredentials</span><span class="o">.</span><span class="n">get_application_default</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -369,7 +369,7 @@ the <code class="docutils literal"><span class="pre">http</span></code> object m
 </ul>
 <p>The entire signature from <code class="docutils literal"><span class="pre">httplib2</span></code> need not be implemented,
 we only use it as</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">http</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For an example of such an implementation,
