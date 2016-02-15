@@ -357,6 +357,194 @@ class TestRow(unittest2.TestCase):
         )
         self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
 
+    def test_commit(self):
+        from google.protobuf import empty_pb2
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        row_key = b'row_key'
+        table_name = 'projects/more-stuff'
+        column_family_id = u'column_family_id'
+        column = b'column'
+        timeout_seconds = 711
+        client = _Client(timeout_seconds=timeout_seconds)
+        table = _Table(table_name, client=client)
+        row = self._makeOne(row_key, table)
+
+        # Create request_pb
+        value = b'bytes-value'
+        mutation = data_pb2.Mutation(
+            set_cell=data_pb2.Mutation.SetCell(
+                family_name=column_family_id,
+                column_qualifier=column,
+                timestamp_micros=-1,  # Default value.
+                value=value,
+            ),
+        )
+        request_pb = messages_pb2.MutateRowRequest(
+            table_name=table_name,
+            row_key=row_key,
+            mutations=[mutation],
+        )
+
+        # Create response_pb
+        response_pb = empty_pb2.Empty()
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = None  # commit() has no return value when no filter.
+
+        # Perform the method and check the result.
+        row.set_cell(column_family_id, column, value)
+        result = row.commit()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'MutateRow',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._true_pb_mutations, None)
+        self.assertEqual(row._false_pb_mutations, None)
+
+    def test_commit_too_many_mutations(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import row as MUT
+
+        row_key = b'row_key'
+        table = object()
+        row = self._makeOne(row_key, table)
+        row._pb_mutations = [1, 2, 3]
+        num_mutations = len(row._pb_mutations)
+        with _Monkey(MUT, _MAX_MUTATIONS=num_mutations - 1):
+            with self.assertRaises(ValueError):
+                row.commit()
+
+    def test_commit_no_mutations(self):
+        from gcloud.bigtable._testing import _FakeStub
+
+        row_key = b'row_key'
+        client = _Client()
+        table = _Table(None, client=client)
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._pb_mutations, [])
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub()
+
+        # Perform the method and check the result.
+        result = row.commit()
+        self.assertEqual(result, None)
+        # Make sure no request was sent.
+        self.assertEqual(stub.method_calls, [])
+
+    def test_commit_with_filter(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.row import RowSampleFilter
+
+        row_key = b'row_key'
+        table_name = 'projects/more-stuff'
+        column_family_id = u'column_family_id'
+        column = b'column'
+        timeout_seconds = 262
+        client = _Client(timeout_seconds=timeout_seconds)
+        table = _Table(table_name, client=client)
+        row_filter = RowSampleFilter(0.33)
+        row = self._makeOne(row_key, table, filter_=row_filter)
+
+        # Create request_pb
+        value1 = b'bytes-value'
+        mutation1 = data_pb2.Mutation(
+            set_cell=data_pb2.Mutation.SetCell(
+                family_name=column_family_id,
+                column_qualifier=column,
+                timestamp_micros=-1,  # Default value.
+                value=value1,
+            ),
+        )
+        value2 = b'other-bytes'
+        mutation2 = data_pb2.Mutation(
+            set_cell=data_pb2.Mutation.SetCell(
+                family_name=column_family_id,
+                column_qualifier=column,
+                timestamp_micros=-1,  # Default value.
+                value=value2,
+            ),
+        )
+        request_pb = messages_pb2.CheckAndMutateRowRequest(
+            table_name=table_name,
+            row_key=row_key,
+            predicate_filter=row_filter.to_pb(),
+            true_mutations=[mutation1],
+            false_mutations=[mutation2],
+        )
+
+        # Create response_pb
+        predicate_matched = True
+        response_pb = messages_pb2.CheckAndMutateRowResponse(
+            predicate_matched=predicate_matched)
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = predicate_matched
+
+        # Perform the method and check the result.
+        row.set_cell(column_family_id, column, value1, state=True)
+        row.set_cell(column_family_id, column, value2, state=False)
+        result = row.commit()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'CheckAndMutateRow',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(row._pb_mutations, None)
+        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._false_pb_mutations, [])
+
+    def test_commit_with_filter_too_many_mutations(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import row as MUT
+
+        row_key = b'row_key'
+        table = object()
+        filter_ = object()
+        row = self._makeOne(row_key, table, filter_=filter_)
+        row._true_pb_mutations = [1, 2, 3]
+        num_mutations = len(row._true_pb_mutations)
+        with _Monkey(MUT, _MAX_MUTATIONS=num_mutations - 1):
+            with self.assertRaises(ValueError):
+                row.commit()
+
+    def test_commit_with_filter_no_mutations(self):
+        from gcloud.bigtable._testing import _FakeStub
+
+        row_key = b'row_key'
+        client = _Client()
+        table = _Table(None, client=client)
+        filter_ = object()
+        row = self._makeOne(row_key, table, filter_=filter_)
+        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._false_pb_mutations, [])
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub()
+
+        # Perform the method and check the result.
+        result = row.commit()
+        self.assertEqual(result, None)
+        # Make sure no request was sent.
+        self.assertEqual(stub.method_calls, [])
+
 
 class Test_BoolFilter(unittest2.TestCase):
 
@@ -1345,3 +1533,24 @@ class TestConditionalRowFilter(unittest2.TestCase):
             ),
         )
         self.assertEqual(filter_pb, expected_pb)
+
+
+class _Client(object):
+
+    data_stub = None
+
+    def __init__(self, timeout_seconds=None):
+        self.timeout_seconds = timeout_seconds
+
+
+class _Cluster(object):
+
+    def __init__(self, client=None):
+        self._client = client
+
+
+class _Table(object):
+
+    def __init__(self, name, client=None):
+        self.name = name
+        self._cluster = _Cluster(client)

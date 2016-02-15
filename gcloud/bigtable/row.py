@@ -22,8 +22,11 @@ import six
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
 from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+from gcloud.bigtable._generated import (
+    bigtable_service_messages_pb2 as messages_pb2)
 
 
+_MAX_MUTATIONS = 100000
 _PACK_I64 = struct.Struct('>q').pack
 
 
@@ -340,6 +343,111 @@ class Row(object):
             # We don't add the mutations until all columns have been
             # processed without error.
             mutations_list.extend(to_append)
+
+    def _commit_mutate(self):
+        """Makes a ``MutateRow`` API request.
+
+        Assumes no filter is set on the :class:`Row` and is meant to be called
+        by :meth:`commit`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        mutations_list = self._get_mutations()
+        num_mutations = len(mutations_list)
+        if num_mutations == 0:
+            return
+        if num_mutations > _MAX_MUTATIONS:
+            raise ValueError('%d total mutations exceed the maximum allowable '
+                             '%d.' % (num_mutations, _MAX_MUTATIONS))
+        request_pb = messages_pb2.MutateRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            mutations=mutations_list,
+        )
+        # We expect a `google.protobuf.empty_pb2.Empty`
+        client = self._table._cluster._client
+        client._data_stub.MutateRow(request_pb, client.timeout_seconds)
+
+    def _commit_check_and_mutate(self):
+        """Makes a ``CheckAndMutateRow`` API request.
+
+        Assumes a filter is set on the :class:`Row` and is meant to be called
+        by :meth:`commit`.
+
+        :rtype: bool
+        :returns: Flag indicating if the filter was matched (which also
+                  indicates which set of mutations were applied by the server).
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        true_mutations = self._get_mutations(state=True)
+        false_mutations = self._get_mutations(state=False)
+        num_true_mutations = len(true_mutations)
+        num_false_mutations = len(false_mutations)
+        if num_true_mutations == 0 and num_false_mutations == 0:
+            return
+        if (num_true_mutations > _MAX_MUTATIONS or
+                num_false_mutations > _MAX_MUTATIONS):
+            raise ValueError(
+                'Exceed the maximum allowable mutations (%d). Had %s true '
+                'mutations and %d false mutations.' % (
+                    _MAX_MUTATIONS, num_true_mutations, num_false_mutations))
+
+        request_pb = messages_pb2.CheckAndMutateRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            predicate_filter=self._filter.to_pb(),
+            true_mutations=true_mutations,
+            false_mutations=false_mutations,
+        )
+        # We expect a `.messages_pb2.CheckAndMutateRowResponse`
+        client = self._table._cluster._client
+        resp = client._data_stub.CheckAndMutateRow(
+            request_pb, client.timeout_seconds)
+        return resp.predicate_matched
+
+    def clear_mutations(self):
+        """Removes all currently accumulated mutations on the current row."""
+        if self._filter is None:
+            del self._pb_mutations[:]
+        else:
+            del self._true_pb_mutations[:]
+            del self._false_pb_mutations[:]
+
+    def commit(self):
+        """Makes a ``MutateRow`` or ``CheckAndMutateRow`` API request.
+
+        If no mutations have been created in the row, no request is made.
+
+        Mutations are applied atomically and in order, meaning that earlier
+        mutations can be masked / negated by later ones. Cells already present
+        in the row are left unchanged unless explicitly changed by a mutation.
+
+        After committing the accumulated mutations, resets the local
+        mutations to an empty list.
+
+        In the case that a filter is set on the :class:`Row`, the mutations
+        will be applied conditionally, based on whether the filter matches
+        any cells in the :class:`Row` or not. (Each method which adds a
+        mutation has a ``state`` parameter for this purpose.)
+
+        :rtype: :class:`bool` or :data:`NoneType <types.NoneType>`
+        :returns: :data:`None` if there is no filter, otherwise a flag
+                  indicating if the filter was matched (which also
+                  indicates which set of mutations were applied by the server).
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        if self._filter is None:
+            result = self._commit_mutate()
+        else:
+            result = self._commit_check_and_mutate()
+
+        # Reset mutations after commit-ing request.
+        self.clear_mutations()
+
+        return result
 
 
 class RowFilter(object):
