@@ -238,6 +238,7 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self.assertTrue(job.destination is table)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -692,6 +693,7 @@ class TestCopyJob(unittest2.TestCase, _Base):
         self.assertTrue(job.destination is destination)
         self.assertEqual(job.sources, [source])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -990,6 +992,7 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self.assertEqual(job.source, source)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -1297,6 +1300,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
         self.assertTrue(job._client is client)
+        self.assertEqual(job.type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))

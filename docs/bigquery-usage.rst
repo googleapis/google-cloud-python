@@ -280,7 +280,7 @@ List jobs for a project:
    >>> client = bigquery.Client()
    >>> jobs, token = client.list_jobs()  # API request
    >>> [(job.job_id, job.type, job.created, job.state) for job in jobs]
-   ['e3344fba-09df-4ae0-8337-fddee34b3840', 'insert', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
+   ['e3344fba-09df-4ae0-8337-fddee34b3840', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -472,7 +472,7 @@ located on Google Cloud Storage.  First, create the job locally:
    >>> job.job_id
    'e3344fba-09df-4ae0-8337-fddee34b3840'
    >>> job.type
-   'load'
+   'extract'
    >>> job.created
    None
    >>> job.state
