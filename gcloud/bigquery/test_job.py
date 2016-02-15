@@ -71,7 +71,6 @@ class _Base(object):
     def _verifyInitialReadonlyProperties(self, job):
         # root elements of resource
         self.assertEqual(job.etag, None)
-        self.assertEqual(job.job_id, None)
         self.assertEqual(job.self_link, None)
         self.assertEqual(job.user_email, None)
 
@@ -87,8 +86,6 @@ class _Base(object):
 
     def _verifyReadonlyResourceProperties(self, job, resource):
         from datetime import timedelta
-
-        self.assertEqual(job.job_id, self.JOB_ID)
 
         statistics = resource.get('statistics', {})
 
@@ -238,6 +235,7 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self.assertTrue(job.destination is table)
         self.assertEqual(list(job.source_uris), [self.SOURCE1])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -336,7 +334,6 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         load_stats['outputRows'] = 345
 
         self.assertEqual(job.etag, 'ETAG')
-        self.assertEqual(job.job_id, JOB_ID)
         self.assertEqual(job.self_link, URL)
         self.assertEqual(job.user_email, EMAIL)
 
@@ -692,6 +689,7 @@ class TestCopyJob(unittest2.TestCase, _Base):
         self.assertTrue(job.destination is destination)
         self.assertEqual(job.sources, [source])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -990,6 +988,7 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self.assertEqual(job.source, source)
         self.assertEqual(job.destination_uris, [self.DESTINATION_URI])
         self.assertTrue(job._client is client)
+        self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))
@@ -1297,6 +1296,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
         self.assertEqual(job.query, self.QUERY)
         self.assertTrue(job._client is client)
+        self.assertEqual(job.job_type, self.JOB_TYPE)
         self.assertEqual(
             job.path,
             '/projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME))

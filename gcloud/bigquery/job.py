@@ -129,6 +129,15 @@ class _AsyncJob(_BaseJob):
         self.name = name
 
     @property
+    def job_type(self):
+        """Type of job
+
+        :rtype: string
+        :returns: one of 'load', 'copy', 'extract', 'query'
+        """
+        return self._JOB_TYPE
+
+    @property
     def path(self):
         """URL path for the job's APIs.
 
@@ -145,15 +154,6 @@ class _AsyncJob(_BaseJob):
         :returns: the ETag (None until set from the server).
         """
         return self._properties.get('etag')
-
-    @property
-    def job_id(self):
-        """ID for the job resource.
-
-        :rtype: string, or ``NoneType``
-        :returns: the ID (None until set from the server).
-        """
-        return self._properties.get('id')
 
     @property
     def self_link(self):
@@ -288,10 +288,10 @@ class _AsyncJob(_BaseJob):
                            '["jobReference"]["jobId"]')
         name = resource['jobReference']['jobId']
         if ('configuration' not in resource or
-                cls._CONFIG_KEY not in resource['configuration']):
+                cls._JOB_TYPE not in resource['configuration']):
             raise KeyError('Resource lacks required configuration: '
-                           '["configuration"]["%s"]' % cls._CONFIG_KEY)
-        config = resource['configuration'][cls._CONFIG_KEY]
+                           '["configuration"]["%s"]' % cls._JOB_TYPE)
+        config = resource['configuration'][cls._JOB_TYPE]
         return name, config
 
     def begin(self, client=None):
@@ -403,7 +403,7 @@ class LoadTableFromStorageJob(_AsyncJob):
     """
 
     _schema = None
-    _CONFIG_KEY = 'load'
+    _JOB_TYPE = 'load'
 
     def __init__(self, name, destination, source_uris, client, schema=()):
         super(LoadTableFromStorageJob, self).__init__(name, client)
@@ -568,7 +568,7 @@ class LoadTableFromStorageJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                self._CONFIG_KEY: {
+                self._JOB_TYPE: {
                     'sourceUris': self.source_uris,
                     'destinationTable': {
                         'projectId': self.destination.project,
@@ -578,7 +578,7 @@ class LoadTableFromStorageJob(_AsyncJob):
                 },
             },
         }
-        configuration = resource['configuration'][self._CONFIG_KEY]
+        configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
         if len(self.schema) > 0:
@@ -647,7 +647,7 @@ class CopyJob(_AsyncJob):
                    for the dataset (which requires a project).
     """
 
-    _CONFIG_KEY = 'copy'
+    _JOB_TYPE = 'copy'
 
     def __init__(self, name, destination, sources, client):
         super(CopyJob, self).__init__(name, client)
@@ -687,7 +687,7 @@ class CopyJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                self._CONFIG_KEY: {
+                self._JOB_TYPE: {
                     'sourceTables': source_refs,
                     'destinationTable': {
                         'projectId': self.destination.project,
@@ -697,7 +697,7 @@ class CopyJob(_AsyncJob):
                 },
             },
         }
-        configuration = resource['configuration'][self._CONFIG_KEY]
+        configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
         return resource
@@ -763,7 +763,7 @@ class ExtractTableToStorageJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    _CONFIG_KEY = 'extract'
+    _JOB_TYPE = 'extract'
 
     def __init__(self, name, source, destination_uris, client):
         super(ExtractTableToStorageJob, self).__init__(name, client)
@@ -817,13 +817,13 @@ class ExtractTableToStorageJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                self._CONFIG_KEY: {
+                self._JOB_TYPE: {
                     'sourceTable': source_ref,
                     'destinationUris': self.destination_uris,
                 },
             },
         }
-        configuration = resource['configuration'][self._CONFIG_KEY]
+        configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
         return resource
@@ -885,7 +885,7 @@ class QueryJob(_AsyncJob):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    _CONFIG_KEY = 'query'
+    _JOB_TYPE = 'query'
 
     def __init__(self, name, query, client):
         super(QueryJob, self).__init__(name, client)
@@ -972,12 +972,12 @@ class QueryJob(_AsyncJob):
                 'jobId': self.name,
             },
             'configuration': {
-                self._CONFIG_KEY: {
+                self._JOB_TYPE: {
                     'query': self.query,
                 },
             },
         }
-        configuration = resource['configuration'][self._CONFIG_KEY]
+        configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
         return resource
