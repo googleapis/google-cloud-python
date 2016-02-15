@@ -77,7 +77,7 @@ class Client(JSONClient):
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
         topics = [Topic.from_api_repr(resource, self)
-                  for resource in resp['topics']]
+                  for resource in resp.get('topics', ())]
         return topics, resp.get('nextPageToken')
 
     def list_subscriptions(self, page_size=None, page_token=None,
@@ -128,7 +128,7 @@ class Client(JSONClient):
         topics = {}
         subscriptions = [Subscription.from_api_repr(resource, self,
                                                     topics=topics)
-                         for resource in resp['subscriptions']]
+                         for resource in resp.get('subscriptions', ())]
         return subscriptions, resp.get('nextPageToken')
 
     def topic(self, name, timestamp_messages=False):
