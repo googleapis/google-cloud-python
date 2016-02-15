@@ -279,7 +279,7 @@ List jobs for a project:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.nme, job.type, job.created, job.state) for job in jobs]
+   >>> [(job.name, job.type, job.created, job.state) for job in jobs]
    ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
