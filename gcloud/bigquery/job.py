@@ -129,7 +129,7 @@ class _AsyncJob(_BaseJob):
         self.name = name
 
     @property
-    def type(self):
+    def job_type(self):
         """Type of job
 
         :rtype: string

@@ -279,7 +279,7 @@ List jobs for a project:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.name, job.type, job.created, job.state) for job in jobs]
+   >>> [(job.name, job.job_type, job.created, job.state) for job in jobs]
    ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
@@ -333,7 +333,7 @@ Background a query, loading the results into a table:
    >>> job.write_disposition= 'truncate'
    >>> job.name
    'fullname-age-query-job'
-   >>> job.type
+   >>> job.job_type
    'query'
    >>> job.created
    None
@@ -414,7 +414,7 @@ the job locally:
    >>> job.write_disposition = 'truncate'
    >>> job.name
    'load-from-storage-job'
-   >>> job.type
+   >>> job.job_type
    'load'
    >>> job.created
    None
@@ -471,7 +471,7 @@ located on Google Cloud Storage.  First, create the job locally:
    ... job.write_disposition = 'truncate'
    >>> job.name
    'extract-person-ages-job'
-   >>> job.type
+   >>> job.job_type
    'extract'
    >>> job.created
    None
@@ -525,7 +525,7 @@ First, create the job locally:
    ...     'copy-table-job', destination_table, source_table)
    >>> job.name
    'copy-table-job'
-   >>> job.type
+   >>> job.job_type
    'copy'
    >>> job.created
    None
