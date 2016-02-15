@@ -545,6 +545,88 @@ class TestRow(unittest2.TestCase):
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
+    def test_commit_modifications(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable import row as MUT
+
+        row_key = b'row_key'
+        table_name = 'projects/more-stuff'
+        column_family_id = u'column_family_id'
+        column = b'column'
+        timeout_seconds = 87
+        client = _Client(timeout_seconds=timeout_seconds)
+        table = _Table(table_name, client=client)
+        row = self._makeOne(row_key, table)
+
+        # Create request_pb
+        value = b'bytes-value'
+        # We will call row.append_cell_value(COLUMN_FAMILY_ID, COLUMN, value).
+        request_pb = messages_pb2.ReadModifyWriteRowRequest(
+            table_name=table_name,
+            row_key=row_key,
+            rules=[
+                data_pb2.ReadModifyWriteRule(
+                    family_name=column_family_id,
+                    column_qualifier=column,
+                    append_value=value,
+                ),
+            ],
+        )
+
+        # Create response_pb
+        response_pb = object()
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        row_responses = []
+        expected_result = object()
+
+        def mock_parse_rmw_row_response(row_response):
+            row_responses.append(row_response)
+            return expected_result
+
+        # Perform the method and check the result.
+        with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
+            row.append_cell_value(column_family_id, column, value)
+            result = row.commit_modifications()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ReadModifyWriteRow',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._true_pb_mutations, None)
+        self.assertEqual(row._false_pb_mutations, None)
+
+        self.assertEqual(row_responses, [response_pb])
+        self.assertEqual(row._rule_pb_list, [])
+
+    def test_commit_modifications_no_rules(self):
+        from gcloud.bigtable._testing import _FakeStub
+
+        row_key = b'row_key'
+        client = _Client()
+        table = _Table(None, client=client)
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._rule_pb_list, [])
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub()
+
+        # Perform the method and check the result.
+        result = row.commit_modifications()
+        self.assertEqual(result, {})
+        # Make sure no request was sent.
+        self.assertEqual(stub.method_calls, [])
+
 
 class Test_BoolFilter(unittest2.TestCase):
 
