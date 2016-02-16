@@ -89,3 +89,90 @@ class TestCell(unittest2.TestCase):
         cell1 = self._makeOne(value1, timestamp)
         cell2 = self._makeOne(value2, timestamp)
         self.assertNotEqual(cell1, cell2)
+
+
+class TestPartialRowData(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row_data import PartialRowData
+        return PartialRowData
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        row_key = object()
+        partial_row_data = self._makeOne(row_key)
+        self.assertTrue(partial_row_data._row_key is row_key)
+        self.assertEqual(partial_row_data._cells, {})
+        self.assertFalse(partial_row_data._committed)
+        self.assertFalse(partial_row_data._chunks_encountered)
+
+    def test___eq__(self):
+        row_key = object()
+        partial_row_data1 = self._makeOne(row_key)
+        partial_row_data2 = self._makeOne(row_key)
+        self.assertEqual(partial_row_data1, partial_row_data2)
+
+    def test___eq__type_differ(self):
+        partial_row_data1 = self._makeOne(None)
+        partial_row_data2 = object()
+        self.assertNotEqual(partial_row_data1, partial_row_data2)
+
+    def test___ne__same_value(self):
+        row_key = object()
+        partial_row_data1 = self._makeOne(row_key)
+        partial_row_data2 = self._makeOne(row_key)
+        comparison_val = (partial_row_data1 != partial_row_data2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        row_key1 = object()
+        partial_row_data1 = self._makeOne(row_key1)
+        row_key2 = object()
+        partial_row_data2 = self._makeOne(row_key2)
+        self.assertNotEqual(partial_row_data1, partial_row_data2)
+
+    def test___ne__committed(self):
+        row_key = object()
+        partial_row_data1 = self._makeOne(row_key)
+        partial_row_data1._committed = object()
+        partial_row_data2 = self._makeOne(row_key)
+        self.assertNotEqual(partial_row_data1, partial_row_data2)
+
+    def test___ne__cells(self):
+        row_key = object()
+        partial_row_data1 = self._makeOne(row_key)
+        partial_row_data1._cells = object()
+        partial_row_data2 = self._makeOne(row_key)
+        self.assertNotEqual(partial_row_data1, partial_row_data2)
+
+    def test_to_dict(self):
+        cell1 = object()
+        cell2 = object()
+        cell3 = object()
+
+        family_name1 = u'name1'
+        family_name2 = u'name2'
+        qual1 = b'col1'
+        qual2 = b'col2'
+        qual3 = b'col3'
+
+        partial_row_data = self._makeOne(None)
+        partial_row_data._cells = {
+            family_name1: {
+                qual1: cell1,
+                qual2: cell2,
+            },
+            family_name2: {
+                qual3: cell3,
+            },
+        }
+
+        result = partial_row_data.to_dict()
+        expected_result = {
+            b'name1:col1': cell1,
+            b'name1:col2': cell2,
+            b'name2:col3': cell3,
+        }
+        self.assertEqual(result, expected_result)
