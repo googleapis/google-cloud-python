@@ -35,6 +35,7 @@ IGNORED_MODULES = frozenset([
     'gcloud.bigtable.column_family',
     'gcloud.bigtable.happybase.connection',
     'gcloud.bigtable.row',
+    'gcloud.bigtable.row_data',
     'gcloud.bigtable.table',
     'gcloud.datastore.demo.demo',
     'gcloud.demo',
