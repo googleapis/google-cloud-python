@@ -127,6 +127,8 @@ class Connection(object):
              parameters are specified with a value other than the defaults.
     """
 
+    _cluster = None
+
     def __init__(self, timeout=None, autoconnect=True, table_prefix=None,
                  table_prefix_separator='_', cluster=None, **kwargs):
         self._handle_legacy_args(kwargs)
@@ -198,10 +200,5 @@ class Connection(object):
         self._cluster._client.stop()
 
     def __del__(self):
-        try:
-            self._initialized
-        except AttributeError:
-            # Failure from constructor
-            return
-        else:
+        if self._cluster is not None:
             self.close()

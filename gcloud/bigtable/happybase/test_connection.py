@@ -197,20 +197,18 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(cluster._client.stop_calls, 1)
         self.assertEqual(cluster._client.start_calls, 0)
 
-    def test___del__good_initialization(self):
+    def test___del__with_cluster(self):
         cluster = _Cluster()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, cluster=cluster)
         self.assertEqual(cluster._client.stop_calls, 0)
         connection.__del__()
         self.assertEqual(cluster._client.stop_calls, 1)
 
-    def test___del__bad_initialization(self):
+    def test___del__no_cluster(self):
         cluster = _Cluster()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, cluster=cluster)
-        # Fake that initialization failed.
-        del connection._initialized
-
         self.assertEqual(cluster._client.stop_calls, 0)
+        del connection._cluster
         connection.__del__()
         self.assertEqual(cluster._client.stop_calls, 0)
 
