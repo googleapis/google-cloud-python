@@ -51,6 +51,13 @@ service BigtableService {
     option (google.api.http) = { post: "/v1/{table_name=projects/*/zones/*/clusters/*/tables/*}/rows/{row_key}:mutate" body: "*" };
   }
 
+  // Mutates multiple rows in a batch. Each individual row is mutated
+  // atomically as in MutateRow, but the entire batch is not executed
+  // atomically.
+  rpc MutateRows(MutateRowsRequest) returns (MutateRowsResponse) {
+    option (google.api.http) = { post: "/v1/{table_name=projects/*/zones/*/clusters/*/tables/*}:mutateRows" body: "*" };
+  }
+
   // Mutates a row atomically based on the output of a predicate Reader filter.
   rpc CheckAndMutateRow(CheckAndMutateRowRequest) returns (CheckAndMutateRowResponse) {
     option (google.api.http) = { post: "/v1/{table_name=projects/*/zones/*/clusters/*/tables/*}/rows/{row_key}:checkAndMutate" body: "*" };
