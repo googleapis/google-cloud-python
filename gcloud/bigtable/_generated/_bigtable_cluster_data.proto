@@ -62,11 +62,6 @@ message Cluster {
   // projects/<project>/zones/<zone>/clusters/[a-z][-a-z0-9]*
   string name = 1;
 
-  // If this cluster has been deleted, the time at which its backup will
-  // be irrevocably destroyed. Omitted otherwise.
-  // This cannot be set directly, only through DeleteCluster.
-  google.protobuf.Timestamp delete_time = 2;
-
   // The operation currently running on the cluster, if any.
   // This cannot be set directly, only through CreateCluster, UpdateCluster,
   // or UndeleteCluster. Calls to these methods will be rejected if
@@ -91,4 +86,8 @@ enum StorageType {
 
   // Data will be stored in SSD, providing low and consistent latencies.
   STORAGE_SSD = 1;
+
+  // Data will be stored in HDD, providing high and less predictable
+  // latencies.
+  STORAGE_HDD = 2;
 }
