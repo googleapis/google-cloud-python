@@ -150,9 +150,9 @@ class Blob(_PropertyMixin):
             quoted_name=quote(self.name, safe=''))
 
     def generate_signed_url(self, expiration, method='GET',
-                            client=None, credentials=None,
-                            response_type=None, response_disposition=None,
-                            generation=None):
+                            content_type=None,
+                            generation=None, response_disposition=None,
+                            response_type=None, client=None, credentials=None):
         """Generates a signed URL for this blob.
 
         .. note::
@@ -179,20 +179,13 @@ class Blob(_PropertyMixin):
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
 
-        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
-        :param client: (Optional) The client to use.  If not passed, falls back
-                       to the ``client`` stored on the blob's bucket.
+        :type content_type: str
+        :param content_type: (Optional) The content type of the object
+                             referenced by ``resource``.
 
-        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
-                           :class:`NoneType`
-        :param credentials: (Optional) The OAuth2 credentials to use to sign
-                            the URL. Defaults to the credentials stored on the
-                            client used.
-
-        :type response_type: str
-        :param response_type: (Optional) Content type of responses to requests
-                              for the signed URL. Used to over-ride the content
-                              type of the underlying blob/object.
+        :type generation: str
+        :param generation: (Optional) A value that indicates which generation
+                           of the resource to fetch.
 
         :type response_disposition: str
         :param response_disposition: (Optional) Content disposition of
@@ -202,9 +195,21 @@ class Blob(_PropertyMixin):
                                      the value
                                      ``'attachment; filename=blob.png'``.
 
-        :type generation: str
-        :param generation: (Optional) A value that indicates which generation
-                           of the resource to fetch.
+        :type response_type: str
+        :param response_type: (Optional) Content type of responses to requests
+                              for the signed URL. Used to over-ride the content
+                              type of the underlying blob/object.
+
+        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
+        :param client: (Optional) The client to use.  If not passed, falls back
+                       to the ``client`` stored on the blob's bucket.
+
+
+        :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
+                           :class:`NoneType`
+        :param credentials: (Optional) The OAuth2 credentials to use to sign
+                            the URL. Defaults to the credentials stored on the
+                            client used.
 
         :rtype: str
         :returns: A signed URL you can use to access the resource
@@ -222,6 +227,7 @@ class Blob(_PropertyMixin):
             credentials, resource=resource,
             api_access_endpoint=_API_ACCESS_ENDPOINT,
             expiration=expiration, method=method,
+            content_type=content_type,
             response_type=response_type,
             response_disposition=response_disposition,
             generation=generation)
