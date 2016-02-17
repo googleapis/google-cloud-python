@@ -42,31 +42,6 @@ class TestMessage(unittest2.TestCase):
         self.assertEqual(message.message_id, MESSAGE_ID)
         self.assertEqual(message.attributes, ATTRS)
 
-    def test_from_api_repr_no_attributes(self):
-        from base64 import b64encode as b64
-        DATA = b'DEADBEEF'
-        B64_DATA = b64(DATA)
-        MESSAGE_ID = '12345'
-        api_repr = {'data': B64_DATA, 'messageId': MESSAGE_ID}
-        message = self._getTargetClass().from_api_repr(api_repr)
-        self.assertEqual(message.data, DATA)
-        self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attributes, {})
-
-    def test_from_api_repr_w_attributes(self):
-        from base64 import b64encode as b64
-        DATA = b'DEADBEEF'
-        B64_DATA = b64(DATA)
-        MESSAGE_ID = '12345'
-        ATTRS = {'a': 'b'}
-        api_repr = {'data': B64_DATA,
-                    'messageId': MESSAGE_ID,
-                    'attributes': ATTRS}
-        message = self._getTargetClass().from_api_repr(api_repr)
-        self.assertEqual(message.data, DATA)
-        self.assertEqual(message.message_id, MESSAGE_ID)
-        self.assertEqual(message.attributes, ATTRS)
-
     def test_timestamp_no_attributes(self):
         DATA = b'DEADBEEF'
         MESSAGE_ID = b'12345'
@@ -102,3 +77,36 @@ class TestMessage(unittest2.TestCase):
         message = self._makeOne(data=DATA, message_id=MESSAGE_ID,
                                 attributes=ATTRS)
         self.assertEqual(message.timestamp, timestamp)
+
+    def test_from_api_repr_missing_data(self):
+        MESSAGE_ID = '12345'
+        api_repr = {'messageId': MESSAGE_ID}
+        message = self._getTargetClass().from_api_repr(api_repr)
+        self.assertEqual(message.data, b'')
+        self.assertEqual(message.message_id, MESSAGE_ID)
+        self.assertEqual(message.attributes, {})
+
+    def test_from_api_repr_no_attributes(self):
+        from base64 import b64encode as b64
+        DATA = b'DEADBEEF'
+        B64_DATA = b64(DATA)
+        MESSAGE_ID = '12345'
+        api_repr = {'data': B64_DATA, 'messageId': MESSAGE_ID}
+        message = self._getTargetClass().from_api_repr(api_repr)
+        self.assertEqual(message.data, DATA)
+        self.assertEqual(message.message_id, MESSAGE_ID)
+        self.assertEqual(message.attributes, {})
+
+    def test_from_api_repr_w_attributes(self):
+        from base64 import b64encode as b64
+        DATA = b'DEADBEEF'
+        B64_DATA = b64(DATA)
+        MESSAGE_ID = '12345'
+        ATTRS = {'a': 'b'}
+        api_repr = {'data': B64_DATA,
+                    'messageId': MESSAGE_ID,
+                    'attributes': ATTRS}
+        message = self._getTargetClass().from_api_repr(api_repr)
+        self.assertEqual(message.data, DATA)
+        self.assertEqual(message.message_id, MESSAGE_ID)
+        self.assertEqual(message.attributes, ATTRS)
