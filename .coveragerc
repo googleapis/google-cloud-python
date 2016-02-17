@@ -1,7 +1,5 @@
 [report]
 omit =
-    */demo/*
-    */demo.py
     */_generated/*.py
 exclude_lines =
     # Re-enable the standard pragma

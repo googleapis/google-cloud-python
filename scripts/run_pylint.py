@@ -17,7 +17,7 @@
 This runs pylint as a script via subprocess in two different
 subprocesses. The first lints the production/library code
 using the default rc file (PRODUCTION_RC). The second lints the
-demo/test code using an rc file (TEST_RC) which allows more style
+test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
 
@@ -126,7 +126,7 @@ def is_production_filename(filename):
     :rtype: bool
     :returns: Boolean indicating production status.
     """
-    return not ('demo' in filename or 'test' in filename)
+    return 'test' not in filename
 
 
 def get_files_for_linting(allow_limited=True):
@@ -195,7 +195,7 @@ def get_python_files(all_files=None):
 
     :rtype: tuple
     :returns: A tuple containing two lists and a boolean. The first list
-              contains all production files, the next all test/demo files and
+              contains all production files, the next all test files and
               the boolean indicates if a restricted fileset was used.
     """
     using_restricted = False
@@ -243,7 +243,7 @@ def main():
     library_files, non_library_files, using_restricted = get_python_files()
     try:
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+        lint_fileset(non_library_files, TEST_RC, 'test code')
     except SystemExit:
         if not using_restricted:
             raise
@@ -254,7 +254,7 @@ def main():
         library_files, non_library_files, _ = get_python_files(
             all_files=all_files)
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+        lint_fileset(non_library_files, TEST_RC, 'test code')
 
 
 if __name__ == '__main__':
