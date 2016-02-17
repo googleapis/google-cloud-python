@@ -78,6 +78,14 @@ class TestMessage(unittest2.TestCase):
                                 attributes=ATTRS)
         self.assertEqual(message.timestamp, timestamp)
 
+    def test_from_api_repr_missing_data(self):
+        MESSAGE_ID = '12345'
+        api_repr = {'messageId': MESSAGE_ID}
+        message = self._getTargetClass().from_api_repr(api_repr)
+        self.assertEqual(message.data, b'')
+        self.assertEqual(message.message_id, MESSAGE_ID)
+        self.assertEqual(message.attributes, {})
+
     def test_from_api_repr_no_attributes(self):
         from base64 import b64encode as b64
         DATA = b'DEADBEEF'
