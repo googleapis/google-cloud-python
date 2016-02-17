@@ -15,7 +15,10 @@
 """Container for Google Cloud Bigtable Cells and Streaming Row Contents."""
 
 
+import six
+
 from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _to_bytes
 
 
 class Cell(object):
@@ -61,3 +64,48 @@ class Cell(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+
+class PartialRowData(object):
+    """Representation of partial row in a Google Cloud Bigtable Table.
+
+    These are expected to be updated directly from a
+    :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+
+    :type row_key: bytes
+    :param row_key: The key for the row holding the (partial) data.
+    """
+
+    def __init__(self, row_key):
+        self._row_key = row_key
+        self._cells = {}
+        self._committed = False
+        self._chunks_encountered = False
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return (other._row_key == self._row_key and
+                other._committed == self._committed and
+                other._chunks_encountered == self._chunks_encountered and
+                other._cells == self._cells)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def to_dict(self):
+        """Convert the cells to a dictionary.
+
+        This is intended to be used with HappyBase, so the column family and
+        column qualiers are combined (with ``:``).
+
+        :rtype: dict
+        :returns: Dictionary containing all the data in the cells of this row.
+        """
+        result = {}
+        for column_family_id, columns in six.iteritems(self._cells):
+            for column_qual, cells in six.iteritems(columns):
+                key = (_to_bytes(column_family_id) + b':' +
+                       _to_bytes(column_qual))
+                result[key] = cells
+        return result
