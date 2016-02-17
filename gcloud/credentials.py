@@ -29,7 +29,7 @@ except ImportError:  # pragma: NO COVER
 from oauth2client import client
 from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
-from oauth2client import service_account
+from oauth2client.service_account import ServiceAccountCredentials
 try:
     from oauth2client.appengine import AppAssertionCredentials as _GAECreds
 except ImportError:
@@ -95,7 +95,7 @@ def get_credentials():
     :rtype: :class:`oauth2client.client.GoogleCredentials`,
             :class:`oauth2client.contrib.appengine.AppAssertionCredentials`,
             :class:`oauth2client.contrib.gce.AppAssertionCredentials`,
-            :class:`oauth2client.service_account._ServiceAccountCredentials`
+            :class:`oauth2client.service_account.ServiceAccountCredentials`
     :returns: A new credentials instance corresponding to the implicit
               environment.
     """
@@ -120,7 +120,7 @@ def get_for_service_account_json(json_credentials_path, scope=None):
                   particular API.)
 
     :rtype: :class:`oauth2client.client.GoogleCredentials`,
-            :class:`oauth2client.service_account._ServiceAccountCredentials`
+            :class:`oauth2client.service_account.ServiceAccountCredentials`
     :returns: New service account or Google (for a user JSON key file)
               credentials object.
     """
@@ -154,21 +154,18 @@ def get_for_service_account_p12(client_email, private_key_path, scope=None):
                   scope is required for the different levels of access to any
                   particular API.)
 
-    :rtype: :class:`oauth2client.client.SignedJwtAssertionCredentials`
-    :returns: A new ``SignedJwtAssertionCredentials`` instance with the
+    :rtype: :class:`oauth2client.service_account.ServiceAccountCredentials`
+    :returns: A new ``ServiceAccountCredentials`` instance with the
               needed service account settings.
     """
-    return client.SignedJwtAssertionCredentials(
-        service_account_name=client_email,
-        private_key=open(private_key_path, 'rb').read(),
-        scope=scope)
+    return ServiceAccountCredentials.from_p12_keyfile(
+        client_email, private_key_path, scopes=scope)
 
 
 def _get_pem_key(credentials):
     """Gets private key for a PEM payload from a credentials object.
 
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`
+    :type credentials: :class:`service_account.ServiceAccountCredentials`,
     :param credentials: The credentials used to create a private key
                         for signing text.
 
@@ -177,12 +174,14 @@ def _get_pem_key(credentials):
     :raises: `TypeError` if `credentials` is the wrong type.
              `EnvironmentError` if `crypto` did not import successfully.
     """
-    if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        # Take our PKCS12 (.p12) text and convert to PEM text.
-        pem_text = crypt.pkcs12_key_as_pem(credentials.private_key,
-                                           credentials.private_key_password)
-    elif isinstance(credentials, service_account._ServiceAccountCredentials):
-        pem_text = credentials._private_key_pkcs8_text
+    if isinstance(credentials, ServiceAccountCredentials):
+        if credentials._private_key_pkcs12 is not None:
+            # Take our PKCS12 (.p12) text and convert to PEM text.
+            pem_text = crypt.pkcs12_key_as_pem(
+                credentials._private_key_pkcs12,
+                credentials._private_key_password)
+        else:
+            pem_text = credentials._private_key_pkcs8_pem
     else:
         raise TypeError((credentials,
                          'not a valid service account credentials type'))
@@ -196,8 +195,7 @@ def _get_pem_key(credentials):
 def _get_signature_bytes(credentials, string_to_sign):
     """Uses crypto attributes of credentials to sign a string/bytes.
 
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`,
+    :type credentials: :class:`service_account.ServiceAccountCredentials`,
                        :class:`_GAECreds`
     :param credentials: The credentials used for signing text (typically
                         involves the creation of a PKey).
@@ -227,8 +225,7 @@ def _get_signature_bytes(credentials, string_to_sign):
 def _get_service_account_name(credentials):
     """Determines service account name from a credentials object.
 
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`,
+    :type credentials: :class:`service_account.ServiceAccountCredentials`,
                        :class:`_GAECreds`
     :param credentials: The credentials used to determine the service
                         account name.
@@ -239,10 +236,8 @@ def _get_service_account_name(credentials):
              account type.
     """
     service_account_name = None
-    if isinstance(credentials, client.SignedJwtAssertionCredentials):
-        service_account_name = credentials.service_account_name
-    elif isinstance(credentials, service_account._ServiceAccountCredentials):
-        service_account_name = credentials._service_account_email
+    if isinstance(credentials, ServiceAccountCredentials):
+        service_account_name = credentials.service_account_email
     elif isinstance(credentials, _GAECreds):
         service_account_name = app_identity.get_service_account_name()
 
@@ -255,8 +250,7 @@ def _get_service_account_name(credentials):
 def _get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
-    :type credentials: :class:`client.SignedJwtAssertionCredentials`,
-                       :class:`service_account._ServiceAccountCredentials`
+    :type credentials: :class:`service_account.ServiceAccountCredentials`
     :param credentials: The credentials used to create a private key
                         for signing text.
 

@@ -14,7 +14,7 @@ with open(os.path.join(here, 'README.rst')) as f:
 REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos',
-    'oauth2client >= 1.4.6',
+    'oauth2client >= 2.0.0',
     'protobuf >= 3.0.0b2',
     'pyOpenSSL',
     'six',
