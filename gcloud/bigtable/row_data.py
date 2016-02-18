@@ -208,6 +208,44 @@ class PartialRowData(object):
             column_cells = column_family_dict.setdefault(column_name, [])
             column_cells.extend(cells)
 
+    def update_from_read_rows(self, read_rows_response_pb):
+        """Updates the current row from a ``ReadRows`` response.
+
+        :type read_rows_response_pb:
+            :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+        :param read_rows_response_pb: A response streamed back as part of a
+                                      ``ReadRows`` request.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the current
+                 partial row has already been committed, if the row key on the
+                 response doesn't match the current one or if there is a chunk
+                 encountered with an unexpected ``ONEOF`` protobuf property.
+        """
+        if self._committed:
+            raise ValueError('The row has been committed')
+
+        if read_rows_response_pb.row_key != self.row_key:
+            raise ValueError('Response row key (%r) does not match current '
+                             'one (%r).' % (read_rows_response_pb.row_key,
+                                            self.row_key))
+
+        last_chunk_index = len(read_rows_response_pb.chunks) - 1
+        for index, chunk in enumerate(read_rows_response_pb.chunks):
+            chunk_property = chunk.WhichOneof('chunk')
+            if chunk_property == 'row_contents':
+                self._handle_row_contents(chunk)
+            elif chunk_property == 'reset_row':
+                self._handle_reset_row(chunk)
+            elif chunk_property == 'commit_row':
+                self._handle_commit_row(chunk, index, last_chunk_index)
+            else:
+                # NOTE: This includes chunk_property == None since we always
+                #       want a value to be set
+                raise ValueError('Unexpected chunk property: %s' % (
+                    chunk_property,))
+
+            self._chunks_encountered = True
+
 
 class PartialRowsData(object):
     """Convenience wrapper for consuming a ``ReadRows`` streaming response.
