@@ -1,28 +1,31 @@
 Using the API
 =============
 
-Authentication / Configuration
-------------------------------
+Authentication and Configuration
+--------------------------------
 
-- Use :class:`Client <gcloud.logging.client.Client>` objects to configure
-  your applications.
+- For an overview of authentication in ``gcloud-python``,
+  see :doc:`gcloud-auth`.
 
-- :class:`Client <gcloud.logging.client.Client>` objects hold both a ``project``
-  and an authenticated connection to the Logging service.
+- In addition to any authentication configuration, you should also set the
+  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
+  to interact with. If you are Google App Engine or Google Compute Engine
+  this will be detected automatically.
 
-- The authentication credentials can be implicitly determined from the
-  environment or directly via
-  :meth:`from_service_account_json <gcloud.logging.client.Client.from_service_account_json>`
-  and
-  :meth:`from_service_account_p12 <gcloud.logging.client.Client.from_service_account_p12>`.
-
-- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables, create a :class:`Client <gcloud.logging.client.Client>`
+- After configuring your environment, create a
+  :class:`Client <gcloud.logging.client.Client>`
 
   .. doctest::
 
      >>> from gcloud import logging
      >>> client = logging.Client()
+
+  or pass in ``credentials`` and ``project`` explicitly
+
+  .. doctest::
+
+     >>> from gcloud import logging
+     >>> client = logging.Client(project='my-project', credentials=creds)
 
 Writing log entries
 -------------------
