@@ -86,6 +86,13 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Cloud Logging
+
+  logging-usage
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
