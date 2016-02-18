@@ -1,6 +1,7 @@
 Using the API
 =============
 
+
 Authentication and Configuration
 --------------------------------
 
@@ -27,6 +28,7 @@ Authentication and Configuration
      >>> from gcloud import logging
      >>> client = logging.Client(project='my-project', credentials=creds)
 
+
 Writing log entries
 -------------------
 
@@ -49,6 +51,7 @@ Write a dictionary entry to a log.
    >>> log.struct(message="My second entry",
    ...     weather="partly cloudy")  # API call
 
+
 Retrieving log entries
 ----------------------
 
@@ -66,7 +69,6 @@ Fetch entries for the default project.
    2016-02-17T20:35:49.031864072Z: A simple entry | None
    2016-02-17T20:38:15.944418531Z: None | {'message': 'My second entry', 'weather': 'partly cloudy'}
 
-
 Fetch entries across multiple projects.
 
 .. doctest::
@@ -75,7 +77,6 @@ Fetch entries across multiple projects.
    >>> client = logging.Client()
    >>> entries, token = client.list_entries(
    ...     project_ids=['one-project', 'another-project'])  # API call
-
 
 Filter entries retrieved using the "Advance Logs Filters" syntax (see
 https://cloud.google.com/logging/docs/view/advanced_filters).
@@ -110,8 +111,8 @@ Retrieve entities in batches of 10, iterating until done.
    ...         break
 
 
-Deleting all entries for a log
-------------------------------
+Delete all entries for a log
+----------------------------
 
 .. doctest::
 
