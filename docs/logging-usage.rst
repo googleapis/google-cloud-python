@@ -163,7 +163,7 @@ Refresh local information about a metric:
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric("robots")
-   >>> metric.get()  # API call
+   >>> metric.reload()  # API call
    >>> metric.description
    "Robots all up in your server"
    >>> metric.filter
@@ -178,7 +178,7 @@ Update a metric:
    >>> metric = client.metric("robots")
    >>> metric.exists()  # API call
    True
-   >>> metric.get()  # API call
+   >>> metric.reload()  # API call
    >>> metric.description = "Danger, Will Robinson!"
    >>> metric.update()  # API call
 
@@ -269,7 +269,7 @@ Refresh local information about a sink:
    >>> sink = client.sink('robots-storage')
    >>> sink.filter is None
    True
-   >>> sink.get()  # API call
+   >>> sink.reload()  # API call
    >>> sink.filter
    'log:apache-access AND textPayload:robot'
    >>> sink.destination
@@ -282,7 +282,7 @@ Update a sink:
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> sink = client.sink("robots")
-   >>> sink.get()  # API call
+   >>> sink.reload()  # API call
    >>> sink.filter = "log:apache-access"
    >>> sink.update()  # API call
 
