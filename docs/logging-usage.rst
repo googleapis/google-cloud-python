@@ -60,10 +60,11 @@ Fetch entries for the default project.
    >>> client = logging.Client()
    >>> entries, token = client.list_entries()  # API call
    >>> for entry in entries:
-   ...    timestamp = entry.timestamp.ISO()
-   ...    print(timestamp, entry.text_payload, entry.struct_payload)
-   ('2016-02-17T20:35:49.031864072Z', 'A simple entry', None)
-   ('2016-02-17T20:38:15.944418531Z,' None, {'message': 'My second entry', 'weather': 'partly cloudy'})
+   ...    timestamp = entry.timestamp.isoformat()
+   ...    print('%sZ: %s | %s" %
+   ...          (timestamp, entry.text_payload, entry.struct_payload))
+   2016-02-17T20:35:49.031864072Z: A simple entry | None
+   2016-02-17T20:38:15.944418531Z: None | {'message': 'My second entry', 'weather': 'partly cloudy'}
 
 
 Fetch entries across multiple projects.
@@ -252,10 +253,10 @@ List all sinks for a project:
    >>> client = logging.Client()
    >>> sinks, token = client.list_sinks()
    >>> for sink in sinks:
-   ...     print(sink.name, sink.destination)
-   ('robots-storage', 'storage.googleapis.com/my-bucket-name')
-   ('robots-bq', 'bigquery.googleapis.com/projects/my-project/datasets/my-dataset')
-   ('robots-pubsub', 'pubsub.googleapis.com/projects/my-project/topics/my-topic')
+   ...     print('%s: %s' % (sink.name, sink.destination))
+   robots-storage: storage.googleapis.com/my-bucket-name
+   robots-bq: bigquery.googleapis.com/projects/my-project/datasets/my-dataset
+   robots-pubsub: pubsub.googleapis.com/projects/my-project/topics/my-topic
 
 Refresh local information about a sink:
 
