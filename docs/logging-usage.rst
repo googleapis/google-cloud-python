@@ -78,8 +78,9 @@ Fetch entries across multiple projects.
    >>> entries, token = client.list_entries(
    ...     project_ids=['one-project', 'another-project'])  # API call
 
-Filter entries retrieved using the "Advance Logs Filters" syntax (see
-https://cloud.google.com/logging/docs/view/advanced_filters).
+Filter entries retrieved using the `Advanced Logs Filters`_ syntax
+
+.. Advanced Logs Filters: https://cloud.google.com/logging/docs/view/advanced_filters
 
 .. doctest::
 
