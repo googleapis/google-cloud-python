@@ -177,6 +177,36 @@ class TestPartialRowData(unittest2.TestCase):
         }
         self.assertEqual(result, expected_result)
 
+    def test_cells_property(self):
+        partial_row_data = self._makeOne(None)
+        cells = {1: 2}
+        partial_row_data._cells = cells
+        # Make sure we get a copy, not the original.
+        self.assertFalse(partial_row_data.cells is cells)
+        self.assertEqual(partial_row_data.cells, cells)
+
+    def test_row_key_getter(self):
+        row_key = object()
+        partial_row_data = self._makeOne(row_key)
+        self.assertTrue(partial_row_data.row_key is row_key)
+
+    def test_committed_getter(self):
+        partial_row_data = self._makeOne(None)
+        partial_row_data._committed = value = object()
+        self.assertTrue(partial_row_data.committed is value)
+
+    def test_clear(self):
+        partial_row_data = self._makeOne(None)
+        cells = {1: 2}
+        partial_row_data._cells = cells
+        self.assertEqual(partial_row_data.cells, cells)
+        partial_row_data._committed = True
+        partial_row_data._chunks_encountered = True
+        partial_row_data.clear()
+        self.assertFalse(partial_row_data.committed)
+        self.assertFalse(partial_row_data._chunks_encountered)
+        self.assertEqual(partial_row_data.cells, {})
+
 
 class TestPartialRowsData(unittest2.TestCase):
 
