@@ -273,7 +273,7 @@ Refresh local information about a sink:
    >>> sink.filter
    'log:apache-access AND textPayload:robot'
    >>> sink.destination
-   'storage.googleapis.com/my-bucket-name')
+   'storage.googleapis.com/my-bucket-name'
 
 Update a sink:
 
