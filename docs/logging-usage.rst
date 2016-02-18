@@ -200,9 +200,9 @@ Export log entries using sinks
 ------------------------------
 
 Sinks allow exporting entries which match a given filter to Cloud Storage
-buckets, BigQuery datasets, or Pub/Sub topics.
+buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
-Create a CloudStorage sink:
+Create a Cloud Storage sink:
 
 .. doctest::
 
@@ -232,7 +232,7 @@ Create a BigQuery sink:
    >>> sink.exists()  # API call
    True
 
-Create a Pub/Sub sink:
+Create a Cloud Pub/Sub sink:
 
 .. doctest::
 
