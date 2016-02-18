@@ -151,7 +151,7 @@ List all metrics for a project:
    >>> client = logging.Client()
    >>> metrics, token = client.list_metrics()
    >>> len(metrics)
-   0
+   1
    >>> metric = metrics[0]
    >>> metric.name
    "robots"
