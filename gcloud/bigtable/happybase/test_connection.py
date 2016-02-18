@@ -212,6 +212,72 @@ class TestConnection(unittest2.TestCase):
         connection.__del__()
         self.assertEqual(cluster._client.stop_calls, 0)
 
+    def test__table_name_with_prefix_set(self):
+        table_prefix = 'table-prefix'
+        table_prefix_separator = '<>'
+        cluster = _Cluster()
+
+        connection = self._makeOne(
+            autoconnect=False,
+            table_prefix=table_prefix,
+            table_prefix_separator=table_prefix_separator,
+            cluster=cluster)
+
+        name = 'some-name'
+        prefixed = connection._table_name(name)
+        self.assertEqual(prefixed,
+                         table_prefix + table_prefix_separator + name)
+
+    def test__table_name_with_no_prefix_set(self):
+        cluster = _Cluster()
+        connection = self._makeOne(autoconnect=False,
+                                   cluster=cluster)
+
+        name = 'some-name'
+        prefixed = connection._table_name(name)
+        self.assertEqual(prefixed, name)
+
+    def test_table_factory(self):
+        from gcloud.bigtable.happybase.table import Table
+
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        table = connection.table(name)
+
+        self.assertTrue(isinstance(table, Table))
+        self.assertEqual(table.name, name)
+        self.assertEqual(table.connection, connection)
+
+    def _table_factory_prefix_helper(self, use_prefix=True):
+        from gcloud.bigtable.happybase.table import Table
+
+        cluster = _Cluster()  # Avoid implicit environ check.
+        table_prefix = 'table-prefix'
+        table_prefix_separator = '<>'
+        connection = self._makeOne(
+            autoconnect=False, table_prefix=table_prefix,
+            table_prefix_separator=table_prefix_separator,
+            cluster=cluster)
+
+        name = 'table-name'
+        table = connection.table(name, use_prefix=use_prefix)
+
+        self.assertTrue(isinstance(table, Table))
+        prefixed_name = table_prefix + table_prefix_separator + name
+        if use_prefix:
+            self.assertEqual(table.name, prefixed_name)
+        else:
+            self.assertEqual(table.name, name)
+        self.assertEqual(table.connection, connection)
+
+    def test_table_factory_with_prefix(self):
+        self._table_factory_prefix_helper(use_prefix=True)
+
+    def test_table_factory_with_ignored_prefix(self):
+        self._table_factory_prefix_helper(use_prefix=False)
+
 
 class _Client(object):
 

@@ -20,6 +20,7 @@ import warnings
 import six
 
 from gcloud.bigtable.client import Client
+from gcloud.bigtable.happybase.table import Table
 
 
 # Constants reproduced here for HappyBase compatibility, though values
@@ -202,3 +203,34 @@ class Connection(object):
     def __del__(self):
         if self._cluster is not None:
             self.close()
+
+    def _table_name(self, name):
+        """Construct a table name by optionally adding a table name prefix.
+
+        :type name: str
+        :param name: The name to have a prefix added to it.
+
+        :rtype: str
+        :returns: The prefixed name, if the current connection has a table
+                  prefix set.
+        """
+        if self.table_prefix is None:
+            return name
+
+        return self.table_prefix + self.table_prefix_separator + name
+
+    def table(self, name, use_prefix=True):
+        """Table factory.
+
+        :type name: str
+        :param name: The name of the table to be created.
+
+        :type use_prefix: bool
+        :param use_prefix: Whether to use the table prefix (if any).
+
+        :rtype: `Table <gcloud.bigtable.happybase.table.Table>`
+        :returns: Table instance owned by this connection.
+        """
+        if use_prefix:
+            name = self._table_name(name)
+        return Table(name, self)
