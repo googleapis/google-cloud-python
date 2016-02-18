@@ -15,6 +15,7 @@
 """Container for Google Cloud Bigtable Cells and Streaming Row Contents."""
 
 
+import copy
 import six
 
 from gcloud._helpers import _datetime_from_microseconds
@@ -109,6 +110,42 @@ class PartialRowData(object):
                        _to_bytes(column_qual))
                 result[key] = cells
         return result
+
+    @property
+    def cells(self):
+        """Property returning all the cells accumulated on this partial row.
+
+        :rtype: dict
+        :returns: Dictionary of the :class:`Cell` objects accumulated. This
+                  dictionary has two-levels of keys (first for column families
+                  and second for column names/qualifiers within a family). For
+                  a given column, a list of :class:`Cell` objects is stored.
+        """
+        return copy.deepcopy(self._cells)
+
+    @property
+    def row_key(self):
+        """Getter for the current (partial) row's key.
+
+        :rtype: bytes
+        :returns: The current (partial) row's key.
+        """
+        return self._row_key
+
+    @property
+    def committed(self):
+        """Getter for the committed status of the (partial) row.
+
+        :rtype: bool
+        :returns: The committed status of the (partial) row.
+        """
+        return self._committed
+
+    def clear(self):
+        """Clears all cells that have been added."""
+        self._committed = False
+        self._chunks_encountered = False
+        self._cells.clear()
 
 
 class PartialRowsData(object):
