@@ -21,6 +21,8 @@ demo/test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
 
+from __future__ import print_function
+
 import ConfigParser
 import copy
 import os
@@ -60,6 +62,11 @@ TEST_RC_ADDITIONS = {
         'disable': ', '.join(TEST_DISABLED_MESSAGES),
     },
 }
+TEST_RC_REPLACEMENTS = {
+    'FORMAT': {
+        'max-module-lines': 1800,
+    },
+}
 
 
 def read_config(filename):
@@ -70,7 +77,8 @@ def read_config(filename):
     return config
 
 
-def make_test_rc(base_rc_filename, additions_dict, target_filename):
+def make_test_rc(base_rc_filename, additions_dict,
+                 replacements_dict, target_filename):
     """Combines a base rc and test additions into single file."""
     main_cfg = read_config(base_rc_filename)
 
@@ -87,6 +95,15 @@ def make_test_rc(base_rc_filename, additions_dict, target_filename):
                 raise KeyError('Expected to be adding to existing option.')
             curr_val = curr_val.rstrip(',')
             curr_section[opt] = '%s, %s' % (curr_val, opt_val)
+
+    for section, opts in replacements_dict.items():
+        curr_section = test_cfg._sections.setdefault(
+            section, test_cfg._dict())
+        for opt, opt_val in opts.items():
+            curr_val = curr_section.get(opt)
+            if curr_val is None:
+                raise KeyError('Expected to be replacing existing option.')
+            curr_section[opt] = '%s' % (opt_val,)
 
     with open(target_filename, 'w') as file_obj:
         test_cfg.write(file_obj)
@@ -151,12 +168,12 @@ def get_files_for_linting(allow_limited=True):
     if diff_base is not None and allow_limited:
         result = subprocess.check_output(['git', 'diff', '--name-only',
                                           diff_base])
-        print 'Using files changed relative to %s:' % (diff_base,)
-        print '-' * 60
-        print result.rstrip('\n')  # Don't print trailing newlines.
-        print '-' * 60
+        print('Using files changed relative to %s:' % (diff_base,))
+        print('-' * 60)
+        print(result.rstrip('\n'))  # Don't print trailing newlines.
+        print('-' * 60)
     else:
-        print 'Diff base not specified, listing all files in repository.'
+        print('Diff base not specified, listing all files in repository.')
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
@@ -211,15 +228,16 @@ def lint_fileset(filenames, rcfile, description):
         if status_code != 0:
             error_message = ('Pylint failed on %s with '
                              'status %d.' % (description, status_code))
-            print >> sys.stderr, error_message
+            print(error_message, file=sys.stderr)
             sys.exit(status_code)
     else:
-        print 'Skipping %s, no files to lint.' % (description,)
+        print('Skipping %s, no files to lint.' % (description,))
 
 
 def main():
     """Script entry point. Lints both sets of files."""
-    make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS, TEST_RC)
+    make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS,
+                 TEST_RC_REPLACEMENTS, TEST_RC)
     library_files, non_library_files, using_restricted = get_python_files()
     try:
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
@@ -229,7 +247,7 @@ def main():
             raise
 
         message = 'Restricted lint failed, expanding to full fileset.'
-        print >> sys.stderr, message
+        print(message, file=sys.stderr)
         all_files, _ = get_files_for_linting(allow_limited=False)
         library_files, non_library_files, _ = get_python_files(
             all_files=all_files)

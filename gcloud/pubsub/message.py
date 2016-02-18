@@ -71,6 +71,6 @@ class Message(object):
         :type api_repr: dict or None
         :param api_repr: The API representation of the message
         """
-        data = base64.b64decode(api_repr['data'])
+        data = base64.b64decode(api_repr.get('data', b''))
         return cls(data=data, message_id=api_repr['messageId'],
                    attributes=api_repr.get('attributes'))

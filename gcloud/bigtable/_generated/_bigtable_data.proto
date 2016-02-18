@@ -89,6 +89,15 @@ message RowRange {
   bytes end_key = 3;
 }
 
+// Specifies a non-contiguous set of rows.
+message RowSet {
+  // Single rows included in the set.
+  repeated bytes row_keys = 1;
+
+  // Contiguous row ranges included in the set.
+  repeated RowRange row_ranges = 2;
+}
+
 // Specifies a contiguous range of columns within a single column family.
 // The range spans from <column_family>:<start_qualifier> to
 // <column_family>:<end_qualifier>, where both bounds can be either inclusive or
@@ -374,15 +383,21 @@ message RowFilter {
     ValueRange value_range_filter = 15;
 
     // Skips the first N cells of each row, matching all subsequent cells.
+    // If duplicate cells are present, as is possible when using an Interleave,
+    // each copy of the cell is counted separately.
     int32 cells_per_row_offset_filter = 10;
 
     // Matches only the first N cells of each row.
+    // If duplicate cells are present, as is possible when using an Interleave,
+    // each copy of the cell is counted separately.
     int32 cells_per_row_limit_filter = 11;
 
     // Matches only the most recent N cells within each column. For example,
     // if N=2, this filter would match column "foo:bar" at timestamps 10 and 9,
     // skip all earlier cells in "foo:bar", and then begin matching again in
     // column "foo:bar2".
+    // If duplicate cells are present, as is possible when using an Interleave,
+    // each copy of the cell is counted separately.
     int32 cells_per_column_limit_filter = 12;
 
     // Replaces each cell's value with the empty string.

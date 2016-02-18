@@ -19,11 +19,15 @@ import struct
 
 import six
 
+from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
 from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+from gcloud.bigtable._generated import (
+    bigtable_service_messages_pb2 as messages_pb2)
 
 
+_MAX_MUTATIONS = 100000
 _PACK_I64 = struct.Struct('>q').pack
 
 
@@ -340,6 +344,172 @@ class Row(object):
             # We don't add the mutations until all columns have been
             # processed without error.
             mutations_list.extend(to_append)
+
+    def _commit_mutate(self):
+        """Makes a ``MutateRow`` API request.
+
+        Assumes no filter is set on the :class:`Row` and is meant to be called
+        by :meth:`commit`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        mutations_list = self._get_mutations()
+        num_mutations = len(mutations_list)
+        if num_mutations == 0:
+            return
+        if num_mutations > _MAX_MUTATIONS:
+            raise ValueError('%d total mutations exceed the maximum allowable '
+                             '%d.' % (num_mutations, _MAX_MUTATIONS))
+        request_pb = messages_pb2.MutateRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            mutations=mutations_list,
+        )
+        # We expect a `google.protobuf.empty_pb2.Empty`
+        client = self._table._cluster._client
+        client._data_stub.MutateRow(request_pb, client.timeout_seconds)
+
+    def _commit_check_and_mutate(self):
+        """Makes a ``CheckAndMutateRow`` API request.
+
+        Assumes a filter is set on the :class:`Row` and is meant to be called
+        by :meth:`commit`.
+
+        :rtype: bool
+        :returns: Flag indicating if the filter was matched (which also
+                  indicates which set of mutations were applied by the server).
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        true_mutations = self._get_mutations(state=True)
+        false_mutations = self._get_mutations(state=False)
+        num_true_mutations = len(true_mutations)
+        num_false_mutations = len(false_mutations)
+        if num_true_mutations == 0 and num_false_mutations == 0:
+            return
+        if (num_true_mutations > _MAX_MUTATIONS or
+                num_false_mutations > _MAX_MUTATIONS):
+            raise ValueError(
+                'Exceed the maximum allowable mutations (%d). Had %s true '
+                'mutations and %d false mutations.' % (
+                    _MAX_MUTATIONS, num_true_mutations, num_false_mutations))
+
+        request_pb = messages_pb2.CheckAndMutateRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            predicate_filter=self._filter.to_pb(),
+            true_mutations=true_mutations,
+            false_mutations=false_mutations,
+        )
+        # We expect a `.messages_pb2.CheckAndMutateRowResponse`
+        client = self._table._cluster._client
+        resp = client._data_stub.CheckAndMutateRow(
+            request_pb, client.timeout_seconds)
+        return resp.predicate_matched
+
+    def clear_mutations(self):
+        """Removes all currently accumulated mutations on the current row."""
+        if self._filter is None:
+            del self._pb_mutations[:]
+        else:
+            del self._true_pb_mutations[:]
+            del self._false_pb_mutations[:]
+
+    def commit(self):
+        """Makes a ``MutateRow`` or ``CheckAndMutateRow`` API request.
+
+        If no mutations have been created in the row, no request is made.
+
+        Mutations are applied atomically and in order, meaning that earlier
+        mutations can be masked / negated by later ones. Cells already present
+        in the row are left unchanged unless explicitly changed by a mutation.
+
+        After committing the accumulated mutations, resets the local
+        mutations to an empty list.
+
+        In the case that a filter is set on the :class:`Row`, the mutations
+        will be applied conditionally, based on whether the filter matches
+        any cells in the :class:`Row` or not. (Each method which adds a
+        mutation has a ``state`` parameter for this purpose.)
+
+        :rtype: :class:`bool` or :data:`NoneType <types.NoneType>`
+        :returns: :data:`None` if there is no filter, otherwise a flag
+                  indicating if the filter was matched (which also
+                  indicates which set of mutations were applied by the server).
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the ``_MAX_MUTATIONS``.
+        """
+        if self._filter is None:
+            result = self._commit_mutate()
+        else:
+            result = self._commit_check_and_mutate()
+
+        # Reset mutations after commit-ing request.
+        self.clear_mutations()
+
+        return result
+
+    def clear_modification_rules(self):
+        """Removes all currently accumulated modifications on current row."""
+        del self._rule_pb_list[:]
+
+    def commit_modifications(self):
+        """Makes a ``ReadModifyWriteRow`` API request.
+
+        This commits modifications made by :meth:`append_cell_value` and
+        :meth:`increment_cell_value`. If no modifications were made, makes
+        no API request and just returns ``{}``.
+
+        Modifies a row atomically, reading the latest existing timestamp/value
+        from the specified columns and writing a new value by appending /
+        incrementing. The new cell created uses either the current server time
+        or the highest timestamp of a cell in that column (if it exceeds the
+        server time).
+
+        :rtype: dict
+        :returns: The new contents of all modified cells. Returned as a
+                  dictionary of column families, each of which holds a
+                  dictionary of columns. Each column contains a list of cells
+                  modified. Each cell is represented with a two-tuple with the
+                  value (in bytes) and the timestamp for the cell. For example:
+
+                  .. code:: python
+
+                      {
+                          u'col-fam-id': {
+                              b'col-name1': [
+                                  (b'cell-val', datetime.datetime(...)),
+                                  (b'cell-val-newer', datetime.datetime(...)),
+                              ],
+                              b'col-name2': [
+                                  (b'altcol-cell-val', datetime.datetime(...)),
+                              ],
+                          },
+                          u'col-fam-id2': {
+                              b'col-name3-but-other-fam': [
+                                  (b'foo', datetime.datetime(...)),
+                              ],
+                          },
+                      }
+        """
+        if len(self._rule_pb_list) == 0:
+            return {}
+        request_pb = messages_pb2.ReadModifyWriteRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            rules=self._rule_pb_list,
+        )
+        # We expect a `.data_pb2.Row`
+        client = self._table._cluster._client
+        row_response = client._data_stub.ReadModifyWriteRow(
+            request_pb, client.timeout_seconds)
+
+        # Reset modifications after commit-ing request.
+        self.clear_modification_rules()
+
+        # NOTE: We expect row_response.key == self._row_key but don't check.
+        return _parse_rmw_row_response(row_response)
 
 
 class RowFilter(object):
@@ -1084,3 +1254,81 @@ class ConditionalRowFilter(RowFilter):
             condition_kwargs['false_filter'] = self.false_filter.to_pb()
         condition = data_pb2.RowFilter.Condition(**condition_kwargs)
         return data_pb2.RowFilter(condition=condition)
+
+
+def _parse_rmw_row_response(row_response):
+    """Parses the response to a ``ReadModifyWriteRow`` request.
+
+    :type row_response: :class:`.data_pb2.Row`
+    :param row_response: The response row (with only modified cells) from a
+                         ``ReadModifyWriteRow`` request.
+
+    :rtype: dict
+    :returns: The new contents of all modified cells. Returned as a
+              dictionary of column families, each of which holds a
+              dictionary of columns. Each column contains a list of cells
+              modified. Each cell is represented with a two-tuple with the
+              value (in bytes) and the timestamp for the cell. For example:
+
+              .. code:: python
+
+                  {
+                      u'col-fam-id': {
+                          b'col-name1': [
+                              (b'cell-val', datetime.datetime(...)),
+                              (b'cell-val-newer', datetime.datetime(...)),
+                          ],
+                          b'col-name2': [
+                              (b'altcol-cell-val', datetime.datetime(...)),
+                          ],
+                      },
+                      u'col-fam-id2': {
+                          b'col-name3-but-other-fam': [
+                              (b'foo', datetime.datetime(...)),
+                          ],
+                      },
+                  }
+    """
+    result = {}
+    for column_family in row_response.families:
+        column_family_id, curr_family = _parse_family_pb(column_family)
+        result[column_family_id] = curr_family
+    return result
+
+
+def _parse_family_pb(family_pb):
+    """Parses a Family protobuf into a dictionary.
+
+    :type family_pb: :class:`._generated.bigtable_data_pb2.Family`
+    :param family_pb: A protobuf
+
+    :rtype: tuple
+    :returns: A string and dictionary. The string is the name of the
+              column family and the dictionary has column names (within the
+              family) as keys and cell lists as values. Each cell is
+              represented with a two-tuple with the value (in bytes) and the
+              timestamp for the cell. For example:
+
+              .. code:: python
+
+                  {
+                      b'col-name1': [
+                          (b'cell-val', datetime.datetime(...)),
+                          (b'cell-val-newer', datetime.datetime(...)),
+                      ],
+                      b'col-name2': [
+                          (b'altcol-cell-val', datetime.datetime(...)),
+                      ],
+                  }
+    """
+    result = {}
+    for column in family_pb.columns:
+        result[column.qualifier] = cells = []
+        for cell in column.cells:
+            val_pair = (
+                cell.value,
+                _datetime_from_microseconds(cell.timestamp_micros),
+            )
+            cells.append(val_pair)
+
+    return family_pb.name, result

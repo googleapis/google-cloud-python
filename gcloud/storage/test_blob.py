@@ -146,6 +146,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': PATH,
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
@@ -154,6 +155,40 @@ class Test_Blob(unittest2.TestCase):
 
     def test_generate_signed_url_w_default_method(self):
         self._basic_generate_signed_url_helper()
+
+    def test_generate_signed_url_w_content_type(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import blob as MUT
+
+        BLOB_NAME = 'blob-name'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+               '&Expiration=2014-10-16T20:34:37.000Z')
+
+        SIGNER = _Signer()
+        CONTENT_TYPE = "text/html"
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            signed_url = blob.generate_signed_url(EXPIRATION,
+                                                  content_type=CONTENT_TYPE)
+            self.assertEqual(signed_url, URI)
+
+        PATH = '/name/%s' % (BLOB_NAME,)
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': PATH,
+            'content_type': CONTENT_TYPE,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_credentials(self):
         credentials = object()
@@ -183,6 +218,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': '/name/parent%2Fchild',
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
@@ -214,6 +250,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'POST',
             'resource': PATH,
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
