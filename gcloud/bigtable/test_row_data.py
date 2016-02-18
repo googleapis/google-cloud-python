@@ -207,6 +207,95 @@ class TestPartialRowData(unittest2.TestCase):
         self.assertFalse(partial_row_data._chunks_encountered)
         self.assertEqual(partial_row_data.cells, {})
 
+    def test__handle_commit_row(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        partial_row_data = self._makeOne(None)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(commit_row=True)
+
+        index = last_chunk_index = 1
+        self.assertFalse(partial_row_data.committed)
+        partial_row_data._handle_commit_row(chunk, index, last_chunk_index)
+        self.assertTrue(partial_row_data.committed)
+
+    def test__handle_commit_row_false(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        partial_row_data = self._makeOne(None)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(commit_row=False)
+
+        with self.assertRaises(ValueError):
+            partial_row_data._handle_commit_row(chunk, None, None)
+
+    def test__handle_commit_row_not_last_chunk(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        partial_row_data = self._makeOne(None)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(commit_row=True)
+
+        with self.assertRaises(ValueError):
+            index = 0
+            last_chunk_index = 1
+            self.assertNotEqual(index, last_chunk_index)
+            partial_row_data._handle_commit_row(chunk, index, last_chunk_index)
+
+    def test__handle_reset_row(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        partial_row_data = self._makeOne(None)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(reset_row=True)
+
+        # Modify the PartialRowData object so we can check it's been cleared.
+        partial_row_data._cells = {1: 2}
+        partial_row_data._committed = True
+        partial_row_data._handle_reset_row(chunk)
+        self.assertEqual(partial_row_data.cells, {})
+        self.assertFalse(partial_row_data.committed)
+
+    def test__handle_reset_row_failure(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        partial_row_data = self._makeOne(None)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(reset_row=False)
+
+        with self.assertRaises(ValueError):
+            partial_row_data._handle_reset_row(chunk)
+
+    def test__handle_row_contents(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable.row_data import Cell
+
+        partial_row_data = self._makeOne(None)
+        cell1_pb = data_pb2.Cell(timestamp_micros=1, value=b'val1')
+        cell2_pb = data_pb2.Cell(timestamp_micros=200, value=b'val2')
+        cell3_pb = data_pb2.Cell(timestamp_micros=300000, value=b'val3')
+        col1 = b'col1'
+        col2 = b'col2'
+        columns = [
+            data_pb2.Column(qualifier=col1, cells=[cell1_pb, cell2_pb]),
+            data_pb2.Column(qualifier=col2, cells=[cell3_pb]),
+        ]
+        family_name = u'name'
+        row_contents = data_pb2.Family(name=family_name, columns=columns)
+        chunk = messages_pb2.ReadRowsResponse.Chunk(row_contents=row_contents)
+
+        self.assertEqual(partial_row_data.cells, {})
+        partial_row_data._handle_row_contents(chunk)
+        expected_cells = {
+            family_name: {
+                col1: [Cell.from_pb(cell1_pb), Cell.from_pb(cell2_pb)],
+                col2: [Cell.from_pb(cell3_pb)],
+            }
+        }
+        self.assertEqual(partial_row_data.cells, expected_cells)
+
 
 class TestPartialRowsData(unittest2.TestCase):
 
