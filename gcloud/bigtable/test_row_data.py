@@ -176,3 +176,50 @@ class TestPartialRowData(unittest2.TestCase):
             b'name2:col3': cell3,
         }
         self.assertEqual(result, expected_result)
+
+
+class TestPartialRowsData(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row_data import PartialRowsData
+        return PartialRowsData
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        response_iterator = object()
+        partial_rows_data = self._makeOne(response_iterator)
+        self.assertTrue(partial_rows_data._response_iterator
+                        is response_iterator)
+        self.assertEqual(partial_rows_data._rows, {})
+
+    def test___eq__(self):
+        response_iterator = object()
+        partial_rows_data1 = self._makeOne(response_iterator)
+        partial_rows_data2 = self._makeOne(response_iterator)
+        self.assertEqual(partial_rows_data1, partial_rows_data2)
+
+    def test___eq__type_differ(self):
+        partial_rows_data1 = self._makeOne(None)
+        partial_rows_data2 = object()
+        self.assertNotEqual(partial_rows_data1, partial_rows_data2)
+
+    def test___ne__same_value(self):
+        response_iterator = object()
+        partial_rows_data1 = self._makeOne(response_iterator)
+        partial_rows_data2 = self._makeOne(response_iterator)
+        comparison_val = (partial_rows_data1 != partial_rows_data2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        response_iterator1 = object()
+        partial_rows_data1 = self._makeOne(response_iterator1)
+        response_iterator2 = object()
+        partial_rows_data2 = self._makeOne(response_iterator2)
+        self.assertNotEqual(partial_rows_data1, partial_rows_data2)
+
+    def test_rows_getter(self):
+        partial_rows_data = self._makeOne(None)
+        partial_rows_data._rows = value = object()
+        self.assertTrue(partial_rows_data.rows is value)
