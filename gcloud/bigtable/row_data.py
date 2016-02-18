@@ -109,3 +109,37 @@ class PartialRowData(object):
                        _to_bytes(column_qual))
                 result[key] = cells
         return result
+
+
+class PartialRowsData(object):
+    """Convenience wrapper for consuming a ``ReadRows`` streaming response.
+
+    :type response_iterator:
+        :class:`grpc.framework.alpha._reexport._CancellableIterator`
+    :param response_iterator: A streaming iterator returned from a
+                              ``ReadRows`` request.
+    """
+
+    def __init__(self, response_iterator):
+        # We expect an iterator of `data_messages_pb2.ReadRowsResponse`
+        self._response_iterator = response_iterator
+        self._rows = {}
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other._response_iterator == self._response_iterator
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @property
+    def rows(self):
+        """Property returning all rows accumulated from the stream.
+
+        :rtype: dict
+        :returns: Dictionary of :class:`PartialRowData`.
+        """
+        # NOTE: To avoid duplicating large objects, this is just the
+        #       mutable private data.
+        return self._rows
