@@ -64,7 +64,7 @@ Fetch entries for the default project.
    >>> entries, token = client.list_entries()  # API call
    >>> for entry in entries:
    ...    timestamp = entry.timestamp.isoformat()
-   ...    print('%sZ: %s | %s" %
+   ...    print('%sZ: %s | %s' %
    ...          (timestamp, entry.text_payload, entry.struct_payload))
    2016-02-17T20:35:49.031864072Z: A simple entry | None
    2016-02-17T20:38:15.944418531Z: None | {'message': 'My second entry', 'weather': 'partly cloudy'}
