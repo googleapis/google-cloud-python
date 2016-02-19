@@ -311,6 +311,37 @@ class TestConnection(unittest2.TestCase):
         result = connection.tables()
         self.assertEqual(result, [unprefixed_table_name1])
 
+    def test_delete_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        tables_created = []
+
+        def make_table(*args, **kwargs):
+            result = _MockLowLevelTable(*args, **kwargs)
+            tables_created.append(result)
+            return result
+
+        name = 'table-name'
+        with _Monkey(MUT, _LowLevelTable=make_table):
+            connection.delete_table(name)
+
+        # Just one table would have been created.
+        table_instance, = tables_created
+        self.assertEqual(table_instance.args, (name, cluster))
+        self.assertEqual(table_instance.kwargs, {})
+        self.assertEqual(table_instance.delete_calls, 1)
+
+    def test_delete_table_disable(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        name = 'table-name'
+        with self.assertRaises(ValueError):
+            connection.delete_table(name, disable=True)
+
     def test_enable_table(self):
         cluster = _Cluster()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, cluster=cluster)
@@ -385,3 +416,14 @@ class _Cluster(object):
 
     def list_tables(self):
         return self.list_tables_result
+
+
+class _MockLowLevelTable(object):
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+        self.delete_calls = 0
+
+    def delete(self):
+        self.delete_calls += 1
