@@ -91,23 +91,25 @@ you can pass it directly to a :class:`Client <gcloud.client.Client>`:
 Google App Engine Environment
 -----------------------------
 
-To create :class:`credentials <oauth2client.appengine.AppAssertionCredentials>`
+To create
+:class:`credentials <oauth2client.contrib.appengine.AppAssertionCredentials>`
 just for Google App Engine:
 
 .. code:: python
 
-    from oauth2client.appengine import AppAssertionCredentials
+    from oauth2client.contrib.appengine import AppAssertionCredentials
     credentials = AppAssertionCredentials([])
 
 Google Compute Engine Environment
 ---------------------------------
 
-To create :class:`credentials <oauth2client.gce.AppAssertionCredentials>`
+To create
+:class:`credentials <oauth2client.contrib.gce.AppAssertionCredentials>`
 just for Google Compute Engine:
 
 .. code:: python
 
-    from oauth2client.gce import AppAssertionCredentials
+    from oauth2client.contrib.gce import AppAssertionCredentials
     credentials = AppAssertionCredentials([])
 
 Service Accounts
