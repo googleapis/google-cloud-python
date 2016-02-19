@@ -370,6 +370,66 @@ class TestTable(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks)
 
+    def test_read_rows(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.row_data import PartialRowsData
+        from gcloud.bigtable import table as MUT
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 1111
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, **kwargs):
+            mock_created.append((table_name, kwargs))
+            return request_pb
+
+        # Create response_iterator
+        response_iterator = object()
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_iterator)
+
+        # Create expected_result.
+        expected_result = PartialRowsData(response_iterator)
+
+        # Perform the method and check the result.
+        start_key = b'start-key'
+        end_key = b'end-key'
+        filter_obj = object()
+        allow_row_interleaving = True
+        limit = 22
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            result = table.read_rows(
+                start_key=start_key, end_key=end_key, filter_=filter_obj,
+                allow_row_interleaving=allow_row_interleaving, limit=limit)
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ReadRows',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        created_kwargs = {
+            'start_key': start_key,
+            'end_key': end_key,
+            'filter_': filter_obj,
+            'allow_row_interleaving': allow_row_interleaving,
+            'limit': limit,
+        }
+        self.assertEqual(mock_created, [(table.name, created_kwargs)])
+
     def test_sample_row_keys(self):
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
