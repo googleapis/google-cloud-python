@@ -25,6 +25,7 @@ from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import Row
 from gcloud.bigtable.row_data import PartialRowData
+from gcloud.bigtable.row_data import PartialRowsData
 
 
 class Table(object):
@@ -255,6 +256,59 @@ class Table(object):
             raise ValueError('The row remains partial / is not committed.')
         return result
 
+    def read_rows(self, start_key=None, end_key=None,
+                  allow_row_interleaving=None, limit=None, filter_=None):
+        """Read rows from this table.
+
+        :type start_key: bytes
+        :param start_key: (Optional) The beginning of a range of row keys to
+                          read from. The range will include ``start_key``. If
+                          left empty, will be interpreted as the empty string.
+
+        :type end_key: bytes
+        :param end_key: (Optional) The end of a range of row keys to read from.
+                        The range will not include ``end_key``. If left empty,
+                        will be interpreted as an infinite string.
+
+        :type allow_row_interleaving: bool
+        :param allow_row_interleaving: (Optional) By default, rows are read
+                                       sequentially, producing results which
+                                       are guaranteed to arrive in increasing
+                                       row order. Setting
+                                       ``allow_row_interleaving`` to
+                                       :data:`True` allows multiple rows to be
+                                       interleaved in the response stream,
+                                       which increases throughput but breaks
+                                       this guarantee, and may force the
+                                       client to use more memory to buffer
+                                       partially-received rows.
+
+        :type limit: int
+        :param limit: (Optional) The read will terminate after committing to N
+                      rows' worth of results. The default (zero) is to return
+                      all results. Note that if ``allow_row_interleaving`` is
+                      set to :data:`True`, partial results may be returned for
+                      more than N rows. However, only N ``commit_row`` chunks
+                      will be sent.
+
+        :type filter_: :class:`.row.RowFilter`
+        :param filter_: (Optional) The filter to apply to the contents of the
+                        specified row(s). If unset, reads every column in
+                        each row.
+
+        :rtype: :class:`.PartialRowsData`
+        :returns: A :class:`.PartialRowsData` convenience wrapper for consuming
+                  the streamed results.
+        """
+        request_pb = _create_row_request(
+            self.name, start_key=start_key, end_key=end_key, filter_=filter_,
+            allow_row_interleaving=allow_row_interleaving, limit=limit)
+        client = self._cluster._client
+        response_iterator = client._data_stub.ReadRows(request_pb,
+                                                       client.timeout_seconds)
+        # We expect an iterator of `data_messages_pb2.ReadRowsResponse`
+        return PartialRowsData(response_iterator)
+
     def sample_row_keys(self):
         """Read a sample of row keys in the table.
 
@@ -314,9 +368,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                     The range will not include ``end_key``. If left empty,
                     will be interpreted as an infinite string.
 
-    :type filter_: :class:`.row.RowFilter`, :class:`.row.RowFilterChain`,
-                   :class:`.row.RowFilterUnion` or
-                   :class:`.row.ConditionalRowFilter`
+    :type filter_: :class:`.row.RowFilter`
     :param filter_: (Optional) The filter to apply to the contents of the
                     specified row(s). If unset, reads the entire table.
 
