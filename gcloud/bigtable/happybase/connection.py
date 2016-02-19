@@ -263,3 +263,51 @@ class Connection(object):
                            if name.startswith(prefix)]
 
         return table_names
+
+    def enable_table(self, name):
+        """Enable the specified table.
+
+        Cloud Bigtable has no concept of enabled / disabled tables so this
+        method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def disable_table(self, name):
+        """Disable the specified table.
+
+        Cloud Bigtable has no concept of enabled / disabled tables so this
+        method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def is_table_enabled(self, name):
+        """Return whether the specified table is enabled.
+
+        Cloud Bigtable has no concept of enabled / disabled tables so this
+        method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def compact_table(self, name, major=False):
+        """Compact the specified table.
+
+        Cloud Bigtable does not support compacting a table, so this
+        method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API does not support '
+                                  'compacting a table.')

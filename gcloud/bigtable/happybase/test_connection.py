@@ -311,6 +311,39 @@ class TestConnection(unittest2.TestCase):
         result = connection.tables()
         self.assertEqual(result, [unprefixed_table_name1])
 
+    def test_enable_table(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        with self.assertRaises(NotImplementedError):
+            connection.enable_table(name)
+
+    def test_disable_table(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        with self.assertRaises(NotImplementedError):
+            connection.disable_table(name)
+
+    def test_is_table_enabled(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        with self.assertRaises(NotImplementedError):
+            connection.is_table_enabled(name)
+
+    def test_compact_table(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        major = True
+        with self.assertRaises(NotImplementedError):
+            connection.compact_table(name, major=major)
+
 
 class _Client(object):
 

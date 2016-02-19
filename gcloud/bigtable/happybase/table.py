@@ -91,3 +91,16 @@ class Table(object):
 
     def __repr__(self):
         return '<table.Table name=%r>' % (self.name,)
+
+    def regions(self):
+        """Retrieve the regions for this table.
+
+        Cloud Bigtable does not give information about how a table is laid
+        out in memory, so regions so this method does not work. It is
+        provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API does not have a '
+                                  'concept of splitting a table into regions.')
