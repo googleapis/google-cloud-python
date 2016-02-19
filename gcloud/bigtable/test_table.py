@@ -291,6 +291,85 @@ class TestTable(unittest2.TestCase):
             {},
         )])
 
+    def _read_row_helper(self, chunks):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable.row_data import PartialRowData
+        from gcloud.bigtable import table as MUT
+
+        project_id = 'project-id'
+        zone = 'zone'
+        cluster_id = 'cluster-id'
+        table_id = 'table-id'
+        timeout_seconds = 596
+        client = _Client(timeout_seconds=timeout_seconds)
+        cluster_name = ('projects/' + project_id + '/zones/' + zone +
+                        '/clusters/' + cluster_id)
+        cluster = _Cluster(cluster_name, client=client)
+        table = self._makeOne(table_id, cluster)
+
+        # Create request_pb
+        request_pb = object()  # Returned by our mock.
+        mock_created = []
+
+        def mock_create_row_request(table_name, row_key, filter_):
+            mock_created.append((table_name, row_key, filter_))
+            return request_pb
+
+        # Create response_iterator
+        row_key = b'row-key'
+        response_pb = messages_pb2.ReadRowsResponse(row_key=row_key,
+                                                    chunks=chunks)
+        response_iterator = [response_pb]
+
+        # Patch the stub used by the API method.
+        client._data_stub = stub = _FakeStub(response_iterator)
+
+        # Create expected_result.
+        if chunks:
+            expected_result = PartialRowData(row_key)
+            expected_result._committed = True
+            expected_result._chunks_encountered = True
+        else:
+            expected_result = None
+
+        # Perform the method and check the result.
+        filter_obj = object()
+        with _Monkey(MUT, _create_row_request=mock_create_row_request):
+            result = table.read_row(row_key, filter_=filter_obj)
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ReadRows',
+            (request_pb, timeout_seconds),
+            {},
+        )])
+        self.assertEqual(mock_created, [(table.name, row_key, filter_obj)])
+
+    def test_read_row(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        chunk = messages_pb2.ReadRowsResponse.Chunk(commit_row=True)
+        chunks = [chunk]
+        self._read_row_helper(chunks)
+
+    def test_read_empty_row(self):
+        chunks = []
+        self._read_row_helper(chunks)
+
+    def test_read_row_still_partial(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        # There is never a "commit row".
+        chunk = messages_pb2.ReadRowsResponse.Chunk(reset_row=True)
+        chunks = [chunk]
+        with self.assertRaises(ValueError):
+            self._read_row_helper(chunks)
+
     def test_sample_row_keys(self):
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
@@ -329,6 +408,128 @@ class TestTable(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
+
+
+class Test__create_row_request(unittest2.TestCase):
+
+    def _callFUT(self, table_name, row_key=None, start_key=None, end_key=None,
+                 filter_=None, allow_row_interleaving=None, limit=None):
+        from gcloud.bigtable.table import _create_row_request
+        return _create_row_request(
+            table_name, row_key=row_key, start_key=start_key, end_key=end_key,
+            filter_=filter_, allow_row_interleaving=allow_row_interleaving,
+            limit=limit)
+
+    def test_table_name_only(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        result = self._callFUT(table_name)
+        expected_result = messages_pb2.ReadRowsRequest(table_name=table_name)
+        self.assertEqual(result, expected_result)
+
+    def test_row_key_row_range_conflict(self):
+        with self.assertRaises(ValueError):
+            self._callFUT(None, row_key=object(), end_key=object())
+
+    def test_row_key(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        row_key = b'row_key'
+        result = self._callFUT(table_name, row_key=row_key)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            row_key=row_key,
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_start_key(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        start_key = b'start_key'
+        result = self._callFUT(table_name, start_key=start_key)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            row_range=data_pb2.RowRange(start_key=start_key),
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_end_key(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        end_key = b'end_key'
+        result = self._callFUT(table_name, end_key=end_key)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            row_range=data_pb2.RowRange(end_key=end_key),
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_row_range_both_keys(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        start_key = b'start_key'
+        end_key = b'end_key'
+        result = self._callFUT(table_name, start_key=start_key,
+                               end_key=end_key)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            row_range=data_pb2.RowRange(start_key=start_key, end_key=end_key),
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_with_filter(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable.row import RowSampleFilter
+
+        table_name = 'table_name'
+        row_filter = RowSampleFilter(0.33)
+        result = self._callFUT(table_name, filter_=row_filter)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            filter=row_filter.to_pb(),
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_with_allow_row_interleaving(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        allow_row_interleaving = True
+        result = self._callFUT(table_name,
+                               allow_row_interleaving=allow_row_interleaving)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            allow_row_interleaving=allow_row_interleaving,
+        )
+        self.assertEqual(result, expected_result)
+
+    def test_with_limit(self):
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_pb2)
+
+        table_name = 'table_name'
+        limit = 1337
+        result = self._callFUT(table_name, limit=limit)
+        expected_result = messages_pb2.ReadRowsRequest(
+            table_name=table_name,
+            num_rows_limit=limit,
+        )
+        self.assertEqual(result, expected_result)
 
 
 class _Client(object):
