@@ -81,7 +81,7 @@ Fetch entries across multiple projects.
 
 Filter entries retrieved using the `Advanced Logs Filters`_ syntax
 
-.. Advanced Logs Filters: https://cloud.google.com/logging/docs/view/advanced_filters
+.. _Advanced Logs Filters: https://cloud.google.com/logging/docs/view/advanced_filters
 
 .. doctest::
 
