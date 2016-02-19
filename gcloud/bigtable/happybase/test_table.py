@@ -83,6 +83,14 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(name, None)
         self.assertEqual(repr(table), '<table.Table name=\'table-name\'>')
 
+    def test_regions(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.regions()
+
 
 class _Connection(object):
 
