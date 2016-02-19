@@ -234,3 +234,32 @@ class Connection(object):
         if use_prefix:
             name = self._table_name(name)
         return Table(name, self)
+
+    def tables(self):
+        """Return a list of table names available to this connection.
+
+        .. note::
+
+            This lists every table in the cluster owned by this connection,
+            **not** every table that a given user may have access to.
+
+        .. note::
+
+            If ``table_prefix`` is set on this connection, only returns the
+            table names which match that prefix.
+
+        :rtype: list
+        :returns: List of string table names.
+        """
+        low_level_table_instances = self._cluster.list_tables()
+        table_names = [table_instance.table_id
+                       for table_instance in low_level_table_instances]
+
+        # Filter using prefix, and strip prefix from names
+        if self.table_prefix is not None:
+            prefix = self._table_name('')
+            offset = len(prefix)
+            table_names = [name[offset:] for name in table_names
+                           if name.startswith(prefix)]
+
+        return table_names
