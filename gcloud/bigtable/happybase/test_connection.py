@@ -278,6 +278,39 @@ class TestConnection(unittest2.TestCase):
     def test_table_factory_with_ignored_prefix(self):
         self._table_factory_prefix_helper(use_prefix=False)
 
+    def test_tables(self):
+        from gcloud.bigtable.table import Table
+
+        table_name1 = 'table-name1'
+        table_name2 = 'table-name2'
+        cluster = _Cluster(list_tables_result=[
+            Table(table_name1, None),
+            Table(table_name2, None),
+        ])
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        result = connection.tables()
+        self.assertEqual(result, [table_name1, table_name2])
+
+    def test_tables_with_prefix(self):
+        from gcloud.bigtable.table import Table
+
+        table_prefix = 'prefix'
+        table_prefix_separator = '<>'
+        unprefixed_table_name1 = 'table-name1'
+
+        table_name1 = (table_prefix + table_prefix_separator +
+                       unprefixed_table_name1)
+        table_name2 = 'table-name2'
+        cluster = _Cluster(list_tables_result=[
+            Table(table_name1, None),
+            Table(table_name2, None),
+        ])
+        connection = self._makeOne(
+            autoconnect=False, cluster=cluster, table_prefix=table_prefix,
+            table_prefix_separator=table_prefix_separator)
+        result = connection.tables()
+        self.assertEqual(result, [unprefixed_table_name1])
+
 
 class _Client(object):
 
@@ -316,3 +349,6 @@ class _Cluster(object):
             return result
         else:
             return self
+
+    def list_tables(self):
+        return self.list_tables_result
