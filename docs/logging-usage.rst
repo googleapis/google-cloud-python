@@ -32,23 +32,23 @@ Authentication and Configuration
 Writing log entries
 -------------------
 
-Write a simple text entry to a log.
+Write a simple text entry to a logger.
 
 .. doctest::
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> log = client.log('log_name')
-   >>> log.text("A simple entry")  # API call
+   >>> logger = client.logger('log_name')
+   >>> logger.text("A simple entry")  # API call
 
-Write a dictionary entry to a log.
+Write a dictionary entry to a logger.
 
 .. doctest::
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> log = client.log('log_name')
-   >>> log.struct(
+   >>> logger = client.logger('log_name')
+   >>> logger.struct(
    ...     message="My second entry",
    ...     weather="partly cloudy")  # API call
 
@@ -113,15 +113,15 @@ Retrieve entities in batches of 10, iterating until done.
    ...         break
 
 
-Delete all entries for a log
-----------------------------
+Delete all entries for a logger
+-------------------------------
 
 .. doctest::
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> log = client.log('log_name')
-   >>> log.delete()  # API call
+   >>> logger = client.logger('log_name')
+   >>> logger.delete()  # API call
 
 
 Manage log metrics
