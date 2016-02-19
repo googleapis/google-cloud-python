@@ -96,7 +96,7 @@ Sort entries in descending timestamp order.
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> entries, token = client.list_entries(order_by='timestamp desc')  # API call
+   >>> entries, token = client.list_entries(order_by=Client.DESCENDING)  # API call
 
 Retrieve entities in batches of 10, iterating until done.
 
