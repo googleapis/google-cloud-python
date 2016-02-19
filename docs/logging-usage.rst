@@ -48,7 +48,8 @@ Write a dictionary entry to a log.
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> log = client.log('log_name')
-   >>> log.struct(message="My second entry",
+   >>> log.struct(
+   ...     message="My second entry",
    ...     weather="partly cloudy")  # API call
 
 
@@ -135,7 +136,8 @@ Create a metric:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> metric = client.metric("robots", "Robots all up in your server",
+   >>> metric = client.metric(
+   ...     "robots", "Robots all up in your server",
    ...     filter='log:apache-access AND textPayload:robot')
    >>> metric.exists()  # API call
    False
@@ -208,7 +210,8 @@ Create a Cloud Storage sink:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> sink = client.sink("robots-storage",
+   >>> sink = client.sink(
+   ...     "robots-storage",
    ...     filter='log:apache-access AND textPayload:robot')
    >>> sink.storage_bucket = "my-bucket-name"
    >>> sink.exists()  # API call
@@ -223,7 +226,8 @@ Create a BigQuery sink:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> sink = client.sink("robots-bq",
+   >>> sink = client.sink(
+   ...     "robots-bq",
    ...     filter='log:apache-access AND textPayload:robot')
    >>> sink.bigquery_dataset = "projects/my-project/datasets/my-dataset"
    >>> sink.exists()  # API call
@@ -238,7 +242,8 @@ Create a Cloud Pub/Sub sink:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> sink = client.sink("robots-pubsub",
+   >>> sink = client.sink(
+   ...     "robots-pubsub",
    ...     filter='log:apache-access AND textPayload:robot')
    >>> sink.pubsub_topic = 'projects/my-project/topics/my-topic'
    >>> sink.exists()  # API call
@@ -292,7 +297,8 @@ Delete a sink:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
-   >>> sink = client.sink("robots",
+   >>> sink = client.sink(
+   ...     "robots",
    ...     filter='log:apache-access AND textPayload:robot')
    >>> sink.exists()  # API call
    True
