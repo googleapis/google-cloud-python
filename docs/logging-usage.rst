@@ -39,7 +39,7 @@ Write a simple text entry to a logger.
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
-   >>> logger.text("A simple entry")  # API call
+   >>> logger.log_text("A simple entry")  # API call
 
 Write a dictionary entry to a logger.
 
@@ -48,7 +48,7 @@ Write a dictionary entry to a logger.
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
-   >>> logger.struct(
+   >>> logger.log_struct(
    ...     message="My second entry",
    ...     weather="partly cloudy")  # API call
 
