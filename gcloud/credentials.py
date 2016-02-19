@@ -31,7 +31,8 @@ from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client.service_account import ServiceAccountCredentials
 try:
-    from oauth2client.appengine import AppAssertionCredentials as _GAECreds
+    from oauth2client.contrib.appengine import (
+        AppAssertionCredentials as _GAECreds)
 except ImportError:
     class _GAECreds(object):
         """Dummy class if not in App Engine environment."""
