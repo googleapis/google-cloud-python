@@ -26,6 +26,9 @@ import os
 import subprocess
 import sys
 
+from run_system_test import run_module_tests
+
+
 MODULES = (
     'datastore',
     'storage',
@@ -102,9 +105,6 @@ def prepare_to_run():
 def main():
     """Run all the system tests if necessary."""
     prepare_to_run()
-
-    sys.path.append(ROOT_DIR)
-    from system_tests.run_system_test import run_module_tests
     for module in MODULES:
         run_module_tests(module)
 
