@@ -78,6 +78,36 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(table.connection, connection)
         self.assertEqual(table._low_level_table, None)
 
+    def test_families(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+
+        # Mock the column families to be returned.
+        col_fam_name = 'fam'
+        gc_rule = object()
+        col_fam = _MockLowLevelColumnFamily(col_fam_name, gc_rule=gc_rule)
+        col_fams = {col_fam_name: col_fam}
+        table._low_level_table.column_families = col_fams
+
+        to_dict_result = object()
+        to_dict_calls = []
+
+        def mock_gc_rule_to_dict(gc_rule):
+            to_dict_calls.append(gc_rule)
+            return to_dict_result
+
+        with _Monkey(MUT, _gc_rule_to_dict=mock_gc_rule_to_dict):
+            result = table.families()
+
+        self.assertEqual(result, {col_fam_name: to_dict_result})
+        self.assertEqual(table._low_level_table.list_column_families_calls, 1)
+        self.assertEqual(to_dict_calls, [gc_rule])
+
     def test___repr__(self):
         name = 'table-name'
         table = self._makeOne(name, None)
@@ -92,10 +122,106 @@ class TestTable(unittest2.TestCase):
             table.regions()
 
 
+class Test__gc_rule_to_dict(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _gc_rule_to_dict
+        return _gc_rule_to_dict(*args, **kwargs)
+
+    def test_with_null(self):
+        gc_rule = None
+        result = self._callFUT(gc_rule)
+        self.assertEqual(result, {})
+
+    def test_with_max_versions(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        max_versions = 2
+        gc_rule = MaxVersionsGCRule(max_versions)
+        result = self._callFUT(gc_rule)
+        expected_result = {'max_versions': max_versions}
+        self.assertEqual(result, expected_result)
+
+    def test_with_max_age(self):
+        import datetime
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+
+        time_to_live = 101
+        max_age = datetime.timedelta(seconds=time_to_live)
+        gc_rule = MaxAgeGCRule(max_age)
+        result = self._callFUT(gc_rule)
+        expected_result = {'time_to_live': time_to_live}
+        self.assertEqual(result, expected_result)
+
+    def test_with_non_gc_rule(self):
+        gc_rule = object()
+        result = self._callFUT(gc_rule)
+        self.assertTrue(result is gc_rule)
+
+    def test_with_gc_rule_union(self):
+        from gcloud.bigtable.column_family import GCRuleUnion
+
+        gc_rule = GCRuleUnion(rules=[])
+        result = self._callFUT(gc_rule)
+        self.assertTrue(result is gc_rule)
+
+    def test_with_intersection_other_than_two(self):
+        from gcloud.bigtable.column_family import GCRuleIntersection
+
+        gc_rule = GCRuleIntersection(rules=[])
+        result = self._callFUT(gc_rule)
+        self.assertTrue(result is gc_rule)
+
+    def test_with_intersection_two_max_num_versions(self):
+        from gcloud.bigtable.column_family import GCRuleIntersection
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        rule1 = MaxVersionsGCRule(1)
+        rule2 = MaxVersionsGCRule(2)
+        gc_rule = GCRuleIntersection(rules=[rule1, rule2])
+        result = self._callFUT(gc_rule)
+        self.assertTrue(result is gc_rule)
+
+    def test_with_intersection_two_rules(self):
+        import datetime
+        from gcloud.bigtable.column_family import GCRuleIntersection
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        time_to_live = 101
+        max_age = datetime.timedelta(seconds=time_to_live)
+        rule1 = MaxAgeGCRule(max_age)
+        max_versions = 2
+        rule2 = MaxVersionsGCRule(max_versions)
+        gc_rule = GCRuleIntersection(rules=[rule1, rule2])
+        result = self._callFUT(gc_rule)
+        expected_result = {
+            'max_versions': max_versions,
+            'time_to_live': time_to_live,
+        }
+        self.assertEqual(result, expected_result)
+
+    def test_with_intersection_two_nested_rules(self):
+        from gcloud.bigtable.column_family import GCRuleIntersection
+
+        rule1 = GCRuleIntersection(rules=[])
+        rule2 = GCRuleIntersection(rules=[])
+        gc_rule = GCRuleIntersection(rules=[rule1, rule2])
+        result = self._callFUT(gc_rule)
+        self.assertTrue(result is gc_rule)
+
+
 class _Connection(object):
 
     def __init__(self, cluster):
         self._cluster = cluster
+
+
+class _MockLowLevelColumnFamily(object):
+
+    def __init__(self, column_family_id, gc_rule=None):
+        self.column_family_id = column_family_id
+        self.gc_rule = gc_rule
 
 
 class _MockLowLevelTable(object):
@@ -103,3 +229,9 @@ class _MockLowLevelTable(object):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
+        self.list_column_families_calls = 0
+        self.column_families = {}
+
+    def list_column_families(self):
+        self.list_column_families_calls += 1
+        return self.column_families
