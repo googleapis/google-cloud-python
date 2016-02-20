@@ -14,13 +14,12 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+from oauth2client.service_account import ServiceAccountCredentials
 import six
 
 from gcloud._helpers import _determine_default_project
 from gcloud.connection import Connection
 from gcloud.credentials import get_credentials
-from gcloud.credentials import get_for_service_account_json
-from gcloud.credentials import get_for_service_account_p12
 
 
 class _ClientFactoryMixin(object):
@@ -56,7 +55,8 @@ class _ClientFactoryMixin(object):
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = get_for_service_account_json(json_credentials_path)
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            json_credentials_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -90,8 +90,8 @@ class _ClientFactoryMixin(object):
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = get_for_service_account_p12(client_email,
-                                                  private_key_path)
+        credentials = ServiceAccountCredentials.from_p12_keyfile(
+            client_email, private_key_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 

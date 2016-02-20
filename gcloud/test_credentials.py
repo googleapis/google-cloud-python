@@ -80,75 +80,6 @@ class Test_get_credentials(unittest2.TestCase):
         self.assertTrue(client._get_app_default_called)
 
 
-class Test_get_for_service_account_p12(unittest2.TestCase):
-
-    def _callFUT(self, client_email, private_key_path, scope=None):
-        from gcloud.credentials import get_for_service_account_p12
-        return get_for_service_account_p12(client_email, private_key_path,
-                                           scope=scope)
-
-    def test_it(self):
-        from gcloud import credentials as MUT
-        from gcloud._testing import _Monkey
-
-        CLIENT_EMAIL = 'phred@example.com'
-        MOCK_FILENAME = 'foo.path'
-        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
-        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
-            found = self._callFUT(CLIENT_EMAIL, MOCK_FILENAME)
-
-        self.assertTrue(found is MOCK_CRED_CLASS._result)
-        self.assertEqual(MOCK_CRED_CLASS.p12_called,
-                         [(CLIENT_EMAIL, MOCK_FILENAME, None)])
-
-    def test_it_with_scope(self):
-        from gcloud import credentials as MUT
-        from gcloud._testing import _Monkey
-
-        CLIENT_EMAIL = 'phred@example.com'
-        SCOPE = 'SCOPE'
-        MOCK_FILENAME = 'foo.path'
-        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
-        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
-            found = self._callFUT(CLIENT_EMAIL, MOCK_FILENAME, SCOPE)
-
-        self.assertTrue(found is MOCK_CRED_CLASS._result)
-        self.assertEqual(MOCK_CRED_CLASS.p12_called,
-                         [(CLIENT_EMAIL, MOCK_FILENAME, SCOPE)])
-
-
-class Test_get_for_service_account_json(unittest2.TestCase):
-
-    def _callFUT(self, json_credentials_path, scope=None):
-        from gcloud.credentials import get_for_service_account_json
-        return get_for_service_account_json(json_credentials_path, scope=scope)
-
-    def test_it(self):
-        from gcloud._testing import _Monkey
-        from gcloud import credentials as MUT
-
-        FILENAME = object()
-        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
-        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
-            result = self._callFUT(FILENAME)
-
-        self.assertEqual(result, MOCK_CRED_CLASS._result)
-        self.assertEqual(MOCK_CRED_CLASS.json_called, [(FILENAME, None)])
-
-    def test_it_with_scope(self):
-        from gcloud._testing import _Monkey
-        from gcloud import credentials as MUT
-
-        FILENAME = object()
-        SCOPE = object()
-        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
-        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
-            result = self._callFUT(FILENAME, scope=SCOPE)
-
-        self.assertEqual(result, MOCK_CRED_CLASS._result)
-        self.assertEqual(MOCK_CRED_CLASS.json_called, [(FILENAME, SCOPE)])
-
-
 class Test_generate_signed_url(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):
@@ -665,19 +596,3 @@ class _MockDB(object):
         def do_nothing_wrapper(func):
             return func
         return do_nothing_wrapper
-
-
-class _MockServiceAccountCredentials(object):
-
-    def __init__(self):
-        self.p12_called = []
-        self.json_called = []
-        self._result = _Credentials()
-
-    def from_p12_keyfile(self, email, path, scopes=None):
-        self.p12_called.append((email, path, scopes))
-        return self._result
-
-    def from_json_keyfile_name(self, path, scopes=None):
-        self.json_called.append((path, scopes))
-        return self._result

@@ -76,19 +76,14 @@ class TestClient(unittest2.TestCase):
         from gcloud import client
 
         KLASS = self._getTargetClass()
-        CREDENTIALS = object()
-        _CALLED = []
+        MOCK_FILENAME = 'foo.path'
+        mock_creds = _MockServiceAccountCredentials()
+        with _Monkey(client, ServiceAccountCredentials=mock_creds):
+            client_obj = KLASS.from_service_account_json(MOCK_FILENAME)
 
-        def mock_creds(arg1):
-            _CALLED.append((arg1,))
-            return CREDENTIALS
-
-        BOGUS_ARG = object()
-        with _Monkey(client, get_for_service_account_json=mock_creds):
-            client_obj = KLASS.from_service_account_json(BOGUS_ARG)
-
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
-        self.assertEqual(_CALLED, [(BOGUS_ARG,)])
+        self.assertTrue(client_obj.connection.credentials is
+                        mock_creds._result)
+        self.assertEqual(mock_creds.json_called, [MOCK_FILENAME])
 
     def test_from_service_account_json_fail(self):
         KLASS = self._getTargetClass()
@@ -101,20 +96,17 @@ class TestClient(unittest2.TestCase):
         from gcloud import client
 
         KLASS = self._getTargetClass()
-        CREDENTIALS = object()
-        _CALLED = []
+        CLIENT_EMAIL = 'phred@example.com'
+        MOCK_FILENAME = 'foo.path'
+        mock_creds = _MockServiceAccountCredentials()
+        with _Monkey(client, ServiceAccountCredentials=mock_creds):
+            client_obj = KLASS.from_service_account_p12(CLIENT_EMAIL,
+                                                        MOCK_FILENAME)
 
-        def mock_creds(arg1, arg2):
-            _CALLED.append((arg1, arg2))
-            return CREDENTIALS
-
-        BOGUS_ARG1 = object()
-        BOGUS_ARG2 = object()
-        with _Monkey(client, get_for_service_account_p12=mock_creds):
-            client_obj = KLASS.from_service_account_p12(BOGUS_ARG1, BOGUS_ARG2)
-
-        self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
-        self.assertEqual(_CALLED, [(BOGUS_ARG1, BOGUS_ARG2)])
+        self.assertTrue(client_obj.connection.credentials is
+                        mock_creds._result)
+        self.assertEqual(mock_creds.p12_called,
+                         [(CLIENT_EMAIL, MOCK_FILENAME)])
 
     def test_from_service_account_p12_fail(self):
         KLASS = self._getTargetClass()
@@ -220,3 +212,19 @@ class _MockConnection(object):
     def __init__(self, credentials=None, http=None):
         self.credentials = credentials
         self.http = http
+
+
+class _MockServiceAccountCredentials(object):
+
+    def __init__(self):
+        self.p12_called = []
+        self.json_called = []
+        self._result = object()
+
+    def from_p12_keyfile(self, email, path):
+        self.p12_called.append((email, path))
+        return self._result
+
+    def from_json_keyfile_name(self, path):
+        self.json_called.append(path)
+        return self._result
