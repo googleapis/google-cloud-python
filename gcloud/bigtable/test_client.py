@@ -41,7 +41,8 @@ class TestClient(unittest2.TestCase):
 
         expected_creds = expected_creds or creds
         self.assertTrue(client._credentials is expected_creds)
-        self.assertEqual(client._credentials.scopes, expected_scopes)
+        if expected_scopes is not None:
+            self.assertEqual(client._credentials.scopes, expected_scopes)
 
         self.assertEqual(client.project, PROJECT)
         self.assertEqual(client.timeout_seconds, timeout_seconds)
@@ -90,7 +91,7 @@ class TestClient(unittest2.TestCase):
             self._constructor_test_helper([], creds, admin=True,
                                           read_only=True)
 
-    def test_constructor_implict_credentials(self):
+    def test_constructor_implicit_credentials(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
 
@@ -103,6 +104,11 @@ class TestClient(unittest2.TestCase):
         with _Monkey(MUT, get_credentials=mock_get_credentials):
             self._constructor_test_helper(expected_scopes, None,
                                           expected_creds=creds)
+
+    def test_constructor_credentials_wo_create_scoped(self):
+        creds = object()
+        expected_scopes = None
+        self._constructor_test_helper(expected_scopes, creds)
 
     def _copy_test_helper(self, read_only=False, admin=False):
         credentials = _Credentials('value')

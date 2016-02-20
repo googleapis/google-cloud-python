@@ -27,7 +27,6 @@ except ImportError:  # pragma: NO COVER
     crypto = None
 
 from oauth2client import client
-from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client.service_account import ServiceAccountCredentials
 try:
@@ -125,11 +124,8 @@ def get_for_service_account_json(json_credentials_path, scope=None):
     :returns: New service account or Google (for a user JSON key file)
               credentials object.
     """
-    credentials = _get_application_default_credential_from_file(
-        json_credentials_path)
-    if scope is not None:
-        credentials = credentials.create_scoped(scope)
-    return credentials
+    return ServiceAccountCredentials.from_json_keyfile_name(
+        json_credentials_path, scopes=scope)
 
 
 def get_for_service_account_p12(client_email, private_key_path, scope=None):

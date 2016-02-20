@@ -127,42 +127,26 @@ class Test_get_for_service_account_json(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud import credentials as MUT
 
-        CREDS = _Credentials()
-        _filenames = []
-
-        def get_creds(filename):
-            _filenames.append(filename)
-            return CREDS
-
         FILENAME = object()
+        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
+        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
+            result = self._callFUT(FILENAME)
 
-        renames = {'_get_application_default_credential_from_file': get_creds}
-        with _Monkey(MUT, **renames):
-            self._callFUT(FILENAME)
-
-        self.assertEqual(_filenames, [FILENAME])
-        self.assertFalse(hasattr(CREDS, '_scopes'))
+        self.assertEqual(result, MOCK_CRED_CLASS._result)
+        self.assertEqual(MOCK_CRED_CLASS.json_called, [(FILENAME, None)])
 
     def test_it_with_scope(self):
         from gcloud._testing import _Monkey
         from gcloud import credentials as MUT
 
-        CREDS = _Credentials()
-        _filenames = []
-
-        def get_creds(filename):
-            _filenames.append(filename)
-            return CREDS
-
         FILENAME = object()
         SCOPE = object()
+        MOCK_CRED_CLASS = _MockServiceAccountCredentials()
+        with _Monkey(MUT, ServiceAccountCredentials=MOCK_CRED_CLASS):
+            result = self._callFUT(FILENAME, scope=SCOPE)
 
-        renames = {'_get_application_default_credential_from_file': get_creds}
-        with _Monkey(MUT, **renames):
-            self._callFUT(FILENAME, scope=SCOPE)
-
-        self.assertEqual(_filenames, [FILENAME])
-        self.assertEqual(CREDS._scopes, SCOPE)
+        self.assertEqual(result, MOCK_CRED_CLASS._result)
+        self.assertEqual(MOCK_CRED_CLASS.json_called, [(FILENAME, SCOPE)])
 
 
 class Test_generate_signed_url(unittest2.TestCase):
@@ -604,12 +588,7 @@ class Test__get_expiration_seconds(unittest2.TestCase):
 
 
 class _Credentials(object):
-
     service_account_name = 'testing@example.com'
-
-    def create_scoped(self, scopes):
-        self._scopes = scopes
-        return self
 
 
 class _Client(object):
@@ -692,8 +671,13 @@ class _MockServiceAccountCredentials(object):
 
     def __init__(self):
         self.p12_called = []
+        self.json_called = []
         self._result = _Credentials()
 
     def from_p12_keyfile(self, email, path, scopes=None):
         self.p12_called.append((email, path, scopes))
+        return self._result
+
+    def from_json_keyfile_name(self, path, scopes=None):
+        self.json_called.append((path, scopes))
         return self._result

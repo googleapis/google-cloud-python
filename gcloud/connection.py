@@ -115,8 +115,12 @@ class Connection(object):
                 :class:`NoneType`
         :returns: A new credentials object that has a scope added (if needed).
         """
-        if credentials and credentials.create_scoped_required():
-            credentials = credentials.create_scoped(scope)
+        if credentials:
+            try:
+                if credentials.create_scoped_required():
+                    credentials = credentials.create_scoped(scope)
+            except AttributeError:
+                pass
         return credentials
 
 
