@@ -48,9 +48,10 @@ class Test_GCloudError(unittest2.TestCase):
 
 class Test_make_exception(unittest2.TestCase):
 
-    def _callFUT(self, response, content):
+    def _callFUT(self, response, content, error_info=None, use_json=True):
         from gcloud.exceptions import make_exception
-        return make_exception(response, content)
+        return make_exception(response, content, error_info=error_info,
+                              use_json=use_json)
 
     def test_hit_w_content_as_str(self):
         from gcloud.exceptions import NotFound
@@ -76,6 +77,15 @@ class Test_make_exception(unittest2.TestCase):
         self.assertTrue(isinstance(exception, GCloudError))
         self.assertEqual(exception.message, 'Unknown Error')
         self.assertEqual(list(exception.errors), [ERROR])
+
+    def test_html_when_json_expected(self):
+        from gcloud.exceptions import NotFound
+        response = _Response(NotFound.code)
+        content = '<html><body>404 Not Found</body></html>'
+        exception = self._callFUT(response, content, use_json=True)
+        self.assertTrue(isinstance(exception, NotFound))
+        self.assertEqual(exception.message, content)
+        self.assertEqual(list(exception.errors), [])
 
 
 class _Response(object):
