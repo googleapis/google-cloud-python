@@ -32,14 +32,24 @@ EXPECTED_ZONES = (
     'us-central1-b',
     CENTRAL_1C_ZONE,
 )
-CLIENT = Client(admin=True)
-CLUSTER = CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID,
-                         display_name=CLUSTER_ID)
+
+
+class Config(object):
+    """Run-time configuration to be modified at set-up.
+
+    This is a mutable stand-in to allow test set-up to modify
+    global state.
+    """
+    CLIENT = None
+    CLUSTER = None
 
 
 def setUpModule():
-    CLIENT.start()
-    clusters, failed_zones = CLIENT.list_clusters()
+    Config.CLIENT = Client(admin=True)
+    Config.CLUSTER = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID,
+                                           display_name=CLUSTER_ID)
+    Config.CLIENT.start()
+    clusters, failed_zones = Config.CLIENT.list_clusters()
 
     if len(failed_zones) != 0:
         raise ValueError('List clusters failed in module set up.')
@@ -47,7 +57,7 @@ def setUpModule():
     EXISTING_CLUSTERS[:] = clusters
 
     # After listing, create the test cluster.
-    created_op = CLUSTER.create()
+    created_op = Config.CLUSTER.create()
     total_sleep = 0
     while not created_op.finished():
         if total_sleep > 5:
@@ -57,8 +67,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    CLUSTER.delete()
-    CLIENT.stop()
+    Config.CLUSTER.delete()
+    Config.CLIENT.stop()
 
 
 class TestClusterAdminAPI(unittest2.TestCase):
@@ -71,15 +81,15 @@ class TestClusterAdminAPI(unittest2.TestCase):
             cluster.delete()
 
     def test_list_zones(self):
-        zones = CLIENT.list_zones()
-        self.assertEqual(sorted(zones), list(EXPECTED_ZONES))
+        zones = Config.CLIENT.list_zones()
+        self.assertEqual(sorted(zones), sorted(EXPECTED_ZONES))
 
     def test_list_clusters(self):
-        clusters, failed_zones = CLIENT.list_clusters()
+        clusters, failed_zones = Config.CLIENT.list_clusters()
         self.assertEqual(failed_zones, [])
         # We have added one new cluster in `setUpModule`.
         self.assertEqual(len(clusters), len(EXISTING_CLUSTERS) + 1)
         for cluster in clusters:
             cluster_existence = (cluster in EXISTING_CLUSTERS or
-                                 cluster == CLUSTER)
+                                 cluster == Config.CLUSTER)
             self.assertTrue(cluster_existence)
