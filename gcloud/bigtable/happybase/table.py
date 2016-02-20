@@ -15,7 +15,16 @@
 """Google Cloud Bigtable HappyBase table module."""
 
 
+import six
+
+from gcloud._helpers import _total_seconds
+from gcloud.bigtable.column_family import GCRuleIntersection
+from gcloud.bigtable.column_family import MaxAgeGCRule
+from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.table import Table as _LowLevelTable
+
+
+_SIMPLE_GC_RULES = (MaxAgeGCRule, MaxVersionsGCRule)
 
 
 def make_row(cell_map, include_timestamp):
@@ -92,6 +101,19 @@ class Table(object):
     def __repr__(self):
         return '<table.Table name=%r>' % (self.name,)
 
+    def families(self):
+        """Retrieve the column families for this table.
+
+        :rtype: dict
+        :returns: Mapping from column family name to garbage collection rule
+                  for a column family.
+        """
+        column_family_map = self._low_level_table.list_column_families()
+        result = {}
+        for col_fam, col_fam_obj in six.iteritems(column_family_map):
+            result[col_fam] = _gc_rule_to_dict(col_fam_obj.gc_rule)
+        return result
+
     def regions(self):
         """Retrieve the regions for this table.
 
@@ -104,3 +126,48 @@ class Table(object):
         """
         raise NotImplementedError('The Cloud Bigtable API does not have a '
                                   'concept of splitting a table into regions.')
+
+
+def _gc_rule_to_dict(gc_rule):
+    """Converts garbage collection rule to dictionary if possible.
+
+    This is in place to support dictionary values as was done
+    in HappyBase, which has somewhat different garbage collection rule
+    settings for column families.
+
+    Only does this if the garbage collection rule is:
+
+    * :class:`.MaxAgeGCRule`
+    * :class:`.MaxVersionsGCRule`
+    * Composite :class:`.GCRuleIntersection` with two rules, one each
+      of type :class:`.MaxAgeGCRule` and :class:`.MaxVersionsGCRule`
+
+    Otherwise, just returns the input without change.
+
+    :type gc_rule: :data:`NoneType <types.NoneType>`,
+                   :class:`.GarbageCollectionRule`
+    :param gc_rule: A garbage collection rule to convert to a dictionary
+                    (if possible).
+
+    :rtype: dict or :class:`.GarbageCollectionRule`
+    :returns: The converted garbage collection rule.
+    """
+    result = gc_rule
+    if gc_rule is None:
+        result = {}
+    elif isinstance(gc_rule, MaxAgeGCRule):
+        result = {'time_to_live': _total_seconds(gc_rule.max_age)}
+    elif isinstance(gc_rule, MaxVersionsGCRule):
+        result = {'max_versions': gc_rule.max_num_versions}
+    elif isinstance(gc_rule, GCRuleIntersection):
+        if len(gc_rule.rules) == 2:
+            rule1, rule2 = gc_rule.rules
+            if (isinstance(rule1, _SIMPLE_GC_RULES) and
+                    isinstance(rule2, _SIMPLE_GC_RULES)):
+                rule1 = _gc_rule_to_dict(rule1)
+                rule2 = _gc_rule_to_dict(rule2)
+                key1, = rule1.keys()
+                key2, = rule2.keys()
+                if key1 != key2:
+                    result = {key1: rule1[key1], key2: rule2[key2]}
+    return result
