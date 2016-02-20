@@ -311,6 +311,90 @@ class TestConnection(unittest2.TestCase):
         result = connection.tables()
         self.assertEqual(result, [unprefixed_table_name1])
 
+    def test_create_table(self):
+        import operator
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        mock_gc_rule = object()
+        called_options = []
+
+        def mock_parse_family_option(option):
+            called_options.append(option)
+            return mock_gc_rule
+
+        name = 'table-name'
+        col_fam1 = 'cf1'
+        col_fam_option1 = object()
+        col_fam2 = u'cf2'
+        col_fam_option2 = object()
+        col_fam3 = b'cf3'
+        col_fam_option3 = object()
+        families = {
+            col_fam1: col_fam_option1,
+            # A trailing colon is also allowed.
+            col_fam2 + ':': col_fam_option2,
+            col_fam3 + b':': col_fam_option3,
+        }
+
+        tables_created = []
+
+        def make_table(*args, **kwargs):
+            result = _MockLowLevelTable(*args, **kwargs)
+            tables_created.append(result)
+            return result
+
+        with _Monkey(MUT, _LowLevelTable=make_table,
+                     _parse_family_option=mock_parse_family_option):
+            connection.create_table(name, families)
+
+        # Just one table would have been created.
+        table_instance, = tables_created
+        self.assertEqual(table_instance.args, (name, cluster))
+        self.assertEqual(table_instance.kwargs, {})
+        self.assertEqual(table_instance.create_calls, 1)
+
+        # Check if our mock was called twice, but we don't know the order.
+        self.assertEqual(
+            set(called_options),
+            set([col_fam_option1, col_fam_option2, col_fam_option3]))
+
+        # We expect three column family instances created, but don't know the
+        # order due to non-deterministic dict.items().
+        col_fam_created = table_instance.col_fam_created
+        self.assertEqual(len(col_fam_created), 3)
+        col_fam_created.sort(key=operator.attrgetter('column_family_id'))
+        self.assertEqual(col_fam_created[0].column_family_id, col_fam1)
+        self.assertEqual(col_fam_created[0].gc_rule, mock_gc_rule)
+        self.assertEqual(col_fam_created[0].create_calls, 1)
+        self.assertEqual(col_fam_created[1].column_family_id, col_fam2)
+        self.assertEqual(col_fam_created[1].gc_rule, mock_gc_rule)
+        self.assertEqual(col_fam_created[1].create_calls, 1)
+        self.assertEqual(col_fam_created[2].column_family_id,
+                         col_fam3.decode('utf-8'))
+        self.assertEqual(col_fam_created[2].gc_rule, mock_gc_rule)
+        self.assertEqual(col_fam_created[2].create_calls, 1)
+
+    def test_create_table_bad_type(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        families = None
+        with self.assertRaises(TypeError):
+            connection.create_table(name, families)
+
+    def test_create_table_bad_value(self):
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        name = 'table-name'
+        families = {}
+        with self.assertRaises(ValueError):
+            connection.create_table(name, families)
+
     def test_delete_table(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
@@ -376,6 +460,90 @@ class TestConnection(unittest2.TestCase):
             connection.compact_table(name, major=major)
 
 
+class Test__parse_family_option(unittest2.TestCase):
+
+    def _callFUT(self, option):
+        from gcloud.bigtable.happybase.connection import _parse_family_option
+        return _parse_family_option(option)
+
+    def test_dictionary_no_keys(self):
+        option = {}
+        result = self._callFUT(option)
+        self.assertEqual(result, None)
+
+    def test_null(self):
+        option = None
+        result = self._callFUT(option)
+        self.assertEqual(result, None)
+
+    def test_dictionary_bad_key(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        option = {'badkey': None}
+        with _Monkey(MUT, _WARN=mock_warn):
+            result = self._callFUT(option)
+
+        self.assertEqual(result, None)
+        self.assertEqual(len(warned), 1)
+        self.assertIn('badkey', warned[0])
+
+    def test_dictionary_versions_key(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        versions = 42
+        option = {'max_versions': versions}
+        result = self._callFUT(option)
+
+        gc_rule = MaxVersionsGCRule(versions)
+        self.assertEqual(result, gc_rule)
+
+    def test_dictionary_ttl_key(self):
+        import datetime
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+
+        time_to_live = 24 * 60 * 60
+        max_age = datetime.timedelta(days=1)
+        option = {'time_to_live': time_to_live}
+        result = self._callFUT(option)
+
+        gc_rule = MaxAgeGCRule(max_age)
+        self.assertEqual(result, gc_rule)
+
+    def test_dictionary_both_keys(self):
+        import datetime
+        from gcloud.bigtable.column_family import GCRuleIntersection
+        from gcloud.bigtable.column_family import MaxAgeGCRule
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        versions = 42
+        time_to_live = 24 * 60 * 60
+        option = {
+            'max_versions': versions,
+            'time_to_live': time_to_live,
+        }
+        result = self._callFUT(option)
+
+        max_age = datetime.timedelta(days=1)
+        # NOTE: This relies on the order of the rules in the method we are
+        #       calling matching this order here.
+        gc_rule1 = MaxAgeGCRule(max_age)
+        gc_rule2 = MaxVersionsGCRule(versions)
+        gc_rule = GCRuleIntersection(rules=[gc_rule1, gc_rule2])
+        self.assertEqual(result, gc_rule)
+
+    def test_non_dictionary(self):
+        option = object()
+        self.assertFalse(isinstance(option, dict))
+        result = self._callFUT(option)
+        self.assertEqual(result, option)
+
+
 class _Client(object):
 
     def __init__(self, *args, **kwargs):
@@ -418,12 +586,33 @@ class _Cluster(object):
         return self.list_tables_result
 
 
+class _MockLowLevelColumnFamily(object):
+
+    def __init__(self, column_family_id, gc_rule=None):
+        self.column_family_id = column_family_id
+        self.gc_rule = gc_rule
+        self.create_calls = 0
+
+    def create(self):
+        self.create_calls += 1
+
+
 class _MockLowLevelTable(object):
 
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
         self.delete_calls = 0
+        self.create_calls = 0
+        self.col_fam_created = []
 
     def delete(self):
         self.delete_calls += 1
+
+    def create(self):
+        self.create_calls += 1
+
+    def column_family(self, column_family_id, gc_rule=None):
+        result = _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)
+        self.col_fam_created.append(result)
+        return result
