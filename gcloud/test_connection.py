@@ -30,7 +30,9 @@ class TestConnection(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         credentials = _Credentials()
+        self.assertEqual(credentials._create_scoped_calls, 0)
         conn = self._makeOne(credentials)
+        self.assertEqual(credentials._create_scoped_calls, 1)
         self.assertTrue(conn.credentials is credentials)
         self.assertEqual(conn._http, None)
 
@@ -39,6 +41,12 @@ class TestConnection(unittest2.TestCase):
         conn = self._makeOne(http=http)
         self.assertEqual(conn.credentials, None)
         self.assertTrue(conn.http is http)
+
+    def test_ctor_credentials_wo_create_scoped(self):
+        credentials = object()
+        conn = self._makeOne(credentials)
+        self.assertTrue(conn.credentials is credentials)
+        self.assertEqual(conn._http, None)
 
     def test_http_w_existing(self):
         conn = self._makeOne()
@@ -371,11 +379,12 @@ class _Credentials(object):
 
     def __init__(self, authorized=None):
         self._authorized = authorized
+        self._create_scoped_calls = 0
 
     def authorize(self, http):
         self._called_with = http
         return self._authorized
 
-    @staticmethod
-    def create_scoped_required():
+    def create_scoped_required(self):
+        self._create_scoped_calls += 1
         return False

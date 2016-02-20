@@ -144,7 +144,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             scopes.append(ADMIN_SCOPE)
 
         self._admin = bool(admin)
-        self._credentials = credentials.create_scoped(scopes)
+        try:
+            credentials = credentials.create_scoped(scopes)
+        except AttributeError:
+            pass
+        self._credentials = credentials
         self.user_agent = user_agent
         self.timeout_seconds = timeout_seconds
 
