@@ -161,7 +161,7 @@ class TestJSONClient(unittest2.TestCase):
                      _determine_default_project=mock_determine_proj):
             client_obj = self._makeOne()
 
-        self.assertTrue(client_obj.project is PROJECT)
+        self.assertEqual(client_obj.project, PROJECT)
         self.assertTrue(isinstance(client_obj.connection, _MockConnection))
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertEqual(
@@ -189,18 +189,30 @@ class TestJSONClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(project=object(), credentials=CREDENTIALS, http=HTTP)
 
-    def test_ctor_explicit(self):
-        PROJECT = 'PROJECT'
+    def _explicit_ctor_helper(self, project):
+        import six
+
         CREDENTIALS = object()
         HTTP = object()
 
-        client_obj = self._makeOne(project=PROJECT, credentials=CREDENTIALS,
+        client_obj = self._makeOne(project=project, credentials=CREDENTIALS,
                                    http=HTTP)
 
-        self.assertTrue(client_obj.project is PROJECT)
+        if isinstance(project, six.binary_type):
+            self.assertEqual(client_obj.project, project.decode('utf-8'))
+        else:
+            self.assertEqual(client_obj.project, project)
         self.assertTrue(isinstance(client_obj.connection, _MockConnection))
         self.assertTrue(client_obj.connection.credentials is CREDENTIALS)
         self.assertTrue(client_obj.connection.http is HTTP)
+
+    def test_ctor_explicit_bytes(self):
+        PROJECT = b'PROJECT'
+        self._explicit_ctor_helper(PROJECT)
+
+    def test_ctor_explicit_unicode(self):
+        PROJECT = u'PROJECT'
+        self._explicit_ctor_helper(PROJECT)
 
 
 class _MockConnection(object):

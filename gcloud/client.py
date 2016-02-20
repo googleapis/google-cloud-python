@@ -141,6 +141,8 @@ class _ClientProjectMixin(object):
         if project is None:
             raise ValueError('Project was not passed and could not be '
                              'determined from the environment.')
+        if isinstance(project, six.binary_type):
+            project = project.decode('utf-8')
         if not isinstance(project, six.string_types):
             raise ValueError('Project must be a string.')
         self.project = project
