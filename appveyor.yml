@@ -85,7 +85,7 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - "%CMD_IN_ENV% pip install wheel nose unittest2 cryptography"
+  - "%CMD_IN_ENV% pip install wheel nose nose-exclude unittest2 cryptography"
 
 build_script:
   # Build the compiled extension
