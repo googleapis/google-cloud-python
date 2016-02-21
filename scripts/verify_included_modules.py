@@ -33,6 +33,7 @@ IGNORED_MODULES = frozenset([
     'gcloud.bigtable.client',
     'gcloud.bigtable.cluster',
     'gcloud.bigtable.column_family',
+    'gcloud.bigtable.happybase.batch',
     'gcloud.bigtable.happybase.connection',
     'gcloud.bigtable.happybase.pool',
     'gcloud.bigtable.happybase.table',
