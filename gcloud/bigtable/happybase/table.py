@@ -15,6 +15,8 @@
 """Google Cloud Bigtable HappyBase table module."""
 
 
+import struct
+
 import six
 
 from gcloud._helpers import _total_seconds
@@ -24,6 +26,7 @@ from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.table import Table as _LowLevelTable
 
 
+_UNPACK_I64 = struct.Struct('>q').unpack
 _SIMPLE_GC_RULES = (MaxAgeGCRule, MaxVersionsGCRule)
 
 
@@ -126,6 +129,102 @@ class Table(object):
         """
         raise NotImplementedError('The Cloud Bigtable API does not have a '
                                   'concept of splitting a table into regions.')
+
+    def counter_get(self, row, column):
+        """Retrieve the current value of a counter column.
+
+        This method retrieves the current value of a counter column. If the
+        counter column does not exist, this function initializes it to ``0``.
+
+        .. note::
+
+            Application code should **never** store a counter value directly;
+            use the atomic :meth:`counter_inc` and :meth:`counter_dec` methods
+            for that.
+
+        :type row: str
+        :param row: Row key for the row we are getting a counter from.
+
+        :type column: str
+        :param column: Column we are ``get``-ing from; of the form ``fam:col``.
+
+        :rtype: int
+        :returns: Counter value (after initializing / incrementing by 0).
+        """
+        # Don't query directly, but increment with value=0 so that the counter
+        # is correctly initialized if didn't exist yet.
+        return self.counter_inc(row, column, value=0)
+
+    def counter_inc(self, row, column, value=1):
+        """Atomically increment a counter column.
+
+        This method atomically increments a counter column in ``row``.
+        If the counter column does not exist, it is automatically initialized
+        to ``0`` before being incremented.
+
+        :type row: str
+        :param row: Row key for the row we are incrementing a counter in.
+
+        :type column: str
+        :param column: Column we are incrementing a value in; of the
+                       form ``fam:col``.
+
+        :type value: int
+        :param value: Amount to increment the counter by. (If negative,
+                      this is equivalent to decrement.)
+
+        :rtype: int
+        :returns: Counter value after incrementing.
+        """
+        row = self._low_level_table.row(row)
+        if isinstance(column, six.binary_type):
+            column = column.decode('utf-8')
+        column_family_id, column_qualifier = column.split(':')
+        row.increment_cell_value(column_family_id, column_qualifier, value)
+        # See row.commit_modifications() will return a dictionary:
+        # {
+        #     u'col-fam-id': {
+        #         b'col-name1': [
+        #             (b'cell-val', datetime.datetime(...)),
+        #             ...
+        #         ],
+        #         ...
+        #     },
+        # }
+        modified_cells = row.commit_modifications()
+        # Get the cells in the modified column,
+        column_cells = modified_cells[column_family_id][column_qualifier]
+        # Make sure there is exactly one cell in the column.
+        if len(column_cells) != 1:
+            raise ValueError('Expected server to return one modified cell.')
+        column_cell = column_cells[0]
+        # Get the bytes value from the column and convert it to an integer.
+        bytes_value = column_cell[0]
+        int_value, = _UNPACK_I64(bytes_value)
+        return int_value
+
+    def counter_dec(self, row, column, value=1):
+        """Atomically decrement a counter column.
+
+        This method atomically decrements a counter column in ``row``.
+        If the counter column does not exist, it is automatically initialized
+        to ``0`` before being decremented.
+
+        :type row: str
+        :param row: Row key for the row we are decrementing a counter in.
+
+        :type column: str
+        :param column: Column we are decrementing a value in; of the
+                       form ``fam:col``.
+
+        :type value: int
+        :param value: Amount to decrement the counter by. (If negative,
+                      this is equivalent to increment.)
+
+        :rtype: int
+        :returns: Counter value after decrementing.
+        """
+        return self.counter_inc(row, column, -value)
 
 
 def _gc_rule_to_dict(gc_rule):
