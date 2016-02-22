@@ -220,7 +220,8 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
-        >>> query = datastore.Query(kind='MyKind')
+        >>> client = datastore.Client()
+        >>> query = client.query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator's

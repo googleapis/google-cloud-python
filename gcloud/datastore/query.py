@@ -194,7 +194,8 @@ class Query(object):
         (ie, ``=``, ``<``, ``<=``, ``>``, ``>=``)::
 
           >>> from gcloud import datastore
-          >>> query = datastore.Query('Person')
+          >>> client = datastore.Client()
+          >>> query = client.query(kind='Person')
           >>> query.add_filter('name', '=', 'James')
           >>> query.add_filter('age', '>', 50)
 
@@ -311,7 +312,8 @@ class Query(object):
         For example::
 
           >>> from gcloud import datastore
-          >>> query = datastore.Query('Person')
+          >>> client = datastore.Client()
+          >>> query = client.query(kind='Person')
           >>> query.add_filter('name', '=', 'Sally')
           >>> list(query.fetch())
           [<Entity object>, <Entity object>, ...]
