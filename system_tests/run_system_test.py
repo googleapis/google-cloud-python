@@ -19,6 +19,7 @@ import unittest2
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
 import bigquery
+import bigtable
 import datastore
 import pubsub
 import storage
@@ -30,12 +31,14 @@ REQUIREMENTS = {
     'storage': ['project', 'credentials'],
     'pubsub': ['project', 'credentials'],
     'bigquery': ['project', 'credentials'],
+    'bigtable': ['project', 'credentials'],
 }
 TEST_MODULES = {
     'datastore': datastore,
     'storage': storage,
     'pubsub': pubsub,
     'bigquery': bigquery,
+    'bigtable': bigtable,
 }
 
 
