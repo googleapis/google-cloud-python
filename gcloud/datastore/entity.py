@@ -39,7 +39,9 @@ class Entity(dict):
 
     Use :func:`gcloud.datastore.get` to retrieve an existing entity.
 
-      >>> datastore.get(key)
+      >>> from gcloud import datastore
+      >>> client = datastore.Client()
+      >>> client.get(key)
       <Entity[{'kind': 'EntityKind', id: 1234}] {'property': 'value'}>
 
     You can the set values on the entity just like you would on any
@@ -67,9 +69,7 @@ class Entity(dict):
        any decoding / encoding step.
 
     :type key: :class:`gcloud.datastore.key.Key`
-    :param key: Optional key to be set on entity. Required for
-                :func:`gcloud.datastore.put()` and
-                :func:`gcloud.datastore.put_multi()`
+    :param key: Optional key to be set on entity.
 
     :type exclude_from_indexes: tuple of string
     :param exclude_from_indexes: Names of fields whose values are not to be
