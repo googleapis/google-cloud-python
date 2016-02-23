@@ -43,6 +43,9 @@ SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
 TEST_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_reduced')
 TEST_DISABLED_MESSAGES = [
+    'abstract-method',
+    'arguments-differ',
+    'assignment-from-no-return',
     'attribute-defined-outside-init',
     'exec-used',
     'import-error',
@@ -55,8 +58,6 @@ TEST_DISABLED_MESSAGES = [
     'too-many-locals',
     'too-many-public-methods',
     'unbalanced-tuple-unpacking',
-    'arguments-differ',
-    'assignment-from-no-return',
 ]
 TEST_RC_ADDITIONS = {
     'MESSAGES CONTROL': {
