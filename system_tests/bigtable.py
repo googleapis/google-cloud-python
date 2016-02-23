@@ -44,6 +44,26 @@ class Config(object):
     CLUSTER = None
 
 
+def _operation_wait(operation, max_attempts=5):
+    """Wait until an operation has completed.
+
+    :type operation: :class:`gcloud.bigtable.cluster.Operation`
+    :param operation: Operation that has not finished.
+
+    :type max_attempts: int
+    :param max_attempts: (Optional) The maximum number of times to check if
+                         the operation has finished. Defaults to 5.
+    """
+    total_sleep = 0
+    while not operation.finished():
+        if total_sleep > max_attempts:
+            return False
+        time.sleep(1)
+        total_sleep += 1
+
+    return True
+
+
 def setUpModule():
     Config.CLIENT = Client(admin=True)
     Config.CLUSTER = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID,
@@ -58,12 +78,8 @@ def setUpModule():
 
     # After listing, create the test cluster.
     created_op = Config.CLUSTER.create()
-    total_sleep = 0
-    while not created_op.finished():
-        if total_sleep > 5:
-            raise RuntimeError('Cluster creation exceed 5 seconds.')
-        time.sleep(1)
-        total_sleep += 1
+    if not _operation_wait(created_op):
+        raise RuntimeError('Cluster creation exceed 5 seconds.')
 
 
 def tearDownModule():
@@ -93,3 +109,57 @@ class TestClusterAdminAPI(unittest2.TestCase):
             cluster_existence = (cluster in EXISTING_CLUSTERS or
                                  cluster == Config.CLUSTER)
             self.assertTrue(cluster_existence)
+
+    def test_reload(self):
+        # Use same arguments as Config.CLUSTER (created in `setUpModule`)
+        # so we can use reload() on a fresh instance.
+        cluster = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID)
+        # Make sure metadata unset before reloading.
+        cluster.display_name = None
+        cluster.serve_nodes = None
+
+        cluster.reload()
+        self.assertEqual(cluster.display_name, Config.CLUSTER.display_name)
+        self.assertEqual(cluster.serve_nodes, Config.CLUSTER.serve_nodes)
+
+    def test_create_cluster(self):
+        cluster_id = '%s-a' % (CLUSTER_ID,)
+        cluster = Config.CLIENT.cluster(CENTRAL_1C_ZONE, cluster_id)
+        operation = cluster.create()
+        # Make sure this cluster gets deleted after the test case.
+        self.clusters_to_delete.append(cluster)
+
+        # We want to make sure the operation completes.
+        self.assertTrue(_operation_wait(operation))
+
+        # Create a new cluster instance and make sure it is the same.
+        cluster_alt = Config.CLIENT.cluster(CENTRAL_1C_ZONE, cluster_id)
+        cluster_alt.reload()
+
+        self.assertEqual(cluster, cluster_alt)
+        self.assertEqual(cluster.display_name, cluster_alt.display_name)
+        self.assertEqual(cluster.serve_nodes, cluster_alt.serve_nodes)
+
+    def test_update(self):
+        curr_display_name = Config.CLUSTER.display_name
+        Config.CLUSTER.display_name = 'Foo Bar Baz'
+        operation = Config.CLUSTER.update()
+
+        # We want to make sure the operation completes.
+        self.assertTrue(_operation_wait(operation))
+
+        # Create a new cluster instance and make sure it is the same.
+        cluster_alt = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID)
+        self.assertNotEqual(cluster_alt.display_name,
+                            Config.CLUSTER.display_name)
+        cluster_alt.reload()
+        self.assertEqual(cluster_alt.display_name,
+                         Config.CLUSTER.display_name)
+
+        # Make sure to put the cluster back the way it was for the
+        # other test cases.
+        Config.CLUSTER.display_name = curr_display_name
+        operation = Config.CLUSTER.update()
+
+        # We want to make sure the operation completes.
+        self.assertTrue(_operation_wait(operation))
