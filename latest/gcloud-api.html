@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Shared Core Modules &mdash; gcloud a77e7fa documentation</title>
+    <title>Shared Core Modules &mdash; gcloud 9c4807d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'a77e7fa',
+        VERSION:     '9c4807d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud a77e7fa documentation" href="index.html" />
+    <link rel="top" title="gcloud 9c4807d documentation" href="index.html" />
     <link rel="next" title="Authentication" href="gcloud-auth.html" />
     <link rel="prev" title="Getting started" href="index.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%20a77e7fa" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-api%0ARelease%3A%209c4807d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a77e7fa)
+              Version History (9c4807d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -407,78 +407,6 @@ used by <a class="reference external" href="http://oauth2client.readthedocs.org/
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new credentials instance corresponding to the implicit
 environment.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gcloud.credentials.get_for_service_account_json">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_json</code><span class="sig-paren">(</span><em>json_credentials_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_json" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the credentials for a service account with JSON key.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>json_credentials_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must contain a JSON
-object with a private key and other
-credentials information (downloaded from the
-Google APIs console).</li>
-<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
-require different scopes, check the documentation for which
-scope is required for the different levels of access to any
-particular API.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.GoogleCredentials" title="(in oauth2client v2.0.0.post1)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.GoogleCredentials</span></code></a>,
-<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.service_account.html#oauth2client.service_account.ServiceAccountCredentials" title="(in oauth2client v2.0.0.post1)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account.ServiceAccountCredentials</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">New service account or Google (for a user JSON key file)
-credentials object.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="gcloud.credentials.get_for_service_account_p12">
-<code class="descclassname">gcloud.credentials.</code><code class="descname">get_for_service_account_p12</code><span class="sig-paren">(</span><em>client_email</em>, <em>private_key_path</em>, <em>scope=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/credentials.html#get_for_service_account_p12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.credentials.get_for_service_account_p12" title="Permalink to this definition">#</a></dt>
-<dd><p>Gets the credentials for a service account with PKCS12 / p12 key.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This method is not used by default, instead <a class="reference internal" href="#gcloud.credentials.get_credentials" title="gcloud.credentials.get_credentials"><code class="xref py py-func docutils literal"><span class="pre">get_credentials()</span></code></a>
-is used. This method is intended to be used when the environment is
-known explicitly and detecting the environment implicitly would be
-superfluous.</p>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>client_email</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The e-mail attached to the service account.</li>
-<li><strong>private_key_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to a private key file (this file was
-given to you when you created the service
-account). This file must be in P12 format.</li>
-<li><strong>scope</strong> (<em>string or tuple of string</em>) &#8211; The scope against which to authenticate. (Different services
-require different scopes, check the documentation for which
-scope is required for the different levels of access to any
-particular API.)</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.service_account.html#oauth2client.service_account.ServiceAccountCredentials" title="(in oauth2client v2.0.0.post1)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.service_account.ServiceAccountCredentials</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new <code class="docutils literal"><span class="pre">ServiceAccountCredentials</span></code> instance with the
-needed service account settings.</p>
-</td>
 </tr>
 </tbody>
 </table>
