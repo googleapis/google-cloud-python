@@ -12,14 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import operator
 import time
 
 import unittest2
 
 from gcloud import _helpers
+from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import UTC
 from gcloud.bigtable.client import Client
 from gcloud.bigtable.column_family import MaxVersionsGCRule
+from gcloud.bigtable.row_data import Cell
 from gcloud.environment_vars import TESTS_PROJECT
 
 
@@ -30,6 +35,14 @@ CLUSTER_ID = 'gcloud-python-%d' % (NOW_MILLIS,)
 TABLE_ID = 'gcloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
+COL_NAME1 = b'col-name1'
+COL_NAME2 = b'col-name2'
+COL_NAME3 = b'col-name3-but-other-fam'
+CELL_VAL1 = b'cell-val'
+CELL_VAL2 = b'cell-val-newer'
+CELL_VAL3 = b'altcol-cell-val'
+CELL_VAL4 = b'foo'
+ROW_KEY = b'row-key'
 EXISTING_CLUSTERS = []
 EXPECTED_ZONES = (
     'asia-east1-b',
@@ -292,3 +305,82 @@ class TestTableAdminAPI(unittest2.TestCase):
         column_family.delete()
         # Make sure we have successfully deleted it.
         self.assertEqual(temp_table.list_column_families(), {})
+
+
+class TestDataAPI(unittest2.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls._table = table = Config.CLUSTER.table(TABLE_ID)
+        table.create()
+        table.column_family(COLUMN_FAMILY_ID1).create()
+        table.column_family(COLUMN_FAMILY_ID2).create()
+
+    @classmethod
+    def tearDownClass(cls):
+        # Will also delete any data contained in the table.
+        cls._table.delete()
+
+    def setUp(self):
+        self.rows_to_delete = []
+
+    def tearDown(self):
+        for row in self.rows_to_delete:
+            row.clear_mutations()
+            row.delete()
+            row.commit()
+
+    def _write_to_row(self, row1=None, row2=None, row3=None, row4=None):
+        timestamp1 = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        timestamp1_micros = _microseconds_from_datetime(timestamp1)
+        # Truncate to millisecond granularity.
+        timestamp1_micros -= (timestamp1_micros % 1000)
+        timestamp1 = _datetime_from_microseconds(timestamp1_micros)
+        # 1000 microseconds is a millisecond
+        timestamp2 = timestamp1 + datetime.timedelta(microseconds=1000)
+        timestamp3 = timestamp1 + datetime.timedelta(microseconds=2000)
+        timestamp4 = timestamp1 + datetime.timedelta(microseconds=3000)
+        if row1 is not None:
+            row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1,
+                          timestamp=timestamp1)
+        if row2 is not None:
+            row2.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL2,
+                          timestamp=timestamp2)
+        if row3 is not None:
+            row3.set_cell(COLUMN_FAMILY_ID1, COL_NAME2, CELL_VAL3,
+                          timestamp=timestamp3)
+        if row4 is not None:
+            row4.set_cell(COLUMN_FAMILY_ID2, COL_NAME3, CELL_VAL4,
+                          timestamp=timestamp4)
+
+        # Create the cells we will check.
+        cell1 = Cell(CELL_VAL1, timestamp1)
+        cell2 = Cell(CELL_VAL2, timestamp2)
+        cell3 = Cell(CELL_VAL3, timestamp3)
+        cell4 = Cell(CELL_VAL4, timestamp4)
+        return cell1, cell2, cell3, cell4
+
+    def test_read_row(self):
+        row = self._table.row(ROW_KEY)
+        self.rows_to_delete.append(row)
+
+        cell1, cell2, cell3, cell4 = self._write_to_row(row, row, row, row)
+        row.commit()
+
+        # Read back the contents of the row.
+        partial_row_data = self._table.read_row(ROW_KEY)
+        self.assertTrue(partial_row_data.committed)
+        self.assertEqual(partial_row_data.row_key, ROW_KEY)
+
+        # Check the cells match.
+        ts_attr = operator.attrgetter('timestamp')
+        expected_row_contents = {
+            COLUMN_FAMILY_ID1: {
+                COL_NAME1: sorted([cell1, cell2], key=ts_attr, reverse=True),
+                COL_NAME2: [cell3],
+            },
+            COLUMN_FAMILY_ID2: {
+                COL_NAME3: [cell4],
+            },
+        }
+        self.assertEqual(partial_row_data.cells, expected_row_contents)
