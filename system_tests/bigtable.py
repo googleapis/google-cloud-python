@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import operator
 import time
 
 import unittest2
@@ -25,6 +26,7 @@ _helpers.PROJECT = TESTS_PROJECT
 CENTRAL_1C_ZONE = 'us-central1-c'
 NOW_MILLIS = int(1000 * time.time())
 CLUSTER_ID = 'gcloud-python-%d' % (NOW_MILLIS,)
+TABLE_ID = 'gcloud-python-test-table'
 EXISTING_CLUSTERS = []
 EXPECTED_ZONES = (
     'asia-east1-b',
@@ -163,3 +165,65 @@ class TestClusterAdminAPI(unittest2.TestCase):
 
         # We want to make sure the operation completes.
         self.assertTrue(_operation_wait(operation))
+
+
+class TestTableAdminAPI(unittest2.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls._table = Config.CLUSTER.table(TABLE_ID)
+        cls._table.create()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls._table.delete()
+
+    def setUp(self):
+        self.tables_to_delete = []
+
+    def tearDown(self):
+        for table in self.tables_to_delete:
+            table.delete()
+
+    def test_list_tables(self):
+        # Since `Config.CLUSTER` is newly created in `setUpModule`, the table
+        # created in `setUpClass` here will be the only one.
+        tables = Config.CLUSTER.list_tables()
+        self.assertEqual(tables, [self._table])
+
+    def test_create_table(self):
+        temp_table_id = 'foo-bar-baz-table'
+        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        # First, create a sorted version of our expected result.
+        name_attr = operator.attrgetter('name')
+        expected_tables = sorted([temp_table, self._table], key=name_attr)
+
+        # Then query for the tables in the cluster and sort them by
+        # name as well.
+        tables = Config.CLUSTER.list_tables()
+        sorted_tables = sorted(tables, key=name_attr)
+        self.assertEqual(sorted_tables, expected_tables)
+
+    def test_rename_table(self):
+        # pylint: disable=no-name-in-module
+        from grpc.beta import interfaces
+        from grpc.framework.interfaces.face import face
+        # pylint: enable=no-name-in-module
+
+        temp_table_id = 'foo-bar-baz-table'
+        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table.create()
+        self.tables_to_delete.append(temp_table)
+
+        with self.assertRaises(face.LocalError) as exc_manager:
+            temp_table.rename(temp_table_id + '-alt')
+        exc_caught = exc_manager.exception
+        self.assertNotEqual(exc_caught, None)
+        self.assertEqual(exc_caught.code,
+                         interfaces.StatusCode.UNIMPLEMENTED)
+        self.assertEqual(
+            exc_caught.details,
+            'BigtableTableService.RenameTable is not yet implemented')
