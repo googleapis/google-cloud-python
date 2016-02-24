@@ -95,3 +95,41 @@ class Batch(object):
         # Internal state for tracking mutations.
         self._row_map = {}
         self._mutation_count = 0
+
+    def send(self):
+        """Send / commit the batch of mutations to the server."""
+        for row in self._row_map.values():
+            # commit() does nothing if row hasn't accumulated any mutations.
+            row.commit()
+
+        self._row_map.clear()
+        self._mutation_count = 0
+
+    def __enter__(self):
+        """Enter context manager, no set-up required."""
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        """Exit context manager, no set-up required.
+
+        :type exc_type: type
+        :param exc_type: The type of the exception if one occurred while the
+                         context manager was active. Otherwise, :data:`None`.
+
+        :type exc_value: :class:`Exception <exceptions.Exception>`
+        :param exc_value: An instance of ``exc_type`` if an exception occurred
+                          while the context was active.
+                          Otherwise, :data:`None`.
+
+        :type traceback: ``traceback`` type
+        :param traceback: The traceback where the exception occurred (if one
+                          did occur). Otherwise, :data:`None`.
+        """
+        # If the context manager encountered an exception and the batch is
+        # transactional, we don't commit the mutations.
+        if self._transaction and exc_type is not None:
+            return
+
+        # NOTE: For non-transactional batches, this will even commit mutations
+        #       if an error occurred during the context manager.
+        self.send()
