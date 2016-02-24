@@ -15,11 +15,15 @@
 """Google Cloud Bigtable HappyBase connection module."""
 
 
+import datetime
 import warnings
 
 import six
 
 from gcloud.bigtable.client import Client
+from gcloud.bigtable.column_family import GCRuleIntersection
+from gcloud.bigtable.column_family import MaxAgeGCRule
+from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.happybase.table import Table
 from gcloud.bigtable.table import Table as _LowLevelTable
 
@@ -124,9 +128,6 @@ class Connection(object):
     :type kwargs: dict
     :param kwargs: Remaining keyword arguments. Provided for HappyBase
                    compatibility.
-
-    :raises: :class:`ValueError <exceptions.ValueError>` if any of the unused
-             parameters are specified with a value other than the defaults.
     """
 
     _cluster = None
@@ -265,6 +266,77 @@ class Connection(object):
 
         return table_names
 
+    def create_table(self, name, families):
+        """Create a table.
+
+        .. warning::
+
+            The only column family options from HappyBase that are able to be
+            used with Cloud Bigtable are ``max_versions`` and ``time_to_live``.
+
+        .. note::
+
+            This method is **not** atomic. The Cloud Bigtable API separates
+            the creation of a table from the creation of column families. Thus
+            this method needs to send 1 request for the table creation and 1
+            request for each column family. If any of these fails, the method
+            will fail, but the progress made towards completion cannot be
+            rolled back.
+
+        Values in ``families`` represent column family options. In HappyBase,
+        these are dictionaries, corresponding to the ``ColumnDescriptor``
+        structure in the Thrift API. The accepted keys are:
+
+        * ``max_versions`` (``int``)
+        * ``compression`` (``str``)
+        * ``in_memory`` (``bool``)
+        * ``bloom_filter_type`` (``str``)
+        * ``bloom_filter_vector_size`` (``int``)
+        * ``bloom_filter_nb_hashes`` (``int``)
+        * ``block_cache_enabled`` (``bool``)
+        * ``time_to_live`` (``int``)
+
+        :type name: str
+        :param name: The name of the table to be created.
+
+        :type families: dict
+        :param families: Dictionary with column family names as keys and column
+                         family options as the values. The options can be among
+
+                         * :class:`dict`
+                         * :class:`.GarbageCollectionRule`
+
+        :raises: :class:`TypeError <exceptions.TypeError>` if ``families`` is
+                 not a dictionary,
+                 :class:`ValueError <exceptions.ValueError>` if ``families``
+                 has no entries
+        """
+        if not isinstance(families, dict):
+            raise TypeError('families arg must be a dictionary')
+
+        if not families:
+            raise ValueError('Cannot create table %r (no column '
+                             'families specified)' % (name,))
+
+        # Parse all keys before making any API requests.
+        gc_rule_dict = {}
+        for column_family_name, option in families.items():
+            if isinstance(column_family_name, six.binary_type):
+                column_family_name = column_family_name.decode('utf-8')
+            if column_family_name.endswith(':'):
+                column_family_name = column_family_name[:-1]
+            gc_rule_dict[column_family_name] = _parse_family_option(option)
+
+        # Create table instance and then make API calls.
+        name = self._table_name(name)
+        low_level_table = _LowLevelTable(name, self._cluster)
+        low_level_table.create()
+
+        for column_family_name, gc_rule in gc_rule_dict.items():
+            column_family = low_level_table.column_family(
+                column_family_name, gc_rule=gc_rule)
+            column_family.create()
+
     def delete_table(self, name, disable=False):
         """Delete the specified table.
 
@@ -336,3 +408,52 @@ class Connection(object):
         """
         raise NotImplementedError('The Cloud Bigtable API does not support '
                                   'compacting a table.')
+
+
+def _parse_family_option(option):
+    """Parses a column family option into a garbage collection rule.
+
+    .. note::
+
+        If ``option`` is not a dictionary, the type is not checked.
+        If ``option`` is :data:`None`, there is nothing to do, since this
+        is the correct output.
+
+    :type option: :class:`dict`,
+                  :data:`NoneType <types.NoneType>`,
+                  :class:`.GarbageCollectionRule`
+    :param option: A column family option passes as a dictionary value in
+                   :meth:`Connection.create_table`.
+
+    :rtype: :class:`.GarbageCollectionRule`
+    :returns: A garbage collection rule parsed from the input.
+    """
+    result = option
+    if isinstance(result, dict):
+        if not set(result.keys()) <= set(['max_versions', 'time_to_live']):
+            all_keys = ', '.join(repr(key) for key in result.keys())
+            warning_msg = ('Cloud Bigtable only supports max_versions and '
+                           'time_to_live column family settings. '
+                           'Received: %s' % (all_keys,))
+            _WARN(warning_msg)
+
+        max_num_versions = result.get('max_versions')
+        max_age = None
+        if 'time_to_live' in result:
+            max_age = datetime.timedelta(seconds=result['time_to_live'])
+
+        versions_rule = age_rule = None
+        if max_num_versions is not None:
+            versions_rule = MaxVersionsGCRule(max_num_versions)
+        if max_age is not None:
+            age_rule = MaxAgeGCRule(max_age)
+
+        if versions_rule is None:
+            result = age_rule
+        else:
+            if age_rule is None:
+                result = versions_rule
+            else:
+                result = GCRuleIntersection(rules=[age_rule, versions_rule])
+
+    return result
