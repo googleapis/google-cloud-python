@@ -24,6 +24,7 @@ from gcloud.bigtable.column_family import GCRuleIntersection
 from gcloud.bigtable.column_family import MaxAgeGCRule
 from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.happybase.batch import _WAL_SENTINEL
+from gcloud.bigtable.happybase.batch import Batch
 from gcloud.bigtable.table import Table as _LowLevelTable
 
 
@@ -416,10 +417,11 @@ class Table(object):
                     for Cloud Bigtable since it does not have a Write Ahead
                     Log.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
+        :rtype: :class:`gcloud.bigtable.happybase.batch.Batch`
+        :returns: A batch bound to this table.
         """
-        raise NotImplementedError
+        return Batch(self, timestamp=timestamp, batch_size=batch_size,
+                     transaction=transaction, wal=wal)
 
     def counter_get(self, row, column):
         """Retrieve the current value of a counter column.

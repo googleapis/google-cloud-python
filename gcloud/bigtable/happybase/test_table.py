@@ -170,12 +170,31 @@ class TestTable(unittest2.TestCase):
             table.delete(None)
 
     def test_batch(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
 
-        with self.assertRaises(NotImplementedError):
-            table.batch()
+        timestamp = object()
+        batch_size = 42
+        transaction = False  # Must be False when batch_size is non-null
+        wal = object()
+
+        with _Monkey(MUT, Batch=_MockBatch):
+            result = table.batch(timestamp=timestamp, batch_size=batch_size,
+                                 transaction=transaction, wal=wal)
+
+        self.assertTrue(isinstance(result, _MockBatch))
+        self.assertEqual(result.args, (table,))
+        expected_kwargs = {
+            'timestamp': timestamp,
+            'batch_size': batch_size,
+            'transaction': transaction,
+            'wal': wal,
+        }
+        self.assertEqual(result.kwargs, expected_kwargs)
 
     def test_counter_get(self):
         klass = self._getTargetClass()
@@ -470,3 +489,10 @@ class _MockLowLevelRow(object):
 
     def commit_modifications(self):
         return self.commit_result
+
+
+class _MockBatch(object):
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs

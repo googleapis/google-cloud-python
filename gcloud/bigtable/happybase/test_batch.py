@@ -16,6 +16,14 @@
 import unittest2
 
 
+class _SendMixin(object):
+
+    _send_called = False
+
+    def send(self):
+        self._send_called = True
+
+
 class TestBatch(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -164,14 +172,6 @@ class TestBatch(unittest2.TestCase):
         # Just to make sure send() actually works (and to make cover happy).
         batch.send()
         self.assertTrue(batch._send_called)
-
-
-class _SendMixin(object):
-
-    _send_called = False
-
-    def send(self):
-        self._send_called = True
 
 
 class _MockRowMap(dict):
