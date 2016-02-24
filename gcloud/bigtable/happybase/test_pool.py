@@ -137,6 +137,83 @@ class TestConnectionPool(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(size)
 
+    def _makeOneWithMockQueue(self, queue_return):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import pool as MUT
+
+        # We are going to use a fake queue, so we don't want any connections
+        # or clusters to be created in the constructor.
+        size = -1
+        cluster = object()
+        with _Monkey(MUT, _MIN_POOL_SIZE=size):
+            pool = self._makeOne(size, cluster=cluster)
+
+        pool._queue = _Queue(queue_return)
+        return pool
+
+    def test__acquire_connection(self):
+        queue_return = object()
+        pool = self._makeOneWithMockQueue(queue_return)
+
+        timeout = 432
+        connection = pool._acquire_connection(timeout=timeout)
+        self.assertTrue(connection is queue_return)
+        self.assertEqual(pool._queue._get_calls, [(True, timeout)])
+        self.assertEqual(pool._queue._put_calls, [])
+
+    def test__acquire_connection_failure(self):
+        from gcloud.bigtable.happybase.pool import NoConnectionsAvailable
+
+        pool = self._makeOneWithMockQueue(None)
+        timeout = 1027
+        with self.assertRaises(NoConnectionsAvailable):
+            pool._acquire_connection(timeout=timeout)
+        self.assertEqual(pool._queue._get_calls, [(True, timeout)])
+        self.assertEqual(pool._queue._put_calls, [])
+
+    def test_connection_is_context_manager(self):
+        import contextlib
+        import six
+
+        queue_return = _Connection()
+        pool = self._makeOneWithMockQueue(queue_return)
+        cnxn_context = pool.connection()
+        if six.PY3:  # pragma: NO COVER
+            self.assertTrue(isinstance(cnxn_context,
+                                       contextlib._GeneratorContextManager))
+        else:
+            self.assertTrue(isinstance(cnxn_context,
+                                       contextlib.GeneratorContextManager))
+
+    def test_connection_no_current_cnxn(self):
+        queue_return = _Connection()
+        pool = self._makeOneWithMockQueue(queue_return)
+        timeout = 55
+
+        self.assertFalse(hasattr(pool._thread_connections, 'current'))
+        with pool.connection(timeout=timeout) as connection:
+            self.assertEqual(pool._thread_connections.current, queue_return)
+            self.assertTrue(connection is queue_return)
+        self.assertFalse(hasattr(pool._thread_connections, 'current'))
+
+        self.assertEqual(pool._queue._get_calls, [(True, timeout)])
+        self.assertEqual(pool._queue._put_calls,
+                         [(queue_return, None, None)])
+
+    def test_connection_with_current_cnxn(self):
+        current_cnxn = _Connection()
+        queue_return = _Connection()
+        pool = self._makeOneWithMockQueue(queue_return)
+        pool._thread_connections.current = current_cnxn
+        timeout = 8001
+
+        with pool.connection(timeout=timeout) as connection:
+            self.assertTrue(connection is current_cnxn)
+
+        self.assertEqual(pool._queue._get_calls, [])
+        self.assertEqual(pool._queue._put_calls, [])
+        self.assertEqual(pool._thread_connections.current, current_cnxn)
+
 
 class _Client(object):
 
@@ -145,6 +222,12 @@ class _Client(object):
 
     def stop(self):
         self.stop_calls += 1
+
+
+class _Connection(object):
+
+    def open(self):
+        pass
 
 
 class _Cluster(object):
@@ -161,3 +244,22 @@ class _Cluster(object):
             return result
         else:
             return self
+
+
+class _Queue(object):
+
+    def __init__(self, result=None):
+        self.result = result
+        self._get_calls = []
+        self._put_calls = []
+
+    def get(self, block=None, timeout=None):
+        self._get_calls.append((block, timeout))
+        if self.result is None:
+            import six
+            raise six.moves.queue.Empty
+        else:
+            return self.result
+
+    def put(self, item, block=None, timeout=None):
+        self._put_calls.append((item, block, timeout))
