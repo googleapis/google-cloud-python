@@ -16,6 +16,14 @@
 import unittest2
 
 
+class _SendMixin(object):
+
+    _send_called = False
+
+    def send(self):
+        self._send_called = True
+
+
 class TestBatch(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -91,3 +99,94 @@ class TestBatch(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(table, batch_size=batch_size,
                           transaction=transaction)
+
+    def test_send(self):
+        table = object()
+        batch = self._makeOne(table)
+
+        batch._row_map = row_map = _MockRowMap()
+        row_map['row-key1'] = row1 = _MockRow()
+        row_map['row-key2'] = row2 = _MockRow()
+        batch._mutation_count = 1337
+
+        self.assertEqual(row_map.clear_count, 0)
+        self.assertEqual(row1.commits, 0)
+        self.assertEqual(row2.commits, 0)
+        self.assertNotEqual(batch._mutation_count, 0)
+        self.assertNotEqual(row_map, {})
+
+        batch.send()
+        self.assertEqual(row_map.clear_count, 1)
+        self.assertEqual(row1.commits, 1)
+        self.assertEqual(row2.commits, 1)
+        self.assertEqual(batch._mutation_count, 0)
+        self.assertEqual(row_map, {})
+
+    def test_context_manager(self):
+        klass = self._getTargetClass()
+
+        class BatchWithSend(_SendMixin, klass):
+            pass
+
+        table = object()
+        batch = BatchWithSend(table)
+        self.assertFalse(batch._send_called)
+
+        with batch:
+            pass
+
+        self.assertTrue(batch._send_called)
+
+    def test_context_manager_with_exception_non_transactional(self):
+        klass = self._getTargetClass()
+
+        class BatchWithSend(_SendMixin, klass):
+            pass
+
+        table = object()
+        batch = BatchWithSend(table)
+        self.assertFalse(batch._send_called)
+
+        with self.assertRaises(ValueError):
+            with batch:
+                raise ValueError('Something bad happened')
+
+        self.assertTrue(batch._send_called)
+
+    def test_context_manager_with_exception_transactional(self):
+        klass = self._getTargetClass()
+
+        class BatchWithSend(_SendMixin, klass):
+            pass
+
+        table = object()
+        batch = BatchWithSend(table, transaction=True)
+        self.assertFalse(batch._send_called)
+
+        with self.assertRaises(ValueError):
+            with batch:
+                raise ValueError('Something bad happened')
+
+        self.assertFalse(batch._send_called)
+
+        # Just to make sure send() actually works (and to make cover happy).
+        batch.send()
+        self.assertTrue(batch._send_called)
+
+
+class _MockRowMap(dict):
+
+    clear_count = 0
+
+    def clear(self):
+        self.clear_count += 1
+        super(_MockRowMap, self).clear()
+
+
+class _MockRow(object):
+
+    def __init__(self):
+        self.commits = 0
+
+    def commit(self):
+        self.commits += 1
