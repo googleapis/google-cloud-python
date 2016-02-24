@@ -121,6 +121,163 @@ class TestTable(unittest2.TestCase):
         with self.assertRaises(NotImplementedError):
             table.regions()
 
+    def test_counter_get(self):
+        klass = self._getTargetClass()
+        counter_value = 1337
+
+        class TableWithInc(klass):
+
+            incremented = []
+            value = counter_value
+
+            def counter_inc(self, row, column, value=1):
+                self.incremented.append((row, column, value))
+                self.value += value
+                return self.value
+
+        name = 'table-name'
+        connection = None
+        table = TableWithInc(name, connection)
+
+        row = 'row-key'
+        column = 'fam:col1'
+        self.assertEqual(TableWithInc.incremented, [])
+        result = table.counter_get(row, column)
+        self.assertEqual(result, counter_value)
+        self.assertEqual(TableWithInc.incremented, [(row, column, 0)])
+
+    def test_counter_dec(self):
+        klass = self._getTargetClass()
+        counter_value = 42
+
+        class TableWithInc(klass):
+
+            incremented = []
+            value = counter_value
+
+            def counter_inc(self, row, column, value=1):
+                self.incremented.append((row, column, value))
+                self.value += value
+                return self.value
+
+        name = 'table-name'
+        connection = None
+        table = TableWithInc(name, connection)
+
+        row = 'row-key'
+        column = 'fam:col1'
+        dec_value = 987
+        self.assertEqual(TableWithInc.incremented, [])
+        result = table.counter_dec(row, column, value=dec_value)
+        self.assertEqual(result, counter_value - dec_value)
+        self.assertEqual(TableWithInc.incremented, [(row, column, -dec_value)])
+
+    def _counter_inc_helper(self, row, column, value, commit_result):
+        import six
+
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        # Mock the return values.
+        table._low_level_table = _MockLowLevelTable()
+        table._low_level_table.row_values[row] = _MockLowLevelRow(
+            row, commit_result=commit_result)
+
+        result = table.counter_inc(row, column, value=value)
+
+        incremented_value = value + _MockLowLevelRow.COUNTER_DEFAULT
+        self.assertEqual(result, incremented_value)
+
+        # Check the row values returned.
+        row_obj = table._low_level_table.row_values[row]
+        if isinstance(column, six.binary_type):
+            column = column.decode('utf-8')
+        self.assertEqual(row_obj.counts,
+                         {tuple(column.split(':')): incremented_value})
+
+    def test_counter_inc(self):
+        import struct
+
+        row = 'row-key'
+        col_fam = u'fam'
+        col_qual = u'col1'
+        column = col_fam + u':' + col_qual
+        value = 42
+        packed_value = struct.pack('>q', value)
+        fake_timestamp = None
+        commit_result = {
+            col_fam: {
+                col_qual: [(packed_value, fake_timestamp)],
+            }
+        }
+        self._counter_inc_helper(row, column, value, commit_result)
+
+    def test_counter_inc_column_bytes(self):
+        import struct
+
+        row = 'row-key'
+        col_fam = b'fam'
+        col_qual = b'col1'
+        column = col_fam + b':' + col_qual
+        value = 42
+        packed_value = struct.pack('>q', value)
+        fake_timestamp = None
+        commit_result = {
+            col_fam.decode('utf-8'): {
+                col_qual.decode('utf-8'): [(packed_value, fake_timestamp)],
+            }
+        }
+        self._counter_inc_helper(row, column, value, commit_result)
+
+    def test_counter_inc_bad_result(self):
+        row = 'row-key'
+        col_fam = 'fam'
+        col_qual = 'col1'
+        column = col_fam + ':' + col_qual
+        value = 42
+        commit_result = None
+        with self.assertRaises(TypeError):
+            self._counter_inc_helper(row, column, value, commit_result)
+
+    def test_counter_inc_result_key_error(self):
+        row = 'row-key'
+        col_fam = 'fam'
+        col_qual = 'col1'
+        column = col_fam + ':' + col_qual
+        value = 42
+        commit_result = {}
+        with self.assertRaises(KeyError):
+            self._counter_inc_helper(row, column, value, commit_result)
+
+    def test_counter_inc_result_nested_key_error(self):
+        row = 'row-key'
+        col_fam = 'fam'
+        col_qual = 'col1'
+        column = col_fam + ':' + col_qual
+        value = 42
+        commit_result = {col_fam: {}}
+        with self.assertRaises(KeyError):
+            self._counter_inc_helper(row, column, value, commit_result)
+
+    def test_counter_inc_result_non_unique_cell(self):
+        row = 'row-key'
+        col_fam = 'fam'
+        col_qual = 'col1'
+        column = col_fam + ':' + col_qual
+        value = 42
+        fake_timestamp = None
+        packed_value = None
+        commit_result = {
+            col_fam: {
+                col_qual: [
+                    (packed_value, fake_timestamp),
+                    (packed_value, fake_timestamp),
+                ],
+            }
+        }
+        with self.assertRaises(ValueError):
+            self._counter_inc_helper(row, column, value, commit_result)
+
 
 class Test__gc_rule_to_dict(unittest2.TestCase):
 
@@ -231,7 +388,29 @@ class _MockLowLevelTable(object):
         self.kwargs = kwargs
         self.list_column_families_calls = 0
         self.column_families = {}
+        self.row_values = {}
 
     def list_column_families(self):
         self.list_column_families_calls += 1
         return self.column_families
+
+    def row(self, row_key):
+        return self.row_values[row_key]
+
+
+class _MockLowLevelRow(object):
+
+    COUNTER_DEFAULT = 0
+
+    def __init__(self, row_key, commit_result=None):
+        self.row_key = row_key
+        self.counts = {}
+        self.commit_result = commit_result
+
+    def increment_cell_value(self, column_family_id, column, int_value):
+        count = self.counts.setdefault((column_family_id, column),
+                                       self.COUNTER_DEFAULT)
+        self.counts[(column_family_id, column)] = count + int_value
+
+    def commit_modifications(self):
+        return self.commit_result
