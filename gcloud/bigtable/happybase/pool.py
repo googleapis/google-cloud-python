@@ -15,6 +15,7 @@
 """Google Cloud Bigtable HappyBase pool module."""
 
 
+import contextlib
 import threading
 
 import six
@@ -25,6 +26,14 @@ from gcloud.bigtable.happybase.connection import _get_cluster
 
 _MIN_POOL_SIZE = 1
 """Minimum allowable size of a connection pool."""
+
+
+class NoConnectionsAvailable(RuntimeError):
+    """Exception raised when no connections are available.
+
+    This happens if a timeout was specified when obtaining a connection,
+    and no connection became available within the specified timeout.
+    """
 
 
 class ConnectionPool(object):
@@ -70,4 +79,73 @@ class ConnectionPool(object):
 
         for _ in six.moves.range(size):
             connection = Connection(**connection_kwargs)
+            self._queue.put(connection)
+
+    def _acquire_connection(self, timeout=None):
+        """Acquire a connection from the pool.
+
+        :type timeout: int
+        :param timeout: (Optional) Time (in seconds) to wait for a connection
+                        to open.
+
+        :rtype: :class:`.Connection`
+        :returns: An active connection from the queue stored on the pool.
+        :raises: :class:`NoConnectionsAvailable` if ``Queue.get`` fails
+                 before the ``timeout`` (only if a timeout is specified).
+        """
+        try:
+            return self._queue.get(block=True, timeout=timeout)
+        except six.moves.queue.Empty:
+            raise NoConnectionsAvailable('No connection available from pool '
+                                         'within specified timeout')
+
+    @contextlib.contextmanager
+    def connection(self, timeout=None):
+        """Obtain a connection from the pool.
+
+        Must be used as a context manager, for example::
+
+            with pool.connection() as connection:
+                pass  # do something with the connection
+
+        If ``timeout`` is omitted, this method waits forever for a connection
+        to become available.
+
+        :type timeout: int
+        :param timeout: (Optional) Time (in seconds) to wait for a connection
+                        to open.
+
+        :rtype: :class:`.Connection`
+        :returns: An active connection from the pool.
+        :raises: :class:`NoConnectionsAvailable` if no connection can be
+                 retrieved from the pool before the ``timeout`` (only if
+                 a timeout is specified).
+        """
+        connection = getattr(self._thread_connections, 'current', None)
+
+        retrieved_new_cnxn = False
+        if connection is None:
+            # In this case we need to actually grab a connection from the
+            # pool. After retrieval, the connection is stored on a thread
+            # local so that nested connection requests from the same
+            # thread can re-use the same connection instance.
+            #
+            # NOTE: This code acquires a lock before assigning to the
+            #       thread local; see
+            #       ('https://emptysqua.re/blog/'
+            #        'another-thing-about-pythons-threadlocals/')
+            retrieved_new_cnxn = True
+            connection = self._acquire_connection(timeout)
+            with self._lock:
+                self._thread_connections.current = connection
+
+        # This is a no-op for connections that have already been opened
+        # since they just call Client.start().
+        connection.open()
+        yield connection
+
+        # Remove thread local reference after the outermost 'with' block
+        # ends. Afterwards the thread no longer owns the connection.
+        if retrieved_new_cnxn:
+            del self._thread_connections.current
             self._queue.put(connection)
