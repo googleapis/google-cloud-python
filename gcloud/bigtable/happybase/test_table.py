@@ -443,6 +443,142 @@ class Test__gc_rule_to_dict(unittest2.TestCase):
         self.assertTrue(result is gc_rule)
 
 
+class Test__string_successor(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _string_successor
+        return _string_successor(*args, **kwargs)
+
+    def test_with_alphanumeric(self):
+        self.assertEqual(self._callFUT(b'boa'), b'bob')
+        self.assertEqual(self._callFUT(b'abc1'), b'abc2')
+
+    def test_with_last_byte(self):
+        self.assertEqual(self._callFUT(b'boa\xff'), b'bob')
+
+    def test_with_empty_string(self):
+        self.assertEqual(self._callFUT(b''), b'')
+
+    def test_with_all_last_bytes(self):
+        self.assertEqual(self._callFUT(b'\xff\xff\xff'), b'')
+
+    def test_with_unicode_input(self):
+        self.assertEqual(self._callFUT(u'boa'), b'bob')
+
+
+class Test__convert_to_time_range(unittest2.TestCase):
+
+    def _callFUT(self, timestamp=None):
+        from gcloud.bigtable.happybase.table import _convert_to_time_range
+        return _convert_to_time_range(timestamp=timestamp)
+
+    def test_null(self):
+        timestamp = None
+        result = self._callFUT(timestamp=timestamp)
+        self.assertEqual(result, None)
+
+    def test_invalid_type(self):
+        timestamp = object()
+        with self.assertRaises(TypeError):
+            self._callFUT(timestamp=timestamp)
+
+    def test_success(self):
+        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud.bigtable.row import TimestampRange
+
+        timestamp = 1441928298571
+        ts_dt = _datetime_from_microseconds(1000 * timestamp)
+        result = self._callFUT(timestamp=timestamp)
+        self.assertTrue(isinstance(result, TimestampRange))
+        self.assertEqual(result.start, None)
+        self.assertEqual(result.end, ts_dt)
+
+
+class Test__cells_to_pairs(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _cells_to_pairs
+        return _cells_to_pairs(*args, **kwargs)
+
+    def test_without_timestamp(self):
+        from gcloud.bigtable.row_data import Cell
+
+        value1 = 'foo'
+        cell1 = Cell(value=value1, timestamp=None)
+        value2 = 'bar'
+        cell2 = Cell(value=value2, timestamp=None)
+
+        result = self._callFUT([cell1, cell2])
+        self.assertEqual(result, [value1, value2])
+
+    def test_with_timestamp(self):
+        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud.bigtable.row_data import Cell
+
+        value1 = 'foo'
+        ts1_millis = 1221934570148
+        ts1 = _datetime_from_microseconds(ts1_millis * 1000)
+        cell1 = Cell(value=value1, timestamp=ts1)
+
+        value2 = 'bar'
+        ts2_millis = 1221955575548
+        ts2 = _datetime_from_microseconds(ts2_millis * 1000)
+        cell2 = Cell(value=value2, timestamp=ts2)
+
+        result = self._callFUT([cell1, cell2], include_timestamp=True)
+        self.assertEqual(result,
+                         [(value1, ts1_millis), (value2, ts2_millis)])
+
+
+class Test__partial_row_to_dict(unittest2.TestCase):
+
+    def _callFUT(self, partial_row_data, include_timestamp=False):
+        from gcloud.bigtable.happybase.table import _partial_row_to_dict
+        return _partial_row_to_dict(partial_row_data,
+                                    include_timestamp=include_timestamp)
+
+    def test_without_timestamp(self):
+        from gcloud.bigtable.row_data import Cell
+        from gcloud.bigtable.row_data import PartialRowData
+
+        row_data = PartialRowData(b'row-key')
+        val1 = b'hi-im-bytes'
+        val2 = b'bi-im-hytes'
+        row_data._cells[u'fam1'] = {
+            b'col1': [Cell(val1, None)],
+            b'col2': [Cell(val2, None)],
+        }
+        result = self._callFUT(row_data)
+        expected_result = {
+            b'fam1:col1': val1,
+            b'fam1:col2': val2,
+        }
+        self.assertEqual(result, expected_result)
+
+    def test_with_timestamp(self):
+        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud.bigtable.row_data import Cell
+        from gcloud.bigtable.row_data import PartialRowData
+
+        row_data = PartialRowData(b'row-key')
+        val1 = b'hi-im-bytes'
+        ts1_millis = 1221934570148
+        ts1 = _datetime_from_microseconds(ts1_millis * 1000)
+        val2 = b'bi-im-hytes'
+        ts2_millis = 1331934880000
+        ts2 = _datetime_from_microseconds(ts2_millis * 1000)
+        row_data._cells[u'fam1'] = {
+            b'col1': [Cell(val1, ts1)],
+            b'col2': [Cell(val2, ts2)],
+        }
+        result = self._callFUT(row_data, include_timestamp=True)
+        expected_result = {
+            b'fam1:col1': (val1, ts1_millis),
+            b'fam1:col2': (val2, ts2_millis),
+        }
+        self.assertEqual(result, expected_result)
+
+
 class _Connection(object):
 
     def __init__(self, cluster):
