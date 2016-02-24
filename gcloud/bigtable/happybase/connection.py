@@ -97,7 +97,7 @@ class Connection(object):
 
     The arguments ``host``, ``port``, ``compat``, ``transport`` and
     ``protocol`` are allowed (as keyword arguments) for compatibility with
-    HappyBase. However, they will not be used in anyway, and will cause a
+    HappyBase. However, they will not be used in any way, and will cause a
     warning if passed.
 
     :type timeout: int

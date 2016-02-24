@@ -121,6 +121,62 @@ class TestTable(unittest2.TestCase):
         with self.assertRaises(NotImplementedError):
             table.regions()
 
+    def test_row(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.row(None)
+
+    def test_rows(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.rows(None)
+
+    def test_cells(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.cells(None, None)
+
+    def test_scan(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.scan()
+
+    def test_put(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.put(None, None)
+
+    def test_delete(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.delete(None)
+
+    def test_batch(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        with self.assertRaises(NotImplementedError):
+            table.batch()
+
     def test_counter_get(self):
         klass = self._getTargetClass()
         counter_value = 1337
