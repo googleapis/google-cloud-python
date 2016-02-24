@@ -23,6 +23,7 @@ from gcloud._helpers import _total_seconds
 from gcloud.bigtable.column_family import GCRuleIntersection
 from gcloud.bigtable.column_family import MaxAgeGCRule
 from gcloud.bigtable.column_family import MaxVersionsGCRule
+from gcloud.bigtable.happybase.batch import _WAL_SENTINEL
 from gcloud.bigtable.table import Table as _LowLevelTable
 
 
@@ -129,6 +130,296 @@ class Table(object):
         """
         raise NotImplementedError('The Cloud Bigtable API does not have a '
                                   'concept of splitting a table into regions.')
+
+    def row(self, row, columns=None, timestamp=None, include_timestamp=False):
+        """Retrieve a single row of data.
+
+        Returns the latest cells in each column (or all columns if ``columns``
+        is not specified). If a ``timestamp`` is set, then **latest** becomes
+        **latest** up until ``timestamp``.
+
+        :type row: str
+        :param row: Row key for the row we are reading from.
+
+        :type columns: list
+        :param columns: (Optional) Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch). If specified, only cells returned before the
+                          the timestamp will be returned.
+
+        :type include_timestamp: bool
+        :param include_timestamp: Flag to indicate if cell timestamps should be
+                                  included with the output.
+
+        :rtype: dict
+        :returns: Dictionary containing all the latest column values in
+                  the row.
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def rows(self, rows, columns=None, timestamp=None,
+             include_timestamp=False):
+        """Retrieve multiple rows of data.
+
+        All optional arguments behave the same in this method as they do in
+        :meth:`row`.
+
+        :type rows: list
+        :param rows: Iterable of the row keys for the rows we are reading from.
+
+        :type columns: list
+        :param columns: (Optional) Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch). If specified, only cells returned before (or
+                          at) the timestamp will be returned.
+
+        :type include_timestamp: bool
+        :param include_timestamp: Flag to indicate if cell timestamps should be
+                                  included with the output.
+
+        :rtype: list
+        :returns: A list of pairs, where the first is the row key and the
+                  second is a dictionary with the filtered values returned.
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def cells(self, row, column, versions=None, timestamp=None,
+              include_timestamp=False):
+        """Retrieve multiple versions of a single cell from the table.
+
+        :type row: str
+        :param row: Row key for the row we are reading from.
+
+        :type column: str
+        :param column: Column we are reading from; of the form ``fam:col``.
+
+        :type versions: int
+        :param versions: (Optional) The maximum number of cells to return. If
+                         not set, returns all cells found.
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch). If specified, only cells returned before (or
+                          at) the timestamp will be returned.
+
+        :type include_timestamp: bool
+        :param include_timestamp: Flag to indicate if cell timestamps should be
+                                  included with the output.
+
+        :rtype: list
+        :returns: List of values in the cell (with timestamps if
+                  ``include_timestamp`` is :data:`True`).
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def scan(self, row_start=None, row_stop=None, row_prefix=None,
+             columns=None, filter=None, timestamp=None,
+             include_timestamp=False, limit=None, **kwargs):
+        """Create a scanner for data in this table.
+
+        This method returns a generator that can be used for looping over the
+        matching rows.
+
+        If ``row_prefix`` is specified, only rows with row keys matching the
+        prefix will be returned. If given, ``row_start`` and ``row_stop``
+        cannot be used.
+
+        .. note::
+
+            Both ``row_start`` and ``row_stop`` can be :data:`None` to specify
+            the start and the end of the table respectively. If both are
+            omitted, a full table scan is done. Note that this usually results
+            in severe performance problems.
+
+        The arguments ``batch_size``, ``scan_batching`` and ``sorted_columns``
+        are allowed (as keyword arguments) for compatibility with
+        HappyBase. However, they will not be used in any way, and will cause a
+        warning if passed. (The ``batch_size`` determines the number of
+        results to retrieve per request. The HBase scanner defaults to reading
+        one record at a time, so this argument allows HappyBase to increase
+        that number. However, the Cloud Bigtable API uses HTTP/2 streaming so
+        there is no concept of a batch. The ``sorted_columns`` flag tells
+        HBase to return columns in order, but Cloud Bigtable doesn't have
+        this feature.)
+
+        :type row_start: str
+        :param row_start: (Optional) Row key where the scanner should start
+                          (includes ``row_start``). If not specified, reads
+                          from the first key. If the table does not contain
+                          ``row_start``, it will start from the next key after
+                          it that **is** contained in the table.
+
+        :type row_stop: str
+        :param row_stop: (Optional) Row key where the scanner should stop
+                         (excludes ``row_stop``). If not specified, reads
+                         until the last key. The table does not have to contain
+                         ``row_stop``.
+
+        :type row_prefix: str
+        :param row_prefix: (Optional) Prefix to match row keys.
+
+        :type columns: list
+        :param columns: (Optional) Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+        :type filter: :class:`.RowFilter`
+        :param filter: (Optional) An additional filter (beyond column and
+                       row range filters supported here). HappyBase / HBase
+                       users will have used this as an HBase filter string. See
+                       http://hbase.apache.org/0.94/book/thrift.html
+                       for more details on those filters.
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch). If specified, only cells returned before (or
+                          at) the timestamp will be returned.
+
+        :type include_timestamp: bool
+        :param include_timestamp: Flag to indicate if cell timestamps should be
+                                  included with the output.
+
+        :type limit: int
+        :param limit: (Optional) Maximum number of rows to return.
+
+        :type kwargs: dict
+        :param kwargs: Remaining keyword arguments. Provided for HappyBase
+                       compatibility.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if ``batch_size``
+                 or ``scan_batching`` are used, or if ``limit`` is set but
+                 non-positive, or if row prefix is used with row start/stop,
+                 :class:`TypeError <exceptions.TypeError>` if a string
+                 ``filter`` is used,
+                 :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def put(self, row, data, timestamp=None, wal=_WAL_SENTINEL):
+        """Insert data into a row in this table.
+
+        .. note::
+
+            This method will send a request with a single "put" mutation.
+            In many situations, :meth:`batch` is a more appropriate
+            method to manipulate data since it helps combine many mutations
+            into a single request.
+
+        :type row: str
+        :param row: The row key where the mutation will be "put".
+
+        :type data: dict
+        :param data: Dictionary containing the data to be inserted. The keys
+                     are columns names (of the form ``fam:col``) and the values
+                     are strings (bytes) to be stored in those columns.
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch) that the mutation will be applied at.
+
+        :type wal: object
+        :param wal: Unused parameter (to be passed to a created batch).
+                    Provided for compatibility with HappyBase, but irrelevant
+                    for Cloud Bigtable since it does not have a Write Ahead
+                    Log.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def delete(self, row, columns=None, timestamp=None, wal=_WAL_SENTINEL):
+        """Delete data from a row in this table.
+
+        This method deletes the entire ``row`` if ``columns`` is not
+        specified.
+
+        .. note::
+
+            This method will send a request with a single delete mutation.
+            In many situations, :meth:`batch` is a more appropriate
+            method to manipulate data since it helps combine many mutations
+            into a single request.
+
+        :type row: str
+        :param row: The row key where the delete will occur.
+
+        :type columns: list
+        :param columns: (Optional) Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch) that the mutation will be applied at.
+
+        :type wal: object
+        :param wal: Unused parameter (to be passed to a created batch).
+                    Provided for compatibility with HappyBase, but irrelevant
+                    for Cloud Bigtable since it does not have a Write Ahead
+                    Log.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
+
+    def batch(self, timestamp=None, batch_size=None, transaction=False,
+              wal=_WAL_SENTINEL):
+        """Create a new batch operation for this table.
+
+        This method returns a new :class:`.Batch` instance that can be used
+        for mass data manipulation.
+
+        :type timestamp: int
+        :param timestamp: (Optional) Timestamp (in milliseconds since the
+                          epoch) that all mutations will be applied at.
+
+        :type batch_size: int
+        :param batch_size: (Optional) The maximum number of mutations to allow
+                           to accumulate before committing them.
+
+        :type transaction: bool
+        :param transaction: Flag indicating if the mutations should be sent
+                            transactionally or not. If ``transaction=True`` and
+                            an error occurs while a :class:`Batch` is active,
+                            then none of the accumulated mutations will be
+                            committed. If ``batch_size`` is set, the mutation
+                            can't be transactional.
+
+        :type wal: object
+        :param wal: Unused parameter (to be passed to the created batch).
+                    Provided for compatibility with HappyBase, but irrelevant
+                    for Cloud Bigtable since it does not have a Write Ahead
+                    Log.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always (until the method is implemented).
+        """
+        raise NotImplementedError
 
     def counter_get(self, row, column):
         """Retrieve the current value of a counter column.
