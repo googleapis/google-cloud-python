@@ -19,6 +19,9 @@ import struct
 
 import six
 
+from gcloud._helpers import _datetime_from_microseconds
+from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import _to_bytes
 from gcloud._helpers import _total_seconds
 from gcloud.bigtable.column_family import GCRuleIntersection
 from gcloud.bigtable.column_family import MaxAgeGCRule
@@ -26,6 +29,7 @@ from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.happybase.batch import _WAL_SENTINEL
 from gcloud.bigtable.happybase.batch import Batch
 from gcloud.bigtable.table import Table as _LowLevelTable
+from gcloud.bigtable.row import TimestampRange
 
 
 _UNPACK_I64 = struct.Struct('>q').unpack
@@ -562,4 +566,156 @@ def _gc_rule_to_dict(gc_rule):
                 key2, = rule2.keys()
                 if key1 != key2:
                     result = {key1: rule1[key1], key2: rule2[key2]}
+    return result
+
+
+def _next_char(str_val, index):
+    """Gets the next character based on a position in a string.
+
+    :type str_val: str
+    :param str_val: A string containing the character to update.
+
+    :type index: int
+    :param index: An integer index in ``str_val``.
+
+    :rtype: str
+    :returns: The next character after the character at ``index``
+              in ``str_val``.
+    """
+    ord_val = six.indexbytes(str_val, index)
+    return _to_bytes(chr(ord_val + 1), encoding='latin-1')
+
+
+def _string_successor(str_val):
+    """Increment and truncate a byte string.
+
+    Determines shortest string that sorts after the given string when
+    compared using regular string comparison semantics.
+
+    Modeled after implementation in ``gcloud-golang``.
+
+    Increments the last byte that is smaller than ``0xFF``, and
+    drops everything after it. If the string only contains ``0xFF`` bytes,
+    ``''`` is returned.
+
+    :type str_val: str
+    :param str_val: String to increment.
+
+    :rtype: str
+    :returns: The next string in lexical order after ``str_val``.
+    """
+    str_val = _to_bytes(str_val, encoding='latin-1')
+    if str_val == b'':
+        return str_val
+
+    index = len(str_val) - 1
+    while index >= 0:
+        if six.indexbytes(str_val, index) != 0xff:
+            break
+        index -= 1
+
+    if index == -1:
+        return b''
+
+    return str_val[:index] + _next_char(str_val, index)
+
+
+def _convert_to_time_range(timestamp=None):
+    """Create a timestamp range from an HBase / HappyBase timestamp.
+
+    HBase uses timestamp as an argument to specify an exclusive end
+    deadline. Cloud Bigtable also uses exclusive end times, so
+    the behavior matches.
+
+    :type timestamp: int
+    :param timestamp: (Optional) Timestamp (in milliseconds since the
+                      epoch). Intended to be used as the end of an HBase
+                      time range, which is exclusive.
+
+    :rtype: :class:`.TimestampRange`, :data:`NoneType <types.NoneType>`
+    :returns: The timestamp range corresponding to the passed in
+              ``timestamp``.
+    """
+    if timestamp is None:
+        return None
+
+    next_timestamp = _datetime_from_microseconds(1000 * timestamp)
+    return TimestampRange(end=next_timestamp)
+
+
+def _cells_to_pairs(cells, include_timestamp=False):
+    """Converts list of cells to HappyBase format.
+
+    For example::
+
+      >>> import datetime
+      >>> from gcloud.bigtable.row_data import Cell
+      >>> cell1 = Cell(b'val1', datetime.datetime.utcnow())
+      >>> cell2 = Cell(b'val2', datetime.datetime.utcnow())
+      >>> _cells_to_pairs([cell1, cell2])
+      [b'val1', b'val2']
+      >>> _cells_to_pairs([cell1, cell2], include_timestamp=True)
+      [(b'val1', 1456361486255), (b'val2', 1456361491927)]
+
+    :type cells: list
+    :param cells: List of :class:`.Cell` returned from a read request.
+
+    :type include_timestamp: bool
+    :param include_timestamp: Flag to indicate if cell timestamps should be
+                              included with the output.
+
+    :rtype: list
+    :returns: List of values in the cell. If ``include_timestamp=True``, each
+              value will be a pair, with the first part the bytes value in
+              the cell and the second part the number of milliseconds in the
+              timestamp on the cell.
+    """
+    result = []
+    for cell in cells:
+        if include_timestamp:
+            ts_millis = _microseconds_from_datetime(cell.timestamp) // 1000
+            result.append((cell.value, ts_millis))
+        else:
+            result.append(cell.value)
+    return result
+
+
+def _partial_row_to_dict(partial_row_data, include_timestamp=False):
+    """Convert a low-level row data object to a dictionary.
+
+    Assumes only the latest value in each row is needed. This assumption
+    is due to the fact that this method is used by callers which use
+    a ``CellsColumnLimitFilter(1)`` filter.
+
+    For example::
+
+      >>> import datetime
+      >>> from gcloud.bigtable.row_data import Cell, PartialRowData
+      >>> cell1 = Cell(b'val1', datetime.datetime.utcnow())
+      >>> cell2 = Cell(b'val2', datetime.datetime.utcnow())
+      >>> row_data = PartialRowData(b'row-key')
+      >>> _partial_row_to_dict(row_data)
+      {}
+      >>> row_data._cells[u'fam1'] = {b'col1': [cell1], b'col2': [cell2]}
+      >>> _partial_row_to_dict(row_data)
+      {b'fam1:col2': b'val2', b'fam1:col1': b'val1'}
+      >>> _partial_row_to_dict(row_data, include_timestamp=True)
+      {b'fam1:col2': (b'val2', 1456361724480),
+       b'fam1:col1': (b'val1', 1456361721135)}
+
+    :type partial_row_data: :class:`.row_data.PartialRowData`
+    :param partial_row_data: Row data consumed from a stream.
+
+    :type include_timestamp: bool
+    :param include_timestamp: Flag to indicate if cell timestamps should be
+                              included with the output.
+
+    :rtype: dict
+    :returns: The row data converted to a dictionary.
+    """
+    result = {}
+    for column, cells in six.iteritems(partial_row_data.to_dict()):
+        cell_vals = _cells_to_pairs(cells,
+                                    include_timestamp=include_timestamp)
+        result[column] = cell_vals[0]
     return result
