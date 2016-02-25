@@ -173,10 +173,21 @@ class Table(object):
         :rtype: dict
         :returns: Dictionary containing all the latest column values in
                   the row.
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
         """
-        raise NotImplementedError
+        filters = []
+        if columns is not None:
+            filters.append(_columns_filter_helper(columns))
+        # versions == 1 since we only want the latest.
+        filter_ = _filter_chain_helper(versions=1, timestamp=timestamp,
+                                       filters=filters)
+
+        partial_row_data = self._low_level_table.read_row(
+            row, filter_=filter_)
+        if partial_row_data is None:
+            return {}
+
+        return _partial_row_to_dict(partial_row_data,
+                                    include_timestamp=include_timestamp)
 
     def rows(self, rows, columns=None, timestamp=None,
              include_timestamp=False):
@@ -207,10 +218,34 @@ class Table(object):
         :rtype: list
         :returns: A list of pairs, where the first is the row key and the
                   second is a dictionary with the filtered values returned.
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
         """
-        raise NotImplementedError
+        if not rows:
+            # Avoid round-trip if the result is empty anyway
+            return []
+
+        filters = []
+        if columns is not None:
+            filters.append(_columns_filter_helper(columns))
+        filters.append(_row_keys_filter_helper(rows))
+        # versions == 1 since we only want the latest.
+        filter_ = _filter_chain_helper(versions=1, timestamp=timestamp,
+                                       filters=filters)
+
+        partial_rows_data = self._low_level_table.read_rows(filter_=filter_)
+        # NOTE: We could use max_loops = 1000 or some similar value to ensure
+        #       that the stream isn't open too long.
+        partial_rows_data.consume_all()
+
+        result = []
+        for row_key in rows:
+            if row_key not in partial_rows_data.rows:
+                continue
+            curr_row_data = partial_rows_data.rows[row_key]
+            curr_row_dict = _partial_row_to_dict(
+                curr_row_data, include_timestamp=include_timestamp)
+            result.append((row_key, curr_row_dict))
+
+        return result
 
     def cells(self, row, column, versions=None, timestamp=None,
               include_timestamp=False):
