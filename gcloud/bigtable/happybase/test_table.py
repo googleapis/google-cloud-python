@@ -579,6 +579,201 @@ class Test__partial_row_to_dict(unittest2.TestCase):
         self.assertEqual(result, expected_result)
 
 
+class Test__filter_chain_helper(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _filter_chain_helper
+        return _filter_chain_helper(*args, **kwargs)
+
+    def test_no_filters(self):
+        with self.assertRaises(ValueError):
+            self._callFUT()
+
+    def test_single_filter(self):
+        from gcloud.bigtable.row import CellsColumnLimitFilter
+
+        versions = 1337
+        result = self._callFUT(versions=versions)
+        self.assertTrue(isinstance(result, CellsColumnLimitFilter))
+        # Relies on the fact that RowFilter instances can
+        # only have one value set.
+        self.assertEqual(result.num_cells, versions)
+
+    def test_existing_filters(self):
+        from gcloud.bigtable.row import CellsColumnLimitFilter
+
+        filters = []
+        versions = 1337
+        result = self._callFUT(versions=versions, filters=filters)
+        # Make sure filters has grown.
+        self.assertEqual(filters, [result])
+
+        self.assertTrue(isinstance(result, CellsColumnLimitFilter))
+        # Relies on the fact that RowFilter instances can
+        # only have one value set.
+        self.assertEqual(result.num_cells, versions)
+
+    def _column_helper(self, num_filters, versions=None, timestamp=None,
+                       column=None, col_fam=None, qual=None):
+        from gcloud.bigtable.row import ColumnQualifierRegexFilter
+        from gcloud.bigtable.row import FamilyNameRegexFilter
+        from gcloud.bigtable.row import RowFilterChain
+
+        if col_fam is None:
+            col_fam = 'cf1'
+        if qual is None:
+            qual = 'qual'
+        if column is None:
+            column = col_fam + ':' + qual
+        result = self._callFUT(column, versions=versions, timestamp=timestamp)
+        self.assertTrue(isinstance(result, RowFilterChain))
+
+        self.assertEqual(len(result.filters), num_filters)
+        fam_filter = result.filters[0]
+        qual_filter = result.filters[1]
+        self.assertTrue(isinstance(fam_filter, FamilyNameRegexFilter))
+        self.assertTrue(isinstance(qual_filter, ColumnQualifierRegexFilter))
+
+        # Relies on the fact that RowFilter instances can
+        # only have one value set.
+        self.assertEqual(fam_filter.regex, col_fam)
+        self.assertEqual(qual_filter.regex, qual)
+
+        return result
+
+    def test_column_only(self):
+        self._column_helper(num_filters=2)
+
+    def test_column_bytes(self):
+        self._column_helper(num_filters=2, column=b'cfB:qualY',
+                            col_fam=u'cfB', qual=u'qualY')
+
+    def test_column_unicode(self):
+        self._column_helper(num_filters=2, column=u'cfU:qualN',
+                            col_fam=u'cfU', qual=u'qualN')
+
+    def test_with_versions(self):
+        from gcloud.bigtable.row import CellsColumnLimitFilter
+
+        versions = 11
+        result = self._column_helper(num_filters=3, versions=versions)
+
+        version_filter = result.filters[2]
+        self.assertTrue(isinstance(version_filter, CellsColumnLimitFilter))
+        # Relies on the fact that RowFilter instances can
+        # only have one value set.
+        self.assertEqual(version_filter.num_cells, versions)
+
+    def test_with_timestamp(self):
+        from gcloud._helpers import _datetime_from_microseconds
+        from gcloud.bigtable.row import TimestampRange
+        from gcloud.bigtable.row import TimestampRangeFilter
+
+        timestamp = 1441928298571
+        result = self._column_helper(num_filters=3, timestamp=timestamp)
+
+        range_filter = result.filters[2]
+        self.assertTrue(isinstance(range_filter, TimestampRangeFilter))
+        # Relies on the fact that RowFilter instances can
+        # only have one value set.
+        time_range = range_filter.range_
+        self.assertTrue(isinstance(time_range, TimestampRange))
+        self.assertEqual(time_range.start, None)
+        ts_dt = _datetime_from_microseconds(1000 * timestamp)
+        self.assertEqual(time_range.end, ts_dt)
+
+    def test_with_all_options(self):
+        versions = 11
+        timestamp = 1441928298571
+        self._column_helper(num_filters=4, versions=versions,
+                            timestamp=timestamp)
+
+
+class Test__columns_filter_helper(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _columns_filter_helper
+        return _columns_filter_helper(*args, **kwargs)
+
+    def test_no_columns(self):
+        columns = []
+        with self.assertRaises(ValueError):
+            self._callFUT(columns)
+
+    def test_single_column(self):
+        from gcloud.bigtable.row import FamilyNameRegexFilter
+
+        col_fam = 'cf1'
+        columns = [col_fam]
+        result = self._callFUT(columns)
+        expected_result = FamilyNameRegexFilter(col_fam)
+        self.assertEqual(result, expected_result)
+
+    def test_column_and_column_families(self):
+        from gcloud.bigtable.row import ColumnQualifierRegexFilter
+        from gcloud.bigtable.row import FamilyNameRegexFilter
+        from gcloud.bigtable.row import RowFilterChain
+        from gcloud.bigtable.row import RowFilterUnion
+
+        col_fam1 = 'cf1'
+        col_fam2 = 'cf2'
+        col_qual2 = 'qual2'
+        columns = [col_fam1, col_fam2 + ':' + col_qual2]
+        result = self._callFUT(columns)
+
+        self.assertTrue(isinstance(result, RowFilterUnion))
+        self.assertEqual(len(result.filters), 2)
+        filter1 = result.filters[0]
+        filter2 = result.filters[1]
+
+        self.assertTrue(isinstance(filter1, FamilyNameRegexFilter))
+        self.assertEqual(filter1.regex, col_fam1)
+
+        self.assertTrue(isinstance(filter2, RowFilterChain))
+        filter2a, filter2b = filter2.filters
+        self.assertTrue(isinstance(filter2a, FamilyNameRegexFilter))
+        self.assertEqual(filter2a.regex, col_fam2)
+        self.assertTrue(isinstance(filter2b, ColumnQualifierRegexFilter))
+        self.assertEqual(filter2b.regex, col_qual2)
+
+
+class Test__row_keys_filter_helper(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.bigtable.happybase.table import _row_keys_filter_helper
+        return _row_keys_filter_helper(*args, **kwargs)
+
+    def test_no_rows(self):
+        row_keys = []
+        with self.assertRaises(ValueError):
+            self._callFUT(row_keys)
+
+    def test_single_row(self):
+        from gcloud.bigtable.row import RowKeyRegexFilter
+
+        row_key = b'row-key'
+        row_keys = [row_key]
+        result = self._callFUT(row_keys)
+        expected_result = RowKeyRegexFilter(row_key)
+        self.assertEqual(result, expected_result)
+
+    def test_many_rows(self):
+        from gcloud.bigtable.row import RowFilterUnion
+        from gcloud.bigtable.row import RowKeyRegexFilter
+
+        row_key1 = b'row-key1'
+        row_key2 = b'row-key2'
+        row_key3 = b'row-key3'
+        row_keys = [row_key1, row_key2, row_key3]
+        result = self._callFUT(row_keys)
+
+        filter1 = RowKeyRegexFilter(row_key1)
+        filter2 = RowKeyRegexFilter(row_key2)
+        filter3 = RowKeyRegexFilter(row_key3)
+        expected_result = RowFilterUnion(filters=[filter1, filter2, filter3])
+        self.assertEqual(result, expected_result)
+
+
 class _Connection(object):
 
     def __init__(self, cluster):
