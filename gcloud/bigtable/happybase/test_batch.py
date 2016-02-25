@@ -212,7 +212,8 @@ class TestBatch(unittest2.TestCase):
 
         def mock_warn(message):
             warned.append(message)
-            # Raise an exception so we don't
+            # Raise an exception so we don't have to mock the entire
+            # environment needed for put().
             raise RuntimeError('No need to execute the rest.')
 
         table = object()
@@ -287,6 +288,139 @@ class TestBatch(unittest2.TestCase):
         batch.put(row_key, data={})
         self.assertEqual(batch._mutation_count, 0)
         self.assertEqual(batch.try_send_calls, 1)
+
+    def _delete_columns_test_helper(self, time_range=None):
+        table = object()
+        batch = self._makeOne(table)
+        batch._delete_range = time_range
+
+        col1_fam = 'cf1'
+        col2_fam = 'cf2'
+        col2_qual = 'col-name'
+        columns = [col1_fam + ':', col2_fam + ':' + col2_qual]
+        row_object = _MockRow()
+
+        batch._delete_columns(columns, row_object)
+        self.assertEqual(row_object.commits, 0)
+
+        cell_deleted_args = (col2_fam, col2_qual)
+        cell_deleted_kwargs = {'time_range': time_range}
+        self.assertEqual(row_object.delete_cell_calls,
+                         [(cell_deleted_args, cell_deleted_kwargs)])
+        fam_deleted_args = (col1_fam,)
+        fam_deleted_kwargs = {'columns': row_object.ALL_COLUMNS}
+        self.assertEqual(row_object.delete_cells_calls,
+                         [(fam_deleted_args, fam_deleted_kwargs)])
+
+    def test__delete_columns(self):
+        self._delete_columns_test_helper()
+
+    def test__delete_columns_w_time_and_col_fam(self):
+        time_range = object()
+        with self.assertRaises(ValueError):
+            self._delete_columns_test_helper(time_range=time_range)
+
+    def test_delete_bad_wal(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import batch as MUT
+
+        warned = []
+
+        def mock_warn(message):
+            warned.append(message)
+            # Raise an exception so we don't have to mock the entire
+            # environment needed for delete().
+            raise RuntimeError('No need to execute the rest.')
+
+        table = object()
+        batch = self._makeOne(table)
+
+        row = 'row-key'
+        columns = []
+        wal = None
+
+        self.assertNotEqual(wal, MUT._WAL_SENTINEL)
+        with _Monkey(MUT, _WARN=mock_warn):
+            with self.assertRaises(RuntimeError):
+                batch.delete(row, columns=columns, wal=wal)
+
+        self.assertEqual(warned, [MUT._WAL_WARNING])
+
+    def test_delete_entire_row(self):
+        table = object()
+        batch = self._makeOne(table)
+
+        row_key = 'row-key'
+        batch._row_map[row_key] = row = _MockRow()
+
+        self.assertEqual(row.deletes, 0)
+        self.assertEqual(batch._mutation_count, 0)
+        batch.delete(row_key, columns=None)
+        self.assertEqual(row.deletes, 1)
+        self.assertEqual(batch._mutation_count, 1)
+
+    def test_delete_entire_row_with_ts(self):
+        table = object()
+        batch = self._makeOne(table)
+        batch._delete_range = object()
+
+        row_key = 'row-key'
+        batch._row_map[row_key] = row = _MockRow()
+
+        self.assertEqual(row.deletes, 0)
+        self.assertEqual(batch._mutation_count, 0)
+        with self.assertRaises(ValueError):
+            batch.delete(row_key, columns=None)
+        self.assertEqual(row.deletes, 0)
+        self.assertEqual(batch._mutation_count, 0)
+
+    def test_delete_call_try_send(self):
+        klass = self._getTargetClass()
+
+        class CallTrySend(klass):
+
+            try_send_calls = 0
+
+            def _try_send(self):
+                self.try_send_calls += 1
+
+        table = object()
+        batch = CallTrySend(table)
+
+        row_key = 'row-key'
+        batch._row_map[row_key] = _MockRow()
+
+        self.assertEqual(batch._mutation_count, 0)
+        self.assertEqual(batch.try_send_calls, 0)
+        # No columns so that nothing happens
+        batch.delete(row_key, columns=[])
+        self.assertEqual(batch._mutation_count, 0)
+        self.assertEqual(batch.try_send_calls, 1)
+
+    def test_delete_some_columns(self):
+        table = object()
+        batch = self._makeOne(table)
+
+        row_key = 'row-key'
+        batch._row_map[row_key] = row = _MockRow()
+
+        self.assertEqual(batch._mutation_count, 0)
+
+        col1_fam = 'cf1'
+        col2_fam = 'cf2'
+        col2_qual = 'col-name'
+        columns = [col1_fam + ':', col2_fam + ':' + col2_qual]
+        batch.delete(row_key, columns=columns)
+
+        self.assertEqual(batch._mutation_count, 2)
+        cell_deleted_args = (col2_fam, col2_qual)
+        cell_deleted_kwargs = {'time_range': None}
+        self.assertEqual(row.delete_cell_calls,
+                         [(cell_deleted_args, cell_deleted_kwargs)])
+        fam_deleted_args = (col1_fam,)
+        fam_deleted_kwargs = {'columns': row.ALL_COLUMNS}
+        self.assertEqual(row.delete_cells_calls,
+                         [(fam_deleted_args, fam_deleted_kwargs)])
 
     def test_context_manager(self):
         klass = self._getTargetClass()
@@ -390,15 +524,29 @@ class _MockRowMap(dict):
 
 class _MockRow(object):
 
+    ALL_COLUMNS = object()
+
     def __init__(self):
         self.commits = 0
+        self.deletes = 0
         self.set_cell_calls = []
+        self.delete_cell_calls = []
+        self.delete_cells_calls = []
 
     def commit(self):
         self.commits += 1
 
+    def delete(self):
+        self.deletes += 1
+
     def set_cell(self, *args, **kwargs):
         self.set_cell_calls.append((args, kwargs))
+
+    def delete_cell(self, *args, **kwargs):
+        self.delete_cell_calls.append((args, kwargs))
+
+    def delete_cells(self, *args, **kwargs):
+        self.delete_cells_calls.append((args, kwargs))
 
 
 class _MockTable(object):
