@@ -171,6 +171,80 @@ class Batch(object):
         self._mutation_count += len(data)
         self._try_send()
 
+    def _delete_columns(self, columns, row_object):
+        """Adds delete mutations for a list of columns and column families.
+
+        :type columns: list
+        :param columns: Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+        :type row_object: :class:`Row <gcloud_bigtable.row.Row>`
+        :param row_object: The row which will hold the delete mutations.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the delete
+                 timestamp range is set on the current batch, but a
+                 column family delete is attempted.
+        """
+        column_pairs = _get_column_pairs(columns)
+        for column_family_id, column_qualifier in column_pairs:
+            if column_qualifier is None:
+                if self._delete_range is not None:
+                    raise ValueError('The Cloud Bigtable API does not support '
+                                     'adding a timestamp to '
+                                     '"DeleteFromFamily" ')
+                row_object.delete_cells(column_family_id,
+                                        columns=row_object.ALL_COLUMNS)
+            else:
+                row_object.delete_cell(column_family_id,
+                                       column_qualifier,
+                                       time_range=self._delete_range)
+
+    def delete(self, row, columns=None, wal=_WAL_SENTINEL):
+        """Delete data from a row in the table owned by this batch.
+
+        :type row: str
+        :param row: The row key where the delete will occur.
+
+        :type columns: list
+        :param columns: (Optional) Iterable containing column names (as
+                        strings). Each column name can be either
+
+                          * an entire column family: ``fam`` or ``fam:``
+                          * an single column: ``fam:col``
+
+                        If not used, will delete the entire row.
+
+        :type wal: object
+        :param wal: Unused parameter (to over-ride the default on the
+                    instance). Provided for compatibility with HappyBase, but
+                    irrelevant for Cloud Bigtable since it does not have a
+                    Write Ahead Log.
+
+        :raises: If if the delete timestamp range is set on the
+                 current batch, but a full row delete is attempted.
+        """
+        if wal is not _WAL_SENTINEL:
+            _WARN(_WAL_WARNING)
+
+        row_object = self._get_row(row)
+
+        if columns is None:
+            # Delete entire row.
+            if self._delete_range is not None:
+                raise ValueError('The Cloud Bigtable API does not support '
+                                 'adding a timestamp to "DeleteFromRow" '
+                                 'mutations')
+            row_object.delete()
+            self._mutation_count += 1
+        else:
+            self._delete_columns(columns, row_object)
+            self._mutation_count += len(columns)
+
+        self._try_send()
+
     def __enter__(self):
         """Enter context manager, no set-up required."""
         return self
