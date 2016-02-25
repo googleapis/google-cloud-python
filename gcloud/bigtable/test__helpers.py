@@ -16,11 +16,11 @@
 import unittest2
 
 
-class TestMetadataTransformer(unittest2.TestCase):
+class TestMetadataPlugin(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable._helpers import MetadataTransformer
-        return MetadataTransformer
+        from gcloud.bigtable._helpers import MetadataPlugin
+        return MetadataPlugin
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
@@ -48,40 +48,21 @@ class TestMetadataTransformer(unittest2.TestCase):
         credentials = _Credentials(access_token=access_token_expected)
         project = 'PROJECT'
         client = Client(project=project, credentials=credentials)
+        callback_args = []
+
+        def callback(*args):
+            callback_args.append(args)
 
         transformer = self._makeOne(client)
-        result = transformer(None)
-        self.assertEqual(
-            result,
-            [
-                ('Authorization', 'Bearer ' + access_token_expected),
-                ('User-agent', DEFAULT_USER_AGENT),
-            ])
+        result = transformer(None, callback)
+        cb_headers = [
+            ('Authorization', 'Bearer ' + access_token_expected),
+            ('User-agent', DEFAULT_USER_AGENT),
+        ]
+        self.assertEqual(result, None)
+        self.assertEqual(callback_args, [(cb_headers, None)])
         self.assertEqual(credentials._scopes, [DATA_SCOPE])
         self.assertEqual(len(credentials._tokens), 1)
-
-
-class Test_get_certs(unittest2.TestCase):
-
-    def _callFUT(self, *args, **kwargs):
-        from gcloud.bigtable._helpers import get_certs
-        return get_certs(*args, **kwargs)
-
-    def test_it(self):
-        import tempfile
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable import _helpers as MUT
-
-        # Just write to a mock file.
-        filename = tempfile.mktemp()
-        contents = b'FOOBARBAZ'
-        with open(filename, 'wb') as file_obj:
-            file_obj.write(contents)
-
-        with _Monkey(MUT, SSL_CERT_FILE=filename):
-            result = self._callFUT()
-
-        self.assertEqual(result, contents)
 
 
 class Test_make_stub(unittest2.TestCase):
@@ -97,53 +78,67 @@ class Test_make_stub(unittest2.TestCase):
         mock_result = object()
         stub_inputs = []
 
-        CLIENT_CREDS = object()
+        SSL_CREDS = object()
+        METADATA_CREDS = object()
+        COMPOSITE_CREDS = object()
         CHANNEL = object()
 
         class _ImplementationsModule(object):
 
             def __init__(self):
-                self.ssl_client_credentials_args = None
+                self.ssl_channel_credentials_args = None
+                self.metadata_call_credentials_args = None
+                self.composite_channel_credentials_args = None
                 self.secure_channel_args = None
 
-            def ssl_client_credentials(self, *args, **kwargs):
-                self.ssl_client_credentials_args = (args, kwargs)
-                return CLIENT_CREDS
+            def ssl_channel_credentials(self, *args):
+                self.ssl_channel_credentials_args = args
+                return SSL_CREDS
 
-            def secure_channel(self, *args, **kwargs):
-                self.secure_channel_args = (args, kwargs)
+            def metadata_call_credentials(self, *args, **kwargs):
+                self.metadata_call_credentials_args = (args, kwargs)
+                return METADATA_CREDS
+
+            def composite_channel_credentials(self, *args):
+                self.composite_channel_credentials_args = args
+                return COMPOSITE_CREDS
+
+            def secure_channel(self, *args):
+                self.secure_channel_args = args
                 return CHANNEL
 
         implementations_mod = _ImplementationsModule()
 
-        def mock_stub_factory(channel, metadata_transformer=None):
-            stub_inputs.append((channel, metadata_transformer))
+        def mock_stub_factory(channel):
+            stub_inputs.append(channel)
             return mock_result
 
-        transformed = object()
+        metadata_plugin = object()
         clients = []
 
-        def mock_transformer(client):
+        def mock_plugin(client):
             clients.append(client)
-            return transformed
+            return metadata_plugin
 
         host = 'HOST'
         port = 1025
-        certs = 'FOOBAR'
         client = object()
-        with _Monkey(MUT, get_certs=lambda: certs,
-                     implementations=implementations_mod,
-                     MetadataTransformer=mock_transformer):
+        with _Monkey(MUT, implementations=implementations_mod,
+                     MetadataPlugin=mock_plugin):
             result = self._callFUT(client, mock_stub_factory, host, port)
 
         self.assertTrue(result is mock_result)
-        self.assertEqual(stub_inputs, [(CHANNEL, transformed)])
+        self.assertEqual(stub_inputs, [CHANNEL])
         self.assertEqual(clients, [client])
-        ssl_cli_kwargs = {'private_key': None, 'certificate_chain': None}
-        self.assertEqual(implementations_mod.ssl_client_credentials_args,
-                         ((certs,), ssl_cli_kwargs))
+        self.assertEqual(implementations_mod.ssl_channel_credentials_args,
+                         (None, None, None))
+        self.assertEqual(implementations_mod.metadata_call_credentials_args,
+                         ((metadata_plugin,), {'name': 'google_creds'}))
+        self.assertEqual(
+            implementations_mod.composite_channel_credentials_args,
+            (SSL_CREDS, METADATA_CREDS))
         self.assertEqual(implementations_mod.secure_channel_args,
-                         ((host, port, CLIENT_CREDS), {}))
+                         (host, port, COMPOSITE_CREDS))
 
 
 class _Credentials(object):

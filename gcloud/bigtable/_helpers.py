@@ -19,22 +19,10 @@ protobuf objects.
 """
 
 
-import platform
-
 from grpc.beta import implementations
 
 
-# See https://gist.github.com/dhermes/bbc5b7be1932bfffae77
-# for appropriate values on other systems.
-_PLAT_SYS = platform.system()
-SSL_CERT_FILE = None
-if _PLAT_SYS == 'Linux':
-    SSL_CERT_FILE = '/etc/ssl/certs/ca-certificates.crt'
-elif _PLAT_SYS == 'Darwin':  # pragma: NO COVER
-    SSL_CERT_FILE = '/usr/local/etc/openssl/cert.pem'
-
-
-class MetadataTransformer(object):
+class MetadataPlugin(object):
     """Callable class to transform metadata for gRPC requests.
 
     :type client: :class:`.client.Client`
@@ -46,32 +34,14 @@ class MetadataTransformer(object):
         self._credentials = client.credentials
         self._user_agent = client.user_agent
 
-    def __call__(self, ignored_val):
+    def __call__(self, unused_context, callback):
         """Adds authorization header to request metadata."""
         access_token = self._credentials.get_access_token().access_token
-        return [
+        headers = [
             ('Authorization', 'Bearer ' + access_token),
             ('User-agent', self._user_agent),
         ]
-
-
-def get_certs():
-    """Gets the root certificates.
-
-    .. note::
-
-        This is only called by :func:`make_stub`. For most applications,
-        a few gRPC stubs (four total, one for each service) will be created
-        when a :class:`.Client` is created. This function will not likely
-        be used again while that application is running.
-
-        However, it may be worthwhile to cache the output of this function.
-
-    :rtype: str
-    :returns: The root certificates for the current machine.
-    """
-    with open(SSL_CERT_FILE, mode='rb') as file_obj:
-        return file_obj.read()
+        callback(headers, None)
 
 
 def make_stub(client, stub_factory, host, port):
@@ -96,11 +66,13 @@ def make_stub(client, stub_factory, host, port):
     :rtype: :class:`grpc.beta._stub._AutoIntermediary`
     :returns: The stub object used to make gRPC requests to a given API.
     """
-    root_certificates = get_certs()
-    client_credentials = implementations.ssl_client_credentials(
-        root_certificates, private_key=None, certificate_chain=None)
-    channel = implementations.secure_channel(
-        host, port, client_credentials)
-    custom_metadata_transformer = MetadataTransformer(client)
-    return stub_factory(channel,
-                        metadata_transformer=custom_metadata_transformer)
+    # Leaving the first argument to ssl_channel_credentials() as None
+    # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
+    transport_creds = implementations.ssl_channel_credentials(None, None, None)
+    custom_metadata_plugin = MetadataPlugin(client)
+    auth_creds = implementations.metadata_call_credentials(
+        custom_metadata_plugin, name='google_creds')
+    channel_creds = implementations.composite_channel_credentials(
+        transport_creds, auth_creds)
+    channel = implementations.secure_channel(host, port, channel_creds)
+    return stub_factory(channel)
