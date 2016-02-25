@@ -35,6 +35,14 @@ _WAL_WARNING = ('The wal argument (Write-Ahead-Log) is not '
 class Batch(object):
     """Batch class for accumulating mutations.
 
+    .. note::
+
+       When using a batch with ``transaction=False`` as a context manager
+       (i.e. in a ``with`` statement), mutations will still be sent as
+       row mutations even if the context manager exits with an error.
+       This behavior is in place to match the behavior in the HappyBase
+       HBase / Thrift implementation.
+
     :type table: :class:`Table <gcloud.bigtable.happybase.table.Table>`
     :param table: The table where mutations will be applied.
 
