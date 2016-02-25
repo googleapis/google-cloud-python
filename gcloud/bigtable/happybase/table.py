@@ -582,10 +582,7 @@ def _next_char(str_val, index):
     :returns: The next character after the character at ``index``
               in ``str_val``.
     """
-    if six.PY3:  # pragma: NO COVER
-        ord_val = str_val[index]
-    else:
-        ord_val = ord(str_val[index])
+    ord_val = six.indexbytes(str_val, index)
     return _to_bytes(chr(ord_val + 1), encoding='latin-1')
 
 
@@ -613,12 +610,8 @@ def _string_successor(str_val):
 
     index = len(str_val) - 1
     while index >= 0:
-        if six.PY3:  # pragma: NO COVER
-            if str_val[index] != 0xff:
-                break
-        else:
-            if str_val[index] != b'\xff':
-                break
+        if six.indexbytes(str_val, index) != 0xff:
+            break
         index -= 1
 
     if index == -1:
@@ -653,6 +646,17 @@ def _convert_to_time_range(timestamp=None):
 def _cells_to_pairs(cells, include_timestamp=False):
     """Converts list of cells to HappyBase format.
 
+    For example::
+
+      >>> import datetime
+      >>> from gcloud.bigtable.row_data import Cell
+      >>> cell1 = Cell(b'val1', datetime.datetime.utcnow())
+      >>> cell2 = Cell(b'val2', datetime.datetime.utcnow())
+      >>> _cells_to_pairs([cell1, cell2])
+      [b'val1', b'val2']
+      >>> _cells_to_pairs([cell1, cell2], include_timestamp=True)
+      [(b'val1', 1456361486255), (b'val2', 1456361491927)]
+
     :type cells: list
     :param cells: List of :class:`.Cell` returned from a read request.
 
@@ -682,6 +686,22 @@ def _partial_row_to_dict(partial_row_data, include_timestamp=False):
     Assumes only the latest value in each row is needed. This assumption
     is due to the fact that this method is used by callers which use
     a ``CellsColumnLimitFilter(1)`` filter.
+
+    For example::
+
+      >>> import datetime
+      >>> from gcloud.bigtable.row_data import Cell, PartialRowData
+      >>> cell1 = Cell(b'val1', datetime.datetime.utcnow())
+      >>> cell2 = Cell(b'val2', datetime.datetime.utcnow())
+      >>> row_data = PartialRowData(b'row-key')
+      >>> _partial_row_to_dict(row_data)
+      {}
+      >>> row_data._cells[u'fam1'] = {b'col1': [cell1], b'col2': [cell2]}
+      >>> _partial_row_to_dict(row_data)
+      {b'fam1:col2': b'val2', b'fam1:col1': b'val1'}
+      >>> _partial_row_to_dict(row_data, include_timestamp=True)
+      {b'fam1:col2': (b'val2', 1456361724480),
+       b'fam1:col1': (b'val1', 1456361721135)}
 
     :type partial_row_data: :class:`.row_data.PartialRowData`
     :param partial_row_data: Row data consumed from a stream.
