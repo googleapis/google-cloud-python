@@ -24,7 +24,12 @@ from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import UTC
 from gcloud.bigtable.client import Client
 from gcloud.bigtable.column_family import MaxVersionsGCRule
+from gcloud.bigtable.row import ApplyLabelFilter
+from gcloud.bigtable.row import ColumnQualifierRegexFilter
+from gcloud.bigtable.row import RowFilterChain
+from gcloud.bigtable.row import RowFilterUnion
 from gcloud.bigtable.row_data import Cell
+from gcloud.bigtable.row_data import PartialRowData
 from gcloud.environment_vars import TESTS_PROJECT
 
 
@@ -43,6 +48,7 @@ CELL_VAL2 = b'cell-val-newer'
 CELL_VAL3 = b'altcol-cell-val'
 CELL_VAL4 = b'foo'
 ROW_KEY = b'row-key'
+ROW_KEY_ALT = b'row-key-alt'
 EXISTING_CLUSTERS = []
 EXPECTED_ZONES = (
     'asia-east1-b',
@@ -384,3 +390,95 @@ class TestDataAPI(unittest2.TestCase):
             },
         }
         self.assertEqual(partial_row_data.cells, expected_row_contents)
+
+    def test_read_rows(self):
+        row = self._table.row(ROW_KEY)
+        row_alt = self._table.row(ROW_KEY_ALT)
+        self.rows_to_delete.extend([row, row_alt])
+
+        cell1, cell2, cell3, cell4 = self._write_to_row(row, row_alt,
+                                                        row, row_alt)
+        row.commit()
+        row_alt.commit()
+
+        rows_data = self._table.read_rows()
+        self.assertEqual(rows_data.rows, {})
+        rows_data.consume_all()
+
+        # NOTE: We should refrain from editing protected data on instances.
+        #       Instead we should make the values public or provide factories
+        #       for constructing objects with them.
+        row_data = PartialRowData(ROW_KEY)
+        row_data._chunks_encountered = True
+        row_data._committed = True
+        row_data._cells = {
+            COLUMN_FAMILY_ID1: {
+                COL_NAME1: [cell1],
+                COL_NAME2: [cell3],
+            },
+        }
+
+        row_alt_data = PartialRowData(ROW_KEY_ALT)
+        row_alt_data._chunks_encountered = True
+        row_alt_data._committed = True
+        row_alt_data._cells = {
+            COLUMN_FAMILY_ID1: {
+                COL_NAME1: [cell2],
+            },
+            COLUMN_FAMILY_ID2: {
+                COL_NAME3: [cell4],
+            },
+        }
+
+        expected_rows = {
+            ROW_KEY: row_data,
+            ROW_KEY_ALT: row_alt_data,
+        }
+        self.assertEqual(rows_data.rows, expected_rows)
+
+    def test_read_with_label_applied(self):
+        row = self._table.row(ROW_KEY)
+        self.rows_to_delete.append(row)
+
+        cell1, _, cell3, _ = self._write_to_row(row, None, row)
+        row.commit()
+
+        # Combine a label with column 1.
+        label1 = u'label-red'
+        label1_filter = ApplyLabelFilter(label1)
+        col1_filter = ColumnQualifierRegexFilter(COL_NAME1)
+        chain1 = RowFilterChain(filters=[col1_filter, label1_filter])
+
+        # Combine a label with column 2.
+        label2 = u'label-blue'
+        label2_filter = ApplyLabelFilter(label2)
+        col2_filter = ColumnQualifierRegexFilter(COL_NAME2)
+        chain2 = RowFilterChain(filters=[col2_filter, label2_filter])
+
+        # Bring our two labeled columns together.
+        row_filter = RowFilterUnion(filters=[chain1, chain2])
+        partial_row_data = self._table.read_row(ROW_KEY, filter_=row_filter)
+        self.assertTrue(partial_row_data.committed)
+        self.assertEqual(partial_row_data.row_key, ROW_KEY)
+
+        cells_returned = partial_row_data.cells
+        col_fam1 = cells_returned.pop(COLUMN_FAMILY_ID1)
+        # Make sure COLUMN_FAMILY_ID1 was the only key.
+        self.assertEqual(len(cells_returned), 0)
+
+        cell1_new, = col_fam1.pop(COL_NAME1)
+        cell3_new, = col_fam1.pop(COL_NAME2)
+        # Make sure COL_NAME1 and COL_NAME2 were the only keys.
+        self.assertEqual(len(col_fam1), 0)
+
+        # Check that cell1 has matching values and gained a label.
+        self.assertEqual(cell1_new.value, cell1.value)
+        self.assertEqual(cell1_new.timestamp, cell1.timestamp)
+        self.assertEqual(cell1.labels, [])
+        self.assertEqual(cell1_new.labels, [label1])
+
+        # Check that cell3 has matching values and gained a label.
+        self.assertEqual(cell3_new.value, cell3.value)
+        self.assertEqual(cell3_new.timestamp, cell3.timestamp)
+        self.assertEqual(cell3.labels, [])
+        self.assertEqual(cell3_new.labels, [label2])
