@@ -16,6 +16,7 @@
 
 
 import struct
+import warnings
 
 import six
 
@@ -40,6 +41,7 @@ from gcloud.bigtable.row import TimestampRangeFilter
 from gcloud.bigtable.table import Table as _LowLevelTable
 
 
+_WARN = warnings.warn
 _UNPACK_I64 = struct.Struct('>q').unpack
 _SIMPLE_GC_RULES = (MaxAgeGCRule, MaxVersionsGCRule)
 
@@ -367,15 +369,63 @@ class Table(object):
         :param kwargs: Remaining keyword arguments. Provided for HappyBase
                        compatibility.
 
-        :raises: :class:`ValueError <exceptions.ValueError>` if ``batch_size``
-                 or ``scan_batching`` are used, or if ``limit`` is set but
-                 non-positive, or if row prefix is used with row start/stop,
+        :raises: If ``limit`` is set but non-positive, or if row prefix is
+                 used with row start/stop,
                  :class:`TypeError <exceptions.TypeError>` if a string
-                 ``filter`` is used,
-                 :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
+                 ``filter`` is used.
         """
-        raise NotImplementedError
+        legacy_args = []
+        for kw_name in ('batch_size', 'scan_batching', 'sorted_columns'):
+            if kw_name in kwargs:
+                legacy_args.append(kw_name)
+                kwargs.pop(kw_name)
+        if legacy_args:
+            legacy_args = ', '.join(legacy_args)
+            message = ('The HappyBase legacy arguments %s were used. These '
+                       'arguments are unused by gcloud.' % (legacy_args,))
+            _WARN(message)
+        if kwargs:
+            raise TypeError('Received unexpected arguments', kwargs.keys())
+
+        if limit is not None and limit < 1:
+            raise ValueError('limit must be positive')
+        if row_prefix is not None:
+            if row_start is not None or row_stop is not None:
+                raise ValueError('row_prefix cannot be combined with '
+                                 'row_start or row_stop')
+            row_start = row_prefix
+            row_stop = _string_successor(row_prefix)
+
+        filters = []
+        if isinstance(filter, six.string_types):
+            raise TypeError('Specifying filters as a string is not supported '
+                            'by Cloud Bigtable. Use a '
+                            'gcloud.bigtable.row.RowFilter instead.')
+        elif filter is not None:
+            filters.append(filter)
+
+        if columns is not None:
+            filters.append(_columns_filter_helper(columns))
+        # versions == 1 since we only want the latest.
+        filter_ = _filter_chain_helper(versions=1, timestamp=timestamp,
+                                       filters=filters)
+
+        partial_rows_data = self._low_level_table.read_rows(
+            start_key=row_start, end_key=row_stop,
+            limit=limit, filter_=filter_)
+
+        # Mutable copy of data.
+        rows_dict = partial_rows_data.rows
+        while True:
+            try:
+                partial_rows_data.consume_next()
+                row_key, curr_row_data = rows_dict.popitem()
+                # NOTE: We expect len(rows_dict) == 0, but don't check it.
+                curr_row_dict = _partial_row_to_dict(
+                    curr_row_data, include_timestamp=include_timestamp)
+                yield (row_key, curr_row_dict)
+            except StopIteration:
+                break
 
     def put(self, row, data, timestamp=None, wal=_WAL_SENTINEL):
         """Insert data into a row in this table.
