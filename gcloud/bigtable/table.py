@@ -53,7 +53,7 @@ class Table(object):
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type cluster: :class:`.cluster.Cluster`
+    :type cluster: :class:`Cluster <.cluster.Cluster>`
     :param cluster: The cluster that owns the table.
     """
 
@@ -86,11 +86,11 @@ class Table(object):
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type gc_rule: :class:`.column_family.GarbageCollectionRule`
+        :type gc_rule: :class:`.GarbageCollectionRule`
         :param gc_rule: (Optional) The garbage collection settings for this
                         column family.
 
-        :rtype: :class:`.column_family.ColumnFamily`
+        :rtype: :class:`.ColumnFamily`
         :returns: A column family owned by this table.
         """
         return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
@@ -199,7 +199,7 @@ class Table(object):
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
                   are strings (column family names) and values are
-                  :class:`.column_family.ColumnFamily` instances.
+                  :class:`.ColumnFamily` instances.
         :raises: :class:`ValueError <exceptions.ValueError>` if the column
                  family name from the response does not agree with the computed
                  name from the column family ID.
@@ -228,7 +228,7 @@ class Table(object):
         :type row_key: bytes
         :param row_key: The key of the row to read from.
 
-        :type filter_: :class:`.row.RowFilter`
+        :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         row. If unset, returns the entire row.
 
@@ -291,7 +291,7 @@ class Table(object):
                       more than N rows. However, only N ``commit_row`` chunks
                       will be sent.
 
-        :type filter_: :class:`.row.RowFilter`
+        :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
@@ -368,7 +368,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                     The range will not include ``end_key``. If left empty,
                     will be interpreted as an infinite string.
 
-    :type filter_: :class:`.row.RowFilter`
+    :type filter_: :class:`.RowFilter`
     :param filter_: (Optional) The filter to apply to the contents of the
                     specified row(s). If unset, reads the entire table.
 

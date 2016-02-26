@@ -27,8 +27,10 @@ from gcloud.bigtable._generated import (
     bigtable_service_messages_pb2 as messages_pb2)
 
 
-_MAX_MUTATIONS = 100000
 _PACK_I64 = struct.Struct('>q').pack
+
+MAX_MUTATIONS = 100000
+"""The maximum number of mutations that a row can accumulate."""
 
 
 class Row(object):
@@ -112,8 +114,7 @@ class Row(object):
 
         The cell is determined by the ``row_key`` of the :class:`Row` and the
         ``column``. The ``column`` must be in an existing
-        :class:`.column_family.ColumnFamily` (as determined by
-        ``column_family_id``).
+        :class:`.ColumnFamily` (as determined by ``column_family_id``).
 
         .. note::
 
@@ -352,15 +353,15 @@ class Row(object):
         by :meth:`commit`.
 
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the ``_MAX_MUTATIONS``.
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
         """
         mutations_list = self._get_mutations()
         num_mutations = len(mutations_list)
         if num_mutations == 0:
             return
-        if num_mutations > _MAX_MUTATIONS:
+        if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total mutations exceed the maximum allowable '
-                             '%d.' % (num_mutations, _MAX_MUTATIONS))
+                             '%d.' % (num_mutations, MAX_MUTATIONS))
         request_pb = messages_pb2.MutateRowRequest(
             table_name=self._table.name,
             row_key=self._row_key,
@@ -380,7 +381,7 @@ class Row(object):
         :returns: Flag indicating if the filter was matched (which also
                   indicates which set of mutations were applied by the server).
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the ``_MAX_MUTATIONS``.
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
         """
         true_mutations = self._get_mutations(state=True)
         false_mutations = self._get_mutations(state=False)
@@ -388,12 +389,12 @@ class Row(object):
         num_false_mutations = len(false_mutations)
         if num_true_mutations == 0 and num_false_mutations == 0:
             return
-        if (num_true_mutations > _MAX_MUTATIONS or
-                num_false_mutations > _MAX_MUTATIONS):
+        if (num_true_mutations > MAX_MUTATIONS or
+                num_false_mutations > MAX_MUTATIONS):
             raise ValueError(
                 'Exceed the maximum allowable mutations (%d). Had %s true '
                 'mutations and %d false mutations.' % (
-                    _MAX_MUTATIONS, num_true_mutations, num_false_mutations))
+                    MAX_MUTATIONS, num_true_mutations, num_false_mutations))
 
         request_pb = messages_pb2.CheckAndMutateRowRequest(
             table_name=self._table.name,
@@ -438,7 +439,7 @@ class Row(object):
                   indicating if the filter was matched (which also
                   indicates which set of mutations were applied by the server).
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the ``_MAX_MUTATIONS``.
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
         """
         if self._filter is None:
             result = self._commit_mutate()
@@ -467,31 +468,33 @@ class Row(object):
         or the highest timestamp of a cell in that column (if it exceeds the
         server time).
 
+        .. code:: python
+
+            >>> row.commit_modifications()
+            {
+                u'col-fam-id': {
+                    b'col-name1': [
+                        (b'cell-val', datetime.datetime(...)),
+                        (b'cell-val-newer', datetime.datetime(...)),
+                    ],
+                    b'col-name2': [
+                        (b'altcol-cell-val', datetime.datetime(...)),
+                    ],
+                },
+                u'col-fam-id2': {
+                    b'col-name3-but-other-fam': [
+                        (b'foo', datetime.datetime(...)),
+                    ],
+                },
+            }
+
         :rtype: dict
         :returns: The new contents of all modified cells. Returned as a
                   dictionary of column families, each of which holds a
                   dictionary of columns. Each column contains a list of cells
                   modified. Each cell is represented with a two-tuple with the
-                  value (in bytes) and the timestamp for the cell. For example:
+                  value (in bytes) and the timestamp for the cell.
 
-                  .. code:: python
-
-                      {
-                          u'col-fam-id': {
-                              b'col-name1': [
-                                  (b'cell-val', datetime.datetime(...)),
-                                  (b'cell-val-newer', datetime.datetime(...)),
-                              ],
-                              b'col-name2': [
-                                  (b'altcol-cell-val', datetime.datetime(...)),
-                              ],
-                          },
-                          u'col-fam-id2': {
-                              b'col-name3-but-other-fam': [
-                                  (b'foo', datetime.datetime(...)),
-                              ],
-                          },
-                      }
         """
         if len(self._rule_pb_list) == 0:
             return {}
@@ -1099,14 +1102,14 @@ class ApplyLabelFilter(RowFilter):
     """Filter to apply labels to cells.
 
     Intended to be used as an intermediate filter on a pre-existing filtered
-    result set. This was if two sets are combined, the label can tell where
+    result set. This way if two sets are combined, the label can tell where
     the cell(s) originated.This allows the client to determine which results
     were produced from which part of the filter.
 
     .. note::
 
-        Due to a technical limitation, it is not currently possible to apply
-        multiple labels to a cell.
+        Due to a technical limitation of the backend, it is not currently
+        possible to apply multiple labels to a cell.
 
     :type label: str
     :param label: Label to apply to cells in the output row. Values must be

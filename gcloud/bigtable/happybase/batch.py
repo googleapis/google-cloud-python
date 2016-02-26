@@ -179,7 +179,7 @@ class Batch(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
         :type row_object: :class:`Row <gcloud_bigtable.row.Row>`
         :param row_object: The row which will hold the delete mutations.
@@ -213,7 +213,7 @@ class Batch(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
                         If not used, will delete the entire row.
 
@@ -223,7 +223,7 @@ class Batch(object):
                     irrelevant for Cloud Bigtable since it does not have a
                     Write Ahead Log.
 
-        :raises: If if the delete timestamp range is set on the
+        :raises: If the delete timestamp range is set on the
                  current batch, but a full row delete is attempted.
         """
         if wal is not _WAL_SENTINEL:
@@ -287,7 +287,7 @@ def _get_column_pairs(columns, require_qualifier=False):
                     strings). Each column name can be either
 
                       * an entire column family: ``fam`` or ``fam:``
-                      * an single column: ``fam:col``
+                      * a single column: ``fam:col``
 
     :type require_qualifier: bool
     :param require_qualifier: Boolean indicating if the columns should
