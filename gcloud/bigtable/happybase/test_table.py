@@ -539,6 +539,17 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(row_obj.counts,
                          {tuple(column.split(':')): incremented_value})
 
+    def test_counter_set(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        row = 'row-key'
+        column = 'fam:col1'
+        value = 42
+        with self.assertRaises(NotImplementedError):
+            table.counter_set(row, column, value=value)
+
     def test_counter_inc(self):
         import struct
 
