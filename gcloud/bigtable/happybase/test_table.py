@@ -121,21 +121,290 @@ class TestTable(unittest2.TestCase):
         with self.assertRaises(NotImplementedError):
             table.regions()
 
-    def test_row(self):
+    def test_row_empty_row(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        table._low_level_table.read_row_result = None
+
+        # Set-up mocks.
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        row_key = 'row-key'
+        timestamp = object()
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper):
+            result = table.row(row_key, timestamp=timestamp)
+
+        # read_row_result == None --> No results.
+        self.assertEqual(result, {})
+
+        read_row_args = (row_key,)
+        read_row_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_row_calls, [
+            (read_row_args, read_row_kwargs),
+        ])
+
+        expected_kwargs = {
+            'filters': [],
+            'versions': 1,
+            'timestamp': timestamp,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+
+    def test_row_with_columns(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        table._low_level_table.read_row_result = None
+
+        # Set-up mocks.
+        fake_col_filter = object()
+        mock_columns = []
+
+        def mock_columns_filter_helper(*args):
+            mock_columns.append(args)
+            return fake_col_filter
+
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        row_key = 'row-key'
+        columns = object()
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper,
+                     _columns_filter_helper=mock_columns_filter_helper):
+            result = table.row(row_key, columns=columns)
+
+        # read_row_result == None --> No results.
+        self.assertEqual(result, {})
+
+        read_row_args = (row_key,)
+        read_row_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_row_calls, [
+            (read_row_args, read_row_kwargs),
+        ])
+
+        self.assertEqual(mock_columns, [(columns,)])
+        expected_kwargs = {
+            'filters': [fake_col_filter],
+            'versions': 1,
+            'timestamp': None,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+
+    def test_row_with_results(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+        from gcloud.bigtable.row_data import PartialRowData
+
+        row_key = 'row-key'
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        partial_row = PartialRowData(row_key)
+        table._low_level_table.read_row_result = partial_row
+
+        # Set-up mocks.
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        fake_pair = object()
+        mock_cells = []
+
+        def mock_cells_to_pairs(*args, **kwargs):
+            mock_cells.append((args, kwargs))
+            return [fake_pair]
+
+        col_fam = u'cf1'
+        qual = b'qual'
+        fake_cells = object()
+        partial_row._cells = {col_fam: {qual: fake_cells}}
+        include_timestamp = object()
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper,
+                     _cells_to_pairs=mock_cells_to_pairs):
+            result = table.row(row_key, include_timestamp=include_timestamp)
+
+        # The results come from _cells_to_pairs.
+        expected_result = {col_fam.encode('ascii') + b':' + qual: fake_pair}
+        self.assertEqual(result, expected_result)
+
+        read_row_args = (row_key,)
+        read_row_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_row_calls, [
+            (read_row_args, read_row_kwargs),
+        ])
+
+        expected_kwargs = {
+            'filters': [],
+            'versions': 1,
+            'timestamp': None,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+        to_pairs_kwargs = {'include_timestamp': include_timestamp}
+        self.assertEqual(mock_cells,
+                         [((fake_cells,), to_pairs_kwargs)])
+
+    def test_rows_empty_row(self):
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
 
-        with self.assertRaises(NotImplementedError):
-            table.row(None)
+        result = table.rows([])
+        self.assertEqual(result, [])
 
-    def test_rows(self):
+    def test_rows_with_columns(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        rr_result = _MockPartialRowsData()
+        table._low_level_table.read_rows_result = rr_result
+        self.assertEqual(rr_result.consume_all_calls, 0)
 
-        with self.assertRaises(NotImplementedError):
-            table.rows(None)
+        # Set-up mocks.
+        fake_col_filter = object()
+        mock_cols = []
+
+        def mock_columns_filter_helper(*args):
+            mock_cols.append(args)
+            return fake_col_filter
+
+        fake_rows_filter = object()
+        mock_rows = []
+
+        def mock_row_keys_filter_helper(*args):
+            mock_rows.append(args)
+            return fake_rows_filter
+
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        rows = ['row-key']
+        columns = object()
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper,
+                     _row_keys_filter_helper=mock_row_keys_filter_helper,
+                     _columns_filter_helper=mock_columns_filter_helper):
+            result = table.rows(rows, columns=columns)
+
+        # read_rows_result == Empty PartialRowsData --> No results.
+        self.assertEqual(result, [])
+
+        read_rows_args = ()
+        read_rows_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_rows_calls, [
+            (read_rows_args, read_rows_kwargs),
+        ])
+        self.assertEqual(rr_result.consume_all_calls, 1)
+
+        self.assertEqual(mock_cols, [(columns,)])
+        self.assertEqual(mock_rows, [(rows,)])
+        expected_kwargs = {
+            'filters': [fake_col_filter, fake_rows_filter],
+            'versions': 1,
+            'timestamp': None,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+
+    def test_rows_with_results(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+        from gcloud.bigtable.row_data import PartialRowData
+
+        row_key1 = 'row-key1'
+        row_key2 = 'row-key2'
+        rows = [row_key1, row_key2]
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+
+        row1 = PartialRowData(row_key1)
+        # Return row1 but not row2
+        rr_result = _MockPartialRowsData(rows={row_key1: row1})
+        table._low_level_table.read_rows_result = rr_result
+        self.assertEqual(rr_result.consume_all_calls, 0)
+
+        # Set-up mocks.
+        fake_rows_filter = object()
+        mock_rows = []
+
+        def mock_row_keys_filter_helper(*args):
+            mock_rows.append(args)
+            return fake_rows_filter
+
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        fake_pair = object()
+        mock_cells = []
+
+        def mock_cells_to_pairs(*args, **kwargs):
+            mock_cells.append((args, kwargs))
+            return [fake_pair]
+
+        col_fam = u'cf1'
+        qual = b'qual'
+        fake_cells = object()
+        row1._cells = {col_fam: {qual: fake_cells}}
+        include_timestamp = object()
+        with _Monkey(MUT, _row_keys_filter_helper=mock_row_keys_filter_helper,
+                     _filter_chain_helper=mock_filter_chain_helper,
+                     _cells_to_pairs=mock_cells_to_pairs):
+            result = table.rows(rows, include_timestamp=include_timestamp)
+
+        # read_rows_result == PartialRowsData with row_key1
+        expected_result = {col_fam.encode('ascii') + b':' + qual: fake_pair}
+        self.assertEqual(result, [(row_key1, expected_result)])
+
+        read_rows_args = ()
+        read_rows_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_rows_calls, [
+            (read_rows_args, read_rows_kwargs),
+        ])
+        self.assertEqual(rr_result.consume_all_calls, 1)
+
+        self.assertEqual(mock_rows, [(rows,)])
+        expected_kwargs = {
+            'filters': [fake_rows_filter],
+            'versions': 1,
+            'timestamp': None,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+        to_pairs_kwargs = {'include_timestamp': include_timestamp}
+        self.assertEqual(mock_cells,
+                         [((fake_cells,), to_pairs_kwargs)])
 
     def test_cells(self):
         name = 'table-name'
@@ -795,6 +1064,10 @@ class _MockLowLevelTable(object):
         self.list_column_families_calls = 0
         self.column_families = {}
         self.row_values = {}
+        self.read_row_calls = []
+        self.read_row_result = None
+        self.read_rows_calls = []
+        self.read_rows_result = None
 
     def list_column_families(self):
         self.list_column_families_calls += 1
@@ -802,6 +1075,14 @@ class _MockLowLevelTable(object):
 
     def row(self, row_key):
         return self.row_values[row_key]
+
+    def read_row(self, *args, **kwargs):
+        self.read_row_calls.append((args, kwargs))
+        return self.read_row_result
+
+    def read_rows(self, *args, **kwargs):
+        self.read_rows_calls.append((args, kwargs))
+        return self.read_rows_result
 
 
 class _MockLowLevelRow(object):
@@ -827,3 +1108,15 @@ class _MockBatch(object):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
+
+
+class _MockPartialRowsData(object):
+
+    def __init__(self, rows=None, iterations=0):
+        self.rows = rows or {}
+        self.consume_all_calls = 0
+        self.consume_next_calls = 0
+        self.iterations = iterations
+
+    def consume_all(self):
+        self.consume_all_calls += 1
