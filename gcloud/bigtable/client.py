@@ -27,8 +27,6 @@ In the hierarchy of API concepts
 """
 
 
-import copy
-
 from grpc.beta import implementations
 
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
@@ -168,7 +166,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`.Client`
         :returns: A copy of the current client.
         """
-        copied_creds = copy.deepcopy(self._credentials)
+        credentials = self._credentials
+        copied_creds = credentials.create_scoped(credentials.scopes)
         return self.__class__(
             self.project,
             copied_creds,

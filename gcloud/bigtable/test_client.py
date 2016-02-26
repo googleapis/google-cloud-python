@@ -129,7 +129,6 @@ class TestClient(unittest2.TestCase):
         new_client = client.copy()
         self.assertEqual(new_client._admin, client._admin)
         self.assertEqual(new_client._credentials, client._credentials)
-        self.assertFalse(new_client._credentials is client._credentials)
         self.assertEqual(new_client.project, client.project)
         self.assertEqual(new_client.user_agent, client.user_agent)
         self.assertEqual(new_client.timeout_seconds, client.timeout_seconds)

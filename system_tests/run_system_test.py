@@ -20,6 +20,7 @@ import unittest2
 # repository root is the current directory.
 import bigquery
 import bigtable
+import bigtable_happybase
 import datastore
 import pubsub
 import storage
@@ -32,6 +33,7 @@ REQUIREMENTS = {
     'pubsub': ['project', 'credentials'],
     'bigquery': ['project', 'credentials'],
     'bigtable': ['project', 'credentials'],
+    'bigtable-happybase': ['project', 'credentials'],
 }
 TEST_MODULES = {
     'datastore': datastore,
@@ -39,6 +41,7 @@ TEST_MODULES = {
     'pubsub': pubsub,
     'bigquery': bigquery,
     'bigtable': bigtable,
+    'bigtable-happybase': bigtable_happybase,
 }
 
 
