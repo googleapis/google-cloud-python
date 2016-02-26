@@ -41,6 +41,9 @@ DEFAULT_PROTOCOL = None
 
 _LEGACY_ARGS = frozenset(('host', 'port', 'compat', 'transport', 'protocol'))
 _WARN = warnings.warn
+_DISABLE_DELETE_MSG = ('The disable argument should not be used in '
+                       'delete_table(). Cloud Bigtable has no concept '
+                       'of enabled / disabled tables.')
 
 
 def _get_cluster(timeout=None):
@@ -349,14 +352,9 @@ class Connection(object):
                         is provided for compatibility with HappyBase, but is
                         not relevant for Cloud Bigtable since it has no concept
                         of enabled / disabled tables.
-
-        :raises: :class:`ValueError <exceptions.ValueError>`
-                 if ``disable=True``.
         """
         if disable:
-            raise ValueError('The disable argument should not be used in '
-                             'delete_table(). Cloud Bigtable has no concept '
-                             'of enabled / disabled tables.')
+            _WARN(_DISABLE_DELETE_MSG)
 
         name = self._table_name(name)
         _LowLevelTable(name, self._cluster).delete()
