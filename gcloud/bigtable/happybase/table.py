@@ -273,10 +273,23 @@ class Table(object):
         :rtype: list
         :returns: List of values in the cell (with timestamps if
                   ``include_timestamp`` is :data:`True`).
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
         """
-        raise NotImplementedError
+        filter_ = _filter_chain_helper(column=column, versions=versions,
+                                       timestamp=timestamp)
+        partial_row_data = self._low_level_table.read_row(row, filter_=filter_)
+        if partial_row_data is None:
+            return []
+        else:
+            cells = partial_row_data._cells
+            # We know that `_filter_chain_helper` has already verified that
+            # column will split as such.
+            column_family_id, column_qualifier = column.split(':')
+            # NOTE: We expect the only key in `cells` is `column_family_id`
+            #       and the only key `cells[column_family_id]` is
+            #       `column_qualifier`. But we don't check that this is true.
+            curr_cells = cells[column_family_id][column_qualifier]
+            return _cells_to_pairs(
+                curr_cells, include_timestamp=include_timestamp)
 
     def scan(self, row_start=None, row_stop=None, row_prefix=None,
              columns=None, filter=None, timestamp=None,
@@ -391,11 +404,9 @@ class Table(object):
                     Provided for compatibility with HappyBase, but irrelevant
                     for Cloud Bigtable since it does not have a Write Ahead
                     Log.
-
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
         """
-        raise NotImplementedError
+        with self.batch(timestamp=timestamp, wal=wal) as batch:
+            batch.put(row, data)
 
     def delete(self, row, columns=None, timestamp=None, wal=_WAL_SENTINEL):
         """Delete data from a row in this table.
@@ -429,11 +440,9 @@ class Table(object):
                     Provided for compatibility with HappyBase, but irrelevant
                     for Cloud Bigtable since it does not have a Write Ahead
                     Log.
-
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always (until the method is implemented).
         """
-        raise NotImplementedError
+        with self.batch(timestamp=timestamp, wal=wal) as batch:
+            batch.delete(row, columns)
 
     def batch(self, timestamp=None, batch_size=None, transaction=False,
               wal=_WAL_SENTINEL):
