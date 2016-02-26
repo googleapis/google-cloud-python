@@ -406,13 +406,106 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(mock_cells,
                          [((fake_cells,), to_pairs_kwargs)])
 
-    def test_cells(self):
+    def test_cells_empty_row(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        table._low_level_table.read_row_result = None
 
-        with self.assertRaises(NotImplementedError):
-            table.cells(None, None)
+        # Set-up mocks.
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        row_key = 'row-key'
+        column = 'fam:col1'
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper):
+            result = table.cells(row_key, column)
+
+        # read_row_result == None --> No results.
+        self.assertEqual(result, [])
+
+        read_row_args = (row_key,)
+        read_row_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_row_calls, [
+            (read_row_args, read_row_kwargs),
+        ])
+
+        expected_kwargs = {
+            'column': column,
+            'versions': None,
+            'timestamp': None,
+        }
+        self.assertEqual(mock_filters, [expected_kwargs])
+
+    def test_cells_with_results(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+        from gcloud.bigtable.row_data import PartialRowData
+
+        row_key = 'row-key'
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+        table._low_level_table = _MockLowLevelTable()
+        partial_row = PartialRowData(row_key)
+        table._low_level_table.read_row_result = partial_row
+
+        # These are all passed to mocks.
+        versions = object()
+        timestamp = object()
+        include_timestamp = object()
+
+        # Set-up mocks.
+        fake_filter = object()
+        mock_filters = []
+
+        def mock_filter_chain_helper(**kwargs):
+            mock_filters.append(kwargs)
+            return fake_filter
+
+        fake_result = object()
+        mock_cells = []
+
+        def mock_cells_to_pairs(*args, **kwargs):
+            mock_cells.append((args, kwargs))
+            return fake_result
+
+        col_fam = 'cf1'
+        qual = 'qual'
+        fake_cells = object()
+        partial_row._cells = {col_fam: {qual: fake_cells}}
+        column = col_fam + ':' + qual
+        with _Monkey(MUT, _filter_chain_helper=mock_filter_chain_helper,
+                     _cells_to_pairs=mock_cells_to_pairs):
+            result = table.cells(row_key, column, versions=versions,
+                                 timestamp=timestamp,
+                                 include_timestamp=include_timestamp)
+
+        self.assertEqual(result, fake_result)
+
+        read_row_args = (row_key,)
+        read_row_kwargs = {'filter_': fake_filter}
+        self.assertEqual(table._low_level_table.read_row_calls, [
+            (read_row_args, read_row_kwargs),
+        ])
+
+        filter_kwargs = {
+            'column': column,
+            'versions': versions,
+            'timestamp': timestamp,
+        }
+        self.assertEqual(mock_filters, [filter_kwargs])
+        to_pairs_kwargs = {'include_timestamp': include_timestamp}
+        self.assertEqual(mock_cells,
+                         [((fake_cells,), to_pairs_kwargs)])
 
     def test_scan(self):
         name = 'table-name'
@@ -423,20 +516,84 @@ class TestTable(unittest2.TestCase):
             table.scan()
 
     def test_put(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+        from gcloud.bigtable.happybase.table import _WAL_SENTINEL
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
+        batches_created = []
 
-        with self.assertRaises(NotImplementedError):
-            table.put(None, None)
+        def make_batch(*args, **kwargs):
+            result = _MockBatch(*args, **kwargs)
+            batches_created.append(result)
+            return result
+
+        row = 'row-key'
+        data = {'fam:col': 'foo'}
+        timestamp = None
+        with _Monkey(MUT, Batch=make_batch):
+            result = table.put(row, data, timestamp=timestamp)
+
+        # There is no return value.
+        self.assertEqual(result, None)
+
+        # Check how the batch was created and used.
+        batch, = batches_created
+        self.assertTrue(isinstance(batch, _MockBatch))
+        self.assertEqual(batch.args, (table,))
+        expected_kwargs = {
+            'timestamp': timestamp,
+            'batch_size': None,
+            'transaction': False,
+            'wal': _WAL_SENTINEL,
+        }
+        self.assertEqual(batch.kwargs, expected_kwargs)
+        # Make sure it was a successful context manager
+        self.assertEqual(batch.exit_vals, [(None, None, None)])
+        self.assertEqual(batch.put_args, [(row, data)])
+        self.assertEqual(batch.delete_args, [])
 
     def test_delete(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+        from gcloud.bigtable.happybase.table import _WAL_SENTINEL
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
+        batches_created = []
 
-        with self.assertRaises(NotImplementedError):
-            table.delete(None)
+        def make_batch(*args, **kwargs):
+            result = _MockBatch(*args, **kwargs)
+            batches_created.append(result)
+            return result
+
+        row = 'row-key'
+        columns = ['fam:col1', 'fam:col2']
+        timestamp = None
+        with _Monkey(MUT, Batch=make_batch):
+            result = table.delete(row, columns=columns, timestamp=timestamp)
+
+        # There is no return value.
+        self.assertEqual(result, None)
+
+        # Check how the batch was created and used.
+        batch, = batches_created
+        self.assertTrue(isinstance(batch, _MockBatch))
+        self.assertEqual(batch.args, (table,))
+        expected_kwargs = {
+            'timestamp': timestamp,
+            'batch_size': None,
+            'transaction': False,
+            'wal': _WAL_SENTINEL,
+        }
+        self.assertEqual(batch.kwargs, expected_kwargs)
+        # Make sure it was a successful context manager
+        self.assertEqual(batch.exit_vals, [(None, None, None)])
+        self.assertEqual(batch.put_args, [])
+        self.assertEqual(batch.delete_args, [(row, columns)])
 
     def test_batch(self):
         from gcloud._testing import _Monkey
@@ -1108,6 +1265,21 @@ class _MockBatch(object):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
+        self.exit_vals = []
+        self.put_args = []
+        self.delete_args = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.exit_vals.append((exc_type, exc_value, traceback))
+
+    def put(self, *args):
+        self.put_args.append(args)
+
+    def delete(self, *args):
+        self.delete_args.append(args)
 
 
 class _MockPartialRowsData(object):
