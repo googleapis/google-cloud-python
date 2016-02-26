@@ -37,7 +37,9 @@ could not be implemented:
 * :meth:`Table.counter_set() \
       <gcloud.bigtable.happybase.table.Table.counter_set>` - method can't
   be atomic, so we disable it
-* The ``__version__`` value for the HappyBase package is :data:`None`
+* The ``__version__`` value for the HappyBase package is :data:`None`.
+  However, it's worth nothing this implementation was based off HappyBase
+  0.9.
 
 In addition, many of the constants from :mod:`.connection` are specific
 to HBase and are defined as :data:`None` in our module:
