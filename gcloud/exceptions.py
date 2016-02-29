@@ -181,9 +181,14 @@ def make_exception(response, content, error_info=None, use_json=True):
         content = content.decode('utf-8')
 
     if isinstance(content, six.string_types):
+        payload = None
         if use_json:
-            payload = json.loads(content)
-        else:
+            try:
+                payload = json.loads(content)
+            except ValueError:
+                # Expected JSON but received something else.
+                pass
+        if payload is None:
             payload = {'error': {'message': content}}
     else:
         payload = content

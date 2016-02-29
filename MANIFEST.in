@@ -1,4 +1,3 @@
 include README.rst
 graft gcloud
 global-exclude *.pyc
-recursive-exclude system_tests *

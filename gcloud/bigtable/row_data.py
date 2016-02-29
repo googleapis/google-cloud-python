@@ -279,3 +279,45 @@ class PartialRowsData(object):
         # NOTE: To avoid duplicating large objects, this is just the
         #       mutable private data.
         return self._rows
+
+    def cancel(self):
+        """Cancels the iterator, closing the stream."""
+        self._response_iterator.cancel()
+
+    def consume_next(self):
+        """Consumes the next ``ReadRowsResponse`` from the stream.
+
+        Parses the response and stores it as a :class:`PartialRowData`
+        in a dictionary owned by this object.
+
+        :raises: :class:`StopIteration <exceptions.StopIteration>` if the
+                 response iterator has no more responses to stream.
+        """
+        read_rows_response = self._response_iterator.next()
+        row_key = read_rows_response.row_key
+        partial_row = self._rows.get(row_key)
+        if partial_row is None:
+            partial_row = self._rows[row_key] = PartialRowData(row_key)
+        # NOTE: This is not atomic in the case of failures.
+        partial_row.update_from_read_rows(read_rows_response)
+
+    def consume_all(self, max_loops=None):
+        """Consume the streamed responses until there are no more.
+
+        This simply calls :meth:`consume_next` until there are no
+        more to consume.
+
+        :type max_loops: int
+        :param max_loops: (Optional) Maximum number of times to try to consume
+                          an additional ``ReadRowsResponse``. You can use this
+                          to avoid long wait times.
+        """
+        curr_loop = 0
+        if max_loops is None:
+            max_loops = float('inf')
+        while curr_loop < max_loops:
+            curr_loop += 1
+            try:
+                self.consume_next()
+            except StopIteration:
+                break

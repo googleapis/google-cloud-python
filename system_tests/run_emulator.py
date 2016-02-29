@@ -28,7 +28,7 @@ import psutil
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import GCD_HOST
 from gcloud.environment_vars import PUBSUB_EMULATOR
-from system_tests.run_system_test import run_module_tests
+from run_system_test import run_module_tests
 
 
 PACKAGE_INFO = {

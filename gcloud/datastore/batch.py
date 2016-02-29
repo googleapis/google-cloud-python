@@ -34,8 +34,9 @@ class Batch(object):
     operations and the ``delete`` operation into the same mutation, and send
     them to the server in a single API request::
 
-      >>> from gcloud.datastore.batch import Batch
-      >>> batch = Batch()
+      >>> from gcloud import datastore
+      >>> client = datastore.Client()
+      >>> batch = client.batch()
       >>> batch.put(entity1)
       >>> batch.put(entity2)
       >>> batch.delete(key3)
@@ -45,14 +46,14 @@ class Batch(object):
     :meth:`commit` will be called automatically if its block exits without
     raising an exception::
 
-      >>> with Batch() as batch:
+      >>> with batch:
       ...     batch.put(entity1)
       ...     batch.put(entity2)
       ...     batch.delete(key3)
 
     By default, no updates will be sent if the block exits with an error::
 
-      >>> with Batch() as batch:
+      >>> with batch:
       ...     do_some_work(batch)
       ...     raise Exception()  # rolls back
 

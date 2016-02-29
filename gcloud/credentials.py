@@ -27,11 +27,11 @@ except ImportError:  # pragma: NO COVER
     crypto = None
 
 from oauth2client import client
-from oauth2client.client import _get_application_default_credential_from_file
 from oauth2client import crypt
 from oauth2client.service_account import ServiceAccountCredentials
 try:
-    from oauth2client.appengine import AppAssertionCredentials as _GAECreds
+    from oauth2client.contrib.appengine import (
+        AppAssertionCredentials as _GAECreds)
 except ImportError:
     class _GAECreds(object):
         """Dummy class if not in App Engine environment."""
@@ -100,66 +100,6 @@ def get_credentials():
               environment.
     """
     return client.GoogleCredentials.get_application_default()
-
-
-def get_for_service_account_json(json_credentials_path, scope=None):
-    """Gets the credentials for a service account with JSON key.
-
-    :type json_credentials_path: string
-    :param json_credentials_path: The path to a private key file (this file was
-                                  given to you when you created the service
-                                  account). This file must contain a JSON
-                                  object with a private key and other
-                                  credentials information (downloaded from the
-                                  Google APIs console).
-
-    :type scope: string or tuple of string
-    :param scope: The scope against which to authenticate. (Different services
-                  require different scopes, check the documentation for which
-                  scope is required for the different levels of access to any
-                  particular API.)
-
-    :rtype: :class:`oauth2client.client.GoogleCredentials`,
-            :class:`oauth2client.service_account.ServiceAccountCredentials`
-    :returns: New service account or Google (for a user JSON key file)
-              credentials object.
-    """
-    credentials = _get_application_default_credential_from_file(
-        json_credentials_path)
-    if scope is not None:
-        credentials = credentials.create_scoped(scope)
-    return credentials
-
-
-def get_for_service_account_p12(client_email, private_key_path, scope=None):
-    """Gets the credentials for a service account with PKCS12 / p12 key.
-
-    .. note::
-      This method is not used by default, instead :func:`get_credentials`
-      is used. This method is intended to be used when the environment is
-      known explicitly and detecting the environment implicitly would be
-      superfluous.
-
-    :type client_email: string
-    :param client_email: The e-mail attached to the service account.
-
-    :type private_key_path: string
-    :param private_key_path: The path to a private key file (this file was
-                             given to you when you created the service
-                             account). This file must be in P12 format.
-
-    :type scope: string or tuple of string
-    :param scope: The scope against which to authenticate. (Different services
-                  require different scopes, check the documentation for which
-                  scope is required for the different levels of access to any
-                  particular API.)
-
-    :rtype: :class:`oauth2client.service_account.ServiceAccountCredentials`
-    :returns: A new ``ServiceAccountCredentials`` instance with the
-              needed service account settings.
-    """
-    return ServiceAccountCredentials.from_p12_keyfile(
-        client_email, private_key_path, scopes=scope)
 
 
 def _get_pem_key(credentials):

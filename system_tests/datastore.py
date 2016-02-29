@@ -28,9 +28,9 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud.exceptions import Conflict
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
-from system_tests import clear_datastore
-from system_tests import populate_datastore
-from system_tests.system_test_utils import EmulatorCreds
+import clear_datastore
+import populate_datastore
+from system_test_utils import EmulatorCreds
 
 
 class Config(object):

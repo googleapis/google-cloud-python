@@ -22,7 +22,7 @@ from gcloud import _helpers
 from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
-from system_tests.system_test_utils import EmulatorCreds
+from system_test_utils import EmulatorCreds
 
 
 DEFAULT_TOPIC_NAME = 'subscribe-me%d' % (1000 * time.time(),)

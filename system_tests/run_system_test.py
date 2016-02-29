@@ -18,11 +18,13 @@ import unittest2
 
 # This assumes the command is being run via tox hence the
 # repository root is the current directory.
-from system_tests import bigquery
-from system_tests import datastore
-from system_tests import pubsub
-from system_tests import storage
-from system_tests import system_test_utils
+import bigquery
+import bigtable
+import bigtable_happybase
+import datastore
+import pubsub
+import storage
+import system_test_utils
 
 
 TEST_MODULES = {
@@ -30,6 +32,8 @@ TEST_MODULES = {
     'storage': storage,
     'pubsub': pubsub,
     'bigquery': bigquery,
+    'bigtable': bigtable,
+    'bigtable-happybase': bigtable_happybase,
 }
 
 
