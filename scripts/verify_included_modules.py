@@ -30,20 +30,22 @@ DOCS_DIR = os.path.join(BASE_DIR, 'docs')
 OBJECT_INVENTORY_RELPATH = os.path.join('_build', 'html', 'objects.inv')
 IGNORED_PREFIXES = ('test_', '_')
 IGNORED_MODULES = frozenset([
-    'gcloud.bigtable.client',
-    'gcloud.bigtable.cluster',
-    'gcloud.bigtable.column_family',
-    'gcloud.bigtable.happybase.batch',
-    'gcloud.bigtable.happybase.connection',
-    'gcloud.bigtable.happybase.pool',
-    'gcloud.bigtable.happybase.table',
-    'gcloud.bigtable.row',
-    'gcloud.bigtable.row_data',
-    'gcloud.bigtable.table',
+    'gcloud.__init__',
+    'gcloud.bigquery.__init__',
+    'gcloud.bigtable.__init__',
+    'gcloud.datastore.__init__',
+    'gcloud.datastore.demo.__init__',
     'gcloud.datastore.demo.demo',
     'gcloud.demo',
+    'gcloud.dns.__init__',
     'gcloud.iterator',
+    'gcloud.pubsub.__init__',
+    'gcloud.resource_manager.__init__',
+    'gcloud.search.__init__',
+    'gcloud.storage.__init__',
+    'gcloud.storage.demo.__init__',
     'gcloud.storage.demo.demo',
+    'gcloud.streaming.__init__',
     'gcloud.streaming.buffered_stream',
     'gcloud.streaming.exceptions',
     'gcloud.streaming.http_wrapper',
@@ -73,6 +75,8 @@ def is_valid_module(filename):
     """
     if not filename.endswith('.py'):
         return False
+    if filename == '__init__.py':
+        return True
     for prefix in IGNORED_PREFIXES:
         if filename.startswith(prefix):
             return False

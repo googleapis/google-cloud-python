@@ -27,6 +27,8 @@ In the hierarchy of API concepts
 """
 
 
+from pkg_resources import get_distribution
+
 from grpc.beta import implementations
 
 from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
@@ -75,7 +77,8 @@ READ_ONLY_SCOPE = ('https://www.googleapis.com/auth/'
 DEFAULT_TIMEOUT_SECONDS = 10
 """The default timeout to use for API requests."""
 
-DEFAULT_USER_AGENT = 'gcloud-bigtable-python'
+DEFAULT_USER_AGENT = 'gcloud-python/{0}'.format(
+    get_distribution('gcloud').version)
 """The default user agent for API requests."""
 
 

@@ -34,7 +34,6 @@ _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
 _OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/zones/([^/]+)/'
                                 r'clusters/([a-z][-a-z0-9]*)/operations/'
                                 r'(?P<operation_id>\d+)$')
-_DEFAULT_SERVE_NODES = 3
 _TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
 _ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.cluster.v1.'
 _CLUSTER_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateClusterMetadata'
@@ -45,6 +44,9 @@ _TYPE_URL_MAP = {
     _UPDATE_CREATE_METADATA: messages_pb2.UpdateClusterMetadata,
     _UNDELETE_CREATE_METADATA: messages_pb2.UndeleteClusterMetadata,
 }
+
+DEFAULT_SERVE_NODES = 3
+"""Default number of nodes to use when creating a cluster."""
 
 
 def _prepare_create_request(cluster):
@@ -204,7 +206,7 @@ class Cluster(object):
     :type cluster_id: str
     :param cluster_id: The ID of the cluster.
 
-    :type client: :class:`.client.Client`
+    :type client: :class:`Client <gcloud.bigtable.client.Client>`
     :param client: The client that owns the cluster. Provides
                    authorization and a project ID.
 
@@ -216,11 +218,11 @@ class Cluster(object):
 
     :type serve_nodes: int
     :param serve_nodes: (Optional) The number of nodes in the cluster.
-                        Defaults to 3 (``_DEFAULT_SERVE_NODES``).
+                        Defaults to :data:`DEFAULT_SERVE_NODES`.
     """
 
     def __init__(self, zone, cluster_id, client,
-                 display_name=None, serve_nodes=_DEFAULT_SERVE_NODES):
+                 display_name=None, serve_nodes=DEFAULT_SERVE_NODES):
         self.zone = zone
         self.cluster_id = cluster_id
         self.display_name = display_name or cluster_id
@@ -253,14 +255,16 @@ class Cluster(object):
         :type cluster_pb: :class:`bigtable_cluster_data_pb2.Cluster`
         :param cluster_pb: A cluster protobuf object.
 
-        :type client: :class:`.client.Client`
+        :type client: :class:`Client <gcloud.bigtable.client.Client>`
         :param client: The client that owns the cluster.
 
         :rtype: :class:`Cluster`
         :returns: The cluster parsed from the protobuf response.
         :raises: :class:`ValueError <exceptions.ValueError>` if the cluster
-                 name does not match :data:`_CLUSTER_NAME_RE` or if the parsed
-                 project ID does not match the project ID on the client.
+                 name does not match
+                 ``projects/{project}/zones/{zone}/clusters/{cluster_id}``
+                 or if the parsed project ID does not match the project ID
+                 on the client.
         """
         match = _CLUSTER_NAME_RE.match(cluster_pb.name)
         if match is None:
@@ -277,9 +281,8 @@ class Cluster(object):
     def copy(self):
         """Make a copy of this cluster.
 
-        Copies the local data stored as simple types but does not copy the
-        current state of any operations with the Cloud Bigtable API. Also
-        copies the client attached to this instance.
+        Copies the local data stored as simple types and copies the client
+        attached to this instance.
 
         :rtype: :class:`.Cluster`
         :returns: A copy of the current cluster.

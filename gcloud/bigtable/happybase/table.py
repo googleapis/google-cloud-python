@@ -49,7 +49,7 @@ _SIMPLE_GC_RULES = (MaxAgeGCRule, MaxVersionsGCRule)
 def make_row(cell_map, include_timestamp):
     """Make a row dict for a Thrift cell mapping.
 
-    .. note::
+    .. warning::
 
         This method is only provided for HappyBase compatibility, but does not
         actually work.
@@ -74,7 +74,7 @@ def make_row(cell_map, include_timestamp):
 def make_ordered_row(sorted_columns, include_timestamp):
     """Make a row dict for sorted Thrift column results from scans.
 
-    .. note::
+    .. warning::
 
         This method is only provided for HappyBase compatibility, but does not
         actually work.
@@ -103,7 +103,7 @@ class Table(object):
     :type name: str
     :param name: The name of the table.
 
-    :type connection: :class:`.Connection`
+    :type connection: :class:`Connection <.happybase.connection.Connection>`
     :param connection: The connection which has access to the table.
     """
 
@@ -136,9 +136,11 @@ class Table(object):
     def regions(self):
         """Retrieve the regions for this table.
 
-        Cloud Bigtable does not give information about how a table is laid
-        out in memory, so regions so this method does not work. It is
-        provided simply for compatibility.
+        .. warning::
+
+            Cloud Bigtable does not give information about how a table is laid
+            out in memory, so this method does not work. It is
+            provided simply for compatibility.
 
         :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
                  always
@@ -161,7 +163,7 @@ class Table(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
         :type timestamp: int
         :param timestamp: (Optional) Timestamp (in milliseconds since the
@@ -206,7 +208,7 @@ class Table(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
         :type timestamp: int
         :param timestamp: (Optional) Timestamp (in milliseconds since the
@@ -319,9 +321,9 @@ class Table(object):
         results to retrieve per request. The HBase scanner defaults to reading
         one record at a time, so this argument allows HappyBase to increase
         that number. However, the Cloud Bigtable API uses HTTP/2 streaming so
-        there is no concept of a batch. The ``sorted_columns`` flag tells
-        HBase to return columns in order, but Cloud Bigtable doesn't have
-        this feature.)
+        there is no concept of a batched scan. The ``sorted_columns`` flag
+        tells HBase to return columns in order, but Cloud Bigtable doesn't
+        have this feature.)
 
         :type row_start: str
         :param row_start: (Optional) Row key where the scanner should start
@@ -344,9 +346,9 @@ class Table(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
-        :type filter: :class:`.RowFilter`
+        :type filter: :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
         :param filter: (Optional) An additional filter (beyond column and
                        row range filters supported here). HappyBase / HBase
                        users will have used this as an HBase filter string. See
@@ -369,7 +371,7 @@ class Table(object):
         :param kwargs: Remaining keyword arguments. Provided for HappyBase
                        compatibility.
 
-        :raises: If ``limit`` is set but non-positive, or if row prefix is
+        :raises: If ``limit`` is set but non-positive, or if ``row_prefix`` is
                  used with row start/stop,
                  :class:`TypeError <exceptions.TypeError>` if a string
                  ``filter`` is used.
@@ -479,7 +481,7 @@ class Table(object):
                         strings). Each column name can be either
 
                           * an entire column family: ``fam`` or ``fam:``
-                          * an single column: ``fam:col``
+                          * a single column: ``fam:col``
 
         :type timestamp: int
         :param timestamp: (Optional) Timestamp (in milliseconds since the
@@ -498,8 +500,9 @@ class Table(object):
               wal=_WAL_SENTINEL):
         """Create a new batch operation for this table.
 
-        This method returns a new :class:`.Batch` instance that can be used
-        for mass data manipulation.
+        This method returns a new
+        :class:`Batch <.happybase.batch.Batch>` instance that can be
+        used for mass data manipulation.
 
         :type timestamp: int
         :param timestamp: (Optional) Timestamp (in milliseconds since the
@@ -512,10 +515,11 @@ class Table(object):
         :type transaction: bool
         :param transaction: Flag indicating if the mutations should be sent
                             transactionally or not. If ``transaction=True`` and
-                            an error occurs while a :class:`Batch` is active,
-                            then none of the accumulated mutations will be
-                            committed. If ``batch_size`` is set, the mutation
-                            can't be transactional.
+                            an error occurs while a
+                            :class:`Batch <.happybase.batch.Batch>` is
+                            active, then none of the accumulated mutations will
+                            be committed. If ``batch_size`` is set, the
+                            mutation can't be transactional.
 
         :type wal: object
         :param wal: Unused parameter (to be passed to the created batch).
@@ -523,7 +527,7 @@ class Table(object):
                     for Cloud Bigtable since it does not have a Write Ahead
                     Log.
 
-        :rtype: :class:`gcloud.bigtable.happybase.batch.Batch`
+        :rtype: :class:`Batch <gcloud.bigtable.happybase.batch.Batch>`
         :returns: A batch bound to this table.
         """
         return Batch(self, timestamp=timestamp, batch_size=batch_size,
@@ -659,10 +663,12 @@ def _gc_rule_to_dict(gc_rule):
 
     Only does this if the garbage collection rule is:
 
-    * :class:`.MaxAgeGCRule`
-    * :class:`.MaxVersionsGCRule`
-    * Composite :class:`.GCRuleIntersection` with two rules, one each
-      of type :class:`.MaxAgeGCRule` and :class:`.MaxVersionsGCRule`
+    * :class:`gcloud.bigtable.column_family.MaxAgeGCRule`
+    * :class:`gcloud.bigtable.column_family.MaxVersionsGCRule`
+    * Composite :class:`gcloud.bigtable.column_family.GCRuleIntersection`
+      with two rules, one each of type
+      :class:`gcloud.bigtable.column_family.MaxAgeGCRule` and
+      :class:`gcloud.bigtable.column_family.MaxVersionsGCRule`
 
     Otherwise, just returns the input without change.
 
@@ -671,7 +677,8 @@ def _gc_rule_to_dict(gc_rule):
     :param gc_rule: A garbage collection rule to convert to a dictionary
                     (if possible).
 
-    :rtype: dict or :class:`.GarbageCollectionRule`
+    :rtype: dict or
+            :class:`gcloud.bigtable.column_family.GarbageCollectionRule`
     :returns: The converted garbage collection rule.
     """
     result = gc_rule
@@ -758,7 +765,8 @@ def _convert_to_time_range(timestamp=None):
                       epoch). Intended to be used as the end of an HBase
                       time range, which is exclusive.
 
-    :rtype: :class:`.TimestampRange`, :data:`NoneType <types.NoneType>`
+    :rtype: :class:`gcloud.bigtable.row.TimestampRange`,
+            :data:`NoneType <types.NoneType>`
     :returns: The timestamp range corresponding to the passed in
               ``timestamp``.
     """
@@ -784,7 +792,8 @@ def _cells_to_pairs(cells, include_timestamp=False):
       [(b'val1', 1456361486255), (b'val2', 1456361491927)]
 
     :type cells: list
-    :param cells: List of :class:`.Cell` returned from a read request.
+    :param cells: List of :class:`gcloud.bigtable.row_data.Cell` returned
+                  from a read request.
 
     :type include_timestamp: bool
     :param include_timestamp: Flag to indicate if cell timestamps should be
@@ -868,7 +877,7 @@ def _filter_chain_helper(column=None, versions=None, timestamp=None,
     :type filters: list
     :param filters: (Optional) List of existing filters to be extended.
 
-    :rtype: :class:`.RowFilter`
+    :rtype: :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
     :returns: The chained filter created, or just a single filter if only
               one was needed.
     :raises: :class:`ValueError <exceptions.ValueError>` if there are no
@@ -907,9 +916,9 @@ def _columns_filter_helper(columns):
                     name can be either
 
                       * an entire column family: ``fam`` or ``fam:``
-                      * an single column: ``fam:col``
+                      * a single column: ``fam:col``
 
-    :rtype: :class:`.RowFilter`
+    :rtype: :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
     :returns: The union filter created containing all of the matched columns.
     :raises: :class:`ValueError <exceptions.ValueError>` if there are no
              filters to union.
@@ -940,7 +949,7 @@ def _row_keys_filter_helper(row_keys):
     :type row_keys: list
     :param row_keys: Iterable containing row keys (as strings).
 
-    :rtype: :class:`.RowFilter`
+    :rtype: :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
     :returns: The union filter created containing all of the row keys.
     :raises: :class:`ValueError <exceptions.ValueError>` if there are no
              filters to union.

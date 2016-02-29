@@ -420,7 +420,7 @@ class TestRow(unittest2.TestCase):
         row = self._makeOne(row_key, table)
         row._pb_mutations = [1, 2, 3]
         num_mutations = len(row._pb_mutations)
-        with _Monkey(MUT, _MAX_MUTATIONS=num_mutations - 1):
+        with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()
 
@@ -521,7 +521,7 @@ class TestRow(unittest2.TestCase):
         row = self._makeOne(row_key, table, filter_=filter_)
         row._true_pb_mutations = [1, 2, 3]
         num_mutations = len(row._true_pb_mutations)
-        with _Monkey(MUT, _MAX_MUTATIONS=num_mutations - 1):
+        with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()
 

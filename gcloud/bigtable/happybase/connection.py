@@ -50,7 +50,8 @@ def _get_cluster(timeout=None):
     """Gets cluster for the default project.
 
     Creates a client with the inferred credentials and project ID from
-    the local environment. Then uses :meth:`.Client.list_clusters` to
+    the local environment. Then uses
+    :meth:`.bigtable.client.Client.list_clusters` to
     get the unique cluster owned by the project.
 
     If the request fails for any reason, or if there isn't exactly one cluster
@@ -94,7 +95,8 @@ class Connection(object):
 
         If you pass a ``cluster``, it will be :meth:`.Cluster.copy`-ed before
         being stored on the new connection. This also copies the
-        :class:`.Client` that created the :class:`.Cluster` instance and the
+        :class:`Client <gcloud.bigtable.client.Client>` that created the
+        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` instance and the
         :class:`Credentials <oauth2client.client.Credentials>` stored on the
         client.
 
@@ -117,12 +119,13 @@ class Connection(object):
     :param table_prefix_separator: (Optional) Separator used with
                                    ``table_prefix``. Defaults to ``_``.
 
-    :type cluster: :class:`gcloud.bigtable.cluster.Cluster`
+    :type cluster: :class:`Cluster <gcloud.bigtable.cluster.Cluster>`
     :param cluster: (Optional) A Cloud Bigtable cluster. The instance also
                     owns a client for making gRPC requests to the Cloud
                     Bigtable API. If not passed in, defaults to creating client
                     with ``admin=True`` and using the ``timeout`` here for the
-                    ``timeout_seconds`` argument to the :class:`.Client``
+                    ``timeout_seconds`` argument to the
+                    :class:`Client <gcloud.bigtable.client.Client>`
                     constructor. The credentials for the client
                     will be the implicit ones loaded from the environment.
                     Then that client is used to retrieve all the clusters
@@ -191,7 +194,8 @@ class Connection(object):
         """Open the underlying transport to Cloud Bigtable.
 
         This method opens the underlying HTTP/2 gRPC connection using a
-        :class:`.Client` bound to the :class:`.Cluster` owned by
+        :class:`Client <gcloud.bigtable.client.Client>` bound to the
+        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` owned by
         this connection.
         """
         self._cluster._client.start()
@@ -200,7 +204,8 @@ class Connection(object):
         """Close the underlying transport to Cloud Bigtable.
 
         This method closes the underlying HTTP/2 gRPC connection using a
-        :class:`.Client` bound to the :class:`.Cluster` owned by
+        :class:`Client <gcloud.bigtable.client.Client>` bound to the
+        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` owned by
         this connection.
         """
         self._cluster._client.stop()
@@ -233,7 +238,7 @@ class Connection(object):
         :type use_prefix: bool
         :param use_prefix: Whether to use the table prefix (if any).
 
-        :rtype: `Table <gcloud.bigtable.happybase.table.Table>`
+        :rtype: :class:`Table <gcloud.bigtable.happybase.table.Table>`
         :returns: Table instance owned by this connection.
         """
         if use_prefix:
@@ -362,8 +367,10 @@ class Connection(object):
     def enable_table(self, name):
         """Enable the specified table.
 
-        Cloud Bigtable has no concept of enabled / disabled tables so this
-        method does not work. It is provided simply for compatibility.
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
 
         :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
                  always
@@ -374,8 +381,10 @@ class Connection(object):
     def disable_table(self, name):
         """Disable the specified table.
 
-        Cloud Bigtable has no concept of enabled / disabled tables so this
-        method does not work. It is provided simply for compatibility.
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
 
         :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
                  always
@@ -386,8 +395,10 @@ class Connection(object):
     def is_table_enabled(self, name):
         """Return whether the specified table is enabled.
 
-        Cloud Bigtable has no concept of enabled / disabled tables so this
-        method does not work. It is provided simply for compatibility.
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
 
         :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
                  always
@@ -398,8 +409,10 @@ class Connection(object):
     def compact_table(self, name, major=False):
         """Compact the specified table.
 
-        Cloud Bigtable does not support compacting a table, so this
-        method does not work. It is provided simply for compatibility.
+        .. warning::
+
+            Cloud Bigtable does not support compacting a table, so this
+            method does not work. It is provided simply for compatibility.
 
         :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
                  always
