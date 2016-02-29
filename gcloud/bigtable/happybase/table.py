@@ -603,12 +603,12 @@ class Table(object):
         :rtype: int
         :returns: Counter value after incrementing.
         """
-        row = self._low_level_table.row(row)
+        row = self._low_level_table.row(row, append=True)
         if isinstance(column, six.binary_type):
             column = column.decode('utf-8')
         column_family_id, column_qualifier = column.split(':')
         row.increment_cell_value(column_family_id, column_qualifier, value)
-        # See row.commit_modifications() will return a dictionary:
+        # See row._commit_modifications() will return a dictionary:
         # {
         #     u'col-fam-id': {
         #         b'col-name1': [
@@ -618,7 +618,7 @@ class Table(object):
         #         ...
         #     },
         # }
-        modified_cells = row.commit_modifications()
+        modified_cells = row.commit()
         # Get the cells in the modified column,
         column_cells = modified_cells[column_family_id][column_qualifier]
         # Make sure there is exactly one cell in the column.

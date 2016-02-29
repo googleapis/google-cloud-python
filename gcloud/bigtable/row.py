@@ -36,15 +36,48 @@ MAX_MUTATIONS = 100000
 class Row(object):
     """Representation of a Google Cloud Bigtable Row.
 
-    .. note::
+    A :class:`Row` accumulates mutations locally via these methods:
 
-        A :class:`Row` accumulates mutations locally via the :meth:`set_cell`,
-        :meth:`delete`, :meth:`delete_cell` and :meth:`delete_cells` methods.
-        To actually send these mutations to the Google Cloud Bigtable API, you
-        must call :meth:`commit`. If a ``filter_`` is set on the :class:`Row`,
-        the mutations must have an associated state: :data:`True` or
-        :data:`False`. The mutations will be applied conditionally, based on
-        whether the filter matches any cells in the :class:`Row` or not.
+    * :meth:`set_cell`,
+    * :meth:`delete`
+    * :meth:`delete_cell`
+    * :meth:`delete_cells`
+    * :meth:`append_cell_value`
+    * :meth:`increment_cell_value`
+
+    To actually send these mutations to the Google Cloud Bigtable API, you
+    must call :meth:`commit`.
+
+    These methods split into two groups: those that are meant to augment
+    existing cell values and those that are meant to set / delete cell
+    values. In order to differentiate the two, the ``append`` argument
+    identifies what type of row mutations are intended.
+
+    If ``append`` is :data:`False` (the default), then
+    :meth:`append_cell_value` and :meth:`increment_cell_value` cannot be used
+    to accumulate mutations. If ``append`` is :data:`True`, then **only**
+    :meth:`append_cell_value` and :meth:`increment_cell_value` can be used.
+
+    The remaining methods can either be used directly::
+
+      >>> row = table.row(b'row-key1')
+      >>> row.set_cell(u'fam', b'col1', b'cell-val')
+      >>> row.delete_cell(u'fam', b'col2')
+
+    or with a filter. If a ``filter_`` is set on the :class:`Row`, the
+    mutations must have an associated boolean ``state``::
+
+      >>> row_cond = table.row(b'row-key2', filter_=row_filter)
+      >>> row_cond.set_cell(u'fam', b'col', b'cell-val', state=True)
+      >>> row_cond.delete_cell(u'fam', b'col', state=False)
+
+    In the filtered case, the mutations will be applied conditionally, based on
+    whether the filter matches any cells in the :class:`Row` or not.
+
+    .. warning::
+
+       At most one of ``filter_`` and ``append`` can be used in a
+       :class:`Row`.
 
     :type row_key: bytes
     :param row_key: The key for the current row.
@@ -59,24 +92,41 @@ class Row(object):
                     When :meth:`commit`-ed, the mutations for the :data:`True`
                     state will be applied if the filter matches any cells in
                     the row, otherwise the :data:`False` state will be.
+
+    :type append: bool
+    :param append: (Optional) Flag to determine if the row should be used
+                   for append mutations. If :data:`True`, then only
+                   :meth:`append_cell_value` and :meth:`increment_cell_value`
+                   can be used for accumulating mutations.
+
+    :raises: :class:`ValueError <exceptions.ValueError>` if both
+             ``filter_`` and ``append`` are used.
     """
 
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
-    def __init__(self, row_key, table, filter_=None):
+    def __init__(self, row_key, table, filter_=None, append=False):
+        if append and filter_ is not None:
+            raise ValueError('At most one of filter_ and append can be set')
         self._row_key = _to_bytes(row_key)
         self._table = table
         self._filter = filter_
-        self._rule_pb_list = []
-        if self._filter is None:
-            self._pb_mutations = []
-            self._true_pb_mutations = None
-            self._false_pb_mutations = None
-        else:
-            self._pb_mutations = None
+        self._append = append
+        self._rule_pb_list = None
+        self._pb_mutations = None
+        self._true_pb_mutations = None
+        self._false_pb_mutations = None
+
+        # We've already checked that at most one of filter_!=None,
+        # append=True has occurred.
+        if self._filter is not None:
             self._true_pb_mutations = []
             self._false_pb_mutations = []
+        elif self._append:
+            self._rule_pb_list = []
+        else:
+            self._pb_mutations = []
 
     def _get_mutations(self, state=None):
         """Gets the list of mutations for a given state.
@@ -107,6 +157,26 @@ class Row(object):
                 return self._true_pb_mutations
             else:
                 return self._false_pb_mutations
+
+    @property
+    def accumulation_type(self):
+        """Identify what type of mutations this row can accumulate.
+
+        .. note::
+
+           This method assumes the :class:`Row` is not in a pathological
+           state that is not possible to occur via public methods (e.g.
+           ``filter_`` and ``append`` set simultaneously).
+
+        :rtype: str
+        :returns: One of ``direct``, ``conditional`` or ``append``
+        """
+        if self._filter is not None:
+            return 'conditional'
+        elif self._append:
+            return 'append'
+        else:
+            return 'direct'
 
     def set_cell(self, column_family_id, column, value, timestamp=None,
                  state=None):
@@ -144,7 +214,12 @@ class Row(object):
         :param state: (Optional) The state that the mutation should be
                       applied in. Unset if the mutation is not conditional,
                       otherwise :data:`True` or :data:`False`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is an append row
         """
+        if self._append:
+            raise ValueError('set_cell() cannot be used on an append Row.')
         column = _to_bytes(column)
         if isinstance(value, six.integer_types):
             value = _PACK_I64(value)
@@ -174,7 +249,7 @@ class Row(object):
             This method adds a read-modify rule protobuf to the accumulated
             read-modify rules on this :class:`Row`, but does not make an API
             request. To actually send an API request (with the rules) to the
-            Google Cloud Bigtable API, call :meth:`commit_modifications`.
+            Google Cloud Bigtable API, call :meth:`commit`.
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -189,7 +264,13 @@ class Row(object):
         :param value: The value to append to the existing value in the cell. If
                       the targeted cell is unset, it will be treated as
                       containing the empty string.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is not an append row
         """
+        if not self._append:
+            raise ValueError('append_cell_value() can only be used on an '
+                             'append Row.')
         column = _to_bytes(column)
         value = _to_bytes(value)
         rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
@@ -208,7 +289,7 @@ class Row(object):
             This method adds a read-modify rule protobuf to the accumulated
             read-modify rules on this :class:`Row`, but does not make an API
             request. To actually send an API request (with the rules) to the
-            Google Cloud Bigtable API, call :meth:`commit_modifications`.
+            Google Cloud Bigtable API, call :meth:`commit`.
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -226,7 +307,13 @@ class Row(object):
                           must contain an 8-byte value (interpreted as a 64-bit
                           big-endian signed integer), or the entire request
                           will fail.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is not an append row
         """
+        if not self._append:
+            raise ValueError('increment_cell_value() can only be used on an '
+                             'append Row.')
         column = _to_bytes(column)
         rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
                                                column_qualifier=column,
@@ -247,7 +334,12 @@ class Row(object):
         :param state: (Optional) The state that the mutation should be
                       applied in. Unset if the mutation is not conditional,
                       otherwise :data:`True` or :data:`False`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is an append row
         """
+        if self._append:
+            raise ValueError('delete() cannot be used on an append Row.')
         mutation_val = data_pb2.Mutation.DeleteFromRow()
         mutation_pb = data_pb2.Mutation(delete_from_row=mutation_val)
         self._get_mutations(state).append(mutation_pb)
@@ -280,7 +372,12 @@ class Row(object):
         :param state: (Optional) The state that the mutation should be
                       applied in. Unset if the mutation is not conditional,
                       otherwise :data:`True` or :data:`False`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is an append row
         """
+        if self._append:
+            raise ValueError('delete_cell() cannot be used on an append Row.')
         self.delete_cells(column_family_id, [column], time_range=time_range,
                           state=state)
 
@@ -314,7 +411,12 @@ class Row(object):
         :param state: (Optional) The state that the mutation should be
                       applied in. Unset if the mutation is not conditional,
                       otherwise :data:`True` or :data:`False`.
+
+        :raises: :class:`ValueError <exceptions.ValueError>` if the
+                 :class:`Row` is an append row
         """
+        if self._append:
+            raise ValueError('delete_cells() cannot be used on an append Row.')
         mutations_list = self._get_mutations(state)
         if columns is self.ALL_COLUMNS:
             mutation_val = data_pb2.Mutation.DeleteFromFamily(
@@ -410,15 +512,30 @@ class Row(object):
         return resp.predicate_matched
 
     def clear_mutations(self):
-        """Removes all currently accumulated mutations on the current row."""
-        if self._filter is None:
-            del self._pb_mutations[:]
-        else:
+        """Removes all currently accumulated mutations on the current row.
+
+        .. note::
+
+           This method assumes the :class:`Row` is not in a pathological
+           state that is not possible to occur via public methods (e.g.
+           ``filter_`` and ``append`` set simultaneously).
+        """
+        if self._filter is not None:
             del self._true_pb_mutations[:]
             del self._false_pb_mutations[:]
+        elif self._append:
+            del self._rule_pb_list[:]
+        else:
+            del self._pb_mutations[:]
 
     def commit(self):
-        """Makes a ``MutateRow`` or ``CheckAndMutateRow`` API request.
+        """Makes an API request.
+
+        Sends request to one of three RPC methods:
+
+        * ``MutateRow`` in the **direct** case
+        * ``CheckAndMutateRow`` in the **conditional** case
+        * ``ReadModifyWriteRow`` in the **append** case
 
         If no mutations have been created in the row, no request is made.
 
@@ -434,28 +551,62 @@ class Row(object):
         any cells in the :class:`Row` or not. (Each method which adds a
         mutation has a ``state`` parameter for this purpose.)
 
-        :rtype: :class:`bool` or :data:`NoneType <types.NoneType>`
-        :returns: :data:`None` if there is no filter, otherwise a flag
-                  indicating if the filter was matched (which also
-                  indicates which set of mutations were applied by the server).
+        In the case that this :class:`Row` has accumulated append mutations,
+        the response will be a dictionary containing the updated
+        cells as nested dictionaries::
+
+            >>> row.commit()
+            {
+                u'col-fam-id': {
+                    b'col-name1': [
+                        (b'cell-val', datetime.datetime(...)),
+                        (b'cell-val-newer', datetime.datetime(...)),
+                    ],
+                    b'col-name2': [
+                        (b'altcol-cell-val', datetime.datetime(...)),
+                    ],
+                },
+                u'col-fam-id2': {
+                    b'col-name3-but-other-fam': [
+                        (b'foo', datetime.datetime(...)),
+                    ],
+                },
+            }
+
+        This dictionary has column families as keys and dictionaries of columns
+        within the family as values. Each column contains a list of cells
+        modified. Each cell is represented with a two-tuple with the
+        value (in bytes) and the timestamp for the cell.
+
+        .. note::
+
+           This method assumes the :class:`Row` is not in a pathological
+           state that is not possible to occur via public methods (e.g.
+           ``filter_`` and ``append`` set simultaneously).
+
+        :rtype: :class:`bool`, :data:`NoneType <types.NoneType>` or
+                :class:`dict`
+        :returns: In the filter case, returns a flag indicating if the filter
+                  was matched (which also indicates which set of mutations
+                  were applied by the server). In the append case, returns
+                  a dictionary with the new contents of all modified cells.
+                  Otherwise, returns :data:`None`.
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        if self._filter is None:
-            result = self._commit_mutate()
-        else:
+        if self._filter is not None:
             result = self._commit_check_and_mutate()
+        elif self._append:
+            result = self._commit_modifications()
+        else:
+            result = self._commit_mutate()
 
         # Reset mutations after commit-ing request.
         self.clear_mutations()
 
         return result
 
-    def clear_modification_rules(self):
-        """Removes all currently accumulated modifications on current row."""
-        del self._rule_pb_list[:]
-
-    def commit_modifications(self):
+    def _commit_modifications(self):
         """Makes a ``ReadModifyWriteRow`` API request.
 
         This commits modifications made by :meth:`append_cell_value` and
@@ -470,7 +621,7 @@ class Row(object):
 
         .. code:: python
 
-            >>> row.commit_modifications()
+            >>> row._commit_modifications()
             {
                 u'col-fam-id': {
                     b'col-name1': [
@@ -494,22 +645,24 @@ class Row(object):
                   dictionary of columns. Each column contains a list of cells
                   modified. Each cell is represented with a two-tuple with the
                   value (in bytes) and the timestamp for the cell.
-
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        if len(self._rule_pb_list) == 0:
+        num_mutations = len(self._rule_pb_list)
+        if num_mutations == 0:
             return {}
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError('%d total append mutations exceed the maximum '
+                             'allowable %d.' % (num_mutations, MAX_MUTATIONS))
         request_pb = messages_pb2.ReadModifyWriteRowRequest(
             table_name=self._table.name,
             row_key=self._row_key,
             rules=self._rule_pb_list,
         )
-        # We expect a `.data_pb2.Row`
         client = self._table._cluster._client
+        # We expect a `.data_pb2.Row`
         row_response = client._data_stub.ReadModifyWriteRow(
             request_pb, client.timeout_seconds)
-
-        # Reset modifications after commit-ing request.
-        self.clear_modification_rules()
 
         # NOTE: We expect row_response.key == self._row_key but don't check.
         return _parse_rmw_row_response(row_response)
