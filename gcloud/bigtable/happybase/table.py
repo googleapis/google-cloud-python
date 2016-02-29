@@ -554,6 +554,30 @@ class Table(object):
         # is correctly initialized if didn't exist yet.
         return self.counter_inc(row, column, value=0)
 
+    def counter_set(self, row, column, value=0):
+        """Set a counter column to a specific value.
+
+        This method is provided in HappyBase, but we do not provide it here
+        because it defeats the purpose of using atomic increment and decrement
+        of a counter.
+
+        :type row: str
+        :param row: Row key for the row we are setting a counter in.
+
+        :type column: str
+        :param column: Column we are setting a value in; of
+                       the form ``fam:col``.
+
+        :type value: int
+        :param value: Value to set the counter to.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('Table.counter_set will not be implemented. '
+                                  'Instead use the increment/decrement '
+                                  'methods along with counter_get.')
+
     def counter_inc(self, row, column, value=1):
         """Atomically increment a counter column.
 
