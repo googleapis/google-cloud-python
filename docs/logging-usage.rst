@@ -121,7 +121,7 @@ Delete all entries for a logger
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
-   >>> logger.delete()  # API call
+   >>> logger.delete_entries()  # API call
 
 
 Manage log metrics
