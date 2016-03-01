@@ -871,10 +871,12 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(name, connection)
         # Mock the return values.
         table._low_level_table = _MockLowLevelTable()
-        table._low_level_table.row_values[row] = _MockLowLevelRow(
+        table._low_level_table.row_values[row] = row_obj = _MockLowLevelRow(
             row, commit_result=commit_result)
 
+        self.assertFalse(row_obj._append)
         result = table.counter_inc(row, column, value=value)
+        self.assertTrue(row_obj._append)
 
         incremented_value = value + _MockLowLevelRow.COUNTER_DEFAULT
         self.assertEqual(result, incremented_value)
@@ -1431,8 +1433,10 @@ class _MockLowLevelTable(object):
         self.list_column_families_calls += 1
         return self.column_families
 
-    def row(self, row_key):
-        return self.row_values[row_key]
+    def row(self, row_key, append=None):
+        result = self.row_values[row_key]
+        result._append = append
+        return result
 
     def read_row(self, *args, **kwargs):
         self.read_row_calls.append((args, kwargs))
@@ -1449,6 +1453,7 @@ class _MockLowLevelRow(object):
 
     def __init__(self, row_key, commit_result=None):
         self.row_key = row_key
+        self._append = False
         self.counts = {}
         self.commit_result = commit_result
 
@@ -1457,7 +1462,7 @@ class _MockLowLevelRow(object):
                                        self.COUNTER_DEFAULT)
         self.counts[(column_family_id, column)] = count + int_value
 
-    def commit_modifications(self):
+    def commit(self):
         return self.commit_result
 
 

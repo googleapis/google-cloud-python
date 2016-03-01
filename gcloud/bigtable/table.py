@@ -23,6 +23,7 @@ from gcloud.bigtable._generated import (
     bigtable_service_messages_pb2 as data_messages_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
+from gcloud.bigtable.row import AppendRow
 from gcloud.bigtable.row import DirectRow
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.bigtable.row_data import PartialRowsData
@@ -95,8 +96,13 @@ class Table(object):
         """
         return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
 
-    def row(self, row_key, filter_=None):
+    def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
+
+        .. warning::
+
+           At most one of ``filter_`` and ``append`` can be used in a
+           :class:`Row`.
 
         :type row_key: bytes
         :param row_key: The key for the row being created.
@@ -105,10 +111,21 @@ class Table(object):
         :param filter_: (Optional) Filter to be used for conditional mutations.
                         See :class:`.DirectRow` for more details.
 
+        :type append: bool
+        :param append: (Optional) Flag to determine if the row should be used
+                       for append mutations.
+
         :rtype: :class:`.DirectRow`
         :returns: A row owned by this table.
+        :raises: :class:`ValueError <exceptions.ValueError>` if both
+                 ``filter_`` and ``append`` are used.
         """
-        return DirectRow(row_key, self, filter_=filter_)
+        if append and filter_ is not None:
+            raise ValueError('At most one of filter_ and append can be set')
+        if append:
+            return AppendRow(row_key, self)
+        else:
+            return DirectRow(row_key, self, filter_=filter_)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

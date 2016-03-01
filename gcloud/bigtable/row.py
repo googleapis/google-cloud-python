@@ -93,7 +93,6 @@ class DirectRow(Row):
         self._pb_mutations = []
         # NOTE: All below to be moved.
         self._filter = filter_
-        self._rule_pb_list = []
         if self._filter is None:
             self._pb_mutations = []
             self._true_pb_mutations = None
@@ -190,73 +189,6 @@ class DirectRow(Row):
         )
         mutation_pb = data_pb2.Mutation(set_cell=mutation_val)
         self._get_mutations(state).append(mutation_pb)
-
-    def append_cell_value(self, column_family_id, column, value):
-        """Appends a value to an existing cell.
-
-        .. note::
-
-            This method adds a read-modify rule protobuf to the accumulated
-            read-modify rules on this :class:`Row`, but does not make an API
-            request. To actually send an API request (with the rules) to the
-            Google Cloud Bigtable API, call :meth:`commit_modifications`.
-
-        :type column_family_id: str
-        :param column_family_id: The column family that contains the column.
-                                 Must be of the form
-                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-
-        :type column: bytes
-        :param column: The column within the column family where the cell
-                       is located.
-
-        :type value: bytes
-        :param value: The value to append to the existing value in the cell. If
-                      the targeted cell is unset, it will be treated as
-                      containing the empty string.
-        """
-        column = _to_bytes(column)
-        value = _to_bytes(value)
-        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
-                                               column_qualifier=column,
-                                               append_value=value)
-        self._rule_pb_list.append(rule_pb)
-
-    def increment_cell_value(self, column_family_id, column, int_value):
-        """Increments a value in an existing cell.
-
-        Assumes the value in the cell is stored as a 64 bit integer
-        serialized to bytes.
-
-        .. note::
-
-            This method adds a read-modify rule protobuf to the accumulated
-            read-modify rules on this :class:`Row`, but does not make an API
-            request. To actually send an API request (with the rules) to the
-            Google Cloud Bigtable API, call :meth:`commit_modifications`.
-
-        :type column_family_id: str
-        :param column_family_id: The column family that contains the column.
-                                 Must be of the form
-                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-
-        :type column: bytes
-        :param column: The column within the column family where the cell
-                       is located.
-
-        :type int_value: int
-        :param int_value: The value to increment the existing value in the cell
-                          by. If the targeted cell is unset, it will be treated
-                          as containing a zero. Otherwise, the targeted cell
-                          must contain an 8-byte value (interpreted as a 64-bit
-                          big-endian signed integer), or the entire request
-                          will fail.
-        """
-        column = _to_bytes(column)
-        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
-                                               column_qualifier=column,
-                                               increment_amount=int_value)
-        self._rule_pb_list.append(rule_pb)
 
     def delete(self, state=None):
         """Deletes this row from the table.
@@ -476,69 +408,6 @@ class DirectRow(Row):
 
         return result
 
-    def clear_modification_rules(self):
-        """Removes all currently accumulated modifications on current row."""
-        del self._rule_pb_list[:]
-
-    def commit_modifications(self):
-        """Makes a ``ReadModifyWriteRow`` API request.
-
-        This commits modifications made by :meth:`append_cell_value` and
-        :meth:`increment_cell_value`. If no modifications were made, makes
-        no API request and just returns ``{}``.
-
-        Modifies a row atomically, reading the latest existing timestamp/value
-        from the specified columns and writing a new value by appending /
-        incrementing. The new cell created uses either the current server time
-        or the highest timestamp of a cell in that column (if it exceeds the
-        server time).
-
-        .. code:: python
-
-            >>> row.commit_modifications()
-            {
-                u'col-fam-id': {
-                    b'col-name1': [
-                        (b'cell-val', datetime.datetime(...)),
-                        (b'cell-val-newer', datetime.datetime(...)),
-                    ],
-                    b'col-name2': [
-                        (b'altcol-cell-val', datetime.datetime(...)),
-                    ],
-                },
-                u'col-fam-id2': {
-                    b'col-name3-but-other-fam': [
-                        (b'foo', datetime.datetime(...)),
-                    ],
-                },
-            }
-
-        :rtype: dict
-        :returns: The new contents of all modified cells. Returned as a
-                  dictionary of column families, each of which holds a
-                  dictionary of columns. Each column contains a list of cells
-                  modified. Each cell is represented with a two-tuple with the
-                  value (in bytes) and the timestamp for the cell.
-
-        """
-        if len(self._rule_pb_list) == 0:
-            return {}
-        request_pb = messages_pb2.ReadModifyWriteRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            rules=self._rule_pb_list,
-        )
-        # We expect a `.data_pb2.Row`
-        client = self._table._cluster._client
-        row_response = client._data_stub.ReadModifyWriteRow(
-            request_pb, client.timeout_seconds)
-
-        # Reset modifications after commit-ing request.
-        self.clear_modification_rules()
-
-        # NOTE: We expect row_response.key == self._row_key but don't check.
-        return _parse_rmw_row_response(row_response)
-
 
 class ConditionalRow(DirectRow):
     """Google Cloud Bigtable Row for sending mutations conditionally.
@@ -606,6 +475,141 @@ class AppendRow(Row):
     def __init__(self, row_key, table):
         super(AppendRow, self).__init__(row_key, table)
         self._rule_pb_list = []
+
+    def clear(self):
+        """Removes all currently accumulated modifications on current row."""
+        del self._rule_pb_list[:]
+
+    def append_cell_value(self, column_family_id, column, value):
+        """Appends a value to an existing cell.
+
+        .. note::
+
+            This method adds a read-modify rule protobuf to the accumulated
+            read-modify rules on this :class:`Row`, but does not make an API
+            request. To actually send an API request (with the rules) to the
+            Google Cloud Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type value: bytes
+        :param value: The value to append to the existing value in the cell. If
+                      the targeted cell is unset, it will be treated as
+                      containing the empty string.
+        """
+        column = _to_bytes(column)
+        value = _to_bytes(value)
+        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
+                                               column_qualifier=column,
+                                               append_value=value)
+        self._rule_pb_list.append(rule_pb)
+
+    def increment_cell_value(self, column_family_id, column, int_value):
+        """Increments a value in an existing cell.
+
+        Assumes the value in the cell is stored as a 64 bit integer
+        serialized to bytes.
+
+        .. note::
+
+            This method adds a read-modify rule protobuf to the accumulated
+            read-modify rules on this :class:`Row`, but does not make an API
+            request. To actually send an API request (with the rules) to the
+            Google Cloud Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type int_value: int
+        :param int_value: The value to increment the existing value in the cell
+                          by. If the targeted cell is unset, it will be treated
+                          as containing a zero. Otherwise, the targeted cell
+                          must contain an 8-byte value (interpreted as a 64-bit
+                          big-endian signed integer), or the entire request
+                          will fail.
+        """
+        column = _to_bytes(column)
+        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
+                                               column_qualifier=column,
+                                               increment_amount=int_value)
+        self._rule_pb_list.append(rule_pb)
+
+    def commit(self):
+        """Makes a ``ReadModifyWriteRow`` API request.
+
+        This commits modifications made by :meth:`append_cell_value` and
+        :meth:`increment_cell_value`. If no modifications were made, makes
+        no API request and just returns ``{}``.
+
+        Modifies a row atomically, reading the latest existing
+        timestamp / value from the specified columns and writing a new value by
+        appending / incrementing. The new cell created uses either the current
+        server time or the highest timestamp of a cell in that column (if it
+        exceeds the server time).
+
+        .. code:: python
+
+            >>> append_row.commit()
+            {
+                u'col-fam-id': {
+                    b'col-name1': [
+                        (b'cell-val', datetime.datetime(...)),
+                        (b'cell-val-newer', datetime.datetime(...)),
+                    ],
+                    b'col-name2': [
+                        (b'altcol-cell-val', datetime.datetime(...)),
+                    ],
+                },
+                u'col-fam-id2': {
+                    b'col-name3-but-other-fam': [
+                        (b'foo', datetime.datetime(...)),
+                    ],
+                },
+            }
+
+        :rtype: dict
+        :returns: The new contents of all modified cells. Returned as a
+                  dictionary of column families, each of which holds a
+                  dictionary of columns. Each column contains a list of cells
+                  modified. Each cell is represented with a two-tuple with the
+                  value (in bytes) and the timestamp for the cell.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
+        """
+        num_mutations = len(self._rule_pb_list)
+        if num_mutations == 0:
+            return {}
+        if num_mutations > MAX_MUTATIONS:
+            raise ValueError('%d total append mutations exceed the maximum '
+                             'allowable %d.' % (num_mutations, MAX_MUTATIONS))
+        request_pb = messages_pb2.ReadModifyWriteRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            rules=self._rule_pb_list,
+        )
+        # We expect a `.data_pb2.Row`
+        client = self._table._cluster._client
+        row_response = client._data_stub.ReadModifyWriteRow(
+            request_pb, client.timeout_seconds)
+
+        # Reset modifications after commit-ing request.
+        self.clear()
+
+        # NOTE: We expect row_response.key == self._row_key but don't check.
+        return _parse_rmw_row_response(row_response)
 
 
 class RowFilter(object):
