@@ -107,7 +107,7 @@ Retrieve entities in batches of 10, iterating until done.
    >>> retrieved = []
    >>> token = None
    >>> while True:
-   ...     entries, token = client.list_entries(page_size=10)  # API call
+   ...     entries, token = client.list_entries(page_size=10, page_token=token)  # API call
    ...     retrieved.extend(entries)
    ...     if token is None:
    ...         break
