@@ -16,11 +16,11 @@
 import unittest2
 
 
-class TestRow(unittest2.TestCase):
+class TestDirectRow(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import Row
-        return Row
+        from gcloud.bigtable.row import DirectRow
+        return DirectRow
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)

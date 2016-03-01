@@ -57,6 +57,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(column_family._table, table)
 
     def test_row_factory(self):
+        from gcloud.bigtable.row import DirectRow
         from gcloud.bigtable.row import Row
 
         table_id = 'table-id'

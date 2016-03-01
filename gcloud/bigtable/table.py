@@ -23,7 +23,7 @@ from gcloud.bigtable._generated import (
     bigtable_service_messages_pb2 as data_messages_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
-from gcloud.bigtable.row import Row
+from gcloud.bigtable.row import DirectRow
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.bigtable.row_data import PartialRowsData
 
@@ -103,12 +103,12 @@ class Table(object):
 
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) Filter to be used for conditional mutations.
-                        See :class:`.Row` for more details.
+                        See :class:`.DirectRow` for more details.
 
-        :rtype: :class:`.Row`
+        :rtype: :class:`.DirectRow`
         :returns: A row owned by this table.
         """
-        return Row(row_key, self, filter_=filter_)
+        return DirectRow(row_key, self, filter_=filter_)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

@@ -34,39 +34,64 @@ MAX_MUTATIONS = 100000
 
 
 class Row(object):
-    """Representation of a Google Cloud Bigtable Row.
+    """Base representation of a Google Cloud Bigtable Row.
 
-    .. note::
+    This class has three subclasses corresponding to the three
+    RPC methods for sending row mutations:
 
-        A :class:`Row` accumulates mutations locally via the :meth:`set_cell`,
-        :meth:`delete`, :meth:`delete_cell` and :meth:`delete_cells` methods.
-        To actually send these mutations to the Google Cloud Bigtable API, you
-        must call :meth:`commit`. If a ``filter_`` is set on the :class:`Row`,
-        the mutations must have an associated state: :data:`True` or
-        :data:`False`. The mutations will be applied conditionally, based on
-        whether the filter matches any cells in the :class:`Row` or not.
+    * :class:`DirectRow` for ``MutateRow``
+    * :class:`ConditionalRow` for ``CheckAndMutateRow``
+    * :class:`AppendRow` for ``ReadModifyWriteRow``
 
     :type row_key: bytes
     :param row_key: The key for the current row.
 
     :type table: :class:`Table <gcloud.bigtable.table.Table>`
     :param table: The table that owns the row.
+    """
 
-    :type filter_: :class:`RowFilter`
-    :param filter_: (Optional) Filter to be used for conditional mutations.
-                    If a filter is set, then the :class:`Row` will accumulate
-                    mutations for either a :data:`True` or :data:`False` state.
-                    When :meth:`commit`-ed, the mutations for the :data:`True`
-                    state will be applied if the filter matches any cells in
-                    the row, otherwise the :data:`False` state will be.
+    def __init__(self, row_key, table):
+        self._row_key = _to_bytes(row_key)
+        self._table = table
+
+
+class DirectRow(Row):
+    """Google Cloud Bigtable Row for sending "direct" mutations.
+
+    These mutations directly set or delete cell contents:
+
+    * :meth:`set_cell`
+    * :meth:`delete`
+    * :meth:`delete_cell`
+    * :meth:`delete_cells`
+
+    These methods can be used directly::
+
+       >>> row = table.row(b'row-key1')
+       >>> row.set_cell(u'fam', b'col1', b'cell-val')
+       >>> row.delete_cell(u'fam', b'col2')
+
+    .. note::
+
+        A :class:`Row` accumulates mutations locally via the :meth:`set_cell`,
+        :meth:`delete`, :meth:`delete_cell` and :meth:`delete_cells` methods.
+        To actually send these mutations to the Google Cloud Bigtable API, you
+        must call :meth:`commit`.
+
+    :type row_key: bytes
+    :param row_key: The key for the current row.
+
+    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :param table: The table that owns the row.
     """
 
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
     def __init__(self, row_key, table, filter_=None):
-        self._row_key = _to_bytes(row_key)
-        self._table = table
+        super(DirectRow, self).__init__(row_key, table)
+        self._pb_mutations = []
+        # NOTE: All below to be moved.
         self._filter = filter_
         self._rule_pb_list = []
         if self._filter is None:
@@ -513,6 +538,74 @@ class Row(object):
 
         # NOTE: We expect row_response.key == self._row_key but don't check.
         return _parse_rmw_row_response(row_response)
+
+
+class ConditionalRow(DirectRow):
+    """Google Cloud Bigtable Row for sending mutations conditionally.
+
+    Each mutation has an associated state: :data:`True` or :data:`False`.
+    When :meth:`commit`-ed, the mutations for the :data:`True`
+    state will be applied if the filter matches any cells in
+    the row, otherwise the :data:`False` state will be applied.
+
+    A :class:`ConditionalRow` accumulates mutations in the same way a
+    :class:`DirectRow` does:
+
+    * :meth:`set_cell`
+    * :meth:`delete`
+    * :meth:`delete_cell`
+    * :meth:`delete_cells`
+
+    with the only change the extra ``state`` parameter::
+
+       >>> row_cond = table.row(b'row-key2', filter_=row_filter)
+       >>> row_cond.set_cell(u'fam', b'col', b'cell-val', state=True)
+       >>> row_cond.delete_cell(u'fam', b'col', state=False)
+
+    .. note::
+
+        As with :class:`DirectRow`, to actually send these mutations to the
+        Google Cloud Bigtable API, you must call :meth:`commit`.
+
+    :type row_key: bytes
+    :param row_key: The key for the current row.
+
+    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :param table: The table that owns the row.
+
+    :type filter_: :class:`RowFilter`
+    :param filter_: Filter to be used for conditional mutations.
+    """
+    def __init__(self, row_key, table, filter_):
+        super(ConditionalRow, self).__init__(row_key, table)
+        # NOTE: We use self._pb_mutations to hold the state=True mutations.
+        self._false_pb_mutations = []
+
+
+class AppendRow(Row):
+    """Google Cloud Bigtable Row for sending append mutations.
+
+    These mutations are intended to augment the value of an existing cell
+    and uses the methods:
+
+    * :meth:`append_cell_value`
+    * :meth:`increment_cell_value`
+
+    The first works by appending bytes and the second by incrementing an
+    integer (stored in the cell as 8 bytes). In either case, if the
+    cell is empty, assumes the default empty value (empty string for
+    bytes or and 0 for integer).
+
+    :type row_key: bytes
+    :param row_key: The key for the current row.
+
+    :type table: :class:`Table <gcloud.bigtable.table.Table>`
+    :param table: The table that owns the row.
+    """
+
+    def __init__(self, row_key, table):
+        super(AppendRow, self).__init__(row_key, table)
+        self._rule_pb_list = []
 
 
 class RowFilter(object):
