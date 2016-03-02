@@ -26,8 +26,9 @@ class TestClient(unittest2.TestCase):
 
     def test_ctor(self):
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        creds = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=creds)
+        self.assertEqual(client.project, PROJECT)
 
 
 class _Credentials(object):
