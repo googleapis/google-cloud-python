@@ -73,10 +73,10 @@ class DirectRow(Row):
 
     .. note::
 
-        A :class:`Row` accumulates mutations locally via the :meth:`set_cell`,
-        :meth:`delete`, :meth:`delete_cell` and :meth:`delete_cells` methods.
-        To actually send these mutations to the Google Cloud Bigtable API, you
-        must call :meth:`commit`.
+        A :class:`DirectRow` accumulates mutations locally via the
+        :meth:`set_cell`, :meth:`delete`, :meth:`delete_cell` and
+        :meth:`delete_cells` methods. To actually send these mutations to the
+        Google Cloud Bigtable API, you must call :meth:`commit`.
 
     :type row_key: bytes
     :param row_key: The key for the current row.
@@ -585,8 +585,10 @@ class ConditionalRow(DirectRow):
         :type columns: :class:`list` of :class:`str` /
                        :func:`unicode <unicode>`, or :class:`object`
         :param columns: The columns within the column family that will have
-                        cells deleted. If :attr:`ALL_COLUMNS` is used then
-                        the entire column family will be deleted from the row.
+                        cells deleted. If
+                        :attr:`ALL_COLUMNS <.DirectRow.ALL_COLUMNS>` is used
+                        then the entire column family will be deleted from
+                        the row.
 
         :type time_range: :class:`TimestampRange`
         :param time_range: (Optional) The range of time within which cells
@@ -641,7 +643,7 @@ class AppendRow(Row):
         .. note::
 
             This method adds a read-modify rule protobuf to the accumulated
-            read-modify rules on this :class:`Row`, but does not make an API
+            read-modify rules on this row, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
 
@@ -675,7 +677,7 @@ class AppendRow(Row):
         .. note::
 
             This method adds a read-modify rule protobuf to the accumulated
-            read-modify rules on this :class:`Row`, but does not make an API
+            read-modify rules on this row, but does not make an API
             request. To actually send an API request (with the rules) to the
             Google Cloud Bigtable API, call :meth:`commit`.
 
@@ -714,6 +716,8 @@ class AppendRow(Row):
         appending / incrementing. The new cell created uses either the current
         server time or the highest timestamp of a cell in that column (if it
         exceeds the server time).
+
+        After committing the accumulated mutations, resets the local mutations.
 
         .. code:: python
 

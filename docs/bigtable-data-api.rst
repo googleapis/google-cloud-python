@@ -24,22 +24,10 @@ Cells vs. Columns vs. Column Families
 Modifying Data
 ++++++++++++++
 
-Since data is stored in cells, which are stored in rows, the
-:class:`Row <gcloud.bigtable.row.Row>` class is the only class used to
-modify (write, update, delete) data in a
+Since data is stored in cells, which are stored in rows, we
+use the metaphor of a **row** in classes that are used to modify
+(write, update, delete) data in a
 :class:`Table <gcloud.bigtable.table.Table>`.
-
-Row Factory
------------
-
-To create a :class:`Row <gcloud.bigtable.row.Row>` object
-
-.. code:: python
-
-    row = table.row(row_key)
-
-Unlike the previous string values we've used before, the row key must
-be ``bytes``.
 
 Direct vs. Conditional vs. Append
 ---------------------------------
@@ -49,43 +37,65 @@ There are three ways to modify data in a table, described by the
 methods.
 
 * The **direct** way is via `MutateRow`_ which involves simply
-  adding, overwriting or deleting cells.
+  adding, overwriting or deleting cells. The
+  :class:`DirectRow <gcloud.bigtable.row.DirectRow>` class
+  handles direct mutations.
 * The **conditional** way is via `CheckAndMutateRow`_. This method
   first checks if some filter is matched in a a given row, then
   applies one of two sets of mutations, depending on if a match
   occurred or not. (These mutation sets are called the "true
-  mutations" and "false mutations".)
+  mutations" and "false mutations".) The
+  :class:`ConditionalRow <gcloud.bigtable.row.ConditionalRow>` class
+  handles conditional mutations.
 * The **append** way is via `ReadModifyWriteRow`_. This simply
   appends (as bytes) or increments (as an integer) data in a presumed
-  existing cell in a row.
+  existing cell in a row. The
+  :class:`AppendRow <gcloud.bigtable.row.AppendRow>` class
+  handles append mutations.
+
+Row Factory
+-----------
+
+A single factory can be used to create any of the three row types.
+To create a :class:`DirectRow <gcloud.bigtable.row.DirectRow>`:
+
+.. code:: python
+
+    row = table.row(row_key)
+
+Unlike the previous string values we've used before, the row key must
+be ``bytes``.
+
+To create a :class:`ConditionalRow <gcloud.bigtable.row.ConditionalRow>`,
+first create a :class:`RowFilter <gcloud.bigtable.row.RowFilter>` and
+then
+
+.. code:: python
+
+    cond_row = table.row(row_key, filter_=filter_)
+
+To create an :class:`AppendRow <gcloud.bigtable.row.AppendRow>`
+
+.. code:: python
+
+    append_row = table.row(row_key, append=True)
 
 Building Up Mutations
 ---------------------
 
 In all three cases, a set of mutations (or two sets) are built up
-on a :class:`Row <gcloud.bigtable.row.Row>` before they are sent of
-in a batch via :meth:`commit() <gcloud.bigtable.row.Row.commit>`:
+on a row before they are sent of in a batch via
 
 .. code:: python
 
     row.commit()
-
-To send **append** mutations in batch, use
-:meth:`commit_modifications() <gcloud.bigtable.row.Row.commit_modifications>`:
-
-.. code:: python
-
-    row.commit_modifications()
-
-We have a small set of methods on the :class:`Row <gcloud.bigtable.row.Row>`
-to build these mutations up.
 
 Direct Mutations
 ----------------
 
 Direct mutations can be added via one of four methods
 
-* :meth:`set_cell() <gcloud.bigtable.row.Row.set_cell>` allows a
+* :meth:`set_cell() <gcloud.bigtable.row.DirectRow.set_cell>` allows a
   single value to be written to a column
 
   .. code:: python
@@ -97,9 +107,9 @@ Direct mutations can be added via one of four methods
   Bigtable server will be used when the cell is stored.
 
   The value can either by bytes or an integer (which will be converted to
-  bytes as an unsigned 64-bit integer).
+  bytes as a signed 64-bit integer).
 
-* :meth:`delete_cell() <gcloud.bigtable.row.Row.delete_cell>` deletes
+* :meth:`delete_cell() <gcloud.bigtable.row.DirectRow.delete_cell>` deletes
   all cells (i.e. for all timestamps) in a given column
 
   .. code:: python
@@ -117,8 +127,9 @@ Direct mutations can be added via one of four methods
       row.delete_cell(column_family_id, column,
                       time_range=time_range)
 
-* :meth:`delete_cells() <gcloud.bigtable.row.Row.delete_cells>` does
-  the same thing as :meth:`delete_cell() <gcloud.bigtable.row.Row.delete_cell>`
+* :meth:`delete_cells() <gcloud.bigtable.row.DirectRow.delete_cells>` does
+  the same thing as
+  :meth:`delete_cell() <gcloud.bigtable.row.DirectRow.delete_cell>`
   but accepts a list of columns in a column family rather than a single one.
 
   .. code:: python
@@ -127,15 +138,16 @@ Direct mutations can be added via one of four methods
                        time_range=time_range)
 
   In addition, if we want to delete cells from every column in a column family,
-  the special :attr:`ALL_COLUMNS <gcloud.bigtable.row.Row.ALL_COLUMNS>` value
-  can be used
+  the special :attr:`ALL_COLUMNS <gcloud.bigtable.row.DirectRow.ALL_COLUMNS>`
+  value can be used
 
   .. code:: python
 
-      row.delete_cells(column_family_id, Row.ALL_COLUMNS,
+      row.delete_cells(column_family_id, row.ALL_COLUMNS,
                        time_range=time_range)
 
-* :meth:`delete() <gcloud.bigtable.row.Row.delete>` will delete the entire row
+* :meth:`delete() <gcloud.bigtable.row.DirectRow.delete>` will delete the
+  entire row
 
   .. code:: python
 
@@ -145,57 +157,42 @@ Conditional Mutations
 ---------------------
 
 Making **conditional** modifications is essentially identical
-to **direct** modifications, but we need to specify a filter to match
-against in the row:
+to **direct** modifications: it uses the exact same methods
+to accumulate mutations.
 
-.. code:: python
-
-    row = table.row(row_key, filter_=filter_val)
-
-See the :class:`Row <gcloud.bigtable.row.Row>` class for more information
-about acceptable values for ``filter_``.
-
-The only other difference from **direct** modifications are that each mutation
-added must specify a ``state``: will the mutation be applied if the filter
-matches or if it fails to match.
+However, each mutation added must specify a ``state``: will the mutation be
+applied if the filter matches or if it fails to match.
 
 For example:
 
 .. code:: python
 
-    row.set_cell(column_family_id, column, value,
-                 timestamp=timestamp, state=True)
+    cond_row.set_cell(column_family_id, column, value,
+                      timestamp=timestamp, state=True)
 
 will add to the set of true mutations.
-
-.. note::
-
-    If ``state`` is passed when no ``filter_`` is set on a
-    :class:`Row <gcloud.bigtable.row.Row>`, adding the mutation will fail.
-    Similarly, if no ``state`` is passed when a ``filter_`` has been set,
-    adding the mutation will fail.
 
 Append Mutations
 ----------------
 
 Append mutations can be added via one of two methods
 
-* :meth:`append_cell_value() <gcloud.bigtable.row.Row.append_cell_value>`
+* :meth:`append_cell_value() <gcloud.bigtable.row.AppendRow.append_cell_value>`
   appends a bytes value to an existing cell:
 
   .. code:: python
 
-      row.append_cell_value(column_family_id, column, bytes_value)
+      append_row.append_cell_value(column_family_id, column, bytes_value)
 
-* :meth:`increment_cell_value() <gcloud.bigtable.row.Row.increment_cell_value>`
+* :meth:`increment_cell_value() <gcloud.bigtable.row.AppendRow.increment_cell_value>`
   increments an integer value in an existing cell:
 
   .. code:: python
 
-      row.increment_cell_value(column_family_id, column, int_value)
+      append_row.increment_cell_value(column_family_id, column, int_value)
 
   Since only bytes are stored in a cell, the cell value is decoded as
-  an unsigned 64-bit integer before being incremented. (This happens on
+  a signed 64-bit integer before being incremented. (This happens on
   the Google Cloud Bigtable server, not in the library.)
 
 Notice that no timestamp was specified. This is because **append** mutations
@@ -208,18 +205,10 @@ Starting Fresh
 --------------
 
 If accumulated mutations need to be dropped, use
-:meth:`clear_mutations() <gcloud.bigtable.row.Row.clear_mutations>`
 
 .. code:: python
 
-    row.clear_mutations()
-
-To clear **append** mutations, use
-:meth:`clear_modification_rules() <gcloud.bigtable.row.Row.clear_modification_rules>`
-
-.. code:: python
-
-    row.clear_modification_rules()
+    row.clear()
 
 Reading Data
 ++++++++++++
@@ -260,19 +249,20 @@ To make a `ReadRows`_ API request for a single row key, use
     >>> cell.timestamp
     datetime.datetime(2016, 2, 27, 3, 41, 18, 122823, tzinfo=<UTC>)
 
-Rather than returning a :class:`Row <gcloud.bigtable.row.Row>`, this method
-returns a :class:`PartialRowData <gcloud.bigtable.row_data.PartialRowData>`
+Rather than returning a :class:`DirectRow <gcloud.bigtable.row.DirectRow>`
+or similar class, this method returns a
+:class:`PartialRowData <gcloud.bigtable.row_data.PartialRowData>`
 instance. This class is used for reading and parsing data rather than for
-modifying data (as :class:`Row <gcloud.bigtable.row.Row>` is).
+modifying data (as :class:`DirectRow <gcloud.bigtable.row.DirectRow>` is).
 
-A filter can also be applied to the
+A filter can also be applied to the results:
 
 .. code:: python
 
     row_data = table.read_row(row_key, filter_=filter_val)
 
 The allowable ``filter_`` values are the same as those used for a
-:class:`Row <gcloud.bigtable.row.Row>` with **conditional** mutations. For
+:class:`ConditionalRow <gcloud.bigtable.row.ConditionalRow>`. For
 more information, see the
 :meth:`Table.read_row() <gcloud.bigtable.table.Table.read_row>` documentation.
 
