@@ -408,7 +408,41 @@ class TestDirectRow(unittest2.TestCase):
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
-    def test_commit_with_filter(self):
+
+class TestConditionalRow(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ConditionalRow
+        return ConditionalRow
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        row_key = b'row_key'
+        table = object()
+        filter_ = object()
+
+        row = self._makeOne(row_key, table, filter_=filter_)
+        self.assertEqual(row._row_key, row_key)
+        self.assertTrue(row._table is table)
+        self.assertTrue(row._filter is filter_)
+        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._false_pb_mutations, [])
+        self.assertTrue(row._pb_mutations is row._true_pb_mutations)
+
+    def test__get_mutations(self):
+        row_key = b'row_key'
+        filter_ = object()
+        row = self._makeOne(row_key, None, filter_=filter_)
+
+        row._pb_mutations = true_mutations = object()
+        row._false_pb_mutations = false_mutations = object()
+        self.assertTrue(true_mutations is row._get_mutations(True))
+        self.assertTrue(false_mutations is row._get_mutations(False))
+        self.assertTrue(false_mutations is row._get_mutations(None))
+
+    def test_commit(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
@@ -473,11 +507,11 @@ class TestDirectRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._pb_mutations, None)
         self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
+        self.assertTrue(row._pb_mutations is row._true_pb_mutations)
 
-    def test_commit_with_filter_too_many_mutations(self):
+    def test_commit_too_many_mutations(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import row as MUT
 
@@ -485,13 +519,13 @@ class TestDirectRow(unittest2.TestCase):
         table = object()
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        row._true_pb_mutations = [1, 2, 3]
-        num_mutations = len(row._true_pb_mutations)
+        row._pb_mutations = [1, 2, 3]
+        num_mutations = len(row._pb_mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()
 
-    def test_commit_with_filter_no_mutations(self):
+    def test_commit_no_mutations(self):
         from gcloud.bigtable._testing import _FakeStub
 
         row_key = b'row_key'
@@ -510,39 +544,6 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(result, None)
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
-
-
-class TestConditionalRow(unittest2.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.bigtable.row import ConditionalRow
-        return ConditionalRow
-
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
-
-    def test_constructor(self):
-        row_key = b'row_key'
-        table = object()
-        filter_ = object()
-
-        row = self._makeOne(row_key, table, filter_=filter_)
-        self.assertEqual(row._row_key, row_key)
-        self.assertTrue(row._table is table)
-        self.assertTrue(row._filter is filter_)
-        self.assertEqual(row._pb_mutations, [])
-        self.assertEqual(row._false_pb_mutations, [])
-
-    def test__get_mutations(self):
-        row_key = b'row_key'
-        filter_ = object()
-        row = self._makeOne(row_key, None, filter_=filter_)
-
-        row._pb_mutations = true_mutations = object()
-        row._false_pb_mutations = false_mutations = object()
-        self.assertTrue(true_mutations is row._get_mutations(True))
-        self.assertTrue(false_mutations is row._get_mutations(False))
-        self.assertTrue(false_mutations is row._get_mutations(None))
 
 
 class TestAppendRow(unittest2.TestCase):

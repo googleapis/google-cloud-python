@@ -446,10 +446,12 @@ class ConditionalRow(DirectRow):
     :param filter_: Filter to be used for conditional mutations.
     """
     def __init__(self, row_key, table, filter_):
-        super(ConditionalRow, self).__init__(row_key, table)
+        super(ConditionalRow, self).__init__(row_key, table, filter_=filter_)
         self._filter = filter_
         # NOTE: We use self._pb_mutations to hold the state=True mutations.
         self._false_pb_mutations = []
+        # Temporary over-ride to re-use behavior in DirectRow constructor.
+        self._pb_mutations = self._true_pb_mutations
 
     def _get_mutations(self, state):
         """Gets the list of mutations for a given state.
