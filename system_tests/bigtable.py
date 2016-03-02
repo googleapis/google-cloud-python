@@ -332,7 +332,7 @@ class TestDataAPI(unittest2.TestCase):
 
     def tearDown(self):
         for row in self.rows_to_delete:
-            row.clear_mutations()
+            row.clear()
             row.delete()
             row.commit()
 

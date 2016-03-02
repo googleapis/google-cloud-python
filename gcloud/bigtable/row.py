@@ -366,7 +366,7 @@ class DirectRow(Row):
             request_pb, client.timeout_seconds)
         return resp.predicate_matched
 
-    def clear_mutations(self):
+    def clear(self):
         """Removes all currently accumulated mutations on the current row."""
         if self._filter is None:
             del self._pb_mutations[:]
@@ -404,7 +404,7 @@ class DirectRow(Row):
             result = self._commit_check_and_mutate()
 
         # Reset mutations after commit-ing request.
-        self.clear_mutations()
+        self.clear()
 
         return result
 
