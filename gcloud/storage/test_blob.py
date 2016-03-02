@@ -260,7 +260,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_miss(self):
         from six.moves.http_client import NOT_FOUND
         NONESUCH = 'nonesuch'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -270,7 +270,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
-        found_response = {'status': OK}
+        found_response = ({'status': OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -281,7 +281,7 @@ class Test_Blob(unittest2.TestCase):
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -749,10 +749,11 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(rq[0]['body'], ENCODED)
 
     def test_make_public(self):
+        from six.moves.http_client import OK
         from gcloud.storage.acl import _ACLEntity
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
-        after = {'acl': permissive}
+        after = ({'status': OK}, {'acl': permissive})
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1092,10 +1093,10 @@ class _Connection(_Responder):
     def api_request(self, **kw):
         from six.moves.http_client import NOT_FOUND
         from gcloud.exceptions import NotFound
-        result = self._respond(**kw)
-        if result.get('status') == NOT_FOUND:
-            raise NotFound(result)
-        return result
+        info, content = self._respond(**kw)
+        if info.get('status') == NOT_FOUND:
+            raise NotFound(info)
+        return content
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):
