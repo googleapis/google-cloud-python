@@ -217,48 +217,12 @@ class DirectRow(Row):
         """
         self._delete(state=None)
 
-    def delete_cell(self, column_family_id, column, time_range=None,
-                    state=None):
-        """Deletes cell in this row.
+    def _delete_cells(self, column_family_id, columns, time_range=None,
+                      state=None):
+        """Helper for :meth:`delete_cell` and :meth:`delete_cells`.
 
-        .. note::
-
-            This method adds a mutation to the accumulated mutations on this
-            :class:`Row`, but does not make an API request. To actually
-            send an API request (with the mutations) to the Google Cloud
-            Bigtable API, call :meth:`commit`.
-
-        :type column_family_id: str
-        :param column_family_id: The column family that contains the column
-                                 or columns with cells being deleted. Must be
-                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
-
-        :type column: bytes
-        :param column: The column within the column family that will have a
-                       cell deleted.
-
-        :type time_range: :class:`TimestampRange`
-        :param time_range: (Optional) The range of time within which cells
-                           should be deleted.
-
-        :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
-        """
-        self.delete_cells(column_family_id, [column], time_range=time_range,
-                          state=state)
-
-    def delete_cells(self, column_family_id, columns, time_range=None,
-                     state=None):
-        """Deletes cells in this row.
-
-        .. note::
-
-            This method adds a mutation to the accumulated mutations on this
-            :class:`Row`, but does not make an API request. To actually
-            send an API request (with the mutations) to the Google Cloud
-            Bigtable API, call :meth:`commit`.
+        ``state`` is unused by :class:`DirectRow` but is used by
+        subclasses.
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column
@@ -268,7 +232,7 @@ class DirectRow(Row):
         :type columns: :class:`list` of :class:`str` /
                        :func:`unicode <unicode>`, or :class:`object`
         :param columns: The columns within the column family that will have
-                        cells deleted. If :attr:`Row.ALL_COLUMNS` is used then
+                        cells deleted. If :attr:`ALL_COLUMNS` is used then
                         the entire column family will be deleted from the row.
 
         :type time_range: :class:`TimestampRange`
@@ -276,9 +240,8 @@ class DirectRow(Row):
                            should be deleted.
 
         :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
+        :param state: (Optional) The state that is passed along to
+                      :meth:`_get_mutations`.
         """
         mutations_list = self._get_mutations(state)
         if columns is self.ALL_COLUMNS:
@@ -310,6 +273,60 @@ class DirectRow(Row):
             # We don't add the mutations until all columns have been
             # processed without error.
             mutations_list.extend(to_append)
+
+    def delete_cell(self, column_family_id, column, time_range=None):
+        """Deletes cell in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family that will have a
+                       cell deleted.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+        """
+        self._delete_cells(column_family_id, [column], time_range=time_range,
+                           state=None)
+
+    def delete_cells(self, column_family_id, columns, time_range=None):
+        """Deletes cells in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type columns: :class:`list` of :class:`str` /
+                       :func:`unicode <unicode>`, or :class:`object`
+        :param columns: The columns within the column family that will have
+                        cells deleted. If :attr:`ALL_COLUMNS` is used then
+                        the entire column family will be deleted from the row.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+        """
+        self._delete_cells(column_family_id, columns, time_range=time_range,
+                           state=None)
 
     def commit(self):
         """Makes a ``MutateRow`` API request.
@@ -518,6 +535,70 @@ class ConditionalRow(DirectRow):
                       applied in. Defaults to :data:`True`.
         """
         self._delete(state=state)
+
+    def delete_cell(self, column_family_id, column, time_range=None,
+                    state=True):
+        """Deletes cell in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family that will have a
+                       cell deleted.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Defaults to :data:`True`.
+        """
+        self._delete_cells(column_family_id, [column], time_range=time_range,
+                           state=state)
+
+    def delete_cells(self, column_family_id, columns, time_range=None,
+                     state=True):
+        """Deletes cells in this row.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column
+                                 or columns with cells being deleted. Must be
+                                 of the form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type columns: :class:`list` of :class:`str` /
+                       :func:`unicode <unicode>`, or :class:`object`
+        :param columns: The columns within the column family that will have
+                        cells deleted. If :attr:`Row.ALL_COLUMNS` is used then
+                        the entire column family will be deleted from the row.
+
+        :type time_range: :class:`TimestampRange`
+        :param time_range: (Optional) The range of time within which cells
+                           should be deleted.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Defaults to :data:`True`.
+        """
+        self._delete_cells(column_family_id, columns, time_range=time_range,
+                           state=state)
     # pylint: enable=arguments-differ
 
     def clear(self):

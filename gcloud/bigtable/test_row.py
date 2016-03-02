@@ -142,7 +142,7 @@ class TestDirectRow(unittest2.TestCase):
                 self._kwargs = []
 
             # Replace the called method with one that logs arguments.
-            def delete_cells(self, *args, **kwargs):
+            def _delete_cells(self, *args, **kwargs):
                 self._args.append(args)
                 self._kwargs.append(kwargs)
 
@@ -414,8 +414,11 @@ class TestConditionalRow(unittest2.TestCase):
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
-        column_family_id = u'column_family_id'
-        column = b'column'
+        column_family_id1 = u'column_family_id1'
+        column_family_id2 = u'column_family_id2'
+        column_family_id3 = u'column_family_id3'
+        column1 = b'column1'
+        column2 = b'column2'
         timeout_seconds = 262
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
@@ -426,8 +429,8 @@ class TestConditionalRow(unittest2.TestCase):
         value1 = b'bytes-value'
         mutation1 = data_pb2.Mutation(
             set_cell=data_pb2.Mutation.SetCell(
-                family_name=column_family_id,
-                column_qualifier=column,
+                family_name=column_family_id1,
+                column_qualifier=column1,
                 timestamp_micros=-1,  # Default value.
                 value=value1,
             ),
@@ -435,11 +438,22 @@ class TestConditionalRow(unittest2.TestCase):
         mutation2 = data_pb2.Mutation(
             delete_from_row=data_pb2.Mutation.DeleteFromRow(),
         )
+        mutation3 = data_pb2.Mutation(
+            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+                family_name=column_family_id2,
+                column_qualifier=column2,
+            ),
+        )
+        mutation4 = data_pb2.Mutation(
+            delete_from_family=data_pb2.Mutation.DeleteFromFamily(
+                family_name=column_family_id3,
+            ),
+        )
         request_pb = messages_pb2.CheckAndMutateRowRequest(
             table_name=table_name,
             row_key=row_key,
             predicate_filter=row_filter.to_pb(),
-            true_mutations=[mutation1],
+            true_mutations=[mutation1, mutation3, mutation4],
             false_mutations=[mutation2],
         )
 
@@ -455,8 +469,10 @@ class TestConditionalRow(unittest2.TestCase):
         expected_result = predicate_matched
 
         # Perform the method and check the result.
-        row.set_cell(column_family_id, column, value1, state=True)
+        row.set_cell(column_family_id1, column1, value1, state=True)
         row.delete(state=False)
+        row.delete_cell(column_family_id2, column2, state=True)
+        row.delete_cells(column_family_id3, row.ALL_COLUMNS, state=True)
         result = row.commit()
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
