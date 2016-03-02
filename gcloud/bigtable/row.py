@@ -279,11 +279,17 @@ class DirectRow(Row):
             # processed without error.
             mutations_list.extend(to_append)
 
-    def _commit_mutate(self):
+    def commit(self):
         """Makes a ``MutateRow`` API request.
 
-        Assumes no filter is set on the :class:`Row` and is meant to be called
-        by :meth:`commit`.
+        If no mutations have been created in the row, no request is made.
+
+        Mutations are applied atomically and in order, meaning that earlier
+        mutations can be masked / negated by later ones. Cells already present
+        in the row are left unchanged unless explicitly changed by a mutation.
+
+        After committing the accumulated mutations, resets the local
+        mutations to an empty list.
 
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
@@ -303,29 +309,11 @@ class DirectRow(Row):
         # We expect a `google.protobuf.empty_pb2.Empty`
         client = self._table._cluster._client
         client._data_stub.MutateRow(request_pb, client.timeout_seconds)
+        self.clear()
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row."""
         del self._pb_mutations[:]
-
-    def commit(self):
-        """Makes a ``MutateRow`` API request.
-
-        If no mutations have been created in the row, no request is made.
-
-        Mutations are applied atomically and in order, meaning that earlier
-        mutations can be masked / negated by later ones. Cells already present
-        in the row are left unchanged unless explicitly changed by a mutation.
-
-        After committing the accumulated mutations, resets the local
-        mutations to an empty list.
-
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the :data:`MAX_MUTATIONS`.
-        """
-        self._commit_mutate()
-        # Reset mutations after commit-ing request.
-        self.clear()
 
 
 class ConditionalRow(DirectRow):
