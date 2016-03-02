@@ -512,6 +512,39 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(stub.method_calls, [])
 
 
+class TestConditionalRow(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ConditionalRow
+        return ConditionalRow
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        row_key = b'row_key'
+        table = object()
+        filter_ = object()
+
+        row = self._makeOne(row_key, table, filter_=filter_)
+        self.assertEqual(row._row_key, row_key)
+        self.assertTrue(row._table is table)
+        self.assertTrue(row._filter is filter_)
+        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._false_pb_mutations, [])
+
+    def test__get_mutations(self):
+        row_key = b'row_key'
+        filter_ = object()
+        row = self._makeOne(row_key, None, filter_=filter_)
+
+        row._pb_mutations = true_mutations = object()
+        row._false_pb_mutations = false_mutations = object()
+        self.assertTrue(true_mutations is row._get_mutations(True))
+        self.assertTrue(false_mutations is row._get_mutations(False))
+        self.assertTrue(false_mutations is row._get_mutations(None))
+
+
 class TestAppendRow(unittest2.TestCase):
 
     def _getTargetClass(self):

@@ -447,8 +447,31 @@ class ConditionalRow(DirectRow):
     """
     def __init__(self, row_key, table, filter_):
         super(ConditionalRow, self).__init__(row_key, table)
+        self._filter = filter_
         # NOTE: We use self._pb_mutations to hold the state=True mutations.
         self._false_pb_mutations = []
+
+    def _get_mutations(self, state):
+        """Gets the list of mutations for a given state.
+
+        Over-ridden so that the state can be used in:
+
+        * :meth:`set_cell`
+        * :meth:`delete`
+        * :meth:`delete_cell`
+        * :meth:`delete_cells`
+
+        :type state: bool
+        :param state: The state that the mutation should be
+                      applied in.
+
+        :rtype: list
+        :returns: The list to add new mutations to (for the current state).
+        """
+        if state:
+            return self._pb_mutations
+        else:
+            return self._false_pb_mutations
 
 
 class AppendRow(Row):
