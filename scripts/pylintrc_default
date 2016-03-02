@@ -200,7 +200,7 @@ no-space-check =
 # Maximum number of lines in a module
 # DEFAULT:  max-module-lines=1000
 # RATIONALE:  API-mapping
-max-module-lines=1500
+max-module-lines=1590
 
 # String used as indentation unit. This is usually " " (4 spaces) or "\t" (1
 # tab).

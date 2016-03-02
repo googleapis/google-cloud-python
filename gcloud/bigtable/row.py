@@ -91,7 +91,6 @@ class DirectRow(Row):
     def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
         self._pb_mutations = []
-        self._pb_mutations = []
 
     def _get_mutations(self, state):  # pylint: disable=unused-argument
         """Gets the list of mutations for a given state.
@@ -586,7 +585,7 @@ class ConditionalRow(DirectRow):
         :type columns: :class:`list` of :class:`str` /
                        :func:`unicode <unicode>`, or :class:`object`
         :param columns: The columns within the column family that will have
-                        cells deleted. If :attr:`Row.ALL_COLUMNS` is used then
+                        cells deleted. If :attr:`ALL_COLUMNS` is used then
                         the entire column family will be deleted from the row.
 
         :type time_range: :class:`TimestampRange`
