@@ -24,6 +24,7 @@ from gcloud.bigtable._generated import (
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import AppendRow
+from gcloud.bigtable.row import ConditionalRow
 from gcloud.bigtable.row import DirectRow
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.bigtable.row_data import PartialRowsData
@@ -124,8 +125,10 @@ class Table(object):
             raise ValueError('At most one of filter_ and append can be set')
         if append:
             return AppendRow(row_key, self)
+        elif filter_ is not None:
+            return ConditionalRow(row_key, self, filter_=filter_)
         else:
-            return DirectRow(row_key, self, filter_=filter_)
+            return DirectRow(row_key, self)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
