@@ -432,14 +432,8 @@ class TestConditionalRow(unittest2.TestCase):
                 value=value1,
             ),
         )
-        value2 = b'other-bytes'
         mutation2 = data_pb2.Mutation(
-            set_cell=data_pb2.Mutation.SetCell(
-                family_name=column_family_id,
-                column_qualifier=column,
-                timestamp_micros=-1,  # Default value.
-                value=value2,
-            ),
+            delete_from_row=data_pb2.Mutation.DeleteFromRow(),
         )
         request_pb = messages_pb2.CheckAndMutateRowRequest(
             table_name=table_name,
@@ -462,7 +456,7 @@ class TestConditionalRow(unittest2.TestCase):
 
         # Perform the method and check the result.
         row.set_cell(column_family_id, column, value1, state=True)
-        row.set_cell(column_family_id, column, value2, state=False)
+        row.delete(state=False)
         result = row.commit()
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(

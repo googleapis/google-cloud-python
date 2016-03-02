@@ -191,24 +191,31 @@ class DirectRow(Row):
         self._set_cell(column_family_id, column, value, timestamp=timestamp,
                        state=None)
 
-    def delete(self, state=None):
+    def _delete(self, state=None):
+        """Helper for :meth:`delete`
+
+        ``state`` is unused by :class:`DirectRow` but is used by
+        subclasses.
+
+        :type state: bool
+        :param state: (Optional) The state that is passed along to
+                      :meth:`_get_mutations`.
+        """
+        mutation_val = data_pb2.Mutation.DeleteFromRow()
+        mutation_pb = data_pb2.Mutation(delete_from_row=mutation_val)
+        self._get_mutations(state).append(mutation_pb)
+
+    def delete(self):
         """Deletes this row from the table.
 
         .. note::
 
             This method adds a mutation to the accumulated mutations on this
-            :class:`Row`, but does not make an API request. To actually
+            row, but does not make an API request. To actually
             send an API request (with the mutations) to the Google Cloud
             Bigtable API, call :meth:`commit`.
-
-        :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
         """
-        mutation_val = data_pb2.Mutation.DeleteFromRow()
-        mutation_pb = data_pb2.Mutation(delete_from_row=mutation_val)
-        self._get_mutations(state).append(mutation_pb)
+        self._delete(state=None)
 
     def delete_cell(self, column_family_id, column, time_range=None,
                     state=None):
@@ -495,6 +502,22 @@ class ConditionalRow(DirectRow):
         """
         self._set_cell(column_family_id, column, value, timestamp=timestamp,
                        state=state)
+
+    def delete(self, state=True):
+        """Deletes this row from the table.
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Defaults to :data:`True`.
+        """
+        self._delete(state=state)
     # pylint: enable=arguments-differ
 
     def clear(self):
