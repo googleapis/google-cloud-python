@@ -287,7 +287,13 @@ class Blob(_PropertyMixin):
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         client = self._require_client(client)
-        download_url = self.media_link
+
+        if not self.media_link:
+            response = client.connection.api_request(
+                method='GET', path=self.path, _target_object=self)
+            download_url = response['media_link']
+        else:
+            download_url = self.media_link
 
         # Use apitools 'Download' facility.
         download = Download.from_stream(file_obj)
