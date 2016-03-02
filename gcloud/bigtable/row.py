@@ -328,44 +328,6 @@ class DirectRow(Row):
         client = self._table._cluster._client
         client._data_stub.MutateRow(request_pb, client.timeout_seconds)
 
-    def _commit_check_and_mutate(self):
-        """Makes a ``CheckAndMutateRow`` API request.
-
-        Assumes a filter is set on the :class:`Row` and is meant to be called
-        by :meth:`commit`.
-
-        :rtype: bool
-        :returns: Flag indicating if the filter was matched (which also
-                  indicates which set of mutations were applied by the server).
-        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-                 mutations exceeds the :data:`MAX_MUTATIONS`.
-        """
-        true_mutations = self._get_mutations(state=True)
-        false_mutations = self._get_mutations(state=False)
-        num_true_mutations = len(true_mutations)
-        num_false_mutations = len(false_mutations)
-        if num_true_mutations == 0 and num_false_mutations == 0:
-            return
-        if (num_true_mutations > MAX_MUTATIONS or
-                num_false_mutations > MAX_MUTATIONS):
-            raise ValueError(
-                'Exceed the maximum allowable mutations (%d). Had %s true '
-                'mutations and %d false mutations.' % (
-                    MAX_MUTATIONS, num_true_mutations, num_false_mutations))
-
-        request_pb = messages_pb2.CheckAndMutateRowRequest(
-            table_name=self._table.name,
-            row_key=self._row_key,
-            predicate_filter=self._filter.to_pb(),
-            true_mutations=true_mutations,
-            false_mutations=false_mutations,
-        )
-        # We expect a `.messages_pb2.CheckAndMutateRowResponse`
-        client = self._table._cluster._client
-        resp = client._data_stub.CheckAndMutateRow(
-            request_pb, client.timeout_seconds)
-        return resp.predicate_matched
-
     def clear(self):
         """Removes all currently accumulated mutations on the current row."""
         if self._filter is None:
@@ -474,6 +436,44 @@ class ConditionalRow(DirectRow):
             return self._pb_mutations
         else:
             return self._false_pb_mutations
+
+    def _commit_check_and_mutate(self):
+        """Makes a ``CheckAndMutateRow`` API request.
+
+        Assumes a filter is set on the :class:`Row` and is meant to be called
+        by :meth:`commit`.
+
+        :rtype: bool
+        :returns: Flag indicating if the filter was matched (which also
+                  indicates which set of mutations were applied by the server).
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 mutations exceeds the :data:`MAX_MUTATIONS`.
+        """
+        true_mutations = self._get_mutations(state=True)
+        false_mutations = self._get_mutations(state=False)
+        num_true_mutations = len(true_mutations)
+        num_false_mutations = len(false_mutations)
+        if num_true_mutations == 0 and num_false_mutations == 0:
+            return
+        if (num_true_mutations > MAX_MUTATIONS or
+                num_false_mutations > MAX_MUTATIONS):
+            raise ValueError(
+                'Exceed the maximum allowable mutations (%d). Had %s true '
+                'mutations and %d false mutations.' % (
+                    MAX_MUTATIONS, num_true_mutations, num_false_mutations))
+
+        request_pb = messages_pb2.CheckAndMutateRowRequest(
+            table_name=self._table.name,
+            row_key=self._row_key,
+            predicate_filter=self._filter.to_pb(),
+            true_mutations=true_mutations,
+            false_mutations=false_mutations,
+        )
+        # We expect a `.messages_pb2.CheckAndMutateRowResponse`
+        client = self._table._cluster._client
+        resp = client._data_stub.CheckAndMutateRow(
+            request_pb, client.timeout_seconds)
+        return resp.predicate_matched
 
 
 class AppendRow(Row):
