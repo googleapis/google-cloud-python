@@ -28,12 +28,11 @@ class TestDirectRow(unittest2.TestCase):
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
-        filter_ = object()
 
-        row = self._makeOne(row_key, table, filter_=filter_)
+        row = self._makeOne(row_key, table)
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
-        self.assertTrue(row._filter is filter_)
+        self.assertEqual(row._pb_mutations, [])
 
     def test_constructor_with_unicode(self):
         row_key = u'row_key'
@@ -49,45 +48,12 @@ class TestDirectRow(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(row_key, None)
 
-    def _get_mutations_helper(self, filter_=None, state=None):
+    def test__get_mutations(self):
         row_key = b'row_key'
-        row = self._makeOne(row_key, None, filter_=filter_)
-        # Mock the mutations with unique objects so we can compare.
-        row._pb_mutations = no_bool = object()
-        row._true_pb_mutations = true_mutations = object()
-        row._false_pb_mutations = false_mutations = object()
+        row = self._makeOne(row_key, None)
 
-        mutations = row._get_mutations(state)
-        return (no_bool, true_mutations, false_mutations), mutations
-
-    def test__get_mutations_no_filter(self):
-        (no_bool, _, _), mutations = self._get_mutations_helper()
-        self.assertTrue(mutations is no_bool)
-
-    def test__get_mutations_no_filter_bad_state(self):
-        state = object()  # State should be null when no filter.
-        with self.assertRaises(ValueError):
-            self._get_mutations_helper(state=state)
-
-    def test__get_mutations_with_filter_true_state(self):
-        filter_ = object()
-        state = True
-        (_, true_filter, _), mutations = self._get_mutations_helper(
-            filter_=filter_, state=state)
-        self.assertTrue(mutations is true_filter)
-
-    def test__get_mutations_with_filter_false_state(self):
-        filter_ = object()
-        state = False
-        (_, _, false_filter), mutations = self._get_mutations_helper(
-            filter_=filter_, state=state)
-        self.assertTrue(mutations is false_filter)
-
-    def test__get_mutations_with_filter_bad_state(self):
-        filter_ = object()
-        state = None
-        with self.assertRaises(ValueError):
-            self._get_mutations_helper(filter_=filter_, state=state)
+        row._pb_mutations = mutations = object()
+        self.assertTrue(mutations is row._get_mutations(None))
 
     def _set_cell_helper(self, column=None, column_bytes=None,
                          value=b'foobar', timestamp=None,
@@ -374,8 +340,6 @@ class TestDirectRow(unittest2.TestCase):
             {},
         )])
         self.assertEqual(row._pb_mutations, [])
-        self.assertEqual(row._true_pb_mutations, None)
-        self.assertEqual(row._false_pb_mutations, None)
 
     def test_commit_too_many_mutations(self):
         from gcloud._testing import _Monkey
@@ -427,9 +391,8 @@ class TestConditionalRow(unittest2.TestCase):
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
         self.assertTrue(row._filter is filter_)
-        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
-        self.assertTrue(row._pb_mutations is row._true_pb_mutations)
 
     def test__get_mutations(self):
         row_key = b'row_key'
@@ -507,9 +470,8 @@ class TestConditionalRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
-        self.assertTrue(row._pb_mutations is row._true_pb_mutations)
 
     def test_commit_too_many_mutations(self):
         from gcloud._testing import _Monkey
@@ -533,7 +495,7 @@ class TestConditionalRow(unittest2.TestCase):
         table = _Table(None, client=client)
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
         # Patch the stub used by the API method.

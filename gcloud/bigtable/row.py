@@ -88,49 +88,25 @@ class DirectRow(Row):
     ALL_COLUMNS = object()
     """Sentinel value used to indicate all columns in a column family."""
 
-    def __init__(self, row_key, table, filter_=None):
+    def __init__(self, row_key, table):
         super(DirectRow, self).__init__(row_key, table)
         self._pb_mutations = []
-        # NOTE: All below to be moved.
-        self._filter = filter_
-        if self._filter is None:
-            self._pb_mutations = []
-            self._true_pb_mutations = None
-            self._false_pb_mutations = None
-        else:
-            self._pb_mutations = None
-            self._true_pb_mutations = []
-            self._false_pb_mutations = []
+        self._pb_mutations = []
 
-    def _get_mutations(self, state=None):
+    def _get_mutations(self, state):  # pylint: disable=unused-argument
         """Gets the list of mutations for a given state.
 
-        If the state is :data`None` but there is a filter set, then we've
-        reached an invalid state. Similarly if no filter is set but the
-        state is not :data:`None`.
+        ``state`` is unused by :class:`DirectRow` but is used by
+        subclasses.
 
         :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
+        :param state: The state that the mutation should be
+                      applied in.
 
         :rtype: list
         :returns: The list to add new mutations to (for the current state).
-        :raises: :class:`ValueError <exceptions.ValueError>`
         """
-        if state is None:
-            if self._filter is not None:
-                raise ValueError('A filter is set on the current row, but no '
-                                 'state given for the mutation')
-            return self._pb_mutations
-        else:
-            if self._filter is None:
-                raise ValueError('No filter was set on the current row, but a '
-                                 'state was given for the mutation')
-            if state:
-                return self._true_pb_mutations
-            else:
-                return self._false_pb_mutations
+        return self._pb_mutations
 
     def set_cell(self, column_family_id, column, value, timestamp=None,
                  state=None):
@@ -330,11 +306,7 @@ class DirectRow(Row):
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row."""
-        if self._filter is None:
-            del self._pb_mutations[:]
-        else:
-            del self._true_pb_mutations[:]
-            del self._false_pb_mutations[:]
+        del self._pb_mutations[:]
 
     def commit(self):
         """Makes a ``MutateRow`` or ``CheckAndMutateRow`` API request.
@@ -360,7 +332,7 @@ class DirectRow(Row):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        if self._filter is None:
+        if getattr(self, '_filter', None) is None:
             result = self._commit_mutate()
         else:
             result = self._commit_check_and_mutate()
@@ -408,12 +380,10 @@ class ConditionalRow(DirectRow):
     :param filter_: Filter to be used for conditional mutations.
     """
     def __init__(self, row_key, table, filter_):
-        super(ConditionalRow, self).__init__(row_key, table, filter_=filter_)
+        super(ConditionalRow, self).__init__(row_key, table)
         self._filter = filter_
         # NOTE: We use self._pb_mutations to hold the state=True mutations.
         self._false_pb_mutations = []
-        # Temporary over-ride to re-use behavior in DirectRow constructor.
-        self._pb_mutations = self._true_pb_mutations
 
     def _get_mutations(self, state):
         """Gets the list of mutations for a given state.
@@ -474,6 +444,11 @@ class ConditionalRow(DirectRow):
         resp = client._data_stub.CheckAndMutateRow(
             request_pb, client.timeout_seconds)
         return resp.predicate_matched
+
+    def clear(self):
+        """Removes all currently accumulated mutations on the current row."""
+        del self._pb_mutations[:]
+        del self._false_pb_mutations[:]
 
 
 class AppendRow(Row):
