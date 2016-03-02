@@ -288,7 +288,7 @@ class DirectRow(Row):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        mutations_list = self._get_mutations()
+        mutations_list = self._get_mutations(None)
         num_mutations = len(mutations_list)
         if num_mutations == 0:
             return
@@ -309,7 +309,7 @@ class DirectRow(Row):
         del self._pb_mutations[:]
 
     def commit(self):
-        """Makes a ``MutateRow`` or ``CheckAndMutateRow`` API request.
+        """Makes a ``MutateRow`` API request.
 
         If no mutations have been created in the row, no request is made.
 
@@ -320,27 +320,12 @@ class DirectRow(Row):
         After committing the accumulated mutations, resets the local
         mutations to an empty list.
 
-        In the case that a filter is set on the :class:`Row`, the mutations
-        will be applied conditionally, based on whether the filter matches
-        any cells in the :class:`Row` or not. (Each method which adds a
-        mutation has a ``state`` parameter for this purpose.)
-
-        :rtype: :class:`bool` or :data:`NoneType <types.NoneType>`
-        :returns: :data:`None` if there is no filter, otherwise a flag
-                  indicating if the filter was matched (which also
-                  indicates which set of mutations were applied by the server).
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  mutations exceeds the :data:`MAX_MUTATIONS`.
         """
-        if getattr(self, '_filter', None) is None:
-            result = self._commit_mutate()
-        else:
-            result = self._commit_check_and_mutate()
-
+        self._commit_mutate()
         # Reset mutations after commit-ing request.
         self.clear()
-
-        return result
 
 
 class ConditionalRow(DirectRow):
@@ -407,11 +392,22 @@ class ConditionalRow(DirectRow):
         else:
             return self._false_pb_mutations
 
-    def _commit_check_and_mutate(self):
+    def commit(self):
         """Makes a ``CheckAndMutateRow`` API request.
 
-        Assumes a filter is set on the :class:`Row` and is meant to be called
-        by :meth:`commit`.
+        If no mutations have been created in the row, no request is made.
+
+        The mutations will be applied conditionally, based on whether the
+        filter matches any cells in the :class:`ConditionalRow` or not. (Each
+        method which adds a mutation has a ``state`` parameter for this
+        purpose.)
+
+        Mutations are applied atomically and in order, meaning that earlier
+        mutations can be masked / negated by later ones. Cells already present
+        in the row are left unchanged unless explicitly changed by a mutation.
+
+        After committing the accumulated mutations, resets the local
+        mutations.
 
         :rtype: bool
         :returns: Flag indicating if the filter was matched (which also
@@ -443,6 +439,7 @@ class ConditionalRow(DirectRow):
         client = self._table._cluster._client
         resp = client._data_stub.CheckAndMutateRow(
             request_pb, client.timeout_seconds)
+        self.clear()
         return resp.predicate_matched
 
     def clear(self):
