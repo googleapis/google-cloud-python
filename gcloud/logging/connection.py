@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc. All rights reserved.
+# Copyright 2016 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ from gcloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud Pubsub via the JSON REST API.
+    """A connection to Google Cloud Logging via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
@@ -45,7 +45,7 @@ class Connection(base_connection.JSONConnection):
              'https://www.googleapis.com/auth/logging.write',
              'https://www.googleapis.com/auth/logging.admin',
              'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Cloud Pub/Sub consumer."""
+    """The scopes required for authenticating as a Cloud Logging consumer."""
 
     def __init__(self, credentials=None, http=None, api_base_url=None):
         super(Connection, self).__init__(credentials=credentials, http=http)

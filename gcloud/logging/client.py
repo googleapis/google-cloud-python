@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc. All rights reserved.
+# Copyright 2016 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the Google Cloud Pub/Sub API."""
+"""Client for interacting with the Google Cloud Logging API."""
 
 
 from gcloud.client import JSONClient
@@ -23,9 +23,9 @@ class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
     :type project: string
-    :param project: the project which the client acts on behalf of. Will be
-                    passed when creating a topic.  If not passed,
-                    falls back to the default inferred from the environment.
+    :param project: the project which the client acts on behalf of.
+                    If not passed, falls back to the default inferred
+                    from the environment.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials` or
                        :class:`NoneType`
