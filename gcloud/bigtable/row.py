@@ -108,20 +108,12 @@ class DirectRow(Row):
         """
         return self._pb_mutations
 
-    def set_cell(self, column_family_id, column, value, timestamp=None,
-                 state=None):
-        """Sets a value in this row.
+    def _set_cell(self, column_family_id, column, value, timestamp=None,
+                  state=None):
+        """Helper for :meth:`set_cell`
 
-        The cell is determined by the ``row_key`` of the :class:`Row` and the
-        ``column``. The ``column`` must be in an existing
-        :class:`.ColumnFamily` (as determined by ``column_family_id``).
-
-        .. note::
-
-            This method adds a mutation to the accumulated mutations on this
-            :class:`Row`, but does not make an API request. To actually
-            send an API request (with the mutations) to the Google Cloud
-            Bigtable API, call :meth:`commit`.
+        ``state`` is unused by :class:`DirectRow` but is used by
+        subclasses.
 
         :type column_family_id: str
         :param column_family_id: The column family that contains the column.
@@ -141,9 +133,8 @@ class DirectRow(Row):
         :param timestamp: (Optional) The timestamp of the operation.
 
         :type state: bool
-        :param state: (Optional) The state that the mutation should be
-                      applied in. Unset if the mutation is not conditional,
-                      otherwise :data:`True` or :data:`False`.
+        :param state: (Optional) The state that is passed along to
+                      :meth:`_get_mutations`.
         """
         column = _to_bytes(column)
         if isinstance(value, six.integer_types):
@@ -165,6 +156,40 @@ class DirectRow(Row):
         )
         mutation_pb = data_pb2.Mutation(set_cell=mutation_val)
         self._get_mutations(state).append(mutation_pb)
+
+    def set_cell(self, column_family_id, column, value, timestamp=None):
+        """Sets a value in this row.
+
+        The cell is determined by the ``row_key`` of this :class:`DirectRow`
+        and the ``column``. The ``column`` must be in an existing
+        :class:`.ColumnFamily` (as determined by ``column_family_id``).
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type value: bytes or :class:`int`
+        :param value: The value to set in the cell. If an integer is used,
+                      will be interpreted as a 64-bit big-endian signed
+                      integer (8 bytes).
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (Optional) The timestamp of the operation.
+        """
+        self._set_cell(column_family_id, column, value, timestamp=timestamp,
+                       state=None)
 
     def delete(self, state=None):
         """Deletes this row from the table.
@@ -429,6 +454,48 @@ class ConditionalRow(DirectRow):
             request_pb, client.timeout_seconds)
         self.clear()
         return resp.predicate_matched
+
+    # pylint: disable=arguments-differ
+    def set_cell(self, column_family_id, column, value, timestamp=None,
+                 state=True):
+        """Sets a value in this row.
+
+        The cell is determined by the ``row_key`` of this
+        :class:`ConditionalRow` and the ``column``. The ``column`` must be in
+        an existing :class:`.ColumnFamily` (as determined by
+        ``column_family_id``).
+
+        .. note::
+
+            This method adds a mutation to the accumulated mutations on this
+            row, but does not make an API request. To actually
+            send an API request (with the mutations) to the Google Cloud
+            Bigtable API, call :meth:`commit`.
+
+        :type column_family_id: str
+        :param column_family_id: The column family that contains the column.
+                                 Must be of the form
+                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
+
+        :type column: bytes
+        :param column: The column within the column family where the cell
+                       is located.
+
+        :type value: bytes or :class:`int`
+        :param value: The value to set in the cell. If an integer is used,
+                      will be interpreted as a 64-bit big-endian signed
+                      integer (8 bytes).
+
+        :type timestamp: :class:`datetime.datetime`
+        :param timestamp: (Optional) The timestamp of the operation.
+
+        :type state: bool
+        :param state: (Optional) The state that the mutation should be
+                      applied in. Defaults to :data:`True`.
+        """
+        self._set_cell(column_family_id, column, value, timestamp=timestamp,
+                       state=state)
+    # pylint: enable=arguments-differ
 
     def clear(self):
         """Removes all currently accumulated mutations on the current row."""
