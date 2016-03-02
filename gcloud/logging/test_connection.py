@@ -25,5 +25,20 @@ class TestConnection(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_default_url(self):
-        conn = self._makeOne()
+        creds = _Credentials()
+        conn = self._makeOne(creds)
         klass = self._getTargetClass()
+        self.assertEqual(conn.credentials._scopes, klass.SCOPE)
+
+
+class _Credentials(object):
+
+    _scopes = None
+
+    @staticmethod
+    def create_scoped_required():
+        return True
+
+    def create_scoped(self, scope):
+        self._scopes = scope
+        return self
