@@ -87,3 +87,30 @@ class Logger(object):
         }
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
+
+    def log_struct(self, info, client=None):
+        """API call:  log a text message via a POST request
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
+
+        :type info: dict
+        :param info: the log entry information
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current logger.
+        """
+        client = self._require_client(client)
+
+        data = {
+            'entries': [{
+                'logName': self.full_name,
+                'jsonPayload': info,
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        client.connection.api_request(
+            method='POST', path='/entries:write', data=data)
