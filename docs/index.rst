@@ -112,6 +112,7 @@
 
   logging-usage
   Client <logging-client>
+  logging-logger
 
 .. toctree::
   :maxdepth: 0

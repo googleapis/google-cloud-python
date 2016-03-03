@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
+from gcloud.logging.logger import Logger
 
 
 class Client(JSONClient):
@@ -41,3 +42,14 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+
+    def logger(self, name):
+        """Creates a logger bound to the current client.
+
+        :type name: string
+        :param name: the name of the logger to be constructed.
+
+        :rtype: :class:`gcloud.pubsub.logger.Logger`
+        :returns: Logger created with the current client.
+        """
+        return Logger(name, client=self)
