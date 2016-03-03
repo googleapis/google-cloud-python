@@ -19,3 +19,5 @@ from gcloud.logging.connection import Connection
 
 
 SCOPE = Connection.SCOPE
+ASCENDING = 'timestamp asc'
+DESCENDING = 'timestamp desc'
