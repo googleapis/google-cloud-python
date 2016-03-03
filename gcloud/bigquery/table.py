@@ -654,9 +654,9 @@ class Table(object):
         :param ignore_unknown_values: ignore columns beyond schema?
 
         :type template_suffix: string or ``NoneType``
-        :param template_suffix: treat ``name`` as a template table and provide 
-                                a suffix. BigQuery will create the table 
-                                ``<name> + <template_suffix>`` based on the 
+        :param template_suffix: treat ``name`` as a template table and provide
+                                a suffix. BigQuery will create the table
+                                ``<name> + <template_suffix>`` based on the
                                 schema of the template table. See:
                                 https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
@@ -698,7 +698,7 @@ class Table(object):
             data['ignoreUnknownValues'] = ignore_unknown_values
 
         if template_suffix is not None:
-            data['templateSuffix'] = template_suffix            
+            data['templateSuffix'] = template_suffix
 
         response = client.connection.api_request(
             method='POST',
