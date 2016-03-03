@@ -15,41 +15,36 @@
 import unittest2
 
 
-class TestClient(unittest2.TestCase):
+class TestLogger(unittest2.TestCase):
 
-    PROJECT = 'PROJECT'
-    LOGGER_NAME = 'LOGGER_NAME'
+    PROJECT = 'test-project'
+    LOGGER_NAME = 'logger-name'
 
     def _getTargetClass(self):
-        from gcloud.logging.client import Client
-        return Client
+        from gcloud.logging.logger import Logger
+        return Logger
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        self.assertEqual(client.project, self.PROJECT)
-
-    def test_logger(self):
-        creds = _Credentials()
-
-        client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
-        logger = client_obj.logger(self.LOGGER_NAME)
+        conn = _Connection()
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client_obj)
+        self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
 
 
-class _Credentials(object):
+class _Connection(object):
 
-    _scopes = None
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
 
-    @staticmethod
-    def create_scoped_required():
-        return True
 
-    def create_scoped(self, scope):
-        self._scopes = scope
-        return self
+class _Client(object):
+
+    def __init__(self, project, connection=None):
+        self.project = project
+        self.connection = connection
