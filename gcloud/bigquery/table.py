@@ -631,6 +631,7 @@ class Table(object):
                     row_ids=None,
                     skip_invalid_rows=None,
                     ignore_unknown_values=None,
+                    template_suffix=None,
                     client=None):
         """API call:  insert table data via a POST request
 
@@ -651,6 +652,13 @@ class Table(object):
 
         :type ignore_unknown_values: boolean or ``NoneType``
         :param ignore_unknown_values: ignore columns beyond schema?
+
+        :type template_suffix: string or ``NoneType``
+        :param template_suffix: treat ``name`` as a template table and provide 
+                                a suffix. BigQuery will create the table 
+                                ``<name> + <template_suffix>`` based on the 
+                                schema of the template table. See:
+                                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -688,6 +696,9 @@ class Table(object):
 
         if ignore_unknown_values is not None:
             data['ignoreUnknownValues'] = ignore_unknown_values
+
+        if template_suffix is not None:
+            data['templateSuffix'] = template_suffix            
 
         response = client.connection.api_request(
             method='POST',
