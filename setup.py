@@ -1,6 +1,5 @@
 import os
 
-
 from setuptools import setup
 from setuptools import find_packages
 
@@ -19,6 +18,7 @@ REQUIREMENTS = [
     'pyOpenSSL',
     'six',
 ]
+GRPC_EXTRAS = ['grpcio >= 0.13.0']
 
 setup(
     name='gcloud',
@@ -35,6 +35,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    extras_require={'grpc': GRPC_EXTRAS},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
