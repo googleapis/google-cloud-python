@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 63aa65c documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud cba090e documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '63aa65c',
+        VERSION:     'cba090e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 63aa65c documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud cba090e documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%2063aa65c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20cba090e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (63aa65c)
+              Version History (cba090e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -370,6 +370,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
+<span class="sd">        .. note::</span>
+
+<span class="sd">           If the server-set property, :attr:`media_link`, is not yet</span>
+<span class="sd">           initialized, makes an additional API request to load it.</span>
+
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
 
@@ -380,6 +385,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># not yet loaded</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
 
         <span class="c1"># Use apitools &#39;Download&#39; facility.</span>
