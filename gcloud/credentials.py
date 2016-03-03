@@ -19,27 +19,7 @@ import datetime
 import six
 from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
 
-try:
-    from OpenSSL import crypto
-except ImportError:  # pragma: NO COVER
-    # pyOpenSSL can't be installed on App Engine, but it will not
-    # be needed there since app_identity is used.
-    crypto = None
-
 from oauth2client import client
-from oauth2client import crypt
-from oauth2client.service_account import ServiceAccountCredentials
-try:
-    from oauth2client.contrib.appengine import (
-        AppAssertionCredentials as _GAECreds)
-except ImportError:
-    class _GAECreds(object):
-        """Dummy class if not in App Engine environment."""
-
-try:
-    from google.appengine.api import app_identity
-except ImportError:
-    app_identity = None
 
 from gcloud._helpers import UTC
 from gcloud._helpers import _NOW
@@ -102,95 +82,10 @@ def get_credentials():
     return client.GoogleCredentials.get_application_default()
 
 
-def _get_pem_key(credentials):
-    """Gets private key for a PEM payload from a credentials object.
-
-    :type credentials: :class:`service_account.ServiceAccountCredentials`,
-    :param credentials: The credentials used to create a private key
-                        for signing text.
-
-    :rtype: :class:`OpenSSL.crypto.PKey`
-    :returns: A PKey object used to sign text.
-    :raises: `TypeError` if `credentials` is the wrong type.
-             `EnvironmentError` if `crypto` did not import successfully.
-    """
-    if isinstance(credentials, ServiceAccountCredentials):
-        if credentials._private_key_pkcs12 is not None:
-            # Take our PKCS12 (.p12) text and convert to PEM text.
-            pem_text = crypt.pkcs12_key_as_pem(
-                credentials._private_key_pkcs12,
-                credentials._private_key_password)
-        else:
-            pem_text = credentials._private_key_pkcs8_pem
-    else:
-        raise TypeError((credentials,
-                         'not a valid service account credentials type'))
-
-    if crypto is None:
-        raise EnvironmentError(
-            'pyOpenSSL must be installed to load a private key')
-    return crypto.load_privatekey(crypto.FILETYPE_PEM, pem_text)
-
-
-def _get_signature_bytes(credentials, string_to_sign):
-    """Uses crypto attributes of credentials to sign a string/bytes.
-
-    :type credentials: :class:`service_account.ServiceAccountCredentials`,
-                       :class:`_GAECreds`
-    :param credentials: The credentials used for signing text (typically
-                        involves the creation of a PKey).
-
-    :type string_to_sign: string
-    :param string_to_sign: The string to be signed by the credentials.
-
-    :rtype: bytes
-    :returns: Signed bytes produced by the credentials.
-    :raises: `EnvironmentError` if `crypto` did not import successfully.
-    """
-    if isinstance(credentials, _GAECreds):
-        _, signed_bytes = app_identity.sign_blob(string_to_sign)
-        return signed_bytes
-    else:
-        # Sign the string with the PKey.
-        pkey = _get_pem_key(credentials)
-        if not isinstance(string_to_sign, six.binary_type):
-            string_to_sign = string_to_sign.encode('utf-8')
-        if crypto is None:
-            raise EnvironmentError(
-                'pyOpenSSL must be installed to sign content using a '
-                'private key')
-        return crypto.sign(pkey, string_to_sign, 'SHA256')
-
-
-def _get_service_account_name(credentials):
-    """Determines service account name from a credentials object.
-
-    :type credentials: :class:`service_account.ServiceAccountCredentials`,
-                       :class:`_GAECreds`
-    :param credentials: The credentials used to determine the service
-                        account name.
-
-    :rtype: string
-    :returns: Service account name associated with the credentials.
-    :raises: :class:`ValueError` if the credentials are not a valid service
-             account type.
-    """
-    service_account_name = None
-    if isinstance(credentials, ServiceAccountCredentials):
-        service_account_name = credentials.service_account_email
-    elif isinstance(credentials, _GAECreds):
-        service_account_name = app_identity.get_service_account_name()
-
-    if service_account_name is None:
-        raise ValueError('Service account name could not be determined '
-                         'from credentials')
-    return service_account_name
-
-
 def _get_signed_query_params(credentials, expiration, string_to_sign):
     """Gets query parameters for creating a signed URL.
 
-    :type credentials: :class:`service_account.ServiceAccountCredentials`
+    :type credentials: :class:`oauth2client.client.AssertionCredentials`
     :param credentials: The credentials used to create a private key
                         for signing text.
 
@@ -204,9 +99,9 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
     :returns: Query parameters matching the signing credentials with a
               signed payload.
     """
-    signature_bytes = _get_signature_bytes(credentials, string_to_sign)
+    _, signature_bytes = credentials.sign_blob(string_to_sign)
     signature = base64.b64encode(signature_bytes)
-    service_account_name = _get_service_account_name(credentials)
+    service_account_name = credentials.service_account_email
     return {
         'GoogleAccessId': service_account_name,
         'Expires': str(expiration),
@@ -245,6 +140,15 @@ def generate_signed_url(credentials, resource, expiration,
                         content_type=None, response_type=None,
                         response_disposition=None, generation=None):
     """Generate signed URL to provide query-string auth'n to a resource.
+
+    .. note::
+
+        Assumes ``credentials`` implements a ``sign_blob()`` method that takes
+        bytes to sign and returns a pair of the key ID (unused here) and the
+        signed bytes (this is abstract in the base class
+        :class:`oauth2client.client.AssertionCredentials`). Also assumes
+        ``credentials`` has a ``service_account_email`` property which
+        identifies the credentials.
 
     .. note::
 
