@@ -95,7 +95,7 @@ class Table(object):
         """
         return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
 
-    def row(self, row_key, filter_=None):
+    def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
 
         :type row_key: bytes
@@ -105,10 +105,14 @@ class Table(object):
         :param filter_: (Optional) Filter to be used for conditional mutations.
                         See :class:`.Row` for more details.
 
+        :type append: bool
+        :param append: (Optional) Flag to determine if the row should be used
+                       for append mutations.
+
         :rtype: :class:`.Row`
         :returns: A row owned by this table.
         """
-        return Row(row_key, self, filter_=filter_)
+        return Row(row_key, self, filter_=filter_, append=append)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

@@ -34,6 +34,17 @@ class TestRow(unittest2.TestCase):
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
         self.assertTrue(row._filter is filter_)
+        self.assertFalse(row._append)
+
+    def test_constructor_append(self):
+        row_key = b'row_key'
+        table = object()
+
+        row = self._makeOne(row_key, table, append=True)
+        self.assertEqual(row._row_key, row_key)
+        self.assertTrue(row._table is table)
+        self.assertEqual(row._filter, None)
+        self.assertTrue(row._append)
 
     def test_constructor_with_unicode(self):
         row_key = u'row_key'
@@ -48,6 +59,20 @@ class TestRow(unittest2.TestCase):
         row_key = object()
         with self.assertRaises(TypeError):
             self._makeOne(row_key, None)
+
+    def test_constructor_filter_and_append(self):
+        row_key = object()
+        with self.assertRaises(ValueError):
+            self._makeOne(row_key, None, filter_=object(), append=True)
+
+    def test_accumulation_type(self):
+        row_key = b'row-key'
+        row1 = self._makeOne(row_key, None)
+        row2 = self._makeOne(row_key, None, filter_=object())
+        row3 = self._makeOne(row_key, None, append=True)
+        self.assertEqual(row1.accumulation_type, 'direct')
+        self.assertEqual(row2.accumulation_type, 'conditional')
+        self.assertEqual(row3.accumulation_type, 'append')
 
     def _get_mutations_helper(self, filter_=None, state=None):
         row_key = b'row_key'
@@ -152,12 +177,17 @@ class TestRow(unittest2.TestCase):
         self._set_cell_helper(timestamp=timestamp,
                               timestamp_micros=millis_granularity)
 
+    def test_set_cell_on_append(self):
+        row = self._makeOne(b'row-key', None, append=True)
+        with self.assertRaises(ValueError):
+            row.set_cell(u'fam', b'col', b'val')
+
     def test_append_cell_value(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 
         table = object()
         row_key = b'row_key'
-        row = self._makeOne(row_key, table)
+        row = self._makeOne(row_key, table, append=True)
         self.assertEqual(row._rule_pb_list, [])
 
         column = b'column'
@@ -169,12 +199,17 @@ class TestRow(unittest2.TestCase):
             append_value=value)
         self.assertEqual(row._rule_pb_list, [expected_pb])
 
+    def test_append_cell_value_without_append(self):
+        row = self._makeOne(b'row-key', None, append=False)
+        with self.assertRaises(ValueError):
+            row.append_cell_value(u'fam', b'col', b'val')
+
     def test_increment_cell_value(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 
         table = object()
         row_key = b'row_key'
-        row = self._makeOne(row_key, table)
+        row = self._makeOne(row_key, table, append=True)
         self.assertEqual(row._rule_pb_list, [])
 
         column = b'column'
@@ -185,6 +220,11 @@ class TestRow(unittest2.TestCase):
             family_name=column_family_id, column_qualifier=column,
             increment_amount=int_value)
         self.assertEqual(row._rule_pb_list, [expected_pb])
+
+    def test_increment_cell_value_without_append(self):
+        row = self._makeOne(b'row-key', None, append=False)
+        with self.assertRaises(ValueError):
+            row.increment_cell_value(u'fam', b'col', 123)
 
     def test_delete(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
@@ -198,6 +238,11 @@ class TestRow(unittest2.TestCase):
             delete_from_row=data_pb2.Mutation.DeleteFromRow(),
         )
         self.assertEqual(row._pb_mutations, [expected_pb])
+
+    def test_delete_on_append(self):
+        row = self._makeOne(b'row-key', None, append=True)
+        with self.assertRaises(ValueError):
+            row.delete()
 
     def test_delete_cell(self):
         klass = self._getTargetClass()
@@ -234,6 +279,11 @@ class TestRow(unittest2.TestCase):
             'state': None,
             'time_range': time_range,
         }])
+
+    def test_delete_cell_on_append(self):
+        row = self._makeOne(b'row-key', None, append=True)
+        with self.assertRaises(ValueError):
+            row.delete_cell(u'fam', b'col')
 
     def test_delete_cells_non_iterable(self):
         row_key = b'row_key'
@@ -356,6 +406,11 @@ class TestRow(unittest2.TestCase):
             ),
         )
         self.assertEqual(row._pb_mutations, [expected_pb1, expected_pb2])
+
+    def test_delete_cells_on_append(self):
+        row = self._makeOne(b'row-key', None, append=True)
+        with self.assertRaises(ValueError):
+            row.delete_cells(u'fam', [b'col1', b'col2'])
 
     def test_commit(self):
         from google.protobuf import empty_pb2
@@ -545,7 +600,7 @@ class TestRow(unittest2.TestCase):
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
-    def test_commit_modifications(self):
+    def test_commit_append(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
@@ -560,7 +615,7 @@ class TestRow(unittest2.TestCase):
         timeout_seconds = 87
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._makeOne(row_key, table, append=True)
 
         # Create request_pb
         value = b'bytes-value'
@@ -594,7 +649,7 @@ class TestRow(unittest2.TestCase):
         # Perform the method and check the result.
         with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
             row.append_cell_value(column_family_id, column, value)
-            result = row.commit_modifications()
+            result = row.commit()
 
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
@@ -602,30 +657,43 @@ class TestRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._pb_mutations, None)
         self.assertEqual(row._true_pb_mutations, None)
         self.assertEqual(row._false_pb_mutations, None)
 
         self.assertEqual(row_responses, [response_pb])
         self.assertEqual(row._rule_pb_list, [])
 
-    def test_commit_modifications_no_rules(self):
+    def test_commit_append_no_rules(self):
         from gcloud.bigtable._testing import _FakeStub
 
         row_key = b'row_key'
         client = _Client()
         table = _Table(None, client=client)
-        row = self._makeOne(row_key, table)
+        row = self._makeOne(row_key, table, append=True)
         self.assertEqual(row._rule_pb_list, [])
 
         # Patch the stub used by the API method.
         client._data_stub = stub = _FakeStub()
 
         # Perform the method and check the result.
-        result = row.commit_modifications()
+        result = row.commit()
         self.assertEqual(result, {})
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
+
+    def test_commit_append_too_many_mutations(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import row as MUT
+
+        row_key = b'row_key'
+        table = object()
+        row = self._makeOne(row_key, table, append=True)
+        row._rule_pb_list = [1, 2, 3]
+        num_mutations = len(row._rule_pb_list)
+        with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
+            with self.assertRaises(ValueError):
+                row.commit()
 
 
 class Test_BoolFilter(unittest2.TestCase):

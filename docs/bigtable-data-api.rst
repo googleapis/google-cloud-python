@@ -70,13 +70,6 @@ in a batch via :meth:`commit() <gcloud.bigtable.row.Row.commit>`:
 
     row.commit()
 
-To send **append** mutations in batch, use
-:meth:`commit_modifications() <gcloud.bigtable.row.Row.commit_modifications>`:
-
-.. code:: python
-
-    row.commit_modifications()
-
 We have a small set of methods on the :class:`Row <gcloud.bigtable.row.Row>`
 to build these mutations up.
 
@@ -213,13 +206,6 @@ If accumulated mutations need to be dropped, use
 .. code:: python
 
     row.clear_mutations()
-
-To clear **append** mutations, use
-:meth:`clear_modification_rules() <gcloud.bigtable.row.Row.clear_modification_rules>`
-
-.. code:: python
-
-    row.clear_modification_rules()
 
 Reading Data
 ++++++++++++
