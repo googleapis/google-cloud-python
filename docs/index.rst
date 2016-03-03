@@ -111,6 +111,7 @@
   :caption: Cloud Logging
 
   logging-usage
+  Client <logging-client>
 
 .. toctree::
   :maxdepth: 0
