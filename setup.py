@@ -14,7 +14,7 @@ REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos',
     'oauth2client >= 2.0.1',
-    'protobuf >= 3.0.0b2',
+    'protobuf >= 3.0.0b2, != 3.0.0.b2.post1',
     'pyOpenSSL',
     'six',
 ]
