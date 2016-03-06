@@ -1185,6 +1185,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         SENT = {
             'skipInvalidRows': True,
             'ignoreUnknownValues': True,
+            'template_suffix': '20160303',
             'rows': [{'insertId': index, 'json': _row_data(row)}
                      for index, row in enumerate(ROWS)],
         }
@@ -1194,7 +1195,9 @@ class TestTable(unittest2.TestCase, _SchemaBase):
             rows=ROWS,
             row_ids=[index for index, _ in enumerate(ROWS)],
             skip_invalid_rows=True,
-            ignore_unknown_values=True)
+            ignore_unknown_values=True,
+            template_suffix='20160303',
+        )
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0]['index'], 1)
