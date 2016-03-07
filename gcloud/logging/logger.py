@@ -114,3 +114,17 @@ class Logger(object):
         }
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
+
+    def delete(self, client=None):
+        """API call:  delete all entries in a logger via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current logger.
+        """
+        client = self._require_client(client)
+        client.connection.api_request(
+            method='DELETE', path='/%s' % self.full_name)
