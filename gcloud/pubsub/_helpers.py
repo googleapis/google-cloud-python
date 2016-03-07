@@ -43,3 +43,34 @@ def topic_name_from_path(path, project):
                          'project from resource.')
 
     return path_parts[3]
+
+
+def subscription_name_from_path(path, project):
+    """Validate a subscription URI path and get the subscription name.
+
+    :type path: string
+    :param path: URI path for a subscription API request.
+
+    :type project: string
+    :param project: The project associated with the request. It is
+                    included for validation purposes.
+
+    :rtype: string
+    :returns: subscription name parsed from ``path``.
+    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
+             the project from the ``path`` does not agree with the
+             ``project`` passed in.
+    """
+    # PATH = 'projects/%s/subscriptions/%s' % (PROJECT, TOPIC_NAME)
+    path_parts = path.split('/')
+    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
+            path_parts[2] != 'subscriptions'):
+        raise ValueError(
+            'Expected path to be of the form '
+            'projects/{project}/subscriptions/{subscription_name}')
+    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
+            path_parts[2] != 'subscriptions' or path_parts[1] != project):
+        raise ValueError('Project from client should agree with '
+                         'project from resource.')
+
+    return path_parts[3]

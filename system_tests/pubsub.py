@@ -118,8 +118,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
-        empty, _ = Config.CLIENT.list_subscriptions(
-            topic_name=DEFAULT_TOPIC_NAME)
+        empty, _ = topic.list_subscriptions()
         self.assertEqual(len(empty), 0)
         subscriptions_to_create = [
             'new%d' % (1000 * time.time(),),
@@ -132,10 +131,9 @@ class TestPubsub(unittest2.TestCase):
             self.to_delete.append(subscription)
 
         # Retrieve the subscriptions.
-        all_subscriptions, _ = Config.CLIENT.list_subscriptions()
+        all_subscriptions, _ = topic.list_subscriptions()
         created = [subscription for subscription in all_subscriptions
-                   if subscription.name in subscriptions_to_create and
-                   subscription.topic.name == DEFAULT_TOPIC_NAME]
+                   if subscription.name in subscriptions_to_create]
         self.assertEqual(len(created), len(subscriptions_to_create))
 
     def test_message_pull_mode_e2e(self):
