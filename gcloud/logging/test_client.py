@@ -104,9 +104,11 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['data'], SENT)
 
     def test_list_entries_explicit(self):
+        # pylint: disable=too-many-statements
         from datetime import datetime
         from gcloud._helpers import UTC
         from gcloud.logging import DESCENDING
+        from gcloud.logging.entries import ProtobufEntry
         from gcloud.logging.entries import StructEntry
         from gcloud.logging.logger import Logger
         from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
@@ -116,7 +118,10 @@ class TestClient(unittest2.TestCase):
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         IID1 = 'IID1'
+        IID2 = 'IID2'
         PAYLOAD = {'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        PROTO_PAYLOAD = PAYLOAD.copy()
+        PROTO_PAYLOAD['@type'] = 'type.googleapis.com/testing.example'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         SENT = {
@@ -136,6 +141,15 @@ class TestClient(unittest2.TestCase):
                 'timestamp': TIMESTAMP,
                 'logName': 'projects/%s/logs/%s' % (
                     self.PROJECT, self.LOGGER_NAME),
+            }, {
+                'protoPayload': PROTO_PAYLOAD,
+                'insertId': IID2,
+                'resource': {
+                    'type': 'global',
+                },
+                'timestamp': TIMESTAMP,
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
             }],
         }
         creds = _Credentials()
@@ -144,7 +158,8 @@ class TestClient(unittest2.TestCase):
         entries, token = client.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
-        self.assertEqual(len(entries), 1)
+        self.assertEqual(len(entries), 2)
+
         entry = entries[0]
         self.assertTrue(isinstance(entry, StructEntry))
         self.assertEqual(entry.insert_id, IID1)
@@ -155,6 +170,19 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
+
+        entry = entries[1]
+        self.assertTrue(isinstance(entry, ProtobufEntry))
+        self.assertEqual(entry.insert_id, IID2)
+        self.assertEqual(entry.payload, PROTO_PAYLOAD)
+        self.assertEqual(entry.timestamp, NOW)
+        logger = entry.logger
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.project, self.PROJECT)
+
+        self.assertTrue(entries[0].logger is entries[1].logger)
+
         self.assertEqual(token, None)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]

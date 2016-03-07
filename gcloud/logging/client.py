@@ -17,6 +17,7 @@
 
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
+from gcloud.logging.entries import ProtobufEntry
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry
 from gcloud.logging.logger import Logger
@@ -71,13 +72,16 @@ class Client(JSONClient):
         :rtype; One of:
                 :class:`gcloud.logging.entries.TextEntry`,
                 :class:`gcloud.logging.entries.StructEntry`,
+                :class:`gcloud.logging.entries.ProtobufEntry`
         :returns: the entry instance, constructed via the resource
         """
         if 'textPayload' in resource:
             return TextEntry.from_api_repr(resource, self, loggers)
         elif 'jsonPayload' in resource:
             return StructEntry.from_api_repr(resource, self, loggers)
-        raise ValueError('Cannot parse job resource')
+        elif 'protoPayload' in resource:
+            return ProtobufEntry.from_api_repr(resource, self, loggers)
+        raise ValueError('Cannot parse log entry resource')
 
     def list_entries(self, projects=None, filter_=None, order_by=None,
                      page_size=None, page_token=None):

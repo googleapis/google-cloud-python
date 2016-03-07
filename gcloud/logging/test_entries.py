@@ -221,6 +221,114 @@ class TestStructEntry(unittest2.TestCase):
         self.assertTrue(entry.logger is LOGGER)
 
 
+class TestProtobufEntry(unittest2.TestCase):
+
+    PROJECT = 'PROJECT'
+    LOGGER_NAME = 'LOGGER_NAME'
+
+    def _getTargetClass(self):
+        from gcloud.logging.entries import ProtobufEntry
+        return ProtobufEntry
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        PAYLOAD = {'@type': 'type.googleapis.com/testing.example',
+                   'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        logger = _Logger(self.LOGGER_NAME, self.PROJECT)
+        entry = self._makeOne(PAYLOAD, logger)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertTrue(entry.logger is logger)
+        self.assertTrue(entry.insert_id is None)
+        self.assertTrue(entry.timestamp is None)
+
+    def test_ctor_explicit(self):
+        import datetime
+        PAYLOAD = {'@type': 'type.googleapis.com/testing.example',
+                   'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        IID = 'IID'
+        TIMESTAMP = datetime.datetime.now()
+        logger = _Logger(self.LOGGER_NAME, self.PROJECT)
+        entry = self._makeOne(PAYLOAD, logger, IID, TIMESTAMP)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertTrue(entry.logger is logger)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, TIMESTAMP)
+
+    def test_from_api_repr_missing_data_no_loggers(self):
+        client = _Client(self.PROJECT)
+        PAYLOAD = {'@type': 'type.googleapis.com/testing.example',
+                   'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        API_REPR = {
+            'protoPayload': PAYLOAD,
+            'logName': LOG_NAME,
+        }
+        klass = self._getTargetClass()
+        entry = klass.from_api_repr(API_REPR, client)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertTrue(entry.insert_id is None)
+        self.assertTrue(entry.timestamp is None)
+        logger = entry.logger
+        self.assertTrue(isinstance(logger, _Logger))
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+
+    def test_from_api_repr_w_loggers_no_logger_match(self):
+        from datetime import datetime
+        from gcloud._helpers import UTC
+        client = _Client(self.PROJECT)
+        PAYLOAD = {'@type': 'type.googleapis.com/testing.example',
+                   'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        IID = 'IID'
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        API_REPR = {
+            'protoPayload': PAYLOAD,
+            'logName': LOG_NAME,
+            'insertId': IID,
+            'timestamp': TIMESTAMP,
+        }
+        loggers = {}
+        klass = self._getTargetClass()
+        entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, NOW)
+        logger = entry.logger
+        self.assertTrue(isinstance(logger, _Logger))
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertEqual(loggers, {LOG_NAME: logger})
+
+    def test_from_api_repr_w_loggers_w_logger_match(self):
+        from datetime import datetime
+        from gcloud._helpers import UTC
+        client = _Client(self.PROJECT)
+        PAYLOAD = {'@type': 'type.googleapis.com/testing.example',
+                   'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        IID = 'IID'
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        API_REPR = {
+            'protoPayload': PAYLOAD,
+            'logName': LOG_NAME,
+            'insertId': IID,
+            'timestamp': TIMESTAMP,
+        }
+        LOGGER = object()
+        loggers = {LOG_NAME: LOGGER}
+        klass = self._getTargetClass()
+        entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertEqual(entry.insert_id, IID)
+        self.assertEqual(entry.timestamp, NOW)
+        self.assertTrue(entry.logger is LOGGER)
+
+
 def _datetime_to_rfc3339_w_nanos(value):
     from gcloud._helpers import _RFC3339_NO_FRACTION
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)
