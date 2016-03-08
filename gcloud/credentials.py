@@ -17,7 +17,7 @@
 import base64
 import datetime
 import six
-from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
+from six.moves.urllib.parse import urlencode
 
 from oauth2client import client
 
