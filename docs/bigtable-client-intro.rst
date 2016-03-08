@@ -21,18 +21,19 @@ defaults
 However, you may over-ride them and these will be used throughout all API
 requests made with the ``client`` you create.
 
-Authorization
+Configuration
 -------------
 
 - For an overview of authentication in ``gcloud-python``,
   see :doc:`gcloud-auth`.
 
 - In addition to any authentication configuration, you can also set the
-  :envvar:`GCLOUD_PROJECT` environment variable for the project you'd like
-  to interact with. If you are Google App Engine or Google Compute Engine
-  this will be detected automatically. (Setting this environment
-  variable is not required, you may instead pass the ``project`` explicitly
-  when constructing a :class:`Client <gcloud.storage.client.Client>`).
+  :envvar:`GCLOUD_PROJECT` environment variable for the Google Cloud Console
+  project you'd like to interact with. If your code is running in Google App
+  Engine or Google Compute Engine the project will be detected automatically.
+  (Setting this environment variable is not required, you may instead pass the
+  ``project`` explicitly when constructing a
+  :class:`Client <gcloud.storage.client.Client>`).
 
 - After configuring your environment, create a
   :class:`Client <gcloud.storage.client.Client>`

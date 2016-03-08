@@ -16,11 +16,11 @@
 import unittest2
 
 
-class TestRow(unittest2.TestCase):
+class TestDirectRow(unittest2.TestCase):
 
     def _getTargetClass(self):
-        from gcloud.bigtable.row import Row
-        return Row
+        from gcloud.bigtable.row import DirectRow
+        return DirectRow
 
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
@@ -28,12 +28,11 @@ class TestRow(unittest2.TestCase):
     def test_constructor(self):
         row_key = b'row_key'
         table = object()
-        filter_ = object()
 
-        row = self._makeOne(row_key, table, filter_=filter_)
+        row = self._makeOne(row_key, table)
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
-        self.assertTrue(row._filter is filter_)
+        self.assertEqual(row._pb_mutations, [])
 
     def test_constructor_with_unicode(self):
         row_key = u'row_key'
@@ -49,45 +48,12 @@ class TestRow(unittest2.TestCase):
         with self.assertRaises(TypeError):
             self._makeOne(row_key, None)
 
-    def _get_mutations_helper(self, filter_=None, state=None):
+    def test__get_mutations(self):
         row_key = b'row_key'
-        row = self._makeOne(row_key, None, filter_=filter_)
-        # Mock the mutations with unique objects so we can compare.
-        row._pb_mutations = no_bool = object()
-        row._true_pb_mutations = true_mutations = object()
-        row._false_pb_mutations = false_mutations = object()
+        row = self._makeOne(row_key, None)
 
-        mutations = row._get_mutations(state)
-        return (no_bool, true_mutations, false_mutations), mutations
-
-    def test__get_mutations_no_filter(self):
-        (no_bool, _, _), mutations = self._get_mutations_helper()
-        self.assertTrue(mutations is no_bool)
-
-    def test__get_mutations_no_filter_bad_state(self):
-        state = object()  # State should be null when no filter.
-        with self.assertRaises(ValueError):
-            self._get_mutations_helper(state=state)
-
-    def test__get_mutations_with_filter_true_state(self):
-        filter_ = object()
-        state = True
-        (_, true_filter, _), mutations = self._get_mutations_helper(
-            filter_=filter_, state=state)
-        self.assertTrue(mutations is true_filter)
-
-    def test__get_mutations_with_filter_false_state(self):
-        filter_ = object()
-        state = False
-        (_, _, false_filter), mutations = self._get_mutations_helper(
-            filter_=filter_, state=state)
-        self.assertTrue(mutations is false_filter)
-
-    def test__get_mutations_with_filter_bad_state(self):
-        filter_ = object()
-        state = None
-        with self.assertRaises(ValueError):
-            self._get_mutations_helper(filter_=filter_, state=state)
+        row._pb_mutations = mutations = object()
+        self.assertTrue(mutations is row._get_mutations(None))
 
     def _set_cell_helper(self, column=None, column_bytes=None,
                          value=b'foobar', timestamp=None,
@@ -152,40 +118,6 @@ class TestRow(unittest2.TestCase):
         self._set_cell_helper(timestamp=timestamp,
                               timestamp_micros=millis_granularity)
 
-    def test_append_cell_value(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
-
-        table = object()
-        row_key = b'row_key'
-        row = self._makeOne(row_key, table)
-        self.assertEqual(row._rule_pb_list, [])
-
-        column = b'column'
-        column_family_id = u'column_family_id'
-        value = b'bytes-val'
-        row.append_cell_value(column_family_id, column, value)
-        expected_pb = data_pb2.ReadModifyWriteRule(
-            family_name=column_family_id, column_qualifier=column,
-            append_value=value)
-        self.assertEqual(row._rule_pb_list, [expected_pb])
-
-    def test_increment_cell_value(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
-
-        table = object()
-        row_key = b'row_key'
-        row = self._makeOne(row_key, table)
-        self.assertEqual(row._rule_pb_list, [])
-
-        column = b'column'
-        column_family_id = u'column_family_id'
-        int_value = 281330
-        row.increment_cell_value(column_family_id, column, int_value)
-        expected_pb = data_pb2.ReadModifyWriteRule(
-            family_name=column_family_id, column_qualifier=column,
-            increment_amount=int_value)
-        self.assertEqual(row._rule_pb_list, [expected_pb])
-
     def test_delete(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 
@@ -210,7 +142,7 @@ class TestRow(unittest2.TestCase):
                 self._kwargs = []
 
             # Replace the called method with one that logs arguments.
-            def delete_cells(self, *args, **kwargs):
+            def _delete_cells(self, *args, **kwargs):
                 self._args.append(args)
                 self._kwargs.append(kwargs)
 
@@ -408,8 +340,6 @@ class TestRow(unittest2.TestCase):
             {},
         )])
         self.assertEqual(row._pb_mutations, [])
-        self.assertEqual(row._true_pb_mutations, None)
-        self.assertEqual(row._false_pb_mutations, None)
 
     def test_commit_too_many_mutations(self):
         from gcloud._testing import _Monkey
@@ -442,7 +372,40 @@ class TestRow(unittest2.TestCase):
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
-    def test_commit_with_filter(self):
+
+class TestConditionalRow(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import ConditionalRow
+        return ConditionalRow
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        row_key = b'row_key'
+        table = object()
+        filter_ = object()
+
+        row = self._makeOne(row_key, table, filter_=filter_)
+        self.assertEqual(row._row_key, row_key)
+        self.assertTrue(row._table is table)
+        self.assertTrue(row._filter is filter_)
+        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._false_pb_mutations, [])
+
+    def test__get_mutations(self):
+        row_key = b'row_key'
+        filter_ = object()
+        row = self._makeOne(row_key, None, filter_=filter_)
+
+        row._pb_mutations = true_mutations = object()
+        row._false_pb_mutations = false_mutations = object()
+        self.assertTrue(true_mutations is row._get_mutations(True))
+        self.assertTrue(false_mutations is row._get_mutations(False))
+        self.assertTrue(false_mutations is row._get_mutations(None))
+
+    def test_commit(self):
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
@@ -451,8 +414,11 @@ class TestRow(unittest2.TestCase):
 
         row_key = b'row_key'
         table_name = 'projects/more-stuff'
-        column_family_id = u'column_family_id'
-        column = b'column'
+        column_family_id1 = u'column_family_id1'
+        column_family_id2 = u'column_family_id2'
+        column_family_id3 = u'column_family_id3'
+        column1 = b'column1'
+        column2 = b'column2'
         timeout_seconds = 262
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
@@ -463,26 +429,31 @@ class TestRow(unittest2.TestCase):
         value1 = b'bytes-value'
         mutation1 = data_pb2.Mutation(
             set_cell=data_pb2.Mutation.SetCell(
-                family_name=column_family_id,
-                column_qualifier=column,
+                family_name=column_family_id1,
+                column_qualifier=column1,
                 timestamp_micros=-1,  # Default value.
                 value=value1,
             ),
         )
-        value2 = b'other-bytes'
         mutation2 = data_pb2.Mutation(
-            set_cell=data_pb2.Mutation.SetCell(
-                family_name=column_family_id,
-                column_qualifier=column,
-                timestamp_micros=-1,  # Default value.
-                value=value2,
+            delete_from_row=data_pb2.Mutation.DeleteFromRow(),
+        )
+        mutation3 = data_pb2.Mutation(
+            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+                family_name=column_family_id2,
+                column_qualifier=column2,
+            ),
+        )
+        mutation4 = data_pb2.Mutation(
+            delete_from_family=data_pb2.Mutation.DeleteFromFamily(
+                family_name=column_family_id3,
             ),
         )
         request_pb = messages_pb2.CheckAndMutateRowRequest(
             table_name=table_name,
             row_key=row_key,
             predicate_filter=row_filter.to_pb(),
-            true_mutations=[mutation1],
+            true_mutations=[mutation1, mutation3, mutation4],
             false_mutations=[mutation2],
         )
 
@@ -498,8 +469,10 @@ class TestRow(unittest2.TestCase):
         expected_result = predicate_matched
 
         # Perform the method and check the result.
-        row.set_cell(column_family_id, column, value1, state=True)
-        row.set_cell(column_family_id, column, value2, state=False)
+        row.set_cell(column_family_id1, column1, value1, state=True)
+        row.delete(state=False)
+        row.delete_cell(column_family_id2, column2, state=True)
+        row.delete_cells(column_family_id3, row.ALL_COLUMNS, state=True)
         result = row.commit()
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
@@ -507,11 +480,10 @@ class TestRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._pb_mutations, None)
-        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
-    def test_commit_with_filter_too_many_mutations(self):
+    def test_commit_too_many_mutations(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import row as MUT
 
@@ -519,13 +491,13 @@ class TestRow(unittest2.TestCase):
         table = object()
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        row._true_pb_mutations = [1, 2, 3]
-        num_mutations = len(row._true_pb_mutations)
+        row._pb_mutations = [1, 2, 3]
+        num_mutations = len(row._pb_mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()
 
-    def test_commit_with_filter_no_mutations(self):
+    def test_commit_no_mutations(self):
         from gcloud.bigtable._testing import _FakeStub
 
         row_key = b'row_key'
@@ -533,7 +505,7 @@ class TestRow(unittest2.TestCase):
         table = _Table(None, client=client)
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        self.assertEqual(row._true_pb_mutations, [])
+        self.assertEqual(row._pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
         # Patch the stub used by the API method.
@@ -545,7 +517,68 @@ class TestRow(unittest2.TestCase):
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
 
-    def test_commit_modifications(self):
+
+class TestAppendRow(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import AppendRow
+        return AppendRow
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_constructor(self):
+        row_key = b'row_key'
+        table = object()
+
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._row_key, row_key)
+        self.assertTrue(row._table is table)
+        self.assertEqual(row._rule_pb_list, [])
+
+    def test_clear(self):
+        row_key = b'row_key'
+        table = object()
+        row = self._makeOne(row_key, table)
+        row._rule_pb_list = [1, 2, 3]
+        row.clear()
+        self.assertEqual(row._rule_pb_list, [])
+
+    def test_append_cell_value(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        table = object()
+        row_key = b'row_key'
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._rule_pb_list, [])
+
+        column = b'column'
+        column_family_id = u'column_family_id'
+        value = b'bytes-val'
+        row.append_cell_value(column_family_id, column, value)
+        expected_pb = data_pb2.ReadModifyWriteRule(
+            family_name=column_family_id, column_qualifier=column,
+            append_value=value)
+        self.assertEqual(row._rule_pb_list, [expected_pb])
+
+    def test_increment_cell_value(self):
+        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+
+        table = object()
+        row_key = b'row_key'
+        row = self._makeOne(row_key, table)
+        self.assertEqual(row._rule_pb_list, [])
+
+        column = b'column'
+        column_family_id = u'column_family_id'
+        int_value = 281330
+        row.increment_cell_value(column_family_id, column, int_value)
+        expected_pb = data_pb2.ReadModifyWriteRule(
+            family_name=column_family_id, column_qualifier=column,
+            increment_amount=int_value)
+        self.assertEqual(row._rule_pb_list, [expected_pb])
+
+    def test_commit(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
@@ -594,7 +627,7 @@ class TestRow(unittest2.TestCase):
         # Perform the method and check the result.
         with _Monkey(MUT, _parse_rmw_row_response=mock_parse_rmw_row_response):
             row.append_cell_value(column_family_id, column, value)
-            result = row.commit_modifications()
+            result = row.commit()
 
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
@@ -602,14 +635,10 @@ class TestRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._pb_mutations, [])
-        self.assertEqual(row._true_pb_mutations, None)
-        self.assertEqual(row._false_pb_mutations, None)
-
         self.assertEqual(row_responses, [response_pb])
         self.assertEqual(row._rule_pb_list, [])
 
-    def test_commit_modifications_no_rules(self):
+    def test_commit_no_rules(self):
         from gcloud.bigtable._testing import _FakeStub
 
         row_key = b'row_key'
@@ -622,10 +651,23 @@ class TestRow(unittest2.TestCase):
         client._data_stub = stub = _FakeStub()
 
         # Perform the method and check the result.
-        result = row.commit_modifications()
+        result = row.commit()
         self.assertEqual(result, {})
         # Make sure no request was sent.
         self.assertEqual(stub.method_calls, [])
+
+    def test_commit_too_many_mutations(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable import row as MUT
+
+        row_key = b'row_key'
+        table = object()
+        row = self._makeOne(row_key, table)
+        row._rule_pb_list = [1, 2, 3]
+        num_mutations = len(row._rule_pb_list)
+        with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
+            with self.assertRaises(ValueError):
+                row.commit()
 
 
 class Test_BoolFilter(unittest2.TestCase):
