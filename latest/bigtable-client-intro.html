@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Base for Everything &mdash; gcloud c18e96e documentation</title>
+    <title>Base for Everything &mdash; gcloud 793b676 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c18e96e',
+        VERSION:     '793b676',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c18e96e documentation" href="index.html" />
+    <link rel="top" title="gcloud 793b676 documentation" href="index.html" />
     <link rel="next" title="Cluster Admin API" href="bigtable-cluster-api.html" />
     <link rel="prev" title="HappyBase Package" href="happybase-package.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client-intro%0ARelease%3A%20c18e96e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client-intro%0ARelease%3A%20793b676" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c18e96e)
+              Version History (793b676)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,18 +110,19 @@ defaults
 However, you may over-ride them and these will be used throughout all API
 requests made with the <code class="docutils literal"><span class="pre">client</span></code> you create.</p>
 </div>
-<div class="section" id="authorization">
-<h2>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">#</a></h2>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">gcloud-python</span></code>,
 see <a class="reference internal" href="gcloud-auth.html"><em>Authentication</em></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you can also set the
-<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GCLOUD_PROJECT</span></code> environment variable for the project you&#8217;d like
-to interact with. If you are Google App Engine or Google Compute Engine
-this will be detected automatically. (Setting this environment
-variable is not required, you may instead pass the <code class="docutils literal"><span class="pre">project</span></code> explicitly
-when constructing a <a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>).</p>
+<span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GCLOUD_PROJECT</span></code> environment variable for the Google Cloud Console
+project you&#8217;d like to interact with. If your code is running in Google App
+Engine or Google Compute Engine the project will be detected automatically.
+(Setting this environment variable is not required, you may instead pass the
+<code class="docutils literal"><span class="pre">project</span></code> explicitly when constructing a
+<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>).</p>
 </li>
 <li><p class="first">After configuring your environment, create a
 <a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>

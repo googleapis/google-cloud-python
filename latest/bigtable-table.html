@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table &mdash; gcloud c18e96e documentation</title>
+    <title>Table &mdash; gcloud 793b676 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c18e96e',
+        VERSION:     '793b676',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c18e96e documentation" href="index.html" />
+    <link rel="top" title="gcloud 793b676 documentation" href="index.html" />
     <link rel="next" title="Column Families" href="bigtable-column-family.html" />
     <link rel="prev" title="Cluster" href="bigtable-cluster.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%20c18e96e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%20793b676" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c18e96e)
+              Version History (793b676)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -351,8 +351,13 @@ actually be supported by the API.</p>
 
 <dl class="method">
 <dt id="gcloud.bigtable.table.Table.row">
-<code class="descname">row</code><span class="sig-paren">(</span><em>row_key</em>, <em>filter_=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/table.html#Table.row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.table.Table.row" title="Permalink to this definition">#</a></dt>
+<code class="descname">row</code><span class="sig-paren">(</span><em>row_key</em>, <em>filter_=None</em>, <em>append=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/table.html#Table.row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.table.Table.row" title="Permalink to this definition">#</a></dt>
 <dd><p>Factory to create a row associated with this table.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">At most one of <code class="docutils literal"><span class="pre">filter_</span></code> and <code class="docutils literal"><span class="pre">append</span></code> can be used in a
+<code class="xref py py-class docutils literal"><span class="pre">Row</span></code>.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -360,14 +365,20 @@ actually be supported by the API.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key for the row being created.</li>
 <li><strong>filter</strong> (<a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.RowFilter" title="gcloud.bigtable.row.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) Filter to be used for conditional mutations.
-See <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.Row" title="gcloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a> for more details.</li>
+See <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> for more details.</li>
+<li><strong>append</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to determine if the row should be used
+for append mutations.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.Row" title="gcloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a></p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A row owned by this table.</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A row owned by this table.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if both
+<code class="docutils literal"><span class="pre">filter_</span></code> and <code class="docutils literal"><span class="pre">append</span></code> are used.</p>
 </td>
 </tr>
 </tbody>

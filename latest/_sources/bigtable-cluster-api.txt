@@ -85,11 +85,13 @@ Check on Current Operation
 .. note::
 
     When modifying a cluster (via a `CreateCluster`_, `UpdateCluster`_ or
-    `UndeleteCluster`_ request), the Bigtable API will return a long-running
-    `Operation`_. This will be stored on the object after each of
+    `UndeleteCluster`_ request), the Bigtable API will return a
+    `long-running operation`_ and a corresponding
+    :class:`Operation <gcloud.bigtable.cluster.Operation>` object
+    will be returned by each of
     :meth:`create() <gcloud.bigtable.cluster.Cluster.create>`,
     :meth:`update() <gcloud.bigtable.cluster.Cluster.update>` and
-    :meth:`undelete() <gcloud.bigtable.cluster.Cluster.undelete>` are called.
+    :meth:`undelete() <gcloud.bigtable.cluster.Cluster.undelete>`.
 
 You can check if a long-running operation (for a
 :meth:`create() <gcloud.bigtable.cluster.Cluster.create>`,
@@ -176,4 +178,4 @@ Head next to learn about the :doc:`bigtable-table-api`.
 .. _ListClusters: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L44-L46
 .. _GetOperation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L43-L45
 .. _UndeleteCluster: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L126-L128
-.. _Operation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102
+.. _long-running operation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102

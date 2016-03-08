@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.table &mdash; gcloud c18e96e documentation</title>
+    <title>gcloud.bigtable.table &mdash; gcloud 793b676 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'c18e96e',
+        VERSION:     '793b676',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud c18e96e documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 793b676 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/table%0ARelease%3A%20c18e96e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/table%0ARelease%3A%20793b676" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c18e96e)
+              Version History (793b676)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -116,7 +116,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">bigtable_service_messages_pb2</span> <span class="k">as</span> <span class="n">data_messages_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">_gc_rule_from_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">ColumnFamily</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row</span> <span class="kn">import</span> <span class="n">Row</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row</span> <span class="kn">import</span> <span class="n">AppendRow</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row</span> <span class="kn">import</span> <span class="n">ConditionalRow</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row</span> <span class="kn">import</span> <span class="n">DirectRow</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.row_data</span> <span class="kn">import</span> <span class="n">PartialRowData</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.row_data</span> <span class="kn">import</span> <span class="n">PartialRowsData</span>
 
@@ -188,20 +190,38 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ColumnFamily</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.row"><a class="viewcode-back" href="../../../bigtable-table.html#gcloud.bigtable.table.Table.row">[docs]</a>    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.row"><a class="viewcode-back" href="../../../bigtable-table.html#gcloud.bigtable.table.Table.row">[docs]</a>    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a row associated with this table.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">           At most one of ``filter_`` and ``append`` can be used in a</span>
+<span class="sd">           :class:`Row`.</span>
 
 <span class="sd">        :type row_key: bytes</span>
 <span class="sd">        :param row_key: The key for the row being created.</span>
 
 <span class="sd">        :type filter_: :class:`.RowFilter`</span>
 <span class="sd">        :param filter_: (Optional) Filter to be used for conditional mutations.</span>
-<span class="sd">                        See :class:`.Row` for more details.</span>
+<span class="sd">                        See :class:`.DirectRow` for more details.</span>
 
-<span class="sd">        :rtype: :class:`.Row`</span>
+<span class="sd">        :type append: bool</span>
+<span class="sd">        :param append: (Optional) Flag to determine if the row should be used</span>
+<span class="sd">                       for append mutations.</span>
+
+<span class="sd">        :rtype: :class:`.DirectRow`</span>
 <span class="sd">        :returns: A row owned by this table.</span>
+<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if both</span>
+<span class="sd">                 ``filter_`` and ``append`` are used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">append</span> <span class="ow">and</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;At most one of filter_ and append can be set&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">append</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">AppendRow</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ConditionalRow</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">DirectRow</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>

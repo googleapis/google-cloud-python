@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Cluster Admin API &mdash; gcloud c18e96e documentation</title>
+    <title>Cluster Admin API &mdash; gcloud 793b676 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c18e96e',
+        VERSION:     '793b676',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c18e96e documentation" href="index.html" />
+    <link rel="top" title="gcloud 793b676 documentation" href="index.html" />
     <link rel="next" title="Table Admin API" href="bigtable-table-api.html" />
     <link rel="prev" title="Base for Everything" href="bigtable-client-intro.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-cluster-api%0ARelease%3A%20c18e96e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-cluster-api%0ARelease%3A%20793b676" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c18e96e)
+              Version History (793b676)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -160,11 +160,13 @@ in your cluster:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">When modifying a cluster (via a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L66-L68">CreateCluster</a>, <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L93-L95">UpdateCluster</a> or
-<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L126-L128">UndeleteCluster</a> request), the Bigtable API will return a long-running
-<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102">Operation</a>. This will be stored on the object after each of
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto#L126-L128">UndeleteCluster</a> request), the Bigtable API will return a
+<a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102">long-running operation</a> and a corresponding
+<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Operation" title="gcloud.bigtable.cluster.Operation"><code class="xref py py-class docutils literal"><span class="pre">Operation</span></code></a> object
+will be returned by each of
 <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.create" title="gcloud.bigtable.cluster.Cluster.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>,
 <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.update" title="gcloud.bigtable.cluster.Cluster.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> and
-<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.undelete" title="gcloud.bigtable.cluster.Cluster.undelete"><code class="xref py py-meth docutils literal"><span class="pre">undelete()</span></code></a> are called.</p>
+<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.undelete" title="gcloud.bigtable.cluster.Cluster.undelete"><code class="xref py py-meth docutils literal"><span class="pre">undelete()</span></code></a>.</p>
 </div>
 <p>You can check if a long-running operation (for a
 <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.create" title="gcloud.bigtable.cluster.Cluster.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>,
