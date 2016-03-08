@@ -320,6 +320,9 @@ good-names = i, j, k, ex, Run, _,
 # (useful for modules/projects where namespaces are manipulated during runtime
 # and thus existing member attributes cannot be deduced by static analysis
 # DEFAULT:  ignored-modules=
+# RATIONALE:  six aliases stuff for compatibility.
+#             google.protobuf fixes up namespace package "late".
+ignored-modules = six, google.protobuf
 
 # List of classes names for which member attributes should not be checked
 # (useful for classes with attributes dynamically set).
