@@ -25,7 +25,7 @@ import sys
 
 from google.protobuf import timestamp_pb2
 import six
-from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
+from six.moves.http_client import HTTPConnection
 
 from gcloud.environment_vars import PROJECT
 

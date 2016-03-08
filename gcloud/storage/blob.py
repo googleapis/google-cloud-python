@@ -22,7 +22,7 @@ import os
 import time
 
 import six
-from six.moves.urllib.parse import quote  # pylint: disable=F0401
+from six.moves.urllib.parse import quote
 
 from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.credentials import generate_signed_url

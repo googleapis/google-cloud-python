@@ -17,7 +17,7 @@
 import json
 from pkg_resources import get_distribution
 import six
-from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
+from six.moves.urllib.parse import urlencode
 
 import httplib2
 
