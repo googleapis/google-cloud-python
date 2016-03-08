@@ -15,6 +15,38 @@
 import unittest2
 
 
+class Test__metric_name_from_path(unittest2.TestCase):
+
+    def _callFUT(self, path, project):
+        from gcloud.logging.metric import _metric_name_from_path
+        return _metric_name_from_path(path, project)
+
+    def test_invalid_path_length(self):
+        PATH = 'projects/foo'
+        PROJECT = None
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
+
+    def test_invalid_path_format(self):
+        METRIC_NAME = 'METRIC_NAME'
+        PROJECT = 'PROJECT'
+        PATH = 'foo/%s/bar/%s' % (PROJECT, METRIC_NAME)
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
+
+    def test_invalid_project(self):
+        METRIC_NAME = 'METRIC_NAME'
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        PATH = 'projects/%s/metrics/%s' % (PROJECT1, METRIC_NAME)
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT2)
+
+    def test_valid_data(self):
+        METRIC_NAME = 'METRIC_NAME'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/metrics/%s' % (PROJECT, METRIC_NAME)
+        metric_name = self._callFUT(PATH, PROJECT)
+        self.assertEqual(metric_name, METRIC_NAME)
+
+
 class TestMetric(unittest2.TestCase):
 
     PROJECT = 'test-project'
@@ -55,6 +87,50 @@ class TestMetric(unittest2.TestCase):
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
         self.assertEqual(metric.path, '/%s' % (FULL,))
+
+    def test_from_api_repr_minimal(self):
+        CLIENT = _Client(project=self.PROJECT)
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        RESOURCE = {
+            'name': FULL,
+            'filter': self.FILTER,
+        }
+        klass = self._getTargetClass()
+        metric = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, '')
+        self.assertTrue(metric._client is CLIENT)
+        self.assertEqual(metric.project, self.PROJECT)
+        self.assertEqual(metric.full_name, FULL)
+
+    def test_from_api_repr_w_description(self):
+        CLIENT = _Client(project=self.PROJECT)
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        RESOURCE = {
+            'name': FULL,
+            'filter': self.FILTER,
+            'description': DESCRIPTION,
+        }
+        klass = self._getTargetClass()
+        metric = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, DESCRIPTION)
+        self.assertTrue(metric._client is CLIENT)
+        self.assertEqual(metric.project, self.PROJECT)
+        self.assertEqual(metric.full_name, FULL)
+
+    def test_from_api_repr_with_mismatched_project(self):
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        CLIENT = _Client(project=PROJECT1)
+        FULL = 'projects/%s/metrics/%s' % (PROJECT2, self.METRIC_NAME)
+        RESOURCE = {'name': FULL, 'filter': self.FILTER}
+        klass = self._getTargetClass()
+        self.assertRaises(ValueError, klass.from_api_repr,
+                          RESOURCE, client=CLIENT)
 
     def test_create_w_bound_client(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)

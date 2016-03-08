@@ -14,7 +14,37 @@
 
 """Define Logging API Metrics."""
 
+import re
+
+from gcloud._helpers import _name_from_project_path
 from gcloud.exceptions import NotFound
+
+
+_METRIC_TEMPLATE = re.compile(r"""
+    projects/            # static prefix
+    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
+    /metrics/            # static midfix
+    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
+""", re.VERBOSE)
+
+
+def _metric_name_from_path(path, project):
+    """Validate a metric URI path and get the metric name.
+
+    :type path: string
+    :param path: URI path for a metric API request.
+
+    :type project: string
+    :param project: The project associated with the request. It is
+                    included for validation purposes.
+
+    :rtype: string
+    :returns: Metric name parsed from ``path``.
+    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
+             the project from the ``path`` does not agree with the
+             ``project`` passed in.
+    """
+    return _name_from_project_path(path, project, _METRIC_TEMPLATE)
 
 
 class Metric(object):
@@ -62,6 +92,29 @@ class Metric(object):
     def path(self):
         """URL path for the metric's APIs"""
         return '/%s' % (self.full_name,)
+
+    @classmethod
+    def from_api_repr(cls, resource, client):
+        """Factory:  construct a metric given its API representation
+
+        :type resource: dict
+        :param resource: metric resource representation returned from the API
+
+        :type client: :class:`gcloud.pubsub.client.Client`
+        :param client: Client which holds credentials and project
+                       configuration for the metric.
+
+        :rtype: :class:`gcloud.logging.metric.Metric`
+        :returns: Metric parsed from ``resource``.
+        :raises: :class:`ValueError` if ``client`` is not ``None`` and the
+                 project from the resource does not agree with the project
+                 from the client.
+        """
+        metric_name = _metric_name_from_path(resource['name'], client.project)
+        filter_ = resource['filter']
+        description = resource.get('description', '')
+        return cls(metric_name, filter_, client=client,
+                   description=description)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
