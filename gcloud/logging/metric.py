@@ -129,3 +129,19 @@ class Metric(object):
         data = client.connection.api_request(method='GET', path=self.path)
         self.description = data.get('description', '')
         self.filter_ = data['filter']
+
+    def update(self, client=None):
+        """API call:  update metric configuration via a PUT request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/update
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current metric.
+        """
+        client = self._require_client(client)
+        data = {'name': self.name, 'filter': self.filter_}
+        if self.description:
+            data['description'] = self.description
+        client.connection.api_request(method='PUT', path=self.path, data=data)
