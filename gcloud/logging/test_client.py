@@ -22,6 +22,9 @@ class TestClient(unittest2.TestCase):
     SINK_NAME = 'SINK_NAME'
     FILTER = 'logName:syslog AND severity>=ERROR'
     DESTINATION_URI = 'faux.googleapis.com/destination'
+    METRIC_NAME = 'metric_name'
+    FILTER = 'logName:syslog AND severity>=ERROR'
+    DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
         from gcloud.logging.client import Client
@@ -270,6 +273,20 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/projects/%s/sinks' % PROJECT)
         self.assertEqual(req['query_params'], {})
 
+    def test_metric(self):
+        from gcloud.logging.metric import Metric
+        creds = _Credentials()
+
+        client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
+        metric = client_obj.metric(self.METRIC_NAME, self.FILTER,
+                                   description=self.DESCRIPTION)
+        self.assertTrue(isinstance(metric, Metric))
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertTrue(metric.client is client_obj)
+        self.assertEqual(metric.project, self.PROJECT)
+
     def test_list_metrics_no_paging(self):
         from gcloud.logging.metric import Metric
         PROJECT = 'PROJECT'
@@ -277,16 +294,13 @@ class TestClient(unittest2.TestCase):
 
         CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
 
-        METRIC_NAME = 'metric_name'
-        FILTER = 'logName:syslog AND severity>=ERROR'
-        DESCRIPTION = 'DESCRIPTION'
-        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, METRIC_NAME)
+        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
 
         RETURNED = {
             'metrics': [{
                 'name': METRIC_PATH,
-                'filter': FILTER,
-                'description': DESCRIPTION,
+                'filter': self.FILTER,
+                'description': self.DESCRIPTION,
             }],
         }
         # Replace the connection on the client with one of our own.
@@ -298,9 +312,9 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertTrue(isinstance(metric, Metric))
-        self.assertEqual(metric.name, METRIC_NAME)
-        self.assertEqual(metric.filter_, FILTER)
-        self.assertEqual(metric.description, DESCRIPTION)
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
         self.assertEqual(next_page_token, None)
         self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
         req = CLIENT_OBJ.connection._requested[0]
@@ -315,18 +329,15 @@ class TestClient(unittest2.TestCase):
 
         CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
 
-        METRIC_NAME = 'metric_name'
-        FILTER = 'logName:syslog AND severity>=ERROR'
-        DESCRIPTION = 'DESCRIPTION'
-        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, METRIC_NAME)
+        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
         RETURNED = {
             'metrics': [{
                 'name': METRIC_PATH,
-                'filter': FILTER,
-                'description': DESCRIPTION,
+                'filter': self.FILTER,
+                'description': self.DESCRIPTION,
             }],
             'nextPageToken': TOKEN2,
         }
@@ -339,9 +350,9 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertTrue(isinstance(metric, Metric))
-        self.assertEqual(metric.name, METRIC_NAME)
-        self.assertEqual(metric.filter_, FILTER)
-        self.assertEqual(metric.description, DESCRIPTION)
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
         self.assertEqual(next_page_token, TOKEN2)
         req = CLIENT_OBJ.connection._requested[0]
         self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)

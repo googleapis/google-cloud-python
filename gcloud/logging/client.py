@@ -194,6 +194,24 @@ class Client(JSONClient):
                  for resource in resp.get('sinks', ())]
         return sinks, resp.get('nextPageToken')
 
+    def metric(self, name, filter_, description=''):
+        """Creates a metric bound to the current client.
+
+        :type name: string
+        :param name: the name of the metric to be constructed.
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries tracked by the metric.
+
+        :type description: string
+        :param description: the description of the metric to be constructed.
+
+        :rtype: :class:`gcloud.pubsub.logger.Logger`
+        :returns: Logger created with the current client.
+        """
+        return Metric(name, filter_, client=self, description=description)
+
     def list_metrics(self, page_size=None, page_token=None):
         """List metrics for the project associated with this client.
 
