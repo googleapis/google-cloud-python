@@ -19,9 +19,10 @@ This module is not part of the public API surface of `gcloud`.
 import calendar
 import datetime
 import os
-from threading import local as Local
+import re
 import socket
 import sys
+from threading import local as Local
 
 from google.protobuf import timestamp_pb2
 import six
@@ -386,6 +387,43 @@ def _datetime_to_pb_timestamp(when):
     seconds, micros = divmod(ms_value, 10**6)
     nanos = micros * 10**3
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
+
+
+def _name_from_project_path(path, project, template):
+    """Validate a URI path and get the leaf object's name.
+
+    :type path: string
+    :param path: URI path containing the name.
+
+    :type project: string
+    :param project: The project associated with the request. It is
+                    included for validation purposes.
+
+    :type template: string
+    :param template: Template regex describing the expected form of the path.
+                     The regex must have two named groups, 'project' and
+                     'name'.
+
+    :rtype: string
+    :returns: Name parsed from ``path``.
+    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
+             the project from the ``path`` does not agree with the
+             ``project`` passed in.
+    """
+    if isinstance(template, str):
+        template = re.compile(template)
+
+    match = template.match(path)
+
+    if not match:
+        raise ValueError('path did not match: %s' % (template.pattern))
+
+    found_project = match.group('project')
+    if found_project != project:
+        raise ValueError('Project from client should agree with '
+                         'project from resource.')
+
+    return match.group('name')
 
 
 try:

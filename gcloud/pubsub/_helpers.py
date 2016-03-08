@@ -14,6 +14,14 @@
 
 """Helper functions for shared behavior."""
 
+import re
+
+from gcloud._helpers import _name_from_project_path
+
+
+_TOPIC_PATH_TEMPLATE = re.compile(
+    r'projects/(?P<project>\w+)/topics/(?P<name>\w+)')
+
 
 def topic_name_from_path(path, project):
     """Validate a topic URI path and get the topic name.
@@ -31,18 +39,11 @@ def topic_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    # PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-    path_parts = path.split('/')
-    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
-            path_parts[2] != 'topics'):
-        raise ValueError('Expected path to be of the form '
-                         'projects/{project}/topics/{topic_name}')
-    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
-            path_parts[2] != 'topics' or path_parts[1] != project):
-        raise ValueError('Project from client should agree with '
-                         'project from resource.')
+    return _name_from_project_path(path, project, _TOPIC_PATH_TEMPLATE)
 
-    return path_parts[3]
+
+_SUBSCRIPTION_PATH_TEMPLATE = re.compile(
+    r'projects/(?P<project>\w+)/subscriptions/(?P<name>\w+)')
 
 
 def subscription_name_from_path(path, project):
@@ -61,16 +62,4 @@ def subscription_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    # PATH = 'projects/%s/subscriptions/%s' % (PROJECT, TOPIC_NAME)
-    path_parts = path.split('/')
-    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
-            path_parts[2] != 'subscriptions'):
-        raise ValueError(
-            'Expected path to be of the form '
-            'projects/{project}/subscriptions/{subscription_name}')
-    if (len(path_parts) != 4 or path_parts[0] != 'projects' or
-            path_parts[2] != 'subscriptions' or path_parts[1] != project):
-        raise ValueError('Project from client should agree with '
-                         'project from resource.')
-
-    return path_parts[3]
+    return _name_from_project_path(path, project, _SUBSCRIPTION_PATH_TEMPLATE)

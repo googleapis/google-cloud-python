@@ -21,25 +21,7 @@ class Test_topic_name_from_path(unittest2.TestCase):
         from gcloud.pubsub._helpers import topic_name_from_path
         return topic_name_from_path(path, project)
 
-    def test_invalid_path_length(self):
-        PATH = 'projects/foo'
-        PROJECT = None
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_path_format(self):
-        TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT = 'PROJECT'
-        PATH = 'foo/%s/bar/%s' % (PROJECT, TOPIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_project(self):
-        TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        PATH = 'projects/%s/topics/%s' % (PROJECT1, TOPIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT2)
-
-    def test_valid_data(self):
+    def test_it(self):
         TOPIC_NAME = 'TOPIC_NAME'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -53,25 +35,7 @@ class Test_subscription_name_from_path(unittest2.TestCase):
         from gcloud.pubsub._helpers import subscription_name_from_path
         return subscription_name_from_path(path, project)
 
-    def test_invalid_path_length(self):
-        PATH = 'projects/foo'
-        PROJECT = None
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_path_format(self):
-        TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT = 'PROJECT'
-        PATH = 'foo/%s/bar/%s' % (PROJECT, TOPIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_project(self):
-        TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        PATH = 'projects/%s/subscriptions/%s' % (PROJECT1, TOPIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT2)
-
-    def test_valid_data(self):
+    def test_it(self):
         TOPIC_NAME = 'TOPIC_NAME'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/subscriptions/%s' % (PROJECT, TOPIC_NAME)
