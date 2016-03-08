@@ -14,6 +14,8 @@
 
 """Define Logging API Metrics."""
 
+from gcloud.exceptions import NotFound
+
 
 class Metric(object):
     """Metrics represent named filters for log entries.
@@ -93,3 +95,22 @@ class Metric(object):
         if self.description:
             data['description'] = self.description
         client.connection.api_request(method='PUT', path=self.path, data=data)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the metric via a GET request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/get
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current metric.
+        """
+        client = self._require_client(client)
+
+        try:
+            client.connection.api_request(method='GET', path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
