@@ -82,6 +82,51 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
+    def test_log_struct_w_implicit_client(self):
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        conn = _Connection({})
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger.log_struct(STRUCT)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'jsonPayload': STRUCT,
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_log_struct_w_explicit_client(self):
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        conn = _Connection({})
+        client1 = _Client(self.PROJECT, object())
+        client2 = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1)
+        logger.log_struct(STRUCT, client=client2)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'jsonPayload': STRUCT,
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
 
 class _Connection(object):
 
