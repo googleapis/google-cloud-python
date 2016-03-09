@@ -26,7 +26,9 @@ class Subscription(object):
     https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions
 
     :type name: string
-    :param name: the name of the subscription
+    :param name: the name of the subscription.  For constraints on the name,
+                 see the "Try It!" section of the
+                 ``projects.subscriptions/create`` API documentation.
 
     :type topic: :class:`gcloud.pubsub.topic.Topic`
     :param topic: the topic to which the subscription belongs..
