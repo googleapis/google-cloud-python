@@ -21,9 +21,16 @@ class Test_topic_name_from_path(unittest2.TestCase):
         from gcloud.pubsub._helpers import topic_name_from_path
         return topic_name_from_path(path, project)
 
-    def test_it(self):
+    def test_w_simple_name(self):
         TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT = 'PROJECT'
+        PROJECT = 'my-project-1234'
+        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        topic_name = self._callFUT(PATH, PROJECT)
+        self.assertEqual(topic_name, TOPIC_NAME)
+
+    def test_w_name_w_all_extras(self):
+        TOPIC_NAME = 'TOPIC_NAME-part.one~part.two%part-three'
+        PROJECT = 'my-project-1234'
         PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         topic_name = self._callFUT(PATH, PROJECT)
         self.assertEqual(topic_name, TOPIC_NAME)
@@ -35,9 +42,16 @@ class Test_subscription_name_from_path(unittest2.TestCase):
         from gcloud.pubsub._helpers import subscription_name_from_path
         return subscription_name_from_path(path, project)
 
-    def test_it(self):
-        TOPIC_NAME = 'TOPIC_NAME'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/subscriptions/%s' % (PROJECT, TOPIC_NAME)
+    def test_w_simple_name(self):
+        SUBSCRIPTION_NAME = 'SUBSCRIPTION_NAME'
+        PROJECT = 'my-project-1234'
+        PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUBSCRIPTION_NAME)
         subscription_name = self._callFUT(PATH, PROJECT)
-        self.assertEqual(subscription_name, TOPIC_NAME)
+        self.assertEqual(subscription_name, SUBSCRIPTION_NAME)
+
+    def test_w_name_w_all_extras(self):
+        SUBSCRIPTION_NAME = 'SUBSCRIPTION_NAME-part.one~part.two%part-three'
+        PROJECT = 'my-project-1234'
+        PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUBSCRIPTION_NAME)
+        topic_name = self._callFUT(PATH, PROJECT)
+        self.assertEqual(topic_name, SUBSCRIPTION_NAME)
