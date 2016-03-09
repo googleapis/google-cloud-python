@@ -127,6 +127,31 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
+    def test_delete_w_bound_client(self):
+        PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=CLIENT)
+        logger.delete()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_delete_w_alternate_client(self):
+        PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        conn1 = _Connection({})
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        logger = self._makeOne(self.LOGGER_NAME, client=CLIENT1)
+        logger.delete(client=CLIENT2)
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
 
 class _Connection(object):
 
