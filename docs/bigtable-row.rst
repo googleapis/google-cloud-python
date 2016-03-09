@@ -2,7 +2,8 @@ Bigtable Row
 ============
 
 It is possible to use a :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
-when adding mutations to a :class:`Row <gcloud.bigtable.row.Row>` and when
+when adding mutations to a
+:class:`ConditionalRow <gcloud.bigtable.row.ConditionalRow>` and when
 reading row data with :meth:`read_row() <gcloud.bigtable.table.Table.read_row>`
 :meth:`read_rows() <gcloud.bigtable.table.Table.read_rows>`.
 

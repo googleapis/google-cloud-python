@@ -186,8 +186,8 @@ List subscriptions for a topic:
 
    >>> from gcloud import pubsub
    >>> client = pubsub.Client()
-   >>> subscriptions, next_page_token = client.list_subscriptions(
-   ...     topic_name='topic_name')  # API request
+   >>> topic = client.topic('topic_name')
+   >>> subscriptions, next_page_token = topic.list_subscriptions()  # API request
    >>> [subscription.name for subscription in subscriptions]
    ['subscription_name']
 
