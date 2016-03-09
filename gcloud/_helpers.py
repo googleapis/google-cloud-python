@@ -416,12 +416,14 @@ def _name_from_project_path(path, project, template):
     match = template.match(path)
 
     if not match:
-        raise ValueError('path did not match: %s' % (template.pattern,))
+        raise ValueError('path "%s" did not match expected pattern "%s"' % (
+            path, template.pattern,))
 
     found_project = match.group('project')
     if found_project != project:
-        raise ValueError('Project from client should agree with '
-                         'project from resource.')
+        raise ValueError(
+            'Project from client (%s) should agree with '
+            'project from resource(%s).' % (project, found_project))
 
     return match.group('name')
 
