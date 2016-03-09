@@ -196,47 +196,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
         self.assertEqual(req['query_params'], {})
 
-    def test_list_subscriptions_with_topic_name(self):
-        from gcloud.pubsub.subscription import Subscription
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        SUB_NAME_1 = 'subscription_1'
-        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_1)
-        SUB_NAME_2 = 'subscription_2'
-        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_2)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_INFO = [{'name': SUB_PATH_1, 'topic': TOPIC_PATH},
-                    {'name': SUB_PATH_2, 'topic': TOPIC_PATH}]
-        TOKEN = 'TOKEN'
-        RETURNED = {'subscriptions': SUB_INFO, 'nextPageToken': TOKEN}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions(
-            topic_name=TOPIC_NAME)
-        # Test values are correct.
-        self.assertEqual(len(subscriptions), 2)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
-        self.assertEqual(subscriptions[0].name, SUB_NAME_1)
-        self.assertEqual(subscriptions[0].topic.name, TOPIC_NAME)
-        self.assertTrue(isinstance(subscriptions[1], Subscription))
-        self.assertEqual(subscriptions[1].name, SUB_NAME_2)
-        self.assertEqual(subscriptions[1].topic.name, TOPIC_NAME)
-        self.assertTrue(subscriptions[1].topic is subscriptions[0].topic)
-        self.assertEqual(next_page_token, TOKEN)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'],
-                         '/projects/%s/topics/%s/subscriptions'
-                         % (PROJECT, TOPIC_NAME))
-        self.assertEqual(req['query_params'], {})
-
     def test_topic(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
