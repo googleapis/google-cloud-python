@@ -98,7 +98,7 @@ Sort entries in descending timestamp order.
    >>> client = logging.Client()
    >>> entries, token = client.list_entries(order_by=logging.DESCENDING)  # API call
 
-Retrieve entities in batches of 10, iterating until done.
+Retrieve entries in batches of 10, iterating until done.
 
 .. doctest::
 
@@ -112,6 +112,14 @@ Retrieve entities in batches of 10, iterating until done.
    ...     if token is None:
    ...         break
 
+Retrieve entries for a single logger, sorting in descending timestamp order:
+
+.. doctest::
+
+   >>> from gcloud import logging
+   >>> client = logging.Client()
+   >>> logger = client.logger('log_name')
+   >>> entries, token = logger.list_entries(order_by=logging.DESCENDING)  # API call
 
 Delete all entries for a logger
 -------------------------------
