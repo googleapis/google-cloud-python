@@ -16,6 +16,21 @@
 import unittest2
 
 
+class Test_SetDeleteRow(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row import _SetDeleteRow
+        return _SetDeleteRow
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test__get_mutations_virtual(self):
+        row = self._makeOne(b'row-key', None)
+        with self.assertRaises(NotImplementedError):
+            row._get_mutations(None)
+
+
 class TestDirectRow(unittest2.TestCase):
 
     def _getTargetClass(self):
@@ -391,7 +406,7 @@ class TestConditionalRow(unittest2.TestCase):
         self.assertEqual(row._row_key, row_key)
         self.assertTrue(row._table is table)
         self.assertTrue(row._filter is filter_)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
     def test__get_mutations(self):
@@ -399,7 +414,7 @@ class TestConditionalRow(unittest2.TestCase):
         filter_ = object()
         row = self._makeOne(row_key, None, filter_=filter_)
 
-        row._pb_mutations = true_mutations = object()
+        row._true_pb_mutations = true_mutations = object()
         row._false_pb_mutations = false_mutations = object()
         self.assertTrue(true_mutations is row._get_mutations(True))
         self.assertTrue(false_mutations is row._get_mutations(False))
@@ -480,7 +495,7 @@ class TestConditionalRow(unittest2.TestCase):
             (request_pb, timeout_seconds),
             {},
         )])
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
     def test_commit_too_many_mutations(self):
@@ -491,8 +506,8 @@ class TestConditionalRow(unittest2.TestCase):
         table = object()
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        row._pb_mutations = [1, 2, 3]
-        num_mutations = len(row._pb_mutations)
+        row._true_pb_mutations = [1, 2, 3]
+        num_mutations = len(row._true_pb_mutations)
         with _Monkey(MUT, MAX_MUTATIONS=num_mutations - 1):
             with self.assertRaises(ValueError):
                 row.commit()
@@ -505,7 +520,7 @@ class TestConditionalRow(unittest2.TestCase):
         table = _Table(None, client=client)
         filter_ = object()
         row = self._makeOne(row_key, table, filter_=filter_)
-        self.assertEqual(row._pb_mutations, [])
+        self.assertEqual(row._true_pb_mutations, [])
         self.assertEqual(row._false_pb_mutations, [])
 
         # Patch the stub used by the API method.
