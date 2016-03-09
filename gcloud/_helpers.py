@@ -416,7 +416,7 @@ def _name_from_project_path(path, project, template):
     match = template.match(path)
 
     if not match:
-        raise ValueError('path did not match: %s' % (template.pattern))
+        raise ValueError('path did not match: %s' % (template.pattern,))
 
     found_project = match.group('project')
     if found_project != project:
