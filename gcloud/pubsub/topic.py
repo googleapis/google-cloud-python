@@ -33,7 +33,9 @@ class Topic(object):
     https://cloud.google.com/pubsub/reference/rest/v1/projects.topics
 
     :type name: string
-    :param name: the name of the topic
+    :param name: the name of the topic.  For constraints on the name, see
+                 the "Try It!" section of the ``projects.topics/create`` API
+                 documentation.
 
     :type client: :class:`gcloud.pubsub.client.Client`
     :param client: A client which holds credentials and project configuration
