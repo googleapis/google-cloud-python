@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Topics &mdash; gcloud cf581cb documentation</title>
+    <title>Topics &mdash; gcloud 7104253 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'cf581cb',
+        VERSION:     '7104253',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud cf581cb documentation" href="index.html" />
+    <link rel="top" title="gcloud 7104253 documentation" href="index.html" />
     <link rel="next" title="Subscriptions" href="pubsub-subscription.html" />
     <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%20cf581cb" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%207104253" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (cf581cb)
+              Version History (7104253)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -275,6 +275,40 @@ from the client.</p>
 <dt id="gcloud.pubsub.topic.Topic.full_name">
 <code class="descname">full_name</code><a class="headerlink" href="#gcloud.pubsub.topic.Topic.full_name" title="Permalink to this definition">#</a></dt>
 <dd><p>Fully-qualified name used in topic / subscription APIs</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.topic.Topic.list_subscriptions">
+<code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.list_subscriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.list_subscriptions" title="Permalink to this definition">#</a></dt>
+<dd><p>List subscriptions for the project associated with this client.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
+defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
+passed, the API will return the first page of
+topics.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current topic.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="pubsub-subscription.html#gcloud.pubsub.subscription.Subscription" title="gcloud.pubsub.subscription.Subscription"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.subscription.Subscription</span></code></a>,
+plus a &#8220;next page token&#8221; string:  if not None, indicates that
+more topics can be retrieved with another call (pass that
+value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
