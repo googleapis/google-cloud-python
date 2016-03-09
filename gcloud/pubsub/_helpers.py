@@ -14,7 +14,25 @@
 
 """Helper functions for shared behavior."""
 
+import re
+
 from gcloud._helpers import _name_from_project_path
+
+
+_TOPIC_TEMPLATE = re.compile(r"""
+    projects/            # static prefix
+    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
+    /topics/             # static midfix
+    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
+""", re.VERBOSE)
+
+
+_SUBSCRIPTION_TEMPLATE = re.compile(r"""
+    projects/            # static prefix
+    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
+    /subscriptions/      # static midfix
+    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
+""", re.VERBOSE)
 
 
 def topic_name_from_path(path, project):
@@ -33,8 +51,7 @@ def topic_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    template = r'projects/(?P<project>\w+)/topics/(?P<name>\w+)'
-    return _name_from_project_path(path, project, template)
+    return _name_from_project_path(path, project, _TOPIC_TEMPLATE)
 
 
 def subscription_name_from_path(path, project):
@@ -53,5 +70,4 @@ def subscription_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    template = r'projects/(?P<project>\w+)/subscriptions/(?P<name>\w+)'
-    return _name_from_project_path(path, project, template)
+    return _name_from_project_path(path, project, _SUBSCRIPTION_TEMPLATE)
