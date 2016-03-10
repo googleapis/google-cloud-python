@@ -20,6 +20,7 @@ from gcloud.logging.connection import Connection
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry
 from gcloud.logging.logger import Logger
+from gcloud.logging.sink import Sink
 
 
 class Client(JSONClient):
@@ -134,3 +135,22 @@ class Client(JSONClient):
         entries = [self._entry_from_resource(resource, loggers)
                    for resource in resp.get('entries', ())]
         return entries, resp.get('nextPageToken')
+
+    def sink(self, name, filter_, destination):
+        """Creates a sink bound to the current client.
+
+        :type name: string
+        :param name: the name of the sink to be constructed.
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries exported by the sink.
+
+        :type destination: string
+        :param destination: destination URI for the entries exported by
+                            the sink.
+
+        :rtype: :class:`gcloud.pubsub.sink.Sink`
+        :returns: Sink created with the current client.
+        """
+        return Sink(name, filter_, destination, client=self)
