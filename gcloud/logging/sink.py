@@ -14,6 +14,8 @@
 
 """Define Logging API Sinks."""
 
+from gcloud.exceptions import NotFound
+
 
 class Sink(object):
     """Sinks represent filtered exports for log entries.
@@ -90,3 +92,22 @@ class Sink(object):
             'destination': self.destination,
         }
         client.connection.api_request(method='PUT', path=self.path, data=data)
+
+    def exists(self, client=None):
+        """API call:  test for the existence of the sink via a GET request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/get
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current sink.
+        """
+        client = self._require_client(client)
+
+        try:
+            client.connection.api_request(method='GET', path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
