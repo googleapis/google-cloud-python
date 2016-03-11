@@ -128,3 +128,46 @@ class Logger(object):
         client = self._require_client(client)
         client.connection.api_request(
             method='DELETE', path='/%s' % self.full_name)
+
+    def list_entries(self, projects=None, filter_=None, order_by=None,
+                     page_size=None, page_token=None):
+        """Return a page of log entries.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list
+
+        :type projects: list of strings
+        :param projects: project IDs to include. If not passed,
+                            defaults to the project bound to the client.
+
+        :type filter_: string
+        :param filter_: a filter expression. See:
+                        https://cloud.google.com/logging/docs/view/advanced_filters
+
+        :type order_by: string
+        :param order_by: One of :data:`gcloud.logging.ASCENDING` or
+                         :data:`gcloud.logging.DESCENDING`.
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        log_filter = 'logName:%s' % (self.name,)
+        if filter_ is not None:
+            filter_ = '%s AND %s' % (filter_, log_filter)
+        else:
+            filter_ = log_filter
+        return self.client.list_entries(
+            projects=projects, filter_=filter_, order_by=order_by,
+            page_size=page_size, page_token=page_token)

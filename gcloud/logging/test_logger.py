@@ -152,6 +152,48 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_list_entries_defaults(self):
+        LISTED = {
+            'projects': None,
+            'filter_': 'logName:%s' % (self.LOGGER_NAME),
+            'order_by': None,
+            'page_size': None,
+            'page_token': None,
+        }
+        TOKEN = 'TOKEN'
+        conn = _Connection()
+        client = _Client(self.PROJECT, conn)
+        client._token = TOKEN
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        entries, token = logger.list_entries()
+        self.assertEqual(len(entries), 0)
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(client._listed, LISTED)
+
+    def test_list_entries_explicit(self):
+        from gcloud.logging import DESCENDING
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        FILTER = 'resource.type:global'
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
+        LISTED = {
+            'projects': ['PROJECT1', 'PROJECT2'],
+            'filter_': '%s AND logName:%s' % (FILTER, self.LOGGER_NAME),
+            'order_by': DESCENDING,
+            'page_size': PAGE_SIZE,
+            'page_token': TOKEN,
+        }
+        conn = _Connection()
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        entries, token = logger.list_entries(
+            projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
+            page_size=PAGE_SIZE, page_token=TOKEN)
+        self.assertEqual(len(entries), 0)
+        self.assertEqual(token, None)
+        self.assertEqual(client._listed, LISTED)
+
 
 class _Connection(object):
 
@@ -167,6 +209,13 @@ class _Connection(object):
 
 class _Client(object):
 
+    _listed = _token = None
+    _entries = ()
+
     def __init__(self, project, connection=None):
         self.project = project
         self.connection = connection
+
+    def list_entries(self, **kw):
+        self._listed = kw
+        return self._entries, self._token
