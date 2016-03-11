@@ -52,7 +52,7 @@ class Client(JSONClient):
         :type name: string
         :param name: the name of the logger to be constructed.
 
-        :rtype: :class:`gcloud.pubsub.logger.Logger`
+        :rtype: :class:`gcloud.logging.logger.Logger`
         :returns: Logger created with the current client.
         """
         return Logger(name, client=self)
