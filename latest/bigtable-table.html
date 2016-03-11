@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table &mdash; gcloud 72617b3 documentation</title>
+    <title>Table &mdash; gcloud bbe4c1d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '72617b3',
+        VERSION:     'bbe4c1d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 72617b3 documentation" href="index.html" />
+    <link rel="top" title="gcloud bbe4c1d documentation" href="index.html" />
     <link rel="next" title="Column Families" href="bigtable-column-family.html" />
     <link rel="prev" title="Cluster" href="bigtable-cluster.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%2072617b3" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%20bbe4c1d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (72617b3)
+              Version History (bbe4c1d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -253,7 +253,7 @@ return value is not cached.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key of the row to read from.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.RowFilter" title="gcloud.bigtable.row.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilter" title="gcloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
 row. If unset, returns the entire row.</li>
 </ul>
 </td>
@@ -305,7 +305,7 @@ all results. Note that if <code class="docutils literal"><span class="pre">allow
 set to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>, partial results may be returned for
 more than N rows. However, only N <code class="docutils literal"><span class="pre">commit_row</span></code> chunks
 will be sent.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.RowFilter" title="gcloud.bigtable.row.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilter" title="gcloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) The filter to apply to the contents of the
 specified row(s). If unset, reads every column in
 each row.</li>
 </ul>
@@ -364,7 +364,7 @@ actually be supported by the API.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>row_key</strong> (<em>bytes</em>) &#8211; The key for the row being created.</li>
-<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.RowFilter" title="gcloud.bigtable.row.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) Filter to be used for conditional mutations.
+<li><strong>filter</strong> (<a class="reference internal" href="bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilter" title="gcloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a>) &#8211; (Optional) Filter to be used for conditional mutations.
 See <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> for more details.</li>
 <li><strong>append</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Flag to determine if the row should be used
 for append mutations.</li>
@@ -483,6 +483,7 @@ calling <code class="docutils literal"><span class="pre">cancel()</span></code>.
 <li class="toctree-l1 current"><a class="current reference internal" href="">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="happybase-connection.html">HappyBase Connection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="happybase-pool.html">HappyBase Connection Pool</a></li>
