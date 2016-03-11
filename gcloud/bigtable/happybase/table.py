@@ -30,14 +30,14 @@ from gcloud.bigtable.column_family import MaxVersionsGCRule
 from gcloud.bigtable.happybase.batch import _get_column_pairs
 from gcloud.bigtable.happybase.batch import _WAL_SENTINEL
 from gcloud.bigtable.happybase.batch import Batch
-from gcloud.bigtable.row import CellsColumnLimitFilter
-from gcloud.bigtable.row import ColumnQualifierRegexFilter
-from gcloud.bigtable.row import FamilyNameRegexFilter
-from gcloud.bigtable.row import RowFilterChain
-from gcloud.bigtable.row import RowFilterUnion
-from gcloud.bigtable.row import RowKeyRegexFilter
-from gcloud.bigtable.row import TimestampRange
-from gcloud.bigtable.row import TimestampRangeFilter
+from gcloud.bigtable.row_filters import CellsColumnLimitFilter
+from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
+from gcloud.bigtable.row_filters import FamilyNameRegexFilter
+from gcloud.bigtable.row_filters import RowFilterChain
+from gcloud.bigtable.row_filters import RowFilterUnion
+from gcloud.bigtable.row_filters import RowKeyRegexFilter
+from gcloud.bigtable.row_filters import TimestampRange
+from gcloud.bigtable.row_filters import TimestampRangeFilter
 from gcloud.bigtable.table import Table as _LowLevelTable
 
 

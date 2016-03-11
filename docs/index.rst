@@ -69,6 +69,7 @@
   bigtable-table
   bigtable-column-family
   bigtable-row
+  bigtable-row-filters
   bigtable-row-data
   happybase-connection
   happybase-pool
