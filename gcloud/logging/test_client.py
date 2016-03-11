@@ -19,6 +19,9 @@ class TestClient(unittest2.TestCase):
 
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
+    SINK_NAME = 'SINK_NAME'
+    FILTER = 'logName:syslog AND severity>=ERROR'
+    DESTINATION_URI = 'faux.googleapis.com/destination'
 
     def _getTargetClass(self):
         from gcloud.logging.client import Client
@@ -33,9 +36,11 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(client.project, self.PROJECT)
 
     def test_logger(self):
+        from gcloud.logging.logger import Logger
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         logger = client.logger(self.LOGGER_NAME)
+        self.assertTrue(isinstance(logger, Logger))
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
@@ -100,6 +105,7 @@ class TestClient(unittest2.TestCase):
         from gcloud._helpers import UTC
         from gcloud.logging import DESCENDING
         from gcloud.logging.entries import StructEntry
+        from gcloud.logging.logger import Logger
         from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
@@ -142,6 +148,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.timestamp, NOW)
         logger = entry.logger
+        self.assertTrue(isinstance(logger, Logger))
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
@@ -151,6 +158,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/entries:list')
         self.assertEqual(req['data'], SENT)
+
+    def test_sink(self):
+        from gcloud.logging.sink import Sink
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        sink = client.sink(self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+        self.assertTrue(isinstance(sink, Sink))
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertTrue(sink.client is client)
+        self.assertEqual(sink.project, self.PROJECT)
 
 
 class _Credentials(object):

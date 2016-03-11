@@ -114,6 +114,7 @@
   Client <logging-client>
   logging-logger
   logging-entries
+  logging-sink
 
 .. toctree::
   :maxdepth: 0
