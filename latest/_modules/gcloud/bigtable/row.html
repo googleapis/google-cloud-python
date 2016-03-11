@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.row &mdash; gcloud bbe4c1d documentation</title>
+    <title>gcloud.bigtable.row &mdash; gcloud 97eb7f5 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'bbe4c1d',
+        VERSION:     '97eb7f5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud bbe4c1d documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 97eb7f5 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%20bbe4c1d" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%2097eb7f5" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (bbe4c1d)
+              Version History (97eb7f5)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -148,28 +148,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span></div>
 
 
-<div class="viewcode-block" id="DirectRow"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow">[docs]</a><span class="k">class</span> <span class="nc">DirectRow</span><span class="p">(</span><span class="n">Row</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Google Cloud Bigtable Row for sending &quot;direct&quot; mutations.</span>
+<span class="k">class</span> <span class="nc">_SetDeleteRow</span><span class="p">(</span><span class="n">Row</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Row helper for setting or deleting cell values.</span>
 
-<span class="sd">    These mutations directly set or delete cell contents:</span>
+<span class="sd">    Implements helper methods to add mutations to set or delete cell contents:</span>
 
 <span class="sd">    * :meth:`set_cell`</span>
 <span class="sd">    * :meth:`delete`</span>
 <span class="sd">    * :meth:`delete_cell`</span>
 <span class="sd">    * :meth:`delete_cells`</span>
-
-<span class="sd">    These methods can be used directly::</span>
-
-<span class="sd">       &gt;&gt;&gt; row = table.row(b&#39;row-key1&#39;)</span>
-<span class="sd">       &gt;&gt;&gt; row.set_cell(u&#39;fam&#39;, b&#39;col1&#39;, b&#39;cell-val&#39;)</span>
-<span class="sd">       &gt;&gt;&gt; row.delete_cell(u&#39;fam&#39;, b&#39;col2&#39;)</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">        A :class:`DirectRow` accumulates mutations locally via the</span>
-<span class="sd">        :meth:`set_cell`, :meth:`delete`, :meth:`delete_cell` and</span>
-<span class="sd">        :meth:`delete_cells` methods. To actually send these mutations to the</span>
-<span class="sd">        Google Cloud Bigtable API, you must call :meth:`commit`.</span>
 
 <span class="sd">    :type row_key: bytes</span>
 <span class="sd">    :param row_key: The key for the current row.</span>
@@ -181,28 +168,27 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">ALL_COLUMNS</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
     <span class="sd">&quot;&quot;&quot;Sentinel value used to indicate all columns in a column family.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">DirectRow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Gets the list of mutations for a given state.</span>
 
-<span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
-<span class="sd">        subclasses.</span>
+<span class="sd">        This method intended to be implemented by subclasses.</span>
+
+<span class="sd">        ``state`` may not need to be used by all subclasses.</span>
 
 <span class="sd">        :type state: bool</span>
 <span class="sd">        :param state: The state that the mutation should be</span>
 <span class="sd">                      applied in.</span>
 
-<span class="sd">        :rtype: list</span>
-<span class="sd">        :returns: The list to add new mutations to (for the current state).</span>
+<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
+<span class="sd">                 always.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">_set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                   <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`set_cell`</span>
+
+<span class="sd">        Adds a mutation to set the value in a specific cell.</span>
 
 <span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
 <span class="sd">        subclasses.</span>
@@ -249,42 +235,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">set_cell</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DirectRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Sets a value in this row.</span>
-
-<span class="sd">        The cell is determined by the ``row_key`` of this :class:`DirectRow`</span>
-<span class="sd">        and the ``column``. The ``column`` must be in an existing</span>
-<span class="sd">        :class:`.ColumnFamily` (as determined by ``column_family_id``).</span>
-
-<span class="sd">        .. note::</span>
-
-<span class="sd">            This method adds a mutation to the accumulated mutations on this</span>
-<span class="sd">            row, but does not make an API request. To actually</span>
-<span class="sd">            send an API request (with the mutations) to the Google Cloud</span>
-<span class="sd">            Bigtable API, call :meth:`commit`.</span>
-
-<span class="sd">        :type column_family_id: str</span>
-<span class="sd">        :param column_family_id: The column family that contains the column.</span>
-<span class="sd">                                 Must be of the form</span>
-<span class="sd">                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.</span>
-
-<span class="sd">        :type column: bytes</span>
-<span class="sd">        :param column: The column within the column family where the cell</span>
-<span class="sd">                       is located.</span>
-
-<span class="sd">        :type value: bytes or :class:`int`</span>
-<span class="sd">        :param value: The value to set in the cell. If an integer is used,</span>
-<span class="sd">                      will be interpreted as a 64-bit big-endian signed</span>
-<span class="sd">                      integer (8 bytes).</span>
-
-<span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
-<span class="sd">        :param timestamp: (Optional) The timestamp of the operation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-                       <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
-
     <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`delete`</span>
+
+<span class="sd">        Adds a delete mutation (for the entire row) to the accumulated</span>
+<span class="sd">        mutations.</span>
 
 <span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
 <span class="sd">        subclasses.</span>
@@ -296,18 +251,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromRow</span><span class="p">()</span>
         <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_row</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
-
-<div class="viewcode-block" id="DirectRow.delete"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Deletes this row from the table.</span>
-
-<span class="sd">        .. note::</span>
-
-<span class="sd">            This method adds a mutation to the accumulated mutations on this</span>
-<span class="sd">            row, but does not make an API request. To actually</span>
-<span class="sd">            send an API request (with the mutations) to the Google Cloud</span>
-<span class="sd">            Bigtable API, call :meth:`commit`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                       <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -365,6 +308,102 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1"># We don&#39;t add the mutations until all columns have been</span>
             <span class="c1"># processed without error.</span>
             <span class="n">mutations_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">to_append</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DirectRow"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow">[docs]</a><span class="k">class</span> <span class="nc">DirectRow</span><span class="p">(</span><span class="n">_SetDeleteRow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Google Cloud Bigtable Row for sending &quot;direct&quot; mutations.</span>
+
+<span class="sd">    These mutations directly set or delete cell contents:</span>
+
+<span class="sd">    * :meth:`set_cell`</span>
+<span class="sd">    * :meth:`delete`</span>
+<span class="sd">    * :meth:`delete_cell`</span>
+<span class="sd">    * :meth:`delete_cells`</span>
+
+<span class="sd">    These methods can be used directly::</span>
+
+<span class="sd">       &gt;&gt;&gt; row = table.row(b&#39;row-key1&#39;)</span>
+<span class="sd">       &gt;&gt;&gt; row.set_cell(u&#39;fam&#39;, b&#39;col1&#39;, b&#39;cell-val&#39;)</span>
+<span class="sd">       &gt;&gt;&gt; row.delete_cell(u&#39;fam&#39;, b&#39;col2&#39;)</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        A :class:`DirectRow` accumulates mutations locally via the</span>
+<span class="sd">        :meth:`set_cell`, :meth:`delete`, :meth:`delete_cell` and</span>
+<span class="sd">        :meth:`delete_cells` methods. To actually send these mutations to the</span>
+<span class="sd">        Google Cloud Bigtable API, you must call :meth:`commit`.</span>
+
+<span class="sd">    :type row_key: bytes</span>
+<span class="sd">    :param row_key: The key for the current row.</span>
+
+<span class="sd">    :type table: :class:`Table &lt;gcloud.bigtable.table.Table&gt;`</span>
+<span class="sd">    :param table: The table that owns the row.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DirectRow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="sd">&quot;&quot;&quot;Gets the list of mutations for a given state.</span>
+
+<span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
+<span class="sd">        subclasses.</span>
+
+<span class="sd">        :type state: bool</span>
+<span class="sd">        :param state: The state that the mutation should be</span>
+<span class="sd">                      applied in.</span>
+
+<span class="sd">        :rtype: list</span>
+<span class="sd">        :returns: The list to add new mutations to (for the current state).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span>
+
+<div class="viewcode-block" id="DirectRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets a value in this row.</span>
+
+<span class="sd">        The cell is determined by the ``row_key`` of this :class:`DirectRow`</span>
+<span class="sd">        and the ``column``. The ``column`` must be in an existing</span>
+<span class="sd">        :class:`.ColumnFamily` (as determined by ``column_family_id``).</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method adds a mutation to the accumulated mutations on this</span>
+<span class="sd">            row, but does not make an API request. To actually</span>
+<span class="sd">            send an API request (with the mutations) to the Google Cloud</span>
+<span class="sd">            Bigtable API, call :meth:`commit`.</span>
+
+<span class="sd">        :type column_family_id: str</span>
+<span class="sd">        :param column_family_id: The column family that contains the column.</span>
+<span class="sd">                                 Must be of the form</span>
+<span class="sd">                                 ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.</span>
+
+<span class="sd">        :type column: bytes</span>
+<span class="sd">        :param column: The column within the column family where the cell</span>
+<span class="sd">                       is located.</span>
+
+<span class="sd">        :type value: bytes or :class:`int`</span>
+<span class="sd">        :param value: The value to set in the cell. If an integer is used,</span>
+<span class="sd">                      will be interpreted as a 64-bit big-endian signed</span>
+<span class="sd">                      integer (8 bytes).</span>
+
+<span class="sd">        :type timestamp: :class:`datetime.datetime`</span>
+<span class="sd">        :param timestamp: (Optional) The timestamp of the operation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+                       <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DirectRow.delete"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deletes this row from the table.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method adds a mutation to the accumulated mutations on this</span>
+<span class="sd">            row, but does not make an API request. To actually</span>
+<span class="sd">            send an API request (with the mutations) to the Google Cloud</span>
+<span class="sd">            Bigtable API, call :meth:`commit`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DirectRow.delete_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes cell in this row.</span>
@@ -457,7 +496,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span><span class="p">[:]</span></div></div>
 
 
-<div class="viewcode-block" id="ConditionalRow"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow">[docs]</a><span class="k">class</span> <span class="nc">ConditionalRow</span><span class="p">(</span><span class="n">DirectRow</span><span class="p">):</span>
+<div class="viewcode-block" id="ConditionalRow"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow">[docs]</a><span class="k">class</span> <span class="nc">ConditionalRow</span><span class="p">(</span><span class="n">_SetDeleteRow</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Google Cloud Bigtable Row for sending mutations conditionally.</span>
 
 <span class="sd">    Each mutation has an associated state: :data:`True` or :data:`False`.</span>
@@ -496,7 +535,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">filter_</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">ConditionalRow</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="n">filter_</span>
-        <span class="c1"># NOTE: We use self._pb_mutations to hold the state=True mutations.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_true_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_false_pb_mutations</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_get_mutations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
@@ -517,7 +556,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The list to add new mutations to (for the current state).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_true_pb_mutations</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_false_pb_mutations</span>
 
@@ -678,10 +717,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type columns: :class:`list` of :class:`str` /</span>
 <span class="sd">                       :func:`unicode &lt;unicode&gt;`, or :class:`object`</span>
 <span class="sd">        :param columns: The columns within the column family that will have</span>
-<span class="sd">                        cells deleted. If</span>
-<span class="sd">                        :attr:`ALL_COLUMNS &lt;.DirectRow.ALL_COLUMNS&gt;` is used</span>
-<span class="sd">                        then the entire column family will be deleted from</span>
-<span class="sd">                        the row.</span>
+<span class="sd">                        cells deleted. If :attr:`ALL_COLUMNS` is used then the</span>
+<span class="sd">                        entire column family will be deleted from the row.</span>
 
 <span class="sd">        :type time_range: :class:`TimestampRange`</span>
 <span class="sd">        :param time_range: (Optional) The range of time within which cells</span>
@@ -697,7 +734,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <div class="viewcode-block" id="ConditionalRow.clear"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Removes all currently accumulated mutations on the current row.&quot;&quot;&quot;</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span><span class="p">[:]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_true_pb_mutations</span><span class="p">[:]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_false_pb_mutations</span><span class="p">[:]</span></div></div>
 
 
