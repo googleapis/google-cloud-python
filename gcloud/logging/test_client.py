@@ -171,6 +171,105 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(sink.client is client)
         self.assertEqual(sink.project, self.PROJECT)
 
+    def test_list_sinks_no_paging(self):
+        from gcloud.logging.sink import Sink
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        SINK_NAME = 'sink_name'
+        FILTER = 'logName:syslog AND severity>=ERROR'
+        SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
+
+        RETURNED = {
+            'sinks': [{
+                'name': SINK_PATH,
+                'filter': FILTER,
+                'destination': self.DESTINATION_URI,
+            }],
+        }
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        sinks, next_page_token = CLIENT_OBJ.list_sinks()
+        # Test values are correct.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertTrue(isinstance(sink, Sink))
+        self.assertEqual(sink.name, SINK_NAME)
+        self.assertEqual(sink.filter_, FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/sinks' % (PROJECT,))
+        self.assertEqual(req['query_params'], {})
+
+    def test_list_sinks_with_paging(self):
+        from gcloud.logging.sink import Sink
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        SINK_NAME = 'sink_name'
+        FILTER = 'logName:syslog AND severity>=ERROR'
+        SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        RETURNED = {
+            'sinks': [{
+                'name': SINK_PATH,
+                'filter': FILTER,
+                'destination': self.DESTINATION_URI,
+            }],
+            'nextPageToken': TOKEN2,
+        }
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        sinks, next_page_token = CLIENT_OBJ.list_sinks(SIZE, TOKEN1)
+        # Test values are correct.
+        self.assertEqual(len(sinks), 1)
+        sink = sinks[0]
+        self.assertTrue(isinstance(sink, Sink))
+        self.assertEqual(sink.name, SINK_NAME)
+        self.assertEqual(sink.filter_, FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(next_page_token, TOKEN2)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/sinks' % (PROJECT,))
+        self.assertEqual(req['query_params'],
+                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+
+    def test_list_sinks_missing_key(self):
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        RETURNED = {}
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        sinks, next_page_token = CLIENT_OBJ.list_sinks()
+        # Test values are correct.
+        self.assertEqual(len(sinks), 0)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/sinks' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
 
 class _Credentials(object):
 
