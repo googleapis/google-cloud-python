@@ -68,7 +68,7 @@ class TestSink(unittest2.TestCase):
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        conn1 = _Connection({'name': FULL})
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'name': FULL})
         client2 = _Client(project=self.PROJECT, connection=conn2)
@@ -96,13 +96,58 @@ class TestSink(unittest2.TestCase):
 
     def test_exists_hit_w_alternate_client(self):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn1 = _Connection({'name': FULL})
+        conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'name': FULL})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=CLIENT1)
         self.assertTrue(sink.exists(client=CLIENT2))
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_reload_w_bound_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        NEW_FILTER = 'logName:syslog AND severity>=INFO'
+        NEW_DESTINATION_URI = 'faux.googleapis.com/other'
+        RESOURCE = {
+            'name': self.SINK_NAME,
+            'filter': NEW_FILTER,
+            'destination': NEW_DESTINATION_URI,
+        }
+        conn = _Connection(RESOURCE)
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT)
+        sink.reload()
+        self.assertEqual(sink.filter_, NEW_FILTER)
+        self.assertEqual(sink.destination, NEW_DESTINATION_URI)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_reload_w_alternate_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        NEW_FILTER = 'logName:syslog AND severity>=INFO'
+        NEW_DESTINATION_URI = 'faux.googleapis.com/other'
+        RESOURCE = {
+            'name': self.SINK_NAME,
+            'filter': NEW_FILTER,
+            'destination': NEW_DESTINATION_URI,
+        }
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT1)
+        sink.reload(client=CLIENT2)
+        self.assertEqual(sink.filter_, NEW_FILTER)
+        self.assertEqual(sink.destination, NEW_DESTINATION_URI)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
