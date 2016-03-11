@@ -34,12 +34,123 @@ class TestClient(unittest2.TestCase):
 
     def test_logger(self):
         creds = _Credentials()
-
-        client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
-        logger = client_obj.logger(self.LOGGER_NAME)
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        logger = client.logger(self.LOGGER_NAME)
         self.assertEqual(logger.name, self.LOGGER_NAME)
-        self.assertTrue(logger.client is client_obj)
+        self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
+
+    def test__entry_from_resource_unknown_type(self):
+        PROJECT = 'PROJECT'
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        loggers = {}
+        with self.assertRaises(ValueError):
+            client._entry_from_resource({'unknownPayload': {}}, loggers)
+
+    def test_list_entries_defaults(self):
+        from datetime import datetime
+        from gcloud._helpers import UTC
+        from gcloud.logging.entries import TextEntry
+        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        IID1 = 'IID1'
+        TEXT = 'TEXT'
+        SENT = {
+            'projectIds': [self.PROJECT],
+        }
+        TOKEN = 'TOKEN'
+        RETURNED = {
+            'entries': [{
+                'textPayload': TEXT,
+                'insertId': IID1,
+                'resource': {
+                    'type': 'global',
+                },
+                'timestamp': TIMESTAMP,
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+            }],
+            'nextPageToken': TOKEN,
+        }
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection(RETURNED)
+        entries, token = client.list_entries()
+        self.assertEqual(len(entries), 1)
+        entry = entries[0]
+        self.assertTrue(isinstance(entry, TextEntry))
+        self.assertEqual(entry.insert_id, IID1)
+        self.assertEqual(entry.payload, TEXT)
+        self.assertEqual(entry.timestamp, NOW)
+        logger = entry.logger
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.project, self.PROJECT)
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:list')
+        self.assertEqual(req['data'], SENT)
+
+    def test_list_entries_explicit(self):
+        from datetime import datetime
+        from gcloud._helpers import UTC
+        from gcloud.logging import DESCENDING
+        from gcloud.logging.entries import StructEntry
+        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        FILTER = 'logName:LOGNAME'
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
+        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
+        IID1 = 'IID1'
+        PAYLOAD = {'message': 'MESSAGE', 'weather': 'partly cloudy'}
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
+        SENT = {
+            'projectIds': [PROJECT1, PROJECT2],
+            'filter': FILTER,
+            'orderBy': DESCENDING,
+            'pageSize': PAGE_SIZE,
+            'pageToken': TOKEN,
+        }
+        RETURNED = {
+            'entries': [{
+                'jsonPayload': PAYLOAD,
+                'insertId': IID1,
+                'resource': {
+                    'type': 'global',
+                },
+                'timestamp': TIMESTAMP,
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+            }],
+        }
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection(RETURNED)
+        entries, token = client.list_entries(
+            projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
+            page_size=PAGE_SIZE, page_token=TOKEN)
+        self.assertEqual(len(entries), 1)
+        entry = entries[0]
+        self.assertTrue(isinstance(entry, StructEntry))
+        self.assertEqual(entry.insert_id, IID1)
+        self.assertEqual(entry.payload, PAYLOAD)
+        self.assertEqual(entry.timestamp, NOW)
+        logger = entry.logger
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.project, self.PROJECT)
+        self.assertEqual(token, None)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:list')
+        self.assertEqual(req['data'], SENT)
 
 
 class _Credentials(object):
@@ -53,3 +164,15 @@ class _Credentials(object):
     def create_scoped(self, scope):
         self._scopes = scope
         return self
+
+
+class _Connection(object):
+
+    def __init__(self, *responses):
+        self._responses = responses
+        self._requested = []
+
+    def api_request(self, **kw):
+        self._requested.append(kw)
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

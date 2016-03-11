@@ -17,6 +17,8 @@
 
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
+from gcloud.logging.entries import StructEntry
+from gcloud.logging.entries import TextEntry
 from gcloud.logging.logger import Logger
 
 
@@ -53,3 +55,82 @@ class Client(JSONClient):
         :returns: Logger created with the current client.
         """
         return Logger(name, client=self)
+
+    def _entry_from_resource(self, resource, loggers):
+        """Detect correct entry type from resource and instantiate.
+
+        :type resource: dict
+        :param resource: one entry resource from API response
+
+        :type loggers: dict or None
+        :param loggers: A mapping of logger fullnames -> loggers.  If not
+                        passed, the entry will have a newly-created logger.
+
+        :rtype; One of:
+                :class:`gcloud.logging.entries.TextEntry`,
+                :class:`gcloud.logging.entries.StructEntry`,
+        :returns: the entry instance, constructed via the resource
+        """
+        if 'textPayload' in resource:
+            return TextEntry.from_api_repr(resource, self, loggers)
+        elif 'jsonPayload' in resource:
+            return StructEntry.from_api_repr(resource, self, loggers)
+        raise ValueError('Cannot parse job resource')
+
+    def list_entries(self, projects=None, filter_=None, order_by=None,
+                     page_size=None, page_token=None):
+        """Return a page of log entries.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list
+
+        :type projects: list of strings
+        :param projects: project IDs to include. If not passed,
+                            defaults to the project bound to the client.
+
+        :type filter_: string
+        :param filter_: a filter expression. See:
+                        https://cloud.google.com/logging/docs/view/advanced_filters
+
+        :type order_by: string
+        :param order_by: One of :data:`gcloud.logging.ASCENDING` or
+                         :data:`gcloud.logging.DESCENDING`.
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        if projects is None:
+            projects = [self.project]
+
+        params = {'projectIds': projects}
+
+        if filter_ is not None:
+            params['filter'] = filter_
+
+        if order_by is not None:
+            params['orderBy'] = order_by
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        resp = self.connection.api_request(method='POST', path='/entries:list',
+                                           data=params)
+        loggers = {}
+        entries = [self._entry_from_resource(resource, loggers)
+                   for resource in resp.get('entries', ())]
+        return entries, resp.get('nextPageToken')
