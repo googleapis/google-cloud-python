@@ -21,7 +21,7 @@ import warnings
 import six
 
 from gcloud._helpers import _datetime_from_microseconds
-from gcloud.bigtable.row import TimestampRange
+from gcloud.bigtable.row_filters import TimestampRange
 
 
 _WAL_SENTINEL = object()

@@ -582,7 +582,7 @@ class Test__create_row_request(unittest2.TestCase):
     def test_with_filter(self):
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row_filters import RowSampleFilter
 
         table_name = 'table_name'
         row_filter = RowSampleFilter(0.33)
