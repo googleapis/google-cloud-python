@@ -154,3 +154,39 @@ class Client(JSONClient):
         :returns: Sink created with the current client.
         """
         return Sink(name, filter_, destination, client=self)
+
+    def list_sinks(self, page_size=None, page_token=None):
+        """List sinks for the project associated with this client.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/list
+
+        :type page_size: int
+        :param page_size: maximum number of sinks to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of sinks. If not
+                           passed, the API will return the first page of
+                           sinks.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.logging.sink.Sink`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more sinks can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/sinks' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        sinks = [Sink.from_api_repr(resource, self)
+                 for resource in resp.get('sinks', ())]
+        return sinks, resp.get('nextPageToken')

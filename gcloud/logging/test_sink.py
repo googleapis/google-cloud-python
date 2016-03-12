@@ -15,6 +15,38 @@
 import unittest2
 
 
+class Test__sink_name_from_path(unittest2.TestCase):
+
+    def _callFUT(self, path, project):
+        from gcloud.logging.sink import _sink_name_from_path
+        return _sink_name_from_path(path, project)
+
+    def test_invalid_path_length(self):
+        PATH = 'projects/foo'
+        PROJECT = None
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
+
+    def test_invalid_path_format(self):
+        SINK_NAME = 'SINK_NAME'
+        PROJECT = 'PROJECT'
+        PATH = 'foo/%s/bar/%s' % (PROJECT, SINK_NAME)
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
+
+    def test_invalid_project(self):
+        SINK_NAME = 'SINK_NAME'
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        PATH = 'projects/%s/sinks/%s' % (PROJECT1, SINK_NAME)
+        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT2)
+
+    def test_valid_data(self):
+        SINK_NAME = 'SINK_NAME'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
+        sink_name = self._callFUT(PATH, PROJECT)
+        self.assertEqual(sink_name, SINK_NAME)
+
+
 class TestSink(unittest2.TestCase):
 
     PROJECT = 'test-project'
@@ -42,6 +74,54 @@ class TestSink(unittest2.TestCase):
         self.assertEqual(sink.project, self.PROJECT)
         self.assertEqual(sink.full_name, FULL)
         self.assertEqual(sink.path, '/%s' % (FULL,))
+
+    def test_from_api_repr_minimal(self):
+        CLIENT = _Client(project=self.PROJECT)
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        RESOURCE = {
+            'name': FULL,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        klass = self._getTargetClass()
+        sink = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertTrue(sink._client is CLIENT)
+        self.assertEqual(sink.project, self.PROJECT)
+        self.assertEqual(sink.full_name, FULL)
+
+    def test_from_api_repr_w_description(self):
+        CLIENT = _Client(project=self.PROJECT)
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        RESOURCE = {
+            'name': FULL,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        klass = self._getTargetClass()
+        sink = klass.from_api_repr(RESOURCE, client=CLIENT)
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertTrue(sink._client is CLIENT)
+        self.assertEqual(sink.project, self.PROJECT)
+        self.assertEqual(sink.full_name, FULL)
+
+    def test_from_api_repr_with_mismatched_project(self):
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        CLIENT = _Client(project=PROJECT1)
+        FULL = 'projects/%s/sinks/%s' % (PROJECT2, self.SINK_NAME)
+        RESOURCE = {
+            'name': FULL,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        klass = self._getTargetClass()
+        self.assertRaises(ValueError, klass.from_api_repr,
+                          RESOURCE, client=CLIENT)
 
     def test_create_w_bound_client(self):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
