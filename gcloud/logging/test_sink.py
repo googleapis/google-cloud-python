@@ -193,6 +193,33 @@ class TestSink(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % FULL)
         self.assertEqual(req['data'], RESOURCE)
 
+    def test_delete_w_bound_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT)
+        sink.delete()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_delete_w_alternate_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({})
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT1)
+        sink.delete(client=CLIENT2)
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'DELETE')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
 
 class _Connection(object):
 
