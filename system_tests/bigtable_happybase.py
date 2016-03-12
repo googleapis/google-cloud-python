@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import operator
 import struct
 import time
 
@@ -25,6 +26,7 @@ from gcloud.environment_vars import TESTS_PROJECT
 
 
 _PACK_I64 = struct.Struct('>q').pack
+_FIRST_ELT = operator.itemgetter(0)
 _helpers.PROJECT = TESTS_PROJECT
 ZONE = 'us-central1-c'
 NOW_MILLIS = int(1000 * time.time())
@@ -230,6 +232,180 @@ class TestTable_row(BaseTableTest):
         self.assertEqual(first_one, {
             COL1: (value1, ts1),
         })
+
+
+class TestTable_rows(BaseTableTest):
+
+    def test_rows(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        row1_data = {COL1: value1, COL2: value2}
+        row2_data = {COL1: value3}
+
+        # Need to clean-up row1 and row2 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        self.rows_to_delete.append(ROW_KEY2)
+        table.put(ROW_KEY1, row1_data)
+        table.put(ROW_KEY2, row2_data)
+
+        rows = table.rows([ROW_KEY1, ROW_KEY2])
+        rows.sort(key=_FIRST_ELT)
+
+        row1, row2 = rows
+        self.assertEqual(row1, (ROW_KEY1, row1_data))
+        self.assertEqual(row2, (ROW_KEY2, row2_data))
+
+    def test_rows_with_returned_timestamps(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        row1_data = {COL1: value1, COL2: value2}
+        row2_data = {COL1: value3}
+
+        # Need to clean-up row1 and row2 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        self.rows_to_delete.append(ROW_KEY2)
+        with table.batch() as batch:
+            batch.put(ROW_KEY1, row1_data)
+            batch.put(ROW_KEY2, row2_data)
+
+        rows = table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True)
+        rows.sort(key=_FIRST_ELT)
+
+        row1, row2 = rows
+        self.assertEqual(row1[0], ROW_KEY1)
+        self.assertEqual(row2[0], ROW_KEY2)
+
+        # Drop the keys now that we have checked.
+        _, row1 = row1
+        _, row2 = row2
+
+        ts = row1[COL1][1]
+        # All will have the same timestamp since we used batch.
+        expected_row1_result = {COL1: (value1, ts), COL2: (value2, ts)}
+        self.assertEqual(row1, expected_row1_result)
+        # NOTE: This method was written before Cloud Bigtable had the concept
+        #       of batching, so each mutation is sent individually. (This
+        #       will be the case until support for the MutateRows() RPC method
+        #       is implemented.) Thus, the server-side timestamps correspond
+        #       to separate calls to row.commit(). We could circumvent this by
+        #       manually using the local time and storing it on mutations
+        #       before sending.
+        ts3 = row2[COL1][1]
+        expected_row2_result = {COL1: (value3, ts3)}
+        self.assertEqual(row2, expected_row2_result)
+
+    def test_rows_with_columns(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        row1_data = {COL1: value1, COL2: value2}
+        row2_data = {COL1: value3}
+
+        # Need to clean-up row1 and row2 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        self.rows_to_delete.append(ROW_KEY2)
+        table.put(ROW_KEY1, row1_data)
+        table.put(ROW_KEY2, row2_data)
+
+        # Filter a single column present in both rows.
+        rows_col1 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL1])
+        rows_col1.sort(key=_FIRST_ELT)
+        row1, row2 = rows_col1
+        self.assertEqual(row1, (ROW_KEY1, {COL1: value1}))
+        self.assertEqual(row2, (ROW_KEY2, {COL1: value3}))
+
+        # Filter a column not present in one row.
+        rows_col2 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL2])
+        self.assertEqual(rows_col2, [(ROW_KEY1, {COL2: value2})])
+
+        # Filter a column family.
+        rows_col_fam1 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL_FAM1])
+        rows_col_fam1.sort(key=_FIRST_ELT)
+        row1, row2 = rows_col_fam1
+        self.assertEqual(row1, (ROW_KEY1, row1_data))
+        self.assertEqual(row2, (ROW_KEY2, row2_data))
+
+        # Filter a column family with no entries.
+        rows_col_fam2 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL_FAM2])
+        self.assertEqual(rows_col_fam2, [])
+
+        # Filter a column family that overlaps with a column.
+        rows_col_fam_overlap1 = table.rows([ROW_KEY1, ROW_KEY2],
+                                           columns=[COL1, COL_FAM1])
+        rows_col_fam_overlap1.sort(key=_FIRST_ELT)
+        row1, row2 = rows_col_fam_overlap1
+        self.assertEqual(row1, (ROW_KEY1, row1_data))
+        self.assertEqual(row2, (ROW_KEY2, row2_data))
+
+        # Filter a column family that overlaps with a column (opposite order).
+        rows_col_fam_overlap2 = table.rows([ROW_KEY1, ROW_KEY2],
+                                           columns=[COL_FAM1, COL1])
+        rows_col_fam_overlap2.sort(key=_FIRST_ELT)
+        row1, row2 = rows_col_fam_overlap2
+        self.assertEqual(row1, (ROW_KEY1, row1_data))
+        self.assertEqual(row2, (ROW_KEY2, row2_data))
+
+    def test_rows_with_timestamp(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        value4 = 'value4'
+
+        # Need to clean-up row1 and row2 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        self.rows_to_delete.append(ROW_KEY2)
+        table.put(ROW_KEY1, {COL1: value1})
+        table.put(ROW_KEY2, {COL1: value2})
+        table.put(ROW_KEY1, {COL2: value3})
+        table.put(ROW_KEY1, {COL4: value4})
+
+        # Just grab the timestamps
+        rows = table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True)
+        rows.sort(key=_FIRST_ELT)
+        row1, row2 = rows
+        self.assertEqual(row1[0], ROW_KEY1)
+        self.assertEqual(row2[0], ROW_KEY2)
+        _, row1 = row1
+        _, row2 = row2
+        ts1 = row1[COL1][1]
+        ts2 = row2[COL1][1]
+        ts3 = row1[COL2][1]
+        ts4 = row1[COL4][1]
+
+        # Make sure the timestamps are (strictly) ascending.
+        self.assertTrue(ts1 < ts2 < ts3 < ts4)
+
+        # Rows before the third timestamp (assumes exclusive endpoint).
+        rows = table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts3,
+                          include_timestamp=True)
+        rows.sort(key=_FIRST_ELT)
+        row1, row2 = rows
+        self.assertEqual(row1, (ROW_KEY1, {COL1: (value1, ts1)}))
+        self.assertEqual(row2, (ROW_KEY2, {COL1: (value2, ts2)}))
+
+        # All writes (bump the exclusive endpoint by 1 millisecond).
+        rows = table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts4 + 1,
+                          include_timestamp=True)
+        rows.sort(key=_FIRST_ELT)
+        row1, row2 = rows
+        row1_all_data = {
+            COL1: (value1, ts1),
+            COL2: (value3, ts3),
+            COL4: (value4, ts4),
+        }
+        self.assertEqual(row1, (ROW_KEY1, row1_all_data))
+        self.assertEqual(row2, (ROW_KEY2, {COL1: (value2, ts2)}))
+
+        # First three writes, restricted to column 2.
+        rows = table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts4,
+                          columns=[COL2], include_timestamp=True)
+        self.assertEqual(rows, [(ROW_KEY1, {COL2: (value3, ts3)})])
 
 
 class TestTableCounterMethods(BaseTableTest):
