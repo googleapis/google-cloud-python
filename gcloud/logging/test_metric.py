@@ -93,6 +93,31 @@ class TestMetric(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % FULL)
         self.assertEqual(req['data'], RESOURCE)
 
+    def test_exists_miss_w_bound_client(self):
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        conn = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT)
+        self.assertFalse(metric.exists())
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_exists_hit_w_alternate_client(self):
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        conn1 = _Connection({'name': FULL})
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': FULL})
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
+        self.assertTrue(metric.exists(client=CLIENT2))
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
 
 class _Connection(object):
 
