@@ -119,7 +119,7 @@ class _RegexFilter(RowFilter):
     """
 
     def __init__(self, regex):
-        self.regex = regex
+        self.regex = _to_bytes(regex)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):

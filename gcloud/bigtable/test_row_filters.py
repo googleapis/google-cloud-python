@@ -117,24 +117,29 @@ class Test_RegexFilter(unittest2.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor(self):
-        regex = object()
+        regex = b'abc'
         row_filter = self._makeOne(regex)
         self.assertTrue(row_filter.regex is regex)
 
+    def test_constructor_non_bytes(self):
+        regex = u'abc'
+        row_filter = self._makeOne(regex)
+        self.assertEqual(row_filter.regex, b'abc')
+
     def test___eq__type_differ(self):
-        regex = object()
+        regex = b'def-rgx'
         row_filter1 = self._makeOne(regex)
         row_filter2 = object()
         self.assertNotEqual(row_filter1, row_filter2)
 
     def test___eq__same_value(self):
-        regex = object()
+        regex = b'trex-regex'
         row_filter1 = self._makeOne(regex)
         row_filter2 = self._makeOne(regex)
         self.assertEqual(row_filter1, row_filter2)
 
     def test___ne__same_value(self):
-        regex = object()
+        regex = b'abc'
         row_filter1 = self._makeOne(regex)
         row_filter2 = self._makeOne(regex)
         comparison_val = (row_filter1 != row_filter2)

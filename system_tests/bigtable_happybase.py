@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import struct
 import time
 
 import unittest2
@@ -23,6 +24,7 @@ from gcloud.bigtable.happybase.connection import Connection
 from gcloud.environment_vars import TESTS_PROJECT
 
 
+_PACK_I64 = struct.Struct('>q').pack
 _helpers.PROJECT = TESTS_PROJECT
 ZONE = 'us-central1-c'
 NOW_MILLIS = int(1000 * time.time())
@@ -38,6 +40,8 @@ FAMILIES = {
     COL_FAM2: {'max_versions': 1, 'time_to_live': TTL_FOR_TEST},
     COL_FAM3: {},  # use defaults
 }
+ROW_KEY1 = 'row-key1'
+COL1 = COL_FAM1 + ':qual1'
 
 
 class Config(object):
@@ -111,3 +115,77 @@ class TestConnection(unittest2.TestCase):
         with self.assertRaises(ValueError):
             connection.create_table(ALT_TABLE_NAME, empty_families)
         self.assertFalse(ALT_TABLE_NAME in connection.tables())
+
+
+class BaseTableTest(unittest2.TestCase):
+
+    def setUp(self):
+        self.rows_to_delete = []
+
+    def tearDown(self):
+        for row_key in self.rows_to_delete:
+            Config.TABLE.delete(row_key)
+
+
+class TestTable_families(BaseTableTest):
+
+    def test_families(self):
+        families = Config.TABLE.families()
+
+        self.assertEqual(set(families.keys()), set(FAMILIES.keys()))
+        for col_fam, settings in FAMILIES.items():
+            retrieved = families[col_fam]
+            for key, value in settings.items():
+                self.assertEqual(retrieved[key], value)
+
+
+class TestTableCounterMethods(BaseTableTest):
+
+    def test_counter_get(self):
+        table = Config.TABLE
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]), {})
+        initial_counter = table.counter_get(ROW_KEY1, COL1)
+        self.assertEqual(initial_counter, 0)
+
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]),
+                         {COL1: _PACK_I64(0)})
+
+    def test_counter_inc(self):
+        table = Config.TABLE
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]), {})
+        initial_counter = table.counter_get(ROW_KEY1, COL1)
+        self.assertEqual(initial_counter, 0)
+
+        inc_value = 10
+        updated_counter = table.counter_inc(ROW_KEY1, COL1, value=inc_value)
+        self.assertEqual(updated_counter, inc_value)
+
+        # Check that the value is set (does not seem to occur on HBase).
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]),
+                         {COL1: _PACK_I64(inc_value)})
+
+    def test_counter_dec(self):
+        table = Config.TABLE
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]), {})
+        initial_counter = table.counter_get(ROW_KEY1, COL1)
+        self.assertEqual(initial_counter, 0)
+
+        dec_value = 10
+        updated_counter = table.counter_dec(ROW_KEY1, COL1, value=dec_value)
+        self.assertEqual(updated_counter, -dec_value)
+
+        # Check that the value is set (does not seem to occur on HBase).
+        self.assertEqual(table.row(ROW_KEY1, columns=[COL1]),
+                         {COL1: _PACK_I64(-dec_value)})

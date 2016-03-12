@@ -1265,8 +1265,8 @@ class Test__filter_chain_helper(unittest2.TestCase):
 
         # Relies on the fact that RowFilter instances can
         # only have one value set.
-        self.assertEqual(fam_filter.regex, col_fam)
-        self.assertEqual(qual_filter.regex, qual)
+        self.assertEqual(fam_filter.regex, col_fam.encode('utf-8'))
+        self.assertEqual(qual_filter.regex, qual.encode('utf-8'))
 
         return result
 
@@ -1356,14 +1356,14 @@ class Test__columns_filter_helper(unittest2.TestCase):
         filter2 = result.filters[1]
 
         self.assertTrue(isinstance(filter1, FamilyNameRegexFilter))
-        self.assertEqual(filter1.regex, col_fam1)
+        self.assertEqual(filter1.regex, col_fam1.encode('utf-8'))
 
         self.assertTrue(isinstance(filter2, RowFilterChain))
         filter2a, filter2b = filter2.filters
         self.assertTrue(isinstance(filter2a, FamilyNameRegexFilter))
-        self.assertEqual(filter2a.regex, col_fam2)
+        self.assertEqual(filter2a.regex, col_fam2.encode('utf-8'))
         self.assertTrue(isinstance(filter2b, ColumnQualifierRegexFilter))
-        self.assertEqual(filter2b.regex, col_qual2)
+        self.assertEqual(filter2b.regex, col_qual2.encode('utf-8'))
 
 
 class Test__row_keys_filter_helper(unittest2.TestCase):
