@@ -41,7 +41,11 @@ FAMILIES = {
     COL_FAM3: {},  # use defaults
 }
 ROW_KEY1 = 'row-key1'
+ROW_KEY2 = 'row-key2a'
 COL1 = COL_FAM1 + ':qual1'
+COL2 = COL_FAM1 + ':qual2'
+COL3 = COL_FAM2 + ':qual1'
+COL4 = COL_FAM3 + ':qual3'
 
 
 class Config(object):
@@ -137,6 +141,95 @@ class TestTable_families(BaseTableTest):
             retrieved = families[col_fam]
             for key, value in settings.items():
                 self.assertEqual(retrieved[key], value)
+
+
+class TestTable_row(BaseTableTest):
+
+    def test_row_when_empty(self):
+        row1 = Config.TABLE.row(ROW_KEY1)
+        row2 = Config.TABLE.row(ROW_KEY2)
+
+        self.assertEqual(row1, {})
+        self.assertEqual(row2, {})
+
+    def test_row_with_columns(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        value4 = 'value4'
+        row1_data = {
+            COL1: value1,
+            COL2: value2,
+            COL3: value3,
+            COL4: value4,
+        }
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, row1_data)
+
+        # Make sure the vanilla write succeeded.
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        # Pick out specific columns.
+        row1_diff_fams = table.row(ROW_KEY1, columns=[COL1, COL4])
+        self.assertEqual(row1_diff_fams, {COL1: value1, COL4: value4})
+        row1_single_col = table.row(ROW_KEY1, columns=[COL3])
+        self.assertEqual(row1_single_col, {COL3: value3})
+        row1_col_fam = table.row(ROW_KEY1, columns=[COL_FAM1])
+        self.assertEqual(row1_col_fam, {COL1: value1, COL2: value2})
+        row1_fam_qual_overlap1 = table.row(ROW_KEY1, columns=[COL1, COL_FAM1])
+        self.assertEqual(row1_fam_qual_overlap1, {COL1: value1, COL2: value2})
+        row1_fam_qual_overlap2 = table.row(ROW_KEY1, columns=[COL_FAM1, COL1])
+        self.assertEqual(row1_fam_qual_overlap2,
+                         {COL1: value1, COL2: value2})
+        row1_multiple_col_fams = table.row(ROW_KEY1,
+                                           columns=[COL_FAM1, COL_FAM2])
+        self.assertEqual(row1_multiple_col_fams,
+                         {COL1: value1, COL2: value2, COL3: value3})
+
+    def test_row_with_timestamp(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, {COL1: value1})
+        table.put(ROW_KEY1, {COL2: value2})
+        table.put(ROW_KEY1, {COL3: value3})
+
+        # Make sure the vanilla write succeeded.
+        row1 = table.row(ROW_KEY1, include_timestamp=True)
+        ts1 = row1[COL1][1]
+        ts2 = row1[COL2][1]
+        ts3 = row1[COL3][1]
+
+        expected_row = {
+            COL1: (value1, ts1),
+            COL2: (value2, ts2),
+            COL3: (value3, ts3),
+        }
+        self.assertEqual(row1, expected_row)
+
+        # Make sure the timestamps are (strictly) ascending.
+        self.assertTrue(ts1 < ts2 < ts3)
+
+        # Use timestamps to retrieve row.
+        first_two = table.row(ROW_KEY1, timestamp=ts2 + 1,
+                              include_timestamp=True)
+        self.assertEqual(first_two, {
+            COL1: (value1, ts1),
+            COL2: (value2, ts2),
+        })
+        first_one = table.row(ROW_KEY1, timestamp=ts2,
+                              include_timestamp=True)
+        self.assertEqual(first_one, {
+            COL1: (value1, ts1),
+        })
 
 
 class TestTableCounterMethods(BaseTableTest):
