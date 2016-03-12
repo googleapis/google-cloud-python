@@ -59,7 +59,7 @@ class Metric(object):
     @property
     def path(self):
         """URL path for the metric's APIs"""
-        return '/%s' % (self.full_name)
+        return '/%s' % (self.full_name,)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
