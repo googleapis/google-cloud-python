@@ -154,6 +154,45 @@ class TestSink(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % FULL)
 
+    def test_update_w_bound_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        RESOURCE = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        conn = _Connection(RESOURCE)
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT)
+        sink.update()
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(req['data'], RESOURCE)
+
+    def test_update_w_alternate_client(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        RESOURCE = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
+                             client=CLIENT1)
+        sink.update(client=CLIENT2)
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'PUT')
+        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(req['data'], RESOURCE)
+
 
 class _Connection(object):
 

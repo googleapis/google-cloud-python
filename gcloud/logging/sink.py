@@ -126,3 +126,21 @@ class Sink(object):
         data = client.connection.api_request(method='GET', path=self.path)
         self.filter_ = data['filter']
         self.destination = data['destination']
+
+    def update(self, client=None):
+        """API call:  update sink configuration via a PUT request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/update
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current sink.
+        """
+        client = self._require_client(client)
+        data = {
+            'name': self.name,
+            'filter': self.filter_,
+            'destination': self.destination,
+        }
+        client.connection.api_request(method='PUT', path=self.path, data=data)
