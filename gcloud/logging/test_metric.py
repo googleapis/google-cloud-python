@@ -106,12 +106,55 @@ class TestMetric(unittest2.TestCase):
 
     def test_exists_hit_w_alternate_client(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn1 = _Connection({'name': FULL})
+        conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'name': FULL})
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
         metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
         self.assertTrue(metric.exists(client=CLIENT2))
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_reload_w_bound_client(self):
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        NEW_FILTER = 'logName:syslog AND severity>=INFO'
+        RESOURCE = {
+            'name': self.METRIC_NAME,
+            'filter': NEW_FILTER,
+        }
+        conn = _Connection(RESOURCE)
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT,
+                               description=DESCRIPTION)
+        metric.reload()
+        self.assertEqual(metric.filter_, NEW_FILTER)
+        self.assertEqual(metric.description, '')
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % FULL)
+
+    def test_reload_w_alternate_client(self):
+        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
+        DESCRIPTION = 'DESCRIPTION'
+        NEW_FILTER = 'logName:syslog AND severity>=INFO'
+        RESOURCE = {
+            'name': self.METRIC_NAME,
+            'description': DESCRIPTION,
+            'filter': NEW_FILTER,
+        }
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection(RESOURCE)
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
+        metric.reload(client=CLIENT2)
+        self.assertEqual(metric.filter_, NEW_FILTER)
+        self.assertEqual(metric.description, DESCRIPTION)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]

@@ -114,3 +114,18 @@ class Metric(object):
             return False
         else:
             return True
+
+    def reload(self, client=None):
+        """API call:  sync local metric configuration via a GET request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/get
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current metric.
+        """
+        client = self._require_client(client)
+        data = client.connection.api_request(method='GET', path=self.path)
+        self.description = data.get('description', '')
+        self.filter_ = data['filter']
