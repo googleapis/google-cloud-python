@@ -250,9 +250,7 @@ class TestTable_rows(BaseTableTest):
         table.put(ROW_KEY1, row1_data)
         table.put(ROW_KEY2, row2_data)
 
-        rows = table.rows([ROW_KEY1, ROW_KEY2])
-        rows.sort(key=_FIRST_ELT)
-
+        rows = sorted(table.rows([ROW_KEY1, ROW_KEY2]), key=_FIRST_ELT)
         row1, row2 = rows
         self.assertEqual(row1, (ROW_KEY1, row1_data))
         self.assertEqual(row2, (ROW_KEY2, row2_data))
@@ -272,9 +270,8 @@ class TestTable_rows(BaseTableTest):
             batch.put(ROW_KEY1, row1_data)
             batch.put(ROW_KEY2, row2_data)
 
-        rows = table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True)
-        rows.sort(key=_FIRST_ELT)
-
+        rows = sorted(table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True),
+                      key=_FIRST_ELT)
         row1, row2 = rows
         self.assertEqual(row1[0], ROW_KEY1)
         self.assertEqual(row2[0], ROW_KEY2)
@@ -313,8 +310,8 @@ class TestTable_rows(BaseTableTest):
         table.put(ROW_KEY2, row2_data)
 
         # Filter a single column present in both rows.
-        rows_col1 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL1])
-        rows_col1.sort(key=_FIRST_ELT)
+        rows_col1 = sorted(table.rows([ROW_KEY1, ROW_KEY2], columns=[COL1]),
+                           key=_FIRST_ELT)
         row1, row2 = rows_col1
         self.assertEqual(row1, (ROW_KEY1, {COL1: value1}))
         self.assertEqual(row2, (ROW_KEY2, {COL1: value3}))
@@ -324,8 +321,9 @@ class TestTable_rows(BaseTableTest):
         self.assertEqual(rows_col2, [(ROW_KEY1, {COL2: value2})])
 
         # Filter a column family.
-        rows_col_fam1 = table.rows([ROW_KEY1, ROW_KEY2], columns=[COL_FAM1])
-        rows_col_fam1.sort(key=_FIRST_ELT)
+        rows_col_fam1 = sorted(
+            table.rows([ROW_KEY1, ROW_KEY2], columns=[COL_FAM1]),
+            key=_FIRST_ELT)
         row1, row2 = rows_col_fam1
         self.assertEqual(row1, (ROW_KEY1, row1_data))
         self.assertEqual(row2, (ROW_KEY2, row2_data))
@@ -335,17 +333,17 @@ class TestTable_rows(BaseTableTest):
         self.assertEqual(rows_col_fam2, [])
 
         # Filter a column family that overlaps with a column.
-        rows_col_fam_overlap1 = table.rows([ROW_KEY1, ROW_KEY2],
-                                           columns=[COL1, COL_FAM1])
-        rows_col_fam_overlap1.sort(key=_FIRST_ELT)
+        rows_col_fam_overlap1 = sorted(table.rows([ROW_KEY1, ROW_KEY2],
+                                                  columns=[COL1, COL_FAM1]),
+                                       key=_FIRST_ELT)
         row1, row2 = rows_col_fam_overlap1
         self.assertEqual(row1, (ROW_KEY1, row1_data))
         self.assertEqual(row2, (ROW_KEY2, row2_data))
 
         # Filter a column family that overlaps with a column (opposite order).
-        rows_col_fam_overlap2 = table.rows([ROW_KEY1, ROW_KEY2],
-                                           columns=[COL_FAM1, COL1])
-        rows_col_fam_overlap2.sort(key=_FIRST_ELT)
+        rows_col_fam_overlap2 = sorted(table.rows([ROW_KEY1, ROW_KEY2],
+                                                  columns=[COL_FAM1, COL1]),
+                                       key=_FIRST_ELT)
         row1, row2 = rows_col_fam_overlap2
         self.assertEqual(row1, (ROW_KEY1, row1_data))
         self.assertEqual(row2, (ROW_KEY2, row2_data))
@@ -366,8 +364,8 @@ class TestTable_rows(BaseTableTest):
         table.put(ROW_KEY1, {COL4: value4})
 
         # Just grab the timestamps
-        rows = table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True)
-        rows.sort(key=_FIRST_ELT)
+        rows = sorted(table.rows([ROW_KEY1, ROW_KEY2], include_timestamp=True),
+                      key=_FIRST_ELT)
         row1, row2 = rows
         self.assertEqual(row1[0], ROW_KEY1)
         self.assertEqual(row2[0], ROW_KEY2)
@@ -382,17 +380,17 @@ class TestTable_rows(BaseTableTest):
         self.assertTrue(ts1 < ts2 < ts3 < ts4)
 
         # Rows before the third timestamp (assumes exclusive endpoint).
-        rows = table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts3,
-                          include_timestamp=True)
-        rows.sort(key=_FIRST_ELT)
+        rows = sorted(table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts3,
+                                 include_timestamp=True),
+                      key=_FIRST_ELT)
         row1, row2 = rows
         self.assertEqual(row1, (ROW_KEY1, {COL1: (value1, ts1)}))
         self.assertEqual(row2, (ROW_KEY2, {COL1: (value2, ts2)}))
 
         # All writes (bump the exclusive endpoint by 1 millisecond).
-        rows = table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts4 + 1,
-                          include_timestamp=True)
-        rows.sort(key=_FIRST_ELT)
+        rows = sorted(table.rows([ROW_KEY1, ROW_KEY2], timestamp=ts4 + 1,
+                                 include_timestamp=True),
+                      key=_FIRST_ELT)
         row1, row2 = rows
         row1_all_data = {
             COL1: (value1, ts1),
