@@ -229,6 +229,7 @@ class Client(JSONClient):
         :returns: list of :class:`gcloud.logging.metric.Metric`, plus a
                   "next page token" string:  if not None, indicates that
                   more metrics can be retrieved with another call (pass that
+                  value as ``page_token``).
         """
         params = {}
 
