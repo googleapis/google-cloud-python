@@ -80,8 +80,7 @@ class Client(JSONClient):
         raise ValueError('Cannot parse job resource')
 
     def list_entries(self, projects=None, filter_=None, order_by=None,
-                     page_size=None,
-                     page_token=None):
+                     page_size=None, page_token=None):
         """Return a page of log entries.
 
         See:
