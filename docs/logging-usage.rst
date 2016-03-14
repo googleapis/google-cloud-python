@@ -186,6 +186,8 @@ Update a metric:
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> metric = client.metric("robots")
+   >>> metric.exists()  # API call
+   True
    >>> metric.reload()  # API call
    >>> metric.description = "Danger, Will Robinson!"
    >>> metric.update()  # API call
