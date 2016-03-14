@@ -205,8 +205,8 @@ class Client(JSONClient):
         :type description: string
         :param description: the description of the metric to be constructed.
 
-        :rtype: :class:`gcloud.pubsub.logger.Logger`
-        :returns: Logger created with the current client.
+        :rtype: :class:`gcloud.pubsub.metric.Metric`
+        :returns: Metric created with the current client.
         """
         return Metric(name, filter_, client=self, description=description)
 
