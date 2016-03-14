@@ -113,7 +113,6 @@ class Client(JSONClient):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        # pylint: disable=too-many-branches
         if projects is None:
             projects = [self.project]
 
