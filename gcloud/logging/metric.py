@@ -145,3 +145,16 @@ class Metric(object):
         if self.description:
             data['description'] = self.description
         client.connection.api_request(method='PUT', path=self.path, data=data)
+
+    def delete(self, client=None):
+        """API call:  delete a metric via a DELETE request
+
+        See
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/delete
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current metric.
+        """
+        client = self._require_client(client)
+        client.connection.api_request(method='DELETE', path=self.path)
