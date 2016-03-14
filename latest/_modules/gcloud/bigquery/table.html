@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud fdae44a documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud 260cb35 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'fdae44a',
+        VERSION:     '260cb35',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud fdae44a documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 260cb35 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20fdae44a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20260cb35" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (fdae44a)
+              Version History (260cb35)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -724,6 +724,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                     <span class="n">row_ids</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                     <span class="n">skip_invalid_rows</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                     <span class="n">ignore_unknown_values</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">template_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                     <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  insert table data via a POST request</span>
 
@@ -744,6 +745,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type ignore_unknown_values: boolean or ``NoneType``</span>
 <span class="sd">        :param ignore_unknown_values: ignore columns beyond schema?</span>
+
+<span class="sd">        :type template_suffix: string or ``NoneType``</span>
+<span class="sd">        :param template_suffix: treat ``name`` as a template table and provide</span>
+<span class="sd">                                a suffix. BigQuery will create the table</span>
+<span class="sd">                                ``&lt;name&gt; + &lt;template_suffix&gt;`` based on the</span>
+<span class="sd">                                schema of the template table. See:</span>
+<span class="sd">                                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</span>
 
 <span class="sd">        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
@@ -781,6 +789,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="n">ignore_unknown_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ignoreUnknownValues&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ignore_unknown_values</span>
+
+        <span class="k">if</span> <span class="n">template_suffix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;templateSuffix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">template_suffix</span>
 
         <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
             <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
