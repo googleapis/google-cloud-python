@@ -20,6 +20,7 @@ from gcloud.logging.connection import Connection
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry
 from gcloud.logging.logger import Logger
+from gcloud.logging.metric import Metric
 from gcloud.logging.sink import Sink
 
 
@@ -190,3 +191,57 @@ class Client(JSONClient):
         sinks = [Sink.from_api_repr(resource, self)
                  for resource in resp.get('sinks', ())]
         return sinks, resp.get('nextPageToken')
+
+    def metric(self, name, filter_, description=''):
+        """Creates a metric bound to the current client.
+
+        :type name: string
+        :param name: the name of the metric to be constructed.
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries tracked by the metric.
+
+        :type description: string
+        :param description: the description of the metric to be constructed.
+
+        :rtype: :class:`gcloud.pubsub.metric.Metric`
+        :returns: Metric created with the current client.
+        """
+        return Metric(name, filter_, client=self, description=description)
+
+    def list_metrics(self, page_size=None, page_token=None):
+        """List metrics for the project associated with this client.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/list
+
+        :type page_size: int
+        :param page_size: maximum number of metrics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of metrics. If not
+                           passed, the API will return the first page of
+                           metrics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.logging.metric.Metric`, plus a
+                  "next page token" string:  if not None, indicates that
+                  more metrics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/metrics' % (self.project,)
+        resp = self.connection.api_request(method='GET', path=path,
+                                           query_params=params)
+        metrics = [Metric.from_api_repr(resource, self)
+                   for resource in resp.get('metrics', ())]
+        return metrics, resp.get('nextPageToken')

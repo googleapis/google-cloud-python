@@ -22,6 +22,9 @@ class TestClient(unittest2.TestCase):
     SINK_NAME = 'SINK_NAME'
     FILTER = 'logName:syslog AND severity>=ERROR'
     DESTINATION_URI = 'faux.googleapis.com/destination'
+    METRIC_NAME = 'metric_name'
+    FILTER = 'logName:syslog AND severity>=ERROR'
+    DESCRIPTION = 'DESCRIPTION'
 
     def _getTargetClass(self):
         from gcloud.logging.client import Client
@@ -268,6 +271,113 @@ class TestClient(unittest2.TestCase):
         req = CLIENT_OBJ.connection._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/%s/sinks' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
+    def test_metric(self):
+        from gcloud.logging.metric import Metric
+        creds = _Credentials()
+
+        client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
+        metric = client_obj.metric(self.METRIC_NAME, self.FILTER,
+                                   description=self.DESCRIPTION)
+        self.assertTrue(isinstance(metric, Metric))
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertTrue(metric.client is client_obj)
+        self.assertEqual(metric.project, self.PROJECT)
+
+    def test_list_metrics_no_paging(self):
+        from gcloud.logging.metric import Metric
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
+
+        RETURNED = {
+            'metrics': [{
+                'name': METRIC_PATH,
+                'filter': self.FILTER,
+                'description': self.DESCRIPTION,
+            }],
+        }
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        metrics, next_page_token = CLIENT_OBJ.list_metrics()
+        # Test values are correct.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertTrue(isinstance(metric, Metric))
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
+        self.assertEqual(req['query_params'], {})
+
+    def test_list_metrics_with_paging(self):
+        from gcloud.logging.metric import Metric
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        RETURNED = {
+            'metrics': [{
+                'name': METRIC_PATH,
+                'filter': self.FILTER,
+                'description': self.DESCRIPTION,
+            }],
+            'nextPageToken': TOKEN2,
+        }
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        metrics, next_page_token = CLIENT_OBJ.list_metrics(SIZE, TOKEN1)
+        # Test values are correct.
+        self.assertEqual(len(metrics), 1)
+        metric = metrics[0]
+        self.assertTrue(isinstance(metric, Metric))
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertEqual(next_page_token, TOKEN2)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
+        self.assertEqual(req['query_params'],
+                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+
+    def test_list_metrics_missing_key(self):
+        PROJECT = 'PROJECT'
+        CREDS = _Credentials()
+
+        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+
+        RETURNED = {}
+        # Replace the connection on the client with one of our own.
+        CLIENT_OBJ.connection = _Connection(RETURNED)
+
+        # Execute request.
+        metrics, next_page_token = CLIENT_OBJ.list_metrics()
+        # Test values are correct.
+        self.assertEqual(len(metrics), 0)
+        self.assertEqual(next_page_token, None)
+        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
+        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
         self.assertEqual(req['query_params'], {})
 
 
