@@ -20,6 +20,7 @@ from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
+from google.rpc import status_pb2
 
 
 class Connection(connection.Connection):
@@ -89,7 +90,8 @@ class Connection(connection.Connection):
 
         status = headers['status']
         if status != '200':
-            raise make_exception(headers, content, use_json=False)
+            error_status = status_pb2.Status.FromString(content)
+            raise make_exception(headers, error_status.message, use_json=False)
 
         return content
 

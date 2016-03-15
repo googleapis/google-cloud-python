@@ -153,12 +153,17 @@ class TestConnection(unittest2.TestCase):
 
     def test__request_not_200(self):
         from gcloud.exceptions import BadRequest
+        from google.rpc import status_pb2
+
+        error = status_pb2.Status()
+        error.message = 'Entity value is indexed.'
+        error.code = 9  # FAILED_PRECONDITION
 
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = 'DATA'
         conn = self._makeOne()
-        conn._http = Http({'status': '400'}, b'Entity value is indexed.')
+        conn._http = Http({'status': '400'}, error.SerializeToString())
         with self.assertRaises(BadRequest) as e:
             conn._request(PROJECT, METHOD, DATA)
         expected_message = '400 Entity value is indexed.'
