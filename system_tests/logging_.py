@@ -21,10 +21,13 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import logging
 
 
-DEFAULT_LOGGER_NAME = 'system-tests-logger-%d' % (1000 * time.time(),)
-DEFAULT_METRIC_NAME = 'system-tests-metric-%d' % (1000 * time.time(),)
+_MILLIS = 1000 * time.time()
+DEFAULT_LOGGER_NAME = 'system-tests-logger-%d' % (_MILLIS,)
+DEFAULT_METRIC_NAME = 'system-tests-metric-%d' % (_MILLIS,)
+DEFAULT_SINK_NAME = 'system-tests-sink-%d' % (_MILLIS,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
+BUCKET_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
 
 
 class Config(object):
@@ -123,3 +126,25 @@ class TestLogging(unittest2.TestCase):
         after = after_info[DEFAULT_METRIC_NAME]
         self.assertEqual(after.filter_, NEW_FILTER)
         self.assertEqual(after.description, NEW_DESCRIPTION)
+
+    def test_create_sink_storage_bucket(self):
+        from gcloud import storage
+        BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
+
+        # Create the destination bucket, and set up the ACL to allow
+        # Cloud Logging to write into it.
+        storage_client = storage.Client()
+        bucket = storage_client.create_bucket(BUCKET_NAME)
+        self.to_delete.append(bucket)
+        bucket.acl.reload()
+        logs_group = bucket.acl.group('cloud-logs@google.com')
+        logs_group.grant_owner()
+        bucket.acl.add_entity(logs_group)
+        bucket.acl.save()
+
+        sink = Config.CLIENT.sink(
+            DEFAULT_SINK_NAME, DEFAULT_FILTER, BUCKET_URI)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        self.assertTrue(sink.exists())
