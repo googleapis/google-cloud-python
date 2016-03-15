@@ -94,3 +94,15 @@ class TestLogging(unittest2.TestCase):
         after_names = set(metric.name for metric in after_metrics)
         self.assertEqual(after_names - before_names,
                          set([DEFAULT_METRIC_NAME]))
+
+    def test_reload_metric(self):
+        metric = Config.CLIENT.metric(
+            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        self.assertFalse(metric.exists())
+        metric.create()
+        self.to_delete.append(metric)
+        metric.filter_ = 'logName:other'
+        metric.description = 'local changes'
+        metric.reload()
+        self.assertEqual(metric.filter_, DEFAULT_FILTER)
+        self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
