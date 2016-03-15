@@ -106,11 +106,8 @@ class Metric(object):
 
         :rtype: :class:`gcloud.logging.metric.Metric`
         :returns: Metric parsed from ``resource``.
-        :raises: :class:`ValueError` if ``client`` is not ``None`` and the
-                 project from the resource does not agree with the project
-                 from the client.
         """
-        metric_name = _metric_name_from_path(resource['name'], client.project)
+        metric_name = resource['name']
         filter_ = resource['filter']
         description = resource.get('description', '')
         return cls(metric_name, filter_, client=client,

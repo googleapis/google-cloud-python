@@ -80,3 +80,17 @@ class TestLogging(unittest2.TestCase):
         metric.create()
         self.to_delete.append(metric)
         self.assertTrue(metric.exists())
+
+    def test_list_metrics(self):
+        metric = Config.CLIENT.metric(
+            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        self.assertFalse(metric.exists())
+        before_metrics, _ = Config.CLIENT.list_metrics()
+        before_names = set(metric.name for metric in before_metrics)
+        metric.create()
+        self.to_delete.append(metric)
+        self.assertTrue(metric.exists())
+        after_metrics, _ = Config.CLIENT.list_metrics()
+        after_names = set(metric.name for metric in after_metrics)
+        self.assertEqual(after_names - before_names,
+                         set([DEFAULT_METRIC_NAME]))
