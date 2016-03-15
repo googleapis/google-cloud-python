@@ -137,12 +137,13 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
+        target = '/projects/%s/sinks' % (self.project,)
         data = {
             'name': self.name,
             'filter': self.filter_,
             'destination': self.destination,
         }
-        client.connection.api_request(method='PUT', path=self.path, data=data)
+        client.connection.api_request(method='POST', path=target, data=data)
 
     def exists(self, client=None):
         """API call:  test for the existence of the sink via a GET request
