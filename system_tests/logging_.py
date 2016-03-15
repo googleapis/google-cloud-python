@@ -106,3 +106,20 @@ class TestLogging(unittest2.TestCase):
         metric.reload()
         self.assertEqual(metric.filter_, DEFAULT_FILTER)
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
+
+    def test_update_metric(self):
+        NEW_FILTER = 'logName:other'
+        NEW_DESCRIPTION = 'updated'
+        metric = Config.CLIENT.metric(
+            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        self.assertFalse(metric.exists())
+        metric.create()
+        self.to_delete.append(metric)
+        metric.filter_ = NEW_FILTER
+        metric.description = NEW_DESCRIPTION
+        metric.update()
+        after_metrics, _ = Config.CLIENT.list_metrics()
+        after_info = dict((metric.name, metric) for metric in after_metrics)
+        after = after_info[DEFAULT_METRIC_NAME]
+        self.assertEqual(after.filter_, NEW_FILTER)
+        self.assertEqual(after.description, NEW_DESCRIPTION)
