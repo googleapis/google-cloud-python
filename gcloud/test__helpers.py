@@ -526,6 +526,41 @@ class Test__datetime_to_pb_timestamp(unittest2.TestCase):
         self.assertEqual(self._callFUT(dt_stamp), timestamp)
 
 
+class Test__name_from_project_path(unittest2.TestCase):
+
+    PROJECT = 'PROJECT'
+    THING_NAME = 'THING_NAME'
+    TEMPLATE = r'projects/(?P<project>\w+)/things/(?P<name>\w+)'
+
+    def _callFUT(self, path, project, template):
+        from gcloud._helpers import _name_from_project_path
+        return _name_from_project_path(path, project, template)
+
+    def test_w_invalid_path_length(self):
+        PATH = 'projects/foo'
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, None, self.TEMPLATE)
+
+    def test_w_invalid_path_segments(self):
+        PATH = 'foo/%s/bar/%s' % (self.PROJECT, self.THING_NAME)
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, self.PROJECT, self.TEMPLATE)
+
+    def test_w_mismatched_project(self):
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        PATH = 'projects/%s/things/%s' % (PROJECT1, self.THING_NAME)
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, PROJECT2, self.TEMPLATE)
+
+    def test_w_valid_data_w_compiled_regex(self):
+        import re
+        template = re.compile(self.TEMPLATE)
+        PATH = 'projects/%s/things/%s' % (self.PROJECT, self.THING_NAME)
+        name = self._callFUT(PATH, self.PROJECT, template)
+        self.assertEqual(name, self.THING_NAME)
+
+
 class _AppIdentity(object):
 
     def __init__(self, app_id):

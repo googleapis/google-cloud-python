@@ -190,6 +190,45 @@ class Test_Bucket(unittest2.TestCase):
         self.assertEqual(kw['query_params'], {'project': PROJECT})
         self.assertEqual(kw['data'], DATA)
 
+    def test_create_w_extra_properties(self):
+        BUCKET_NAME = 'bucket-name'
+        PROJECT = 'PROJECT'
+        CORS = [{
+            'maxAgeSeconds': 60,
+            'methods': ['*'],
+            'origin': ['https://example.com/frontend'],
+            'responseHeader': ['X-Custom-Header'],
+        }]
+        LIFECYCLE_RULES = [{
+            "action": {"type": "Delete"},
+            "condition": {"age": 365}
+        }]
+        LOCATION = 'eu'
+        STORAGE_CLASS = 'NEARLINE'
+        DATA = {
+            'name': BUCKET_NAME,
+            'cors': CORS,
+            'lifecycle': {'rule': LIFECYCLE_RULES},
+            'location': LOCATION,
+            'storageClass': STORAGE_CLASS,
+            'versioning': {'enabled': True},
+        }
+        connection = _Connection(DATA)
+        client = _Client(connection, project=PROJECT)
+        bucket = self._makeOne(client=client, name=BUCKET_NAME)
+        bucket.cors = CORS
+        bucket.lifecycle_rules = LIFECYCLE_RULES
+        bucket.location = LOCATION
+        bucket.storage_class = STORAGE_CLASS
+        bucket.versioning_enabled = True
+        bucket.create()
+
+        kw, = connection._requested
+        self.assertEqual(kw['method'], 'POST')
+        self.assertEqual(kw['path'], '/b')
+        self.assertEqual(kw['query_params'], {'project': PROJECT})
+        self.assertEqual(kw['data'], DATA)
+
     def test_acl_property(self):
         from gcloud.storage.acl import BucketACL
         bucket = self._makeOne()

@@ -220,8 +220,8 @@ Update all writable metadata for a table
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> table.update()  # API request
 
 Upload table data from a file:
@@ -233,8 +233,8 @@ Upload table data from a file:
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> with open('person_ages.csv', 'rb') as csv_file:
    ...     table.upload_from_file(csv_file, CSV,
    ...                            create_disposition='CREATE_IF_NEEDED')
@@ -384,8 +384,8 @@ Load data synchronously from a local CSV file into a new table:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
    ...     reader = csv.reader(file_obj)
    ...     rows = list(reader)
@@ -405,8 +405,8 @@ the job locally:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> job = client.load_table_from_storage(
    ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
    >>> job.source_format = 'CSV'

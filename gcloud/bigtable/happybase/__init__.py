@@ -24,10 +24,18 @@ Some concepts from HBase/Thrift do not map directly to the Cloud
 Bigtable API. As a result, the following instance methods and functions
 could not be implemented:
 
-* :meth:`.Connection.enable_table` - no concept of enabled/disabled
-* :meth:`.Connection.disable_table` - no concept of enabled/disabled
-* :meth:`.Connection.is_table_enabled` - no concept of enabled/disabled
-* :meth:`.Connection.compact_table` - table storage is opaque to user
+* :meth:`Connection.enable_table() \
+      <gcloud.bigtable.happybase.connection.Connection.enable_table>` - no
+  concept of enabled/disabled
+* :meth:`Connection.disable_table() \
+      <gcloud.bigtable.happybase.connection.Connection.disable_table>` - no
+  concept of enabled/disabled
+* :meth:`Connection.is_table_enabled() \
+      <gcloud.bigtable.happybase.connection.Connection.is_table_enabled>`
+  - no concept of enabled/disabled
+* :meth:`Connection.compact_table() \
+      <gcloud.bigtable.happybase.connection.Connection.compact_table>` -
+  table storage is opaque to user
 * :func:`make_row() <gcloud.bigtable.happybase.table.make_row>` - helper
   needed for Thrift library
 * :func:`make_ordered_row() <gcloud.bigtable.happybase.table.make_ordered_row>`
@@ -41,8 +49,9 @@ could not be implemented:
   However, it's worth nothing this implementation was based off HappyBase
   0.9.
 
-In addition, many of the constants from :mod:`.connection` are specific
-to HBase and are defined as :data:`None` in our module:
+In addition, many of the constants from
+:mod:`connection <gcloud.bigtable.happybase.connection>`
+are specific to HBase and are defined as :data:`None` in our module:
 
 * ``COMPAT_MODES``
 * ``THRIFT_TRANSPORTS``
@@ -63,9 +72,12 @@ API Behavior Changes
 --------------------
 
 * Since there is no concept of an enabled / disabled table, calling
-  :meth:`.Connection.delete_table` with ``disable=True`` can't be supported.
+  :meth:`Connection.delete_table() \
+      <gcloud.bigtable.happybase.connection.Connection.delete_table>`
+  with ``disable=True`` can't be supported.
   Using that argument will result in a warning.
-* The :class:`.Connection` constructor **disables** the use of several
+* The :class:`Connection <gcloud.bigtable.happybase.connection.Connection>`
+  constructor **disables** the use of several
   arguments and will print a warning if any of them are passed in as keyword
   arguments. The arguments are:
 
@@ -74,9 +86,12 @@ API Behavior Changes
   * ``compat``
   * ``transport``
   * ``protocol``
-* In order to make :class:`.Connection` compatible with Cloud Bigtable, we
-  add a ``cluster`` keyword argument to allow user's to pass in their own
-  :class:`.Cluster` (which they can construct beforehand).
+* In order to make
+  :class:`Connection <gcloud.bigtable.happybase.connection.Connection>`
+  compatible with Cloud Bigtable, we add a ``cluster`` keyword argument to
+  allow users to pass in their own
+  :class:`Cluster <gcloud.bigtable.cluster.Cluster>` (which they can
+  construct beforehand).
 
   For example:
 
@@ -93,14 +108,16 @@ API Behavior Changes
 * Any uses of the ``wal`` (Write Ahead Log) argument will result in a
   warning as well. This includes uses in:
 
-  * :class:`.Batch` constructor
-  * :meth:`.Batch.put`
-  * :meth:`.Batch.delete`
+  * :class:`Batch <gcloud.bigtable.happybase.batch.Batch>`
+  * :meth:`Batch.put() <gcloud.bigtable.happybase.batch.Batch.put>`
+  * :meth:`Batch.delete() <gcloud.bigtable.happybase.batch.Batch.delete>`
   * :meth:`Table.put() <gcloud.bigtable.happybase.table.Table.put>`
   * :meth:`Table.delete() <gcloud.bigtable.happybase.table.Table.delete>`
   * :meth:`Table.batch() <gcloud.bigtable.happybase.table.Table.batch>` factory
-* When calling :meth:`.Connection.create_table`, the majority of HBase column
-  family options cannot be used. Among
+* When calling
+  :meth:`Connection.create_table() \
+      <gcloud.bigtable.happybase.connection.Connection.create_table>`, the
+  majority of HBase column family options cannot be used. Among
 
   * ``max_versions``
   * ``compression``
@@ -113,9 +130,9 @@ API Behavior Changes
 
   Only ``max_versions`` and ``time_to_live`` are availabe in Cloud Bigtable
   (as
-   :class:`MaxVersionsGCRule <gcloud.bigtable.column_family.MaxVersionsGCRule>`
-   and
-   `MaxAgeGCRule <gcloud.bigtable.column_family.MaxAgeGCRule>`).
+  :class:`MaxVersionsGCRule <gcloud.bigtable.column_family.MaxVersionsGCRule>`
+  and
+  :class:`MaxAgeGCRule <gcloud.bigtable.column_family.MaxAgeGCRule>`).
 
   In addition to using a dictionary for specifying column family options,
   we also accept instances of :class:`.GarbageCollectionRule` or subclasses.
@@ -131,7 +148,8 @@ API Behavior Changes
   not possible with Cloud Bigtable and will result in a
   :class:`TypeError <exceptions.TypeError>`. However, the method now accepts
   instances of :class:`.RowFilter` and subclasses.
-* :meth:`.Batch.delete` (and hence
+* :meth:`Batch.delete() <gcloud.bigtable.happybase.batch.Batch.delete>` (and
+  hence
   :meth:`Table.delete() <gcloud.bigtable.happybase.table.Table.delete>`)
   will fail with a :class:`ValueError <exceptions.ValueError>` when either a
   row or column family delete is attempted with a ``timestamp``. This is

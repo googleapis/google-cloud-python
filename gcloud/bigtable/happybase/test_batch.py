@@ -46,7 +46,7 @@ class TestBatch(unittest2.TestCase):
 
     def test_constructor_explicit(self):
         from gcloud._helpers import _datetime_from_microseconds
-        from gcloud.bigtable.row import TimestampRange
+        from gcloud.bigtable.row_filters import TimestampRange
 
         table = object()
         timestamp = 144185290431

@@ -210,7 +210,7 @@ class TestCluster(unittest2.TestCase):
     def test__update_from_pb_success(self):
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         display_name = 'display_name'
         serve_nodes = 8
@@ -221,7 +221,7 @@ class TestCluster(unittest2.TestCase):
 
         cluster = self._makeOne(None, None, None)
         self.assertEqual(cluster.display_name, None)
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         cluster._update_from_pb(cluster_pb)
         self.assertEqual(cluster.display_name, display_name)
         self.assertEqual(cluster.serve_nodes, serve_nodes)
@@ -229,30 +229,30 @@ class TestCluster(unittest2.TestCase):
     def test__update_from_pb_no_display_name(self):
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         cluster_pb = data_pb2.Cluster(serve_nodes=331)
         cluster = self._makeOne(None, None, None)
         self.assertEqual(cluster.display_name, None)
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         with self.assertRaises(ValueError):
             cluster._update_from_pb(cluster_pb)
         self.assertEqual(cluster.display_name, None)
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test__update_from_pb_no_serve_nodes(self):
         from gcloud.bigtable._generated import (
             bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         cluster_pb = data_pb2.Cluster(display_name='name')
         cluster = self._makeOne(None, None, None)
         self.assertEqual(cluster.display_name, None)
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         with self.assertRaises(ValueError):
             cluster._update_from_pb(cluster_pb)
         self.assertEqual(cluster.display_name, None)
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_from_pb_success(self):
         from gcloud.bigtable._generated import (
@@ -353,7 +353,7 @@ class TestCluster(unittest2.TestCase):
         from gcloud.bigtable._generated import (
             bigtable_cluster_service_messages_pb2 as messages_pb2)
         from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         project = 'PROJECT'
         zone = 'zone'
@@ -383,7 +383,7 @@ class TestCluster(unittest2.TestCase):
         expected_result = None  # reload() has no return value.
 
         # Check Cluster optional config values before.
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
         self.assertEqual(cluster.display_name, cluster_id)
 
         # Perform the method and check the result.

@@ -2,7 +2,7 @@
 #
 # NOTES:
 #
-# - Rules for test / demo code are generated into 'pylintrc_reduced'
+# - Rules for test code are generated into 'pylintrc_reduced'
 #   as deltas from this configuration by the 'run_pylint.py' script.
 #
 # - 'RATIONALE:  API mapping' as a defense for non-default settings is
@@ -193,7 +193,7 @@ no-space-check =
 # Maximum number of lines in a module
 # DEFAULT:  max-module-lines=1000
 # RATIONALE:  API-mapping
-max-module-lines=1500
+max-module-lines=1200
 
 # String used as indentation unit. This is usually " " (4 spaces) or "\t" (1
 # tab).
@@ -313,6 +313,9 @@ good-names = i, j, k, ex, Run, _,
 # (useful for modules/projects where namespaces are manipulated during runtime
 # and thus existing member attributes cannot be deduced by static analysis
 # DEFAULT:  ignored-modules=
+# RATIONALE:  six aliases stuff for compatibility.
+#             google.protobuf fixes up namespace package "late".
+ignored-modules = six, google.protobuf
 
 # List of classes names for which member attributes should not be checked
 # (useful for classes with attributes dynamically set).

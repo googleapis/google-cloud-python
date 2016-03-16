@@ -157,7 +157,7 @@ class GCRuleUnion(GarbageCollectionRule):
         return other.rules == self.rules
 
     def to_pb(self):
-        """Converts the union into a single gc rule as a protobuf.
+        """Converts the union into a single GC rule as a protobuf.
 
         :rtype: :class:`.data_pb2.GcRule`
         :returns: The converted current object.
@@ -183,7 +183,7 @@ class GCRuleIntersection(GarbageCollectionRule):
         return other.rules == self.rules
 
     def to_pb(self):
-        """Converts the intersection into a single gc rule as a protobuf.
+        """Converts the intersection into a single GC rule as a protobuf.
 
         :rtype: :class:`.data_pb2.GcRule`
         :returns: The converted current object.
