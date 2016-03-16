@@ -618,6 +618,197 @@ class TestTable_scan(BaseTableTest):
         ])
 
 
+class TestTable_put(BaseTableTest):
+
+    def test_put(self):
+        value1 = 'value1'
+        value2 = 'value2'
+        row1_data = {COL1: value1, COL2: value2}
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        Config.TABLE.put(ROW_KEY1, row1_data)
+
+        row1 = Config.TABLE.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        # Check again, but this time with timestamps.
+        row1 = Config.TABLE.row(ROW_KEY1, include_timestamp=True)
+        timestamp1 = row1[COL1][1]
+        timestamp2 = row1[COL2][1]
+        self.assertEqual(timestamp1, timestamp2)
+
+        row1_data_with_timestamps = {COL1: (value1, timestamp1),
+                                     COL2: (value2, timestamp2)}
+        self.assertEqual(row1, row1_data_with_timestamps)
+
+    def test_put_with_timestamp(self):
+        value1 = 'value1'
+        value2 = 'value2'
+        row1_data = {COL1: value1, COL2: value2}
+        ts = NOW_MILLIS
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        Config.TABLE.put(ROW_KEY1, row1_data, timestamp=ts)
+
+        # Check again, but this time with timestamps.
+        row1 = Config.TABLE.row(ROW_KEY1, include_timestamp=True)
+        row1_data_with_timestamps = {COL1: (value1, ts),
+                                     COL2: (value2, ts)}
+        self.assertEqual(row1, row1_data_with_timestamps)
+
+
+class TestTable_delete(BaseTableTest):
+
+    def test_delete(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        row1_data = {COL1: value1, COL2: value2}
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, row1_data)
+
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        table.delete(ROW_KEY1)
+        row1_after = table.row(ROW_KEY1)
+        self.assertEqual(row1_after, {})
+
+    def test_delete_with_columns(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        row1_data = {COL1: value1, COL2: value2}
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, row1_data)
+
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        table.delete(ROW_KEY1, columns=[COL1])
+        row1_after = table.row(ROW_KEY1)
+        self.assertEqual(row1_after, {COL2: value2})
+
+    def test_delete_with_column_family(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        value3 = 'value3'
+        row1_data = {COL1: value1, COL2: value2, COL4: value3}
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, row1_data)
+
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        table.delete(ROW_KEY1, columns=[COL_FAM1])
+        row1_after = table.row(ROW_KEY1)
+        self.assertEqual(row1_after, {COL4: value3})
+
+    def test_delete_with_columns_family_overlap(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+        row1_data = {COL1: value1, COL2: value2}
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+
+        # First go-around, use [COL_FAM1, COL1]
+        table.put(ROW_KEY1, row1_data)
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        table.delete(ROW_KEY1, columns=[COL_FAM1, COL1])
+        row1_after = table.row(ROW_KEY1)
+        self.assertEqual(row1_after, {})
+
+        # Second go-around, use [COL1, COL_FAM1]
+        table.put(ROW_KEY1, row1_data)
+        row1 = table.row(ROW_KEY1)
+        self.assertEqual(row1, row1_data)
+
+        table.delete(ROW_KEY1, columns=[COL1, COL_FAM1])
+        row1_after = table.row(ROW_KEY1)
+        self.assertEqual(row1_after, {})
+
+    def test_delete_with_timestamp(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, {COL1: value1})
+        table.put(ROW_KEY1, {COL2: value2})
+
+        row1 = table.row(ROW_KEY1, include_timestamp=True)
+        ts1 = row1[COL1][1]
+        ts2 = row1[COL2][1]
+
+        self.assertTrue(ts1 < ts2)
+
+        # NOTE: The Cloud Bigtable "Mutation.DeleteFromRow" mutation does
+        #       not support timestamps. Even attempting to send one
+        #       conditionally(via CheckAndMutateRowRequest) deletes the
+        #       entire row.
+        # NOTE: Cloud Bigtable deletes **ALSO** use an inclusive timestamp
+        #       at the endpoint, but only because we fake this when
+        #       creating Batch._delete_range.
+        table.delete(ROW_KEY1, columns=[COL1, COL2], timestamp=ts1 - 1)
+        row1_after_early_delete = table.row(ROW_KEY1, include_timestamp=True)
+        self.assertEqual(row1_after_early_delete, row1)
+
+        # NOTE: Cloud Bigtable deletes **ALSO** use an inclusive timestamp
+        #       at the endpoint, but only because we fake this when
+        #       creating Batch._delete_range.
+        table.delete(ROW_KEY1, columns=[COL1, COL2], timestamp=ts1)
+        row1_after_incl_delete = table.row(ROW_KEY1, include_timestamp=True)
+        self.assertEqual(row1_after_incl_delete, {COL2: (value2, ts2)})
+
+    def test_delete_with_columns_and_timestamp(self):
+        table = Config.TABLE
+        value1 = 'value1'
+        value2 = 'value2'
+
+        # Need to clean-up row1 after.
+        self.rows_to_delete.append(ROW_KEY1)
+        table.put(ROW_KEY1, {COL1: value1})
+        table.put(ROW_KEY1, {COL2: value2})
+
+        row1 = table.row(ROW_KEY1, include_timestamp=True)
+        ts1 = row1[COL1][1]
+        ts2 = row1[COL2][1]
+
+        # Delete with conditions that have no matches.
+        table.delete(ROW_KEY1, timestamp=ts1, columns=[COL2])
+        row1_after_delete = table.row(ROW_KEY1, include_timestamp=True)
+        # NOTE: COL2 is still present since it occurs after ts1 and
+        #       COL1 is still present since it is not in `columns`.
+        self.assertEqual(row1_after_delete, row1)
+
+        # Delete with conditions that have no matches.
+        # NOTE: Cloud Bigtable can't use a timestamp with column families
+        #       since "Mutation.DeleteFromFamily" does not include a
+        #       timestamp range.
+        # NOTE: Cloud Bigtable deletes **ALSO** use an inclusive timestamp
+        #       at the endpoint, but only because we fake this when
+        #       creating Batch._delete_range.
+        table.delete(ROW_KEY1, timestamp=ts1, columns=[COL1, COL2])
+        row1_delete_fam = table.row(ROW_KEY1, include_timestamp=True)
+        # NOTE: COL2 is still present since it occurs after ts1 and
+        #       COL1 is still present since it is not in `columns`.
+        self.assertEqual(row1_delete_fam, {COL2: (value2, ts2)})
+
+
 class TestTableCounterMethods(BaseTableTest):
 
     def test_counter_get(self):
