@@ -12,8 +12,8 @@ import time
 
 import httplib2
 import six
-from six.moves import http_client   # pylint: disable=F0401
-from six.moves.urllib import parse  # pylint: disable=F0401
+from six.moves import http_client
+from six.moves.urllib import parse
 
 from gcloud.streaming.exceptions import BadStatusCodeError
 from gcloud.streaming.exceptions import RequestError

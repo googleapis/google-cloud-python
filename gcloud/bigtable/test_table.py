@@ -56,8 +56,20 @@ class TestTable(unittest2.TestCase):
         self.assertTrue(column_family.gc_rule is gc_rule)
         self.assertEqual(column_family._table, table)
 
-    def test_row_factory(self):
-        from gcloud.bigtable.row import Row
+    def test_row_factory_direct(self):
+        from gcloud.bigtable.row import DirectRow
+
+        table_id = 'table-id'
+        table = self._makeOne(table_id, None)
+        row_key = b'row_key'
+        row = table.row(row_key)
+
+        self.assertTrue(isinstance(row, DirectRow))
+        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row._table, table)
+
+    def test_row_factory_conditional(self):
+        from gcloud.bigtable.row import ConditionalRow
 
         table_id = 'table-id'
         table = self._makeOne(table_id, None)
@@ -65,10 +77,27 @@ class TestTable(unittest2.TestCase):
         filter_ = object()
         row = table.row(row_key, filter_=filter_)
 
-        self.assertTrue(isinstance(row, Row))
+        self.assertTrue(isinstance(row, ConditionalRow))
         self.assertEqual(row._row_key, row_key)
         self.assertEqual(row._table, table)
-        self.assertEqual(row._filter, filter_)
+
+    def test_row_factory_append(self):
+        from gcloud.bigtable.row import AppendRow
+
+        table_id = 'table-id'
+        table = self._makeOne(table_id, None)
+        row_key = b'row_key'
+        row = table.row(row_key, append=True)
+
+        self.assertTrue(isinstance(row, AppendRow))
+        self.assertEqual(row._row_key, row_key)
+        self.assertEqual(row._table, table)
+
+    def test_row_factory_failure(self):
+        table_id = 'table-id'
+        table = self._makeOne(table_id, None)
+        with self.assertRaises(ValueError):
+            table.row(b'row_key', filter_=object(), append=True)
 
     def test___eq__(self):
         table_id = 'table_id'
@@ -553,7 +582,7 @@ class Test__create_row_request(unittest2.TestCase):
     def test_with_filter(self):
         from gcloud.bigtable._generated import (
             bigtable_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable.row import RowSampleFilter
+        from gcloud.bigtable.row_filters import RowSampleFilter
 
         table_name = 'table_name'
         row_filter = RowSampleFilter(0.33)

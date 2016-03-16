@@ -871,10 +871,12 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(name, connection)
         # Mock the return values.
         table._low_level_table = _MockLowLevelTable()
-        table._low_level_table.row_values[row] = _MockLowLevelRow(
+        table._low_level_table.row_values[row] = row_obj = _MockLowLevelRow(
             row, commit_result=commit_result)
 
+        self.assertFalse(row_obj._append)
         result = table.counter_inc(row, column, value=value)
+        self.assertTrue(row_obj._append)
 
         incremented_value = value + _MockLowLevelRow.COUNTER_DEFAULT
         self.assertEqual(result, incremented_value)
@@ -885,6 +887,17 @@ class TestTable(unittest2.TestCase):
             column = column.decode('utf-8')
         self.assertEqual(row_obj.counts,
                          {tuple(column.split(':')): incremented_value})
+
+    def test_counter_set(self):
+        name = 'table-name'
+        connection = None
+        table = self._makeOne(name, connection)
+
+        row = 'row-key'
+        column = 'fam:col1'
+        value = 42
+        with self.assertRaises(NotImplementedError):
+            table.counter_set(row, column, value=value)
 
     def test_counter_inc(self):
         import struct
@@ -1100,7 +1113,7 @@ class Test__convert_to_time_range(unittest2.TestCase):
 
     def test_success(self):
         from gcloud._helpers import _datetime_from_microseconds
-        from gcloud.bigtable.row import TimestampRange
+        from gcloud.bigtable.row_filters import TimestampRange
 
         timestamp = 1441928298571
         ts_dt = _datetime_from_microseconds(1000 * timestamp)
@@ -1206,7 +1219,7 @@ class Test__filter_chain_helper(unittest2.TestCase):
             self._callFUT()
 
     def test_single_filter(self):
-        from gcloud.bigtable.row import CellsColumnLimitFilter
+        from gcloud.bigtable.row_filters import CellsColumnLimitFilter
 
         versions = 1337
         result = self._callFUT(versions=versions)
@@ -1216,7 +1229,7 @@ class Test__filter_chain_helper(unittest2.TestCase):
         self.assertEqual(result.num_cells, versions)
 
     def test_existing_filters(self):
-        from gcloud.bigtable.row import CellsColumnLimitFilter
+        from gcloud.bigtable.row_filters import CellsColumnLimitFilter
 
         filters = []
         versions = 1337
@@ -1231,9 +1244,9 @@ class Test__filter_chain_helper(unittest2.TestCase):
 
     def _column_helper(self, num_filters, versions=None, timestamp=None,
                        column=None, col_fam=None, qual=None):
-        from gcloud.bigtable.row import ColumnQualifierRegexFilter
-        from gcloud.bigtable.row import FamilyNameRegexFilter
-        from gcloud.bigtable.row import RowFilterChain
+        from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
+        from gcloud.bigtable.row_filters import FamilyNameRegexFilter
+        from gcloud.bigtable.row_filters import RowFilterChain
 
         if col_fam is None:
             col_fam = 'cf1'
@@ -1252,8 +1265,8 @@ class Test__filter_chain_helper(unittest2.TestCase):
 
         # Relies on the fact that RowFilter instances can
         # only have one value set.
-        self.assertEqual(fam_filter.regex, col_fam)
-        self.assertEqual(qual_filter.regex, qual)
+        self.assertEqual(fam_filter.regex, col_fam.encode('utf-8'))
+        self.assertEqual(qual_filter.regex, qual.encode('utf-8'))
 
         return result
 
@@ -1269,7 +1282,7 @@ class Test__filter_chain_helper(unittest2.TestCase):
                             col_fam=u'cfU', qual=u'qualN')
 
     def test_with_versions(self):
-        from gcloud.bigtable.row import CellsColumnLimitFilter
+        from gcloud.bigtable.row_filters import CellsColumnLimitFilter
 
         versions = 11
         result = self._column_helper(num_filters=3, versions=versions)
@@ -1282,8 +1295,8 @@ class Test__filter_chain_helper(unittest2.TestCase):
 
     def test_with_timestamp(self):
         from gcloud._helpers import _datetime_from_microseconds
-        from gcloud.bigtable.row import TimestampRange
-        from gcloud.bigtable.row import TimestampRangeFilter
+        from gcloud.bigtable.row_filters import TimestampRange
+        from gcloud.bigtable.row_filters import TimestampRangeFilter
 
         timestamp = 1441928298571
         result = self._column_helper(num_filters=3, timestamp=timestamp)
@@ -1317,7 +1330,7 @@ class Test__columns_filter_helper(unittest2.TestCase):
             self._callFUT(columns)
 
     def test_single_column(self):
-        from gcloud.bigtable.row import FamilyNameRegexFilter
+        from gcloud.bigtable.row_filters import FamilyNameRegexFilter
 
         col_fam = 'cf1'
         columns = [col_fam]
@@ -1326,10 +1339,10 @@ class Test__columns_filter_helper(unittest2.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_column_and_column_families(self):
-        from gcloud.bigtable.row import ColumnQualifierRegexFilter
-        from gcloud.bigtable.row import FamilyNameRegexFilter
-        from gcloud.bigtable.row import RowFilterChain
-        from gcloud.bigtable.row import RowFilterUnion
+        from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
+        from gcloud.bigtable.row_filters import FamilyNameRegexFilter
+        from gcloud.bigtable.row_filters import RowFilterChain
+        from gcloud.bigtable.row_filters import RowFilterUnion
 
         col_fam1 = 'cf1'
         col_fam2 = 'cf2'
@@ -1343,14 +1356,14 @@ class Test__columns_filter_helper(unittest2.TestCase):
         filter2 = result.filters[1]
 
         self.assertTrue(isinstance(filter1, FamilyNameRegexFilter))
-        self.assertEqual(filter1.regex, col_fam1)
+        self.assertEqual(filter1.regex, col_fam1.encode('utf-8'))
 
         self.assertTrue(isinstance(filter2, RowFilterChain))
         filter2a, filter2b = filter2.filters
         self.assertTrue(isinstance(filter2a, FamilyNameRegexFilter))
-        self.assertEqual(filter2a.regex, col_fam2)
+        self.assertEqual(filter2a.regex, col_fam2.encode('utf-8'))
         self.assertTrue(isinstance(filter2b, ColumnQualifierRegexFilter))
-        self.assertEqual(filter2b.regex, col_qual2)
+        self.assertEqual(filter2b.regex, col_qual2.encode('utf-8'))
 
 
 class Test__row_keys_filter_helper(unittest2.TestCase):
@@ -1365,7 +1378,7 @@ class Test__row_keys_filter_helper(unittest2.TestCase):
             self._callFUT(row_keys)
 
     def test_single_row(self):
-        from gcloud.bigtable.row import RowKeyRegexFilter
+        from gcloud.bigtable.row_filters import RowKeyRegexFilter
 
         row_key = b'row-key'
         row_keys = [row_key]
@@ -1374,8 +1387,8 @@ class Test__row_keys_filter_helper(unittest2.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_many_rows(self):
-        from gcloud.bigtable.row import RowFilterUnion
-        from gcloud.bigtable.row import RowKeyRegexFilter
+        from gcloud.bigtable.row_filters import RowFilterUnion
+        from gcloud.bigtable.row_filters import RowKeyRegexFilter
 
         row_key1 = b'row-key1'
         row_key2 = b'row-key2'
@@ -1420,8 +1433,10 @@ class _MockLowLevelTable(object):
         self.list_column_families_calls += 1
         return self.column_families
 
-    def row(self, row_key):
-        return self.row_values[row_key]
+    def row(self, row_key, append=None):
+        result = self.row_values[row_key]
+        result._append = append
+        return result
 
     def read_row(self, *args, **kwargs):
         self.read_row_calls.append((args, kwargs))
@@ -1438,6 +1453,7 @@ class _MockLowLevelRow(object):
 
     def __init__(self, row_key, commit_result=None):
         self.row_key = row_key
+        self._append = False
         self.counts = {}
         self.commit_result = commit_result
 
@@ -1446,7 +1462,7 @@ class _MockLowLevelRow(object):
                                        self.COUNTER_DEFAULT)
         self.counts[(column_family_id, column)] = count + int_value
 
-    def commit_modifications(self):
+    def commit(self):
         return self.commit_result
 
 

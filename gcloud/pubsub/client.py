@@ -80,8 +80,7 @@ class Client(JSONClient):
                   for resource in resp.get('topics', ())]
         return topics, resp.get('nextPageToken')
 
-    def list_subscriptions(self, page_size=None, page_token=None,
-                           topic_name=None):
+    def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.
 
         See:
@@ -99,10 +98,6 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            topics.
 
-        :type topic_name: string
-        :param topic_name: limit results to subscriptions bound to the given
-                           topic.
-
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
                   plus a "next page token" string:  if not None, indicates that
@@ -117,11 +112,7 @@ class Client(JSONClient):
         if page_token is not None:
             params['pageToken'] = page_token
 
-        if topic_name is None:
-            path = '/projects/%s/subscriptions' % (self.project,)
-        else:
-            path = '/projects/%s/topics/%s/subscriptions' % (self.project,
-                                                             topic_name)
+        path = '/projects/%s/subscriptions' % (self.project,)
 
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)

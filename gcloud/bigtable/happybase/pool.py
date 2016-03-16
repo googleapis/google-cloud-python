@@ -42,17 +42,19 @@ class ConnectionPool(object):
     .. note::
 
         All keyword arguments are passed unmodified to the
-        :class:`.Connection` constructor **except** for ``autoconnect``.
-        This is because the ``open`` / ``closed`` status of a connection
-        is managed by the pool. In addition, if ``cluster`` is not passed,
-        the default / inferred cluster is determined by the pool and then
-        passed to each :class:`.Connection` that is created.
+        :class:`Connection <.happybase.connection.Connection>` constructor
+        **except** for ``autoconnect``. This is because the ``open`` /
+        ``closed`` status of a connection is managed by the pool. In addition,
+        if ``cluster`` is not passed, the default / inferred cluster is
+        determined by the pool and then passed to each
+        :class:`Connection <.happybase.connection.Connection>` that is created.
 
     :type size: int
     :param size: The maximum number of concurrently open connections.
 
     :type kwargs: dict
-    :param kwargs: Keyword arguments passed to :class:`.Connection`
+    :param kwargs: Keyword arguments passed to
+                   :class:`Connection <.happybase.Connection>`
                    constructor.
 
     :raises: :class:`TypeError <exceptions.TypeError>` if ``size``
@@ -88,7 +90,7 @@ class ConnectionPool(object):
         :param timeout: (Optional) Time (in seconds) to wait for a connection
                         to open.
 
-        :rtype: :class:`.Connection`
+        :rtype: :class:`Connection <.happybase.Connection>`
         :returns: An active connection from the queue stored on the pool.
         :raises: :class:`NoConnectionsAvailable` if ``Queue.get`` fails
                  before the ``timeout`` (only if a timeout is specified).
@@ -109,13 +111,13 @@ class ConnectionPool(object):
                 pass  # do something with the connection
 
         If ``timeout`` is omitted, this method waits forever for a connection
-        to become available.
+        to become available from the local queue.
 
         :type timeout: int
         :param timeout: (Optional) Time (in seconds) to wait for a connection
                         to open.
 
-        :rtype: :class:`.Connection`
+        :rtype: :class:`Connection <.happybase.connection.Connection>`
         :returns: An active connection from the pool.
         :raises: :class:`NoConnectionsAvailable` if no connection can be
                  retrieved from the pool before the ``timeout`` (only if
