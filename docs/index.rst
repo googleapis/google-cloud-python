@@ -56,6 +56,29 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Cloud Bigtable
+
+  bigtable-usage
+  HappyBase <happybase-package>
+  bigtable-client-intro
+  bigtable-cluster-api
+  bigtable-table-api
+  bigtable-data-api
+  Client <bigtable-client>
+  bigtable-cluster
+  bigtable-table
+  bigtable-column-family
+  bigtable-row
+  bigtable-row-filters
+  bigtable-row-data
+  happybase-connection
+  happybase-pool
+  happybase-table
+  happybase-batch
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: Resource Manager
 
   Overview <resource-manager-api>

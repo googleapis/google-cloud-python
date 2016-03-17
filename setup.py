@@ -1,6 +1,5 @@
 import os
 
-
 from setuptools import setup
 from setuptools import find_packages
 
@@ -14,15 +13,16 @@ with open(os.path.join(here, 'README.rst')) as f:
 REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos',
-    'oauth2client >= 2.0.0.post1',
-    'protobuf >= 3.0.0b2',
+    'oauth2client >= 2.0.1',
+    'protobuf >= 3.0.0b2, != 3.0.0.b2.post1',
     'pyOpenSSL',
     'six',
 ]
+GRPC_EXTRAS = ['grpcio >= 0.13.0']
 
 setup(
     name='gcloud',
-    version='0.10.1',
+    version='0.11.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',
@@ -35,6 +35,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    extras_require={'grpc': GRPC_EXTRAS},
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

@@ -23,7 +23,9 @@ from gcloud.bigtable._generated import (
     bigtable_service_messages_pb2 as data_messages_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
-from gcloud.bigtable.row import Row
+from gcloud.bigtable.row import AppendRow
+from gcloud.bigtable.row import ConditionalRow
+from gcloud.bigtable.row import DirectRow
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.bigtable.row_data import PartialRowsData
 
@@ -53,7 +55,7 @@ class Table(object):
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type cluster: :class:`.cluster.Cluster`
+    :type cluster: :class:`Cluster <.cluster.Cluster>`
     :param cluster: The cluster that owns the table.
     """
 
@@ -86,29 +88,47 @@ class Table(object):
         :param column_family_id: The ID of the column family. Must be of the
                                  form ``[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
 
-        :type gc_rule: :class:`.column_family.GarbageCollectionRule`
+        :type gc_rule: :class:`.GarbageCollectionRule`
         :param gc_rule: (Optional) The garbage collection settings for this
                         column family.
 
-        :rtype: :class:`.column_family.ColumnFamily`
+        :rtype: :class:`.ColumnFamily`
         :returns: A column family owned by this table.
         """
         return ColumnFamily(column_family_id, self, gc_rule=gc_rule)
 
-    def row(self, row_key, filter_=None):
+    def row(self, row_key, filter_=None, append=False):
         """Factory to create a row associated with this table.
+
+        .. warning::
+
+           At most one of ``filter_`` and ``append`` can be used in a
+           :class:`Row`.
 
         :type row_key: bytes
         :param row_key: The key for the row being created.
 
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) Filter to be used for conditional mutations.
-                        See :class:`.Row` for more details.
+                        See :class:`.DirectRow` for more details.
 
-        :rtype: :class:`.Row`
+        :type append: bool
+        :param append: (Optional) Flag to determine if the row should be used
+                       for append mutations.
+
+        :rtype: :class:`.DirectRow`
         :returns: A row owned by this table.
+        :raises: :class:`ValueError <exceptions.ValueError>` if both
+                 ``filter_`` and ``append`` are used.
         """
-        return Row(row_key, self, filter_=filter_)
+        if append and filter_ is not None:
+            raise ValueError('At most one of filter_ and append can be set')
+        if append:
+            return AppendRow(row_key, self)
+        elif filter_ is not None:
+            return ConditionalRow(row_key, self, filter_=filter_)
+        else:
+            return DirectRow(row_key, self)
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -199,7 +219,7 @@ class Table(object):
         :rtype: dict
         :returns: Dictionary of column families attached to this table. Keys
                   are strings (column family names) and values are
-                  :class:`.column_family.ColumnFamily` instances.
+                  :class:`.ColumnFamily` instances.
         :raises: :class:`ValueError <exceptions.ValueError>` if the column
                  family name from the response does not agree with the computed
                  name from the column family ID.
@@ -228,7 +248,7 @@ class Table(object):
         :type row_key: bytes
         :param row_key: The key of the row to read from.
 
-        :type filter_: :class:`.row.RowFilter`
+        :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         row. If unset, returns the entire row.
 
@@ -291,7 +311,7 @@ class Table(object):
                       more than N rows. However, only N ``commit_row`` chunks
                       will be sent.
 
-        :type filter_: :class:`.row.RowFilter`
+        :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
                         specified row(s). If unset, reads every column in
                         each row.
@@ -368,7 +388,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                     The range will not include ``end_key``. If left empty,
                     will be interpreted as an infinite string.
 
-    :type filter_: :class:`.row.RowFilter`
+    :type filter_: :class:`.RowFilter`
     :param filter_: (Optional) The filter to apply to the contents of the
                     specified row(s). If unset, reads the entire table.
 

@@ -260,7 +260,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_miss(self):
         from six.moves.http_client import NOT_FOUND
         NONESUCH = 'nonesuch'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -270,7 +270,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
-        found_response = {'status': OK}
+        found_response = ({'status': OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -281,7 +281,7 @@ class Test_Blob(unittest2.TestCase):
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -290,6 +290,32 @@ class Test_Blob(unittest2.TestCase):
         blob.delete()
         self.assertFalse(blob.exists())
         self.assertEqual(bucket._deleted, [(BLOB_NAME, None)])
+
+    def test_download_to_file_wo_media_link(self):
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
+        from io import BytesIO
+        BLOB_NAME = 'blob-name'
+        MEDIA_LINK = 'http://example.com/media/'
+        chunk1_response = {'status': PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
+        )
+        # Only the 'reload' request hits on this side:  the others are done
+        # through the 'http' object.
+        reload_response = {'status': OK, 'content-type': 'application/json'}
+        connection._responses = [(reload_response, {"mediaLink": MEDIA_LINK})]
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        fh = BytesIO()
+        blob.download_to_file(fh)
+        self.assertEqual(fh.getvalue(), b'abcdef')
+        self.assertEqual(blob.media_link, MEDIA_LINK)
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -749,10 +775,11 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(rq[0]['body'], ENCODED)
 
     def test_make_public(self):
+        from six.moves.http_client import OK
         from gcloud.storage.acl import _ACLEntity
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
-        after = {'acl': permissive}
+        after = ({'status': OK}, {'acl': permissive})
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1092,10 +1119,10 @@ class _Connection(_Responder):
     def api_request(self, **kw):
         from six.moves.http_client import NOT_FOUND
         from gcloud.exceptions import NotFound
-        result = self._respond(**kw)
-        if result.get('status') == NOT_FOUND:
-            raise NotFound(result)
-        return result
+        info, content = self._respond(**kw)
+        if info.get('status') == NOT_FOUND:
+            raise NotFound(info)
+        return content
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):

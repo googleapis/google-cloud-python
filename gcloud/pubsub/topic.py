@@ -19,6 +19,7 @@ import base64
 from gcloud._helpers import _datetime_to_rfc3339
 from gcloud._helpers import _NOW
 from gcloud.exceptions import NotFound
+from gcloud.pubsub._helpers import subscription_name_from_path
 from gcloud.pubsub._helpers import topic_name_from_path
 from gcloud.pubsub.subscription import Subscription
 
@@ -211,6 +212,51 @@ class Topic(object):
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
+
+    def list_subscriptions(self, page_size=None, page_token=None, client=None):
+        """List subscriptions for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current topic.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
+                  plus a "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        client = self._require_client(client)
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/topics/%s/subscriptions' % (
+            self.project, self.name)
+
+        resp = client.connection.api_request(method='GET', path=path,
+                                             query_params=params)
+        subscriptions = []
+        for sub_path in resp.get('subscriptions', ()):
+            sub_name = subscription_name_from_path(sub_path, self.project)
+            subscriptions.append(Subscription(sub_name, self))
+        return subscriptions, resp.get('nextPageToken')
 
 
 class Batch(object):
