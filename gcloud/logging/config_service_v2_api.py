@@ -14,64 +14,123 @@
 #
 # EDITING INSTRUCTIONS
 # This file was generated from the file
-# https://github.com/google/googleapis/blob/7710ead495227e80a0f06ceb66bdf3238d926f77/google/logging/v2/logging_config.proto,
+# https://github.com/google/googleapis/blob/master/google/logging/v2/logging_config.proto,
 # and updates to that file get reflected here through a refresh process.
 # For the short term, the refresh process will only be runnable by Google engineers.
-# Manual additions are allowed because the refresh process performs
-# a 3-way merge in order to preserve those manual additions. In order to not
-# break the refresh process, only certain types of modifications are
-# allowed.
 #
-# Allowed modifications:
-# 1. New methods (these should be added to the end of the class)
-#
-# Happy editing!
+# The only allowed edits are to method and file documentation. A 3-way
+# merge preserves those additions if the generated source changes.
+
+import os
+import platform
 
 from google.gax import api_callable
-from google.gax import api_utils
-from google.gax import page_descriptor
+from google.gax import config
+from google.gax.path_template import PathTemplate
+import google.gax
+import yaml
+
 from google.logging.v2 import logging_config_pb2
 
 
 class ConfigServiceV2Api(object):
+    """See src/api/google/logging/v2/logging.proto for documentation"""
 
-    # The default address of the logging service.
-    _SERVICE_ADDRESS = 'logging.googleapis.com'
+    _CODE_GEN_NAME_VERSION = 'gapic-0.1.0'
 
-    # The default port of the logging service.
-    _DEFAULT_SERVICE_PORT = 443
+    SERVICE_ADDRESS = 'logging.googleapis.com'
+    """The default address of the service."""
+
+    DEFAULT_SERVICE_PORT = 443
+    """The default port of the service."""
 
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
-    _ALL_SCOPES = (
-        'https://www.googleapis.com/auth/logging.write',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/cloud-platform',
-    )
+    _ALL_SCOPES = ('https://www.googleapis.com/auth/logging.write',
+                   'https://www.googleapis.com/auth/logging.admin',
+                   'https://www.googleapis.com/auth/logging.read',
+                   'https://www.googleapis.com/auth/cloud-platform.read-only',
+                   'https://www.googleapis.com/auth/cloud-platform', )
 
-    _LIST_SINKS_DESCRIPTOR = page_descriptor.PageDescriptor(
-        'page_token',
-        'next_page_token',
-        'sinks',
-    )
+    _PROJECT_PATH_TEMPLATE = PathTemplate('projects/{project}')
+    _SINK_PATH_TEMPLATE = PathTemplate('projects/{project}/sinks/{sink}')
 
-    def __init__(
-            self,
-            service_path=_SERVICE_ADDRESS,
-            port=_DEFAULT_SERVICE_PORT,
-            channel=None,
-            ssl_creds=None,
-            scopes=_ALL_SCOPES,
-            is_idempotent_retrying=True,
-            max_attempts=3,
-            timeout=30):
-        self.defaults = api_callable.ApiCallableDefaults(
-            timeout=timeout,
-            max_attempts=max_attempts,
-            is_idempotent_retrying=is_idempotent_retrying)
-        self.stub = api_utils.create_stub(
+    @classmethod
+    def project_path(cls, project):
+        """Returns a fully-qualified project resource name string."""
+        return cls._PROJECT_PATH_TEMPLATE.instantiate({'project': project, })
+
+    @classmethod
+    def sink_path(cls, project, sink):
+        """Returns a fully-qualified sink resource name string."""
+        return cls._SINK_PATH_TEMPLATE.instantiate({
+            'project': project,
+            'sink': sink,
+        })
+
+    def __init__(self,
+                 service_path=SERVICE_ADDRESS,
+                 port=DEFAULT_SERVICE_PORT,
+                 channel=None,
+                 ssl_creds=None,
+                 scopes=_ALL_SCOPES,
+                 retrying_override=None,
+                 bundling_override=None,
+                 timeout=30,
+                 app_name=None,
+                 app_version=None):
+        """Constructor.
+
+        Args:
+          :keyword service_path: The DNS of the API remote host.
+          :type service_path: string
+          :keyword port: The port on which to connect to the remote host.
+          :type port: int
+          :keyword channel: A Channel object through which to make calls.
+          :type channel: A grpc.beta.implementations.Channel object
+          :keyword ssl_creds: A ClientCredentials for use with an SSL-
+            enabled channel
+          :type ssl_creds: A grpc.beta.implementations.ClientCredentials
+            object
+          :keyword retrying_override: A dictionary that overrides default
+            retrying settings. ``retrying_override`` maps method names
+            (e.g., 'list_foo') to custom RetryOptions objects, or to None.
+            A value of None indicates that the method in question should not
+            retry.
+          :type retrying_override: dict
+          :keyword bundling_override: A dictionary that overrides default
+            bundling settings. ``bundling_override`` maps bundling method
+            names (e.g., 'publish_foo') to custom BundleOptions objects, or to
+            None. It is invalid to have a key for a method that is not
+            bundling-enabled. A value of None indicates that the method in
+            question should not bundle.
+          :type bundling_override: dict
+          :keyword timeout: The default timeout, in seconds, for calls made
+            through this client
+          :type timeout: int
+          :keyword app_name: The codename of the calling service.
+          :type app_name: string
+          :keyword app_version: The version of the calling service.
+          :type app_version: string
+        """
+        if app_name is None:
+            app_name = 'gax'
+        if app_version is None:
+            app_version = google.gax.__version__
+        bundling_override = bundling_override or dict()
+        retrying_override = retrying_override or dict()
+        config_filename = os.path.join(
+            os.path.dirname(__file__), 'config_service_v2_api.yaml')
+        with open(config_filename, 'r') as api_yaml:
+            self._defaults = api_callable.construct_settings(
+                yaml.load(api_yaml.read()), bundling_override,
+                retrying_override, config.STATUS_CODE_NAMES, timeout)
+        google_apis_agent = '{}-{}/{}/gax-{}/{}'.format(
+            app_name, app_version, self._CODE_GEN_NAME_VERSION,
+            google.gax.__version__,
+            'python-{}'.format(platform.python_version()))
+        self._headers = [('x-google-apis-agent', google_apis_agent)]
+        self.stub = config.create_stub(
             logging_config_pb2.beta_create_ConfigServiceV2_stub,
             service_path,
             port,
@@ -79,126 +138,81 @@ class ConfigServiceV2Api(object):
             channel=channel,
             scopes=scopes)
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
-    def close(self):
-        del self.stub
-
     # Service calls
-    def list_sinks(
-            self,
-            project_name='',
-            **kwargs):
-        """Lists sinks."""
-        list_sinks_request = logging_config_pb2.ListSinksRequest(
-            project_name=project_name,
-            **kwargs)
-        return self.list_sinks_callable()(list_sinks_request)
+    def list_sinks(self, project_name='', options=None):
+        """
+        Lists sinks.
 
-    def list_sinks_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None,
-            page_streaming=_LIST_SINKS_DESCRIPTOR):
-        return api_callable.idempotent_callable(
+        :type project_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_config_pb2.ListSinksRequest(project_name=project_name)
+        settings = self._defaults['list_sinks'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.ListSinks,
-            page_streaming=page_streaming,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def get_sink(
-            self,
-            sink_name='',
-            **kwargs):
-        """Gets a sink."""
-        get_sink_request = logging_config_pb2.GetSinkRequest(
-            sink_name=sink_name,
-            **kwargs)
-        return self.get_sink_callable()(get_sink_request)
+    def get_sink(self, sink_name='', options=None):
+        """
+        Gets a sink.
 
-    def get_sink_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        :type sink_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_config_pb2.GetSinkRequest(sink_name=sink_name)
+        settings = self._defaults['get_sink'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.GetSink,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def create_sink(
-            self,
-            project_name='',
-            sink=None,
-            **kwargs):
-        """Creates a sink."""
+    def create_sink(self, project_name='', sink=None, options=None):
+        """
+        Creates a sink.
+
+        :type project_name: string
+        :type sink: logging_config_pb2.LogSink
+        :type options: api_callable.CallOptions
+        """
         if sink is None:
             sink = logging_config_pb2.LogSink()
-        create_sink_request = logging_config_pb2.CreateSinkRequest(
-            project_name=project_name,
-            sink=sink,
-            **kwargs)
-        return self.create_sink_callable()(create_sink_request)
-
-    def create_sink_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        req = logging_config_pb2.CreateSinkRequest(project_name=project_name,
+                                                   sink=sink)
+        settings = self._defaults['create_sink'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.CreateSink,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def update_sink(
-            self,
-            sink_name='',
-            sink=None,
-            **kwargs):
-        """Creates or updates a sink."""
+    def update_sink(self, sink_name='', sink=None, options=None):
+        """
+        Creates or updates a sink.
+
+        :type sink_name: string
+        :type sink: logging_config_pb2.LogSink
+        :type options: api_callable.CallOptions
+        """
         if sink is None:
             sink = logging_config_pb2.LogSink()
-        update_sink_request = logging_config_pb2.UpdateSinkRequest(
-            sink_name=sink_name,
-            sink=sink,
-            **kwargs)
-        return self.update_sink_callable()(update_sink_request)
-
-    def update_sink_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        req = logging_config_pb2.UpdateSinkRequest(sink_name=sink_name,
+                                                   sink=sink)
+        settings = self._defaults['update_sink'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.UpdateSink,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def delete_sink(
-            self,
-            sink_name='',
-            **kwargs):
-        """Deletes a sink."""
-        delete_sink_request = logging_config_pb2.DeleteSinkRequest(
-            sink_name=sink_name,
-            **kwargs)
-        return self.delete_sink_callable()(delete_sink_request)
+    def delete_sink(self, sink_name='', options=None):
+        """
+        Deletes a sink.
 
-    def delete_sink_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        :type sink_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_config_pb2.DeleteSinkRequest(sink_name=sink_name)
+        settings = self._defaults['delete_sink'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.DeleteSink,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
-
-    # ========
-    # Manually-added methods: add custom (non-generated) methods after this point.
-    # ========
+            settings=settings)(req,
+                               metadata=self._headers)

@@ -14,64 +14,123 @@
 #
 # EDITING INSTRUCTIONS
 # This file was generated from the file
-# https://github.com/google/googleapis/blob/7710ead495227e80a0f06ceb66bdf3238d926f77/google/logging/v2/logging_metrics.proto,
+# https://github.com/google/googleapis/blob/master/google/logging/v2/logging_metrics.proto,
 # and updates to that file get reflected here through a refresh process.
 # For the short term, the refresh process will only be runnable by Google engineers.
-# Manual additions are allowed because the refresh process performs
-# a 3-way merge in order to preserve those manual additions. In order to not
-# break the refresh process, only certain types of modifications are
-# allowed.
 #
-# Allowed modifications:
-# 1. New methods (these should be added to the end of the class)
-#
-# Happy editing!
+# The only allowed edits are to method and file documentation. A 3-way
+# merge preserves those additions if the generated source changes.
+
+import os
+import platform
 
 from google.gax import api_callable
-from google.gax import api_utils
-from google.gax import page_descriptor
+from google.gax import config
+from google.gax.path_template import PathTemplate
+import google.gax
+import yaml
+
 from google.logging.v2 import logging_metrics_pb2
 
 
 class MetricsServiceV2Api(object):
+    """See src/api/google/logging/v1/logging.proto for documentation"""
 
-    # The default address of the logging service.
-    _SERVICE_ADDRESS = 'logging.googleapis.com'
+    _CODE_GEN_NAME_VERSION = 'gapic-0.1.0'
 
-    # The default port of the logging service.
-    _DEFAULT_SERVICE_PORT = 443
+    SERVICE_ADDRESS = 'logging.googleapis.com'
+    """The default address of the service."""
+
+    DEFAULT_SERVICE_PORT = 443
+    """The default port of the service."""
 
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
-    _ALL_SCOPES = (
-        'https://www.googleapis.com/auth/logging.write',
-        'https://www.googleapis.com/auth/logging.admin',
-        'https://www.googleapis.com/auth/logging.read',
-        'https://www.googleapis.com/auth/cloud-platform.read-only',
-        'https://www.googleapis.com/auth/cloud-platform',
-    )
+    _ALL_SCOPES = ('https://www.googleapis.com/auth/logging.write',
+                   'https://www.googleapis.com/auth/logging.admin',
+                   'https://www.googleapis.com/auth/logging.read',
+                   'https://www.googleapis.com/auth/cloud-platform.read-only',
+                   'https://www.googleapis.com/auth/cloud-platform', )
 
-    _LIST_LOG_METRICS_DESCRIPTOR = page_descriptor.PageDescriptor(
-        'page_token',
-        'next_page_token',
-        'metrics',
-    )
+    _PROJECT_PATH_TEMPLATE = PathTemplate('projects/{project}')
+    _METRIC_PATH_TEMPLATE = PathTemplate('projects/{project}/metrics/{metric}')
 
-    def __init__(
-            self,
-            service_path=_SERVICE_ADDRESS,
-            port=_DEFAULT_SERVICE_PORT,
-            channel=None,
-            ssl_creds=None,
-            scopes=_ALL_SCOPES,
-            is_idempotent_retrying=True,
-            max_attempts=3,
-            timeout=30):
-        self.defaults = api_callable.ApiCallableDefaults(
-            timeout=timeout,
-            max_attempts=max_attempts,
-            is_idempotent_retrying=is_idempotent_retrying)
-        self.stub = api_utils.create_stub(
+    @classmethod
+    def project_path(cls, project):
+        """Returns a fully-qualified project resource name string."""
+        return cls._PROJECT_PATH_TEMPLATE.instantiate({'project': project, })
+
+    @classmethod
+    def metric_path(cls, project, metric):
+        """Returns a fully-qualified metric resource name string."""
+        return cls._METRIC_PATH_TEMPLATE.instantiate({
+            'project': project,
+            'metric': metric,
+        })
+
+    def __init__(self,
+                 service_path=SERVICE_ADDRESS,
+                 port=DEFAULT_SERVICE_PORT,
+                 channel=None,
+                 ssl_creds=None,
+                 scopes=_ALL_SCOPES,
+                 retrying_override=None,
+                 bundling_override=None,
+                 timeout=30,
+                 app_name=None,
+                 app_version=None):
+        """Constructor.
+
+        Args:
+          :keyword service_path: The DNS of the API remote host.
+          :type service_path: string
+          :keyword port: The port on which to connect to the remote host.
+          :type port: int
+          :keyword channel: A Channel object through which to make calls.
+          :type channel: A grpc.beta.implementations.Channel object
+          :keyword ssl_creds: A ClientCredentials for use with an SSL-
+            enabled channel
+          :type ssl_creds: A grpc.beta.implementations.ClientCredentials
+            object
+          :keyword retrying_override: A dictionary that overrides default
+            retrying settings. ``retrying_override`` maps method names
+            (e.g., 'list_foo') to custom RetryOptions objects, or to None.
+            A value of None indicates that the method in question should not
+            retry.
+          :type retrying_override: dict
+          :keyword bundling_override: A dictionary that overrides default
+            bundling settings. ``bundling_override`` maps bundling method
+            names (e.g., 'publish_foo') to custom BundleOptions objects, or to
+            None. It is invalid to have a key for a method that is not
+            bundling-enabled. A value of None indicates that the method in
+            question should not bundle.
+          :type bundling_override: dict
+          :keyword timeout: The default timeout, in seconds, for calls made
+            through this client
+          :type timeout: int
+          :keyword app_name: The codename of the calling service.
+          :type app_name: string
+          :keyword app_version: The version of the calling service.
+          :type app_version: string
+        """
+        if app_name is None:
+            app_name = 'gax'
+        if app_version is None:
+            app_version = google.gax.__version__
+        bundling_override = bundling_override or dict()
+        retrying_override = retrying_override or dict()
+        config_filename = os.path.join(
+            os.path.dirname(__file__), 'metrics_service_v2_api.yaml')
+        with open(config_filename, 'r') as api_yaml:
+            self._defaults = api_callable.construct_settings(
+                yaml.load(api_yaml.read()), bundling_override,
+                retrying_override, config.STATUS_CODE_NAMES, timeout)
+        google_apis_agent = '{}-{}/{}/gax-{}/{}'.format(
+            app_name, app_version, self._CODE_GEN_NAME_VERSION,
+            google.gax.__version__,
+            'python-{}'.format(platform.python_version()))
+        self._headers = [('x-google-apis-agent', google_apis_agent)]
+        self.stub = config.create_stub(
             logging_metrics_pb2.beta_create_MetricsServiceV2_stub,
             service_path,
             port,
@@ -79,126 +138,85 @@ class MetricsServiceV2Api(object):
             channel=channel,
             scopes=scopes)
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
-    def close(self):
-        del self.stub
-
     # Service calls
-    def list_log_metrics(
-            self,
-            project_name='',
-            **kwargs):
-        """Lists logs-based metrics."""
-        list_log_metrics_request = logging_metrics_pb2.ListLogMetricsRequest(
-            project_name=project_name,
-            **kwargs)
-        return self.list_log_metrics_callable()(list_log_metrics_request)
+    def list_log_metrics(self, project_name='', options=None):
+        """
+        Lists logs-based metrics.
 
-    def list_log_metrics_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None,
-            page_streaming=_LIST_LOG_METRICS_DESCRIPTOR):
-        return api_callable.idempotent_callable(
+        :type project_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_metrics_pb2.ListLogMetricsRequest(
+            project_name=project_name)
+        settings = self._defaults['list_log_metrics'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.ListLogMetrics,
-            page_streaming=page_streaming,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def get_log_metric(
-            self,
-            metric_name='',
-            **kwargs):
-        """Gets a logs-based metric."""
-        get_log_metric_request = logging_metrics_pb2.GetLogMetricRequest(
-            metric_name=metric_name,
-            **kwargs)
-        return self.get_log_metric_callable()(get_log_metric_request)
+    def get_log_metric(self, metric_name='', options=None):
+        """
+        Gets a logs-based metric.
 
-    def get_log_metric_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        :type metric_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_metrics_pb2.GetLogMetricRequest(metric_name=metric_name)
+        settings = self._defaults['get_log_metric'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.GetLogMetric,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def create_log_metric(
-            self,
-            project_name='',
-            metric=None,
-            **kwargs):
-        """Creates a logs-based metric."""
+    def create_log_metric(self, project_name='', metric=None, options=None):
+        """
+        Creates a logs-based metric.
+
+        :type project_name: string
+        :type metric: logging_metrics_pb2.LogMetric
+        :type options: api_callable.CallOptions
+        """
         if metric is None:
             metric = logging_metrics_pb2.LogMetric()
-        create_log_metric_request = logging_metrics_pb2.CreateLogMetricRequest(
+        req = logging_metrics_pb2.CreateLogMetricRequest(
             project_name=project_name,
-            metric=metric,
-            **kwargs)
-        return self.create_log_metric_callable()(create_log_metric_request)
-
-    def create_log_metric_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+            metric=metric)
+        settings = self._defaults['create_log_metric'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.CreateLogMetric,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def update_log_metric(
-            self,
-            metric_name='',
-            metric=None,
-            **kwargs):
-        """Creates or updates a logs-based metric."""
+    def update_log_metric(self, metric_name='', metric=None, options=None):
+        """
+        Creates or updates a logs-based metric.
+
+        :type metric_name: string
+        :type metric: logging_metrics_pb2.LogMetric
+        :type options: api_callable.CallOptions
+        """
         if metric is None:
             metric = logging_metrics_pb2.LogMetric()
-        update_log_metric_request = logging_metrics_pb2.UpdateLogMetricRequest(
+        req = logging_metrics_pb2.UpdateLogMetricRequest(
             metric_name=metric_name,
-            metric=metric,
-            **kwargs)
-        return self.update_log_metric_callable()(update_log_metric_request)
-
-    def update_log_metric_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+            metric=metric)
+        settings = self._defaults['update_log_metric'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.UpdateLogMetric,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
+            settings=settings)(req,
+                               metadata=self._headers)
 
-    def delete_log_metric(
-            self,
-            metric_name='',
-            **kwargs):
-        """Deletes a logs-based metric."""
-        delete_log_metric_request = logging_metrics_pb2.DeleteLogMetricRequest(
-            metric_name=metric_name,
-            **kwargs)
-        return self.delete_log_metric_callable()(delete_log_metric_request)
+    def delete_log_metric(self, metric_name='', options=None):
+        """
+        Deletes a logs-based metric.
 
-    def delete_log_metric_callable(
-            self,
-            is_retrying=None,
-            max_attempts=None):
-        return api_callable.idempotent_callable(
+        :type metric_name: string
+        :type options: api_callable.CallOptions
+        """
+        req = logging_metrics_pb2.DeleteLogMetricRequest(
+            metric_name=metric_name)
+        settings = self._defaults['delete_log_metric'].merge(options)
+        return api_callable.ApiCallable(
             self.stub.DeleteLogMetric,
-            is_retrying=is_retrying,
-            max_attempts=max_attempts,
-            defaults=self.defaults)
-
-    # ========
-    # Manually-added methods: add custom (non-generated) methods after this point.
-    # ========
+            settings=settings)(req,
+                               metadata=self._headers)
