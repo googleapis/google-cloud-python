@@ -124,25 +124,25 @@ class TestSink(unittest2.TestCase):
                           RESOURCE, client=CLIENT)
 
     def test_create_w_bound_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        TARGET = 'projects/%s/sinks' % (self.PROJECT,)
         RESOURCE = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
-        conn = _Connection({'name': FULL})
+        conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=client)
         sink.create()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % TARGET)
         self.assertEqual(req['data'], RESOURCE)
 
     def test_create_w_alternate_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        TARGET = 'projects/%s/sinks' % (self.PROJECT,)
         RESOURCE = {
             'name': self.SINK_NAME,
             'filter': self.FILTER,
@@ -150,7 +150,7 @@ class TestSink(unittest2.TestCase):
         }
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': FULL})
+        conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=client1)
@@ -158,8 +158,8 @@ class TestSink(unittest2.TestCase):
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % TARGET)
         self.assertEqual(req['data'], RESOURCE)
 
     def test_exists_miss_w_bound_client(self):
