@@ -35,6 +35,9 @@ MODULES = (
     'pubsub',
     'bigquery',
 )
+if sys.version_info[:2] == (2, 7):
+    MODULES += ('bigtable', 'bigtable-happybase')
+
 SCRIPTS_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.abspath(os.path.join(SCRIPTS_DIR, '..'))
 ENCRYPTED_KEYFILE = os.path.join(ROOT_DIR, 'system_tests', 'key.json.enc')
