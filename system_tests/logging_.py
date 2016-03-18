@@ -21,7 +21,10 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import logging
 
 
-DEFAULT_LOGGER_NAME = 'system-tests-%d' % (1000 * time.time(),)
+DEFAULT_LOGGER_NAME = 'system-tests-logger-%d' % (1000 * time.time(),)
+DEFAULT_METRIC_NAME = 'system-tests-metric-%d' % (1000 * time.time(),)
+DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
+DEFAULT_DESCRIPTION = 'System testing'
 
 
 class Config(object):
@@ -69,3 +72,11 @@ class TestLogging(unittest2.TestCase):
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+
+    def test_create_metric(self):
+        metric = Config.CLIENT.metric(
+            DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
+        self.assertFalse(metric.exists())
+        metric.create()
+        self.to_delete.append(metric)
+        self.assertTrue(metric.exists())
