@@ -92,7 +92,7 @@ class TestMetric(unittest2.TestCase):
         CLIENT = _Client(project=self.PROJECT)
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         RESOURCE = {
-            'name': FULL,
+            'name': self.METRIC_NAME,
             'filter': self.FILTER,
         }
         klass = self._getTargetClass()
@@ -109,7 +109,7 @@ class TestMetric(unittest2.TestCase):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         DESCRIPTION = 'DESCRIPTION'
         RESOURCE = {
-            'name': FULL,
+            'name': self.METRIC_NAME,
             'filter': self.FILTER,
             'description': DESCRIPTION,
         }
@@ -121,16 +121,6 @@ class TestMetric(unittest2.TestCase):
         self.assertTrue(metric._client is CLIENT)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
-
-    def test_from_api_repr_with_mismatched_project(self):
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        CLIENT = _Client(project=PROJECT1)
-        FULL = 'projects/%s/metrics/%s' % (PROJECT2, self.METRIC_NAME)
-        RESOURCE = {'name': FULL, 'filter': self.FILTER}
-        klass = self._getTargetClass()
-        self.assertRaises(ValueError, klass.from_api_repr,
-                          RESOURCE, client=CLIENT)
 
     def test_create_w_bound_client(self):
         TARGET = 'projects/%s/metrics' % (self.PROJECT,)

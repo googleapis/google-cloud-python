@@ -294,11 +294,9 @@ class TestClient(unittest2.TestCase):
 
         CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
 
-        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
-
         RETURNED = {
             'metrics': [{
-                'name': METRIC_PATH,
+                'name': self.METRIC_NAME,
                 'filter': self.FILTER,
                 'description': self.DESCRIPTION,
             }],
@@ -329,13 +327,12 @@ class TestClient(unittest2.TestCase):
 
         CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
 
-        METRIC_PATH = 'projects/%s/metrics/%s' % (PROJECT, self.METRIC_NAME)
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
         RETURNED = {
             'metrics': [{
-                'name': METRIC_PATH,
+                'name': self.METRIC_NAME,
                 'filter': self.FILTER,
                 'description': self.DESCRIPTION,
             }],
