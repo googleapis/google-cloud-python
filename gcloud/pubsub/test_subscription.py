@@ -485,6 +485,48 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
 
 
+class TestAutoAck(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.pubsub.subscription import AutoAck
+        return AutoAck
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        ACK_ID = 'ACK_ID'
+        MESSAGE = object()
+        subscription = _FauxSubscription()
+        auto_ack = self._makeOne(subscription, ACK_ID, MESSAGE)
+        self.assertTrue(auto_ack.subscription is subscription)
+        self.assertEqual(auto_ack.ack_id, ACK_ID)
+        self.assertTrue(auto_ack.message is MESSAGE)
+
+    def test_as_context_mgr_no_error(self):
+        ACK_ID = 'ACK_ID'
+        MESSAGE = object()
+        subscription = _FauxSubscription()
+
+        with self._makeOne(subscription, ACK_ID, MESSAGE):
+            pass
+
+        self.assertEqual(list(subscription._acknowledged), [ACK_ID])
+        self.assertEqual(subscription._ack_client, None)
+
+    def test_as_context_mgr_w_error(self):
+        ACK_ID = 'ACK_ID'
+        MESSAGE = object()
+        subscription = _FauxSubscription()
+
+        with self.assertRaises(ValueError):
+            with self._makeOne(subscription, ACK_ID, MESSAGE):
+                raise ValueError()
+
+        self.assertEqual(list(subscription._acknowledged), [])
+        self.assertTrue(getattr(subscription, '_ack_client', self) is self)
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
@@ -522,3 +564,14 @@ class _Client(object):
     def topic(self, name, timestamp_messages=False):
         from gcloud.pubsub.topic import Topic
         return Topic(name, client=self, timestamp_messages=timestamp_messages)
+
+
+class _FauxSubscription(object):
+
+    def __init__(self):
+        self._acknowledged = set()
+
+    def acknowledge(self, ack_ids, client=None):
+        self._ack_client = client
+        for ack_id in ack_ids:
+            self._acknowledged.add(ack_id)

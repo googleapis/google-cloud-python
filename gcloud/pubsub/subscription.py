@@ -263,3 +263,29 @@ class Subscription(object):
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
+
+
+class AutoAck(object):
+    """Automatically acknowlege a single message if processed without error.
+
+    :type subscription: :class:`Subscription`
+    :param subscription: the subscription from which the message was pulled,
+                         and to which it must be acknowledged.
+
+    :type ack_id: string
+    :param ack_id: the ID for acknowledging the message
+
+    :type message: :class:`gcloud.pubsub.message.Message`
+    :param message: the message to be acknowleged
+    """
+    def __init__(self, subscription, ack_id, message):
+        self.subscription = subscription
+        self.ack_id = ack_id
+        self.message = message
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.subscription.acknowledge([self.ack_id])

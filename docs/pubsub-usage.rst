@@ -272,3 +272,29 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> messages = [recv[1] for recv in received]
    >>> [message.message_id for message in messages]
    []
+
+
+Fetch pending messages, acknowledging those whose processing doesn't raise an
+error:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> with topic.batch() as batch:
+   ...     batch.publish('this is the first message_payload')
+   ...     batch.publish('this is the second message_payload',
+   ...                   attr1='value1', attr2='value2')
+   >>> from gcloud.pubsub.subscription import AutoAck
+   >>> for ack_id, message in subscription.pull(max_messages=10):  # API request
+   ...     with AutoAck(subscription, ack_id, message):
+   ...         do_something_with(message)
+
+.. note::
+
+   One ``acknowledge`` API request occurs at the end of each ``with`` block,
+   passing only the ``ack_id`` of the message just processed.  If
+   ``do_something_with`` raises an exception, the ``acknowledge`` API
+   request is skipped.
