@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.message &mdash; gcloud 97f2e23 documentation</title>
+    <title>gcloud.pubsub.message &mdash; gcloud 72d0bba documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '97f2e23',
+        VERSION:     '72d0bba',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 97f2e23 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 72d0bba documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/message%0ARelease%3A%2097f2e23" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/message%0ARelease%3A%2072d0bba" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (97f2e23)
+              Version History (72d0bba)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -128,6 +128,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param attributes: Extra metadata associated by the publisher with the</span>
 <span class="sd">                       message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_service_timesstamp</span> <span class="o">=</span> <span class="bp">None</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">message_id</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_id</span> <span class="o">=</span> <span class="n">message_id</span>
@@ -157,6 +159,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No timestamp&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">stamp</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">service_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return server-set timestamp.</span>
+
+<span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: timestamp (in UTC timezone) in RFC 3339 format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_timesstamp</span>
+
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Message.from_api_repr"><a class="viewcode-back" href="../../../pubsub-message.html#gcloud.pubsub.message.Message.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">api_repr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct message from API representation.</span>
@@ -165,8 +176,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param api_repr: The API representation of the message</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">b</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">message_id</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;messageId&#39;</span><span class="p">],</span>
-                   <span class="n">attributes</span><span class="o">=</span><span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">))</span></div></div>
+        <span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">message_id</span><span class="o">=</span><span class="n">api_repr</span><span class="p">[</span><span class="s1">&#39;messageId&#39;</span><span class="p">],</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">))</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">_service_timesstamp</span> <span class="o">=</span> <span class="n">api_repr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;publishTimestamp&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">instance</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
