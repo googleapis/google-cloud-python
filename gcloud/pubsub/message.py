@@ -35,7 +35,7 @@ class Message(object):
     :param attributes: Extra metadata associated by the publisher with the
                        message.
     """
-    _service_timesstamp = None
+    _service_timestamp = None
 
     def __init__(self, data, message_id, attributes=None):
         self.data = data
@@ -73,7 +73,7 @@ class Message(object):
         :rtype: string
         :returns: timestamp (in UTC timezone) in RFC 3339 format
         """
-        return self._service_timesstamp
+        return self._service_timestamp
 
     @classmethod
     def from_api_repr(cls, api_repr):
@@ -86,5 +86,5 @@ class Message(object):
         instance = cls(
             data=data, message_id=api_repr['messageId'],
             attributes=api_repr.get('attributes'))
-        instance._service_timesstamp = api_repr.get('publishTimestamp')
+        instance._service_timestamp = api_repr.get('publishTimestamp')
         return instance
