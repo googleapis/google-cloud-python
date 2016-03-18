@@ -132,20 +132,25 @@ class _ClientProjectMixin(object):
                     passed falls back to the default inferred from the
                     environment.
 
-    :raises: :class:`ValueError` if the project is neither passed in nor
-             set in the environment.
+    :raises: :class:`EnvironmentError` if the project is neither passed in nor
+             set in the environment. :class:`ValueError` if the project value
+             is invalid.
     """
 
     def __init__(self, project=None):
-        project = _determine_default_project(project)
+        project = self._determine_default(project)
         if project is None:
-            raise ValueError('Project was not passed and could not be '
-                             'determined from the environment.')
+            raise EnvironmentError('Project was not passed and could not be '
+                                   'determined from the environment.')
         if isinstance(project, six.binary_type):
             project = project.decode('utf-8')
         if not isinstance(project, six.string_types):
             raise ValueError('Project must be a string.')
         self.project = project
+
+    @staticmethod
+    def _determine_default(project):
+        return _determine_default_project(project)
 
 
 class JSONClient(Client, _ClientProjectMixin):
