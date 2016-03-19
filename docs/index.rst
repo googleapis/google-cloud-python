@@ -40,6 +40,7 @@
   pubsub-topic
   pubsub-subscription
   pubsub-message
+  pubsub-iam
 
 .. toctree::
   :maxdepth: 0
