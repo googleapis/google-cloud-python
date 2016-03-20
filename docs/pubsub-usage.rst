@@ -287,9 +287,8 @@ error:
    ...     batch.publish('this is the first message_payload')
    ...     batch.publish('this is the second message_payload',
    ...                   attr1='value1', attr2='value2')
-   >>> from gcloud.pubsub.subscription import AutoAck
    >>> for ack_id, message in subscription.pull(max_messages=10):  # API request
-   ...     with AutoAck(subscription, ack_id, message):
+   ...     with subscription.auto_ack(subscription, ack_id, message):
    ...         do_something_with(message)
 
 .. note::

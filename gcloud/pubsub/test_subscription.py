@@ -116,6 +116,19 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
+    def test_autoack(self):
+        from gcloud.pubsub.subscription import AutoAck
+        SUB_NAME = 'sub_name'
+        ACK_ID = 'ACK_ID'
+        TOPIC = object()
+        MESSAGE = object
+        subscription = self._makeOne(SUB_NAME, TOPIC)
+        auto_ack = subscription.auto_ack(ACK_ID, MESSAGE)
+        self.assertTrue(isinstance(auto_ack, AutoAck))
+        self.assertTrue(auto_ack.subscription is subscription)
+        self.assertEqual(auto_ack.ack_id, ACK_ID)
+        self.assertTrue(auto_ack.message is MESSAGE)
+
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
         PROJECT = 'PROJECT'
         SUB_NAME = 'sub_name'
