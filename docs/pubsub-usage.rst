@@ -66,6 +66,23 @@ Delete a topic:
    >>> topic = client.topic('topic_name')
    >>> topic.delete()  # API request
 
+Fetch the IAM policy for a topic:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> policy = topic.get_iam_policy()  # API request
+   >>> policy.etag
+   'DEADBEEF'
+   >>> policy.owners
+   ['user:phred@example.com']
+   >>> policy.writers
+   ['systemAccount':abc-1234@systemaccounts.example.com']
+   >>> policy.readers
+   ['doman':example.com']
+
 
 Publish messages to a topic
 ---------------------------
