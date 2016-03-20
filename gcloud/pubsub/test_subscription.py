@@ -134,15 +134,39 @@ class TestSubscription(unittest2.TestCase):
 
     def test_full_name_and_path(self):
         PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, self.SUB_NAME)
         SUB_PATH = '/%s' % (SUB_FULL,)
         TOPIC_NAME = 'topic_name'
         CLIENT = _Client(project=PROJECT)
         topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         self.assertEqual(subscription.full_name, SUB_FULL)
         self.assertEqual(subscription.path, SUB_PATH)
+
+    def test_autoack_defaults(self):
+        from gcloud.pubsub.subscription import AutoAck
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        auto_ack = subscription.auto_ack()
+        self.assertTrue(isinstance(auto_ack, AutoAck))
+        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertEqual(auto_ack._return_immediately, False)
+        self.assertEqual(auto_ack._max_messages, 1)
+        self.assertTrue(auto_ack._client is None)
+
+    def test_autoack_explicit(self):
+        from gcloud.pubsub.subscription import AutoAck
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        auto_ack = subscription.auto_ack(True, 10, client2)
+        self.assertTrue(isinstance(auto_ack, AutoAck))
+        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertEqual(auto_ack._return_immediately, True)
+        self.assertEqual(auto_ack._max_messages, 10)
+        self.assertTrue(auto_ack._client is client2)
 
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
         RESPONSE = {

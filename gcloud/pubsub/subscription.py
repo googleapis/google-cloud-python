@@ -123,6 +123,24 @@ class Subscription(object):
         """URL path for the subscription's APIs"""
         return '/%s' % (self.full_name,)
 
+    def auto_ack(self, return_immediately=False, max_messages=1, client=None):
+        """:class:`AutoAck` factory
+
+        :type return_immediately: boolean
+        :param return_immediately: passed through to :meth:`Subscription.pull`
+
+        :type max_messages: int
+        :param max_messages: passed through to :meth:`Subscription.pull`
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: passed through to :meth:`Subscription.pull` and
+                      :meth:`Subscription.acknowledge`.
+
+        :rtype: :class:`AutoAck`
+        :returns: the instance created for the given ``ack_id`` and ``message``
+        """
+        return AutoAck(self, return_immediately, max_messages, client)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
