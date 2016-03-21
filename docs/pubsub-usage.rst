@@ -341,3 +341,15 @@ Update the IAM policy for a subscription:
    >>> policy = subscription.get_iam_policy()  # API request
    >>> policy.writers.add(policy.group('editors-list@example.com'))
    >>> subscription.set_iam_policy(policy)  # API request
+
+Test permissions allowed by the current IAM policy on a subscription:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> subscription.test_iam_permissions(
+   ...     ['roles/reader', 'roles/writer', 'roles/owner'])  # API request
+   ['roles/reader', 'roles/writer']
