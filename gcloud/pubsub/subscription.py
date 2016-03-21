@@ -16,6 +16,7 @@
 
 from gcloud.exceptions import NotFound
 from gcloud.pubsub._helpers import topic_name_from_path
+from gcloud.pubsub.iam import Policy
 from gcloud.pubsub.message import Message
 
 
@@ -263,3 +264,22 @@ class Subscription(object):
         """
         client = self._require_client(client)
         client.connection.api_request(method='DELETE', path=self.path)
+
+    def get_iam_policy(self, client=None):
+        """Fetch the IAM policy for the subscription.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current subscription's topic.
+
+        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :returns: policy created from the resource returned by the
+                  ``getIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        path = '%s:getIamPolicy' % (self.path,)
+        resp = client.connection.api_request(method='GET', path=path)
+        return Policy.from_api_repr(resp)

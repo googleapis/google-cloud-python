@@ -484,6 +484,77 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'DELETE')
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
 
+    def test_get_iam_policy_w_bound_client(self):
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        WRITER1 = 'domain:google.com'
+        WRITER2 = 'user:phred@example.com'
+        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        READER2 = 'user:phred@example.com'
+        POLICY = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': 'roles/owner', 'members': [OWNER1, OWNER2]},
+                {'role': 'roles/writer', 'members': [WRITER1, WRITER2]},
+                {'role': 'roles/reader', 'members': [READER1, READER2]},
+            ],
+        }
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        SUB_NAME = 'sub_name'
+        PATH = 'projects/%s/subscriptions/%s:getIamPolicy' % (
+            PROJECT, SUB_NAME)
+
+        conn = _Connection(POLICY)
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = _Topic(TOPIC_NAME, client=CLIENT)
+        subscription = self._makeOne(SUB_NAME, topic)
+
+        policy = subscription.get_iam_policy()
+
+        self.assertEqual(policy.etag, 'DEADBEEF')
+        self.assertEqual(policy.version, 17)
+        self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
+        self.assertEqual(sorted(policy.writers), [WRITER1, WRITER2])
+        self.assertEqual(sorted(policy.readers), [READER1, READER2])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_get_iam_policy_w_alternate_client(self):
+        POLICY = {
+            'etag': 'ACAB',
+        }
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        SUB_NAME = 'sub_name'
+        PATH = 'projects/%s/subscriptions/%s:getIamPolicy' % (
+            PROJECT, SUB_NAME)
+
+        conn1 = _Connection()
+        conn2 = _Connection(POLICY)
+        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        topic = _Topic(TOPIC_NAME, client=CLIENT1)
+        subscription = self._makeOne(SUB_NAME, topic)
+
+        policy = subscription.get_iam_policy(client=CLIENT2)
+
+        self.assertEqual(policy.etag, 'ACAB')
+        self.assertEqual(policy.version, None)
+        self.assertEqual(sorted(policy.owners), [])
+        self.assertEqual(sorted(policy.writers), [])
+        self.assertEqual(sorted(policy.readers), [])
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
 
 class _Connection(object):
 

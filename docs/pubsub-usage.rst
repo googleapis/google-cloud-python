@@ -311,3 +311,21 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> messages = [recv[1] for recv in received]
    >>> [message.message_id for message in messages]
    []
+
+Fetch the IAM policy for a subscription
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> policy = subscription.get_iam_policy()  # API request
+   >>> policy.etag
+   'DEADBEEF'
+   >>> policy.owners
+   ['user:phred@example.com']
+   >>> policy.writers
+   ['systemAccount':abc-1234@systemaccounts.example.com']
+   >>> policy.readers
+   ['domain':example.com']
