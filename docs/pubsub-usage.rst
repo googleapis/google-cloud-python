@@ -66,7 +66,7 @@ Delete a topic:
    >>> topic = client.topic('topic_name')
    >>> topic.delete()  # API request
 
-Fetch the IAM policy for a topic:
+Update the IAM policy for a topic:
 
 .. doctest::
 
@@ -82,6 +82,8 @@ Fetch the IAM policy for a topic:
    ['systemAccount:abc-1234@systemaccounts.example.com']
    >>> policy.readers
    ['domain:example.com']
+   >>> policy.writers.add(policy.group('editors-list@example.com'))
+   >>> topic.set_iam_policy(policy)  # API request
 
 
 Publish messages to a topic
