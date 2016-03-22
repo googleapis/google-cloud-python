@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.client &mdash; gcloud d5a2409 documentation</title>
+    <title>gcloud.client &mdash; gcloud 6b46045 documentation</title>
     
     <link rel="stylesheet" href="../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     'd5a2409',
+        VERSION:     '6b46045',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d5a2409 documentation" href="../../index.html" />
+    <link rel="top" title="gcloud 6b46045 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/client%0ARelease%3A%20d5a2409" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/client%0ARelease%3A%206b46045" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d5a2409)
+              Version History (6b46045)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -225,20 +225,25 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                    passed falls back to the default inferred from the</span>
 <span class="sd">                    environment.</span>
 
-<span class="sd">    :raises: :class:`ValueError` if the project is neither passed in nor</span>
-<span class="sd">             set in the environment.</span>
+<span class="sd">    :raises: :class:`EnvironmentError` if the project is neither passed in nor</span>
+<span class="sd">             set in the environment. :class:`ValueError` if the project value</span>
+<span class="sd">             is invalid.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_determine_default_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_determine_default</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project was not passed and could not be &#39;</span>
-                             <span class="s1">&#39;determined from the environment.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;Project was not passed and could not be &#39;</span>
+                                   <span class="s1">&#39;determined from the environment.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
             <span class="n">project</span> <span class="o">=</span> <span class="n">project</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project must be a string.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="n">project</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_determine_default</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_determine_default_project</span><span class="p">(</span><span class="n">project</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="JSONClient"><a class="viewcode-back" href="../../gcloud-api.html#gcloud.client.JSONClient">[docs]</a><span class="k">class</span> <span class="nc">JSONClient</span><span class="p">(</span><span class="n">Client</span><span class="p">,</span> <span class="n">_ClientProjectMixin</span><span class="p">):</span>
