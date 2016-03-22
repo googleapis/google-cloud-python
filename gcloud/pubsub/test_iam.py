@@ -87,6 +87,7 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(list(policy.readers), [])
 
     def test_from_api_repr_complete(self):
+        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         WRITER1 = 'domain:google.com'
@@ -97,9 +98,9 @@ class TestPolicy(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': 'roles/owner', 'members': [OWNER1, OWNER2]},
-                {'role': 'roles/writer', 'members': [WRITER1, WRITER2]},
-                {'role': 'roles/reader', 'members': [READER1, READER2]},
+                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': _READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         klass = self._getTargetClass()
@@ -133,6 +134,7 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
+        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         WRITER1 = 'domain:google.com'
@@ -143,9 +145,9 @@ class TestPolicy(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': 'roles/owner', 'members': [OWNER1, OWNER2]},
-                {'role': 'roles/writer', 'members': [WRITER1, WRITER2]},
-                {'role': 'roles/reader', 'members': [READER1, READER2]},
+                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': _READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         policy = self._makeOne('DEADBEEF', 17)

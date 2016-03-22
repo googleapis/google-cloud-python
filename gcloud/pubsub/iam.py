@@ -13,6 +13,10 @@
 # limitations under the License.
 """PubSub API IAM policy definitions"""
 
+_OWNER_ROLE = 'roles/owner'
+_WRITER_ROLE = 'roles/writer'
+_READER_ROLE = 'roles/reader'
+
 
 class Policy(object):
     """Combined IAM Policy / Bindings.
@@ -116,11 +120,11 @@ class Policy(object):
         for binding in resource.get('bindings', ()):
             role = binding['role']
             members = set(binding['members'])
-            if role == 'roles/owner':
+            if role == _OWNER_ROLE:
                 policy.owners = members
-            elif role == 'roles/writer':
+            elif role == _WRITER_ROLE:
                 policy.writers = members
-            elif role == 'roles/reader':
+            elif role == _READER_ROLE:
                 policy.readers = members
             else:
                 raise ValueError('Unknown role: %s' % (role,))
@@ -144,15 +148,15 @@ class Policy(object):
 
         if self.owners:
             bindings.append(
-                {'role': 'roles/owner', 'members': sorted(self.owners)})
+                {'role': _OWNER_ROLE, 'members': sorted(self.owners)})
 
         if self.writers:
             bindings.append(
-                {'role': 'roles/writer', 'members': sorted(self.writers)})
+                {'role': _WRITER_ROLE, 'members': sorted(self.writers)})
 
         if self.readers:
             bindings.append(
-                {'role': 'roles/reader', 'members': sorted(self.readers)})
+                {'role': _READER_ROLE, 'members': sorted(self.readers)})
 
         if bindings:
             resource['bindings'] = bindings
