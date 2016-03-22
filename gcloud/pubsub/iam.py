@@ -84,7 +84,7 @@ class Policy(object):
 
     @staticmethod
     def all_users():
-        """Factory method for an member representing all users.
+        """Factory method for a member representing all users.
 
         :rtype: string
         :returns: A member string representing all users.
@@ -93,7 +93,7 @@ class Policy(object):
 
     @staticmethod
     def authenticated_users():
-        """Factory method for an member representing all authenticated users.
+        """Factory method for a member representing all authenticated users.
 
         :rtype: string
         :returns: A member string representing all authenticated users.
