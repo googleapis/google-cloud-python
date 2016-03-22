@@ -48,10 +48,10 @@ class Policy(object):
 
     @staticmethod
     def service_account(email):
-        """Factory method for a user member.
+        """Factory method for a service account member.
 
         :type email: string
-        :param email: E-mail for this particular user.
+        :param email: E-mail for this particular service account.
 
         :rtype: string
         :returns: A member string corresponding to the given service account.
