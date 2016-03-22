@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Topics &mdash; gcloud b162a81 documentation</title>
+    <title>Topics &mdash; gcloud aea1e6d documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b162a81',
+        VERSION:     'aea1e6d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b162a81 documentation" href="index.html" />
+    <link rel="top" title="gcloud aea1e6d documentation" href="index.html" />
     <link rel="next" title="Subscriptions" href="pubsub-subscription.html" />
     <link rel="prev" title="Pub/Sub Client" href="pubsub-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%20b162a81" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-topic%0ARelease%3A%20aea1e6d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b162a81)
+              Version History (aea1e6d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -367,6 +367,35 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">message ID assigned by the server to the published message</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.topic.Topic.set_iam_policy">
+<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>policy</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/topic.html#Topic.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.topic.Topic.set_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Update the IAM policy for the topic.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>policy</strong> (<a class="reference internal" href="pubsub-iam.html#gcloud.pubsub.iam.Policy" title="gcloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.iam.Policy</span></code></a>) &#8211; the new policy, typically fetched via
+<code class="xref py py-meth docutils literal"><span class="pre">getIamPolicy()</span></code> and updated in place.</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current batch.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="pubsub-iam.html#gcloud.pubsub.iam.Policy" title="gcloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.iam.Policy</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated policy created from the resource returned by the
+<code class="docutils literal"><span class="pre">setIamPolicy</span></code> API request.</p>
 </td>
 </tr>
 </tbody>
