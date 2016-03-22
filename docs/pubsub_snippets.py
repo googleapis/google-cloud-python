@@ -378,7 +378,7 @@ def subscription_pull_w_autoack(client, to_delete):
     # [START subscription_pull_autoack]
     from gcloud.pubsub.subscription import AutoAck
     with AutoAck(subscription, max_messages=10) as ack:
-        for ack_id, message in ack.items():
+        for ack_id, message in list(ack.items()):
             try:
                 do_something_with(message)
             except Exception:  # pylint: disable=broad-except
