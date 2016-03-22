@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud c2c9cff documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud efc1d41 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'c2c9cff',
+        VERSION:     'efc1d41',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud c2c9cff documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud efc1d41 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20c2c9cff" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20efc1d41" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c2c9cff)
+              Version History (efc1d41)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -375,6 +375,31 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:getIamPolicy&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Subscription.set_iam_policy"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the subscription.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
+
+<span class="sd">        :type policy: :class:`gcloud.pubsub.iam.Policy`</span>
+<span class="sd">        :param policy: the new policy, typically fetched via</span>
+<span class="sd">                       :meth:`get_iam_policy` and updated in place.</span>
+
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.pubsub.iam.Policy`</span>
+<span class="sd">        :returns: updated policy created from the resource returned by the</span>
+<span class="sd">                  ``setIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:setIamPolicy&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 </pre></div>
 
