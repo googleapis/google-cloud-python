@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.topic &mdash; gcloud 6b46045 documentation</title>
+    <title>gcloud.pubsub.topic &mdash; gcloud b162a81 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '6b46045',
+        VERSION:     'b162a81',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 6b46045 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud b162a81 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%206b46045" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%20b162a81" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (6b46045)
+              Version History (b162a81)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -114,6 +114,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="kn">import</span> <span class="n">subscription_name_from_path</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="kn">import</span> <span class="n">topic_name_from_path</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="kn">import</span> <span class="n">Policy</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 
 
@@ -349,7 +350,26 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">sub_path</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="n">sub_name</span> <span class="o">=</span> <span class="n">subscription_name_from_path</span><span class="p">(</span><span class="n">sub_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
             <span class="n">subscriptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Subscription</span><span class="p">(</span><span class="n">sub_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">subscriptions</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">subscriptions</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Topic.get_iam_policy"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the topic.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy</span>
+
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
+<span class="sd">                       ``client`` stored on the current batch.</span>
+
+<span class="sd">        :rtype: :class:`gcloud.pubsub.iam.Policy`</span>
+<span class="sd">        :returns: policy created from the resource returned by the</span>
+<span class="sd">                  ``getIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">:getIamPolicy&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Batch"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Batch">[docs]</a><span class="k">class</span> <span class="nc">Batch</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -441,6 +461,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-topic.html">Topics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-subscription.html">Subscriptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pubsub-iam.html">IAM Policy</a></li>
 </ul>
 <p class="caption"><span class="caption-text">BigQuery</span></p>
 <ul>
