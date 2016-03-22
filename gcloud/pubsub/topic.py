@@ -303,6 +303,31 @@ class Topic(object):
             method='POST', path=path, data=resource)
         return Policy.from_api_repr(resp)
 
+    def test_iam_permissions(self, permissions, client=None):
+        """Permissions allowed for the current user by the effective IAM policy.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+
+        :type permissions: list of string
+        :param permissions: list of permissions to be tested
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+
+        :rtype: sequence of string
+        :returns: subset of ``permissions`` allowed by current IAM policy.
+        """
+        client = self._require_client(client)
+        path = '%s:testIamPermissions' % (self.path,)
+        data = {
+            'permissions': list(permissions),
+        }
+        resp = client.connection.api_request(
+            method='POST', path=path, data=data)
+        return resp.get('permissions', ())
+
 
 class Batch(object):
     """Context manager:  collect messages to publish via a single API call.

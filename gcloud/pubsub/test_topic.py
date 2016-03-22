@@ -601,6 +601,57 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], {})
 
+    def test_test_iam_permissions_w_bound_client(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
+            PROJECT, TOPIC_NAME)
+        ROLES = ['roles/reader', 'roles/writer', 'roles/owner']
+        REQUESTED = {
+            'permissions': ROLES,
+        }
+        RESPONSE = {
+            'permissions': ROLES[:-1],
+        }
+        conn = _Connection(RESPONSE)
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+
+        allowed = topic.test_iam_permissions(ROLES)
+
+        self.assertEqual(allowed, ROLES[:-1])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], REQUESTED)
+
+    def test_test_iam_permissions_w_alternate_client(self):
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
+            PROJECT, TOPIC_NAME)
+        ROLES = ['roles/reader', 'roles/writer', 'roles/owner']
+        REQUESTED = {
+            'permissions': ROLES,
+        }
+        RESPONSE = {}
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        conn2 = _Connection(RESPONSE)
+        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+
+        allowed = topic.test_iam_permissions(ROLES, client=CLIENT2)
+
+        self.assertEqual(len(allowed), 0)
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], REQUESTED)
+
 
 class TestBatch(unittest2.TestCase):
 
