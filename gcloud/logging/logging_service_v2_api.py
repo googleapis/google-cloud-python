@@ -22,6 +22,7 @@
 # merge preserves those additions if the generated source changes.
 
 import os
+import pkg_resources
 import platform
 
 from google.gax import api_callable
@@ -38,7 +39,7 @@ from google.logging.v2 import logging_pb2
 class LoggingServiceV2Api(object):
     """Service for ingesting and querying logs."""
 
-    _CODE_GEN_NAME_VERSION = 'gapic-0.1.0'
+    _CODE_GEN_NAME_VERSION = 'gapic/0.1.0'
 
     SERVICE_ADDRESS = 'logging.googleapis.com'
     """The default address of the service."""
@@ -84,7 +85,7 @@ class LoggingServiceV2Api(object):
         """Constructor.
 
         Args:
-          :keyword service_path: The DNS of the API remote host.
+          :keyword service_path: The domain name of the API remote host.
           :type service_path: string
           :keyword port: The port on which to connect to the remote host.
           :type port: int
@@ -119,18 +120,16 @@ class LoggingServiceV2Api(object):
             app_name = 'gax'
         if app_version is None:
             app_version = google.gax.__version__
-        bundling_override = bundling_override or dict()
-        retrying_override = retrying_override or dict()
-        config_filename = os.path.join(
-            os.path.dirname(__file__), 'logging_service_v2_api.yaml')
-        with open(config_filename, 'r') as api_yaml:
-            self._defaults = api_callable.construct_settings(
-                yaml.load(api_yaml.read()), bundling_override,
-                retrying_override, config.STATUS_CODE_NAMES, timeout)
-        google_apis_agent = '{}-{}/{}/gax-{}/{}'.format(
+        bundling_override = bundling_override or {}
+        retrying_override = retrying_override or {}
+        client_config = pkg_resources.resource_string(
+            __name__, 'logging_service_v2_api.yaml')
+        self._defaults = api_callable.construct_settings(
+            yaml.load(client_config), bundling_override, retrying_override,
+            config.STATUS_CODE_NAMES, timeout)
+        google_apis_agent = '{}/{};{};gax/{};python/{}'.format(
             app_name, app_version, self._CODE_GEN_NAME_VERSION,
-            google.gax.__version__,
-            'python-{}'.format(platform.python_version()))
+            google.gax.__version__, platform.python_version())
         self._headers = [('x-google-apis-agent', google_apis_agent)]
         self.stub = config.create_stub(
             logging_pb2.beta_create_LoggingServiceV2_stub,
@@ -194,10 +193,9 @@ class LoggingServiceV2Api(object):
                          order_by='',
                          options=None):
         """
-        Lists log entries.
-        Use this method to examine log entries from Cloud Logging.
-        See `Exporting Logs <https://cloud.google.com/logging/docs/export>`_
-        log entries out of Cloud Logging.
+        Lists log entries.  Use this method to retrieve log entries from Cloud
+        Logging.  For ways to export log entries, see
+        `Exporting Logs <https://cloud.google.com/logging/docs/export>`_
 
         :type project_ids: list of string
         :type filter: string
@@ -212,34 +210,6 @@ class LoggingServiceV2Api(object):
         settings = self._defaults['list_log_entries'].merge(options)
         return api_callable.ApiCallable(
             self.stub.ListLogEntries,
-            settings=settings)(req,
-                               metadata=self._headers)
-
-    def read_log_entries(self,
-                         project_ids=None,
-                         filter_='',
-                         order_by='',
-                         resume_token='',
-                         options=None):
-        """
-        Streaming read of log entries.  Similar to ``List``, this method is intended
-        for a large volume of log entries.
-
-        :type project_ids: list of string
-        :type filter: string
-        :type order_by: string
-        :type resume_token: string
-        :type options: api_callable.CallOptions
-        """
-        if project_ids is None:
-            project_ids = []
-        req = logging_pb2.ReadLogEntriesRequest(project_ids=project_ids,
-                                                filter=filter_,
-                                                order_by=order_by,
-                                                resume_token=resume_token)
-        settings = self._defaults['read_log_entries'].merge(options)
-        return api_callable.ApiCallable(
-            self.stub.ReadLogEntries,
             settings=settings)(req,
                                metadata=self._headers)
 

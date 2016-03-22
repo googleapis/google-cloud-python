@@ -22,6 +22,7 @@
 # merge preserves those additions if the generated source changes.
 
 import os
+import pkg_resources
 import platform
 
 from google.gax import api_callable
@@ -34,9 +35,7 @@ from google.logging.v2 import logging_config_pb2
 
 
 class ConfigServiceV2Api(object):
-    """See src/api/google/logging/v2/logging.proto for documentation"""
-
-    _CODE_GEN_NAME_VERSION = 'gapic-0.1.0'
+    _CODE_GEN_NAME_VERSION = 'gapic/0.1.0'
 
     SERVICE_ADDRESS = 'logging.googleapis.com'
     """The default address of the service."""
@@ -82,7 +81,7 @@ class ConfigServiceV2Api(object):
         """Constructor.
 
         Args:
-          :keyword service_path: The DNS of the API remote host.
+          :keyword service_path: The domain name of the API remote host.
           :type service_path: string
           :keyword port: The port on which to connect to the remote host.
           :type port: int
@@ -117,18 +116,16 @@ class ConfigServiceV2Api(object):
             app_name = 'gax'
         if app_version is None:
             app_version = google.gax.__version__
-        bundling_override = bundling_override or dict()
-        retrying_override = retrying_override or dict()
-        config_filename = os.path.join(
-            os.path.dirname(__file__), 'config_service_v2_api.yaml')
-        with open(config_filename, 'r') as api_yaml:
-            self._defaults = api_callable.construct_settings(
-                yaml.load(api_yaml.read()), bundling_override,
-                retrying_override, config.STATUS_CODE_NAMES, timeout)
-        google_apis_agent = '{}-{}/{}/gax-{}/{}'.format(
+        bundling_override = bundling_override or {}
+        retrying_override = retrying_override or {}
+        client_config = pkg_resources.resource_string(
+            __name__, 'config_service_v2_api.yaml')
+        self._defaults = api_callable.construct_settings(
+            yaml.load(client_config), bundling_override, retrying_override,
+            config.STATUS_CODE_NAMES, timeout)
+        google_apis_agent = '{}/{};{};gax/{};python/{}'.format(
             app_name, app_version, self._CODE_GEN_NAME_VERSION,
-            google.gax.__version__,
-            'python-{}'.format(platform.python_version()))
+            google.gax.__version__, platform.python_version())
         self._headers = [('x-google-apis-agent', google_apis_agent)]
         self.stub = config.create_stub(
             logging_config_pb2.beta_create_ConfigServiceV2_stub,
