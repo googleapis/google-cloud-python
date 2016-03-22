@@ -79,9 +79,9 @@ Fetch the IAM policy for a topic:
    >>> policy.owners
    ['user:phred@example.com']
    >>> policy.writers
-   ['systemAccount':abc-1234@systemaccounts.example.com']
+   ['systemAccount:abc-1234@systemaccounts.example.com']
    >>> policy.readers
-   ['doman':example.com']
+   ['domain:example.com']
 
 
 Publish messages to a topic
