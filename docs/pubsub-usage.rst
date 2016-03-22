@@ -340,4 +340,4 @@ Update the IAM policy for a subscription:
    >>> subscription = topic.subscription('subscription_name')
    >>> policy = subscription.get_iam_policy()  # API request
    >>> policy.writers.add(policy.group('editors-list@example.com'))
-   >>> subscriptoin.set_iam_policy(policy)  # API request
+   >>> subscription.set_iam_policy(policy)  # API request
