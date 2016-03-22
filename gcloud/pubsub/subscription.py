@@ -446,7 +446,9 @@ class AutoAck(dict):
     Mapping, tracks messages still-to-be-acknowledged.
 
     When used as a context manager, acknowledges all messages still in the
-    mapping on `__exit__`.  E.g.:
+    mapping on `__exit__`.  When processing the pulled messsages, application
+    code MUST delete messages from the :class:`AutoAck` mapping which are not
+    successfully processed, e.g.:
 
     .. code-block: python
 
