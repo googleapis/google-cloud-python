@@ -286,7 +286,7 @@ class Topic(object):
 
         :type policy: :class:`gcloud.pubsub.iam.Policy`
         :param policy: the new policy, typically fetched via
-                       :meth:`getIamPolicy` and updated in place.
+                       :meth:`get_iam_policy` and updated in place.
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
