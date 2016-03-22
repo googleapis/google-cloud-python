@@ -171,7 +171,7 @@ class TestJSONClient(unittest2.TestCase):
             return None
 
         with _Monkey(client, _determine_default_project=mock_determine_proj):
-            self.assertRaises(ValueError, self._makeOne)
+            self.assertRaises(EnvironmentError, self._makeOne)
 
         self.assertEqual(FUNC_CALLS, [(None, '_determine_default_project')])
 

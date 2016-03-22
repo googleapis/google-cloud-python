@@ -18,6 +18,7 @@ import os
 from gcloud._helpers import _LocalStack
 from gcloud._helpers import _app_engine_id
 from gcloud._helpers import _compute_engine_id
+from gcloud.client import _ClientProjectMixin
 from gcloud.client import Client as _BaseClient
 from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
@@ -155,7 +156,7 @@ def _extended_lookup(connection, project, key_pbs,
     return results
 
 
-class Client(_BaseClient):
+class Client(_BaseClient, _ClientProjectMixin):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
     :type project: string
@@ -180,13 +181,14 @@ class Client(_BaseClient):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        project = _determine_default_project(project)
-        if project is None:
-            raise EnvironmentError('Project could not be inferred.')
-        self.project = project
+        _ClientProjectMixin.__init__(self, project=project)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         super(Client, self).__init__(credentials, http)
+
+    @staticmethod
+    def _determine_default(project):
+        return _determine_default_project(project)
 
     def _push_batch(self, batch):
         """Push a batch/transaction onto our stack.
