@@ -326,6 +326,6 @@ Fetch the IAM policy for a subscription
    >>> policy.owners
    ['user:phred@example.com']
    >>> policy.writers
-   ['systemAccount':abc-1234@systemaccounts.example.com']
+   ['systemAccount:abc-1234@systemaccounts.example.com']
    >>> policy.readers
-   ['domain':example.com']
+   ['domain:example.com']
