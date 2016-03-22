@@ -66,7 +66,7 @@ Delete a topic:
    >>> topic = client.topic('topic_name')
    >>> topic.delete()  # API request
 
-Update the IAM policy for a topic:
+Fetch the IAM policy for a topic:
 
 .. doctest::
 
@@ -82,6 +82,15 @@ Update the IAM policy for a topic:
    ['systemAccount:abc-1234@systemaccounts.example.com']
    >>> policy.readers
    ['domain:example.com']
+
+Update the IAM policy for a topic:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> policy = topic.get_iam_policy()  # API request
    >>> policy.writers.add(policy.group('editors-list@example.com'))
    >>> topic.set_iam_policy(policy)  # API request
 
