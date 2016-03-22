@@ -76,7 +76,7 @@ class _BaseEntry(object):
 
 
 class TextEntry(_BaseEntry):
-    """Entry created via a write request with ``textPayload``.
+    """Entry created with ``textPayload``.
 
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry
@@ -85,9 +85,18 @@ class TextEntry(_BaseEntry):
 
 
 class StructEntry(_BaseEntry):
-    """Entry created via a write request with ``jsonPayload``.
+    """Entry created with ``jsonPayload``.
 
     See:
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry
     """
     _PAYLOAD_KEY = 'jsonPayload'
+
+
+class ProtobufEntry(_BaseEntry):
+    """Entry created with ``protoPayload``.
+
+    See:
+    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry
+    """
+    _PAYLOAD_KEY = 'protoPayload'
