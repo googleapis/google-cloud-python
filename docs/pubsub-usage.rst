@@ -329,3 +329,15 @@ Fetch the IAM policy for a subscription
    ['systemAccount:abc-1234@systemaccounts.example.com']
    >>> policy.readers
    ['domain:example.com']
+
+Update the IAM policy for a subscription:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> policy = subscription.get_iam_policy()  # API request
+   >>> policy.writers.add(policy.group('editors-list@example.com'))
+   >>> subscription.set_iam_policy(policy)  # API request
