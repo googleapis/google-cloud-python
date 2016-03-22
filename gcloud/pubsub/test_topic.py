@@ -602,11 +602,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['data'], {})
 
     def test_test_iam_permissions_w_bound_client(self):
+        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s:testIamPermissions' % (
             PROJECT, TOPIC_NAME)
-        ROLES = ['roles/reader', 'roles/writer', 'roles/owner']
+        ROLES = [_READER_ROLE, _WRITER_ROLE, _OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
@@ -627,11 +628,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['data'], REQUESTED)
 
     def test_test_iam_permissions_w_alternate_client(self):
+        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s:testIamPermissions' % (
             PROJECT, TOPIC_NAME)
-        ROLES = ['roles/reader', 'roles/writer', 'roles/owner']
+        ROLES = [_READER_ROLE, _WRITER_ROLE, _OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
