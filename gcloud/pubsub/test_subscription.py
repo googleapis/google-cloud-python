@@ -485,7 +485,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % SUB_PATH)
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         WRITER1 = 'domain:google.com'
@@ -496,9 +496,9 @@ class TestSubscription(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': _READER_ROLE, 'members': [READER1, READER2]},
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         PROJECT = 'PROJECT'
@@ -557,7 +557,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_set_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         from gcloud.pubsub.iam import Policy
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
@@ -569,9 +569,9 @@ class TestSubscription(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': _READER_ROLE, 'members': [READER1, READER2]},
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         RESPONSE = POLICY.copy()
