@@ -278,6 +278,31 @@ class Topic(object):
         resp = client.connection.api_request(method='GET', path=path)
         return Policy.from_api_repr(resp)
 
+    def set_iam_policy(self, policy, client=None):
+        """Update the IAM policy for the topic.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+
+        :type policy: :class:`gcloud.pubsub.iam.Policy`
+        :param policy: the new policy, typically fetched via
+                       :meth:`getIamPolicy` and updated in place.
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+
+        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :returns: updated policy created from the resource returned by the
+                  ``setIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        path = '%s:setIamPolicy' % (self.path,)
+        resource = policy.to_api_repr()
+        resp = client.connection.api_request(
+            method='POST', path=path, data=resource)
+        return Policy.from_api_repr(resp)
+
 
 class Batch(object):
     """Context manager:  collect messages to publish via a single API call.
