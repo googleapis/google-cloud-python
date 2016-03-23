@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud dbb22a7 documentation</title>
+    <title>Using the API &mdash; gcloud be4c06c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'dbb22a7',
+        VERSION:     'be4c06c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud dbb22a7 documentation" href="index.html" />
+    <link rel="top" title="gcloud be4c06c documentation" href="index.html" />
     <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
     <link rel="prev" title="Batches" href="storage-batch.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20dbb22a7" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20be4c06c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (dbb22a7)
+              Version History (be4c06c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -178,7 +178,7 @@ environment variables, create a <a class="reference internal" href="pubsub-clien
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="kn">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">WRITER_ROLE</span><span class="p">,</span> <span class="n">READER_ROLE</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">[</span><span class="n">READER_ROLE</span><span class="p">,</span> <span class="n">WRITER_ROLE</span><span class="p">,</span> <span class="n">OWNER_ROLE</span><span class="p">])</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">==</span> <span class="p">[</span><span class="n">READER_ROLE</span><span class="p">,</span> <span class="n">WRITER_ROLE</span><span class="p">]</span>
 <span class="go">True</span>
@@ -388,7 +388,7 @@ will re-send them later:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">[</span><span class="n">READER_ROLE</span><span class="p">,</span> <span class="n">WRITER_ROLE</span><span class="p">,</span> <span class="n">OWNER_ROLE</span><span class="p">])</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">==</span> <span class="p">[</span><span class="n">READER_ROLE</span><span class="p">,</span> <span class="n">WRITER_ROLE</span><span class="p">]</span>
 <span class="go">True</span>
