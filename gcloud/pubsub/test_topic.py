@@ -453,7 +453,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['query_params'], {})
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         WRITER1 = 'domain:google.com'
@@ -464,9 +464,9 @@ class TestTopic(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': _READER_ROLE, 'members': [READER1, READER2]},
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         TOPIC_NAME = 'topic_name'
@@ -522,7 +522,7 @@ class TestTopic(unittest2.TestCase):
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import Policy
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         WRITER1 = 'domain:google.com'
@@ -533,9 +533,9 @@ class TestTopic(unittest2.TestCase):
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': _OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': _WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': _READER_ROLE, 'members': [READER1, READER2]},
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
             ],
         }
         RESPONSE = POLICY.copy()
@@ -602,12 +602,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['data'], {})
 
     def test_test_iam_permissions_w_bound_client(self):
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s:testIamPermissions' % (
             PROJECT, TOPIC_NAME)
-        ROLES = [_READER_ROLE, _WRITER_ROLE, _OWNER_ROLE]
+        ROLES = [READER_ROLE, WRITER_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
@@ -628,12 +628,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['data'], REQUESTED)
 
     def test_test_iam_permissions_w_alternate_client(self):
-        from gcloud.pubsub.iam import _OWNER_ROLE, _WRITER_ROLE, _READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/topics/%s:testIamPermissions' % (
             PROJECT, TOPIC_NAME)
-        ROLES = [_READER_ROLE, _WRITER_ROLE, _OWNER_ROLE]
+        ROLES = [READER_ROLE, WRITER_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
