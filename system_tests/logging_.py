@@ -29,6 +29,7 @@ DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
 BUCKET_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
 DATASET_NAME = 'system_testing_dataset_%d' % (_MILLIS,)
+TOPIC_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
 
 
 class Config(object):
@@ -51,8 +52,12 @@ class TestLogging(unittest2.TestCase):
         self.to_delete = []
 
     def tearDown(self):
+        from gcloud.exceptions import NotFound
         for doomed in self.to_delete:
-            doomed.delete()
+            try:
+                doomed.delete()
+            except NotFound as error:
+                print('Unable to delete resource: %s' % error)
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
@@ -171,6 +176,28 @@ class TestLogging(unittest2.TestCase):
 
         sink = Config.CLIENT.sink(
             DEFAULT_SINK_NAME, DEFAULT_FILTER, DATASET_URI)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        self.assertTrue(sink.exists())
+
+    def test_create_sink_pubsub_topic(self):
+        from gcloud import pubsub
+        TOPIC_URI = 'pubsub.googleapis.com/projects/%s/topic/%s' % (
+            Config.CLIENT.project, TOPIC_NAME)
+
+        # Create the destination topic, and set up the IAM policy to allow
+        # Cloud Logging to write into it.
+        pubsub_client = pubsub.Client()
+        topic = pubsub_client.topic(TOPIC_NAME)
+        topic.create()
+        self.to_delete.append(topic)
+        policy = topic.get_iam_policy()
+        policy.owners.add(policy.group('cloud-logs@google.com'))
+        topic.set_iam_policy(policy)
+
+        sink = Config.CLIENT.sink(
+            DEFAULT_SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
