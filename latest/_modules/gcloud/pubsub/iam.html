@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.iam &mdash; gcloud efc1d41 documentation</title>
+    <title>gcloud.pubsub.iam &mdash; gcloud dbb22a7 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'efc1d41',
+        VERSION:     'dbb22a7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud efc1d41 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud dbb22a7 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/iam%0ARelease%3A%20efc1d41" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/iam%0ARelease%3A%20dbb22a7" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (efc1d41)
+              Version History (dbb22a7)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -106,9 +106,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c1"># limitations under the License.</span>
 <span class="sd">&quot;&quot;&quot;PubSub API IAM policy definitions&quot;&quot;&quot;</span>
 
-<span class="n">_OWNER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/owner&#39;</span>
-<span class="n">_WRITER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/writer&#39;</span>
-<span class="n">_READER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/reader&#39;</span>
+<span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/owner&#39;</span>
+<span class="sd">&quot;&quot;&quot;IAM permission implying all rights to an object.&quot;&quot;&quot;</span>
+
+<span class="n">WRITER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/writer&#39;</span>
+<span class="sd">&quot;&quot;&quot;IAM permission implying rights to modify an object.&quot;&quot;&quot;</span>
+
+<span class="n">READER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/reader&#39;</span>
+<span class="sd">&quot;&quot;&quot;IAM permission implying rights to access an object without modifying it.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../pubsub-iam.html#gcloud.pubsub.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -213,11 +218,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">binding</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">_OWNER_ROLE</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">OWNER_ROLE</span><span class="p">:</span>
                 <span class="n">policy</span><span class="o">.</span><span class="n">owners</span> <span class="o">=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">_WRITER_ROLE</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">WRITER_ROLE</span><span class="p">:</span>
                 <span class="n">policy</span><span class="o">.</span><span class="n">writers</span> <span class="o">=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">_READER_ROLE</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">READER_ROLE</span><span class="p">:</span>
                 <span class="n">policy</span><span class="o">.</span><span class="n">readers</span> <span class="o">=</span> <span class="n">members</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown role: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">role</span><span class="p">,))</span>
@@ -241,15 +246,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">_OWNER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">writers</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">_WRITER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writers</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">WRITER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writers</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">_READER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">READER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readers</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="n">bindings</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;bindings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindings</span>
