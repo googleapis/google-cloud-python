@@ -99,12 +99,12 @@ Test permissions allowed by the current IAM policy on a topic:
 .. doctest::
 
    >>> from gcloud import pubsub
-   >>> from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+   >>> from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
    >>> allowed = topic.check_iam_permissions(
-   ...     [READER_ROLE, WRITER_ROLE, OWNER_ROLE])  # API request
-   >>> allowed == [READER_ROLE, WRITER_ROLE]
+   ...     [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE])  # API request
+   >>> allowed == [VIEWER_ROLE, EDITOR_ROLE]
    True
 
 
@@ -349,11 +349,11 @@ Test permissions allowed by the current IAM policy on a subscription:
 .. doctest::
 
    >>> from gcloud import pubsub
-   >>> from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+   >>> from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
    >>> client = pubsub.Client()
    >>> topic = client.topic('topic_name')
    >>> subscription = topic.subscription('subscription_name')
    >>> allowed = subscription.check_iam_permissions(
-   ...     [READER_ROLE, WRITER_ROLE, OWNER_ROLE])  # API request
-   >>> allowed == [READER_ROLE, WRITER_ROLE]
+   ...     [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE])  # API request
+   >>> allowed == [VIEWER_ROLE, EDITOR_ROLE]
    True

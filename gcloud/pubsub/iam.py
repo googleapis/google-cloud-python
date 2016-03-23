@@ -16,10 +16,10 @@
 OWNER_ROLE = 'roles/owner'
 """IAM permission implying all rights to an object."""
 
-WRITER_ROLE = 'roles/writer'
+EDITOR_ROLE = 'roles/editor'
 """IAM permission implying rights to modify an object."""
 
-READER_ROLE = 'roles/reader'
+VIEWER_ROLE = 'roles/viewer'
 """IAM permission implying rights to access an object without modifying it."""
 
 
@@ -127,9 +127,9 @@ class Policy(object):
             members = set(binding['members'])
             if role == OWNER_ROLE:
                 policy.owners = members
-            elif role == WRITER_ROLE:
+            elif role == EDITOR_ROLE:
                 policy.writers = members
-            elif role == READER_ROLE:
+            elif role == VIEWER_ROLE:
                 policy.readers = members
             else:
                 raise ValueError('Unknown role: %s' % (role,))
@@ -157,11 +157,11 @@ class Policy(object):
 
         if self.writers:
             bindings.append(
-                {'role': WRITER_ROLE, 'members': sorted(self.writers)})
+                {'role': EDITOR_ROLE, 'members': sorted(self.writers)})
 
         if self.readers:
             bindings.append(
-                {'role': READER_ROLE, 'members': sorted(self.readers)})
+                {'role': VIEWER_ROLE, 'members': sorted(self.readers)})
 
         if bindings:
             resource['bindings'] = bindings
