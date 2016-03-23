@@ -66,6 +66,47 @@ Delete a topic:
    >>> topic = client.topic('topic_name')
    >>> topic.delete()  # API request
 
+Fetch the IAM policy for a topic:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> policy = topic.get_iam_policy()  # API request
+   >>> policy.etag
+   'DEADBEEF'
+   >>> policy.owners
+   ['user:phred@example.com']
+   >>> policy.writers
+   ['systemAccount:abc-1234@systemaccounts.example.com']
+   >>> policy.readers
+   ['domain:example.com']
+
+Update the IAM policy for a topic:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> policy = topic.get_iam_policy()  # API request
+   >>> policy.writers.add(policy.group('editors-list@example.com'))
+   >>> topic.set_iam_policy(policy)  # API request
+
+Test permissions allowed by the current IAM policy on a topic:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> allowed = topic.test_iam_permissions(
+   ...     [READER_ROLE, WRITER_ROLE, OWNER_ROLE])  # API request
+   >>> allowed == [READER_ROLE, WRITER_ROLE]
+   True
+
 
 Publish messages to a topic
 ---------------------------
@@ -272,3 +313,47 @@ Fetch messages for a pull subscription without blocking (none pending):
    >>> messages = [recv[1] for recv in received]
    >>> [message.message_id for message in messages]
    []
+
+Fetch the IAM policy for a subscription
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> policy = subscription.get_iam_policy()  # API request
+   >>> policy.etag
+   'DEADBEEF'
+   >>> policy.owners
+   ['user:phred@example.com']
+   >>> policy.writers
+   ['systemAccount:abc-1234@systemaccounts.example.com']
+   >>> policy.readers
+   ['domain:example.com']
+
+Update the IAM policy for a subscription:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> policy = subscription.get_iam_policy()  # API request
+   >>> policy.writers.add(policy.group('editors-list@example.com'))
+   >>> subscription.set_iam_policy(policy)  # API request
+
+Test permissions allowed by the current IAM policy on a subscription:
+
+.. doctest::
+
+   >>> from gcloud import pubsub
+   >>> from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+   >>> client = pubsub.Client()
+   >>> topic = client.topic('topic_name')
+   >>> subscription = topic.subscription('subscription_name')
+   >>> allowed = subscription.test_iam_permissions(
+   ...     [READER_ROLE, WRITER_ROLE, OWNER_ROLE])  # API request
+   >>> allowed == [READER_ROLE, WRITER_ROLE]
+   True

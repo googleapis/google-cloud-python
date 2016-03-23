@@ -452,6 +452,208 @@ class TestTopic(unittest2.TestCase):
                          % (PROJECT, TOPIC_NAME))
         self.assertEqual(req['query_params'], {})
 
+    def test_get_iam_policy_w_bound_client(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        WRITER1 = 'domain:google.com'
+        WRITER2 = 'user:phred@example.com'
+        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        READER2 = 'user:phred@example.com'
+        POLICY = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
+            ],
+        }
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        PATH = 'projects/%s/topics/%s:getIamPolicy' % (PROJECT, TOPIC_NAME)
+
+        conn = _Connection(POLICY)
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+
+        policy = topic.get_iam_policy()
+
+        self.assertEqual(policy.etag, 'DEADBEEF')
+        self.assertEqual(policy.version, 17)
+        self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
+        self.assertEqual(sorted(policy.writers), [WRITER1, WRITER2])
+        self.assertEqual(sorted(policy.readers), [READER1, READER2])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_get_iam_policy_w_alternate_client(self):
+        POLICY = {
+            'etag': 'ACAB',
+        }
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        PATH = 'projects/%s/topics/%s:getIamPolicy' % (PROJECT, TOPIC_NAME)
+
+        conn1 = _Connection()
+        conn2 = _Connection(POLICY)
+        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+
+        policy = topic.get_iam_policy(client=CLIENT2)
+
+        self.assertEqual(policy.etag, 'ACAB')
+        self.assertEqual(policy.version, None)
+        self.assertEqual(sorted(policy.owners), [])
+        self.assertEqual(sorted(policy.writers), [])
+        self.assertEqual(sorted(policy.readers), [])
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
+    def test_set_iam_policy_w_bound_client(self):
+        from gcloud.pubsub.iam import Policy
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        OWNER1 = 'group:cloud-logs@google.com'
+        OWNER2 = 'user:phred@example.com'
+        WRITER1 = 'domain:google.com'
+        WRITER2 = 'user:phred@example.com'
+        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        READER2 = 'user:phred@example.com'
+        POLICY = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
+                {'role': READER_ROLE, 'members': [READER1, READER2]},
+            ],
+        }
+        RESPONSE = POLICY.copy()
+        RESPONSE['etag'] = 'ABACABAF'
+        RESPONSE['version'] = 18
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        PATH = 'projects/%s/topics/%s:setIamPolicy' % (PROJECT, TOPIC_NAME)
+
+        conn = _Connection(RESPONSE)
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        policy = Policy('DEADBEEF', 17)
+        policy.owners.add(OWNER1)
+        policy.owners.add(OWNER2)
+        policy.writers.add(WRITER1)
+        policy.writers.add(WRITER2)
+        policy.readers.add(READER1)
+        policy.readers.add(READER2)
+
+        new_policy = topic.set_iam_policy(policy)
+
+        self.assertEqual(new_policy.etag, 'ABACABAF')
+        self.assertEqual(new_policy.version, 18)
+        self.assertEqual(sorted(new_policy.owners), [OWNER1, OWNER2])
+        self.assertEqual(sorted(new_policy.writers), [WRITER1, WRITER2])
+        self.assertEqual(sorted(new_policy.readers), [READER1, READER2])
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], POLICY)
+
+    def test_set_iam_policy_w_alternate_client(self):
+        from gcloud.pubsub.iam import Policy
+        RESPONSE = {'etag': 'ACAB'}
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        TOPIC_NAME = 'topic_name'
+        PATH = 'projects/%s/topics/%s:setIamPolicy' % (PROJECT, TOPIC_NAME)
+
+        conn1 = _Connection()
+        conn2 = _Connection(RESPONSE)
+        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+
+        policy = Policy()
+        new_policy = topic.set_iam_policy(policy, client=CLIENT2)
+
+        self.assertEqual(new_policy.etag, 'ACAB')
+        self.assertEqual(new_policy.version, None)
+        self.assertEqual(sorted(new_policy.owners), [])
+        self.assertEqual(sorted(new_policy.writers), [])
+        self.assertEqual(sorted(new_policy.readers), [])
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], {})
+
+    def test_test_iam_permissions_w_bound_client(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
+            PROJECT, TOPIC_NAME)
+        ROLES = [READER_ROLE, WRITER_ROLE, OWNER_ROLE]
+        REQUESTED = {
+            'permissions': ROLES,
+        }
+        RESPONSE = {
+            'permissions': ROLES[:-1],
+        }
+        conn = _Connection(RESPONSE)
+        CLIENT = _Client(project=PROJECT, connection=conn)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+
+        allowed = topic.test_iam_permissions(ROLES)
+
+        self.assertEqual(allowed, ROLES[:-1])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], REQUESTED)
+
+    def test_test_iam_permissions_w_alternate_client(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        TOPIC_NAME = 'topic_name'
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
+            PROJECT, TOPIC_NAME)
+        ROLES = [READER_ROLE, WRITER_ROLE, OWNER_ROLE]
+        REQUESTED = {
+            'permissions': ROLES,
+        }
+        RESPONSE = {}
+        conn1 = _Connection()
+        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        conn2 = _Connection(RESPONSE)
+        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+
+        allowed = topic.test_iam_permissions(ROLES, client=CLIENT2)
+
+        self.assertEqual(len(allowed), 0)
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['data'], REQUESTED)
+
 
 class TestBatch(unittest2.TestCase):
 

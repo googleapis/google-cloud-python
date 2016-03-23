@@ -19,7 +19,6 @@ The non-private functions are part of the API.
 
 import datetime
 
-from google.protobuf.internal.type_checkers import Int64ValueChecker
 import six
 
 from gcloud._helpers import _datetime_from_microseconds
@@ -29,8 +28,6 @@ from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
-
-INT_VALUE_CHECKER = Int64ValueChecker()
 
 
 def find_true_project(project, connection):
@@ -318,8 +315,7 @@ def _pb_attr_value(val):
     elif isinstance(val, float):
         name, value = 'double', val
     elif isinstance(val, six.integer_types):
-        INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
-        name, value = 'integer', int(val)  # Always cast to an integer.
+        name, value = 'integer', val
     elif isinstance(val, six.text_type):
         name, value = 'string', val
     elif isinstance(val, (bytes, str)):

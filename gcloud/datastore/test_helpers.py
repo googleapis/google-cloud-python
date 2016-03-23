@@ -457,14 +457,6 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(name, 'integer_value')
         self.assertEqual(value, must_be_long)
 
-    def test_long_too_small(self):
-        too_small = -(1 << 63) - 1
-        self.assertRaises(ValueError, self._callFUT, too_small)
-
-    def test_long_too_large(self):
-        too_large = 1 << 63
-        self.assertRaises(ValueError, self._callFUT, too_large)
-
     def test_native_str(self):
         import six
         name, value = self._callFUT('str')

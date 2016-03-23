@@ -24,10 +24,10 @@ from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import UTC
 from gcloud.bigtable.client import Client
 from gcloud.bigtable.column_family import MaxVersionsGCRule
-from gcloud.bigtable.row import ApplyLabelFilter
-from gcloud.bigtable.row import ColumnQualifierRegexFilter
-from gcloud.bigtable.row import RowFilterChain
-from gcloud.bigtable.row import RowFilterUnion
+from gcloud.bigtable.row_filters import ApplyLabelFilter
+from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
+from gcloud.bigtable.row_filters import RowFilterChain
+from gcloud.bigtable.row_filters import RowFilterUnion
 from gcloud.bigtable.row_data import Cell
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.environment_vars import TESTS_PROJECT

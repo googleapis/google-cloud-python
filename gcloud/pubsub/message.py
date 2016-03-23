@@ -35,6 +35,8 @@ class Message(object):
     :param attributes: Extra metadata associated by the publisher with the
                        message.
     """
+    _service_timestamp = None
+
     def __init__(self, data, message_id, attributes=None):
         self.data = data
         self.message_id = message_id
@@ -64,6 +66,15 @@ class Message(object):
             raise ValueError('No timestamp')
         return _rfc3339_to_datetime(stamp)
 
+    @property
+    def service_timestamp(self):
+        """Return server-set timestamp.
+
+        :rtype: string
+        :returns: timestamp (in UTC timezone) in RFC 3339 format
+        """
+        return self._service_timestamp
+
     @classmethod
     def from_api_repr(cls, api_repr):
         """Factory:  construct message from API representation.
@@ -72,5 +83,8 @@ class Message(object):
         :param api_repr: The API representation of the message
         """
         data = base64.b64decode(api_repr.get('data', b''))
-        return cls(data=data, message_id=api_repr['messageId'],
-                   attributes=api_repr.get('attributes'))
+        instance = cls(
+            data=data, message_id=api_repr['messageId'],
+            attributes=api_repr.get('attributes'))
+        instance._service_timestamp = api_repr.get('publishTimestamp')
+        return instance

@@ -66,12 +66,11 @@ DATA_API_PORT = 443
 
 OPERATIONS_STUB_FACTORY = operations_grpc_pb2.beta_create_Operations_stub
 
-ADMIN_SCOPE = 'https://www.googleapis.com/auth/cloud-bigtable.admin'
+ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
-DATA_SCOPE = 'https://www.googleapis.com/auth/cloud-bigtable.data'
+DATA_SCOPE = 'https://www.googleapis.com/auth/bigtable.data'
 """Scope for reading and writing table data."""
-READ_ONLY_SCOPE = ('https://www.googleapis.com/auth/'
-                   'cloud-bigtable.data.readonly')
+READ_ONLY_SCOPE = 'https://www.googleapis.com/auth/bigtable.data.readonly'
 """Scope for reading table data."""
 
 DEFAULT_TIMEOUT_SECONDS = 10

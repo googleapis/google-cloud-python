@@ -207,7 +207,8 @@ class Query(object):
 
         :type value: :class:`int`, :class:`str`, :class:`bool`,
                      :class:`float`, :class:`NoneType`,
-                     :class`datetime.datetime`
+                     :class:`datetime.datetime`,
+                     :class:`gcloud.datastore.key.Key`
         :param value: The value to filter on.
 
         :raises: :class:`ValueError` if ``operation`` is not one of the
