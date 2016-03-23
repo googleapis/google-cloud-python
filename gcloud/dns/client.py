@@ -55,8 +55,9 @@ class Client(JSONClient):
         """
         path = '/projects/%s' % (self.project,)
         resp = self.connection.api_request(method='GET', path=path)
+
         return dict([(key, int(value))
-                     for key, value in resp['quota'].items()])
+                     for key, value in resp['quota'].items() if key != 'kind'])
 
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.
