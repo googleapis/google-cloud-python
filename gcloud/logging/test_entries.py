@@ -134,15 +134,17 @@ class TestProtobufEntry(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_message(self):
-        from google.protobuf.unittest_pb2 import BoolMessage
+    def test_parse_message(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
         LOGGER = object()
-        PAYLOAD = {'data': True}
-        message = BoolMessage(data=False)
-        self.assertFalse(message.data)
+        message = Struct(fields={'foo': Value(bool_value=False)})
+        with_true = Struct(fields={'foo': Value(bool_value=True)})
+        PAYLOAD = json.loads(MessageToJson(with_true))
         entry = self._makeOne(PAYLOAD, LOGGER)
         entry.parse_message(message)
-        self.assertTrue(message.data)
+        self.assertTrue(message.fields['foo'])
 
 
 def _datetime_to_rfc3339_w_nanos(value):
