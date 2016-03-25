@@ -127,6 +127,53 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
+    def test_log_proto_w_implicit_client(self):
+        from google.protobuf.unittest_pb2 import BoolMessage
+        MESSAGE = BoolMessage(data=True)
+        conn = _Connection({})
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        logger.log_proto(MESSAGE)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'protoPayload': {'data': True},
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_log_proto_w_explicit_client(self):
+        from google.protobuf.unittest_pb2 import BoolMessage
+        MESSAGE = BoolMessage(data=True)
+        conn = _Connection({})
+        client1 = _Client(self.PROJECT, object())
+        client2 = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1)
+        logger.log_proto(MESSAGE, client=client2)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'protoPayload': {'data': True},
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
     def test_delete_w_bound_client(self):
         PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         conn = _Connection({})
