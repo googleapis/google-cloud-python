@@ -105,7 +105,8 @@ Each managed zone exposes a read-only set of resource records:
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co')
      >>> records, page_token = zone.list_resource_record_sets()  # API request
-     >>> [(record.name, record.type, record.ttl, record.rrdatas) for record in records]
+     >>> [(record.name, record.record_type, record.ttl, record.rrdatas)
+     ...  for record in records]
      [('example.com.', 'SOA', 21600, ['ns-cloud1.googlecomains.com dns-admin.google.com 1 21600 3600 1209600 300'])]
 
 .. note::
