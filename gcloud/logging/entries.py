@@ -14,6 +14,10 @@
 
 """Log entries within the Google Cloud Logging API."""
 
+import json
+
+from google.protobuf.json_format import Parse
+
 from gcloud._helpers import _rfc3339_nanos_to_datetime
 from gcloud.logging._helpers import logger_name_from_path
 
@@ -100,3 +104,11 @@ class ProtobufEntry(_BaseEntry):
     https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry
     """
     _PAYLOAD_KEY = 'protoPayload'
+
+    def parse_message(self, message):
+        """Parse payload into a protobuf message.
+
+        :type message: Protobuf message
+        :param message: the message to be logged
+        """
+        Parse(json.dumps(self.payload), message)
