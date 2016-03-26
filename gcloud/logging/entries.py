@@ -108,6 +108,8 @@ class ProtobufEntry(_BaseEntry):
     def parse_message(self, message):
         """Parse payload into a protobuf message.
 
+        Mutates the passed-in ``message`` in place.
+
         :type message: Protobuf message
         :param message: the message to be logged
         """
