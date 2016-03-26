@@ -122,6 +122,31 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertTrue(entry.logger is LOGGER)
 
 
+class TestProtobufEntry(unittest2.TestCase):
+
+    PROJECT = 'PROJECT'
+    LOGGER_NAME = 'LOGGER_NAME'
+
+    def _getTargetClass(self):
+        from gcloud.logging.entries import ProtobufEntry
+        return ProtobufEntry
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_parse_message(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        LOGGER = object()
+        message = Struct(fields={'foo': Value(bool_value=False)})
+        with_true = Struct(fields={'foo': Value(bool_value=True)})
+        PAYLOAD = json.loads(MessageToJson(with_true))
+        entry = self._makeOne(PAYLOAD, LOGGER)
+        entry.parse_message(message)
+        self.assertTrue(message.fields['foo'])
+
+
 def _datetime_to_rfc3339_w_nanos(value):
     from gcloud._helpers import _RFC3339_NO_FRACTION
     no_fraction = value.strftime(_RFC3339_NO_FRACTION)

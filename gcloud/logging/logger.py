@@ -14,6 +14,10 @@
 
 """Define API Loggers."""
 
+import json
+
+from google.protobuf.json_format import MessageToJson
+
 
 class Logger(object):
     """Loggers represent named targets for log entries.
@@ -89,7 +93,7 @@ class Logger(object):
             method='POST', path='/entries:write', data=data)
 
     def log_struct(self, info, client=None):
-        """API call:  log a text message via a POST request
+        """API call:  log a structured message via a POST request
 
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
@@ -107,6 +111,35 @@ class Logger(object):
             'entries': [{
                 'logName': self.full_name,
                 'jsonPayload': info,
+                'resource': {
+                    'type': 'global',
+                },
+            }],
+        }
+        client.connection.api_request(
+            method='POST', path='/entries:write', data=data)
+
+    def log_proto(self, message, client=None):
+        """API call:  log a protobuf message via a POST request
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
+
+        :type message: Protobuf message
+        :param message: the message to be logged
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current logger.
+        """
+        client = self._require_client(client)
+        as_json_str = MessageToJson(message)
+        as_json = json.loads(as_json_str)
+
+        data = {
+            'entries': [{
+                'logName': self.full_name,
+                'protoPayload': as_json,
                 'resource': {
                     'type': 'global',
                 },
