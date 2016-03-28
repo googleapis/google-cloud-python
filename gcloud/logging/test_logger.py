@@ -27,7 +27,7 @@ class TestLogger(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
         conn = _Connection()
         client = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client)
@@ -36,6 +36,19 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(logger.labels, None)
+
+    def test_ctor_explicit(self):
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        conn = _Connection()
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client, labels=LABELS)
+        self.assertEqual(logger.name, self.LOGGER_NAME)
+        self.assertTrue(logger.client is client)
+        self.assertEqual(logger.project, self.PROJECT)
+        self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
+                         % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(logger.labels, LABELS)
 
     def test_batch_w_bound_client(self):
         from gcloud.logging.logger import Batch

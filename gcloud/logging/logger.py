@@ -31,10 +31,15 @@ class Logger(object):
     :type client: :class:`gcloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the logger (which requires a project).
+
+    :type labels: dict or :class:`NoneType`
+    :param labels: (optional) mapping of default labels for entries written
+                   via this logger.
     """
-    def __init__(self, name, client):
+    def __init__(self, name, client, labels=None):
         self.name = name
         self._client = client
+        self.labels = labels
 
     @property
     def client(self):
