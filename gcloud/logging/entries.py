@@ -40,14 +40,23 @@ class _BaseEntry(object):
 
     :type labels: dict or :class:`NoneType`
     :param labels: (optional) mapping of labels for the entry
+
+    :type severity: string or :class:`NoneType`
+    :param severity: (optional) severity of event being logged.
+
+    :type http_request: dict or :class:`NoneType`
+    :param http_request: (optional) info about HTTP request associated with
+                         the entry
     """
-    def __init__(self, payload, logger,
-                 insert_id=None, timestamp=None, labels=None):
+    def __init__(self, payload, logger, insert_id=None, timestamp=None,
+                 labels=None, severity=None, http_request=None):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
         self.timestamp = timestamp
         self.labels = labels
+        self.severity = severity
+        self.http_request = http_request
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -82,7 +91,10 @@ class _BaseEntry(object):
         if timestamp is not None:
             timestamp = _rfc3339_nanos_to_datetime(timestamp)
         labels = resource.get('labels')
-        return cls(payload, logger, insert_id, timestamp, labels)
+        severity = resource.get('severity')
+        http_request = resource.get('httpRequest')
+        return cls(payload, logger, insert_id=insert_id, timestamp=timestamp,
+                   labels=labels, severity=severity, http_request=http_request)
 
 
 class TextEntry(_BaseEntry):

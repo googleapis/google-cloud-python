@@ -40,6 +40,8 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertTrue(entry.insert_id is None)
         self.assertTrue(entry.timestamp is None)
         self.assertTrue(entry.labels is None)
+        self.assertTrue(entry.severity is None)
+        self.assertTrue(entry.http_request is None)
 
     def test_ctor_explicit(self):
         import datetime
@@ -47,13 +49,31 @@ class Test_BaseEntry(unittest2.TestCase):
         IID = 'IID'
         TIMESTAMP = datetime.datetime.now()
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger, IID, TIMESTAMP, LABELS)
+        entry = self._makeOne(PAYLOAD, logger,
+                              insert_id=IID,
+                              timestamp=TIMESTAMP,
+                              labels=LABELS,
+                              severity=SEVERITY,
+                              http_request={
+                                'requestMethod': METHOD,
+                                'requestUrl': URI,
+                                'status': STATUS,
+                              },
+                             )
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertTrue(entry.logger is logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, TIMESTAMP)
         self.assertEqual(entry.labels, LABELS)
+        self.assertEqual(entry.severity, SEVERITY)
+        self.assertEqual(entry.http_request['requestMethod'], METHOD)
+        self.assertEqual(entry.http_request['requestUrl'], URI)
+        self.assertEqual(entry.http_request['status'], STATUS)
 
     def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -68,6 +88,8 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertTrue(entry.insert_id is None)
         self.assertTrue(entry.timestamp is None)
+        self.assertTrue(entry.severity is None)
+        self.assertTrue(entry.http_request is None)
         logger = entry.logger
         self.assertTrue(isinstance(logger, _Logger))
         self.assertTrue(logger.client is client)
@@ -76,27 +98,41 @@ class Test_BaseEntry(unittest2.TestCase):
     def test_from_api_repr_w_loggers_no_logger_match(self):
         from datetime import datetime
         from gcloud._helpers import UTC
+        klass = self._getTargetClass()
         client = _Client(self.PROJECT)
         PAYLOAD = 'PAYLOAD'
+        SEVERITY = 'CRITICAL'
         IID = 'IID'
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
             'labels': LABELS,
+            'severity': SEVERITY,
+            'httpRequest': {
+                'requestMethod': METHOD,
+                'requestUrl': URI,
+                'status': STATUS,
+            },
         }
         loggers = {}
-        klass = self._getTargetClass()
         entry = klass.from_api_repr(API_REPR, client, loggers=loggers)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
         self.assertEqual(entry.labels, LABELS)
+        self.assertEqual(entry.severity, SEVERITY)
+        self.assertEqual(entry.http_request['requestMethod'], METHOD)
+        self.assertEqual(entry.http_request['requestUrl'], URI)
+        self.assertEqual(entry.http_request['status'], STATUS)
         logger = entry.logger
         self.assertTrue(isinstance(logger, _Logger))
         self.assertTrue(logger.client is client)
