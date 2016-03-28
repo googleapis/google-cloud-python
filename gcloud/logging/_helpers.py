@@ -38,7 +38,7 @@ def logger_name_from_path(path, project):
                     included for validation purposes.
 
     :rtype: string
-    :returns: Topic name parsed from ``path``.
+    :returns: Logger name parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the
              ``project`` passed in.

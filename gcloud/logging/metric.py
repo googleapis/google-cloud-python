@@ -100,7 +100,7 @@ class Metric(object):
         :type resource: dict
         :param resource: metric resource representation returned from the API
 
-        :type client: :class:`gcloud.pubsub.client.Client`
+        :type client: :class:`gcloud.logging.client.Client`
         :param client: Client which holds credentials and project
                        configuration for the metric.
 

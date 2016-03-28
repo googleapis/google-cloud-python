@@ -103,18 +103,18 @@ class Client(JSONClient):
                          :data:`gcloud.logging.DESCENDING`.
 
         :type page_size: int
-        :param page_size: maximum number of topics to return, If not passed,
+        :param page_size: maximum number of entries to return, If not passed,
                           defaults to a value set by the API.
 
         :type page_token: string
-        :param page_token: opaque marker for the next "page" of topics. If not
+        :param page_token: opaque marker for the next "page" of entries. If not
                            passed, the API will return the first page of
-                           topics.
+                           entries.
 
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
                   "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
+                  more entries can be retrieved with another call (pass that
                   value as ``page_token``).
         """
         if projects is None:
@@ -155,7 +155,7 @@ class Client(JSONClient):
         :param destination: destination URI for the entries exported by
                             the sink.
 
-        :rtype: :class:`gcloud.pubsub.sink.Sink`
+        :rtype: :class:`gcloud.logging.sink.Sink`
         :returns: Sink created with the current client.
         """
         return Sink(name, filter_, destination, client=self)
@@ -209,7 +209,7 @@ class Client(JSONClient):
         :type description: string
         :param description: the description of the metric to be constructed.
 
-        :rtype: :class:`gcloud.pubsub.metric.Metric`
+        :rtype: :class:`gcloud.logging.metric.Metric`
         :returns: Metric created with the current client.
         """
         return Metric(name, filter_, client=self, description=description)
