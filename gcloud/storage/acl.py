@@ -168,14 +168,24 @@ class ACL(object):
     _URL_PATH_ELEM = 'acl'
     _PREDEFINED_QUERY_PARAM = 'predefinedAcl'
 
-    _PREDEFINED_ACLS = frozenset([
+    PREDEFINED_XML_ACLS = {
+        # XML API name -> JSON API name
+        'project-private': 'projectPrivate',
+        'public-read': 'publicRead',
+        'public-read-write': 'publicReadWrite',
+        'authenticated-read': 'authenticatedRead',
+        'bucket-owner-read': 'bucketOwnerRead',
+        'bucket-owner-full-control': 'bucketOwnerFullControl',
+    }
+
+    PREDEFINED_JSON_ACLS = frozenset([
         'private',
-        'project-private',
-        'public-read',
-        'public-read-write',
-        'authenticated-read',
-        'bucket-owner-read',
-        'bucket-owner-full-control',
+        'projectPrivate',
+        'publicRead',
+        'publicReadWrite',
+        'authenticatedRead',
+        'bucketOwnerRead',
+        'bucketOwnerFullControl',
     ])
     """See:
     https://cloud.google.com/storage/docs/access-control#predefined-acl
@@ -409,7 +419,7 @@ class ACL(object):
 
         :type predefined: string or None
         :param predefined: An identifier for a predefined ACL.  Must be one
-                           of the keys in :attr:`_PREDEFINED_ACLS`
+                           of the keys in :attr:`PREDEFINED_JSON_ACLS`
                            If passed, `acl` must be None.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
@@ -458,14 +468,18 @@ class ACL(object):
 
         :type predefined: string
         :param predefined: An identifier for a predefined ACL.  Must be one
-                           of the keys in :attr:`_PREDEFINED_ACLS`
+                           of the keys in :attr:`PREDEFINED_JSON_ACLS`
+                           or :attr:`PREDEFINED_XML_ACLS` (which will be
+                           aliased to the corresponding JSON name).
                            If passed, `acl` must be None.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         """
-        if predefined not in self._PREDEFINED_ACLS:
+        predefined = self.PREDEFINED_XML_ACLS.get(predefined, predefined)
+
+        if predefined not in self.PREDEFINED_JSON_ACLS:
             raise ValueError("Invalid predefined ACL: %s" % (predefined,))
 
         self._save(None, predefined, client)
