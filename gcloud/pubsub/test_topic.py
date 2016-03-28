@@ -601,7 +601,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], {})
 
-    def test_test_iam_permissions_w_bound_client(self):
+    def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -618,7 +618,7 @@ class TestTopic(unittest2.TestCase):
         CLIENT = _Client(project=PROJECT, connection=conn)
         topic = self._makeOne(TOPIC_NAME, client=CLIENT)
 
-        allowed = topic.test_iam_permissions(ROLES)
+        allowed = topic.check_iam_permissions(ROLES)
 
         self.assertEqual(allowed, ROLES[:-1])
         self.assertEqual(len(conn._requested), 1)
@@ -627,7 +627,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], REQUESTED)
 
-    def test_test_iam_permissions_w_alternate_client(self):
+    def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
         TOPIC_NAME = 'topic_name'
         PROJECT = 'PROJECT'
@@ -644,7 +644,7 @@ class TestTopic(unittest2.TestCase):
         CLIENT2 = _Client(project=PROJECT, connection=conn2)
         topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
 
-        allowed = topic.test_iam_permissions(ROLES, client=CLIENT2)
+        allowed = topic.check_iam_permissions(ROLES, client=CLIENT2)
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)

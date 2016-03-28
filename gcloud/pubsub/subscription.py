@@ -309,8 +309,8 @@ class Subscription(object):
             method='POST', path=path, data=resource)
         return Policy.from_api_repr(resp)
 
-    def test_iam_permissions(self, permissions, client=None):
-        """Permissions allowed for the current user by the effective IAM policy.
+    def check_iam_permissions(self, permissions, client=None):
+        """Verify permissions allowed for the current user.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions

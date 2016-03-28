@@ -641,7 +641,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], {})
 
-    def test_test_iam_permissions_w_bound_client(self):
+    def test_check_iam_permissions_w_bound_client(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'topic_name'
         SUB_NAME = 'sub_name'
@@ -659,7 +659,7 @@ class TestSubscription(unittest2.TestCase):
         topic = _Topic(TOPIC_NAME, client=CLIENT)
         subscription = self._makeOne(SUB_NAME, topic)
 
-        allowed = subscription.test_iam_permissions(ROLES)
+        allowed = subscription.check_iam_permissions(ROLES)
 
         self.assertEqual(allowed, ROLES[:-1])
         self.assertEqual(len(conn._requested), 1)
@@ -668,7 +668,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], REQUESTED)
 
-    def test_test_iam_permissions_w_alternate_client(self):
+    def test_check_iam_permissions_w_alternate_client(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'topic_name'
         SUB_NAME = 'sub_name'
@@ -686,7 +686,7 @@ class TestSubscription(unittest2.TestCase):
         topic = _Topic(TOPIC_NAME, client=CLIENT1)
         subscription = self._makeOne(SUB_NAME, topic)
 
-        allowed = subscription.test_iam_permissions(ROLES, client=CLIENT2)
+        allowed = subscription.check_iam_permissions(ROLES, client=CLIENT2)
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
