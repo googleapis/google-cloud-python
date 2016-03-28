@@ -88,21 +88,49 @@ class Logger(object):
         client = self._require_client(client)
         return Batch(self, client)
 
-    def _get_labels(self, labels):
-        """Return effective labels.
+    def _make_entry_resource(self, text=None, info=None, message=None,
+                             labels=None):
+        """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
 
+        Only one of ``text``, ``info``, or ``message`` should be passed.
+
+        :type text: string or :class:`NoneType`
+        :param text: text payload
+
+        :type info: dict or :class:`NoneType`
+        :param info: struct payload
+
+        :type message: Protobuf message or :class:`NoneType`
+        :param message: protobuf payload
+
         :type labels: dict or :class:`NoneType`
         :param labels: labels passed in to calling method.
-
-        :rtype: dict or :class:`NoneType`.
-        :returns: the passed-in labels, if not none, else any default labels
-                  configured on the logger instance.
         """
+        resource = {
+            'logName': self.full_name,
+            'resource': {'type': 'global'},
+        }
+
+        if text is not None:
+            resource['textPayload'] = text
+
+        if info is not None:
+            resource['jsonPayload'] = info
+
+        if message is not None:
+            as_json_str = MessageToJson(message)
+            as_json = json.loads(as_json_str)
+            resource['protoPayload'] = as_json
+
+        if labels is None:
+            labels = self.labels
+
         if labels is not None:
-            return labels
-        return self.labels
+            resource['labels'] = labels
+
+        return resource
 
     def log_text(self, text, client=None, labels=None):
         """API call:  log a text message via a POST request
@@ -121,20 +149,9 @@ class Logger(object):
         :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
+        entry_resource = self._make_entry_resource(text=text, labels=labels)
 
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'textPayload': text,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
-
-        labels = self._get_labels(labels)
-        if labels is not None:
-            data['entries'][0]['labels'] = labels
+        data = {'entries': [entry_resource]}
 
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
@@ -156,20 +173,8 @@ class Logger(object):
         :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
-
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'jsonPayload': info,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
-
-        labels = self._get_labels(labels)
-        if labels is not None:
-            data['entries'][0]['labels'] = labels
+        entry_resource = self._make_entry_resource(info=info, labels=labels)
+        data = {'entries': [entry_resource]}
 
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
@@ -191,22 +196,9 @@ class Logger(object):
         :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
-        as_json_str = MessageToJson(message)
-        as_json = json.loads(as_json_str)
-
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'protoPayload': as_json,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
-
-        labels = self._get_labels(labels)
-        if labels is not None:
-            data['entries'][0]['labels'] = labels
+        entry_resource = self._make_entry_resource(
+            message=message, labels=labels)
+        data = {'entries': [entry_resource]}
 
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
