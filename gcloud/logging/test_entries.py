@@ -39,18 +39,21 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertTrue(entry.logger is logger)
         self.assertTrue(entry.insert_id is None)
         self.assertTrue(entry.timestamp is None)
+        self.assertTrue(entry.labels is None)
 
     def test_ctor_explicit(self):
         import datetime
         PAYLOAD = 'PAYLOAD'
         IID = 'IID'
         TIMESTAMP = datetime.datetime.now()
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
-        entry = self._makeOne(PAYLOAD, logger, IID, TIMESTAMP)
+        entry = self._makeOne(PAYLOAD, logger, IID, TIMESTAMP, LABELS)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertTrue(entry.logger is logger)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, TIMESTAMP)
+        self.assertEqual(entry.labels, LABELS)
 
     def test_from_api_repr_missing_data_no_loggers(self):
         client = _Client(self.PROJECT)
@@ -79,11 +82,13 @@ class Test_BaseEntry(unittest2.TestCase):
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
+            'labels': LABELS,
         }
         loggers = {}
         klass = self._getTargetClass()
@@ -91,6 +96,7 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
+        self.assertEqual(entry.labels, LABELS)
         logger = entry.logger
         self.assertTrue(isinstance(logger, _Logger))
         self.assertTrue(logger.client is client)
@@ -106,11 +112,13 @@ class Test_BaseEntry(unittest2.TestCase):
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         LOG_NAME = 'projects/%s/logs/%s' % (self.PROJECT, self.LOGGER_NAME)
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
         API_REPR = {
             'dummyPayload': PAYLOAD,
             'logName': LOG_NAME,
             'insertId': IID,
             'timestamp': TIMESTAMP,
+            'labels': LABELS,
         }
         LOGGER = object()
         loggers = {LOG_NAME: LOGGER}
@@ -119,6 +127,7 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.timestamp, NOW)
+        self.assertEqual(entry.labels, LABELS)
         self.assertTrue(entry.logger is LOGGER)
 
 
