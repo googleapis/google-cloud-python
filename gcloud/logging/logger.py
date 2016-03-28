@@ -346,7 +346,7 @@ class Batch(object):
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
-                info = {'structPayload': entry}
+                info = {'jsonPayload': entry}
             elif entry_type == 'proto':
                 as_json_str = MessageToJson(entry)
                 as_json = json.loads(as_json_str)

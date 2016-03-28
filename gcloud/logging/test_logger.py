@@ -485,7 +485,7 @@ class TestBatch(unittest2.TestCase):
             },
             'entries': [
                 {'textPayload': TEXT},
-                {'structPayload': STRUCT},
+                {'jsonPayload': STRUCT},
                 {'protoPayload': json.loads(MessageToJson(message))},
             ],
         }
@@ -522,7 +522,7 @@ class TestBatch(unittest2.TestCase):
             'labels': DEFAULT_LABELS,
             'entries': [
                 {'textPayload': TEXT, 'labels': LABELS},
-                {'structPayload': STRUCT},
+                {'jsonPayload': STRUCT},
                 {'protoPayload': json.loads(MessageToJson(message))},
             ],
         }
@@ -560,7 +560,7 @@ class TestBatch(unittest2.TestCase):
             'labels': DEFAULT_LABELS,
             'entries': [
                 {'textPayload': TEXT},
-                {'structPayload': STRUCT, 'labels': LABELS},
+                {'jsonPayload': STRUCT, 'labels': LABELS},
                 {'protoPayload': json.loads(MessageToJson(message))},
             ],
         }
