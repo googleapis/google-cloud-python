@@ -37,6 +37,28 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
 
+    def test_batch_w_bound_client(self):
+        from gcloud.logging.logger import Batch
+        conn = _Connection()
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client)
+        batch = logger.batch()
+        self.assertTrue(isinstance(batch, Batch))
+        self.assertTrue(batch.logger is logger)
+        self.assertTrue(batch.client is client)
+
+    def test_batch_w_alternate_client(self):
+        from gcloud.logging.logger import Batch
+        conn1 = _Connection()
+        conn2 = _Connection()
+        client1 = _Client(self.PROJECT, conn1)
+        client2 = _Client(self.PROJECT, conn2)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1)
+        batch = logger.batch(client2)
+        self.assertTrue(isinstance(batch, Batch))
+        self.assertTrue(batch.logger is logger)
+        self.assertTrue(batch.client is client2)
+
     def test_log_text_w_str_implicit_client(self):
         TEXT = 'TEXT'
         conn = _Connection({})
@@ -246,6 +268,197 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(client._listed, LISTED)
 
 
+class TestBatch(unittest2.TestCase):
+
+    PROJECT = 'test-project'
+
+    def _getTargetClass(self):
+        from gcloud.logging.logger import Batch
+        return Batch
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def test_ctor_defaults(self):
+        logger = _Logger()
+        CLIENT = _Client(project=self.PROJECT)
+        batch = self._makeOne(logger, CLIENT)
+        self.assertTrue(batch.logger is logger)
+        self.assertTrue(batch.client is CLIENT)
+        self.assertEqual(len(batch.entries), 0)
+
+    def test_log_text(self):
+        TEXT = 'This is the entry text'
+        connection = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=connection)
+        logger = _Logger()
+        batch = self._makeOne(logger, client=CLIENT)
+        batch.log_text(TEXT)
+        self.assertEqual(len(connection._requested), 0)
+        self.assertEqual(batch.entries, [('text', TEXT)])
+
+    def test_log_struct(self):
+        STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
+        connection = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=connection)
+        logger = _Logger()
+        batch = self._makeOne(logger, client=CLIENT)
+        batch.log_struct(STRUCT)
+        self.assertEqual(len(connection._requested), 0)
+        self.assertEqual(batch.entries, [('struct', STRUCT)])
+
+    def test_log_proto(self):
+        from google.protobuf.struct_pb2 import Struct, Value
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        connection = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=connection)
+        logger = _Logger()
+        batch = self._makeOne(logger, client=CLIENT)
+        batch.log_proto(message)
+        self.assertEqual(len(connection._requested), 0)
+        self.assertEqual(batch.entries, [('proto', message)])
+
+    def test_commit_w_invalid_entry_type(self):
+        logger = _Logger()
+        conn = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        batch = self._makeOne(logger, CLIENT)
+        batch.entries.append(('bogus', 'BOGUS'))
+        with self.assertRaises(ValueError):
+            batch.commit()
+
+    def test_commit_w_bound_client(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        TEXT = 'This is the entry text'
+        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        logger = _Logger()
+        SENT = {
+            'logName': logger.path,
+            'resource': {
+                'type': 'global',
+            },
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
+        }
+        batch = self._makeOne(logger, client=CLIENT)
+        batch.log_text(TEXT)
+        batch.log_struct(STRUCT)
+        batch.log_proto(message)
+        batch.commit()
+        self.assertEqual(list(batch.entries), [])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_commit_w_alternate_client(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        TEXT = 'This is the entry text'
+        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        conn1 = _Connection()
+        conn2 = _Connection({})
+        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
+        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        logger = _Logger()
+        SENT = {
+            'logName': logger.path,
+            'resource': {'type': 'global'},
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
+        }
+        batch = self._makeOne(logger, client=CLIENT1)
+        batch.log_text(TEXT)
+        batch.log_struct(STRUCT)
+        batch.log_proto(message)
+        batch.commit(client=CLIENT2)
+        self.assertEqual(list(batch.entries), [])
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 1)
+        req = conn2._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_context_mgr_success(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        TEXT = 'This is the entry text'
+        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        logger = _Logger()
+        SENT = {
+            'logName': logger.path,
+            'resource': {
+                'type': 'global',
+            },
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
+        }
+        batch = self._makeOne(logger, client=CLIENT)
+
+        with batch as other:
+            other.log_text(TEXT)
+            other.log_struct(STRUCT)
+            other.log_proto(message)
+
+        self.assertEqual(list(batch.entries), [])
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_context_mgr_failure(self):
+        from google.protobuf.struct_pb2 import Struct, Value
+        TEXT = 'This is the entry text'
+        STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        conn = _Connection({})
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        logger = _Logger()
+        UNSENT = [('text', TEXT), ('struct', STRUCT), ('proto', message)]
+        batch = self._makeOne(logger, client=CLIENT)
+
+        try:
+            with batch as other:
+                other.log_text(TEXT)
+                other.log_struct(STRUCT)
+                other.log_proto(message)
+                raise _Bugout()
+        except _Bugout:
+            pass
+
+        self.assertEqual(list(batch.entries), UNSENT)
+        self.assertEqual(len(conn._requested), 0)
+
+
+class _Logger(object):
+
+    def __init__(self, name="NAME", project="PROJECT"):
+        self.path = '/projects/%s/logs/%s' % (project, name)
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
@@ -270,3 +483,7 @@ class _Client(object):
     def list_entries(self, **kw):
         self._listed = kw
         return self._entries, self._token
+
+
+class _Bugout(Exception):
+    pass

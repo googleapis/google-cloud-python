@@ -65,6 +65,19 @@ class Logger(object):
             client = self._client
         return client
 
+    def batch(self, client=None):
+        """Return a batch to use as a context manager.
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current topic.
+
+        :rtype: :class:`Batch`
+        :returns: A batch to use as a context manager.
+        """
+        client = self._require_client(client)
+        return Batch(self, client)
+
     def log_text(self, text, client=None):
         """API call:  log a text message via a POST request
 
@@ -204,3 +217,82 @@ class Logger(object):
         return self.client.list_entries(
             projects=projects, filter_=filter_, order_by=order_by,
             page_size=page_size, page_token=page_token)
+
+
+class Batch(object):
+    """Context manager:  collect entries to log via a single API call.
+
+    Helper returned by :meth:`Logger.batch`
+
+    :type logger: :class:`gcloud.logging.logger.Logger`
+    :param logger: the logger to which entries will be logged.
+
+    :type client: :class:`gcloud.logging.client.Client`
+    :param client: The client to use.
+    """
+    def __init__(self, logger, client):
+        self.logger = logger
+        self.entries = []
+        self.client = client
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.commit()
+
+    def log_text(self, text):
+        """Add a text entry to be logged during :meth:`commit`.
+
+        :type text: string
+        :param text: the text entry
+        """
+        self.entries.append(('text', text))
+
+    def log_struct(self, info):
+        """Add a struct entry to be logged during :meth:`commit`.
+
+        :type info: dict
+        :param info: the struct entry
+        """
+        self.entries.append(('struct', info))
+
+    def log_proto(self, message):
+        """Add a protobuf entry to be logged during :meth:`commit`.
+
+        :type message: protobuf message
+        :param message: the protobuf entry
+        """
+        self.entries.append(('proto', message))
+
+    def commit(self, client=None):
+        """Send saved log entries as a single API call.
+
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+        """
+        if client is None:
+            client = self.client
+        data = {
+            'logName': self.logger.path,
+            'resource': {'type': 'global'},
+        }
+        entries = data['entries'] = []
+        for entry_type, entry in self.entries:
+            if entry_type == 'text':
+                info = {'textPayload': entry}
+            elif entry_type == 'struct':
+                info = {'structPayload': entry}
+            elif entry_type == 'proto':
+                as_json_str = MessageToJson(entry)
+                as_json = json.loads(as_json_str)
+                info = {'protoPayload': as_json}
+            else:
+                raise ValueError('Unknown entry type: %s' % (entry_type,))
+            entries.append(info)
+
+        client.connection.api_request(
+            method='POST', path='/entries:write', data=data)
+        del self.entries[:]
