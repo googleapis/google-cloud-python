@@ -37,12 +37,17 @@ class _BaseEntry(object):
 
     :type timestamp: :class:`datetime.datetime`, or :class:`NoneType`
     :param timestamp: (optional) timestamp for the entry
+
+    :type labels: dict or :class:`NoneType`
+    :param labels: (optional) mapping of labels for the entry
     """
-    def __init__(self, payload, logger, insert_id=None, timestamp=None):
+    def __init__(self, payload, logger,
+                 insert_id=None, timestamp=None, labels=None):
         self.payload = payload
         self.logger = logger
         self.insert_id = insert_id
         self.timestamp = timestamp
+        self.labels = labels
 
     @classmethod
     def from_api_repr(cls, resource, client, loggers=None):
@@ -76,7 +81,8 @@ class _BaseEntry(object):
         timestamp = resource.get('timestamp')
         if timestamp is not None:
             timestamp = _rfc3339_nanos_to_datetime(timestamp)
-        return cls(payload, logger, insert_id, timestamp)
+        labels = resource.get('labels')
+        return cls(payload, logger, insert_id, timestamp, labels)
 
 
 class TextEntry(_BaseEntry):

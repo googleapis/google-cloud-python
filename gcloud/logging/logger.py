@@ -31,10 +31,15 @@ class Logger(object):
     :type client: :class:`gcloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the logger (which requires a project).
+
+    :type labels: dict or :class:`NoneType`
+    :param labels: (optional) mapping of default labels for entries written
+                   via this logger.
     """
-    def __init__(self, name, client):
+    def __init__(self, name, client, labels=None):
         self.name = name
         self._client = client
+        self.labels = labels
 
     @property
     def client(self):
@@ -50,6 +55,11 @@ class Logger(object):
     def full_name(self):
         """Fully-qualified name used in logging APIs"""
         return 'projects/%s/logs/%s' % (self.project, self.name)
+
+    @property
+    def path(self):
+        """URI path for use in logging APIs"""
+        return '/%s' % (self.full_name,)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -78,7 +88,51 @@ class Logger(object):
         client = self._require_client(client)
         return Batch(self, client)
 
-    def log_text(self, text, client=None):
+    def _make_entry_resource(self, text=None, info=None, message=None,
+                             labels=None):
+        """Return a log entry resource of the appropriate type.
+
+        Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
+
+        Only one of ``text``, ``info``, or ``message`` should be passed.
+
+        :type text: string or :class:`NoneType`
+        :param text: text payload
+
+        :type info: dict or :class:`NoneType`
+        :param info: struct payload
+
+        :type message: Protobuf message or :class:`NoneType`
+        :param message: protobuf payload
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: labels passed in to calling method.
+        """
+        resource = {
+            'logName': self.full_name,
+            'resource': {'type': 'global'},
+        }
+
+        if text is not None:
+            resource['textPayload'] = text
+
+        if info is not None:
+            resource['jsonPayload'] = info
+
+        if message is not None:
+            as_json_str = MessageToJson(message)
+            as_json = json.loads(as_json_str)
+            resource['protoPayload'] = as_json
+
+        if labels is None:
+            labels = self.labels
+
+        if labels is not None:
+            resource['labels'] = labels
+
+        return resource
+
+    def log_text(self, text, client=None, labels=None):
         """API call:  log a text message via a POST request
 
         See:
@@ -90,22 +144,19 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
+        entry_resource = self._make_entry_resource(text=text, labels=labels)
 
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'textPayload': text,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
+        data = {'entries': [entry_resource]}
+
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_struct(self, info, client=None):
+    def log_struct(self, info, client=None, labels=None):
         """API call:  log a structured message via a POST request
 
         See:
@@ -117,22 +168,18 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
+        entry_resource = self._make_entry_resource(info=info, labels=labels)
+        data = {'entries': [entry_resource]}
 
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'jsonPayload': info,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_proto(self, message, client=None):
+    def log_proto(self, message, client=None, labels=None):
         """API call:  log a protobuf message via a POST request
 
         See:
@@ -144,20 +191,15 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
-        as_json_str = MessageToJson(message)
-        as_json = json.loads(as_json_str)
+        entry_resource = self._make_entry_resource(
+            message=message, labels=labels)
+        data = {'entries': [entry_resource]}
 
-        data = {
-            'entries': [{
-                'logName': self.full_name,
-                'protoPayload': as_json,
-                'resource': {
-                    'type': 'global',
-                },
-            }],
-        }
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
@@ -172,8 +214,7 @@ class Logger(object):
                        ``client`` stored on the current logger.
         """
         client = self._require_client(client)
-        client.connection.api_request(
-            method='DELETE', path='/%s' % self.full_name)
+        client.connection.api_request(method='DELETE', path=self.path)
 
     def list_entries(self, projects=None, filter_=None, order_by=None,
                      page_size=None, page_token=None):
@@ -242,29 +283,38 @@ class Batch(object):
         if exc_type is None:
             self.commit()
 
-    def log_text(self, text):
+    def log_text(self, text, labels=None):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: string
         :param text: the text entry
-        """
-        self.entries.append(('text', text))
 
-    def log_struct(self, info):
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
+        """
+        self.entries.append(('text', text, labels))
+
+    def log_struct(self, info, labels=None):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
         :param info: the struct entry
-        """
-        self.entries.append(('struct', info))
 
-    def log_proto(self, message):
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
+        """
+        self.entries.append(('struct', info, labels))
+
+    def log_proto(self, message, labels=None):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
         :param message: the protobuf entry
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
-        self.entries.append(('proto', message))
+        self.entries.append(('proto', message, labels))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -275,22 +325,28 @@ class Batch(object):
         """
         if client is None:
             client = self.client
+
         data = {
             'logName': self.logger.path,
             'resource': {'type': 'global'},
         }
+        if self.logger.labels is not None:
+            data['labels'] = self.logger.labels
+
         entries = data['entries'] = []
-        for entry_type, entry in self.entries:
+        for entry_type, entry, labels in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
-                info = {'structPayload': entry}
+                info = {'jsonPayload': entry}
             elif entry_type == 'proto':
                 as_json_str = MessageToJson(entry)
                 as_json = json.loads(as_json_str)
                 info = {'protoPayload': as_json}
             else:
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
+            if labels is not None:
+                info['labels'] = labels
             entries.append(info)
 
         client.connection.api_request(
