@@ -56,7 +56,7 @@ class Logger(object):
 
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current topic.
+                       ``client`` stored on the current logger.
 
         :rtype: :class:`gcloud.logging.client.Client`
         :returns: The client passed in or the currently bound client.
@@ -152,9 +152,9 @@ class Logger(object):
         """API call:  delete all entries in a logger via a DELETE request
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs/delete
 
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
         """
@@ -182,18 +182,18 @@ class Logger(object):
                          :data:`gcloud.logging.DESCENDING`.
 
         :type page_size: int
-        :param page_size: maximum number of topics to return, If not passed,
+        :param page_size: maximum number of entries to return, If not passed,
                           defaults to a value set by the API.
 
         :type page_token: string
-        :param page_token: opaque marker for the next "page" of topics. If not
+        :param page_token: opaque marker for the next "page" of entries. If not
                            passed, the API will return the first page of
-                           topics.
+                           entries.
 
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.logging.entry.TextEntry`, plus a
                   "next page token" string:  if not None, indicates that
-                  more topics can be retrieved with another call (pass that
+                  more entries can be retrieved with another call (pass that
                   value as ``page_token``).
         """
         log_filter = 'logName:%s' % (self.name,)
