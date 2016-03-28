@@ -89,7 +89,8 @@ class Logger(object):
         return Batch(self, client)
 
     def _make_entry_resource(self, text=None, info=None, message=None,
-                             labels=None):
+                             labels=None, insert_id=None, severity=None,
+                             http_request=None):
         """Return a log entry resource of the appropriate type.
 
         Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
@@ -107,6 +108,16 @@ class Logger(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: labels passed in to calling method.
+
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
         """
         resource = {
             'logName': self.full_name,
@@ -130,9 +141,19 @@ class Logger(object):
         if labels is not None:
             resource['labels'] = labels
 
+        if insert_id is not None:
+            resource['insertId'] = insert_id
+
+        if severity is not None:
+            resource['severity'] = severity
+
+        if http_request is not None:
+            resource['httpRequest'] = http_request
+
         return resource
 
-    def log_text(self, text, client=None, labels=None):
+    def log_text(self, text, client=None, labels=None, insert_id=None,
+                 severity=None, http_request=None):
         """API call:  log a text message via a POST request
 
         See:
@@ -147,16 +168,28 @@ class Logger(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
         """
         client = self._require_client(client)
-        entry_resource = self._make_entry_resource(text=text, labels=labels)
-
+        entry_resource = self._make_entry_resource(
+            text=text, labels=labels, insert_id=insert_id, severity=severity,
+            http_request=http_request)
         data = {'entries': [entry_resource]}
 
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_struct(self, info, client=None, labels=None):
+    def log_struct(self, info, client=None, labels=None, insert_id=None,
+                   severity=None, http_request=None):
         """API call:  log a structured message via a POST request
 
         See:
@@ -171,15 +204,28 @@ class Logger(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
         """
         client = self._require_client(client)
-        entry_resource = self._make_entry_resource(info=info, labels=labels)
+        entry_resource = self._make_entry_resource(
+            info=info, labels=labels, insert_id=insert_id, severity=severity,
+            http_request=http_request)
         data = {'entries': [entry_resource]}
 
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_proto(self, message, client=None, labels=None):
+    def log_proto(self, message, client=None, labels=None, insert_id=None,
+                  severity=None, http_request=None):
         """API call:  log a protobuf message via a POST request
 
         See:
@@ -194,10 +240,21 @@ class Logger(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry
         """
         client = self._require_client(client)
         entry_resource = self._make_entry_resource(
-            message=message, labels=labels)
+            message=message, labels=labels, insert_id=insert_id,
+            severity=severity, http_request=http_request)
         data = {'entries': [entry_resource]}
 
         client.connection.api_request(
@@ -283,7 +340,8 @@ class Batch(object):
         if exc_type is None:
             self.commit()
 
-    def log_text(self, text, labels=None):
+    def log_text(self, text, labels=None, insert_id=None, severity=None,
+                 http_request=None):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: string
@@ -291,10 +349,22 @@ class Batch(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
-        """
-        self.entries.append(('text', text, labels))
 
-    def log_struct(self, info, labels=None):
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry.
+        """
+        self.entries.append(
+            ('text', text, labels, insert_id, severity, http_request))
+
+    def log_struct(self, info, labels=None, insert_id=None, severity=None,
+                   http_request=None):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
@@ -302,10 +372,22 @@ class Batch(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
-        """
-        self.entries.append(('struct', info, labels))
 
-    def log_proto(self, message, labels=None):
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry.
+        """
+        self.entries.append(
+            ('struct', info, labels, insert_id, severity, http_request))
+
+    def log_proto(self, message, labels=None, insert_id=None, severity=None,
+                  http_request=None):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
@@ -313,8 +395,19 @@ class Batch(object):
 
         :type labels: dict or :class:`NoneType`
         :param labels: (optional) mapping of labels for the entry.
+
+        :type insert_id: string or :class:`NoneType`
+        :param insert_id: (optional) unique ID for log entry.
+
+        :type severity: string or :class:`NoneType`
+        :param severity: (optional) severity of event being logged.
+
+        :type http_request: dict or :class:`NoneType`
+        :param http_request: (optional) info about HTTP request associated with
+                             the entry.
         """
-        self.entries.append(('proto', message, labels))
+        self.entries.append(
+            ('proto', message, labels, insert_id, severity, http_request))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -334,7 +427,7 @@ class Batch(object):
             data['labels'] = self.logger.labels
 
         entries = data['entries'] = []
-        for entry_type, entry, labels in self.entries:
+        for entry_type, entry, labels, iid, severity, http_req in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -347,6 +440,12 @@ class Batch(object):
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
             if labels is not None:
                 info['labels'] = labels
+            if iid is not None:
+                info['insertId'] = iid
+            if severity is not None:
+                info['severity'] = severity
+            if http_req is not None:
+                info['httpRequest'] = http_req
             entries.append(info)
 
         client.connection.api_request(

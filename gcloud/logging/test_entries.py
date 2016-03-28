@@ -53,18 +53,18 @@ class Test_BaseEntry(unittest2.TestCase):
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
         STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         logger = _Logger(self.LOGGER_NAME, self.PROJECT)
         entry = self._makeOne(PAYLOAD, logger,
                               insert_id=IID,
                               timestamp=TIMESTAMP,
                               labels=LABELS,
                               severity=SEVERITY,
-                              http_request={
-                                'requestMethod': METHOD,
-                                'requestUrl': URI,
-                                'status': STATUS,
-                              },
-                             )
+                              http_request=REQUEST)
         self.assertEqual(entry.payload, PAYLOAD)
         self.assertTrue(entry.logger is logger)
         self.assertEqual(entry.insert_id, IID)
