@@ -36,6 +36,8 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(logger.path, '/projects/%s/logs/%s'
+                         % (self.PROJECT, self.LOGGER_NAME))
         self.assertEqual(logger.labels, None)
 
     def test_ctor_explicit(self):
@@ -47,6 +49,8 @@ class TestLogger(unittest2.TestCase):
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(logger.full_name, 'projects/%s/logs/%s'
+                         % (self.PROJECT, self.LOGGER_NAME))
+        self.assertEqual(logger.path, '/projects/%s/logs/%s'
                          % (self.PROJECT, self.LOGGER_NAME))
         self.assertEqual(logger.labels, LABELS)
 

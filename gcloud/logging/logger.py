@@ -56,6 +56,11 @@ class Logger(object):
         """Fully-qualified name used in logging APIs"""
         return 'projects/%s/logs/%s' % (self.project, self.name)
 
+    @property
+    def path(self):
+        """URI path for use in logging APIs"""
+        return '/%s' % (self.full_name,)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -217,8 +222,7 @@ class Logger(object):
                        ``client`` stored on the current logger.
         """
         client = self._require_client(client)
-        client.connection.api_request(
-            method='DELETE', path='/%s' % self.full_name)
+        client.connection.api_request(method='DELETE', path=self.path)
 
     def list_entries(self, projects=None, filter_=None, order_by=None,
                      page_size=None, page_token=None):
