@@ -83,7 +83,23 @@ class Logger(object):
         client = self._require_client(client)
         return Batch(self, client)
 
-    def log_text(self, text, client=None):
+    def _get_labels(self, labels):
+        """Return effective labels.
+
+        Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: labels passed in to calling method.
+
+        :rtype: dict or :class:`NoneType`.
+        :returns: the passed-in labels, if not none, else any default labels
+                  configured on the logger instance.
+        """
+        if labels is not None:
+            return labels
+        return self.labels
+
+    def log_text(self, text, client=None, labels=None):
         """API call:  log a text message via a POST request
 
         See:
@@ -95,6 +111,9 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
 
@@ -107,10 +126,15 @@ class Logger(object):
                 },
             }],
         }
+
+        labels = self._get_labels(labels)
+        if labels is not None:
+            data['entries'][0]['labels'] = labels
+
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_struct(self, info, client=None):
+    def log_struct(self, info, client=None, labels=None):
         """API call:  log a structured message via a POST request
 
         See:
@@ -122,6 +146,9 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
 
@@ -134,10 +161,15 @@ class Logger(object):
                 },
             }],
         }
+
+        labels = self._get_labels(labels)
+        if labels is not None:
+            data['entries'][0]['labels'] = labels
+
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 
-    def log_proto(self, message, client=None):
+    def log_proto(self, message, client=None, labels=None):
         """API call:  log a protobuf message via a POST request
 
         See:
@@ -149,6 +181,9 @@ class Logger(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current logger.
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
         client = self._require_client(client)
         as_json_str = MessageToJson(message)
@@ -163,6 +198,11 @@ class Logger(object):
                 },
             }],
         }
+
+        labels = self._get_labels(labels)
+        if labels is not None:
+            data['entries'][0]['labels'] = labels
+
         client.connection.api_request(
             method='POST', path='/entries:write', data=data)
 

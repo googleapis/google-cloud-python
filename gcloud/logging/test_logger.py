@@ -94,13 +94,14 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_text_w_unicode_explicit_client(self):
-        TEXT = u'TEXT'
+    def test_log_text_w_default_labels(self):
+        TEXT = 'TEXT'
+        DEFAULT_LABELS = {'foo': 'spam'}
         conn = _Connection({})
-        client1 = _Client(self.PROJECT, object())
-        client2 = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client1)
-        logger.log_text(TEXT, client=client2)
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client,
+                               labels=DEFAULT_LABELS)
+        logger.log_text(TEXT)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -111,6 +112,34 @@ class TestLogger(unittest2.TestCase):
                 'resource': {
                     'type': 'global',
                 },
+                'labels': DEFAULT_LABELS,
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_log_text_w_unicode_explicit_client_and_labels(self):
+        TEXT = u'TEXT'
+        DEFAULT_LABELS = {'foo': 'spam'}
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        conn = _Connection({})
+        client1 = _Client(self.PROJECT, object())
+        client2 = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1,
+                               labels=DEFAULT_LABELS)
+        logger.log_text(TEXT, client=client2, labels=LABELS)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'textPayload': TEXT,
+                'resource': {
+                    'type': 'global',
+                },
+                'labels': LABELS,
             }],
         }
         self.assertEqual(req['method'], 'POST')
@@ -139,13 +168,14 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_struct_w_explicit_client(self):
+    def test_log_struct_w_default_labels(self):
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        DEFAULT_LABELS = {'foo': 'spam'}
         conn = _Connection({})
-        client1 = _Client(self.PROJECT, object())
-        client2 = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client1)
-        logger.log_struct(STRUCT, client=client2)
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client,
+                               labels=DEFAULT_LABELS)
+        logger.log_struct(STRUCT)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -156,6 +186,34 @@ class TestLogger(unittest2.TestCase):
                 'resource': {
                     'type': 'global',
                 },
+                'labels': DEFAULT_LABELS,
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_log_struct_w_explicit_client_and_labels(self):
+        STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
+        DEFAULT_LABELS = {'foo': 'spam'}
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        conn = _Connection({})
+        client1 = _Client(self.PROJECT, object())
+        client2 = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1,
+                               labels=DEFAULT_LABELS)
+        logger.log_struct(STRUCT, client=client2, labels=LABELS)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'jsonPayload': STRUCT,
+                'resource': {
+                    'type': 'global',
+                },
+                'labels': LABELS,
             }],
         }
         self.assertEqual(req['method'], 'POST')
@@ -187,16 +245,17 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_proto_w_explicit_client(self):
+    def test_log_proto_w_default_labels(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
         message = Struct(fields={'foo': Value(bool_value=True)})
+        DEFAULT_LABELS = {'foo': 'spam'}
         conn = _Connection({})
-        client1 = _Client(self.PROJECT, object())
-        client2 = _Client(self.PROJECT, conn)
-        logger = self._makeOne(self.LOGGER_NAME, client=client1)
-        logger.log_proto(message, client=client2)
+        client = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client,
+                               labels=DEFAULT_LABELS)
+        logger.log_proto(message)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -207,6 +266,37 @@ class TestLogger(unittest2.TestCase):
                 'resource': {
                     'type': 'global',
                 },
+                'labels': DEFAULT_LABELS,
+            }],
+        }
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/entries:write')
+        self.assertEqual(req['data'], SENT)
+
+    def test_log_proto_w_explicit_client_and_labels(self):
+        import json
+        from google.protobuf.json_format import MessageToJson
+        from google.protobuf.struct_pb2 import Struct, Value
+        message = Struct(fields={'foo': Value(bool_value=True)})
+        DEFAULT_LABELS = {'foo': 'spam'}
+        LABELS = {'foo': 'bar', 'baz': 'qux'}
+        conn = _Connection({})
+        client1 = _Client(self.PROJECT, object())
+        client2 = _Client(self.PROJECT, conn)
+        logger = self._makeOne(self.LOGGER_NAME, client=client1,
+                               labels=DEFAULT_LABELS)
+        logger.log_proto(message, client=client2, labels=LABELS)
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        SENT = {
+            'entries': [{
+                'logName': 'projects/%s/logs/%s' % (
+                    self.PROJECT, self.LOGGER_NAME),
+                'protoPayload': json.loads(MessageToJson(message)),
+                'resource': {
+                    'type': 'global',
+                },
+                'labels': LABELS,
             }],
         }
         self.assertEqual(req['method'], 'POST')
