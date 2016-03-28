@@ -275,23 +275,20 @@ class Batch(object):
         """
         if client is None:
             client = self.client
-        data = {}
+        data = {
+            'logName': self.logger.path,
+            'resource': {'type': 'global'},
+        }
         entries = data['entries'] = []
         for entry_type, entry in self.entries:
-            info = {
-                'logName': self.logger.path,
-                'resource': {
-                    'type': 'global',
-                },
-            }
             if entry_type == 'text':
-                info['textPayload'] = entry
+                info = {'textPayload': entry}
             elif entry_type == 'struct':
-                info['structPayload'] = entry
+                info = {'structPayload': entry}
             elif entry_type == 'proto':
                 as_json_str = MessageToJson(entry)
                 as_json = json.loads(as_json_str)
-                info['protoPayload'] = as_json
+                info = {'protoPayload': as_json}
             else:  # pragma: NO COVER
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
             entries.append(info)

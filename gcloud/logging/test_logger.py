@@ -329,25 +329,15 @@ class TestBatch(unittest2.TestCase):
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         logger = _Logger()
         SENT = {
-            'entries': [{
-                'logName': logger.path,
-                'textPayload': TEXT,
-                'resource': {
-                    'type': 'global',
-                }
-            }, {
-                'logName': logger.path,
-                'structPayload': STRUCT,
-                'resource': {
-                    'type': 'global',
-                },
-            }, {
-                'logName': logger.path,
-                'protoPayload': json.loads(MessageToJson(message)),
-                'resource': {
-                    'type': 'global',
-                },
-            }],
+            'logName': logger.path,
+            'resource': {
+                'type': 'global',
+            },
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
         }
         batch = self._makeOne(logger, client=CLIENT)
         batch.log_text(TEXT)
@@ -374,25 +364,13 @@ class TestBatch(unittest2.TestCase):
         CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
         logger = _Logger()
         SENT = {
-            'entries': [{
-                'logName': logger.path,
-                'textPayload': TEXT,
-                'resource': {
-                    'type': 'global',
-                }
-            }, {
-                'logName': logger.path,
-                'structPayload': STRUCT,
-                'resource': {
-                    'type': 'global',
-                },
-            }, {
-                'logName': logger.path,
-                'protoPayload': json.loads(MessageToJson(message)),
-                'resource': {
-                    'type': 'global',
-                },
-            }],
+            'logName': logger.path,
+            'resource': {'type': 'global'},
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
         }
         batch = self._makeOne(logger, client=CLIENT1)
         batch.log_text(TEXT)
@@ -418,25 +396,15 @@ class TestBatch(unittest2.TestCase):
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         logger = _Logger()
         SENT = {
-            'entries': [{
-                'logName': logger.path,
-                'textPayload': TEXT,
-                'resource': {
-                    'type': 'global',
-                }
-            }, {
-                'logName': logger.path,
-                'structPayload': STRUCT,
-                'resource': {
-                    'type': 'global',
-                },
-            }, {
-                'logName': logger.path,
-                'protoPayload': json.loads(MessageToJson(message)),
-                'resource': {
-                    'type': 'global',
-                },
-            }],
+            'logName': logger.path,
+            'resource': {
+                'type': 'global',
+            },
+            'entries': [
+                {'textPayload': TEXT},
+                {'structPayload': STRUCT},
+                {'protoPayload': json.loads(MessageToJson(message))},
+            ],
         }
         batch = self._makeOne(logger, client=CLIENT)
 
