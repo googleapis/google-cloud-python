@@ -289,7 +289,7 @@ class Batch(object):
                 as_json_str = MessageToJson(entry)
                 as_json = json.loads(as_json_str)
                 info = {'protoPayload': as_json}
-            else:  # pragma: NO COVER
+            else:
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
             entries.append(info)
 

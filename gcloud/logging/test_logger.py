@@ -318,6 +318,15 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(len(connection._requested), 0)
         self.assertEqual(batch.entries, [('proto', message)])
 
+    def test_commit_w_invalid_entry_type(self):
+        logger = _Logger()
+        conn = _Connection()
+        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        batch = self._makeOne(logger, CLIENT)
+        batch.entries.append(('bogus', 'BOGUS'))
+        with self.assertRaises(ValueError):
+            batch.commit()
+
     def test_commit_w_bound_client(self):
         import json
         from google.protobuf.json_format import MessageToJson
