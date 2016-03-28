@@ -28,6 +28,7 @@ DEFAULT_SINK_NAME = 'system-tests-sink-%d' % (_MILLIS,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
 BUCKET_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
+DATASET_NAME = 'system_testing_dataset_%d' % (_MILLIS,)
 
 
 class Config(object):
@@ -144,6 +145,32 @@ class TestLogging(unittest2.TestCase):
 
         sink = Config.CLIENT.sink(
             DEFAULT_SINK_NAME, DEFAULT_FILTER, BUCKET_URI)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        self.assertTrue(sink.exists())
+
+    def test_create_sink_bigquery_dataset(self):
+        from gcloud import bigquery
+        from gcloud.bigquery.dataset import AccessGrant
+        DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
+            Config.CLIENT.project, DATASET_NAME,)
+
+        # Create the destination dataset, and set up the ACL to allow
+        # Cloud Logging to write into it.
+        bigquery_client = bigquery.Client()
+        dataset = bigquery_client.dataset(DATASET_NAME)
+        dataset.create()
+        self.to_delete.append(dataset)
+        dataset.reload()
+        grants = dataset.access_grants
+        grants.append(AccessGrant(
+            'WRITER', 'groupByEmail', 'cloud-logs@google.com'))
+        dataset.access_grants = grants
+        dataset.update()
+
+        sink = Config.CLIENT.sink(
+            DEFAULT_SINK_NAME, DEFAULT_FILTER, DATASET_URI)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
