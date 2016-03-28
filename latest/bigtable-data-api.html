@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Data API &mdash; gcloud be4c06c documentation</title>
+    <title>Data API &mdash; gcloud 89693ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'be4c06c',
+        VERSION:     '89693ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud be4c06c documentation" href="index.html" />
+    <link rel="top" title="gcloud 89693ec documentation" href="index.html" />
     <link rel="next" title="Client" href="bigtable-client.html" />
     <link rel="prev" title="Table Admin API" href="bigtable-table-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-data-api%0ARelease%3A%20be4c06c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-data-api%0ARelease%3A%2089693ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (be4c06c)
+              Version History (89693ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -98,7 +98,7 @@ column families, you are ready to store and retrieve data.</p>
 <div class="section" id="cells-vs-columns-vs-column-families">
 <h2>Cells vs. Columns vs. Column Families<a class="headerlink" href="#cells-vs-columns-vs-column-families" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
-<li>As explained in the <a class="reference internal" href="bigtable-table-api.html"><em>table overview</em></a>, tables can
+<li>As explained in the <a class="reference internal" href="bigtable-table-api.html"><span class="doc">table overview</span></a>, tables can
 have many column families.</li>
 <li>As described below, a table can also have many rows which are
 specified by row keys.</li>
@@ -147,7 +147,7 @@ handles append mutations.</li>
 <h3>Row Factory<a class="headerlink" href="#row-factory" title="Permalink to this headline">#</a></h3>
 <p>A single factory can be used to create any of the three row types.
 To create a <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Unlike the previous string values we&#8217;ve used before, the row key must
@@ -155,11 +155,11 @@ be <code class="docutils literal"><span class="pre">bytes</span></code>.</p>
 <p>To create a <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.ConditionalRow" title="gcloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a>,
 first create a <code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code> and
 then</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">cond_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cond_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To create an <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.AppendRow" title="gcloud.bigtable.row.AppendRow"><code class="xref py py-class docutils literal"><span class="pre">AppendRow</span></code></a></p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">append_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -167,7 +167,7 @@ then</p>
 <h3>Building Up Mutations<a class="headerlink" href="#building-up-mutations" title="Permalink to this headline">#</a></h3>
 <p>In all three cases, a set of mutations (or two sets) are built up
 on a row before they are sent of in a batch via</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -177,7 +177,7 @@ on a row before they are sent of in a batch via</p>
 <ul>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow.set_cell" title="gcloud.bigtable.row.DirectRow.set_cell"><code class="xref py py-meth docutils literal"><span class="pre">set_cell()</span></code></a> allows a
 single value to be written to a column</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
              <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -188,14 +188,14 @@ bytes as a signed 64-bit integer).</p>
 </li>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cell" title="gcloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a> deletes
 all cells (i.e. for all timestamps) in a given column</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Remember, this only happens in the <code class="docutils literal"><span class="pre">row</span></code> we are using.</p>
 <p>If we only want to delete cells from a limited range of time, a
 <code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code> can
 be used</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span>
                 <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -204,21 +204,21 @@ be used</p>
 the same thing as
 <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cell" title="gcloud.bigtable.row.DirectRow.delete_cell"><code class="xref py py-meth docutils literal"><span class="pre">delete_cell()</span></code></a>
 but accepts a list of columns in a column family rather than a single one.</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">],</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">],</span>
                  <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In addition, if we want to delete cells from every column in a column family,
 the special <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow.ALL_COLUMNS" title="gcloud.bigtable.row.DirectRow.ALL_COLUMNS"><code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code></a>
 value can be used</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">ALL_COLUMNS</span><span class="p">,</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">ALL_COLUMNS</span><span class="p">,</span>
                  <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow.delete" title="gcloud.bigtable.row.DirectRow.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a> will delete the
 entire row</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </li>
@@ -232,8 +232,8 @@ to accumulate mutations.</p>
 <p>However, each mutation added must specify a <code class="docutils literal"><span class="pre">state</span></code>: will the mutation be
 applied if the filter matches or if it fails to match.</p>
 <p>For example:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">cond_row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
-                  <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">cond_row</span><span class="o">.</span><span class="n">set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                  <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will add to the set of true mutations.</p>
@@ -244,13 +244,13 @@ applied if the filter matches or if it fails to match.</p>
 <ul>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.AppendRow.append_cell_value" title="gcloud.bigtable.row.AppendRow.append_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">append_cell_value()</span></code></a>
 appends a bytes value to an existing cell:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">append_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">bytes_value</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">append_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">bytes_value</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first"><a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.AppendRow.increment_cell_value" title="gcloud.bigtable.row.AppendRow.increment_cell_value"><code class="xref py py-meth docutils literal"><span class="pre">increment_cell_value()</span></code></a>
 increments an integer value in an existing cell:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">increment_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">int_value</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">append_row</span><span class="o">.</span><span class="n">increment_cell_value</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">int_value</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Since only bytes are stored in a cell, the cell value is decoded as
@@ -266,7 +266,7 @@ case) or zero (integer case) are the assumed values.</p>
 <div class="section" id="starting-fresh">
 <h3>Starting Fresh<a class="headerlink" href="#starting-fresh" title="Permalink to this headline">#</a></h3>
 <p>If accumulated mutations need to be dropped, use</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -277,7 +277,7 @@ case) or zero (integer case) are the assumed values.</p>
 <h3>Read Single Row from a Table<a class="headerlink" href="#read-single-row-from-a-table" title="Permalink to this headline">#</a></h3>
 <p>To make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L36-L38">ReadRows</a> API request for a single row key, use
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.read_row" title="gcloud.bigtable.table.Table.read_row"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_row()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">row_data</span><span class="o">.</span><span class="n">cells</span>
 <span class="go">{</span>
 <span class="go">    u&#39;fam1&#39;: {</span>
@@ -312,7 +312,7 @@ or similar class, this method returns a
 instance. This class is used for reading and parsing data rather than for
 modifying data (as <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> is).</p>
 <p>A filter can also be applied to the results:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_val</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row_key</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_val</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The allowable <code class="docutils literal"><span class="pre">filter_</span></code> values are the same as those used for a
@@ -324,7 +324,7 @@ more information, see the
 <h3>Stream Many Rows from a Table<a class="headerlink" href="#stream-many-rows-from-a-table" title="Permalink to this headline">#</a></h3>
 <p>To make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L36-L38">ReadRows</a> API request for a stream of rows, use
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.read_rows" title="gcloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_rows()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_rows</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">row_data</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">read_rows</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Using gRPC over HTTP/2, a continual stream of responses will be delivered.
@@ -353,7 +353,7 @@ documentation for more information on the optional arguments.</p>
 <h3>Sample Keys in a Table<a class="headerlink" href="#sample-keys-in-a-table" title="Permalink to this headline">#</a></h3>
 <p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/v1/bigtable_service.proto#L44-L46">SampleRowKeys</a> API request with
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.sample_row_keys" title="gcloud.bigtable.table.Table.sample_row_keys"><code class="xref py py-meth docutils literal"><span class="pre">Table.sample_row_keys()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sample_row_keys</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">sample_row_keys</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The returned row keys will delimit contiguous sections of the table of
@@ -363,16 +363,16 @@ distributed tasks like mapreduces.</p>
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.read_rows" title="gcloud.bigtable.table.Table.read_rows"><code class="xref py py-meth docutils literal"><span class="pre">Table.read_rows()</span></code></a>, the
 returned <code class="docutils literal"><span class="pre">keys_iterator</span></code> is connected to a cancellable HTTP/2 stream.</p>
 <p>The next key in the result can be accessed via</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">next_key</span> <span class="o">=</span> <span class="n">keys_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">next_key</span> <span class="o">=</span> <span class="n">keys_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or all keys can be iterated over via</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">curr_key</span> <span class="ow">in</span> <span class="n">keys_iterator</span><span class="p">:</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">curr_key</span> <span class="ow">in</span> <span class="n">keys_iterator</span><span class="p">:</span>
     <span class="n">do_something</span><span class="p">(</span><span class="n">curr_key</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Just as with reading, the stream can be canceled:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">keys_iterator</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -430,7 +430,7 @@ returned <code class="docutils literal"><span class="pre">keys_iterator</span></
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster-api.html">Cluster Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Data API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>

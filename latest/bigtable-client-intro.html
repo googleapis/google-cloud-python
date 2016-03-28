@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Base for Everything &mdash; gcloud be4c06c documentation</title>
+    <title>Base for Everything &mdash; gcloud 89693ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'be4c06c',
+        VERSION:     '89693ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud be4c06c documentation" href="index.html" />
+    <link rel="top" title="gcloud 89693ec documentation" href="index.html" />
     <link rel="next" title="Cluster Admin API" href="bigtable-cluster-api.html" />
     <link rel="prev" title="HappyBase Package" href="happybase-package.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client-intro%0ARelease%3A%20be4c06c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client-intro%0ARelease%3A%2089693ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (be4c06c)
+              Version History (89693ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -96,7 +96,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>To use the API, the <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
 class defines a high-level interface which handles authorization
 and creating other objects:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gcloud.bigtable.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">gcloud.bigtable.client</span> <span class="k">import</span> <span class="n">Client</span>
 <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -114,7 +114,7 @@ requests made with the <code class="docutils literal"><span class="pre">client</
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">#</a></h2>
 <ul>
 <li><p class="first">For an overview of authentication in <code class="docutils literal"><span class="pre">gcloud-python</span></code>,
-see <a class="reference internal" href="gcloud-auth.html"><em>Authentication</em></a>.</p>
+see <a class="reference internal" href="gcloud-auth.html"><span class="doc">Authentication</span></a>.</p>
 </li>
 <li><p class="first">In addition to any authentication configuration, you can also set the
 <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GCLOUD_PROJECT</span></code> environment variable for the Google Cloud Console
@@ -126,12 +126,12 @@ Engine or Google Compute Engine the project will be detected automatically.
 </li>
 <li><p class="first">After configuring your environment, create a
 <a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a></p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigtable</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigtable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>or pass in <code class="docutils literal"><span class="pre">credentials</span></code> and <code class="docutils literal"><span class="pre">project</span></code> explicitly</p>
-<div class="code highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">bigtable</span>
+<div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigtable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;my-project&#39;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -146,7 +146,7 @@ Engine or Google Compute Engine the project will be detected automatically.
 <h2>Admin API Access<a class="headerlink" href="#admin-api-access" title="Permalink to this headline">#</a></h2>
 <p>If you&#8217;ll be using your client to make <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/tree/master/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1">Cluster Admin</a> and <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/tree/master/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1">Table Admin</a>
 API requests, you&#8217;ll need to pass the <code class="docutils literal"><span class="pre">admin</span></code> argument:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">admin</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -154,7 +154,7 @@ API requests, you&#8217;ll need to pass the <code class="docutils literal"><span
 <h2>Read-Only Mode<a class="headerlink" href="#read-only-mode" title="Permalink to this headline">#</a></h2>
 <p>If on the other hand, you only have (or want) read access to the data,
 you can pass the <code class="docutils literal"><span class="pre">read_only</span></code> argument:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">read_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">bigtable</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">read_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will ensure that the
@@ -167,7 +167,7 @@ fail).</p>
 <p>After a <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>, the next highest-level
 object is a <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a>. You&#8217;ll need
 one before you can interact with tables or data.</p>
-<p>Head next to learn about the <a class="reference internal" href="bigtable-cluster-api.html"><em>Cluster Admin API</em></a>.</p>
+<p>Head next to learn about the <a class="reference internal" href="bigtable-cluster-api.html"><span class="doc">Cluster Admin API</span></a>.</p>
 </div>
 </div>
 
@@ -219,7 +219,7 @@ one before you can interact with tables or data.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Base for Everything</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Base for Everything</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster-api.html">Cluster Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Authentication &mdash; gcloud be4c06c documentation</title>
+    <title>Authentication &mdash; gcloud 89693ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'be4c06c',
+        VERSION:     '89693ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud be4c06c documentation" href="index.html" />
+    <link rel="top" title="gcloud 89693ec documentation" href="index.html" />
     <link rel="next" title="Datastore Client" href="datastore-client.html" />
     <link rel="prev" title="Shared Core Modules" href="gcloud-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%20be4c06c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+gcloud-auth%0ARelease%3A%2089693ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (be4c06c)
+              Version History (89693ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -126,7 +126,7 @@ For example:</p>
 </pre></div>
 </div>
 <p>Passing no arguments at all will &#8220;just work&#8221; if you&#8217;ve followed the
-instructions in the <a class="reference internal" href="#overview"><span>Overview</span></a>.
+instructions in the <a class="reference internal" href="#overview"><span class="std std-ref">Overview</span></a>.
 The credentials are inferred from your local environment by using
 Google <a class="reference external" href="https://developers.google.com/identity/protocols/application-default-credentials">Application Default Credentials</a>.</p>
 <div class="section" id="credential-discovery-precedence">
@@ -161,7 +161,7 @@ from different projects</li>
 environment.
 After creation,
 you can pass it directly to a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="google-app-engine-environment">
@@ -169,7 +169,7 @@ you can pass it directly to a <a class="reference internal" href="gcloud-api.htm
 <p>To create
 <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.contrib.appengine.html#oauth2client.contrib.appengine.AppAssertionCredentials" title="(in oauth2client v2.0.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google App Engine:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.contrib.appengine</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.contrib.appengine</span> <span class="k">import</span> <span class="n">AppAssertionCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
 </pre></div>
 </div>
@@ -179,7 +179,7 @@ just for Google App Engine:</p>
 <p>To create
 <a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.contrib.gce.html#oauth2client.contrib.gce.AppAssertionCredentials" title="(in oauth2client v2.0.1)"><code class="xref py py-class docutils literal"><span class="pre">credentials</span></code></a>
 just for Google Compute Engine:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.contrib.gce</span> <span class="kn">import</span> <span class="n">AppAssertionCredentials</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.contrib.gce</span> <span class="k">import</span> <span class="n">AppAssertionCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">AppAssertionCredentials</span><span class="p">([])</span>
 </pre></div>
 </div>
@@ -197,7 +197,7 @@ and
 factories are provided to create a <a class="reference internal" href="gcloud-api.html#gcloud.client.Client" title="gcloud.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> with
 service account credentials.</p>
 <p>For example, with a JSON keyfile:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/keyfile.json&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition tip">
@@ -222,11 +222,11 @@ getting started with the <code class="docutils literal"><span class="pre">gcloud
 <p>The simplest way to use credentials from a user account is via
 Application Default Credentials using <code class="docutils literal"><span class="pre">gcloud</span> <span class="pre">auth</span> <span class="pre">login</span></code>
 (as mentioned above):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="kn">import</span> <span class="n">GoogleCredentials</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">oauth2client.client</span> <span class="k">import</span> <span class="n">GoogleCredentials</span>
 <span class="n">credentials</span> <span class="o">=</span> <span class="n">GoogleCredentials</span><span class="o">.</span><span class="n">get_application_default</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This will still follow the <a class="reference internal" href="#precedence"><span>precedence</span></a>
+<p>This will still follow the <a class="reference internal" href="#precedence"><span class="std std-ref">precedence</span></a>
 described above,
 so be sure none of the other possible environments conflict
 with your user provided credentials.</p>
@@ -391,7 +391,7 @@ some point.</p>
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Authentication</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
 <ul>

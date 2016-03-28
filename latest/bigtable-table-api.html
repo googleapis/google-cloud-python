@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table Admin API &mdash; gcloud be4c06c documentation</title>
+    <title>Table Admin API &mdash; gcloud 89693ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'be4c06c',
+        VERSION:     '89693ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud be4c06c documentation" href="index.html" />
+    <link rel="top" title="gcloud 89693ec documentation" href="index.html" />
     <link rel="next" title="Data API" href="bigtable-data-api.html" />
     <link rel="prev" title="Cluster Admin API" href="bigtable-cluster-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table-api%0ARelease%3A%20be4c06c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table-api%0ARelease%3A%2089693ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (be4c06c)
+              Version History (89693ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -101,7 +101,7 @@ a table.</p>
 <p>If you want a comprehensive list of all existing tables in a cluster, make a
 <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L40-L42">ListTables</a> API request with
 <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.list_tables" title="gcloud.bigtable.cluster.Cluster.list_tables"><code class="xref py py-meth docutils literal"><span class="pre">Cluster.list_tables()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cluster</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>
 <span class="go">[&lt;gcloud.bigtable.table.Table at 0x7ff6a1de8f50&gt;,</span>
 <span class="go"> &lt;gcloud.bigtable.table.Table at 0x7ff6a1de8350&gt;]</span>
 </pre></div>
@@ -110,7 +110,7 @@ a table.</p>
 <div class="section" id="table-factory">
 <h2>Table Factory<a class="headerlink" href="#table-factory" title="Permalink to this headline">#</a></h2>
 <p>To create a <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> object:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Even if this <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> already
@@ -122,12 +122,12 @@ or <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.Row
 <h2>Create a new Table<a class="headerlink" href="#create-a-new-table" title="Permalink to this headline">#</a></h2>
 <p>After creating the table object, make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L35-L37">CreateTable</a> API request
 with <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.create" title="gcloud.bigtable.table.Table.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>If you would to initially split the table into several tablets (Tablets are
 similar to HBase regions):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">initial_split_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">])</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">initial_split_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;s1&#39;</span><span class="p">,</span> <span class="s1">&#39;s2&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -135,7 +135,7 @@ similar to HBase regions):</p>
 <h2>Delete an existing Table<a class="headerlink" href="#delete-an-existing-table" title="Permalink to this headline">#</a></h2>
 <p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L50-L52">DeleteTable</a> API request with
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.delete" title="gcloud.bigtable.table.Table.delete"><code class="xref py py-meth docutils literal"><span class="pre">delete()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -143,7 +143,7 @@ similar to HBase regions):</p>
 <h2>Rename an existing Table<a class="headerlink" href="#rename-an-existing-table" title="Permalink to this headline">#</a></h2>
 <p>Though the <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L56-L58">RenameTable</a> API request is listed in the service
 definition, requests to that method return:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>BigtableTableService.RenameTable is not yet implemented
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">BigtableTableService</span><span class="o">.</span><span class="n">RenameTable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">yet</span> <span class="n">implemented</span>
 </pre></div>
 </div>
 <p>We have implemented <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.rename" title="gcloud.bigtable.table.Table.rename"><code class="xref py py-meth docutils literal"><span class="pre">rename()</span></code></a>
@@ -156,7 +156,7 @@ associated with a table, the <a class="reference external" href="https://github.
 table object with the names of the column families.</p>
 <p>To retrieve the list of column families use
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table.list_column_families" title="gcloud.bigtable.table.Table.list_column_families"><code class="xref py py-meth docutils literal"><span class="pre">list_column_families()</span></code></a>:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_families</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">list_column_families</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_families</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">list_column_families</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -164,7 +164,7 @@ table object with the names of the column families.</p>
 <h2>Column Family Factory<a class="headerlink" href="#column-family-factory" title="Permalink to this headline">#</a></h2>
 <p>To create a
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.ColumnFamily" title="gcloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> object:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>There is no real reason to use this factory unless you intend to
@@ -172,13 +172,13 @@ create or delete a column family.</p>
 <p>In addition, you can specify an optional <code class="docutils literal"><span class="pre">gc_rule</span></code> (a
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.GarbageCollectionRule" title="gcloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>
 or similar):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span>
                                     <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This rule helps the backend determine when and how to clean up old cells
 in the column family.</p>
-<p>See <a class="reference internal" href="bigtable-column-family.html"><em>Column Families</em></a> for more information about
+<p>See <a class="reference internal" href="bigtable-column-family.html"><span class="doc">Column Families</span></a> for more information about
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.GarbageCollectionRule" title="gcloud.bigtable.column_family.GarbageCollectionRule"><code class="xref py py-class docutils literal"><span class="pre">GarbageCollectionRule</span></code></a>
 and related classes.</p>
 </div>
@@ -187,7 +187,7 @@ and related classes.</p>
 <p>After creating the column family object, make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L61-L63">CreateColumnFamily</a> API
 request with
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.ColumnFamily.create" title="gcloud.bigtable.column_family.ColumnFamily.create"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.create()</span></code></a></p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -195,7 +195,7 @@ request with
 <h2>Delete an existing Column Family<a class="headerlink" href="#delete-an-existing-column-family" title="Permalink to this headline">#</a></h2>
 <p>Make a <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L71-L73">DeleteColumnFamily</a> API request with
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.ColumnFamily.delete" title="gcloud.bigtable.column_family.ColumnFamily.delete"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.delete()</span></code></a></p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -203,7 +203,7 @@ request with
 <h2>Update an existing Column Family<a class="headerlink" href="#update-an-existing-column-family" title="Permalink to this headline">#</a></h2>
 <p>Make an <a class="reference external" href="https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1/bigtable_table_service.proto#L66-L68">UpdateColumnFamily</a> API request with
 <a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.ColumnFamily.update" title="gcloud.bigtable.column_family.ColumnFamily.update"><code class="xref py py-meth docutils literal"><span class="pre">ColumnFamily.delete()</span></code></a></p>
-<div class="code python highlight-python"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">column_family</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -213,7 +213,7 @@ request with
 <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> to
 <a class="reference internal" href="bigtable-row.html#gcloud.bigtable.row.Row" title="gcloud.bigtable.row.Row"><code class="xref py py-class docutils literal"><span class="pre">Row</span></code></a> as well as streaming
 data directly via a <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a>.</p>
-<p>Head next to learn about the <a class="reference internal" href="bigtable-data-api.html"><em>Data API</em></a>.</p>
+<p>Head next to learn about the <a class="reference internal" href="bigtable-data-api.html"><span class="doc">Data API</span></a>.</p>
 </div>
 </div>
 
@@ -267,7 +267,7 @@ data directly via a <a class="reference internal" href="bigtable-table.html#gclo
 <li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster-api.html">Cluster Admin API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Table Admin API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
