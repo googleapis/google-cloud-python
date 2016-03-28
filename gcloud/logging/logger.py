@@ -291,29 +291,38 @@ class Batch(object):
         if exc_type is None:
             self.commit()
 
-    def log_text(self, text):
+    def log_text(self, text, labels=None):
         """Add a text entry to be logged during :meth:`commit`.
 
         :type text: string
         :param text: the text entry
-        """
-        self.entries.append(('text', text))
 
-    def log_struct(self, info):
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
+        """
+        self.entries.append(('text', text, labels))
+
+    def log_struct(self, info, labels=None):
         """Add a struct entry to be logged during :meth:`commit`.
 
         :type info: dict
         :param info: the struct entry
-        """
-        self.entries.append(('struct', info))
 
-    def log_proto(self, message):
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
+        """
+        self.entries.append(('struct', info, labels))
+
+    def log_proto(self, message, labels=None):
         """Add a protobuf entry to be logged during :meth:`commit`.
 
         :type message: protobuf message
         :param message: the protobuf entry
+
+        :type labels: dict or :class:`NoneType`
+        :param labels: (optional) mapping of labels for the entry.
         """
-        self.entries.append(('proto', message))
+        self.entries.append(('proto', message, labels))
 
     def commit(self, client=None):
         """Send saved log entries as a single API call.
@@ -324,12 +333,16 @@ class Batch(object):
         """
         if client is None:
             client = self.client
+
         data = {
             'logName': self.logger.path,
             'resource': {'type': 'global'},
         }
+        if self.logger.labels is not None:
+            data['labels'] = self.logger.labels
+
         entries = data['entries'] = []
-        for entry_type, entry in self.entries:
+        for entry_type, entry, labels in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
             elif entry_type == 'struct':
@@ -340,6 +353,8 @@ class Batch(object):
                 info = {'protoPayload': as_json}
             else:
                 raise ValueError('Unknown entry type: %s' % (entry_type,))
+            if labels is not None:
+                info['labels'] = labels
             entries.append(info)
 
         client.connection.api_request(
