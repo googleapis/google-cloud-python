@@ -40,6 +40,14 @@ class Subscription(object):
     :param push_endpoint: URL to which messages will be pushed by the back-end.
                           If not set, the application must pull messages.
     """
+
+    _DELETED_TOPIC_PATH = '_deleted-topic_'
+    """Value of ``projects.subscriptions.topic`` when topic has been deleted.
+
+    See:
+    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic
+    """
+
     def __init__(self, name, topic, ack_deadline=None, push_endpoint=None):
         self.name = name
         self.topic = topic
@@ -67,7 +75,7 @@ class Subscription(object):
         if topics is None:
             topics = {}
         topic_path = resource['topic']
-        if topic_path == '_deleted-topic_':
+        if topic_path == cls._DELETED_TOPIC_PATH:
             # Use a name which cannot conflict ('#' not allowed).
             topic = client.topic('###DELETED-TOPIC###')
         else:
