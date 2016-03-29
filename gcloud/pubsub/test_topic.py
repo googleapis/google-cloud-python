@@ -456,17 +456,17 @@ class TestTopic(unittest2.TestCase):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
-        WRITER1 = 'domain:google.com'
-        WRITER2 = 'user:phred@example.com'
-        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        READER2 = 'user:phred@example.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
         POLICY = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
                 {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': VIEWER_ROLE, 'members': [READER1, READER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
         TOPIC_NAME = 'topic_name'
@@ -483,8 +483,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
         self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
-        self.assertEqual(sorted(policy.writers), [WRITER1, WRITER2])
-        self.assertEqual(sorted(policy.readers), [READER1, READER2])
+        self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
+        self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -511,8 +511,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(policy.etag, 'ACAB')
         self.assertEqual(policy.version, None)
         self.assertEqual(sorted(policy.owners), [])
-        self.assertEqual(sorted(policy.writers), [])
-        self.assertEqual(sorted(policy.readers), [])
+        self.assertEqual(sorted(policy.editors), [])
+        self.assertEqual(sorted(policy.viewers), [])
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
@@ -525,17 +525,17 @@ class TestTopic(unittest2.TestCase):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
-        WRITER1 = 'domain:google.com'
-        WRITER2 = 'user:phred@example.com'
-        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        READER2 = 'user:phred@example.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
         POLICY = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
                 {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': VIEWER_ROLE, 'members': [READER1, READER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
         RESPONSE = POLICY.copy()
@@ -552,18 +552,18 @@ class TestTopic(unittest2.TestCase):
         policy = Policy('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
-        policy.writers.add(WRITER1)
-        policy.writers.add(WRITER2)
-        policy.readers.add(READER1)
-        policy.readers.add(READER2)
+        policy.editors.add(EDITOR1)
+        policy.editors.add(EDITOR2)
+        policy.viewers.add(VIEWER1)
+        policy.viewers.add(VIEWER2)
 
         new_policy = topic.set_iam_policy(policy)
 
         self.assertEqual(new_policy.etag, 'ABACABAF')
         self.assertEqual(new_policy.version, 18)
         self.assertEqual(sorted(new_policy.owners), [OWNER1, OWNER2])
-        self.assertEqual(sorted(new_policy.writers), [WRITER1, WRITER2])
-        self.assertEqual(sorted(new_policy.readers), [READER1, READER2])
+        self.assertEqual(sorted(new_policy.editors), [EDITOR1, EDITOR2])
+        self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
@@ -591,8 +591,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(new_policy.etag, 'ACAB')
         self.assertEqual(new_policy.version, None)
         self.assertEqual(sorted(new_policy.owners), [])
-        self.assertEqual(sorted(new_policy.writers), [])
-        self.assertEqual(sorted(new_policy.readers), [])
+        self.assertEqual(sorted(new_policy.editors), [])
+        self.assertEqual(sorted(new_policy.viewers), [])
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)

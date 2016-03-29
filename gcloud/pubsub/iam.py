@@ -40,8 +40,8 @@ class Policy(object):
         self.etag = etag
         self.version = version
         self.owners = set()
-        self.writers = set()
-        self.readers = set()
+        self.editors = set()
+        self.viewers = set()
 
     @staticmethod
     def user(email):
@@ -128,9 +128,9 @@ class Policy(object):
             if role == OWNER_ROLE:
                 policy.owners = members
             elif role == EDITOR_ROLE:
-                policy.writers = members
+                policy.editors = members
             elif role == VIEWER_ROLE:
-                policy.readers = members
+                policy.viewers = members
             else:
                 raise ValueError('Unknown role: %s' % (role,))
         return policy
@@ -155,13 +155,13 @@ class Policy(object):
             bindings.append(
                 {'role': OWNER_ROLE, 'members': sorted(self.owners)})
 
-        if self.writers:
+        if self.editors:
             bindings.append(
-                {'role': EDITOR_ROLE, 'members': sorted(self.writers)})
+                {'role': EDITOR_ROLE, 'members': sorted(self.editors)})
 
-        if self.readers:
+        if self.viewers:
             bindings.append(
-                {'role': VIEWER_ROLE, 'members': sorted(self.readers)})
+                {'role': VIEWER_ROLE, 'members': sorted(self.viewers)})
 
         if bindings:
             resource['bindings'] = bindings
