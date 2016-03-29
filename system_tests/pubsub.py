@@ -177,6 +177,7 @@ class TestPubsub(unittest2.TestCase):
         while count > 0 and not topic.exists():
             time.sleep(1)
             count -= 1
+        self.assertTrue(topic.exists())
         self.to_delete.append(topic)
         policy = topic.get_iam_policy()
         policy.readers.add(policy.user('jjg@google.com'))
@@ -200,6 +201,7 @@ class TestPubsub(unittest2.TestCase):
         while count > 0 and not subscription.exists():
             time.sleep(1)
             count -= 1
+        self.assertTrue(subscription.exists())
         self.to_delete.insert(0, subscription)
         policy = subscription.get_iam_policy()
         policy.readers.add(policy.user('jjg@google.com'))
