@@ -76,8 +76,7 @@ class Subscription(object):
             topics = {}
         topic_path = resource['topic']
         if topic_path == cls._DELETED_TOPIC_PATH:
-            # Use a name which cannot conflict ('#' not allowed).
-            topic = client.topic('###DELETED-TOPIC###')
+            topic = client.topic(name=None)
         else:
             topic = topics.get(topic_path)
             if topic is None:

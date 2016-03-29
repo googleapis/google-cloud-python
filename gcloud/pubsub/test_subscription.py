@@ -86,7 +86,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.name, SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
-        self.assertEqual(topic.name, '###DELETED-TOPIC###')
+        self.assertEqual(topic.name, None)
         self.assertEqual(topic.project, PROJECT)
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
