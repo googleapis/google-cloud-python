@@ -67,12 +67,16 @@ class Subscription(object):
         if topics is None:
             topics = {}
         topic_path = resource['topic']
-        topic = topics.get(topic_path)
-        if topic is None:
-            # NOTE: This duplicates behavior from Topic.from_api_repr to avoid
-            #       an import cycle.
-            topic_name = topic_name_from_path(topic_path, client.project)
-            topic = topics[topic_path] = client.topic(topic_name)
+        if topic_path == '_deleted-topic_':
+            # Use a name which cannot conflict ('#' not allowed).
+            topic = client.topic('###DELETED-TOPIC###')
+        else:
+            topic = topics.get(topic_path)
+            if topic is None:
+                # NOTE: This duplicates behavior from Topic.from_api_repr to
+                #       avoid an import cycle.
+                topic_name = topic_name_from_path(topic_path, client.project)
+                topic = topics[topic_path] = client.topic(topic_name)
         _, _, _, name = resource['name'].split('/')
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})

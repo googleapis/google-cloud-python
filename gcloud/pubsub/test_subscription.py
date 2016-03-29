@@ -68,6 +68,29 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, DEADLINE)
         self.assertEqual(subscription.push_endpoint, ENDPOINT)
 
+    def test_from_api_repr_w_deleted_topic(self):
+        from gcloud.pubsub.topic import Topic
+        PROJECT = 'PROJECT'
+        TOPIC_PATH = '_deleted-topic_'
+        SUB_NAME = 'sub_name'
+        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        DEADLINE = 42
+        ENDPOINT = 'https://api.example.com/push'
+        resource = {'topic': TOPIC_PATH,
+                    'name': SUB_PATH,
+                    'ackDeadlineSeconds': DEADLINE,
+                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        klass = self._getTargetClass()
+        client = _Client(project=PROJECT)
+        subscription = klass.from_api_repr(resource, client)
+        self.assertEqual(subscription.name, SUB_NAME)
+        topic = subscription.topic
+        self.assertTrue(isinstance(topic, Topic))
+        self.assertEqual(topic.name, '###DELETED-TOPIC###')
+        self.assertEqual(topic.project, PROJECT)
+        self.assertEqual(subscription.ack_deadline, DEADLINE)
+        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+
     def test_from_api_repr_w_topics_no_topic_match(self):
         from gcloud.pubsub.topic import Topic
         TOPIC_NAME = 'topic_name'
