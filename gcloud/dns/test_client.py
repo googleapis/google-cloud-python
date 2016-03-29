@@ -68,6 +68,42 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/%s' % PATH)
 
+    def test_quotas_w_kind_key(self):
+        PROJECT = 'PROJECT'
+        PATH = 'projects/%s' % PROJECT
+        MANAGED_ZONES = 1234
+        RRS_PER_RRSET = 23
+        RRSETS_PER_ZONE = 345
+        RRSET_ADDITIONS = 456
+        RRSET_DELETIONS = 567
+        TOTAL_SIZE = 67890
+        DATA = {
+            'quota': {
+                'managedZones': str(MANAGED_ZONES),
+                'resourceRecordsPerRrset': str(RRS_PER_RRSET),
+                'rrsetsPerManagedZone': str(RRSETS_PER_ZONE),
+                'rrsetAdditionsPerChange': str(RRSET_ADDITIONS),
+                'rrsetDeletionsPerChange': str(RRSET_DELETIONS),
+                'totalRrdataSizePerChange': str(TOTAL_SIZE),
+            }
+        }
+        CONVERTED = dict([(key, int(value))
+                          for key, value in DATA['quota'].items()])
+        WITH_KIND = {'quota': DATA['quota'].copy()}
+        WITH_KIND['quota']['kind'] = 'dns#quota'
+        creds = _Credentials()
+        client = self._makeOne(PROJECT, creds)
+        conn = client.connection = _Connection(WITH_KIND)
+
+        quotas = client.quotas()
+
+        self.assertEqual(quotas, CONVERTED)
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/%s' % PATH)
+
     def test_list_zones_defaults(self):
         from gcloud.dns.zone import ManagedZone
         PROJECT = 'PROJECT'
