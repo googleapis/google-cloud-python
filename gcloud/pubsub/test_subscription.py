@@ -642,12 +642,13 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'], {'policy': {}})
 
     def test_check_iam_permissions_w_bound_client(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'topic_name'
         SUB_NAME = 'sub_name'
         PATH = 'projects/%s/subscriptions/%s:testIamPermissions' % (
             PROJECT, SUB_NAME)
-        ROLES = ['roles/viewer', 'roles/editor', 'roles/owner']
+        ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
@@ -669,12 +670,13 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'], REQUESTED)
 
     def test_check_iam_permissions_w_alternate_client(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'topic_name'
         SUB_NAME = 'sub_name'
         PATH = 'projects/%s/subscriptions/%s:testIamPermissions' % (
             PROJECT, SUB_NAME)
-        ROLES = ['roles/viewer', 'roles/editor', 'roles/owner']
+        ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
