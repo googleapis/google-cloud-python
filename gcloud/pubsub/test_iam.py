@@ -29,8 +29,8 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.etag, None)
         self.assertEqual(policy.version, None)
         self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.writers), [])
-        self.assertEqual(list(policy.readers), [])
+        self.assertEqual(list(policy.editors), [])
+        self.assertEqual(list(policy.viewers), [])
 
     def test_ctor_explicit(self):
         VERSION = 17
@@ -39,8 +39,8 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.etag, ETAG)
         self.assertEqual(policy.version, VERSION)
         self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.writers), [])
-        self.assertEqual(list(policy.readers), [])
+        self.assertEqual(list(policy.editors), [])
+        self.assertEqual(list(policy.viewers), [])
 
     def test_user(self):
         EMAIL = 'phred@example.com'
@@ -83,24 +83,24 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.etag, 'ACAB')
         self.assertEqual(policy.version, None)
         self.assertEqual(list(policy.owners), [])
-        self.assertEqual(list(policy.writers), [])
-        self.assertEqual(list(policy.readers), [])
+        self.assertEqual(list(policy.editors), [])
+        self.assertEqual(list(policy.viewers), [])
 
     def test_from_api_repr_complete(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
-        WRITER1 = 'domain:google.com'
-        WRITER2 = 'user:phred@example.com'
-        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        READER2 = 'user:phred@example.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
         RESOURCE = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
                 {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': READER_ROLE, 'members': [READER1, READER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
         klass = self._getTargetClass()
@@ -108,8 +108,8 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.etag, 'DEADBEEF')
         self.assertEqual(policy.version, 17)
         self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
-        self.assertEqual(sorted(policy.writers), [WRITER1, WRITER2])
-        self.assertEqual(sorted(policy.readers), [READER1, READER2])
+        self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
+        self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
 
     def test_from_api_repr_bad_role(self):
         BOGUS1 = 'user:phred@example.com'
@@ -134,27 +134,27 @@ class TestPolicy(unittest2.TestCase):
         self.assertEqual(policy.to_api_repr(), {'etag': 'DEADBEEF'})
 
     def test_to_api_repr_full(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, WRITER_ROLE, READER_ROLE
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
-        WRITER1 = 'domain:google.com'
-        WRITER2 = 'user:phred@example.com'
-        READER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        READER2 = 'user:phred@example.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
         EXPECTED = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
                 {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': WRITER_ROLE, 'members': [WRITER1, WRITER2]},
-                {'role': READER_ROLE, 'members': [READER1, READER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
         policy = self._makeOne('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
-        policy.writers.add(WRITER1)
-        policy.writers.add(WRITER2)
-        policy.readers.add(READER1)
-        policy.readers.add(READER2)
+        policy.editors.add(EDITOR1)
+        policy.editors.add(EDITOR2)
+        policy.viewers.add(VIEWER1)
+        policy.viewers.add(VIEWER2)
         self.assertEqual(policy.to_api_repr(), EXPECTED)

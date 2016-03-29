@@ -16,10 +16,10 @@
 OWNER_ROLE = 'roles/owner'
 """IAM permission implying all rights to an object."""
 
-WRITER_ROLE = 'roles/writer'
+EDITOR_ROLE = 'roles/editor'
 """IAM permission implying rights to modify an object."""
 
-READER_ROLE = 'roles/reader'
+VIEWER_ROLE = 'roles/viewer'
 """IAM permission implying rights to access an object without modifying it."""
 
 
@@ -40,8 +40,8 @@ class Policy(object):
         self.etag = etag
         self.version = version
         self.owners = set()
-        self.writers = set()
-        self.readers = set()
+        self.editors = set()
+        self.viewers = set()
 
     @staticmethod
     def user(email):
@@ -127,10 +127,10 @@ class Policy(object):
             members = set(binding['members'])
             if role == OWNER_ROLE:
                 policy.owners = members
-            elif role == WRITER_ROLE:
-                policy.writers = members
-            elif role == READER_ROLE:
-                policy.readers = members
+            elif role == EDITOR_ROLE:
+                policy.editors = members
+            elif role == VIEWER_ROLE:
+                policy.viewers = members
             else:
                 raise ValueError('Unknown role: %s' % (role,))
         return policy
@@ -155,13 +155,13 @@ class Policy(object):
             bindings.append(
                 {'role': OWNER_ROLE, 'members': sorted(self.owners)})
 
-        if self.writers:
+        if self.editors:
             bindings.append(
-                {'role': WRITER_ROLE, 'members': sorted(self.writers)})
+                {'role': EDITOR_ROLE, 'members': sorted(self.editors)})
 
-        if self.readers:
+        if self.viewers:
             bindings.append(
-                {'role': READER_ROLE, 'members': sorted(self.readers)})
+                {'role': VIEWER_ROLE, 'members': sorted(self.viewers)})
 
         if bindings:
             resource['bindings'] = bindings
