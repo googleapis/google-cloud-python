@@ -50,6 +50,7 @@ class QueryResults(object):
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
+        self._job = None
 
     @property
     def project(self):
@@ -134,9 +135,12 @@ class QueryResults(object):
         :returns: Job instance used to run the query (None until
                   ``jobReference`` property is set by the server).
         """
-        job_ref = self._properties.get('jobReference')
-        if job_ref is not None:
-            return QueryJob(job_ref['jobId'], self.query, self._client)
+        if self._job is None:
+            job_ref = self._properties.get('jobReference')
+            if job_ref is not None:
+                self._job = QueryJob(job_ref['jobId'], self.query,
+                                     self._client)
+        return self._job
 
     @property
     def page_token(self):
