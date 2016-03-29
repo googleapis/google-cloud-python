@@ -123,16 +123,27 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_text_w_unicode_explicit_client_and_labels(self):
+    def test_log_text_w_unicode_explicit_client_labels_severity_httpreq(self):
         TEXT = u'TEXT'
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         conn = _Connection({})
         client1 = _Client(self.PROJECT, object())
         client2 = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client1,
                                labels=DEFAULT_LABELS)
-        logger.log_text(TEXT, client=client2, labels=LABELS)
+        logger.log_text(TEXT, client=client2, labels=LABELS,
+                        insert_id=IID, severity=SEVERITY, http_request=REQUEST)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -144,6 +155,9 @@ class TestLogger(unittest2.TestCase):
                     'type': 'global',
                 },
                 'labels': LABELS,
+                'insertId': IID,
+                'severity': SEVERITY,
+                'httpRequest': REQUEST,
             }],
         }
         self.assertEqual(req['method'], 'POST')
@@ -197,16 +211,28 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_struct_w_explicit_client_and_labels(self):
+    def test_log_struct_w_explicit_client_labels_severity_httpreq(self):
         STRUCT = {'message': 'MESSAGE', 'weather': 'cloudy'}
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         conn = _Connection({})
         client1 = _Client(self.PROJECT, object())
         client2 = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client1,
                                labels=DEFAULT_LABELS)
-        logger.log_struct(STRUCT, client=client2, labels=LABELS)
+        logger.log_struct(STRUCT, client=client2, labels=LABELS,
+                          insert_id=IID, severity=SEVERITY,
+                          http_request=REQUEST)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -218,6 +244,9 @@ class TestLogger(unittest2.TestCase):
                     'type': 'global',
                 },
                 'labels': LABELS,
+                'insertId': IID,
+                'severity': SEVERITY,
+                'httpRequest': REQUEST,
             }],
         }
         self.assertEqual(req['method'], 'POST')
@@ -277,19 +306,31 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(req['path'], '/entries:write')
         self.assertEqual(req['data'], SENT)
 
-    def test_log_proto_w_explicit_client_and_labels(self):
+    def test_log_proto_w_explicit_client_labels_severity_httpreq(self):
         import json
         from google.protobuf.json_format import MessageToJson
         from google.protobuf.struct_pb2 import Struct, Value
         message = Struct(fields={'foo': Value(bool_value=True)})
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         conn = _Connection({})
         client1 = _Client(self.PROJECT, object())
         client2 = _Client(self.PROJECT, conn)
         logger = self._makeOne(self.LOGGER_NAME, client=client1,
                                labels=DEFAULT_LABELS)
-        logger.log_proto(message, client=client2, labels=LABELS)
+        logger.log_proto(message, client=client2, labels=LABELS,
+                         insert_id=IID, severity=SEVERITY,
+                         http_request=REQUEST)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         SENT = {
@@ -301,6 +342,9 @@ class TestLogger(unittest2.TestCase):
                     'type': 'global',
                 },
                 'labels': LABELS,
+                'insertId': IID,
+                'severity': SEVERITY,
+                'httpRequest': REQUEST,
             }],
         }
         self.assertEqual(req['method'], 'POST')
@@ -402,18 +446,31 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(logger, client=CLIENT)
         batch.log_text(TEXT)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('text', TEXT, None)])
+        self.assertEqual(batch.entries,
+                         [('text', TEXT, None, None, None, None)])
 
     def test_log_text_explicit(self):
         TEXT = 'This is the entry text'
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         connection = _Connection()
         CLIENT = _Client(project=self.PROJECT, connection=connection)
         logger = _Logger()
         batch = self._makeOne(logger, client=CLIENT)
-        batch.log_text(TEXT, labels=LABELS)
+        batch.log_text(TEXT, labels=LABELS, insert_id=IID, severity=SEVERITY,
+                       http_request=REQUEST)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('text', TEXT, LABELS)])
+        self.assertEqual(batch.entries,
+                         [('text', TEXT, LABELS, IID, SEVERITY, REQUEST)])
 
     def test_log_struct_defaults(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
@@ -423,18 +480,31 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(logger, client=CLIENT)
         batch.log_struct(STRUCT)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('struct', STRUCT, None)])
+        self.assertEqual(batch.entries,
+                         [('struct', STRUCT, None, None, None, None)])
 
     def test_log_struct_explicit(self):
         STRUCT = {'message': 'Message text', 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         connection = _Connection()
         CLIENT = _Client(project=self.PROJECT, connection=connection)
         logger = _Logger()
         batch = self._makeOne(logger, client=CLIENT)
-        batch.log_struct(STRUCT, labels=LABELS)
+        batch.log_struct(STRUCT, labels=LABELS, insert_id=IID,
+                         severity=SEVERITY, http_request=REQUEST)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('struct', STRUCT, LABELS)])
+        self.assertEqual(batch.entries,
+                         [('struct', STRUCT, LABELS, IID, SEVERITY, REQUEST)])
 
     def test_log_proto_defaults(self):
         from google.protobuf.struct_pb2 import Struct, Value
@@ -445,26 +515,39 @@ class TestBatch(unittest2.TestCase):
         batch = self._makeOne(logger, client=CLIENT)
         batch.log_proto(message)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('proto', message, None)])
+        self.assertEqual(batch.entries,
+                         [('proto', message, None, None, None, None)])
 
     def test_log_proto_explicit(self):
         from google.protobuf.struct_pb2 import Struct, Value
         message = Struct(fields={'foo': Value(bool_value=True)})
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         connection = _Connection()
         CLIENT = _Client(project=self.PROJECT, connection=connection)
         logger = _Logger()
         batch = self._makeOne(logger, client=CLIENT)
-        batch.log_proto(message, labels=LABELS)
+        batch.log_proto(message, labels=LABELS, insert_id=IID,
+                        severity=SEVERITY, http_request=REQUEST)
         self.assertEqual(len(connection._requested), 0)
-        self.assertEqual(batch.entries, [('proto', message, LABELS)])
+        self.assertEqual(batch.entries,
+                         [('proto', message, LABELS, IID, SEVERITY, REQUEST)])
 
     def test_commit_w_invalid_entry_type(self):
         logger = _Logger()
         conn = _Connection()
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         batch = self._makeOne(logger, CLIENT)
-        batch.entries.append(('bogus', 'BOGUS', None))
+        batch.entries.append(('bogus', 'BOGUS', None, None, None, None))
         with self.assertRaises(ValueError):
             batch.commit()
 
@@ -475,6 +558,9 @@ class TestBatch(unittest2.TestCase):
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         message = Struct(fields={'foo': Value(bool_value=True)})
+        IID1 = 'IID1'
+        IID2 = 'IID2'
+        IID3 = 'IID3'
         conn = _Connection({})
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         logger = _Logger()
@@ -484,15 +570,16 @@ class TestBatch(unittest2.TestCase):
                 'type': 'global',
             },
             'entries': [
-                {'textPayload': TEXT},
-                {'jsonPayload': STRUCT},
-                {'protoPayload': json.loads(MessageToJson(message))},
+                {'textPayload': TEXT, 'insertId': IID1},
+                {'jsonPayload': STRUCT, 'insertId': IID2},
+                {'protoPayload': json.loads(MessageToJson(message)),
+                 'insertId': IID3},
             ],
         }
         batch = self._makeOne(logger, client=CLIENT)
-        batch.log_text(TEXT)
-        batch.log_struct(STRUCT)
-        batch.log_proto(message)
+        batch.log_text(TEXT, insert_id=IID1)
+        batch.log_struct(STRUCT, insert_id=IID2)
+        batch.log_proto(message, insert_id=IID3)
         batch.commit()
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(len(conn._requested), 1)
@@ -511,6 +598,15 @@ class TestBatch(unittest2.TestCase):
         message = Struct(fields={'foo': Value(bool_value=True)})
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         conn1 = _Connection()
         conn2 = _Connection({})
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
@@ -522,14 +618,15 @@ class TestBatch(unittest2.TestCase):
             'labels': DEFAULT_LABELS,
             'entries': [
                 {'textPayload': TEXT, 'labels': LABELS},
-                {'jsonPayload': STRUCT},
-                {'protoPayload': json.loads(MessageToJson(message))},
+                {'jsonPayload': STRUCT, 'severity': SEVERITY},
+                {'protoPayload': json.loads(MessageToJson(message)),
+                 'httpRequest': REQUEST},
             ],
         }
         batch = self._makeOne(logger, client=CLIENT1)
         batch.log_text(TEXT, labels=LABELS)
-        batch.log_struct(STRUCT)
-        batch.log_proto(message)
+        batch.log_struct(STRUCT, severity=SEVERITY)
+        batch.log_proto(message, http_request=REQUEST)
         batch.commit(client=CLIENT2)
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(len(conn1._requested), 0)
@@ -549,6 +646,15 @@ class TestBatch(unittest2.TestCase):
         message = Struct(fields={'foo': Value(bool_value=True)})
         DEFAULT_LABELS = {'foo': 'spam'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         conn = _Connection({})
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         logger = Logger('logger_name', CLIENT, labels=DEFAULT_LABELS)
@@ -559,17 +665,18 @@ class TestBatch(unittest2.TestCase):
             },
             'labels': DEFAULT_LABELS,
             'entries': [
-                {'textPayload': TEXT},
+                {'textPayload': TEXT, 'httpRequest': REQUEST},
                 {'jsonPayload': STRUCT, 'labels': LABELS},
-                {'protoPayload': json.loads(MessageToJson(message))},
+                {'protoPayload': json.loads(MessageToJson(message)),
+                 'severity': SEVERITY},
             ],
         }
         batch = self._makeOne(logger, client=CLIENT)
 
         with batch as other:
-            other.log_text(TEXT)
+            other.log_text(TEXT, http_request=REQUEST)
             other.log_struct(STRUCT, labels=LABELS)
-            other.log_proto(message)
+            other.log_proto(message, severity=SEVERITY)
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(len(conn._requested), 1)
@@ -583,22 +690,32 @@ class TestBatch(unittest2.TestCase):
         TEXT = 'This is the entry text'
         STRUCT = {'message': TEXT, 'weather': 'partly cloudy'}
         LABELS = {'foo': 'bar', 'baz': 'qux'}
+        IID = 'IID'
+        SEVERITY = 'CRITICAL'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
         message = Struct(fields={'foo': Value(bool_value=True)})
         conn = _Connection({})
         CLIENT = _Client(project=self.PROJECT, connection=conn)
         logger = _Logger()
         UNSENT = [
-            ('text', TEXT, None),
-            ('struct', STRUCT, None),
-            ('proto', message, LABELS),
+            ('text', TEXT, None, IID, None, None),
+            ('struct', STRUCT, None, None, SEVERITY, None),
+            ('proto', message, LABELS, None, None, REQUEST),
         ]
         batch = self._makeOne(logger, client=CLIENT)
 
         try:
             with batch as other:
-                other.log_text(TEXT)
-                other.log_struct(STRUCT)
-                other.log_proto(message, labels=LABELS)
+                other.log_text(TEXT, insert_id=IID)
+                other.log_struct(STRUCT, severity=SEVERITY)
+                other.log_proto(message, labels=LABELS, http_request=REQUEST)
                 raise _Bugout()
         except _Bugout:
             pass
