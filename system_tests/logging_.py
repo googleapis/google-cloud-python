@@ -68,6 +68,33 @@ class TestLogging(unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
+    def test_log_text_w_metadata(self):
+        TEXT_PAYLOAD = 'System test: test_log_text'
+        INSERT_ID = 'INSERTID'
+        SEVERITY = 'INFO'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        logger = Config.CLIENT.logger(self._logger_name())
+        self.to_delete.append(logger)
+        logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
+                        http_request=REQUEST)
+        time.sleep(2)
+        entries, _ = logger.list_entries()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
+        self.assertEqual(entries[0].insert_id, INSERT_ID)
+        self.assertEqual(entries[0].severity, SEVERITY)
+        request = entries[0].http_request
+        self.assertEqual(request['requestMethod'], METHOD)
+        self.assertEqual(request['requestUrl'], URI)
+        self.assertEqual(request['status'], int(STATUS))
+
     def test_log_struct(self):
         JSON_PAYLOAD = {
             'message': 'System test: test_log_struct',
@@ -80,6 +107,36 @@ class TestLogging(unittest2.TestCase):
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+
+    def test_log_struct_w_metadata(self):
+        JSON_PAYLOAD = {
+            'message': 'System test: test_log_struct',
+            'weather': 'partly cloudy',
+        }
+        INSERT_ID = 'INSERTID'
+        SEVERITY = 'INFO'
+        METHOD = 'POST'
+        URI = 'https://api.example.com/endpoint'
+        STATUS = '500'
+        REQUEST = {
+            'requestMethod': METHOD,
+            'requestUrl': URI,
+            'status': STATUS,
+        }
+        logger = Config.CLIENT.logger(self._logger_name())
+        self.to_delete.append(logger)
+        logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
+                          http_request=REQUEST)
+        time.sleep(2)
+        entries, _ = logger.list_entries()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+        self.assertEqual(entries[0].insert_id, INSERT_ID)
+        self.assertEqual(entries[0].severity, SEVERITY)
+        request = entries[0].http_request
+        self.assertEqual(request['requestMethod'], METHOD)
+        self.assertEqual(request['requestUrl'], URI)
+        self.assertEqual(request['status'], int(STATUS))
 
     def test_create_metric(self):
         metric = Config.CLIENT.metric(
