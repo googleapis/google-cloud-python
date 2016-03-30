@@ -132,7 +132,7 @@ class TestLogging(unittest2.TestCase):
         self.assertEqual(after.filter_, NEW_FILTER)
         self.assertEqual(after.description, NEW_DESCRIPTION)
 
-    def test_create_sink_storage_bucket(self):
+    def _init_storage_bucket(self):
         from gcloud import storage
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
@@ -147,8 +147,12 @@ class TestLogging(unittest2.TestCase):
         bucket.acl.add_entity(logs_group)
         bucket.acl.save()
 
-        sink = Config.CLIENT.sink(
-            DEFAULT_SINK_NAME, DEFAULT_FILTER, BUCKET_URI)
+        return BUCKET_URI
+
+    def test_create_sink_storage_bucket(self):
+        uri = self._init_storage_bucket()
+
+        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
@@ -193,3 +197,18 @@ class TestLogging(unittest2.TestCase):
         sink.reload()
         self.assertEqual(sink.filter_, DEFAULT_FILTER)
         self.assertEqual(sink.destination, uri)
+
+    def test_update_sink(self):
+        bucket_uri = self._init_storage_bucket()
+        dataset_uri = self._init_bigquery_dataset()
+        UPDATED_FILTER = 'logName:syslog'
+        sink = Config.CLIENT.sink(
+            DEFAULT_SINK_NAME, DEFAULT_FILTER, bucket_uri)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        sink.filter_ = UPDATED_FILTER
+        sink.destination = dataset_uri
+        sink.update()
+        self.assertEqual(sink.filter_, UPDATED_FILTER)
+        self.assertEqual(sink.destination, dataset_uri)
