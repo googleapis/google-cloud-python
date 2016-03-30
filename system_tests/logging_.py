@@ -52,12 +52,8 @@ class TestLogging(unittest2.TestCase):
         self.to_delete = []
 
     def tearDown(self):
-        from gcloud.exceptions import NotFound
         for doomed in self.to_delete:
-            try:
-                doomed.delete()
-            except NotFound as error:
-                print('Unable to delete resource: %s' % error)
+            doomed.delete()
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
