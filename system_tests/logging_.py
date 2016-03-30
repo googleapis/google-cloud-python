@@ -179,8 +179,6 @@ class TestLogging(unittest2.TestCase):
 
     def test_create_sink_pubsub_topic(self):
         from gcloud import pubsub
-        TOPIC_URI = 'pubsub.googleapis.com/projects/%s/topic/%s' % (
-            Config.CLIENT.project, TOPIC_NAME)
 
         # Create the destination topic, and set up the IAM policy to allow
         # Cloud Logging to write into it.
@@ -191,6 +189,8 @@ class TestLogging(unittest2.TestCase):
         policy = topic.get_iam_policy()
         policy.owners.add(policy.group('cloud-logs@google.com'))
         topic.set_iam_policy(policy)
+
+        TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic.full_name,)
 
         sink = Config.CLIENT.sink(
             DEFAULT_SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
