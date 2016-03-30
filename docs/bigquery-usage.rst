@@ -291,26 +291,88 @@ Run a query which can be expected to complete within bounded time:
 
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
-   >>> query = """\
-   SELECT count(*) AS age_count FROM dataset_name.person_ages
-   """
-   >>> query = client.run_sync_query(query)
+   >>> QUERY = """\
+   ... SELECT count(*) AS age_count FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
    >>> query.timeout_ms = 1000
    >>> query.run()  # API request
-   >>> retry_count = 100
-   >>> while retry_count > 0 and not job.complete:
-   ...     retry_count -= 1
-   ...     time.sleep(10)
-   ...     query.reload()  # API request
-   >>> query.schema
-   [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
+   >>> query.complete
+   True
+   >>> len(query.schema)
+   1
+   >>> field = query.schema[0]
+   >>> field.name
+   u'count'
+   >>> field.field_type
+   u'INTEGER'
+   >>> field.mode
+   u'NULLABLE'
    >>> query.rows
    [(15,)]
+   >>> query.total_rows
+   1
 
-.. note::
+If the rows returned by the query do not fit into the inital response,
+then we need to fetch the remaining rows via ``fetch_data``:
 
-   If the query takes longer than the timeout allowed, ``job.complete``
-   will be ``False``:  we therefore poll until it is completed.
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> QUERY = """\
+   ... SELECT * FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
+   >>> query.timeout_ms = 1000
+   >>> query.run()  # API request
+   >>> query.complete
+   True
+   >>> query.total_rows
+   1234
+   >>> query.page_token
+   '8d6e452459238eb0fe87d8eb191dd526ee70a35e'
+   >>> do_something_with(query.schema, query.rows)
+   >>> token = query.page_token  # for initial request
+   >>> while True:
+   ...     do_something_with(query.schema, rows)
+   ...     if token is None:
+   ...         break
+   ...     rows, _, token = query.fetch_data(page_token=token)
+
+
+If the query takes longer than the timeout allowed, ``query.complete``
+will be ``False``.  In that case, we need to poll the associated job until
+it is done, and then fetch the reuslts:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> QUERY = """\
+   ... SELECT * FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
+   >>> query.timeout_ms = 1000
+   >>> query.run()  # API request
+   >>> query.complete
+   False
+   >>> job = query.job
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
+   ...     time.sleep(10)
+   ...     job.reload()  # API call
+   >>> job.state
+   'done'
+   >>> token = None  # for initial request
+   >>> while True:
+   ...     rows, _, token = query.fetch_data(page_token=token)
+   ...     do_something_with(query.schema, rows)
+   ...     if token is None:
+   ...         break
+
+
 
 Querying data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

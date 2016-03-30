@@ -156,6 +156,8 @@ class TestQueryResults(unittest2.TestCase):
         self.assertEqual(job.query, self.QUERY)
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, SERVER_GENERATED)
+        fetched_later = query.job
+        self.assertTrue(fetched_later is job)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
