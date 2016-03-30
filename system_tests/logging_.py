@@ -22,7 +22,6 @@ from gcloud import logging
 
 
 _MILLIS = 1000 * time.time()
-DEFAULT_LOGGER_NAME = 'system-tests-logger-%d' % (_MILLIS,)
 DEFAULT_METRIC_NAME = 'system-tests-metric-%d' % (_MILLIS,)
 DEFAULT_SINK_NAME = 'system-tests-sink-%d' % (_MILLIS,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
@@ -54,9 +53,14 @@ class TestLogging(unittest2.TestCase):
         for doomed in self.to_delete:
             doomed.delete()
 
+    @staticmethod
+    def _logger_name():
+        _millis = 1000 * time.time()
+        return 'system-tests-logger-%d' % (_millis,)
+
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
-        logger = Config.CLIENT.logger(DEFAULT_LOGGER_NAME)
+        logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
         time.sleep(2)
@@ -69,7 +73,7 @@ class TestLogging(unittest2.TestCase):
             'message': 'System test: test_log_struct',
             'weather': 'partly cloudy',
         }
-        logger = Config.CLIENT.logger(DEFAULT_LOGGER_NAME)
+        logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_struct(JSON_PAYLOAD)
         time.sleep(2)
