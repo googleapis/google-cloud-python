@@ -19,6 +19,8 @@ from gcloud.monitoring.connection import Connection
 from gcloud.monitoring.label import LabelDescriptor
 from gcloud.monitoring.metric import Metric
 from gcloud.monitoring.metric import MetricDescriptor
+from gcloud.monitoring.resource import Resource
+from gcloud.monitoring.resource import ResourceDescriptor
 
 
 SCOPE = Connection.SCOPE

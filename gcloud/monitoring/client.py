@@ -17,6 +17,7 @@
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
 from gcloud.monitoring.metric import MetricDescriptor
+from gcloud.monitoring.resource import ResourceDescriptor
 
 
 class Client(JSONClient):
@@ -57,7 +58,7 @@ class Client(JSONClient):
     def list_metric_descriptors(self, filter=None):
         """List all metric descriptors for the project.
 
-        :type filter: string or ``NoneType``
+        :type filter: string or None
         :param filter: An optional filter string describing the metric
                        descriptors to be returned.
 
@@ -66,3 +67,29 @@ class Client(JSONClient):
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
         return MetricDescriptor._list(self, filter)
+
+    def fetch_resource_descriptor(self, resource_type):
+        """Look up a resource descriptor by type.
+
+        :type resource_type: string
+        :param resource_type: The resource type name.
+
+        :rtype: :class:`~gcloud.monitoring.resource.ResourceDescriptor`
+        :returns: The resource descriptor instance.
+
+        :raises: :class:`gcloud.exceptions.NotFound`
+        """
+        return ResourceDescriptor._fetch(self, resource_type)
+
+    def list_resource_descriptors(self, filter=None):
+        """List all resource descriptors for the project.
+
+        :type filter: string or None
+        :param filter: An optional filter string describing the resource
+                       descriptors to be returned.
+
+        :rtype: list of :class:`~gcloud.monitoring.resource.ResourceDescriptor`
+        :returns: A list of resource descriptor instances.
+        """
+        # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
+        return ResourceDescriptor._list(self, filter)

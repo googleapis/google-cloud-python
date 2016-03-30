@@ -127,6 +127,7 @@
   Client <monitoring-client>
   monitoring-label
   monitoring-metric
+  monitoring-resource
 
 .. toctree::
   :maxdepth: 0
