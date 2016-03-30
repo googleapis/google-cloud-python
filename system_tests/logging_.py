@@ -50,8 +50,18 @@ class TestLogging(unittest2.TestCase):
         self.to_delete = []
 
     def tearDown(self):
+        from gcloud.exceptions import NotFound
         for doomed in self.to_delete:
-            doomed.delete()
+            backoff_intervals = [1, 2, 4, 8]
+            while True:
+                try:
+                    doomed.delete()
+                    break
+                except NotFound:
+                    if backoff_intervals:
+                        time.sleep(backoff_intervals.pop(0))
+                    else:
+                        raise
 
     @staticmethod
     def _logger_name():
