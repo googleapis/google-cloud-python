@@ -154,7 +154,7 @@ class TestLogging(unittest2.TestCase):
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
-    def test_create_sink_bigquery_dataset(self):
+    def _init_bigquery_dataset(self):
         from gcloud import bigquery
         from gcloud.bigquery.dataset import AccessGrant
         DATASET_URI = 'bigquery.googleapis.com/projects/%s/datasets/%s' % (
@@ -172,10 +172,24 @@ class TestLogging(unittest2.TestCase):
             'WRITER', 'groupByEmail', 'cloud-logs@google.com'))
         dataset.access_grants = grants
         dataset.update()
+        return DATASET_URI
 
-        sink = Config.CLIENT.sink(
-            DEFAULT_SINK_NAME, DEFAULT_FILTER, DATASET_URI)
+    def test_create_sink_bigquery_dataset(self):
+        uri = self._init_bigquery_dataset()
+        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
+
+    def test_reload_sink(self):
+        uri = self._init_bigquery_dataset()
+        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        sink.filter_ = 'BOGUS FILTER'
+        sink.destination = 'BOGUS DESTINATION'
+        sink.reload()
+        self.assertEqual(sink.filter_, DEFAULT_FILTER)
+        self.assertEqual(sink.destination, uri)
