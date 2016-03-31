@@ -28,6 +28,7 @@ DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
 BUCKET_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
 DATASET_NAME = 'system_testing_dataset_%d' % (_MILLIS,)
+TOPIC_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
 
 
 class Config(object):
@@ -220,6 +221,28 @@ class TestLogging(unittest2.TestCase):
         uri = self._init_storage_bucket()
 
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        self.assertFalse(sink.exists())
+        sink.create()
+        self.to_delete.append(sink)
+        self.assertTrue(sink.exists())
+
+    def test_create_sink_pubsub_topic(self):
+        from gcloud import pubsub
+
+        # Create the destination topic, and set up the IAM policy to allow
+        # Cloud Logging to write into it.
+        pubsub_client = pubsub.Client()
+        topic = pubsub_client.topic(TOPIC_NAME)
+        topic.create()
+        self.to_delete.append(topic)
+        policy = topic.get_iam_policy()
+        policy.owners.add(policy.group('cloud-logs@google.com'))
+        topic.set_iam_policy(policy)
+
+        TOPIC_URI = 'pubsub.googleapis.com/%s' % (topic.full_name,)
+
+        sink = Config.CLIENT.sink(
+            DEFAULT_SINK_NAME, DEFAULT_FILTER, TOPIC_URI)
         self.assertFalse(sink.exists())
         sink.create()
         self.to_delete.append(sink)
