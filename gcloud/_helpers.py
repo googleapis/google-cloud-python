@@ -38,6 +38,16 @@ except ImportError:
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
+_RFC3339_NO_FRACTION = '%Y-%m-%dT%H:%M:%S'
+# datetime.strptime cannot handle nanosecond precision:  parse w/ regex
+_RFC3339_NANOS = re.compile(r"""
+    (?P<no_fraction>
+        \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}  # YYYY-MM-DDTHH:MM:SS
+    )
+    \.                                       # decimal point
+    (?P<nanos>\d{9})                         # nanoseconds
+    Z                                        # Zulu
+""", re.VERBOSE)
 
 
 class _LocalStack(Local):
@@ -301,7 +311,7 @@ def _total_seconds(offset):
 
 
 def _rfc3339_to_datetime(dt_str):
-    """Convert a string to a native timestamp.
+    """Convert a microsecond-precision timetamp to a native datetime.
 
     :type dt_str: str
     :param dt_str: The string to convert.
@@ -311,6 +321,32 @@ def _rfc3339_to_datetime(dt_str):
     """
     return datetime.datetime.strptime(
         dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
+
+
+def _rfc3339_nanos_to_datetime(dt_str):
+    """Convert a nanosecond-precision timestamp to a native datetime.
+
+    .. note::
+
+       Python datetimes do not support nanosecond precision;  this function
+       therefore truncates such values to microseconds.
+
+    :type dt_str: str
+    :param dt_str: The string to convert.
+
+    :rtype: :class:`datetime.datetime`
+    :returns: The datetime object created from the string.
+    """
+    with_nanos = _RFC3339_NANOS.match(dt_str)
+    if with_nanos is None:
+        raise ValueError(
+            'Timestamp: %r, does not match pattern: %r' % (
+                dt_str, _RFC3339_NANOS.pattern))
+    bare_seconds = datetime.datetime.strptime(
+        with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
+    nanos = int(with_nanos.group('nanos'))
+    micros = nanos // 1000
+    return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
 def _datetime_to_rfc3339(value):
