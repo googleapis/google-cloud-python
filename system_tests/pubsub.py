@@ -180,9 +180,9 @@ class TestPubsub(unittest2.TestCase):
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
         policy = topic.get_iam_policy()
-        policy.readers.add(policy.user('jjg@google.com'))
+        policy.viewers.add(policy.user('jjg@google.com'))
         new_policy = topic.set_iam_policy(policy)
-        self.assertEqual(new_policy.readers, policy.readers)
+        self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_subscription_iam_policy(self):
         topic_name = 'test-sub-iam-policy-topic-%d' % (1000 * time.time(),)
@@ -204,6 +204,6 @@ class TestPubsub(unittest2.TestCase):
         self.assertTrue(subscription.exists())
         self.to_delete.insert(0, subscription)
         policy = subscription.get_iam_policy()
-        policy.readers.add(policy.user('jjg@google.com'))
+        policy.viewers.add(policy.user('jjg@google.com'))
         new_policy = subscription.set_iam_policy(policy)
-        self.assertEqual(new_policy.readers, policy.readers)
+        self.assertEqual(new_policy.viewers, policy.viewers)
