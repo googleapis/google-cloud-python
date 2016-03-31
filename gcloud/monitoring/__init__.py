@@ -21,6 +21,9 @@ from gcloud.monitoring.metric import Metric
 from gcloud.monitoring.metric import MetricDescriptor
 from gcloud.monitoring.resource import Resource
 from gcloud.monitoring.resource import ResourceDescriptor
+from gcloud.monitoring.timeseries import Point
+from gcloud.monitoring.timeseries import TimeSeries
+from gcloud.monitoring.timeseries import Query
 
 
 SCOPE = Connection.SCOPE

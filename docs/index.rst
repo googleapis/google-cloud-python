@@ -125,9 +125,10 @@
   :caption: Cloud Monitoring
 
   Client <monitoring-client>
-  monitoring-label
+  monitoring-timeseries
   monitoring-metric
   monitoring-resource
+  monitoring-label
 
 .. toctree::
   :maxdepth: 0
