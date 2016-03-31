@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Logging Client &mdash; gcloud d85bf2f documentation</title>
+    
+    <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/normalize.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     'd85bf2f',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="gcloud d85bf2f documentation" href="index.html" />
+    <link rel="next" title="Logger" href="logging-logger.html" />
+    <link rel="prev" title="Using the API" href="logging-usage.html" /> 
+  </head>
+  <body role="document">
+    <header class="page-header fixed" role="banner">
+      <h1 class="logo">
+        <a href="index.html" title="back to home">
+          <img src="_static/images/logo.svg" alt="Google Cloud Platform" />
+          <span class="gcloud">gcloud</span>
+        </a>
+      </h1>
+      <nav class="main-nav">
+        <div class="nav-current">Python</div>
+        <ul class="menu">
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-java/" title="gcloud-java page">
+              <img src="_static/images/icon-lang-java-duke.svg" alt="Duke icon" class="menu-icon" />
+              Java
+            </a>
+          </li>
+          <li>
+            <a href="
+https://googlecloudplatform.github.io/gcloud-node/#/docs" title="Node.js docs page">
+              <img src="_static/images/icon-lang-nodejs.svg" alt="Node.js icon" class="menu-icon" />
+              Node.js
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Python docs page">
+              <img src="_static/images/icon-lang-python.svg" alt="Python icon" class="menu-icon" />
+              Python
+            </a>
+          </li>
+          <li>
+            <a href="
+http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs page">
+              <img src="_static/images/icon-lang-ruby.svg" alt="Ruby icon" class="menu-icon" />
+              Ruby
+            </a>
+          </li>
+        </ul>
+      </nav><!-- end of .main-nav -->
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20d85bf2f" target="_blank" class="v-btn" id="file-issue">
+        <img src="_static/images/icon-link-github.svg" />
+        Report an Issue
+      </a>
+    </header><!-- end of .page-header -->
+    
+      <article class="main lang-page" role="main">
+
+      <header class="docs-header">
+          <div class="versions">
+            <a href="/gcloud-python/versions.html" class="v-btn">
+              <img src="_static/images/icon-arrow-bullet.svg" />
+              Version History (d85bf2f)
+            </a>
+          </div><!-- end of .versions -->
+          <div>
+            <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+" target="_blank" class="v-btn" id="file-issue-secondary">
+              <img src="_static/images/icon-link-github.svg" />
+              Report an Issue
+            </a>
+          </div>
+      </header>
+
+      <section class="content">
+        
+  <div class="section" id="module-gcloud.logging.client">
+<span id="logging-client"></span><h1>Logging Client<a class="headerlink" href="#module-gcloud.logging.client" title="Permalink to this headline">#</a></h1>
+<p>Client for interacting with the Google Cloud Logging API.</p>
+<dl class="class">
+<dt id="gcloud.logging.client.Client">
+<em class="property">class </em><code class="descclassname">gcloud.logging.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.client.JSONClient" title="gcloud.client.JSONClient"><code class="xref py py-class docutils literal"><span class="pre">gcloud.client.JSONClient</span></code></a></p>
+<p>Client to bundle configuration needed for API requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the project which the client acts on behalf of.
+If not passed, falls back to the default inferred
+from the environment.</li>
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.0.1)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
+owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
+object is passed), falls back to the default inferred
+from the environment.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; An optional HTTP object to make requests. If not passed, an
+<code class="docutils literal"><span class="pre">http</span></code> object is created that is bound to the
+<code class="docutils literal"><span class="pre">credentials</span></code> for the current object.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gcloud.logging.client.Client.list_entries">
+<code class="descname">list_entries</code><span class="sig-paren">(</span><em>projects=None</em>, <em>filter_=None</em>, <em>order_by=None</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.list_entries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.list_entries" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a page of log entries.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>projects</strong> (<em>list of strings</em>) &#8211; project IDs to include. If not passed,
+defaults to the project bound to the client.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; a filter expression. See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">gcloud.logging.ASCENDING</span></code> or
+<code class="xref py py-data docutils literal"><span class="pre">gcloud.logging.DESCENDING</span></code>.</li>
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
+defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
+passed, the API will return the first page of
+entries.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.entry.TextEntry</span></code>, plus a
+&#8220;next page token&#8221; string:  if not None, indicates that
+more entries can be retrieved with another call (pass that
+value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.logging.client.Client.list_metrics">
+<code class="descname">list_metrics</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.list_metrics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.list_metrics" title="Permalink to this definition">#</a></dt>
+<dd><p>List metrics for the project associated with this client.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/list">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of metrics to return, If not passed,
+defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of metrics. If not
+passed, the API will return the first page of
+metrics.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="logging-metric.html#gcloud.logging.metric.Metric" title="gcloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.metric.Metric</span></code></a>, plus a
+&#8220;next page token&#8221; string:  if not None, indicates that
+more metrics can be retrieved with another call (pass that
+value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.logging.client.Client.list_sinks">
+<code class="descname">list_sinks</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.list_sinks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.list_sinks" title="Permalink to this definition">#</a></dt>
+<dd><p>List sinks for the project associated with this client.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/list">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/list</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of sinks to return, If not passed,
+defaults to a value set by the API.</li>
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of sinks. If not
+passed, the API will return the first page of
+sinks.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="logging-sink.html#gcloud.logging.sink.Sink" title="gcloud.logging.sink.Sink"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.sink.Sink</span></code></a>, plus a
+&#8220;next page token&#8221; string:  if not None, indicates that
+more sinks can be retrieved with another call (pass that
+value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.logging.client.Client.logger">
+<code class="descname">logger</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.logger" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a logger bound to the current client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the logger to be constructed.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="logging-logger.html#gcloud.logging.logger.Logger" title="gcloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.logger.Logger</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Logger created with the current client.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.logging.client.Client.metric">
+<code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a metric bound to the current client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the metric to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the advanced logs filter expression defining the
+entries tracked by the metric.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the description of the metric to be constructed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="logging-metric.html#gcloud.logging.metric.Metric" title="gcloud.logging.metric.Metric"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.metric.Metric</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Metric created with the current client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.logging.client.Client.sink">
+<code class="descname">sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.sink" title="Permalink to this definition">#</a></dt>
+<dd><p>Creates a sink bound to the current client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the sink to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the advanced logs filter expression defining the
+entries exported by the sink.</li>
+<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; destination URI for the entries exported by
+the sink.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="logging-sink.html#gcloud.logging.sink.Sink" title="gcloud.logging.sink.Sink"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.sink.Sink</span></code></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Sink created with the current client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="module-gcloud.logging.connection">
+<span id="connection"></span><h2>Connection<a class="headerlink" href="#module-gcloud.logging.connection" title="Permalink to this headline">#</a></h2>
+<p>Create / interact with gcloud logging connections.</p>
+<dl class="class">
+<dt id="gcloud.logging.connection.Connection">
+<em class="property">class </em><code class="descclassname">gcloud.logging.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.connection.Connection" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.JSONConnection" title="gcloud.connection.JSONConnection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.JSONConnection</span></code></a></p>
+<p>A connection to Google Cloud Logging via the JSON REST API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.0.1)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+connection.</li>
+<li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; (Optional) HTTP object to make requests.</li>
+<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base of the API call URL. Defaults to the value
+<a class="reference internal" href="#gcloud.logging.connection.Connection.API_BASE_URL" title="gcloud.logging.connection.Connection.API_BASE_URL"><code class="xref py py-attr docutils literal"><span class="pre">Connection.API_BASE_URL</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gcloud.logging.connection.Connection.API_BASE_URL">
+<code class="descname">API_BASE_URL</code><em class="property"> = 'https://logging.googleapis.com'</em><a class="headerlink" href="#gcloud.logging.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
+<dd><p>The base of the API call URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.logging.connection.Connection.API_URL_TEMPLATE">
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base_url}/{api_version}{path}'</em><a class="headerlink" href="#gcloud.logging.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<dd><p>A template for the URL of a particular API call.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.logging.connection.Connection.API_VERSION">
+<code class="descname">API_VERSION</code><em class="property"> = 'v2beta1'</em><a class="headerlink" href="#gcloud.logging.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
+<dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.logging.connection.Connection.SCOPE">
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/logging.read', 'https://www.googleapis.com/auth/logging.write', 'https://www.googleapis.com/auth/logging.admin', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#gcloud.logging.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
+<dd><p>The scopes required for authenticating as a Cloud Logging consumer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </section><!-- end of .content -->
+      <nav class="side-nav">
+        <p class="caption"><span class="caption-text">gcloud</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Datastore</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="datastore-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-entities.html">Entities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-keys.html">Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-queries.html">Queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-transactions.html">Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-batches.html">Batches</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datastore-helpers.html">Helpers</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Storage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="storage-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-blobs.html">Blobs / Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-buckets.html">Buckets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-acl.html">ACL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="storage-batch.html">Batches</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Pub/Sub</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-topic.html">Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-subscription.html">Subscriptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pubsub-iam.html">IAM Policy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">BigQuery</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-job.html">Jobs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-table.html">Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigquery-query.html">Query</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Bigtable</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row.html">Bigtable Row</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-filters.html">Bigtable Row Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-row-data.html">Row Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="happybase-connection.html">HappyBase Connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="happybase-pool.html">HappyBase Connection Pool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="happybase-table.html">HappyBase Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="happybase-batch.html">HappyBase Batch</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Resource Manager</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-api.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource-manager-project.html">Projects</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DNS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dns-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-zone.html">Managed Zones</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Search</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="search-usage.html">Using the API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-index.html">Indexes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="search-document.html">Documents</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Cloud Logging</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">External Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/">GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/GoogleCloudPlatform/gcloud-python/issues">Issues</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://stackoverflow.com/questions/tagged/gcloud-python">Stack Overflow</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://pypi.python.org/pypi/gcloud">PyPI</a></li>
+</ul>
+
+      </nav><!-- end of .side-nav -->
+    </article><!-- end of .main -->
+
+    <script src="_static/js/vendor/jquery-1.10.2.min.js"></script>
+    <script src="_static/js/plugins.js"></script>
+    <script src="_static/js/main.js"></script>
+  
+  </body>
+</html>
