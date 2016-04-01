@@ -267,8 +267,8 @@ class Subscription(object):
         Example:
 
         .. literalinclude:: pubsub_snippets.py
-           :start-after: [START subscription_push_pull]
-           :end-before: [END subscription_push_pull]
+           :start-after: [START subscription_pull]
+           :end-before: [END subscription_pull]
 
         :type return_immediately: boolean
         :param return_immediately: if True, the back-end returns even if no
@@ -300,6 +300,12 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_acknowledge]
+           :end-before: [END subscription_acknowledge]
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged

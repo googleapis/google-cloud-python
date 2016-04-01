@@ -170,61 +170,28 @@ Pull messages from a subscription
 
 Fetch pending messages for a pull subscription:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> with topic.batch() as batch:
-   ...     batch.publish('this is the first message_payload')
-   ...     batch.publish('this is the second message_payload',
-   ...                   attr1='value1', attr2='value2')
-   >>> received = subscription.pull()  # API request
-   >>> messages = [recv[1] for recv in received]
-   >>> [message.message_id for message in messages]
-   [<message_id1>, <message_id2>]
-   >>> [message.data for message in messages]
-   ['this is the first message_payload', 'this is the second message_payload']
-   >>> [message.attributes for message in messages]
-   [{}, {'attr1': 'value1', 'attr2': 'value2'}]
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_pull]
+   :end-before: [END subscription_pull]
 
 Note that received messages must be acknowledged, or else the back-end
 will re-send them later:
 
-.. doctest::
-
-   >>> ack_ids = [recv[0] for recv in received]
-   >>> subscription.acknowledge(ack_ids)
-
-Fetch a limited number of pending messages for a pull subscription:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> with topic.batch() as batch:
-   ...     batch.publish('this is the first message_payload')
-   ...     batch.publish('this is the second message_payload',
-   ...                   attr1='value1', attr2='value2')
-   >>> received = subscription.pull(max_messages=1)  # API request
-   >>> messages = [recv[1] for recv in received]
-   >>> [message.message_id for message in messages]
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_acknowledge]
+   :end-before: [END subscription_acknowledge]
 
 Fetch messages for a pull subscription without blocking (none pending):
 
-.. doctest::
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_pull_return_immediately]
+   :end-before: [END subscription_pull_return_immediately]
 
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> received = subscription.pull(return_immediately=True)  # API request
-   >>> messages = [recv[1] for recv in received]
-   >>> [message.message_id for message in messages]
-   []
+Update the acknowlegement deadline for pulled messages:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_modify_ack_deadline]
+   :end-before: [END subscription_modify_ack_deadline]
 
 Fetch the IAM policy for a subscription
 

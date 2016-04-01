@@ -293,6 +293,76 @@ def subscription_lifecycle(client, to_delete):
     # [END subscription_delete]
 
 
+@snippet
+def subscription_pull(client, to_delete):
+    """Pull messges from a subscribed topic."""
+    TOPIC_NAME = 'subscription_pull-%d' % (_millis(),)
+    SUB_NAME = 'subscription_pull-defaults-%d' % (_millis(),)
+    PAYLOAD1 = b'PAYLOAD1'
+    PAYLOAD2 = b'PAYLOAD2'
+    EXTRA = 'EXTRA'
+    topic = client.topic(TOPIC_NAME)
+    topic.create()
+    to_delete.append(topic)
+
+    subscription = topic.subscription(SUB_NAME)
+    subscription.create()
+    to_delete.append(subscription)
+
+    # [START subscription_pull_none_pending]
+    pulled = subscription.pull(max_messages=1)
+    # [END subscription_pull_none_pending]
+    assert len(pulled) == 0
+
+    # [START subscription_pull_return_immediately]
+    pulled = subscription.pull(return_immediately=True)
+    # [END subscription_pull_return_immediately]
+    assert len(pulled) == 0
+
+    topic.publish(PAYLOAD1)
+    topic.publish(PAYLOAD2, extra=EXTRA)
+
+    # [START subscription_pull]
+    pulled = subscription.pull(max_messages=2)
+    # [END subscription_pull]
+
+    assert len(pulled) == 2
+
+    # [START subscription_modify_ack_deadline]
+    for ack_id, _ in pulled:
+        subscription.modify_ack_deadline(ack_id, 90)    # API request
+    # [END subscription_modify_ack_deadline]
+
+    payloads = []
+    extras = []
+
+    def do_something_with(message):  # pylint: disable=unused-argument
+        payloads.append(message.data)
+        if message.attributes:
+            extras.append(message.attributes)
+
+    class ApplicationException(Exception):
+        pass
+
+    def log_exception(_):
+        pass
+
+    # [START subscription_acknowledge]
+    for ack_id, message in pulled:
+        try:
+            do_something_with(message)
+        except ApplicationException as e:
+            log_exception(e)
+        else:
+            subscription.acknowledge([ack_id])
+    # [END subscription_acknowledge]
+
+    assert set(payloads) == set([PAYLOAD1, PAYLOAD2]), 'payloads: %s' % (
+        (payloads,))
+    assert extras == [{'extra': EXTRA}], 'extras: %s' % (
+        (extras,))
+
+
 def _find_examples():
     funcs = [obj for obj in globals().values()
              if getattr(obj, '_snippet', False)]
