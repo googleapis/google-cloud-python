@@ -1,5 +1,4 @@
 export GOOGLE_APPLICATION_CREDENTIALS="app_credentials.json.sample"
 export GCLOUD_TESTS_PROJECT_ID="my-project"
-export GCLOUD_TESTS_DATASET_ID=${GCLOUD_TESTS_PROJECT_ID}
 export GCLOUD_REMOTE_FOR_LINT="upstream"
 export GCLOUD_BRANCH_FOR_LINT="master"

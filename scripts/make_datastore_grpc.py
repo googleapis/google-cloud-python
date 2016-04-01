@@ -23,12 +23,11 @@ import tempfile
 
 ROOT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
-PROTOS_DIR = os.path.join(ROOT_DIR, 'cloud-bigtable-client',
-                          'bigtable-protos', 'src', 'main', 'proto')
-PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
-                          'operations.proto')
-GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
-                              '_generated', 'operations_grpc_pb2.py')
+PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
+PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'datastore',
+                          'v1beta3', 'datastore.proto')
+GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'datastore',
+                              '_generated', 'datastore_grpc_pb2.py')
 PROTOC_CMD = 'protoc'
 GRPC_PLUGIN = 'grpc_python_plugin'
 
@@ -40,8 +39,8 @@ def get_pb2_contents_with_grpc():
     :returns: A list of lines in the generated file.
     """
     temp_dir = tempfile.mkdtemp()
-    generated_path = os.path.join(temp_dir, 'google', 'longrunning',
-                                  'operations_pb2.py')
+    generated_path = os.path.join(temp_dir, 'google', 'datastore',
+                                  'v1beta3', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
             PROTOC_CMD,
@@ -70,8 +69,8 @@ def get_pb2_contents_without_grpc():
     :returns: A list of lines in the generated file.
     """
     temp_dir = tempfile.mkdtemp()
-    generated_path = os.path.join(temp_dir, 'google', 'longrunning',
-                                  'operations_pb2.py')
+    generated_path = os.path.join(temp_dir, 'google', 'datastore',
+                                  'v1beta3', 'datastore_pb2.py')
     try:
         return_code = subprocess.call([
             PROTOC_CMD,
@@ -114,7 +113,7 @@ def main():
     """Write gRPC-only lines to custom module."""
     grpc_only_lines = get_pb2_grpc_only()
     with open(GRPC_ONLY_FILE, 'wb') as file_obj:
-        file_obj.writelines(grpc_only_lines)
+        file_obj.write(''.join(grpc_only_lines))
 
 
 if __name__ == '__main__':

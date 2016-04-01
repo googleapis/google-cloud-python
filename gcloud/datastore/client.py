@@ -16,29 +16,21 @@
 import os
 
 from gcloud._helpers import _LocalStack
-from gcloud._helpers import _app_engine_id
-from gcloud._helpers import _compute_engine_id
+from gcloud._helpers import _determine_default_project as _base_default_project
 from gcloud.client import _ClientProjectMixin
 from gcloud.client import Client as _BaseClient
 from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-from gcloud.environment_vars import DATASET
 from gcloud.environment_vars import GCD_DATASET
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
-
-
-def _get_production_project():
-    """Gets the production application ID if it can be inferred."""
-    return os.getenv(DATASET)
 
 
 def _get_gcd_project():
@@ -52,8 +44,8 @@ def _determine_default_project(project=None):
     In implicit case, supports four environments. In order of precedence, the
     implicit environments are:
 
-    * GCLOUD_DATASET_ID environment variable
-    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
+    * GCLOUD_PROJECT environment variable
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
@@ -64,16 +56,10 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
-        project = _get_production_project()
-
-    if project is None:
         project = _get_gcd_project()
 
     if project is None:
-        project = _app_engine_id()
-
-    if project is None:
-        project = _compute_engine_id()
+        project = _base_default_project(project=project)
 
     return project
 
@@ -291,7 +277,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
         ids = set(key.project for key in keys)
         for current_id in ids:
-            if not _projects_equal(current_id, self.project):
+            if current_id != self.project:
                 raise ValueError('Keys do not match project')
 
         transaction = self.current_transaction
@@ -418,7 +404,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         conn = self.connection
         allocated_key_pbs = conn.allocate_ids(incomplete_key.project,
                                               incomplete_key_pbs)
-        allocated_ids = [allocated_key_pb.path_element[-1].id
+        allocated_ids = [allocated_key_pb.path[-1].id
                          for allocated_key_pb in allocated_key_pbs]
         return [incomplete_key.completed_key(allocated_id)
                 for allocated_id in allocated_ids]

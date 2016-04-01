@@ -24,9 +24,6 @@ PROJECT = 'GCLOUD_PROJECT'
 TESTS_PROJECT = 'GCLOUD_TESTS_PROJECT_ID'
 """Environment variable defining project for tests."""
 
-DATASET = 'GCLOUD_DATASET_ID'
-"""Environment variable defining default dataset ID."""
-
 GCD_DATASET = 'DATASTORE_DATASET'
 """Environment variable defining default dataset ID under GCD."""
 
@@ -35,9 +32,6 @@ GCD_HOST = 'DATASTORE_HOST'
 
 PUBSUB_EMULATOR = 'PUBSUB_EMULATOR_HOST'
 """Environment variable defining host for Pub/Sub emulator."""
-
-TESTS_DATASET = 'GCLOUD_TESTS_DATASET_ID'
-"""Environment variable defining dataset ID for tests."""
 
 CREDENTIALS = 'GOOGLE_APPLICATION_CREDENTIALS'
 """Environment variable defining location of Google credentials."""

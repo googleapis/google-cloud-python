@@ -221,16 +221,6 @@ class TestKey(unittest2.TestCase):
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
 
-    def test___eq_____ne___same_kind_and_id_different_project_pfx(self):
-        _PROJECT = 'PROJECT'
-        _PROJECT_W_PFX = 's~PROJECT'
-        _KIND = 'KIND'
-        _ID = 1234
-        key1 = self._makeOne(_KIND, _ID, project=_PROJECT)
-        key2 = self._makeOne(_KIND, _ID, project=_PROJECT_W_PFX)
-        self.assertTrue(key1 == key2)
-        self.assertFalse(key1 != key2)
-
     def test___eq_____ne___same_kind_different_names(self):
         _PROJECT = 'PROJECT'
         _KIND = 'KIND'
@@ -272,16 +262,6 @@ class TestKey(unittest2.TestCase):
                              namespace=_NAMESPACE2)
         self.assertFalse(key1 == key2)
         self.assertTrue(key1 != key2)
-
-    def test___eq_____ne___same_kind_and_name_different_project_pfx(self):
-        _PROJECT = 'PROJECT'
-        _PROJECT_W_PFX = 's~PROJECT'
-        _KIND = 'KIND'
-        _NAME = 'one'
-        key1 = self._makeOne(_KIND, _NAME, project=_PROJECT)
-        key2 = self._makeOne(_KIND, _NAME, project=_PROJECT_W_PFX)
-        self.assertTrue(key1 == key2)
-        self.assertFalse(key1 != key2)
 
     def test___hash___incomplete(self):
         _PROJECT = 'PROJECT'
@@ -341,12 +321,12 @@ class TestKey(unittest2.TestCase):
         self.assertTrue(isinstance(pb, entity_pb2.Key))
 
         # Check partition ID.
-        self.assertEqual(pb.partition_id.dataset_id, self._DEFAULT_PROJECT)
+        self.assertEqual(pb.partition_id.project_id, self._DEFAULT_PROJECT)
         # Unset values are False-y.
-        self.assertEqual(pb.partition_id.namespace, '')
+        self.assertEqual(pb.partition_id.namespace_id, '')
 
         # Check the element PB matches the partial key and kind.
-        elem, = list(pb.path_element)
+        elem, = list(pb.path)
         self.assertEqual(elem.kind, _KIND)
         # Unset values are False-y.
         self.assertEqual(elem.name, '')
@@ -357,14 +337,14 @@ class TestKey(unittest2.TestCase):
         _PROJECT = 'PROJECT-ALT'
         key = self._makeOne('KIND', project=_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.dataset_id, _PROJECT)
+        self.assertEqual(pb.partition_id.project_id, _PROJECT)
 
     def test_to_protobuf_w_explicit_namespace(self):
         _NAMESPACE = 'NAMESPACE'
         key = self._makeOne('KIND', namespace=_NAMESPACE,
                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        self.assertEqual(pb.partition_id.namespace, _NAMESPACE)
+        self.assertEqual(pb.partition_id.namespace_id, _NAMESPACE)
 
     def test_to_protobuf_w_explicit_path(self):
         _PARENT = 'PARENT'
@@ -374,7 +354,7 @@ class TestKey(unittest2.TestCase):
         key = self._makeOne(_PARENT, _NAME, _CHILD, _ID,
                             project=self._DEFAULT_PROJECT)
         pb = key.to_protobuf()
-        elems = list(pb.path_element)
+        elems = list(pb.path)
         self.assertEqual(len(elems), 2)
         self.assertEqual(elems[0].kind, _PARENT)
         self.assertEqual(elems[0].name, _NAME)
@@ -388,7 +368,7 @@ class TestKey(unittest2.TestCase):
         key._path[-1].pop('kind')
         pb = key.to_protobuf()
         # Unset values are False-y.
-        self.assertEqual(pb.path_element[0].kind, '')
+        self.assertEqual(pb.path[0].kind, '')
 
     def test_is_partial_no_name_or_id(self):
         key = self._makeOne('KIND', project=self._DEFAULT_PROJECT)
@@ -449,27 +429,3 @@ class TestKey(unittest2.TestCase):
         self.assertEqual(parent.path, _PARENT_PATH)
         new_parent = key.parent
         self.assertTrue(parent is new_parent)
-
-
-class Test__projects_equal(unittest2.TestCase):
-
-    def _callFUT(self, project1, project2):
-        from gcloud.datastore.key import _projects_equal
-        return _projects_equal(project1, project2)
-
-    def test_identical_prefixed(self):
-        self.assertTrue(self._callFUT('s~foo', 's~foo'))
-        self.assertTrue(self._callFUT('e~bar', 'e~bar'))
-
-    def test_different_prefixed(self):
-        self.assertFalse(self._callFUT('s~foo', 's~bar'))
-        self.assertFalse(self._callFUT('s~foo', 'e~foo'))
-
-    def test_all_unprefixed(self):
-        self.assertTrue(self._callFUT('foo', 'foo'))
-        self.assertFalse(self._callFUT('foo', 'bar'))
-
-    def test_unprefixed_with_prefixed(self):
-        self.assertTrue(self._callFUT('foo', 's~foo'))
-        self.assertTrue(self._callFUT('foo', 'e~foo'))
-        self.assertFalse(self._callFUT('foo', 's~bar'))

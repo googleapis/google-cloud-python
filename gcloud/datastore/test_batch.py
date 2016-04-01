@@ -38,7 +38,9 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(batch.namespace, _NAMESPACE)
         self.assertTrue(batch._id is None)
         self.assertEqual(batch._status, batch._INITIAL)
-        self.assertTrue(isinstance(batch.mutations, datastore_pb2.Mutation))
+        self.assertTrue(isinstance(batch._commit_request,
+                                   datastore_pb2.CommitRequest))
+        self.assertTrue(batch.mutations is batch._commit_request.mutations)
         self.assertEqual(batch._partial_key_entities, [])
 
     def test_current(self):
@@ -90,7 +92,7 @@ class TestBatch(unittest2.TestCase):
 
         batch.put(entity)
 
-        mutated_entity = _mutated_pb(self, batch.mutations, 'insert_auto_id')
+        mutated_entity = _mutated_pb(self, batch.mutations, 'insert')
         self.assertEqual(mutated_entity.key, key._key)
         self.assertEqual(batch._partial_key_entities, [entity])
 
@@ -118,44 +120,13 @@ class TestBatch(unittest2.TestCase):
 
         prop_dict = dict(_property_tuples(mutated_entity))
         self.assertEqual(len(prop_dict), 3)
-        self.assertTrue(prop_dict['foo'].indexed)
-        self.assertFalse(prop_dict['baz'].indexed)
-        self.assertTrue(prop_dict['spam'].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
-        self.assertFalse('frotz' in prop_dict)
-
-    def test_put_entity_w_completed_key_prefixed_project(self):
-        from gcloud.datastore.helpers import _property_tuples
-
-        _PROJECT = 'PROJECT'
-        _PROPERTIES = {
-            'foo': 'bar',
-            'baz': 'qux',
-            'spam': [1, 2, 3],
-            'frotz': [],  # will be ignored
-            }
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
-        entity = _Entity(_PROPERTIES)
-        entity.exclude_from_indexes = ('baz', 'spam')
-        key = entity.key = _Key('s~' + _PROJECT)
-
-        batch.put(entity)
-
-        mutated_entity = _mutated_pb(self, batch.mutations, 'upsert')
-        self.assertEqual(mutated_entity.key, key._key)
-
-        prop_dict = dict(_property_tuples(mutated_entity))
-        self.assertEqual(len(prop_dict), 3)
-        self.assertTrue(prop_dict['foo'].indexed)
-        self.assertFalse(prop_dict['baz'].indexed)
-        self.assertTrue(prop_dict['spam'].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[0].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[1].indexed)
-        self.assertFalse(prop_dict['spam'].list_value[2].indexed)
+        self.assertFalse(prop_dict['foo'].exclude_from_indexes)
+        self.assertTrue(prop_dict['baz'].exclude_from_indexes)
+        self.assertFalse(prop_dict['spam'].exclude_from_indexes)
+        spam_values = prop_dict['spam'].array_value.values
+        self.assertTrue(spam_values[0].exclude_from_indexes)
+        self.assertTrue(spam_values[1].exclude_from_indexes)
+        self.assertTrue(spam_values[2].exclude_from_indexes)
         self.assertFalse('frotz' in prop_dict)
 
     def test_delete_w_partial_key(self):
@@ -183,18 +154,6 @@ class TestBatch(unittest2.TestCase):
         client = _Client(_PROJECT, connection)
         batch = self._makeOne(client)
         key = _Key(_PROJECT)
-
-        batch.delete(key)
-
-        mutated_key = _mutated_pb(self, batch.mutations, 'delete')
-        self.assertEqual(mutated_key, key._key)
-
-    def test_delete_w_completed_key_w_prefixed_project(self):
-        _PROJECT = 'PROJECT'
-        connection = _Connection()
-        client = _Client(_PROJECT, connection)
-        batch = self._makeOne(client)
-        key = _Key('s~' + _PROJECT)
 
         batch.delete(key)
 
@@ -346,7 +305,7 @@ class _PathElementPB(object):
 class _KeyPB(object):
 
     def __init__(self, id):
-        self.path_element = [_PathElementPB(id)]
+        self.path = [_PathElementPB(id)]
 
 
 class _Connection(object):
@@ -388,9 +347,9 @@ class _Key(object):
         from gcloud.datastore._generated import entity_pb2
         key = self._key = entity_pb2.Key()
         # Don't assign it, because it will just get ripped out
-        # key.partition_id.dataset_id = self.project
+        # key.partition_id.project_id = self.project
 
-        element = key.path_element.add()
+        element = key.path.add()
         element.kind = self._kind
         if self._id is not None:
             element.id = self._id
@@ -424,20 +383,18 @@ class _Client(object):
             return self._batches[0]
 
 
-def _assert_num_mutations(test_case, mutation_pb, num_mutations):
-    total_mutations = (len(mutation_pb.upsert) +
-                       len(mutation_pb.update) +
-                       len(mutation_pb.insert) +
-                       len(mutation_pb.insert_auto_id) +
-                       len(mutation_pb.delete))
-    test_case.assertEqual(total_mutations, num_mutations)
+def _assert_num_mutations(test_case, mutation_pb_list, num_mutations):
+    test_case.assertEqual(len(mutation_pb_list), num_mutations)
 
 
-def _mutated_pb(test_case, mutation_pb, mutation_type):
+def _mutated_pb(test_case, mutation_pb_list, mutation_type):
     # Make sure there is only one mutation.
-    _assert_num_mutations(test_case, mutation_pb, 1)
+    _assert_num_mutations(test_case, mutation_pb_list, 1)
 
-    mutated_pbs = getattr(mutation_pb, mutation_type, [])
-    # Make sure we have exactly one protobuf.
-    test_case.assertEqual(len(mutated_pbs), 1)
-    return mutated_pbs[0]
+    # We grab the only mutation.
+    mutated_pb = mutation_pb_list[0]
+    # Then check if it is the correct type.
+    test_case.assertEqual(mutated_pb.WhichOneof('operation'),
+                          mutation_type)
+
+    return getattr(mutated_pb, mutation_type)

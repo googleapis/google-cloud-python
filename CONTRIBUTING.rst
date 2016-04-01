@@ -162,8 +162,6 @@ Running System Tests
 
   - ``GCLOUD_TESTS_PROJECT_ID``: Developers Console project ID (e.g.
     bamboo-shift-455).
-  - ``GCLOUD_TESTS_DATASET_ID``: The name of the dataset your tests connect to.
-    This is typically the same as ``GCLOUD_TESTS_PROJECT_ID``.
   - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
     see ``system_tests/app_credentials.json.sample`` as an example. Such a file
     can be downloaded directly from the developer's console by clicking
@@ -195,7 +193,7 @@ Running System Tests
 
    # Create the indexes
    $ gcloud preview datastore create-indexes system_tests/data/index.yaml \
-   > --project=$GCLOUD_TESTS_DATASET_ID
+   > --project=$GCLOUD_TESTS_PROJECT_ID
 
    # Restore your environment to its previous state.
    $ unset CLOUDSDK_PYTHON_SITEPACKAGES

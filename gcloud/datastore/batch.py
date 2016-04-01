@@ -22,7 +22,6 @@ https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operat
 """
 
 from gcloud.datastore import helpers
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
 
 
@@ -120,7 +119,8 @@ class Batch(object):
         :returns: The newly created entity protobuf that will be
                   updated and sent with a commit.
         """
-        return self.mutations.insert_auto_id.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.insert
 
     def _add_complete_key_entity_pb(self):
         """Adds a new mutation for an entity with a completed key.
@@ -132,7 +132,8 @@ class Batch(object):
         # We use ``upsert`` for entities with completed keys, rather than
         # ``insert`` or ``update``, in order not to create race conditions
         # based on prior existence / removal of the entity.
-        return self.mutations.upsert.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.upsert
 
     def _add_delete_key_pb(self):
         """Adds a new mutation for a key to be deleted.
@@ -141,7 +142,8 @@ class Batch(object):
         :returns: The newly created key protobuf that will be
                   deleted when sent with a commit.
         """
-        return self.mutations.delete.add()
+        new_mutation = self.mutations.add()
+        return new_mutation.delete
 
     @property
     def mutations(self):
@@ -153,10 +155,11 @@ class Batch(object):
         adding a new mutation. This getter returns the protobuf that has been
         built-up so far.
 
-        :rtype: :class:`gcloud.datastore._generated.datastore_pb2.Mutation`
-        :returns: The Mutation protobuf to be sent in the commit request.
+        :rtype: iterable
+        :returns: The list of :class:`._generated.datastore_pb2.Mutation`
+                  protobufs to be sent in the commit request.
         """
-        return self._commit_request.mutation
+        return self._commit_request.mutations
 
     def put(self, entity):
         """Remember an entity's state to be saved during :meth:`commit`.
@@ -173,7 +176,7 @@ class Batch(object):
            "bytes" ('str' in Python2, 'bytes' in Python3) map to 'blob_value'.
 
         When an entity has a partial key, calling :meth:`commit` sends it as
-        an ``insert_auto_id`` mutation and the key is completed. On return,
+        an ``insert`` mutation and the key is completed. On return,
         the key for the ``entity`` passed in is updated to match the key ID
         assigned by the server.
 
@@ -186,7 +189,7 @@ class Batch(object):
         if entity.key is None:
             raise ValueError("Entity must have a key")
 
-        if not _projects_equal(self.project, entity.key.project):
+        if self.project != entity.key.project:
             raise ValueError("Key must be from same project as batch")
 
         if entity.key.is_partial:
@@ -209,10 +212,10 @@ class Batch(object):
         if key.is_partial:
             raise ValueError("Key must be complete")
 
-        if not _projects_equal(self.project, key.project):
+        if self.project != key.project:
             raise ValueError("Key must be from same project as batch")
 
-        key_pb = helpers._prepare_key_for_request(key.to_protobuf())
+        key_pb = key.to_protobuf()
         self._add_delete_key_pb().CopyFrom(key_pb)
 
     def begin(self):
@@ -243,7 +246,7 @@ class Batch(object):
         # order) directly ``_partial_key_entities``.
         for new_key_pb, entity in zip(updated_keys,
                                       self._partial_key_entities):
-            new_id = new_key_pb.path_element[-1].id
+            new_id = new_key_pb.path[-1].id
             entity.key = entity.key.completed_key(new_id)
 
     def commit(self):
@@ -294,6 +297,5 @@ def _assign_entity_to_pb(entity_pb, entity):
     :param entity: The entity being updated within the batch / transaction.
     """
     bare_entity_pb = helpers.entity_to_protobuf(entity)
-    key_pb = helpers._prepare_key_for_request(bare_entity_pb.key)
-    bare_entity_pb.key.CopyFrom(key_pb)
+    bare_entity_pb.key.CopyFrom(bare_entity_pb.key)
     entity_pb.CopyFrom(bare_entity_pb)

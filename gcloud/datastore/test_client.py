@@ -20,8 +20,8 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
     from gcloud.datastore.helpers import _new_value_pb
 
     entity_pb = entity_pb2.Entity()
-    entity_pb.key.partition_id.dataset_id = project
-    path_element = entity_pb.key.path_element.add()
+    entity_pb.key.partition_id.project_id = project
+    path_element = entity_pb.key.path.add()
     path_element.kind = kind
     path_element.id = integer_id
     if name is not None and str_val is not None:
@@ -29,33 +29,6 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
         value_pb.string_value = str_val
 
     return entity_pb
-
-
-class Test__get_production_project(unittest2.TestCase):
-
-    def _callFUT(self):
-        from gcloud.datastore.client import _get_production_project
-        return _get_production_project()
-
-    def test_no_value(self):
-        import os
-        from gcloud._testing import _Monkey
-
-        environ = {}
-        with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
-            self.assertEqual(project, None)
-
-    def test_value_set(self):
-        import os
-        from gcloud._testing import _Monkey
-        from gcloud.datastore.client import DATASET
-
-        MOCK_PROJECT = object()
-        environ = {DATASET: MOCK_PROJECT}
-        with _Monkey(os, getenv=environ.get):
-            project = self._callFUT()
-            self.assertEqual(project, MOCK_PROJECT)
 
 
 class Test__get_gcd_project(unittest2.TestCase):
@@ -88,81 +61,58 @@ class Test__get_gcd_project(unittest2.TestCase):
 class Test__determine_default_project(unittest2.TestCase):
 
     def _callFUT(self, project=None):
-        from gcloud.datastore.client import _determine_default_project
+        from gcloud.datastore.client import (
+            _determine_default_project)
         return _determine_default_project(project=project)
 
-    def _determine_default_helper(self, prod=None, gcd=None, gae=None,
-                                  gce=None, project=None):
+    def _determine_default_helper(self, gcd=None, fallback=None,
+                                  project_called=None):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client
 
         _callers = []
 
-        def prod_mock():
-            _callers.append('prod_mock')
-            return prod
-
         def gcd_mock():
             _callers.append('gcd_mock')
             return gcd
 
-        def gae_mock():
-            _callers.append('gae_mock')
-            return gae
-
-        def gce_mock():
-            _callers.append('gce_mock')
-            return gce
+        def fallback_mock(project=None):
+            _callers.append(('fallback_mock', project))
+            return fallback
 
         patched_methods = {
-            '_get_production_project': prod_mock,
             '_get_gcd_project': gcd_mock,
-            '_app_engine_id': gae_mock,
-            '_compute_engine_id': gce_mock,
+            '_base_default_project': fallback_mock,
         }
 
         with _Monkey(client, **patched_methods):
-            returned_project = self._callFUT(project)
+            returned_project = self._callFUT(project_called)
 
         return returned_project, _callers
 
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers,
-                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
     def test_explicit(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(
-            project=PROJECT)
+            project_called=PROJECT)
         self.assertEqual(project, PROJECT)
         self.assertEqual(callers, [])
-
-    def test_prod(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(prod=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock'])
 
     def test_gcd(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(gcd=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gcd_mock'])
+        self.assertEqual(callers, ['gcd_mock'])
 
-    def test_gae(self):
+    def test_fallback(self):
         PROJECT = object()
-        project, callers = self._determine_default_helper(gae=PROJECT)
+        project, callers = self._determine_default_helper(fallback=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gcd_mock', 'gae_mock'])
-
-    def test_gce(self):
-        PROJECT = object()
-        project, callers = self._determine_default_helper(gce=PROJECT)
-        self.assertEqual(project, PROJECT)
-        self.assertEqual(callers,
-                         ['prod_mock', 'gcd_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
 
 class TestClient(unittest2.TestCase):
@@ -195,7 +145,7 @@ class TestClient(unittest2.TestCase):
 
         # Some environments (e.g. AppVeyor CI) run in GCE, so
         # this test would fail artificially.
-        with _Monkey(_MUT, _compute_engine_id=lambda: None):
+        with _Monkey(_MUT, _base_default_project=lambda project: None):
             self.assertRaises(EnvironmentError, self._makeOne, None)
 
     def test_ctor_w_implicit_inputs(self):
@@ -205,10 +155,15 @@ class TestClient(unittest2.TestCase):
 
         OTHER = 'other'
         creds = object()
+        default_called = []
+
+        def fallback_mock(project):
+            default_called.append(project)
+            return project or OTHER
 
         klass = self._getTargetClass()
         with _Monkey(_MUT,
-                     _determine_default_project=lambda x: x or OTHER):
+                     _determine_default_project=fallback_mock):
             with _Monkey(_base_client,
                          get_credentials=lambda: creds):
                 client = klass()
@@ -219,6 +174,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(client.connection.http is None)
         self.assertTrue(client.current_batch is None)
         self.assertTrue(client.current_transaction is None)
+        self.assertEqual(default_called, [None])
 
     def test_ctor_w_explicit_inputs(self):
         OTHER = 'other'
@@ -322,8 +278,8 @@ class TestClient(unittest2.TestCase):
 
         # Make a missing entity pb to be returned from mock backend.
         missed = entity_pb2.Entity()
-        missed.key.partition_id.dataset_id = self.PROJECT
-        path_element = missed.key.path_element.add()
+        missed.key.partition_id.project_id = self.PROJECT
+        path_element = missed.key.path.add()
         path_element.kind = KIND
         path_element.id = ID
 
@@ -500,55 +456,6 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             client.get_multi([key1, key2])
 
-    def test_get_multi_diff_prefixes(self):
-        from gcloud.datastore.key import Key
-
-        PROJECT1 = 'PROJECT'
-        PROJECT2 = 'e~PROJECT'
-        PROJECT3 = 's~PROJECT'
-        KIND = 'Kind'
-        ID1 = 1234
-        ID2 = 2345
-        ID3 = 3456
-
-        # Make found entity pbs to be returned from mock backend.
-        entity_pb1 = _make_entity_pb(PROJECT1, KIND, ID1)
-        entity_pb2 = _make_entity_pb(PROJECT2, KIND, ID2)
-        entity_pb3 = _make_entity_pb(PROJECT3, KIND, ID3)
-
-        creds = object()
-        client = self._makeOne(credentials=creds)
-        client.connection._add_lookup_result([entity_pb1,
-                                              entity_pb2,
-                                              entity_pb3])
-
-        key1 = Key(KIND, ID1, project=PROJECT1)
-        key2 = Key(KIND, ID2, project=PROJECT2)
-        key3 = Key(KIND, ID3, project=PROJECT3)
-
-        retrieved_all = client.get_multi([key1, key2, key3])
-        retrieved1, retrieved2, retrieved3 = retrieved_all
-
-        # Check values & keys match.
-        self.assertEqual(retrieved1.key.path, key1.path)
-        self.assertEqual(retrieved2.key.path, key2.path)
-        self.assertEqual(retrieved3.key.path, key3.path)
-
-    def test_get_multi_diff_projects_w_prefix(self):
-        from gcloud.datastore.key import Key
-
-        PROJECT1 = 'e~PROJECT'
-        PROJECT2 = 's~PROJECT-ALT'
-
-        key1 = Key('KIND', 1234, project=PROJECT1)
-        key2 = Key('KIND', 1234, project=PROJECT2)
-
-        creds = object()
-        client = self._makeOne(credentials=creds)
-
-        with self.assertRaises(ValueError):
-            client.get_multi([key1, key2])
-
     def test_get_multi_max_loops(self):
         from gcloud._testing import _Monkey
         from gcloud.datastore import client as _MUT
@@ -612,6 +519,7 @@ class TestClient(unittest2.TestCase):
         from gcloud.datastore.test_batch import _Entity
         from gcloud.datastore.test_batch import _Key
         from gcloud.datastore.test_batch import _KeyPB
+        from gcloud.datastore.test_batch import _mutated_pb
 
         entity = _Entity(foo=u'bar')
         key = entity.key = _Key(self.PROJECT)
@@ -628,15 +536,16 @@ class TestClient(unittest2.TestCase):
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
-        inserts = list(commit_req.mutation.insert_auto_id)
-        self.assertEqual(len(inserts), 1)
-        self.assertEqual(inserts[0].key, key.to_protobuf())
 
-        prop_list = list(_property_tuples(inserts[0]))
+        mutated_entity = _mutated_pb(self, commit_req.mutations, 'insert')
+        self.assertEqual(mutated_entity.key, key.to_protobuf())
+
+        prop_list = list(_property_tuples(mutated_entity))
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
         self.assertEqual(name, 'foo')
         self.assertEqual(value_pb.string_value, u'bar')
+
         self.assertTrue(transaction_id is None)
 
     def test_put_multi_existing_batch_w_completed_key(self):
@@ -688,6 +597,7 @@ class TestClient(unittest2.TestCase):
 
     def test_delete_multi_no_batch(self):
         from gcloud.datastore.test_batch import _Key
+        from gcloud.datastore.test_batch import _mutated_pb
 
         key = _Key(self.PROJECT)
 
@@ -701,7 +611,9 @@ class TestClient(unittest2.TestCase):
         (project,
          commit_req, transaction_id) = client.connection._commit_cw[0]
         self.assertEqual(project, self.PROJECT)
-        self.assertEqual(list(commit_req.mutation.delete), [key.to_protobuf()])
+
+        mutated_key = _mutated_pb(self, commit_req.mutations, 'delete')
+        self.assertEqual(mutated_key, key.to_protobuf())
         self.assertTrue(transaction_id is None)
 
     def test_delete_multi_w_existing_batch(self):
@@ -909,7 +821,7 @@ class TestClient(unittest2.TestCase):
         FILTERS = [('PROPERTY', '==', 'VALUE')]
         PROJECTION = ['__key__']
         ORDER = ['PROPERTY']
-        GROUP_BY = ['GROUPBY']
+        DISTINCT_ON = ['DISTINCT_ON']
 
         creds = object()
         client = self._makeOne(credentials=creds)
@@ -922,7 +834,7 @@ class TestClient(unittest2.TestCase):
                 filters=FILTERS,
                 projection=PROJECTION,
                 order=ORDER,
-                group_by=GROUP_BY,
+                distinct_on=DISTINCT_ON,
                 )
 
         self.assertTrue(isinstance(query, _Dummy))
@@ -935,7 +847,7 @@ class TestClient(unittest2.TestCase):
             'filters': FILTERS,
             'projection': PROJECTION,
             'order': ORDER,
-            'group_by': GROUP_BY,
+            'distinct_on': DISTINCT_ON,
         }
         self.assertEqual(query.kwargs, kwargs)
 

@@ -56,8 +56,8 @@ class Query(object):
     :param order:  field names used to order query results. Prepend '-'
                    to a field name to sort it in descending order.
 
-    :type group_by: sequence of string
-    :param group_by: field names used to group query results.
+    :type distinct_on: sequence of string
+    :param distinct_on: field names used to group query results.
 
     :raises: ValueError if ``project`` is not passed and no implicit
              default is set.
@@ -81,7 +81,7 @@ class Query(object):
                  filters=(),
                  projection=(),
                  order=(),
-                 group_by=()):
+                 distinct_on=()):
 
         self._client = client
         self._kind = kind
@@ -94,7 +94,7 @@ class Query(object):
             self.add_filter(property_name, operator, value)
         self._projection = _ensure_tuple_or_list('projection', projection)
         self._order = _ensure_tuple_or_list('order', order)
-        self._group_by = _ensure_tuple_or_list('group_by', group_by)
+        self._distinct_on = _ensure_tuple_or_list('distinct_on', distinct_on)
 
     @property
     def project(self):
@@ -287,15 +287,15 @@ class Query(object):
         self._order[:] = value
 
     @property
-    def group_by(self):
+    def distinct_on(self):
         """Names of fields used to group query results.
 
         :rtype: sequence of string
         """
-        return self._group_by[:]
+        return self._distinct_on[:]
 
-    @group_by.setter
-    def group_by(self, value):
+    @distinct_on.setter
+    def distinct_on(self, value):
         """Set fields used to group query results.
 
         :type value: string or sequence of strings
@@ -304,7 +304,7 @@ class Query(object):
         """
         if isinstance(value, str):
             value = [value]
-        self._group_by[:] = value
+        self._distinct_on[:] = value
 
     def fetch(self, limit=None, offset=0, start_cursor=None, end_cursor=None,
               client=None):
@@ -411,7 +411,7 @@ class Iterator(object):
             pb.end_cursor = base64.urlsafe_b64decode(end_cursor)
 
         if self._limit is not None:
-            pb.limit = self._limit
+            pb.limit.value = self._limit
 
         pb.offset = self._offset
 
@@ -486,35 +486,33 @@ def _pb_from_query(query):
         pb.kind.add().name = query.kind
 
     composite_filter = pb.filter.composite_filter
-    composite_filter.operator = _query_pb2.CompositeFilter.AND
+    composite_filter.op = _query_pb2.CompositeFilter.AND
 
     if query.ancestor:
-        ancestor_pb = helpers._prepare_key_for_request(
-            query.ancestor.to_protobuf())
+        ancestor_pb = query.ancestor.to_protobuf()
 
         # Filter on __key__ HAS_ANCESTOR == ancestor.
-        ancestor_filter = composite_filter.filter.add().property_filter
+        ancestor_filter = composite_filter.filters.add().property_filter
         ancestor_filter.property.name = '__key__'
-        ancestor_filter.operator = _query_pb2.PropertyFilter.HAS_ANCESTOR
+        ancestor_filter.op = _query_pb2.PropertyFilter.HAS_ANCESTOR
         ancestor_filter.value.key_value.CopyFrom(ancestor_pb)
 
     for property_name, operator, value in query.filters:
         pb_op_enum = query.OPERATORS.get(operator)
 
         # Add the specific filter
-        property_filter = composite_filter.filter.add().property_filter
+        property_filter = composite_filter.filters.add().property_filter
         property_filter.property.name = property_name
-        property_filter.operator = pb_op_enum
+        property_filter.op = pb_op_enum
 
         # Set the value to filter on based on the type.
         if property_name == '__key__':
             key_pb = value.to_protobuf()
-            property_filter.value.key_value.CopyFrom(
-                helpers._prepare_key_for_request(key_pb))
+            property_filter.value.key_value.CopyFrom(key_pb)
         else:
             helpers._set_protobuf_value(property_filter.value, value)
 
-    if not composite_filter.filter:
+    if not composite_filter.filters:
         pb.ClearField('filter')
 
     for prop in query.order:
@@ -527,7 +525,7 @@ def _pb_from_query(query):
             property_order.property.name = prop
             property_order.direction = property_order.ASCENDING
 
-    for group_by_name in query.group_by:
-        pb.group_by.add().name = group_by_name
+    for distinct_on_name in query.distinct_on:
+        pb.distinct_on.add().name = distinct_on_name
 
     return pb

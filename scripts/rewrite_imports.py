@@ -27,6 +27,7 @@ REPLACEMENTS = {
     'google.bigtable.admin.cluster.v1': 'gcloud.bigtable._generated',
     'google.bigtable.admin.table.v1': 'gcloud.bigtable._generated',
     'google.bigtable.v1': 'gcloud.bigtable._generated',
+    'google.datastore.v1beta3': 'gcloud.datastore._generated',
 }
 
 
@@ -134,7 +135,8 @@ def rewrite_file(filename):
 
 def main():
     """Rewrites all PB2 files."""
-    pb2_files = glob.glob('gcloud/bigtable/_generated/*pb2.py')
+    pb2_files = (glob.glob('gcloud/bigtable/_generated/*pb2.py') +
+                 glob.glob('gcloud/datastore/_generated/*pb2.py'))
     for filename in pb2_files:
         rewrite_file(filename)
 

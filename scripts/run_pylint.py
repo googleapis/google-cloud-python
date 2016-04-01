@@ -31,12 +31,11 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    'gcloud/bigtable/_generated',
-    'gcloud/datastore/_generated',
+    os.path.join('gcloud', 'bigtable', '_generated'),
+    os.path.join('gcloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
-    'gcloud/datastore/_datastore_v1_pb2.py',
-    'docs/conf.py',
+    os.path.join('docs', 'conf.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
