@@ -131,10 +131,11 @@ def topic_iam_policy(client, to_delete):
 
     # [START topic_get_iam_policy]
     policy = topic.get_iam_policy()             # API request
+    # [END topic_get_iam_policy]
+
     assert len(policy.viewers) == 0
     assert len(policy.editors) == 0
     assert len(policy.owners) == 0
-    # [END topic_get_iam_policy]
 
     # [START topic_set_iam_policy]
     ALL_USERS = policy.all_users()
@@ -142,9 +143,10 @@ def topic_iam_policy(client, to_delete):
     LOGS_GROUP = policy.group('cloud-logs@google.com')
     policy.editors.add(LOGS_GROUP)
     new_policy = topic.set_iam_policy(policy)   # API request
+    # [END topic_set_iam_policy]
+
     assert ALL_USERS in new_policy.viewers
     assert LOGS_GROUP in new_policy.editors
-    # [END topic_set_iam_policy]
 
 
 # @snippet   # Disabled due to #1687
@@ -361,6 +363,60 @@ def subscription_pull(client, to_delete):
         (payloads,))
     assert extras == [{'extra': EXTRA}], 'extras: %s' % (
         (extras,))
+
+
+@snippet
+def subscription_iam_policy(client, to_delete):
+    """Fetch / set a subscription's IAM policy."""
+    TOPIC_NAME = 'subscription_iam_policy-%d' % (_millis(),)
+    SUB_NAME = 'subscription_iam_policy-defaults-%d' % (_millis(),)
+    topic = client.topic(TOPIC_NAME)
+    topic.create()
+    to_delete.append(topic)
+
+    subscription = topic.subscription(SUB_NAME)
+    subscription.create()
+    to_delete.append(subscription)
+
+    # [START subscription_get_iam_policy]
+    policy = subscription.get_iam_policy()             # API request
+    # [END subscription_get_iam_policy]
+
+    assert len(policy.viewers) == 0
+    assert len(policy.editors) == 0
+    assert len(policy.owners) == 0
+
+    # [START subscription_set_iam_policy]
+    ALL_USERS = policy.all_users()
+    policy.viewers.add(ALL_USERS)
+    LOGS_GROUP = policy.group('cloud-logs@google.com')
+    policy.editors.add(LOGS_GROUP)
+    new_policy = subscription.set_iam_policy(policy)   # API request
+    # [END subscription_set_iam_policy]
+
+    assert ALL_USERS in new_policy.viewers
+    assert LOGS_GROUP in new_policy.editors
+
+
+# @snippet   # Disabled due to #1687
+def subscription_check_iam_permissions(client, to_delete):
+    """Check subscription IAM permissions."""
+    TOPIC_NAME = 'subscription_check_iam_permissions-%d' % (_millis(),)
+    SUB_NAME = 'subscription_check_iam_permissions-defaults-%d' % (_millis(),)
+    topic = client.topic(TOPIC_NAME)
+    topic.create()
+    to_delete.append(topic)
+
+    subscription = topic.subscription(SUB_NAME)
+    subscription.create()
+    to_delete.append(subscription)
+
+    # [START subscription_check_iam_permissions]
+    from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+    TO_CHECK = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
+    ALLOWED = subscription.check_iam_permissions(TO_CHECK)
+    assert set(ALLOWED) == set(TO_CHECK)
+    # [END subscription_check_iam_permissions]
 
 
 def _find_examples():

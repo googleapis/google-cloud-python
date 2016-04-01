@@ -345,6 +345,12 @@ class Subscription(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_get_iam_policy]
+           :end-before: [END subscription_get_iam_policy]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
@@ -363,6 +369,12 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_set_iam_policy]
+           :end-before: [END subscription_set_iam_policy]
 
         :type policy: :class:`gcloud.pubsub.iam.Policy`
         :param policy: the new policy, typically fetched via
@@ -387,6 +399,12 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_check_iam_permissions]
+           :end-before: [END subscription_check_iam_permissions]
 
         :type permissions: list of string
         :param permissions: list of permissions to be tested

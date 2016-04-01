@@ -195,44 +195,18 @@ Update the acknowlegement deadline for pulled messages:
 
 Fetch the IAM policy for a subscription
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> policy = subscription.get_iam_policy()  # API request
-   >>> policy.etag
-   'DEADBEEF'
-   >>> policy.owners
-   ['user:phred@example.com']
-   >>> policy.writers
-   ['systemAccount:abc-1234@systemaccounts.example.com']
-   >>> policy.readers
-   ['domain:example.com']
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_get_iam_policy]
+   :end-before: [END subscription_get_iam_policy]
 
 Update the IAM policy for a subscription:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> policy = subscription.get_iam_policy()  # API request
-   >>> policy.writers.add(policy.group('editors-list@example.com'))
-   >>> subscription.set_iam_policy(policy)  # API request
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_set_iam_policy]
+   :end-before: [END subscription_set_iam_policy]
 
 Test permissions allowed by the current IAM policy on a subscription:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> allowed = subscription.check_iam_permissions(
-   ...     [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE])  # API request
-   >>> allowed == [VIEWER_ROLE, EDITOR_ROLE]
-   True
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_check_iam_permissions]
+   :end-before: [END subscription_check_iam_permissions]
