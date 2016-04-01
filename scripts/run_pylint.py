@@ -125,7 +125,7 @@ def is_production_filename(filename):
     :rtype: bool
     :returns: Boolean indicating production status.
     """
-    return 'test' not in filename
+    return 'test' not in filename and 'docs' not in filename
 
 
 def get_files_for_linting(allow_limited=True):

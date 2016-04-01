@@ -75,6 +75,12 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_list_topics]
+           :end-before: [END client_list_topics]
+
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
                           defaults to a value set by the API.
@@ -103,8 +109,11 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
 
-        and (where ``topic_name`` is passed):
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_list_subscriptions]
+           :end-before: [END client_list_subscriptions]
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -132,6 +141,12 @@ class Client(JSONClient):
 
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_topic]
+           :end-before: [END client_topic]
 
         :type name: string
         :param name: the name of the topic to be constructed.

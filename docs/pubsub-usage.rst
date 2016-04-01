@@ -28,84 +28,47 @@ Authentication / Configuration
 Manage topics for a project
 ---------------------------
 
+List topics for the default project:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START client_list_topics]
+   :end-before: [END client_list_topics]
+
 Create a new topic for the default project:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> topic.create()  # API request
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_create]
+   :end-before: [END topic_create]
 
 Check for the existence of a topic:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> topic.exists()  # API request
-   True
-
-List topics for the default project:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topics, next_page_token = client.list_topics()  # API request
-   >>> [topic.name for topic in topics]
-   ['topic_name']
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_exists]
+   :end-before: [END topic_exists]
 
 Delete a topic:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> topic.delete()  # API request
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_delete]
+   :end-before: [END topic_delete]
 
 Fetch the IAM policy for a topic:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> policy = topic.get_iam_policy()  # API request
-   >>> policy.etag
-   'DEADBEEF'
-   >>> policy.owners
-   ['user:phred@example.com']
-   >>> policy.writers
-   ['systemAccount:abc-1234@systemaccounts.example.com']
-   >>> policy.readers
-   ['domain:example.com']
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_get_iam_policy]
+   :end-before: [END topic_get_iam_policy]
 
 Update the IAM policy for a topic:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> policy = topic.get_iam_policy()  # API request
-   >>> policy.writers.add(policy.group('editors-list@example.com'))
-   >>> topic.set_iam_policy(policy)  # API request
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_set_iam_policy]
+   :end-before: [END topic_set_iam_policy]
 
 Test permissions allowed by the current IAM policy on a topic:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> allowed = topic.check_iam_permissions(
-   ...     [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE])  # API request
-   >>> allowed == [VIEWER_ROLE, EDITOR_ROLE]
-   True
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_check_iam_permissions]
+   :end-before: [END topic_check_iam_permissions]
 
 
 Publish messages to a topic
@@ -113,144 +76,93 @@ Publish messages to a topic
 
 Publish a single message to a topic, without attributes:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> topic.publish('this is the message_payload')  # API request
-   <message_id>
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_publish_simple_message]
+   :end-before: [END topic_publish_simple_message]
 
 Publish a single message to a topic, with attributes:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> topic.publish('this is another message_payload',
-   ...               attr1='value1', attr2='value2')  # API request
-   <message_id>
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_publish_message_with_attrs]
+   :end-before: [END topic_publish_message_with_attrs]
 
 Publish a set of messages to a topic (as a single request):
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> with topic.batch() as batch:
-   ...     batch.publish('this is the first message_payload')
-   ...     batch.publish('this is the second message_payload',
-   ...                   attr1='value1', attr2='value2')
-   >>> list(batch)
-   [<message_id1>, <message_id2>]
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_batch]
+   :end-before: [END topic_batch]
 
 .. note::
 
    The only API request happens during the ``__exit__()`` of the topic
-   used as a context manager.
+   used as a context manager, and only if the block exits without raising
+   an exception.
 
 
 Manage subscriptions to topics
 ------------------------------
 
-Create a new pull subscription for a topic:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> subscription.create()  # API request
-
-Create a new pull subscription for a topic with a non-default ACK deadline:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name', ack_deadline=90)
-   >>> subscription.create()  # API request
-
-Create a new push subscription for a topic:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> ENDPOINT = 'https://example.com/hook'
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name',
-   ...                                   push_endpoint=ENDPOINT)
-   >>> subscription.create()  # API request
-
-Check for the existence of a subscription:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> subscription.exists()  # API request
-   True
-
-Convert a pull subscription to push:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> ENDPOINT = 'https://example.com/hook'
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> subscription.modify_push_configuration(push_endpoint=ENDPOINT)  # API request
-
-Convert a push subscription to pull:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> ENDPOINT = 'https://example.com/hook'
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name',
-   ...                                   push_endpoint=ENDPOINT)
-   >>> subscription.modify_push_configuration(push_endpoint=None)  # API request
-
-List subscriptions for a topic:
-
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscriptions, next_page_token = topic.list_subscriptions()  # API request
-   >>> [subscription.name for subscription in subscriptions]
-   ['subscription_name']
-
 List all subscriptions for the default project:
 
 .. doctest::
 
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> subscription, next_page_tokens = client.list_subscriptions()  # API request
-   >>> [subscription.name for subscription in subscriptions]
-   ['subscription_name']
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START client_list_subscriptions]
+   :end-before: [END client_list_subscriptions]
+
+List subscriptions for a topic:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_list_subscriptions]
+   :end-before: [END topic_list_subscriptions]
+
+Create a new pull subscription for a topic, with defaults:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_subscription_defaults]
+   :end-before: [END topic_subscription_defaults]
+
+Create a new pull subscription for a topic with a non-default ACK deadline:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_subscription_ack90]
+   :end-before: [END topic_subscription_ack90]
+
+Create a new push subscription for a topic:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START topic_subscription_push]
+   :end-before: [END topic_subscription_push]
+
+Check for the existence of a subscription:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_exists]
+   :end-before: [END subscription_exists]
+
+Convert a pull subscription to push:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_pull_push]
+   :end-before: [END subscription_pull_push]
+
+Convert a push subscription to pull:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_push_pull]
+   :end-before: [END subscription_push_pull]
+
+Re-synchronize a subscription with the back-end:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_reload]
+   :end-before: [END subscription_reload]
 
 Delete a subscription:
 
-.. doctest::
-
-   >>> from gcloud import pubsub
-   >>> client = pubsub.Client()
-   >>> topic = client.topic('topic_name')
-   >>> subscription = topic.subscription('subscription_name')
-   >>> subscription.delete()  # API request
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_delete]
+   :end-before: [END subscription_delete]
 
 
 Pull messages from a subscription

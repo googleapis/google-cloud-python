@@ -115,8 +115,13 @@ class Subscription(object):
 
     @property
     def full_name(self):
-        """URL path for the subscription's APIs"""
+        """Fully-qualified name used in subscription APIs"""
         return 'projects/%s/subscriptions/%s' % (self.project, self.name)
+
+    @property
+    def path(self):
+        """URL path for the subscription's APIs"""
+        return '/%s' % (self.full_name,)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -139,6 +144,12 @@ class Subscription(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_create]
+           :end-before: [END subscription_create]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
@@ -154,6 +165,12 @@ class Subscription(object):
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_exists]
+           :end-before: [END subscription_exists]
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -174,6 +191,12 @@ class Subscription(object):
         See
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_reload]
+           :end-before: [END subscription_reload]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
@@ -191,6 +214,12 @@ class Subscription(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_delete]
+           :end-before: [END subscription_delete]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
@@ -204,6 +233,16 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_push_pull]
+           :end-before: [END subscription_push_pull]
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_pull_push]
+           :end-before: [END subscription_pull_push]
 
         :type push_endpoint: string
         :param push_endpoint: URL to which messages will be pushed by the
@@ -224,6 +263,12 @@ class Subscription(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START subscription_push_pull]
+           :end-before: [END subscription_push_pull]
 
         :type return_immediately: boolean
         :param return_immediately: if True, the back-end returns even if no

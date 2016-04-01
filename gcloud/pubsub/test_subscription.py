@@ -132,6 +132,18 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
+    def test_full_name_and_path(self):
+        PROJECT = 'PROJECT'
+        SUB_NAME = 'sub_name'
+        SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        SUB_PATH = '/%s' % (SUB_FULL,)
+        TOPIC_NAME = 'topic_name'
+        CLIENT = _Client(project=PROJECT, connection=None)
+        topic = _Topic(TOPIC_NAME, client=CLIENT)
+        subscription = self._makeOne(SUB_NAME, topic)
+        self.assertEqual(subscription.full_name, SUB_FULL)
+        self.assertEqual(subscription.path, SUB_PATH)
+
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
         RESPONSE = {
             'topic': self.TOPIC_PATH,
