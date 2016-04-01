@@ -22,6 +22,7 @@ import bigquery
 import bigtable
 import bigtable_happybase
 import datastore
+import logging_
 import pubsub
 import storage
 import system_test_utils
@@ -34,6 +35,7 @@ TEST_MODULES = {
     'bigquery': bigquery,
     'bigtable': bigtable,
     'bigtable-happybase': bigtable_happybase,
+    'logging': logging_,
 }
 
 
