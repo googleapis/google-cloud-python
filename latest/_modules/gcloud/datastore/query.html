@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 659d279 documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud 1c9c12c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '659d279',
+        VERSION:     '1c9c12c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 659d279 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 1c9c12c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%20659d279" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%201c9c12c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (659d279)
+              Version History (1c9c12c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -149,8 +149,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param order:  field names used to order query results. Prepend &#39;-&#39;</span>
 <span class="sd">                   to a field name to sort it in descending order.</span>
 
-<span class="sd">    :type group_by: sequence of string</span>
-<span class="sd">    :param group_by: field names used to group query results.</span>
+<span class="sd">    :type distinct_on: sequence of string</span>
+<span class="sd">    :param distinct_on: field names used to group query results.</span>
 
 <span class="sd">    :raises: ValueError if ``project`` is not passed and no implicit</span>
 <span class="sd">             default is set.</span>
@@ -174,7 +174,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                  <span class="n">filters</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">projection</span><span class="o">=</span><span class="p">(),</span>
                  <span class="n">order</span><span class="o">=</span><span class="p">(),</span>
-                 <span class="n">group_by</span><span class="o">=</span><span class="p">()):</span>
+                 <span class="n">distinct_on</span><span class="o">=</span><span class="p">()):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span> <span class="o">=</span> <span class="n">kind</span>
@@ -187,7 +187,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="bp">self</span><span class="o">.</span><span class="n">add_filter</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_projection</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s1">&#39;group_by&#39;</span><span class="p">,</span> <span class="n">group_by</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distinct_on</span> <span class="o">=</span> <span class="n">_ensure_tuple_or_list</span><span class="p">(</span><span class="s1">&#39;distinct_on&#39;</span><span class="p">,</span> <span class="n">distinct_on</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -380,15 +380,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">distinct_on</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Names of fields used to group query results.</span>
 
 <span class="sd">        :rtype: sequence of string</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span><span class="p">[:]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distinct_on</span><span class="p">[:]</span>
 
-    <span class="nd">@group_by.setter</span>
-    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@distinct_on.setter</span>
+    <span class="k">def</span> <span class="nf">distinct_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set fields used to group query results.</span>
 
 <span class="sd">        :type value: string or sequence of strings</span>
@@ -397,7 +397,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_group_by</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distinct_on</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="Query.fetch"><a class="viewcode-back" href="../../../datastore-queries.html#gcloud.datastore.query.Query.fetch">[docs]</a>    <span class="k">def</span> <span class="nf">fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">end_cursor</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
               <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -504,7 +504,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">pb</span><span class="o">.</span><span class="n">end_cursor</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">urlsafe_b64decode</span><span class="p">(</span><span class="n">end_cursor</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">pb</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span>
+            <span class="n">pb</span><span class="o">.</span><span class="n">limit</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_limit</span>
 
         <span class="n">pb</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
 
@@ -579,35 +579,33 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">pb</span><span class="o">.</span><span class="n">kind</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">kind</span>
 
     <span class="n">composite_filter</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">composite_filter</span>
-    <span class="n">composite_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="o">.</span><span class="n">AND</span>
+    <span class="n">composite_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">CompositeFilter</span><span class="o">.</span><span class="n">AND</span>
 
     <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="p">:</span>
-        <span class="n">ancestor_pb</span> <span class="o">=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span>
-            <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">())</span>
+        <span class="n">ancestor_pb</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">ancestor</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
 
         <span class="c1"># Filter on __key__ HAS_ANCESTOR == ancestor.</span>
-        <span class="n">ancestor_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
+        <span class="n">ancestor_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;__key__&#39;</span>
-        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">HAS_ANCESTOR</span>
+        <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">_query_pb2</span><span class="o">.</span><span class="n">PropertyFilter</span><span class="o">.</span><span class="n">HAS_ANCESTOR</span>
         <span class="n">ancestor_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">ancestor_pb</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">operator</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
         <span class="n">pb_op_enum</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">OPERATORS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
 
         <span class="c1"># Add the specific filter</span>
-        <span class="n">property_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
+        <span class="n">property_filter</span> <span class="o">=</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">property_filter</span>
         <span class="n">property_filter</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">property_name</span>
-        <span class="n">property_filter</span><span class="o">.</span><span class="n">operator</span> <span class="o">=</span> <span class="n">pb_op_enum</span>
+        <span class="n">property_filter</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">pb_op_enum</span>
 
         <span class="c1"># Set the value to filter on based on the type.</span>
         <span class="k">if</span> <span class="n">property_name</span> <span class="o">==</span> <span class="s1">&#39;__key__&#39;</span><span class="p">:</span>
             <span class="n">key_pb</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
-            <span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span>
-                <span class="n">helpers</span><span class="o">.</span><span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">))</span>
+            <span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">key_value</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">helpers</span><span class="o">.</span><span class="n">_set_protobuf_value</span><span class="p">(</span><span class="n">property_filter</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filter</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">composite_filter</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span>
         <span class="n">pb</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">order</span><span class="p">:</span>
@@ -620,8 +618,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">property_order</span><span class="o">.</span><span class="n">property</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
             <span class="n">property_order</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">property_order</span><span class="o">.</span><span class="n">ASCENDING</span>
 
-    <span class="k">for</span> <span class="n">group_by_name</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">group_by</span><span class="p">:</span>
-        <span class="n">pb</span><span class="o">.</span><span class="n">group_by</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">group_by_name</span>
+    <span class="k">for</span> <span class="n">distinct_on_name</span> <span class="ow">in</span> <span class="n">query</span><span class="o">.</span><span class="n">distinct_on</span><span class="p">:</span>
+        <span class="n">pb</span><span class="o">.</span><span class="n">distinct_on</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">distinct_on_name</span>
 
     <span class="k">return</span> <span class="n">pb</span>
 </pre></div>

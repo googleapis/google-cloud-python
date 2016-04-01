@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud 659d279 documentation</title>
+    <title>Datastore Client &mdash; gcloud 1c9c12c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '659d279',
+        VERSION:     '1c9c12c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 659d279 documentation" href="index.html" />
+    <link rel="top" title="gcloud 1c9c12c documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20659d279" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%201c9c12c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (659d279)
+              Version History (1c9c12c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -374,25 +374,25 @@ in method arguments, however should be capable of returning advanced types.</p>
 </table>
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_BASE_URL">
-<code class="descname">API_BASE_URL</code><em class="property"> = 'https://www.googleapis.com'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_BASE_URL</code><em class="property"> = 'https://datastore.googleapis.com'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_BASE_URL" title="Permalink to this definition">#</a></dt>
 <dd><p>The base of the API call URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_URL_TEMPLATE">
-<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base}/datastore/{api_version}/datasets/{project}/{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_URL_TEMPLATE</code><em class="property"> = '{api_base}/{api_version}/projects/{project}:{method}'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_URL_TEMPLATE" title="Permalink to this definition">#</a></dt>
 <dd><p>A template for the URL of a particular API call.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.API_VERSION">
-<code class="descname">API_VERSION</code><em class="property"> = 'v1beta2'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
+<code class="descname">API_VERSION</code><em class="property"> = 'v1beta3'</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.API_VERSION" title="Permalink to this definition">#</a></dt>
 <dd><p>The version of the API, used in building the API call&#8217;s URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="gcloud.datastore.connection.Connection.SCOPE">
-<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/datastore', 'https://www.googleapis.com/auth/userinfo.email')</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
+<code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/datastore',)</em><a class="headerlink" href="#gcloud.datastore.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
 <dd><p>The scopes required for authenticating as a Cloud Datastore consumer.</p>
 </dd></dl>
 

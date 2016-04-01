@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.connection &mdash; gcloud 659d279 documentation</title>
+    <title>gcloud.datastore.connection &mdash; gcloud 1c9c12c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '659d279',
+        VERSION:     '1c9c12c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 659d279 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 1c9c12c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%20659d279" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%201c9c12c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (659d279)
+              Version History (1c9c12c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,7 +113,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">GCD_HOST</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="kn">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="kn">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
+<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="kn">import</span> <span class="n">status_pb2</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -133,18 +133,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                         :attr:`API_BASE_URL`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com&#39;</span>
+    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://datastore.googleapis.com&#39;</span>
     <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v1beta2&#39;</span>
+    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v1beta3&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;{api_base}/datastore/{api_version}&#39;</span>
-                        <span class="s1">&#39;/datasets/{project}/{method}&#39;</span><span class="p">)</span>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;{api_base}/{api_version}/projects&#39;</span>
+                        <span class="s1">&#39;/{project}:{method}&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/userinfo.email&#39;</span><span class="p">)</span>
+    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -184,7 +183,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="n">status</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;200&#39;</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">error_status</span> <span class="o">=</span> <span class="n">status_pb2</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">error_status</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">content</span>
 
@@ -286,7 +286,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lookup_request</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">LookupRequest</span><span class="p">()</span>
         <span class="n">_set_read_options</span><span class="p">(</span><span class="n">lookup_request</span><span class="p">,</span> <span class="n">eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
-        <span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">lookup_request</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
+        <span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">lookup_request</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
 
         <span class="n">lookup_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;lookup&#39;</span><span class="p">,</span> <span class="n">lookup_request</span><span class="p">,</span>
                                     <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">LookupResponse</span><span class="p">)</span>
@@ -357,13 +357,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">_set_read_options</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">namespace</span><span class="p">:</span>
-            <span class="n">request</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace_id</span> <span class="o">=</span> <span class="n">namespace</span>
 
         <span class="n">request</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">query_pb</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;runQuery&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">RunQueryResponse</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span>
-            <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entity_result</span><span class="p">],</span>
+            <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">entity</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">entity_results</span><span class="p">],</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">end_cursor</span><span class="p">,</span>  <span class="c1"># Assume response always has cursor.</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">more_results</span><span class="p">,</span>
             <span class="n">response</span><span class="o">.</span><span class="n">batch</span><span class="o">.</span><span class="n">skipped_results</span><span class="p">,</span>
@@ -381,8 +381,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The serialized transaction that was begun.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">BeginTransactionRequest</span><span class="p">()</span>
-        <span class="n">request</span><span class="o">.</span><span class="n">isolation_level</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">BeginTransactionRequest</span><span class="o">.</span><span class="n">SERIALIZABLE</span><span class="p">)</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;beginTransaction&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">BeginTransactionResponse</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">transaction</span></div>
@@ -456,11 +454,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: An equal number of keys,  with IDs filled in by the backend.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">AllocateIdsRequest</span><span class="p">()</span>
-        <span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
+        <span class="n">_add_keys_to_request</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">)</span>
         <span class="c1"># Nothing to do with this response, so just execute the method.</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rpc</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="s1">&#39;allocateIds&#39;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                              <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">AllocateIdsResponse</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">key</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">keys</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_set_read_options</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">eventual</span><span class="p">,</span> <span class="n">transaction_id</span><span class="p">):</span>
@@ -481,28 +479,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">opts</span><span class="o">.</span><span class="n">transaction</span> <span class="o">=</span> <span class="n">transaction_id</span>
 
 
-<span class="k">def</span> <span class="nf">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER copied from helpers</span>
-    <span class="sd">&quot;&quot;&quot;Add protobuf keys to a request object.</span>
-
-<span class="sd">    .. note::</span>
-<span class="sd">      This is copied from `helpers` to avoid a cycle:</span>
-<span class="sd">      _implicit_environ -&gt; connection -&gt; helpers -&gt; key -&gt; _implicit_environ</span>
-
-<span class="sd">    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`</span>
-<span class="sd">    :param key_pb: A key to be added to a request.</span>
-
-<span class="sd">    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`</span>
-<span class="sd">    :returns: A key which will be added to a request. It will be the</span>
-<span class="sd">              original if nothing needs to be changed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">key_pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
-        <span class="n">new_key_pb</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">Key</span><span class="p">()</span>
-        <span class="n">new_key_pb</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
-        <span class="n">new_key_pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">ClearField</span><span class="p">(</span><span class="s1">&#39;dataset_id&#39;</span><span class="p">)</span>
-        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">new_key_pb</span>
-    <span class="k">return</span> <span class="n">key_pb</span>
-
-
 <span class="k">def</span> <span class="nf">_add_keys_to_request</span><span class="p">(</span><span class="n">request_field_pb</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add protobuf keys to a request object.</span>
 
@@ -513,7 +489,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param key_pbs: The keys to add to a request.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key_pb</span> <span class="ow">in</span> <span class="n">key_pbs</span><span class="p">:</span>
-        <span class="n">key_pb</span> <span class="o">=</span> <span class="n">_prepare_key_for_request</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
         <span class="n">request_field_pb</span><span class="o">.</span><span class="n">add</span><span class="p">()</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
 
@@ -528,9 +503,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">               :class:`._generated.entity_pb2.Key` for each incomplete key</span>
 <span class="sd">               that was completed in the commit.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">mut_result</span> <span class="o">=</span> <span class="n">commit_response_pb</span><span class="o">.</span><span class="n">mutation_result</span>
-    <span class="n">index_updates</span> <span class="o">=</span> <span class="n">mut_result</span><span class="o">.</span><span class="n">index_updates</span>
-    <span class="n">completed_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mut_result</span><span class="o">.</span><span class="n">insert_auto_id_key</span><span class="p">)</span>
+    <span class="n">mut_results</span> <span class="o">=</span> <span class="n">commit_response_pb</span><span class="o">.</span><span class="n">mutation_results</span>
+    <span class="n">index_updates</span> <span class="o">=</span> <span class="n">commit_response_pb</span><span class="o">.</span><span class="n">index_updates</span>
+    <span class="n">completed_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">mut_result</span><span class="o">.</span><span class="n">key</span> <span class="k">for</span> <span class="n">mut_result</span> <span class="ow">in</span> <span class="n">mut_results</span>
+                      <span class="k">if</span> <span class="n">mut_result</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">)]</span>  <span class="c1"># Message field (Key)</span>
     <span class="k">return</span> <span class="n">index_updates</span><span class="p">,</span> <span class="n">completed_keys</span>
 </pre></div>
 

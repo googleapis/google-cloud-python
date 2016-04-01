@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.client &mdash; gcloud 659d279 documentation</title>
+    <title>gcloud.datastore.client &mdash; gcloud 1c9c12c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '659d279',
+        VERSION:     '1c9c12c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 659d279 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 1c9c12c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%20659d279" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/client%0ARelease%3A%201c9c12c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (659d279)
+              Version History (1c9c12c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -109,29 +109,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_LocalStack</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_app_engine_id</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_compute_engine_id</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_determine_default_project</span> <span class="k">as</span> <span class="n">_base_default_project</span>
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">_ClientProjectMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">Client</span> <span class="k">as</span> <span class="n">_BaseClient</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore</span> <span class="kn">import</span> <span class="n">helpers</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">_projects_equal</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.query</span> <span class="kn">import</span> <span class="n">Query</span>
 <span class="kn">from</span> <span class="nn">gcloud.datastore.transaction</span> <span class="kn">import</span> <span class="n">Transaction</span>
-<span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">DATASET</span>
 <span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">GCD_DATASET</span>
 
 
 <span class="n">_MAX_LOOPS</span> <span class="o">=</span> <span class="mi">128</span>
 <span class="sd">&quot;&quot;&quot;Maximum number of iterations to wait for deferred keys.&quot;&quot;&quot;</span>
-
-
-<span class="k">def</span> <span class="nf">_get_production_project</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Gets the production application ID if it can be inferred.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">DATASET</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_gcd_project</span><span class="p">():</span>
@@ -145,8 +137,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    In implicit case, supports four environments. In order of precedence, the</span>
 <span class="sd">    implicit environments are:</span>
 
-<span class="sd">    * GCLOUD_DATASET_ID environment variable</span>
-<span class="sd">    * DATASTORE_DATASET environment variable (for ``gcd`` testing)</span>
+<span class="sd">    * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)</span>
+<span class="sd">    * GCLOUD_PROJECT environment variable</span>
 <span class="sd">    * Google App Engine application ID</span>
 <span class="sd">    * Google Compute Engine project ID (from metadata server)</span>
 
@@ -157,16 +149,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: Default project if it can be determined.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_get_production_project</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">project</span> <span class="o">=</span> <span class="n">_get_gcd_project</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_app_engine_id</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">project</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="n">project</span> <span class="o">=</span> <span class="n">_compute_engine_id</span><span class="p">()</span>
+        <span class="n">project</span> <span class="o">=</span> <span class="n">_base_default_project</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">project</span>
 
@@ -384,7 +370,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">project</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">current_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">_projects_equal</span><span class="p">(</span><span class="n">current_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">current_id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Keys do not match project&#39;</span><span class="p">)</span>
 
         <span class="n">transaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_transaction</span>
@@ -511,7 +497,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
         <span class="n">allocated_key_pbs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">allocate_ids</span><span class="p">(</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">project</span><span class="p">,</span>
                                               <span class="n">incomplete_key_pbs</span><span class="p">)</span>
-        <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path_element</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">allocated_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">allocated_key_pb</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
                          <span class="k">for</span> <span class="n">allocated_key_pb</span> <span class="ow">in</span> <span class="n">allocated_key_pbs</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">incomplete_key</span><span class="o">.</span><span class="n">completed_key</span><span class="p">(</span><span class="n">allocated_id</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">allocated_id</span> <span class="ow">in</span> <span class="n">allocated_ids</span><span class="p">]</span></div>
