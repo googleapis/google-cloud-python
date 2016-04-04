@@ -141,3 +141,47 @@ class Iterator(object):
         :returns: Items that the iterator should yield.
         """
         raise NotImplementedError
+
+
+class MethodIterator(object):
+    """Method-based iterator iterating through Cloud JSON APIs list responses.
+
+    :type method: instance method
+    :param method: ``list_foo`` method of a domain object, taking as arguments
+                   ``page_token``, ``page_size``, and optional additional
+                   keyword arguments.
+
+    :type page_token: string or ``NoneType``
+    :param page_token: Initial page token to pass.  if ``None``, fetch the
+                       first page from the ``method`` API call.
+
+    :type page_size: integer or ``NoneType``
+    :param page_size: Maximum number of items to return from the ``method``
+                      API call; if ``None``, uses the default for the API.
+
+    :type max_calls: integer or ``NoneType``
+    :param max_calls: Maximum number of times to make the ``method``
+                      API call; if ``None``, applies no limit.
+
+    :type kw: dict
+    :param kw: optional keyword argments to be passed to ``method``.
+    """
+    def __init__(self, method, page_token=None, page_size=None,
+                 max_calls=None, **kw):
+        self._method = method
+        self._token = page_token
+        self._page_size = page_size
+        self._kw = kw
+        self._max_calls = max_calls
+        self._page_no = 0
+
+    def __iter__(self):
+        while self._max_calls is None or self._page_no < self._max_calls:
+            items, new_token = self._method(
+                page_token=self._token, page_size=self._page_size, **self._kw)
+            for item in items:
+                yield item
+            if new_token is None:
+                return
+            self._page_no += 1
+            self._token = new_token
