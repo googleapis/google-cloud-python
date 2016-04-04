@@ -228,4 +228,6 @@ class TestPubsub(unittest2.TestCase):
         created = [subscription for subscription in all_subs
                    if subscription.name == ORPHANED]
         self.assertEqual(len(created), 1)
-        created[0].delete()
+        orphaned = created[0]
+        self.assertTrue(orphaned.topic is None)
+        orphaned.delete()
