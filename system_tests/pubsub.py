@@ -207,3 +207,27 @@ class TestPubsub(unittest2.TestCase):
         policy.viewers.add(policy.user('jjg@google.com'))
         new_policy = subscription.set_iam_policy(policy)
         self.assertEqual(new_policy.viewers, policy.viewers)
+
+    def test_fetch_delete_subscription_w_deleted_topic(self):
+        TO_DELETE = 'delete-me-%d' % (1000 * time.time(),)
+        ORPHANED = 'orphaned-%d' % (1000 * time.time(),)
+        topic = Config.CLIENT.topic(TO_DELETE)
+        topic.create()
+        subscription = topic.subscription(ORPHANED)
+        subscription.create()
+        topic.delete()
+
+        all_subs = []
+        token = None
+        while True:
+            subs, token = Config.CLIENT.list_subscriptions(page_token=token)
+            all_subs.extend(subs)
+            if token is None:
+                break
+
+        created = [subscription for subscription in all_subs
+                   if subscription.name == ORPHANED]
+        self.assertEqual(len(created), 1)
+        orphaned = created[0]
+        self.assertTrue(orphaned.topic is None)
+        orphaned.delete()

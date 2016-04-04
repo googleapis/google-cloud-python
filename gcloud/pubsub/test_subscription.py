@@ -16,6 +16,13 @@ import unittest2
 
 
 class TestSubscription(unittest2.TestCase):
+    PROJECT = 'PROJECT'
+    TOPIC_NAME = 'topic_name'
+    TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+    SUB_NAME = 'sub_name'
+    SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+    DEADLINE = 42
+    ENDPOINT = 'https://api.example.com/push'
 
     def _getTargetClass(self):
         from gcloud.pubsub.subscription import Subscription
@@ -25,273 +32,244 @@ class TestSubscription(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_defaults(self):
-        SUB_NAME = 'sub_name'
-        topic = object()
-        subscription = self._makeOne(SUB_NAME, topic)
-        self.assertEqual(subscription.name, SUB_NAME)
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertTrue(subscription.topic is topic)
         self.assertEqual(subscription.ack_deadline, None)
         self.assertEqual(subscription.push_endpoint, None)
 
     def test_ctor_explicit(self):
-        SUB_NAME = 'sub_name'
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        topic = object()
-        subscription = self._makeOne(SUB_NAME, topic, DEADLINE, ENDPOINT)
-        self.assertEqual(subscription.name, SUB_NAME)
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic,
+                                     self.DEADLINE, self.ENDPOINT)
+        self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertTrue(subscription.topic is topic)
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
+
+    def test_ctor_w_client_wo_topic(self):
+        client = _Client(project=self.PROJECT)
+        subscription = self._makeOne(self.SUB_NAME, client=client)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertTrue(subscription.topic is None)
+
+    def test_ctor_w_both_topic_and_client(self):
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        with self.assertRaises(TypeError):
+            self._makeOne(self.SUB_NAME, topic, client=client2)
+
+    def test_ctor_w_neither_topic_nor_client(self):
+        with self.assertRaises(TypeError):
+            self._makeOne(self.SUB_NAME)
 
     def test_from_api_repr_no_topics(self):
         from gcloud.pubsub.topic import Topic
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        resource = {'topic': TOPIC_PATH,
-                    'name': SUB_PATH,
-                    'ackDeadlineSeconds': DEADLINE,
-                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        resource = {'topic': self.TOPIC_PATH,
+                    'name': self.SUB_PATH,
+                    'ackDeadlineSeconds': self.DEADLINE,
+                    'pushConfig': {'pushEndpoint': self.ENDPOINT}}
         klass = self._getTargetClass()
-        client = _Client(project=PROJECT)
+        client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client)
-        self.assertEqual(subscription.name, SUB_NAME)
+        self.assertEqual(subscription.name, self.SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.project, self.PROJECT)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
+
+    def test_from_api_repr_w_deleted_topic(self):
+        klass = self._getTargetClass()
+        resource = {'topic': klass._DELETED_TOPIC_PATH,
+                    'name': self.SUB_PATH,
+                    'ackDeadlineSeconds': self.DEADLINE,
+                    'pushConfig': {'pushEndpoint': self.ENDPOINT}}
+        klass = self._getTargetClass()
+        client = _Client(project=self.PROJECT)
+        subscription = klass.from_api_repr(resource, client)
+        self.assertEqual(subscription.name, self.SUB_NAME)
+        self.assertTrue(subscription.topic is None)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_from_api_repr_w_topics_no_topic_match(self):
         from gcloud.pubsub.topic import Topic
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        resource = {'topic': TOPIC_PATH,
-                    'name': SUB_PATH,
-                    'ackDeadlineSeconds': DEADLINE,
-                    'pushConfig': {'pushEndpoint': ENDPOINT}}
+        resource = {'topic': self.TOPIC_PATH,
+                    'name': self.SUB_PATH,
+                    'ackDeadlineSeconds': self.DEADLINE,
+                    'pushConfig': {'pushEndpoint': self.ENDPOINT}}
         topics = {}
         klass = self._getTargetClass()
-        client = _Client(project=PROJECT)
+        client = _Client(project=self.PROJECT)
         subscription = klass.from_api_repr(resource, client, topics=topics)
-        self.assertEqual(subscription.name, SUB_NAME)
+        self.assertEqual(subscription.name, self.SUB_NAME)
         topic = subscription.topic
         self.assertTrue(isinstance(topic, Topic))
-        self.assertTrue(topic is topics[TOPIC_PATH])
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertTrue(topic is topics[self.TOPIC_PATH])
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.project, self.PROJECT)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_from_api_repr_w_topics_w_topic_match(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        resource = {'topic': TOPIC_PATH,
-                    'name': SUB_PATH,
-                    'ackDeadlineSeconds': DEADLINE,
-                    'pushConfig': {'pushEndpoint': ENDPOINT}}
-        topic = object()
-        topics = {TOPIC_PATH: topic}
+        resource = {'topic': self.TOPIC_PATH,
+                    'name': self.SUB_PATH,
+                    'ackDeadlineSeconds': self.DEADLINE,
+                    'pushConfig': {'pushEndpoint': self.ENDPOINT}}
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        topics = {self.TOPIC_PATH: topic}
         klass = self._getTargetClass()
-        client = _Client(project=PROJECT)
         subscription = klass.from_api_repr(resource, client, topics=topics)
-        self.assertEqual(subscription.name, SUB_NAME)
+        self.assertEqual(subscription.name, self.SUB_NAME)
         self.assertTrue(subscription.topic is topic)
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        BODY = {'topic': TOPIC_PATH}
-        conn = _Connection({'name': SUB_PATH})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        PATH = '/%s' % (self.SUB_PATH,)
+        BODY = {'topic': self.TOPIC_PATH}
+        conn = _Connection({'name': self.SUB_PATH})
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         subscription.create()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], BODY)
 
     def test_create_push_w_ack_deadline_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        BODY = {'topic': TOPIC_PATH,
-                'ackDeadlineSeconds': DEADLINE,
-                'pushConfig': {'pushEndpoint': ENDPOINT}}
-        conn1 = _Connection({'name': SUB_PATH})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        conn2 = _Connection({'name': SUB_PATH})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic, DEADLINE, ENDPOINT)
-        subscription.create(client=CLIENT2)
+        PATH = '/%s' % (self.SUB_PATH,)
+        BODY = {'topic': self.TOPIC_PATH,
+                'ackDeadlineSeconds': self.DEADLINE,
+                'pushConfig': {'pushEndpoint': self.ENDPOINT}}
+        conn1 = _Connection({'name': self.SUB_PATH})
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': self.SUB_PATH})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic,
+                                     self.DEADLINE, self.ENDPOINT)
+        subscription.create(client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], BODY)
 
     def test_exists_miss_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s' % (self.SUB_PATH,)
         conn = _Connection()
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         self.assertFalse(subscription.exists())
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req.get('query_params'), None)
 
     def test_exists_hit_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({'name': SUB_PATH, 'topic': TOPIC_PATH})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        conn2 = _Connection({'name': SUB_PATH, 'topic': TOPIC_PATH})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
-        self.assertTrue(subscription.exists(client=CLIENT2))
+        PATH = '/%s' % (self.SUB_PATH,)
+        conn1 = _Connection({'name': self.SUB_PATH, 'topic': self.TOPIC_PATH})
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': self.SUB_PATH, 'topic': self.TOPIC_PATH})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        self.assertTrue(subscription.exists(client=client2))
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req.get('query_params'), None)
 
     def test_reload_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
-        conn = _Connection({'name': SUB_PATH,
-                            'topic': TOPIC_PATH,
-                            'ackDeadlineSeconds': DEADLINE,
-                            'pushConfig': {'pushEndpoint': ENDPOINT}})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        PATH = '/%s' % (self.SUB_PATH,)
+        conn = _Connection({'name': self.SUB_PATH,
+                            'topic': self.TOPIC_PATH,
+                            'ackDeadlineSeconds': self.DEADLINE,
+                            'pushConfig': {'pushEndpoint': self.ENDPOINT}})
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         subscription.reload()
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_reload_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        DEADLINE = 42
-        ENDPOINT = 'https://api.example.com/push'
+        PATH = '/%s' % (self.SUB_PATH,)
         conn1 = _Connection()
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        conn2 = _Connection({'name': SUB_PATH,
-                             'topic': TOPIC_PATH,
-                             'ackDeadlineSeconds': DEADLINE,
-                             'pushConfig': {'pushEndpoint': ENDPOINT}})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.reload(client=CLIENT2)
-        self.assertEqual(subscription.ack_deadline, DEADLINE)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': self.SUB_PATH,
+                             'topic': self.TOPIC_PATH,
+                             'ackDeadlineSeconds': self.DEADLINE,
+                             'pushConfig': {'pushEndpoint': self.ENDPOINT}})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.reload(client=client2)
+        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_modify_push_config_w_endpoint_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        ENDPOINT = 'https://api.example.com/push'
+        PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.modify_push_configuration(push_endpoint=ENDPOINT)
-        self.assertEqual(subscription.push_endpoint, ENDPOINT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.modify_push_configuration(push_endpoint=self.ENDPOINT)
+        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:modifyPushConfig' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'],
-                         {'pushConfig': {'pushEndpoint': ENDPOINT}})
+                         {'pushConfig': {'pushEndpoint': self.ENDPOINT}})
 
     def test_modify_push_config_wo_endpoint_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        ENDPOINT = 'https://api.example.com/push'
+        PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)
         conn1 = _Connection({})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic, push_endpoint=ENDPOINT)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic,
+                                     push_endpoint=self.ENDPOINT)
         subscription.modify_push_configuration(push_endpoint=None,
-                                               client=CLIENT2)
+                                               client=client2)
         self.assertEqual(subscription.push_endpoint, None)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:modifyPushConfig' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'pushConfig': {}})
 
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
         import base64
         from gcloud.pubsub.message import Message
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:pull' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -299,9 +277,9 @@ class TestSubscription(unittest2.TestCase):
         MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn = _Connection({'receivedMessages': [REC_MESSAGE]})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         pulled = subscription.pull()
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
@@ -313,17 +291,14 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:pull' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'],
                          {'returnImmediately': False, 'maxMessages': 1})
 
     def test_pull_w_return_immediately_w_max_messages_w_alt_client(self):
         import base64
         from gcloud.pubsub.message import Message
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:pull' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -331,13 +306,13 @@ class TestSubscription(unittest2.TestCase):
         MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn1 = _Connection()
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'receivedMessages': [REC_MESSAGE]})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         pulled = subscription.pull(return_immediately=True, max_messages=3,
-                                   client=CLIENT2)
+                                   client=client2)
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
@@ -349,140 +324,117 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:pull' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'],
                          {'returnImmediately': True, 'maxMessages': 3})
 
     def test_pull_wo_receivedMessages(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:pull' % (self.SUB_PATH,)
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         pulled = subscription.pull(return_immediately=False)
         self.assertEqual(len(pulled), 0)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:pull' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'],
                          {'returnImmediately': False, 'maxMessages': 1})
 
     def test_acknowledge_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:acknowledge' % (self.SUB_PATH,)
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         subscription.acknowledge([ACK_ID1, ACK_ID2])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:acknowledge' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
 
     def test_acknowledge_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:acknowledge' % (self.SUB_PATH,)
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
         conn1 = _Connection({})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.acknowledge([ACK_ID1, ACK_ID2], client=CLIENT2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.acknowledge([ACK_ID1, ACK_ID2], client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:acknowledge' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
 
     def test_modify_ack_deadline_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
-        DEADLINE = 42
+        SENT = {'ackIds': [ACK_ID], 'ackDeadlineSeconds': self.DEADLINE}
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.modify_ack_deadline(ACK_ID, DEADLINE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.modify_ack_deadline(ACK_ID, self.DEADLINE)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:modifyAckDeadline' % SUB_PATH)
-        self.assertEqual(req['data'],
-                         {'ackIds': [ACK_ID], 'ackDeadlineSeconds': DEADLINE})
+        self.assertEqual(req['path'], PATH)
+        self.assertEqual(req['data'], SENT)
 
     def test_modify_ack_deadline_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
-        DEADLINE = 42
+        SENT = {'ackIds': [ACK_ID], 'ackDeadlineSeconds': self.DEADLINE}
         conn1 = _Connection({})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.modify_ack_deadline(ACK_ID, DEADLINE, client=CLIENT2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.modify_ack_deadline(ACK_ID, self.DEADLINE, client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:modifyAckDeadline' % SUB_PATH)
-        self.assertEqual(req['data'],
-                         {'ackIds': [ACK_ID], 'ackDeadlineSeconds': DEADLINE})
+        self.assertEqual(req['path'], PATH)
+        self.assertEqual(req['data'], SENT)
 
     def test_delete_w_bound_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s' % (self.SUB_PATH,)
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         subscription.delete()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_delete_w_alternate_client(self):
-        PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
+        PATH = '/%s' % (self.SUB_PATH,)
         conn1 = _Connection({})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
-        subscription.delete(client=CLIENT2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription.delete(client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % SUB_PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -501,16 +453,12 @@ class TestSubscription(unittest2.TestCase):
                 {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:getIamPolicy' % (
-            PROJECT, SUB_NAME)
+        PATH = '/%s:getIamPolicy' % (self.SUB_PATH,)
 
         conn = _Connection(POLICY)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
 
         policy = subscription.get_iam_policy()
 
@@ -523,26 +471,22 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
         POLICY = {
             'etag': 'ACAB',
         }
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:getIamPolicy' % (
-            PROJECT, SUB_NAME)
+        PATH = '/%s:getIamPolicy' % (self.SUB_PATH,)
 
         conn1 = _Connection()
         conn2 = _Connection(POLICY)
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
 
-        policy = subscription.get_iam_policy(client=CLIENT2)
+        policy = subscription.get_iam_policy(client=client2)
 
         self.assertEqual(policy.etag, 'ACAB')
         self.assertEqual(policy.version, None)
@@ -554,7 +498,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -577,16 +521,12 @@ class TestSubscription(unittest2.TestCase):
         RESPONSE = POLICY.copy()
         RESPONSE['etag'] = 'ABACABAF'
         RESPONSE['version'] = 18
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:setIamPolicy' % (
-            PROJECT, SUB_NAME)
+        PATH = '/%s:setIamPolicy' % (self.SUB_PATH,)
 
         conn = _Connection(RESPONSE)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         policy = Policy('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
@@ -606,27 +546,23 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'policy': POLICY})
 
     def test_set_iam_policy_w_alternate_client(self):
         from gcloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:setIamPolicy' % (
-            PROJECT, SUB_NAME)
+        PATH = '/%s:setIamPolicy' % (self.SUB_PATH,)
 
         conn1 = _Connection()
         conn2 = _Connection(RESPONSE)
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
 
         policy = Policy()
-        new_policy = subscription.set_iam_policy(policy, client=CLIENT2)
+        new_policy = subscription.set_iam_policy(policy, client=client2)
 
         self.assertEqual(new_policy.etag, 'ACAB')
         self.assertEqual(new_policy.version, None)
@@ -638,17 +574,13 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'policy': {}})
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:testIamPermissions' % (
-            PROJECT, SUB_NAME)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
+        PATH = '/%s:testIamPermissions' % (self.SUB_PATH,)
         REQUESTED = {
             'permissions': ROLES,
         }
@@ -656,9 +588,9 @@ class TestSubscription(unittest2.TestCase):
             'permissions': ROLES[:-1],
         }
         conn = _Connection(RESPONSE)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
 
         allowed = subscription.check_iam_permissions(ROLES)
 
@@ -666,36 +598,32 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], REQUESTED)
 
     def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        SUB_NAME = 'sub_name'
-        PATH = 'projects/%s/subscriptions/%s:testIamPermissions' % (
-            PROJECT, SUB_NAME)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
+        PATH = '/%s:testIamPermissions' % (self.SUB_PATH,)
         REQUESTED = {
             'permissions': ROLES,
         }
         RESPONSE = {}
         conn1 = _Connection()
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESPONSE)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = _Topic(TOPIC_NAME, client=CLIENT1)
-        subscription = self._makeOne(SUB_NAME, topic)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
 
-        allowed = subscription.check_iam_permissions(ROLES, client=CLIENT2)
+        allowed = subscription.check_iam_permissions(ROLES, client=client2)
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], REQUESTED)
 
 
