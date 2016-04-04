@@ -18,7 +18,7 @@ REQUIREMENTS = [
     'pyOpenSSL',
     'six',
 ]
-GRPC_EXTRAS = ['grpcio >= 0.13.0']
+GRPC_EXTRAS = ['grpcio >= 0.13.1']
 
 setup(
     name='gcloud',
