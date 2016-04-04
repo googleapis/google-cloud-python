@@ -138,13 +138,16 @@ bundling additions to or deletions from the set.
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
      >>> zone = client.zone('acme-co')
-     >>> record = dns.ResourceRecord(name='www.example.com', type='CNAME')
-     >>> change = zone.change_request(additions=[record])
-     >>> change.begin()  # API request
-     >>> while change.status != 'done':
-     ...     print('Waiting for change to complete')
-     ...     time.sleep(60)  # or whatever interval is appropriate
-     ...     change.reload()  # API request
+     >>> TWO_HOURS = 2 * 60 * 60  # seconds
+     >>> record_set = zone.resource_record_set(
+     ...    'www.example.com', 'CNAME', TWO_HOURS, 'www1.example.com')
+     >>> changes = zone.changes()
+     >>> changes.add_record_set(record_set)
+     >>> changes.begin()  # API request
+     >>> while changes.status != 'done':
+     ...     print('Waiting for changes to complete')
+     ...     time.sleep(60)     # or whatever interval is appropriate
+     ...     changes.reload()   # API request
 
 
 List changes made to the resource record set for a given zone:
