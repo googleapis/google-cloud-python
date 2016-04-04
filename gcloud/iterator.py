@@ -173,15 +173,15 @@ class MethodIterator(object):
         self._page_size = page_size
         self._kw = kw
         self._max_calls = max_calls
-        self._page_no = 0
+        self._page_num = 0
 
     def __iter__(self):
-        while self._max_calls is None or self._page_no < self._max_calls:
+        while self._max_calls is None or self._page_num < self._max_calls:
             items, new_token = self._method(
                 page_token=self._token, page_size=self._page_size, **self._kw)
             for item in items:
                 yield item
             if new_token is None:
                 return
-            self._page_no += 1
+            self._page_num += 1
             self._token = new_token

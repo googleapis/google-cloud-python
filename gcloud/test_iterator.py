@@ -189,7 +189,7 @@ class TestMethodIterator(unittest2.TestCase):
         self.assertEqual(iterator._page_size, None)
         self.assertEqual(iterator._kw, {})
         self.assertEqual(iterator._max_calls, None)
-        self.assertEqual(iterator._page_no, 0)
+        self.assertEqual(iterator._page_num, 0)
 
     def test_ctor_explicit(self):
         wlm = _WithListMethod()
@@ -203,7 +203,7 @@ class TestMethodIterator(unittest2.TestCase):
         self.assertEqual(iterator._page_size, SIZE)
         self.assertEqual(iterator._kw, {'foo_type': 'Bar'})
         self.assertEqual(iterator._max_calls, CALLS)
-        self.assertEqual(iterator._page_no, 0)
+        self.assertEqual(iterator._page_num, 0)
 
     def test___iter___defaults(self):
         import string
