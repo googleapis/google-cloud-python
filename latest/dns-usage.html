@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud 3596353 documentation</title>
+    <title>Using the API &mdash; gcloud fde68df documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '3596353',
+        VERSION:     'fde68df',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 3596353 documentation" href="index.html" />
+    <link rel="top" title="gcloud fde68df documentation" href="index.html" />
     <link rel="next" title="DNS Client" href="dns-client.html" />
     <link rel="prev" title="Projects" href="resource-manager-project.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-usage%0ARelease%3A%203596353" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+dns-usage%0ARelease%3A%20fde68df" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (3596353)
+              Version History (fde68df)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -157,8 +157,8 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 <blockquote>
 <div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Acme Company zone&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                   <span class="n">dns_name</span><span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Acme Company zone&#39;</span><span class="p">)</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="go">False</span>
@@ -185,7 +185,7 @@ suffix and has a set of name servers that accept and responds to queries:</p>
 <blockquote>
 <div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_resource_record_sets</span><span class="p">()</span>  <span class="c1"># API request</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">record_type</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">ttl</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">rrdatas</span><span class="p">)</span>
 <span class="gp">... </span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">]</span>
@@ -217,14 +217,17 @@ bundling additions to or deletions from the set.</p>
 <div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">time</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">ResourceRecord</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;www.example.com&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;CNAME&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">change</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">change_request</span><span class="p">(</span><span class="n">additions</span><span class="o">=</span><span class="p">[</span><span class="n">record</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">change</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">change</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Waiting for change to complete&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>  <span class="c1"># or whatever interval is appropriate</span>
-<span class="gp">... </span>    <span class="n">change</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TWO_HOURS</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span>  <span class="c1"># seconds</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_set</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">resource_record_set</span><span class="p">(</span>
+<span class="gp">... </span>   <span class="s1">&#39;www.example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;CNAME&#39;</span><span class="p">,</span> <span class="n">TWO_HOURS</span><span class="p">,</span> <span class="s1">&#39;www1.example.com&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">changes</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="o">.</span><span class="n">add_record_set</span><span class="p">(</span><span class="n">record_set</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>  <span class="c1"># API request</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">changes</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Waiting for changes to complete&#39;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>     <span class="c1"># or whatever interval is appropriate</span>
+<span class="gp">... </span>    <span class="n">changes</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -232,7 +235,7 @@ bundling additions to or deletions from the set.</p>
 <blockquote>
 <div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">dns</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">dns</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="s1">&#39;PROJECT_ID&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">zone</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">zone</span><span class="p">(</span><span class="s1">&#39;acme-co&#39;</span><span class="p">,</span> <span class="s1">&#39;example.com&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">changes</span><span class="p">,</span> <span class="n">page_token</span> <span class="o">=</span> <span class="n">zone</span><span class="o">.</span><span class="n">list_changes</span><span class="p">()</span>  <span class="c1"># API request</span>
 </pre></div>
