@@ -320,7 +320,8 @@ class Query(object):
         :returns: Time series objects, containing points ordered from oldest
             to newest.
         """
-        path = '/projects/{}/timeSeries'.format(self._client.project)
+        path = '/projects/{project}/timeSeries'.format(
+            project=self._client.project)
 
         def _fragments():
             page_token = None

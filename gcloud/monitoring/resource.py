@@ -64,9 +64,10 @@ class ResourceDescriptor(collections.namedtuple(
 
         :raises: :class:`gcloud.exceptions.NotFound`
         """
-        path = '/projects/{}/monitoredResourceDescriptors/{}'.format(
-            client.project, resource_type)
-        info = client.connection.api_request('GET', path)
+        path = '/projects/{project}/monitoredResourceDescriptors/{type}' \
+            .format(project=client.project,
+                    type=resource_type)
+        info = client.connection.api_request(method='GET', path=path)
         return cls._from_dict(info)
 
     @classmethod
@@ -85,8 +86,8 @@ class ResourceDescriptor(collections.namedtuple(
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
 
-        path = '/projects/{}/monitoredResourceDescriptors/'.format(
-            client.project)
+        path = '/projects/{project}/monitoredResourceDescriptors/'.format(
+            project=client.project)
 
         def _descriptors():
             page_token = None
@@ -99,8 +100,8 @@ class ResourceDescriptor(collections.namedtuple(
                 if page_token is not None:
                     params['pageToken'] = page_token
 
-                response = client.connection.api_request('GET', path,
-                                                         query_params=params)
+                response = client.connection.api_request(
+                    method='GET', path=path, query_params=params)
                 for info in response.get('resourceDescriptors', []):
                     yield cls._from_dict(info)
 

@@ -79,7 +79,7 @@ class MetricDescriptor(collections.namedtuple(
         path = '/projects/{project}/metricDescriptors/{type}'.format(
             project=client.project,
             type=metric_type)
-        info = client.connection.api_request('GET', path)
+        info = client.connection.api_request(method='GET', path=path)
         return cls._from_dict(info)
 
     @classmethod
@@ -98,7 +98,8 @@ class MetricDescriptor(collections.namedtuple(
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
 
-        path = '/projects/{}/metricDescriptors/'.format(client.project)
+        path = '/projects/{project}/metricDescriptors/'.format(
+            project=client.project)
 
         def _descriptors():
             page_token = None
@@ -111,8 +112,8 @@ class MetricDescriptor(collections.namedtuple(
                 if page_token is not None:
                     params['pageToken'] = page_token
 
-                response = client.connection.api_request('GET', path,
-                                                         query_params=params)
+                response = client.connection.api_request(
+                    method='GET', path=path, query_params=params)
                 for info in response.get('metricDescriptors', []):
                     yield cls._from_dict(info)
 
