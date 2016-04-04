@@ -234,7 +234,7 @@ class Subscription(object):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type ack_id: string
         :param ack_id: ack ID of message being updated
