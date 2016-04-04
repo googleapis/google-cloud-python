@@ -74,8 +74,8 @@ suffix and has a set of name servers that accept and responds to queries:
 
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
-     >>> zone = client.zone('acme-co', description='Acme Company zone',
-     ...                    dns_name='example.com')
+     >>> zone = client.zone('acme-co', 'example.com',
+     ...                    description='Acme Company zone')
 
      >>> zone.exists()  # API request
      False
@@ -103,7 +103,7 @@ Each managed zone exposes a read-only set of resource records:
 
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
-     >>> zone = client.zone('acme-co')
+     >>> zone = client.zone('acme-co', 'example.com')
      >>> records, page_token = zone.list_resource_record_sets()  # API request
      >>> [(record.name, record.record_type, record.ttl, record.rrdatas)
      ...  for record in records]
@@ -137,14 +137,17 @@ bundling additions to or deletions from the set.
      >>> import time
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
-     >>> zone = client.zone('acme-co')
-     >>> record = dns.ResourceRecord(name='www.example.com', type='CNAME')
-     >>> change = zone.change_request(additions=[record])
-     >>> change.begin()  # API request
-     >>> while change.status != 'done':
-     ...     print('Waiting for change to complete')
-     ...     time.sleep(60)  # or whatever interval is appropriate
-     ...     change.reload()  # API request
+     >>> zone = client.zone('acme-co', 'example.com')
+     >>> TWO_HOURS = 2 * 60 * 60  # seconds
+     >>> record_set = zone.resource_record_set(
+     ...    'www.example.com', 'CNAME', TWO_HOURS, 'www1.example.com')
+     >>> changes = zone.changes()
+     >>> changes.add_record_set(record_set)
+     >>> changes.begin()  # API request
+     >>> while changes.status != 'done':
+     ...     print('Waiting for changes to complete')
+     ...     time.sleep(60)     # or whatever interval is appropriate
+     ...     changes.reload()   # API request
 
 
 List changes made to the resource record set for a given zone:
@@ -153,7 +156,7 @@ List changes made to the resource record set for a given zone:
 
      >>> from gcloud import dns
      >>> client = dns.Client(project='PROJECT_ID')
-     >>> zone = client.zone('acme-co')
+     >>> zone = client.zone('acme-co', 'example.com')
      >>> changes = []
      >>> changes, page_token = zone.list_changes()  # API request
 
