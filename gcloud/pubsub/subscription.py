@@ -130,7 +130,7 @@ class Subscription(object):
         :returns: The client passed in or the currently bound client.
         """
         if client is None:
-            client = self.topic._client
+            client = self._client
         return client
 
     def create(self, client=None):
