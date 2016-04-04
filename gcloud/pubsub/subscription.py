@@ -29,8 +29,9 @@ class Subscription(object):
     :type name: string
     :param name: the name of the subscription
 
-    :type topic: :class:`gcloud.pubsub.topic.Topic`
-    :param topic: the topic to which the subscription belongs..
+    :type topic: :class:`gcloud.pubsub.topic.Topic` or ``NoneType``
+    :param topic: the topic to which the subscription belongs;  if ``None``,
+                  the subscription's topic has been deleted.
 
     :type ack_deadline: int
     :param ack_deadline: the deadline (in seconds) by which messages pulled
@@ -39,6 +40,10 @@ class Subscription(object):
     :type push_endpoint: string
     :param push_endpoint: URL to which messages will be pushed by the back-end.
                           If not set, the application must pull messages.
+
+    :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+    :param client: the client to use.  If not passed, falls back to the
+                   ``client`` stored on the topic.
     """
 
     _DELETED_TOPIC_PATH = '_deleted-topic_'
@@ -48,9 +53,19 @@ class Subscription(object):
     https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic
     """
 
-    def __init__(self, name, topic, ack_deadline=None, push_endpoint=None):
+    def __init__(self, name, topic=None, ack_deadline=None, push_endpoint=None,
+                 client=None):
+
+        if client is None and topic is None:
+            raise TypeError("Pass only one of 'topic' or 'client'.")
+
+        if client is not None and topic is not None:
+            raise TypeError("Pass only one of 'topic' or 'client'.")
+
         self.name = name
         self.topic = topic
+        self._client = client or topic._client
+        self._project = self._client.project
         self.ack_deadline = ack_deadline
         self.push_endpoint = push_endpoint
 
@@ -76,7 +91,7 @@ class Subscription(object):
             topics = {}
         topic_path = resource['topic']
         if topic_path == cls._DELETED_TOPIC_PATH:
-            topic = client.topic(name=None)
+            topic = None
         else:
             topic = topics.get(topic_path)
             if topic is None:
@@ -88,13 +103,20 @@ class Subscription(object):
         ack_deadline = resource.get('ackDeadlineSeconds')
         push_config = resource.get('pushConfig', {})
         push_endpoint = push_config.get('pushEndpoint')
+        if topic is None:
+            return cls(name, ack_deadline=ack_deadline,
+                       push_endpoint=push_endpoint, client=client)
         return cls(name, topic, ack_deadline, push_endpoint)
+
+    @property
+    def project(self):
+        """Project bound to the subscription."""
+        return self._client.project
 
     @property
     def path(self):
         """URL path for the subscription's APIs"""
-        project = self.topic.project
-        return '/projects/%s/subscriptions/%s' % (project, self.name)
+        return '/projects/%s/subscriptions/%s' % (self.project, self.name)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
