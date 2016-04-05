@@ -97,27 +97,28 @@ class ResourceDescriptor(collections.namedtuple(
         path = '/projects/{project}/monitoredResourceDescriptors/'.format(
             project=client.project)
 
-        def _descriptors():
-            page_token = None
-            while True:
-                params = {}
+        descriptors = []
 
-                if filter is not None:
-                    params['filter'] = filter
+        page_token = None
+        while True:
+            params = {}
 
-                if page_token is not None:
-                    params['pageToken'] = page_token
+            if filter is not None:
+                params['filter'] = filter
 
-                response = client.connection.api_request(
-                    method='GET', path=path, query_params=params)
-                for info in response.get('resourceDescriptors', []):
-                    yield cls._from_dict(info)
+            if page_token is not None:
+                params['pageToken'] = page_token
 
-                page_token = response.get('nextPageToken')
-                if not page_token:
-                    break
+            response = client.connection.api_request(
+                method='GET', path=path, query_params=params)
+            for info in response.get('resourceDescriptors', []):
+                descriptors.append(cls._from_dict(info))
 
-        return list(_descriptors())
+            page_token = response.get('nextPageToken')
+            if not page_token:
+                break
+
+        return descriptors
 
     @classmethod
     def _from_dict(cls, info):
