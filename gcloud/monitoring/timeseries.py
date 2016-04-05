@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Time series in the Google Monitoring API."""
+"""Time series in the `Google Monitoring API (V3)`_.
+
+.. _Google Monitoring API (V3):
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries
+"""
 
 # Features intentionally omitted from this first version of the client library:
 #   - Creating time series.
@@ -51,11 +55,13 @@ class Query(object):
     :param metric_type: The metric type name. The default value is
         ``"compute.googleapis.com/instance/cpu/utilization"``, but
         please note that this default value is provided only for
-        demonstration purposes and is subject to change.
+        demonstration purposes and is subject to change. See the
+        `supported metrics`_.
 
     :type resource_type: string
     :param resource_type: An optional resource type to filter by.
-        For example: ``"gce_instance"``
+        For example: ``"gce_instance"``. See the `defined resource
+        types`_.
 
     :type end_time: :class:`datetime.datetime` or string or None
     :param end_time: The end time (inclusive) of the time interval
@@ -82,6 +88,10 @@ class Query(object):
 
     :type minutes: integer
     :param minutes: The number of minutes in the time interval.
+
+    .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
+    .. _defined resource types:
+        https://cloud.google.com/monitoring/api/v3/monitored-resources
     """
 
     DEFAULT_METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
@@ -252,8 +262,9 @@ class Query(object):
             query = query.align('ALIGN_MEAN', minutes=5)
 
         :type per_series_aligner: string
-        :param per_series_aligner: The approach to be used to align individual
-            time series. For example: ``"ALIGN_MEAN"``
+        :param per_series_aligner: The approach to be used to align
+            individual time series. For example: ``"ALIGN_MEAN"``.
+            See the `supported aligners`_.
 
         :type seconds: integer
         :param seconds: The number of seconds in the alignment period.
@@ -266,6 +277,10 @@ class Query(object):
 
         :rtype: :class:`Query`
         :returns: The new query object.
+
+        .. _supported aligners:
+            https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+            projects.timeSeries/list#Aligner
         """
         new_query = self.copy()
         new_query._per_series_aligner = per_series_aligner
@@ -277,8 +292,9 @@ class Query(object):
         """Copy the query and add cross-series reduction.
 
         :type cross_series_reducer: string
-        :param cross_series_reducer: The approach to be used to combine time
-            series. For example: ``"REDUCE_MEAN"``
+        :param cross_series_reducer: The approach to be used to combine
+            time series. For example: ``"REDUCE_MEAN"``.
+            See the `supported reducers`_.
 
         :type group_by_fields: string or list of strings
         :param group_by_fields: An optional field or set of fields
@@ -288,6 +304,10 @@ class Query(object):
 
         :rtype: :class:`Query`
         :returns: The new query object.
+
+        .. _supported reducers:
+            https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+            projects.timeSeries/list#Reducer
         """
         if isinstance(group_by_fields, six.string_types):
             group_by_fields = [group_by_fields]
@@ -499,6 +519,8 @@ class Query(object):
         :rtype: :class:`Query`
         :returns: The new query object.
         """
+        # Using copy.deepcopy() would be appropriate, except that we want
+        # to copy self._client only as a reference.
         new_query = copy.copy(self)
         new_query._filter = copy.copy(self._filter)
         return new_query

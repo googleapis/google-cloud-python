@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Label Descriptors for the Google Monitoring API."""
+"""Label Descriptors for the `Google Monitoring API (V3)`_.
+
+.. _Google Monitoring API (V3):
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/LabelDescriptor
+"""
 
 import collections
 

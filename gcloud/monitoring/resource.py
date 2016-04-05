@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Resource Descriptors for the Google Monitoring API."""
+"""Resource Descriptors for the `Google Monitoring API (V3)`_.
+
+.. _Google Monitoring API (V3):
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.monitoredResourceDescriptors
+"""
 
 import collections
 
@@ -79,10 +84,13 @@ class ResourceDescriptor(collections.namedtuple(
 
         :type filter: string or None
         :param filter: An optional filter string describing the resource
-                       descriptors to be returned.
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`ResourceDescriptor`
         :returns: A list of resource descriptor instances.
+
+        .. _filter documentation:
+            https://cloud.google.com/monitoring/api/v3/filters
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
 

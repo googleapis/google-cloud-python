@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the Google Monitoring API.
+"""Client for interacting with the `Google Monitoring API (V3)`_.
 
 Example::
 
@@ -24,8 +24,7 @@ Example::
 At present, the client supports querying of time series, metric descriptors,
 and monitored resource descriptors.
 
-See the documentation for
-`Google Monitoring API V3 <https://cloud.google.com/monitoring/api/>`_.
+.. _Google Monitoring API (V3): https://cloud.google.com/monitoring/api/
 """
 
 from gcloud.client import JSONClient
@@ -73,11 +72,13 @@ class Client(JSONClient):
         :param metric_type: The metric type name. The default value is
             ``"compute.googleapis.com/instance/cpu/utilization"``, but
             please note that this default value is provided only for
-            demonstration purposes and is subject to change.
+            demonstration purposes and is subject to change. See the
+            `supported metrics`_.
 
         :type resource_type: string
         :param resource_type: An optional resource type to filter by.
-            For example: ``"gce_instance"``
+            For example: ``"gce_instance"``. See the `defined resource
+            types`_.
 
         :type end_time: :class:`datetime.datetime` or string or None
         :param end_time: The end time (inclusive) of the time interval
@@ -107,6 +108,10 @@ class Client(JSONClient):
 
         :rtype: :class:`~gcloud.monitoring.timeseries.Query`
         :returns: The query object.
+
+        .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
+        .. _defined resource types:
+            https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
         return Query(self, metric_type, resource_type,
                      end_time=end_time, start_time=start_time,
@@ -140,10 +145,13 @@ class Client(JSONClient):
 
         :type filter: string or None
         :param filter: An optional filter string describing the metric
-                       descriptors to be returned.
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`~gcloud.monitoring.metric.MetricDescriptor`
         :returns: A list of metric descriptor instances.
+
+        .. _filter documentation:
+            https://cloud.google.com/monitoring/api/v3/filters
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
         return MetricDescriptor._list(self, filter)
@@ -175,10 +183,13 @@ class Client(JSONClient):
 
         :type filter: string or None
         :param filter: An optional filter string describing the resource
-                       descriptors to be returned.
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`~gcloud.monitoring.resource.ResourceDescriptor`
         :returns: A list of resource descriptor instances.
+
+        .. _filter documentation:
+            https://cloud.google.com/monitoring/api/v3/filters
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
         return ResourceDescriptor._list(self, filter)

@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Metric Descriptors for the Google Monitoring API."""
+"""Metric Descriptors for the `Google Monitoring API (V3)`_.
+
+.. _Google Monitoring API (V3):
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.metricDescriptors
+"""
 
 # Features intentionally omitted from this first version of the client library:
 #   - Creating and deleting metric descriptors.
@@ -91,10 +96,13 @@ class MetricDescriptor(collections.namedtuple(
 
         :type filter: string or None
         :param filter: An optional filter string describing the metric
-                       descriptors to be returned.
+            descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`MetricDescriptor`
         :returns: A list of metric descriptor instances.
+
+        .. _filter documentation:
+            https://cloud.google.com/monitoring/api/v3/filters
         """
         # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
 
