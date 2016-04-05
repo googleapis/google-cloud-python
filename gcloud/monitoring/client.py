@@ -80,22 +80,18 @@ class Client(JSONClient):
             For example: ``"gce_instance"``. See the `defined resource
             types`_.
 
-        :type end_time: :class:`datetime.datetime` or string or None
+        :type end_time: :class:`datetime.datetime` or None
         :param end_time: The end time (inclusive) of the time interval
             for which results should be returned, as a datetime object.
-            The default is the start of the current minute. If the
-            ``days``/``hours``/``minutes`` parameters are not used, the
-            end time can alternatively be provided as a timestamp string
-            in RFC3339 UTC "Zulu" format.
+            The default is the start of the current minute.
 
-        :type start_time: :class:`datetime.datetime` or string or None
+        :type start_time: :class:`datetime.datetime` or None
         :param start_time: An optional start time (exclusive) of the time
-            interval for which results should be returned, as either a
-            datetime object or a timestamp string. If omitted and no
-            non-zero duration is specified, the interval is a point in
-            time. If any of ``days``, ``hours``, or ``minutes`` is non-zero,
-            these are combined and subtracted from the end time to determine
-            the start time.
+            interval for which results should be returned, as a datetime
+            object. If omitted and no non-zero duration is specified, the
+            interval is a point in time. If any of ``days``, ``hours``,
+            or ``minutes`` is non-zero, these are combined and subtracted
+            from the end time to determine the start time.
 
         :type days: integer
         :param days: The number of days in the time interval.

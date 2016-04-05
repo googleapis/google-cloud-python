@@ -63,22 +63,18 @@ class Query(object):
         For example: ``"gce_instance"``. See the `defined resource
         types`_.
 
-    :type end_time: :class:`datetime.datetime` or string or None
+    :type end_time: :class:`datetime.datetime` or None
     :param end_time: The end time (inclusive) of the time interval
         for which results should be returned, as a datetime object.
-        The default is the start of the current minute. If the
-        ``days``/``hours``/``minutes`` parameters are not used, the
-        end time can alternatively be provided as a timestamp string
-        in RFC3339 UTC "Zulu" format.
+        The default is the start of the current minute.
 
-    :type start_time: :class:`datetime.datetime` or string or None
+    :type start_time: :class:`datetime.datetime` or None
     :param start_time: An optional start time (exclusive) of the time
-        interval for which results should be returned, as either a
-        datetime object or a timestamp string. If omitted and no
-        non-zero duration is specified, the interval is a point in
-        time. If any of ``days``, ``hours``, or ``minutes`` is non-zero,
-        these are combined and subtracted from the end time to determine
-        the start time.
+        interval for which results should be returned, as a datetime
+        object. If omitted and no non-zero duration is specified, the
+        interval is a point in time. If any of ``days``, ``hours``,
+        or ``minutes`` is non-zero, these are combined and subtracted
+        from the end time to determine the start time.
 
     :type days: integer
     :param days: The number of days in the time interval.
@@ -711,17 +707,13 @@ def _sorted_resource_labels(labels):
 def _format_timestamp(timestamp):
     """Convert a datetime object to a string as required by the API.
 
-    :type timestamp: :class:`datetime.datetime` or string
-    :param timestamp: A :class:`~datetime.datetime` or a timestamp string
-        in RFC3339 UTC "Zulu" format.
+    :type timestamp: :class:`datetime.datetime`
+    :param timestamp: A datetime object.
 
     :rtype: string
     :returns: The formatted timestamp. For example:
         ``"2016-02-17T19:18:01.763000Z"``
     """
-    if isinstance(timestamp, six.string_types):
-        return timestamp
-
     if timestamp.tzinfo is not None:
         # Convert to UTC and remove the time zone info.
         timestamp = timestamp.replace(tzinfo=None) - timestamp.utcoffset()
