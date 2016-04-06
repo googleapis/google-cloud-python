@@ -522,38 +522,26 @@ class TestTopic(unittest2.TestCase):
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        REQUESTED = {
-            'permissions': ROLES,
-        }
-        RESPONSE = {
-            'permissions': ROLES[:-1],
-        }
-        conn = _Connection(RESPONSE)
+        conn = _Connection()
+        conn._test_iam_permissions_response = ROLES[:-1]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         allowed = topic.check_iam_permissions(ROLES)
 
         self.assertEqual(allowed, ROLES[:-1])
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], REQUESTED)
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._tested_iam_permissions,
+                         (self.TOPIC_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        REQUESTED = {
-            'permissions': ROLES,
-        }
-        RESPONSE = {}
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESPONSE)
+        conn2 = _Connection()
+        conn2._test_iam_permissions_response = []
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
@@ -561,11 +549,9 @@ class TestTopic(unittest2.TestCase):
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], REQUESTED)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._tested_iam_permissions,
+                         (self.TOPIC_PATH, ROLES))
 
 
 class TestBatch(unittest2.TestCase):
@@ -748,22 +734,11 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(getattr(conn, '_topic_published', self), self)
 
 
-class _Connection(object):
+class _Connection(object):  # pylint: disable=too-many-instance-attributes
 
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-
-    def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
-        self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFound('miss')
-        else:
-            return response
 
     def topic_create(self, topic_path):
         self._topic_created = topic_path
@@ -797,6 +772,10 @@ class _Connection(object):
     def set_iam_policy(self, target_path, policy):
         self._set_iam_policy = target_path, policy
         return self._set_iam_policy_response
+
+    def test_iam_permissions(self, target_path, permissions):
+        self._tested_iam_permissions = target_path, permissions
+        return self._test_iam_permissions_response
 
 
 class _Topic(object):

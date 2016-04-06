@@ -491,6 +491,49 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'],
                          json.dumps({'policy': POLICY}))
 
+    def test_test_iam_permissions(self):
+        import json
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        PATH = '%s:testIamPermissions' % (self.TOPIC_PATH,)
+        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
+        ALLOWED = ALL_ROLES[1:]
+        RETURNED = {'permissions': ALLOWED}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        allowed = conn.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
+
+        self.assertEqual(allowed, ALLOWED)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'], PATH)
+        self.assertEqual(http._called_with['body'],
+                         json.dumps({'permissions': ALL_ROLES}))
+
+    def test_test_iam_permissions_missing_key(self):
+        import json
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        PATH = '%s:testIamPermissions' % (self.TOPIC_PATH,)
+        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
+        RETURNED = {}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        allowed = conn.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
+
+        self.assertEqual(allowed, [])
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'], PATH)
+        self.assertEqual(http._called_with['body'],
+                         json.dumps({'permissions': ALL_ROLES}))
+
 
 class _Http(object):
 

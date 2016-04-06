@@ -281,3 +281,24 @@ class Connection(base_connection.JSONConnection):
         wrapped = {'policy': policy}
         return self.api_request(method='POST', path='/%s:setIamPolicy' % (
             target_path,), data=wrapped)
+
+    def test_iam_permissions(self, target_path, permissions):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type permissions: list of string
+        :param permissions: the permissions to check
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        wrapped = {'permissions': permissions}
+        path = '/%s:testIamPermissions' % (target_path,)
+        resp = self.api_request(method='POST', path=path, data=wrapped)
+        return resp.get('permissions', [])
