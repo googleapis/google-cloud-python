@@ -59,7 +59,7 @@ class Client(JSONClient):
     def query(self,
               metric_type=Query.DEFAULT_METRIC_TYPE,
               resource_type=None,
-              end_time=None, start_time=None,
+              end_time=None,
               days=0, hours=0, minutes=0):
         """Construct a query object for listing time series.
 
@@ -85,13 +85,14 @@ class Client(JSONClient):
             for which results should be returned, as a datetime object.
             The default is the start of the current minute.
 
-        :type start_time: :class:`datetime.datetime` or None
-        :param start_time: An optional start time (exclusive) of the time
-            interval for which results should be returned, as a datetime
-            object. If omitted and no non-zero duration is specified, the
-            interval is a point in time. If any of ``days``, ``hours``,
-            or ``minutes`` is non-zero, these are combined and subtracted
-            from the end time to determine the start time.
+            The start time (exclusive) is determined by combining the
+            values of  ``days``, ``hours``, and ``minutes``, and
+            subtracting the resulting duration from the end time.
+
+            It is also allowed to omit the end time and duration here,
+            in which case
+            :meth:`~gcloud.monitoring.timeseries.Query.select_interval`
+            must be called before the query is executed.
 
         :type days: integer
         :param days: The number of days in the time interval.
@@ -105,12 +106,17 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.timeseries.Query`
         :returns: The query object.
 
+        :raises: :exc:`ValueError` if ``end_time`` is specified but
+            ``days``, ``hours``, and ``minutes`` are all zero.
+            If you really want to specify a point in time, use
+            :meth:`~gcloud.monitoring.timeseries.Query.select_interval`.
+
         .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
         .. _defined resource types:
             https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
         return Query(self, metric_type, resource_type,
-                     end_time=end_time, start_time=start_time,
+                     end_time=end_time,
                      days=days, hours=hours, minutes=minutes)
 
     def fetch_metric_descriptor(self, metric_type):

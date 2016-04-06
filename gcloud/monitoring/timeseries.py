@@ -68,13 +68,14 @@ class Query(object):
         for which results should be returned, as a datetime object.
         The default is the start of the current minute.
 
-    :type start_time: :class:`datetime.datetime` or None
-    :param start_time: An optional start time (exclusive) of the time
-        interval for which results should be returned, as a datetime
-        object. If omitted and no non-zero duration is specified, the
-        interval is a point in time. If any of ``days``, ``hours``,
-        or ``minutes`` is non-zero, these are combined and subtracted
-        from the end time to determine the start time.
+        The start time (exclusive) is determined by combining the
+        values of  ``days``, ``hours``, and ``minutes``, and
+        subtracting the resulting duration from the end time.
+
+        It is also allowed to omit the end time and duration here,
+        in which case
+        :meth:`~gcloud.monitoring.timeseries.Query.select_interval`
+        must be called before the query is executed.
 
     :type days: integer
     :param days: The number of days in the time interval.
@@ -85,6 +86,11 @@ class Query(object):
     :type minutes: integer
     :param minutes: The number of minutes in the time interval.
 
+    :raises: :exc:`ValueError` if ``end_time`` is specified but
+        ``days``, ``hours``, and ``minutes`` are all zero.
+        If you really want to specify a point in time, use
+        :meth:`~gcloud.monitoring.timeseries.Query.select_interval`.
+
     .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
     .. _defined resource types:
         https://cloud.google.com/monitoring/api/v3/monitored-resources
@@ -94,18 +100,17 @@ class Query(object):
 
     def __init__(self, client,
                  metric_type=DEFAULT_METRIC_TYPE, resource_type=None,
-                 end_time=None, start_time=None,
-                 days=0, hours=0, minutes=0):
-        if end_time is None:
-            end_time = datetime.datetime.utcnow().replace(second=0,
-                                                          microsecond=0)
-
+                 end_time=None, days=0, hours=0, minutes=0):
+        start_time = None
         if days or hours or minutes:
-            if start_time is not None:
-                raise ValueError('Duration and start time both specified.')
+            if end_time is None:
+                end_time = datetime.datetime.utcnow().replace(second=0,
+                                                              microsecond=0)
             start_time = end_time - datetime.timedelta(days=days,
                                                        hours=hours,
                                                        minutes=minutes)
+        elif end_time is not None:
+            raise ValueError('Non-zero duration required for time interval.')
 
         self._client = client
         self._end_time = end_time
@@ -129,6 +134,26 @@ class Query(object):
         and metric labels.
         """
         return str(self._filter)
+
+    def select_interval(self, end_time, start_time=None):
+        """Copy the query and set the query time interval.
+
+        :type end_time: :class:`datetime.datetime`
+        :param end_time: The end time (inclusive) of the time interval
+            for which results should be returned, as a datetime object.
+
+        :type start_time: :class:`datetime.datetime` or None
+        :param start_time: The start time (exclusive) of the time interval
+            for which results should be returned, as a datetime object.
+            If not specified, the interval is a point in time.
+
+        :rtype: :class:`Query`
+        :returns: The new query object.
+        """
+        new_query = self.copy()
+        new_query._end_time = end_time
+        new_query._start_time = start_time
+        return new_query
 
     def select_group(self, group_id):
         """Copy the query and add filtering by group.
@@ -335,7 +360,12 @@ class Query(object):
         :rtype: iterator over :class:`TimeSeries`
         :returns: Time series objects, containing points ordered from oldest
             to newest.
+        :raises: :exc:`ValueError` if the query time interval has not been
+            specified.
         """
+        if self._end_time is None:
+            raise ValueError('Query time interval not specified.')
+
         path = '/projects/{project}/timeSeries'.format(
             project=self._client.project)
 
