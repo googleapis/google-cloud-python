@@ -196,3 +196,20 @@ class Connection(base_connection.JSONConnection):
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
         return self.api_request(method='DELETE', path='/%s' % (topic_path,))
+
+    def topic_publish(self, topic_path, messages):
+        """API call:  publish a message to a topic via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type messages: list of dict
+        :param messages: messages to be published.
+        """
+        data = {'messages': messages}
+        return self.api_request(
+            method='POST', path='/%s:publish' % (topic_path,), data=data)

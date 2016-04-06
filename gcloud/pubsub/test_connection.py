@@ -318,6 +318,30 @@ class TestConnection(unittest2.TestCase):
         self._verify_uri(http._called_with['uri'], self.TOPIC_PATH)
         self.assertEqual(http._called_with['body'], None)
 
+    def test_topic_publish(self):
+        import base64
+        import json
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MSGID = 'DEADBEEF'
+        MESSAGE = {'data': B64, 'attributes': {}}
+        RETURNED = {'messageIds': [MSGID]}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.topic_publish(self.TOPIC_PATH, [MESSAGE])
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:publish' % (self.TOPIC_PATH,))
+        self.assertEqual(http._called_with['body'],
+                         json.dumps({'messages': [MESSAGE]}))
+
 
 class _Http(object):
 
