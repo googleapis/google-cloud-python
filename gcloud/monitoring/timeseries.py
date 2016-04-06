@@ -58,11 +58,6 @@ class Query(object):
         demonstration purposes and is subject to change. See the
         `supported metrics`_.
 
-    :type resource_type: string
-    :param resource_type: An optional resource type to filter by.
-        For example: ``"gce_instance"``. See the `defined resource
-        types`_.
-
     :type end_time: :class:`datetime.datetime` or None
     :param end_time: The end time (inclusive) of the time interval
         for which results should be returned, as a datetime object.
@@ -92,14 +87,12 @@ class Query(object):
         :meth:`~gcloud.monitoring.timeseries.Query.select_interval`.
 
     .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
-    .. _defined resource types:
-        https://cloud.google.com/monitoring/api/v3/monitored-resources
     """
 
     DEFAULT_METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
 
     def __init__(self, client,
-                 metric_type=DEFAULT_METRIC_TYPE, resource_type=None,
+                 metric_type=DEFAULT_METRIC_TYPE,
                  end_time=None, days=0, hours=0, minutes=0):
         start_time = None
         if days or hours or minutes:
@@ -115,7 +108,7 @@ class Query(object):
         self._client = client
         self._end_time = end_time
         self._start_time = start_time
-        self._filter = _Filter(metric_type, resource_type)
+        self._filter = _Filter(metric_type)
 
         self._per_series_aligner = None
         self._alignment_period_seconds = None
@@ -189,13 +182,14 @@ class Query(object):
         new_query._filter.projects = args
         return new_query
 
-    def select_resource_labels(self, *args, **kwargs):
+    def select_resources(self, *args, **kwargs):
         """Copy the query and add filtering by resource labels.
 
         Examples::
 
-            query = query.select_resource_labels(zone='us-central1-a')
-            query = query.select_resource_labels(zone_prefix='europe-')
+            query = query.select_resources(zone='us-central1-a')
+            query = query.select_resources(zone_prefix='europe-')
+            query = query.select_resources(resource_type='gce_instance')
 
         A keyword argument ``<label>=<value>`` ordinarily generates a filter
         expression of the form::
@@ -213,11 +207,19 @@ class Query(object):
 
             resource.label.<label> = ends_with("<value>")
 
+        As a special case, ``"resource_type"`` is treated as a special
+        pseudo-label corresponding to the filter object ``resource.type``.
+        For example, ``resource_type=<value>`` generates::
+
+            resource.type = "<value>"
+
+        See the `defined resource types`_.
+
         .. note::
 
-            The label ``"instance_name"`` is a metric label, not a
-            resource label. Use ``select_metric_labels(instance_name=...)``,
-            not this method.
+            The label ``"instance_name"`` is a metric label,
+            not a resource label. You would filter on it using
+            ``select_metrics(instance_name=...)``.
 
         :param args: Raw filter expression strings to include in the
             conjunction. If just one is provided and no keyword arguments
@@ -228,19 +230,21 @@ class Query(object):
 
         :rtype: :class:`Query`
         :returns: The new query object.
+
+        .. _defined resource types:
+            https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
         new_query = self.copy()
-        new_query._filter.select_resource_labels(*args, **kwargs)
+        new_query._filter.select_resources(*args, **kwargs)
         return new_query
 
-    def select_metric_labels(self, *args, **kwargs):
+    def select_metrics(self, *args, **kwargs):
         """Copy the query and add filtering by metric labels.
 
         Examples::
 
-            query = query.select_metric_labels(instance_name='myinstance')
-            query = query.select_metric_labels(
-                instance_name_prefix='mycluster-')
+            query = query.select_metrics(instance_name='myinstance')
+            query = query.select_metrics(instance_name_prefix='mycluster-')
 
         A keyword argument ``<label>=<value>`` ordinarily generates a filter
         expression of the form::
@@ -269,7 +273,7 @@ class Query(object):
         :returns: The new query object.
         """
         new_query = self.copy()
-        new_query._filter.select_metric_labels(*args, **kwargs)
+        new_query._filter.select_metrics(*args, **kwargs)
         return new_query
 
     def align(self, per_series_aligner, seconds=0, minutes=0, hours=0):
@@ -656,34 +660,31 @@ class Point(collections.namedtuple('Point', 'end_time start_time value')):
 class _Filter(object):
     """Helper for assembling a filter string."""
 
-    def __init__(self, metric_type, resource_type=None):
+    def __init__(self, metric_type):
         self.metric_type = metric_type
-        self.resource_type = resource_type
         self.group_id = None
         self.projects = ()
         self.resource_label_filter = None
         self.metric_label_filter = None
 
-    def select_resource_labels(self, *args, **kwargs):
+    def select_resources(self, *args, **kwargs):
         """Select by resource labels.
 
-        See :meth:`Query.select_resource_labels`.
+        See :meth:`Query.select_resources`.
         """
         self.resource_label_filter = _build_label_filter('resource',
                                                          *args, **kwargs)
 
-    def select_metric_labels(self, *args, **kwargs):
+    def select_metrics(self, *args, **kwargs):
         """Select by metric labels.
 
-        See :meth:`Query.select_metric_labels`.
+        See :meth:`Query.select_metrics`.
         """
         self.metric_label_filter = _build_label_filter('metric',
                                                        *args, **kwargs)
 
     def __str__(self):
         filters = ['metric.type = "{}"'.format(self.metric_type)]
-        if self.resource_type is not None:
-            filters.append('resource.type = "{}"'.format(self.resource_type))
         if self.group_id is not None:
             filters.append('group.id = "{}"'.format(self.group_id))
         if self.projects:
@@ -701,29 +702,31 @@ class _Filter(object):
 
 def _build_label_filter(category, *args, **kwargs):
     """Construct a filter string to filter on metric or resource labels."""
-    def _strip_suffix(key):
-        return key.rsplit('_', 1)[0]
+    terms = list(args)
+    for key in kwargs:
+        value = kwargs[key]
+        if value is None:
+            continue
 
-    def _terms():
-        for arg in args:
-            yield arg
+        suffix = None
+        if key.endswith('_prefix') or key.endswith('_suffix'):
+            key, suffix = key.rsplit('_', 1)
 
-        for key in kwargs:
-            value = kwargs[key]
-            if value is None:
-                continue
-
+        if category == 'resource' and key == 'resource_type':
+            key = 'resource.type'
+        else:
             key = '.'.join((category, 'label', key))
-            if key.endswith('_prefix'):
-                yield '{} = starts_with("{}")'.format(
-                    _strip_suffix(key), value)
-            elif key.endswith('_suffix'):
-                yield '{} = ends_with("{}")'.format(
-                    _strip_suffix(key), value)
-            else:
-                yield '{} = "{}"'.format(key, value)
 
-    return ' AND '.join(sorted(_terms()))
+        if suffix == 'prefix':
+            term = '{} = starts_with("{}")'
+        elif suffix == 'suffix':
+            term = '{} = ends_with("{}")'
+        else:
+            term = '{} = "{}"'
+
+        terms.append(term.format(key, value))
+
+    return ' AND '.join(sorted(terms))
 
 
 def _sorted_resource_labels(labels):

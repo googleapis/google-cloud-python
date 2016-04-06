@@ -58,7 +58,6 @@ class Client(JSONClient):
 
     def query(self,
               metric_type=Query.DEFAULT_METRIC_TYPE,
-              resource_type=None,
               end_time=None,
               days=0, hours=0, minutes=0):
         """Construct a query object for listing time series.
@@ -74,11 +73,6 @@ class Client(JSONClient):
             please note that this default value is provided only for
             demonstration purposes and is subject to change. See the
             `supported metrics`_.
-
-        :type resource_type: string
-        :param resource_type: An optional resource type to filter by.
-            For example: ``"gce_instance"``. See the `defined resource
-            types`_.
 
         :type end_time: :class:`datetime.datetime` or None
         :param end_time: The end time (inclusive) of the time interval
@@ -112,10 +106,8 @@ class Client(JSONClient):
             :meth:`~gcloud.monitoring.timeseries.Query.select_interval`.
 
         .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
-        .. _defined resource types:
-            https://cloud.google.com/monitoring/api/v3/monitored-resources
         """
-        return Query(self, metric_type, resource_type,
+        return Query(self, metric_type,
                      end_time=end_time,
                      days=days, hours=hours, minutes=minutes)
 
