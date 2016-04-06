@@ -149,6 +149,19 @@ class Topic(object):
         else:
             return True
 
+    def delete(self, client=None):
+        """API call:  delete the topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current topic.
+        """
+        client = self._require_client(client)
+        client.connection.topic_delete(topic_path=self.full_name)
+
     def _timestamp_message(self, attrs):
         """Add a timestamp to ``attrs``, if the topic is so configured.
 
@@ -200,19 +213,6 @@ class Topic(object):
         """
         client = self._require_client(client)
         return Batch(self, client)
-
-    def delete(self, client=None):
-        """API call:  delete the topic via a DELETE request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
-
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current topic.
-        """
-        client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
 
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.

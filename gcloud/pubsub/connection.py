@@ -180,7 +180,19 @@ class Connection(base_connection.JSONConnection):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the new topic, in format
+        :param topic_path: the fully-qualfied path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
         return self.api_request(method='GET', path='/%s' % (topic_path,))
+
+    def topic_delete(self, topic_path):
+        """API call:  delete a topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+        """
+        return self.api_request(method='DELETE', path='/%s' % (topic_path,))
