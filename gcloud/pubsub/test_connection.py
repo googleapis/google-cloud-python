@@ -279,7 +279,25 @@ class TestConnection(unittest2.TestCase):
 
         resource = conn.topic_create(self.TOPIC_PATH)
 
+        self.assertEqual(resource, RETURNED)
         self.assertEqual(http._called_with['method'], 'PUT')
+        self._verify_uri(http._called_with['uri'], self.TOPIC_PATH)
+        self.assertEqual(http._called_with['body'], None)
+
+    def test_topic_get(self):
+        import json
+        RETURNED = {'name': self.TOPIC_PATH}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.topic_get(self.TOPIC_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(http._called_with['method'], 'GET')
         self._verify_uri(http._called_with['uri'], self.TOPIC_PATH)
         self.assertEqual(http._called_with['body'], None)
 

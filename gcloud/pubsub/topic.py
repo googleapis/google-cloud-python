@@ -143,7 +143,7 @@ class Topic(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.connection.topic_get(topic_path=self.full_name)
         except NotFound:
             return False
         else:
