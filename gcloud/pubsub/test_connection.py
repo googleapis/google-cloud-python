@@ -423,6 +423,38 @@ class TestConnection(unittest2.TestCase):
                          self.LIST_TOPIC_SUBSCRIPTIONS_PATH)
         self.assertEqual(http._called_with['body'], None)
 
+    def test_get_iam_policy(self):
+        import json
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        PATH = '%s:getIamPolicy' % (self.TOPIC_PATH,)
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        RETURNED = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+            ],
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        policy = conn.get_iam_policy(self.TOPIC_PATH)
+
+        self.assertEqual(policy, RETURNED)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self._verify_uri(http._called_with['uri'], PATH)
+
 
 class _Http(object):
 

@@ -245,3 +245,19 @@ class Connection(base_connection.JSONConnection):
         path = '/%s/subscriptions' % (topic_path,)
         resp = self.api_request(method='GET', path=path, query_params=params)
         return resp.get('subscriptions', ()), resp.get('nextPageToken')
+
+    def get_iam_policy(self, target_path):
+        """Fetch the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        return self.api_request(method='GET', path='/%s:getIamPolicy' % (
+            target_path,))

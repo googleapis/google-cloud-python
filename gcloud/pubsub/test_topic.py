@@ -397,7 +397,6 @@ class TestTopic(unittest2.TestCase):
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '/%s:getIamPolicy' % (self.TOPIC_PATH,)
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -414,7 +413,8 @@ class TestTopic(unittest2.TestCase):
             ],
         }
 
-        conn = _Connection(POLICY)
+        conn = _Connection()
+        conn._get_iam_policy_response = POLICY
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
@@ -425,20 +425,17 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._got_iam_policy, self.TOPIC_PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
-        PATH = '/%s:getIamPolicy' % (self.TOPIC_PATH,)
         POLICY = {
             'etag': 'ACAB',
         }
 
         conn1 = _Connection()
-        conn2 = _Connection(POLICY)
+        conn2 = _Connection()
+        conn2._get_iam_policy_response = POLICY
         client1 = _Client(project=self.PROJECT, connection=conn1)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
@@ -452,10 +449,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(sorted(policy.viewers), [])
 
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._got_iam_policy, self.TOPIC_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import Policy
@@ -801,6 +796,10 @@ class _Connection(object):
                                  page_token=None):
         self._topic_listed = topic_path, page_size, page_token
         return self._topic_list_subscriptions_response
+
+    def get_iam_policy(self, target_path):
+        self._got_iam_policy = target_path
+        return self._get_iam_policy_response
 
 
 class _Topic(object):
