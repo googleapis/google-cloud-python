@@ -15,7 +15,22 @@
 import unittest2
 
 
-class TestLabel(unittest2.TestCase):
+class TestLabelValueType(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.monitoring.label import LabelValueType
+        return LabelValueType
+
+    def test_one(self):
+        self.assertTrue(hasattr(self._getTargetClass(), 'STRING'))
+
+    def test_names(self):
+        for name in self._getTargetClass().__dict__:
+            if not name.startswith('_'):
+                self.assertEqual(getattr(self._getTargetClass(), name), name)
+
+
+class TestLabelDescriptor(unittest2.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.label import LabelDescriptor

@@ -15,6 +15,36 @@
 import unittest2
 
 
+class TestMetricKind(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.monitoring.metric import MetricKind
+        return MetricKind
+
+    def test_one(self):
+        self.assertTrue(hasattr(self._getTargetClass(), 'GAUGE'))
+
+    def test_names(self):
+        for name in self._getTargetClass().__dict__:
+            if not name.startswith('_'):
+                self.assertEqual(getattr(self._getTargetClass(), name), name)
+
+
+class TestValueType(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.monitoring.metric import ValueType
+        return ValueType
+
+    def test_one(self):
+        self.assertTrue(hasattr(self._getTargetClass(), 'DISTRIBUTION'))
+
+    def test_names(self):
+        for name in self._getTargetClass().__dict__:
+            if not name.startswith('_'):
+                self.assertEqual(getattr(self._getTargetClass(), name), name)
+
+
 class TestMetricDescriptor(unittest2.TestCase):
 
     def _getTargetClass(self):

@@ -27,6 +27,35 @@ import collections
 from gcloud.monitoring.label import LabelDescriptor
 
 
+class MetricKind(object):
+    """Allowed values for the `kind of measurement`_.
+
+    .. _kind of measurement:
+        https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+        projects.metricDescriptors#MetricKind
+    """
+
+    GAUGE = 'GAUGE'
+    DELTA = 'DELTA'
+    CUMULATIVE = 'CUMULATIVE'
+
+
+class ValueType(object):
+    """Allowed values for the `metric value type`_.
+
+    .. _metric value type:
+        https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+        projects.metricDescriptors#ValueType
+    """
+
+    BOOL = 'BOOL'
+    INT64 = 'INT64'
+    DOUBLE = 'DOUBLE'
+    STRING = 'STRING'
+    DISTRIBUTION = 'DISTRIBUTION'
+    MONEY = 'MONEY'
+
+
 class MetricDescriptor(collections.namedtuple(
         'MetricDescriptor', ('name type labels metric_kind value_type unit'
                              ' description display_name'))):

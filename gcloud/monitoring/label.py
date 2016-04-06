@@ -21,6 +21,19 @@
 import collections
 
 
+class LabelValueType(object):
+    """Allowed values for the `type of a label`_.
+
+    .. _type of a label:
+        https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+        LabelDescriptor#ValueType
+    """
+
+    STRING = 'STRING'
+    BOOL = 'BOOL'
+    INT64 = 'INT64'
+
+
 class LabelDescriptor(collections.namedtuple('LabelDescriptor',
                                              'key value_type description')):
     """Schema specification and documentation for a single label.
@@ -50,6 +63,6 @@ class LabelDescriptor(collections.namedtuple('LabelDescriptor',
         """
         return cls(
             info.get('key', ''),
-            info.get('valueType', 'STRING'),
+            info.get('valueType', LabelValueType.STRING),
             info.get('description', ''),
         )
