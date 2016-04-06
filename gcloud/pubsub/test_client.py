@@ -16,6 +16,9 @@ import unittest2
 
 
 class TestClient(unittest2.TestCase):
+    PROJECT = 'PROJECT'
+    TOPIC_NAME = 'topic_name'
+    TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
 
     def _getTargetClass(self):
         from gcloud.pubsub.client import Client
@@ -26,89 +29,61 @@ class TestClient(unittest2.TestCase):
 
     def test_list_topics_no_paging(self):
         from gcloud.pubsub.topic import Topic
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        conn._list_topics_response = [{'name': self.TOPIC_PATH}], None
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        topics, next_page_token = client.list_topics()
 
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-
-        RETURNED = {'topics': [{'name': TOPIC_PATH}]}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        topics, next_page_token = CLIENT_OBJ.list_topics()
-        # Test values are correct.
         self.assertEqual(len(topics), 1)
         self.assertTrue(isinstance(topics[0], Topic))
-        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._listed, (self.PROJECT, None, None))
 
     def test_list_topics_with_paging(self):
         from gcloud.pubsub.topic import Topic
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        RETURNED = {'topics': [{'name': TOPIC_PATH}],
-                    'nextPageToken': TOKEN2}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        conn._list_topics_response = [{'name': self.TOPIC_PATH}], TOKEN2
 
-        # Execute request.
-        topics, next_page_token = CLIENT_OBJ.list_topics(SIZE, TOKEN1)
-        # Test values are correct.
+        topics, next_page_token = client.list_topics(SIZE, TOKEN1)
+
         self.assertEqual(len(topics), 1)
         self.assertTrue(isinstance(topics[0], Topic))
-        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, TOKEN2)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req['query_params'],
-                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._listed, (self.PROJECT, 1, TOKEN1))
 
     def test_list_topics_missing_key(self):
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        conn._list_topics_response = (), None
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        topics, next_page_token = client.list_topics()
 
-        RETURNED = {}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        topics, next_page_token = CLIENT_OBJ.list_topics()
-        # Test values are correct.
         self.assertEqual(len(topics), 0)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._listed, (self.PROJECT, None, None))
 
     def test_list_subscriptions_no_paging(self):
         from gcloud.pubsub.subscription import Subscription
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        client = self._makeOne(project=PROJECT, credentials=creds)
 
         SUB_NAME = 'subscription_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -117,18 +92,18 @@ class TestClient(unittest2.TestCase):
         SUB_INFO = [{'name': SUB_PATH, 'topic': TOPIC_PATH}]
         RETURNED = {'subscriptions': SUB_INFO}
         # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client.connection = _Connection(RETURNED)
 
         # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions()
+        subscriptions, next_page_token = client.list_subscriptions()
         # Test values are correct.
         self.assertEqual(len(subscriptions), 1)
         self.assertTrue(isinstance(subscriptions[0], Subscription))
         self.assertEqual(subscriptions[0].name, SUB_NAME)
         self.assertEqual(subscriptions[0].topic.name, TOPIC_NAME)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(len(client.connection._requested), 1)
+        req = client.connection._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
         self.assertEqual(req['query_params'], {})
@@ -136,9 +111,9 @@ class TestClient(unittest2.TestCase):
     def test_list_subscriptions_with_paging(self):
         from gcloud.pubsub.subscription import Subscription
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        client = self._makeOne(project=PROJECT, credentials=creds)
 
         SUB_NAME = 'subscription_name'
         SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
@@ -155,10 +130,10 @@ class TestClient(unittest2.TestCase):
                      'pushConfig': {'pushEndpoint': PUSH_ENDPOINT}}]
         RETURNED = {'subscriptions': SUB_INFO, 'nextPageToken': TOKEN2}
         # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client.connection = _Connection(RETURNED)
 
         # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions(
+        subscriptions, next_page_token = client.list_subscriptions(
             SIZE, TOKEN1)
         # Test values are correct.
         self.assertEqual(len(subscriptions), 1)
@@ -168,8 +143,8 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(subscriptions[0].ack_deadline, ACK_DEADLINE)
         self.assertEqual(subscriptions[0].push_endpoint, PUSH_ENDPOINT)
         self.assertEqual(next_page_token, TOKEN2)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(len(client.connection._requested), 1)
+        req = client.connection._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
         self.assertEqual(req['query_params'],
@@ -177,21 +152,21 @@ class TestClient(unittest2.TestCase):
 
     def test_list_subscriptions_w_missing_key(self):
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        client = self._makeOne(project=PROJECT, credentials=creds)
 
         RETURNED = {}
         # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client.connection = _Connection(RETURNED)
 
         # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions()
+        subscriptions, next_page_token = client.list_subscriptions()
         # Test values are correct.
         self.assertEqual(len(subscriptions), 0)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
+        self.assertEqual(len(client.connection._requested), 1)
+        req = client.connection._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
         self.assertEqual(req['query_params'], {})
@@ -199,9 +174,9 @@ class TestClient(unittest2.TestCase):
     def test_topic(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        client_obj = self._makeOne(project=PROJECT, credentials=CREDS)
+        client_obj = self._makeOne(project=PROJECT, credentials=creds)
         new_topic = client_obj.topic(TOPIC_NAME)
         self.assertEqual(new_topic.name, TOPIC_NAME)
         self.assertTrue(new_topic._client is client_obj)
@@ -234,3 +209,7 @@ class _Connection(object):
         self._requested.append(kw)
         response, self._responses = self._responses[0], self._responses[1:]
         return response
+
+    def list_topics(self, project, page_size, page_token):
+        self._listed = (project, page_size, page_token)
+        return self._list_topics_response
