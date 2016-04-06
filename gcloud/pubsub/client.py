@@ -96,23 +96,14 @@ class Client(JSONClient):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/subscriptions' % (self.project,)
-
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
+        conn = self.connection
+        resources, next_token = conn.list_subscriptions(
+            self.project, page_size, page_token)
         topics = {}
         subscriptions = [Subscription.from_api_repr(resource, self,
                                                     topics=topics)
-                         for resource in resp.get('subscriptions', ())]
-        return subscriptions, resp.get('nextPageToken')
+                         for resource in resources]
+        return subscriptions, next_token
 
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
