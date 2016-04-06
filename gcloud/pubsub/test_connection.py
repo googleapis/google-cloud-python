@@ -267,6 +267,22 @@ class TestConnection(unittest2.TestCase):
                          self.LIST_SUBSCRIPTIONS_PATH)
         self.assertEqual(http._called_with['body'], None)
 
+    def test_topic_create(self):
+        import json
+        RETURNED = {'name': self.TOPIC_PATH}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.topic_create(self.TOPIC_PATH)
+
+        self.assertEqual(http._called_with['method'], 'PUT')
+        self._verify_uri(http._called_with['uri'], self.TOPIC_PATH)
+        self.assertEqual(http._called_with['body'], None)
+
 
 class _Http(object):
 

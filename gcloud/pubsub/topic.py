@@ -128,7 +128,7 @@ class Topic(object):
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='PUT', path=self.path)
+        client.connection.topic_create(topic_path=self.full_name)
 
     def exists(self, client=None):
         """API call:  test for the existence of the topic via a GET request

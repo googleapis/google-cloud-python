@@ -160,3 +160,15 @@ class Connection(base_connection.JSONConnection):
         path = '/projects/%s/subscriptions' % (project,)
         resp = self.api_request(method='GET', path=path, query_params=params)
         return resp.get('subscriptions', ()), resp.get('nextPageToken')
+
+    def topic_create(self, topic_path):
+        """API call:  create a topic via a PUT request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the new topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+        """
+        return self.api_request(method='PUT', path='/%s' % (topic_path,))
