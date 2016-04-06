@@ -16,6 +16,9 @@ import unittest2
 
 
 class TestTopic(unittest2.TestCase):
+    PROJECT = 'PROJECT'
+    TOPIC_NAME = 'topic_name'
+    TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
 
     def _getTargetClass(self):
         from gcloud.pubsub.topic import Topic
@@ -25,119 +28,101 @@ class TestTopic(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor_w_explicit_timestamp(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        CLIENT = _Client(project=PROJECT)
-        topic = self._makeOne(TOPIC_NAME,
-                              client=CLIENT,
+        client = _Client(project=self.PROJECT)
+        topic = self._makeOne(self.TOPIC_NAME,
+                              client=client,
                               timestamp_messages=True)
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(topic.full_name,
-                         'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME))
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertEqual(topic.project, self.PROJECT)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
         self.assertTrue(topic.timestamp_messages)
 
     def test_from_api_repr(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        CLIENT = _Client(project=PROJECT)
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        resource = {'name': PATH}
+        client = _Client(project=self.PROJECT)
+        resource = {'name': self.TOPIC_PATH}
         klass = self._getTargetClass()
-        topic = klass.from_api_repr(resource, client=CLIENT)
-        self.assertEqual(topic.name, TOPIC_NAME)
-        self.assertTrue(topic._client is CLIENT)
-        self.assertEqual(topic.project, PROJECT)
-        self.assertEqual(topic.full_name, PATH)
+        topic = klass.from_api_repr(resource, client=client)
+        self.assertEqual(topic.name, self.TOPIC_NAME)
+        self.assertTrue(topic._client is client)
+        self.assertEqual(topic.project, self.PROJECT)
+        self.assertEqual(topic.full_name, self.TOPIC_PATH)
 
     def test_from_api_repr_with_bad_client(self):
-        TOPIC_NAME = 'topic_name'
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
-        CLIENT = _Client(project=PROJECT1)
-        PATH = 'projects/%s/topics/%s' % (PROJECT2, TOPIC_NAME)
+        client = _Client(project=PROJECT1)
+        PATH = 'projects/%s/topics/%s' % (PROJECT2, self.TOPIC_NAME)
         resource = {'name': PATH}
         klass = self._getTargetClass()
         self.assertRaises(ValueError, klass.from_api_repr,
-                          resource, client=CLIENT)
+                          resource, client=client)
 
     def test_create_w_bound_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn = _Connection({'name': PATH})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        PATH = '/%s' % (self.TOPIC_PATH,)
+        conn = _Connection({'name': self.TOPIC_PATH})
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         topic.create()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_create_w_alternate_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({'name': PATH})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        conn2 = _Connection({'name': PATH})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
-        topic.create(client=CLIENT2)
+        PATH = '/%s' % (self.TOPIC_PATH,)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': self.TOPIC_PATH})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic.create(client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_exists_miss_w_bound_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        PATH = '/%s' % (self.TOPIC_PATH,)
         conn = _Connection()
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         self.assertFalse(topic.exists())
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_exists_hit_w_alternate_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({'name': PATH})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        conn2 = _Connection({'name': PATH})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
-        self.assertTrue(topic.exists(client=CLIENT2))
+        PATH = '/%s' % (self.TOPIC_PATH,)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection({'name': self.TOPIC_PATH})
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        self.assertTrue(topic.exists(client=client2))
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_publish_single_bytes_wo_attrs_w_bound_client(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64,
-                   'attributes': {}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        MESSAGE = {'data': B64, 'attributes': {}}
         conn = _Connection({'messageIds': [MSGID]})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         msgid = topic.publish(PAYLOAD)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
@@ -146,85 +131,80 @@ class TestTopic(unittest2.TestCase):
         from gcloud.pubsub import topic as MUT
         from gcloud._helpers import _RFC3339_MICROS
         from gcloud._testing import _Monkey
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         NOW = datetime.datetime.utcnow()
 
         def _utcnow():
             return NOW
 
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64,
-                   'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({'messageIds': [MSGID]})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        MESSAGE = {
+            'data': B64,
+            'attributes': {'timestamp': NOW.strftime(_RFC3339_MICROS)},
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'messageIds': [MSGID]})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
 
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1,
+        topic = self._makeOne(self.TOPIC_NAME, client=client1,
                               timestamp_messages=True)
         with _Monkey(MUT, _NOW=_utcnow):
-            msgid = topic.publish(PAYLOAD, client=CLIENT2)
+            msgid = topic.publish(PAYLOAD, client=client2)
 
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
     def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         OVERRIDE = '2015-04-10T16:46:22.868399Z'
         MESSAGE = {'data': B64,
                    'attributes': {'timestamp': OVERRIDE}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT,
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client,
                               timestamp_messages=True)
         msgid = topic.publish(PAYLOAD, timestamp=OVERRIDE)
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
     def test_publish_single_w_attrs(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID]})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         msgid = topic.publish(PAYLOAD, attr1='value1', attr2='value2')
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE]})
 
     def test_publish_multiple_w_bound_client(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD1 = b'This is the first message text'
         PAYLOAD2 = b'This is the second message text'
         B64_1 = base64.b64encode(PAYLOAD1)
@@ -235,10 +215,9 @@ class TestTopic(unittest2.TestCase):
                     'attributes': {}}
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         with topic.batch() as batch:
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
@@ -247,30 +226,29 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE1, MESSAGE2]})
 
     def test_publish_multiple_w_alternate_client(self):
         import base64
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD1 = b'This is the first message text'
         PAYLOAD2 = b'This is the second message text'
         B64_1 = base64.b64encode(PAYLOAD1)
         B64_2 = base64.b64encode(PAYLOAD2)
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
-        MESSAGE1 = {'data': B64_1.decode('ascii'),
-                    'attributes': {}}
-        MESSAGE2 = {'data': B64_2.decode('ascii'),
-                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        MESSAGE1 = {'data': B64_1.decode('ascii'), 'attributes': {}}
+        MESSAGE2 = {
+            'data': B64_2.decode('ascii'),
+            'attributes': {'attr1': 'value1', 'attr2': 'value2'},
+        }
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
-        with topic.batch(client=CLIENT2) as batch:
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        with topic.batch(client=client2) as batch:
             batch.publish(PAYLOAD1)
             batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
         self.assertEqual(list(batch), [MSGID1, MSGID2])
@@ -279,19 +257,18 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s:publish' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'messages': [MESSAGE1, MESSAGE2]})
 
     def test_publish_multiple_error(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
+        PATH = '/%s:publish' % (self.TOPIC_PATH,)
         PAYLOAD1 = b'This is the first message text'
         PAYLOAD2 = b'This is the second message text'
         MSGID1 = 'DEADBEEF'
         MSGID2 = 'BEADCAFE'
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT = _Client(project=PROJECT)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         try:
             with topic.batch() as batch:
                 batch.publish(PAYLOAD1)
@@ -303,40 +280,34 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 0)
 
     def test_delete_w_bound_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        PATH = '/%s' % (self.TOPIC_PATH,)
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         topic.delete()
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_delete_w_alternate_client(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        conn1 = _Connection({})
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        PATH = '/%s' % (self.TOPIC_PATH,)
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection({})
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
-        topic.delete(client=CLIENT2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
+        topic.delete(client=client2)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_subscription(self):
         from gcloud.pubsub.subscription import Subscription
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        CLIENT = _Client(project=PROJECT)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         SUBSCRIPTION_NAME = 'subscription_name'
         subscription = topic.subscription(SUBSCRIPTION_NAME)
@@ -345,21 +316,21 @@ class TestTopic(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions_no_paging(self):
+        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
         from gcloud.pubsub.subscription import Subscription
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
         SUB_NAME_1 = 'subscription_1'
-        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_1)
+        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, SUB_NAME_1)
         SUB_NAME_2 = 'subscription_2'
-        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_2)
-        TOPIC_NAME = 'topic_name'
+        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, SUB_NAME_2)
         SUBS_LIST = [SUB_PATH_1, SUB_PATH_2]
         TOKEN = 'TOKEN'
         RETURNED = {'subscriptions': SUBS_LIST, 'nextPageToken': TOKEN}
 
         conn = _Connection(RETURNED)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions()
@@ -380,28 +351,26 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'],
-                         '/projects/%s/topics/%s/subscriptions'
-                         % (PROJECT, TOPIC_NAME))
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {})
 
     def test_list_subscriptions_with_paging(self):
+        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
         from gcloud.pubsub.subscription import Subscription
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
         SUB_NAME_1 = 'subscription_1'
-        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_1)
+        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, SUB_NAME_1)
         SUB_NAME_2 = 'subscription_2'
-        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_2)
-        TOPIC_NAME = 'topic_name'
+        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (
+            self.PROJECT, SUB_NAME_2)
         SUBS_LIST = [SUB_PATH_1, SUB_PATH_2]
         PAGE_SIZE = 10
         TOKEN = 'TOKEN'
         RETURNED = {'subscriptions': SUBS_LIST}
 
         conn = _Connection(RETURNED)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions(
@@ -423,20 +392,15 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'],
-                         '/projects/%s/topics/%s/subscriptions'
-                         % (PROJECT, TOPIC_NAME))
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'],
                          {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
 
     def test_list_subscriptions_missing_key(self):
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-
+        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
         conn = _Connection({})
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions()
@@ -447,13 +411,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'],
-                         '/projects/%s/topics/%s/subscriptions'
-                         % (PROJECT, TOPIC_NAME))
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['query_params'], {})
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        PATH = '/%s:getIamPolicy' % (self.TOPIC_PATH,)
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
@@ -469,14 +432,10 @@ class TestTopic(unittest2.TestCase):
                 {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        PATH = 'projects/%s/topics/%s:getIamPolicy' % (PROJECT, TOPIC_NAME)
 
         conn = _Connection(POLICY)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         policy = topic.get_iam_policy()
 
@@ -489,24 +448,21 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
+        PATH = '/%s:getIamPolicy' % (self.TOPIC_PATH,)
         POLICY = {
             'etag': 'ACAB',
         }
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        PATH = 'projects/%s/topics/%s:getIamPolicy' % (PROJECT, TOPIC_NAME)
 
         conn1 = _Connection()
         conn2 = _Connection(POLICY)
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
-        policy = topic.get_iam_policy(client=CLIENT2)
+        policy = topic.get_iam_policy(client=client2)
 
         self.assertEqual(policy.etag, 'ACAB')
         self.assertEqual(policy.version, None)
@@ -518,11 +474,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import Policy
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        PATH = '/%s:setIamPolicy' % (self.TOPIC_PATH,)
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
@@ -541,14 +498,10 @@ class TestTopic(unittest2.TestCase):
         RESPONSE = POLICY.copy()
         RESPONSE['etag'] = 'ABACABAF'
         RESPONSE['version'] = 18
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        PATH = 'projects/%s/topics/%s:setIamPolicy' % (PROJECT, TOPIC_NAME)
 
         conn = _Connection(RESPONSE)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
         policy = Policy('DEADBEEF', 17)
         policy.owners.add(OWNER1)
         policy.owners.add(OWNER2)
@@ -568,25 +521,22 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'policy': POLICY})
 
     def test_set_iam_policy_w_alternate_client(self):
         from gcloud.pubsub.iam import Policy
+        PATH = '/%s:setIamPolicy' % (self.TOPIC_PATH,)
         RESPONSE = {'etag': 'ACAB'}
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        TOPIC_NAME = 'topic_name'
-        PATH = 'projects/%s/topics/%s:setIamPolicy' % (PROJECT, TOPIC_NAME)
 
         conn1 = _Connection()
         conn2 = _Connection(RESPONSE)
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
         policy = Policy()
-        new_policy = topic.set_iam_policy(policy, client=CLIENT2)
+        new_policy = topic.set_iam_policy(policy, client=client2)
 
         self.assertEqual(new_policy.etag, 'ACAB')
         self.assertEqual(new_policy.version, None)
@@ -598,15 +548,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], {'policy': {}})
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
-            PROJECT, TOPIC_NAME)
+        PATH = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
@@ -615,8 +562,8 @@ class TestTopic(unittest2.TestCase):
             'permissions': ROLES[:-1],
         }
         conn = _Connection(RESPONSE)
-        CLIENT = _Client(project=PROJECT, connection=conn)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT)
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         allowed = topic.check_iam_permissions(ROLES)
 
@@ -624,34 +571,31 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], REQUESTED)
 
     def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        TOPIC_NAME = 'topic_name'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/topics/%s:testIamPermissions' % (
-            PROJECT, TOPIC_NAME)
+        PATH = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         REQUESTED = {
             'permissions': ROLES,
         }
         RESPONSE = {}
         conn1 = _Connection()
-        CLIENT1 = _Client(project=PROJECT, connection=conn1)
+        client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection(RESPONSE)
-        CLIENT2 = _Client(project=PROJECT, connection=conn2)
-        topic = self._makeOne(TOPIC_NAME, client=CLIENT1)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
-        allowed = topic.check_iam_permissions(ROLES, client=CLIENT2)
+        allowed = topic.check_iam_permissions(ROLES, client=client2)
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 1)
         req = conn2._requested[0]
         self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], REQUESTED)
 
 
@@ -666,10 +610,10 @@ class TestBatch(unittest2.TestCase):
 
     def test_ctor_defaults(self):
         topic = _Topic()
-        CLIENT = _Client(project='PROJECT')
-        batch = self._makeOne(topic, CLIENT)
+        client = _Client(project='PROJECT')
+        batch = self._makeOne(topic, client)
         self.assertTrue(batch.topic is topic)
-        self.assertTrue(batch.client is CLIENT)
+        self.assertTrue(batch.client is client)
         self.assertEqual(len(batch.messages), 0)
         self.assertEqual(len(batch.message_ids), 0)
 
@@ -693,9 +637,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {}}
         connection = _Connection()
-        CLIENT = _Client(project='PROJECT', connection=connection)
+        client = _Client(project='PROJECT', connection=connection)
         topic = _Topic()
-        batch = self._makeOne(topic, client=CLIENT)
+        batch = self._makeOne(topic, client=client)
         batch.publish(PAYLOAD)
         self.assertEqual(len(connection._requested), 0)
         self.assertEqual(batch.messages, [MESSAGE])
@@ -707,9 +651,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {'timestamp': 'TIMESTAMP'}}
         connection = _Connection()
-        CLIENT = _Client(project='PROJECT', connection=connection)
+        client = _Client(project='PROJECT', connection=connection)
         topic = _Topic(timestamp_messages=True)
-        batch = self._makeOne(topic, client=CLIENT)
+        batch = self._makeOne(topic, client=client)
         batch.publish(PAYLOAD)
         self.assertEqual(len(connection._requested), 0)
         self.assertEqual(batch.messages, [MESSAGE])
@@ -727,9 +671,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT = _Client(project='PROJECT', connection=conn)
+        client = _Client(project='PROJECT', connection=conn)
         topic = _Topic()
-        batch = self._makeOne(topic, client=CLIENT)
+        batch = self._makeOne(topic, client=client)
         batch.publish(PAYLOAD1)
         batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
         batch.commit()
@@ -754,14 +698,14 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn1 = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT1 = _Client(project='PROJECT', connection=conn1)
+        client1 = _Client(project='PROJECT', connection=conn1)
         conn2 = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT2 = _Client(project='PROJECT', connection=conn2)
+        client2 = _Client(project='PROJECT', connection=conn2)
         topic = _Topic()
-        batch = self._makeOne(topic, client=CLIENT1)
+        batch = self._makeOne(topic, client=client1)
         batch.publish(PAYLOAD1)
         batch.publish(PAYLOAD2, attr1='value1', attr2='value2')
-        batch.commit(client=CLIENT2)
+        batch.commit(client=client2)
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn1._requested), 0)
@@ -784,9 +728,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT = _Client(project='PROJECT', connection=conn)
+        client = _Client(project='PROJECT', connection=conn)
         topic = _Topic()
-        batch = self._makeOne(topic, client=CLIENT)
+        batch = self._makeOne(topic, client=client)
 
         with batch as other:
             batch.publish(PAYLOAD1)
@@ -814,9 +758,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
-        CLIENT = _Client(project='PROJECT', connection=conn)
+        client = _Client(project='PROJECT', connection=conn)
         topic = _Topic()
-        batch = self._makeOne(topic, client=CLIENT)
+        batch = self._makeOne(topic, client=client)
 
         try:
             with batch as other:
