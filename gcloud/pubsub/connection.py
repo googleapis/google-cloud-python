@@ -261,3 +261,23 @@ class Connection(base_connection.JSONConnection):
         """
         return self.api_request(method='GET', path='/%s:getIamPolicy' % (
             target_path,))
+
+    def set_iam_policy(self, target_path, policy):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type policy: dict
+        :param policy: the new policy resource.
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        wrapped = {'policy': policy}
+        return self.api_request(method='POST', path='/%s:setIamPolicy' % (
+            target_path,), data=wrapped)
