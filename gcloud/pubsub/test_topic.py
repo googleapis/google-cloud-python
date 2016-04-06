@@ -309,7 +309,6 @@ class TestTopic(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
     def test_list_subscriptions_no_paging(self):
-        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
         from gcloud.pubsub.subscription import Subscription
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -319,15 +318,14 @@ class TestTopic(unittest2.TestCase):
             self.PROJECT, SUB_NAME_2)
         SUBS_LIST = [SUB_PATH_1, SUB_PATH_2]
         TOKEN = 'TOKEN'
-        RETURNED = {'subscriptions': SUBS_LIST, 'nextPageToken': TOKEN}
 
-        conn = _Connection(RETURNED)
+        conn = _Connection()
+        conn._topic_list_subscriptions_response = SUBS_LIST, TOKEN
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
-        # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions()
-        # Test values are correct.
+
         self.assertEqual(len(subscriptions), 2)
 
         subscription = subscriptions[0]
@@ -341,14 +339,11 @@ class TestTopic(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
         self.assertEqual(next_page_token, TOKEN)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._topic_listed,
+                         (self.TOPIC_PATH, None, None))
 
     def test_list_subscriptions_with_paging(self):
-        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
         from gcloud.pubsub.subscription import Subscription
         SUB_NAME_1 = 'subscription_1'
         SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (
@@ -359,16 +354,15 @@ class TestTopic(unittest2.TestCase):
         SUBS_LIST = [SUB_PATH_1, SUB_PATH_2]
         PAGE_SIZE = 10
         TOKEN = 'TOKEN'
-        RETURNED = {'subscriptions': SUBS_LIST}
 
-        conn = _Connection(RETURNED)
+        conn = _Connection()
+        conn._topic_list_subscriptions_response = SUBS_LIST, None
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
-        # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions(
             page_size=PAGE_SIZE, page_token=TOKEN)
-        # Test values are correct.
+
         self.assertEqual(len(subscriptions), 2)
 
         subscription = subscriptions[0]
@@ -382,30 +376,24 @@ class TestTopic(unittest2.TestCase):
         self.assertTrue(subscription.topic is topic)
 
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'],
-                         {'pageSize': PAGE_SIZE, 'pageToken': TOKEN})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._topic_listed,
+                         (self.TOPIC_PATH, PAGE_SIZE, TOKEN))
 
     def test_list_subscriptions_missing_key(self):
-        PATH = '/%s/subscriptions' % (self.TOPIC_PATH,)
-        conn = _Connection({})
+        conn = _Connection()
+        conn._topic_list_subscriptions_response = (), None
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
-        # Execute request.
         subscriptions, next_page_token = topic.list_subscriptions()
-        # Test values are correct.
+
         self.assertEqual(len(subscriptions), 0)
         self.assertEqual(next_page_token, None)
 
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._topic_listed,
+                         (self.TOPIC_PATH, None, None))
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -808,6 +796,11 @@ class _Connection(object):
     def topic_publish(self, topic_path, messages):
         self._topic_published = topic_path, messages
         return self._topic_publish_response
+
+    def topic_list_subscriptions(self, topic_path, page_size=None,
+                                 page_token=None):
+        self._topic_listed = topic_path, page_size, page_token
+        return self._topic_list_subscriptions_response
 
 
 class _Topic(object):

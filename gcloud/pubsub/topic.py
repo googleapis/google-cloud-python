@@ -239,24 +239,14 @@ class Topic(object):
                   value as ``page_token``).
         """
         client = self._require_client(client)
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/topics/%s/subscriptions' % (
-            self.project, self.name)
-
-        resp = client.connection.api_request(method='GET', path=path,
-                                             query_params=params)
+        conn = client.connection
+        sub_paths, next_token = conn.topic_list_subscriptions(
+            self.full_name, page_size, page_token)
         subscriptions = []
-        for sub_path in resp.get('subscriptions', ()):
+        for sub_path in sub_paths:
             sub_name = subscription_name_from_path(sub_path, self.project)
             subscriptions.append(Subscription(sub_name, self))
-        return subscriptions, resp.get('nextPageToken')
+        return subscriptions, next_token
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the topic.

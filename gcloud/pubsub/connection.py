@@ -213,3 +213,35 @@ class Connection(base_connection.JSONConnection):
         data = {'messages': messages}
         return self.api_request(
             method='POST', path='/%s:publish' % (topic_path,), data=data)
+
+    def topic_list_subscriptions(self, topic_path, page_size=None,
+                                 page_token=None):
+        """API call:  list subscriptions bound to a topic via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/%s/subscriptions' % (topic_path,)
+        resp = self.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')

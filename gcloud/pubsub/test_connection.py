@@ -18,9 +18,10 @@ import unittest2
 class TestConnection(unittest2.TestCase):
     PROJECT = 'PROJECT'
     LIST_TOPICS_PATH = 'projects/%s/topics' % (PROJECT,)
+    LIST_SUBSCRIPTIONS_PATH = 'projects/%s/subscriptions' % (PROJECT,)
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-    LIST_SUBSCRIPTIONS_PATH = 'projects/%s/subscriptions' % (PROJECT,)
+    LIST_TOPIC_SUBSCRIPTIONS_PATH = '%s/subscriptions' % (TOPIC_PATH,)
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
@@ -341,6 +342,86 @@ class TestConnection(unittest2.TestCase):
                          '%s:publish' % (self.TOPIC_PATH,))
         self.assertEqual(http._called_with['body'],
                          json.dumps({'messages': [MESSAGE]}))
+
+    def test_topic_list_subscriptions_no_paging(self):
+        import json
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        RETURNED = {'subscriptions': [SUB_INFO]}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        subscriptions, next_token = conn.topic_list_subscriptions(
+            self.TOPIC_PATH)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertTrue(isinstance(subscription, dict))
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(http._called_with['method'], 'GET')
+        self._verify_uri(http._called_with['uri'],
+                         self.LIST_TOPIC_SUBSCRIPTIONS_PATH)
+        self.assertEqual(http._called_with['body'], None)
+
+    def test_topic_list_subscriptions_with_paging(self):
+        import json
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        RETURNED = {
+            'subscriptions': [SUB_INFO],
+            'nextPageToken': 'TOKEN2',
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        subscriptions, next_token = conn.topic_list_subscriptions(
+            self.TOPIC_PATH, page_token=TOKEN1, page_size=SIZE)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertTrue(isinstance(subscription, dict))
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(next_token, TOKEN2)
+
+        self.assertEqual(http._called_with['method'], 'GET')
+        self._verify_uri(http._called_with['uri'],
+                         self.LIST_TOPIC_SUBSCRIPTIONS_PATH,
+                         pageToken=TOKEN1, pageSize=str(SIZE))
+        self.assertEqual(http._called_with['body'], None)
+
+    def test_topic_list_subscriptions_missing_key(self):
+        import json
+        RETURNED = {}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        subscriptions, next_token = conn.topic_list_subscriptions(
+            self.TOPIC_PATH)
+
+        self.assertEqual(len(subscriptions), 0)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(http._called_with['method'], 'GET')
+        self._verify_uri(http._called_with['uri'],
+                         self.LIST_TOPIC_SUBSCRIPTIONS_PATH)
+        self.assertEqual(http._called_with['body'], None)
 
 
 class _Http(object):
