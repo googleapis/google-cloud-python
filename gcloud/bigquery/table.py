@@ -401,7 +401,6 @@ class Table(object):
                 'projectId': self._dataset.project,
                 'datasetId': self._dataset.name,
                 'tableId': self.name},
-            'schema': {'fields': _build_schema_resource(self._schema)},
         }
         if self.description is not None:
             resource['description'] = self.description
@@ -419,8 +418,10 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
-            # Back-end rejects 'schema' when passing a query.
-            del resource['schema']
+        elif self._schema:
+            resource['schema'] = {
+                'fields': _build_schema_resource(self._schema)
+            }
 
         return resource
 
