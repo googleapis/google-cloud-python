@@ -275,38 +275,37 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(conn2._subscription_deleted, self.SUB_PATH)
 
     def test_modify_push_config_w_endpoint_w_bound_client(self):
-        PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)
-        conn = _Connection({})
+        conn = _Connection()
+        conn._subscription_modify_push_config_response = {}
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         subscription.modify_push_configuration(push_endpoint=self.ENDPOINT)
+
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'],
-                         {'pushConfig': {'pushEndpoint': self.ENDPOINT}})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_modified_push_config,
+                         (self.SUB_PATH, self.ENDPOINT))
 
     def test_modify_push_config_wo_endpoint_w_alternate_client(self):
-        PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)
-        conn1 = _Connection({})
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _Connection()
+        conn2._subscription_modify_push_config_response = {}
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic,
                                      push_endpoint=self.ENDPOINT)
+
         subscription.modify_push_configuration(push_endpoint=None,
                                                client=client2)
+
         self.assertEqual(subscription.push_endpoint, None)
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], {'pushConfig': {}})
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_modified_push_config,
+                         (self.SUB_PATH, None))
 
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
         import base64
@@ -671,6 +670,12 @@ class _Connection(object):
     def subscription_delete(self, subscription_path):
         self._subscription_deleted = subscription_path
         return self._subscription_delete_response
+
+    def subscription_modify_push_config(
+            self, subscription_path, push_endpoint):
+        self._subscription_modified_push_config = (
+            subscription_path, push_endpoint)
+        return self._subscription_modify_push_config_response
 
 
 class _Topic(object):

@@ -367,3 +367,23 @@ class Connection(base_connection.JSONConnection):
         """
         path = '/%s' % (subscription_path,)
         return self.api_request(method='DELETE', path=path)
+
+    def subscription_modify_push_config(self, subscription_path,
+                                        push_endpoint):
+        """API call:  update push config of a subscription via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+        :type push_endpoint: string, or ``NoneType``
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end.  If not set, the application must pull
+                              messages.
+        """
+        path = '/%s:modifyPushConfig' % (subscription_path,)
+        resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
+        return self.api_request(method='POST', path=path, data=resource)

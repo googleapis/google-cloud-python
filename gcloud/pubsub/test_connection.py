@@ -622,6 +622,27 @@ class TestConnection(unittest2.TestCase):
         self._verify_uri(http._called_with['uri'], self.SUB_PATH)
         self.assertEqual(http._called_with['body'], None)
 
+    def test_subscription_modify_push_config(self):
+        import json
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        BODY = {
+            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
+        }
+        RETURNED = {}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        conn.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
+
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:modifyPushConfig' % (self.SUB_PATH,))
+        self.assertEqual(http._called_with['body'], json.dumps(BODY))
+
 
 class _Http(object):
 

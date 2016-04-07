@@ -216,13 +216,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {}
-        config = data['pushConfig'] = {}
-        if push_endpoint is not None:
-            config['pushEndpoint'] = push_endpoint
-        client.connection.api_request(
-            method='POST', path='%s:modifyPushConfig' % (self.path,),
-            data=data)
+        client.connection.subscription_modify_push_config(
+            self.full_name, push_endpoint)
         self.push_endpoint = push_endpoint
 
     def pull(self, return_immediately=False, max_messages=1, client=None):
