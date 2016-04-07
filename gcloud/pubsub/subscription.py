@@ -114,9 +114,14 @@ class Subscription(object):
         return self._client.project
 
     @property
+    def full_name(self):
+        """URL path for the subscription's APIs"""
+        return 'projects/%s/subscriptions/%s' % (self.project, self.name)
+
+    @property
     def path(self):
         """URL path for the subscription's APIs"""
-        return '/projects/%s/subscriptions/%s' % (self.project, self.name)
+        return '/%s' % (self.full_name,)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -143,16 +148,10 @@ class Subscription(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
-        data = {'topic': self.topic.full_name}
-
-        if self.ack_deadline is not None:
-            data['ackDeadlineSeconds'] = self.ack_deadline
-
-        if self.push_endpoint is not None:
-            data['pushConfig'] = {'pushEndpoint': self.push_endpoint}
-
         client = self._require_client(client)
-        client.connection.api_request(method='PUT', path=self.path, data=data)
+        client.connection.subscription_create(
+            self.full_name, self.topic.full_name, self.ack_deadline,
+            self.push_endpoint)
 
     def exists(self, client=None):
         """API call:  test existence of the subscription via a GET request

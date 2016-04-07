@@ -534,6 +534,54 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'],
                          json.dumps({'permissions': ALL_ROLES}))
 
+    def test_subscription_create_defaults(self):
+        import json
+        RESOURCE = {'topic': self.TOPIC_PATH}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        RETURNED = RESOURCE.copy()
+        RETURNED['name'] = self.SUB_PATH
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(http._called_with['method'], 'PUT')
+        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
+        self.assertEqual(http._called_with['body'], json.dumps(RESOURCE))
+
+    def test_subscription_create_explicit(self):
+        import json
+        ACK_DEADLINE = 90
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        RESOURCE = {
+            'topic': self.TOPIC_PATH,
+            'ackDeadlineSeconds': ACK_DEADLINE,
+            'pushConfig': {
+                'pushEndpoint': PUSH_ENDPOINT,
+            },
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        RETURNED = RESOURCE.copy()
+        RETURNED['name'] = self.SUB_PATH
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.subscription_create(
+            self.SUB_PATH, self.TOPIC_PATH,
+            ack_deadline=ACK_DEADLINE, push_endpoint=PUSH_ENDPOINT)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(http._called_with['method'], 'PUT')
+        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
+        self.assertEqual(http._called_with['body'], json.dumps(RESOURCE))
+
 
 class _Http(object):
 

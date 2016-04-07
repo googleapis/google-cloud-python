@@ -133,38 +133,47 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
 
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        BODY = {'topic': self.TOPIC_PATH}
-        conn = _Connection({'name': self.SUB_PATH})
+        RESPONSE = {
+            'topic': self.TOPIC_PATH,
+            'name': self.SUB_PATH,
+        }
+        conn = _Connection()
+        conn._subscription_create_response = RESPONSE
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         subscription.create()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], BODY)
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_created,
+                         (self.SUB_PATH, self.TOPIC_PATH, None, None))
 
     def test_create_push_w_ack_deadline_w_alternate_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        BODY = {'topic': self.TOPIC_PATH,
-                'ackDeadlineSeconds': self.DEADLINE,
-                'pushConfig': {'pushEndpoint': self.ENDPOINT}}
-        conn1 = _Connection({'name': self.SUB_PATH})
+        RESPONSE = {
+            'topic': self.TOPIC_PATH,
+            'name': self.SUB_PATH,
+            'ackDeadlineSeconds': self.DEADLINE,
+            'pushConfig': {'pushEndpoint': self.ENDPOINT}
+        }
+        conn = _Connection()
+        conn._subscription_create_response = RESPONSE
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': self.SUB_PATH})
+        conn2 = _Connection()
+        conn2._subscription_create_response = RESPONSE
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic,
                                      self.DEADLINE, self.ENDPOINT)
+
         subscription.create(client=client2)
+
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], BODY)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(
+            conn2._subscription_created,
+            (self.SUB_PATH, self.TOPIC_PATH, self.DEADLINE, self.ENDPOINT))
 
     def test_exists_miss_w_bound_client(self):
         PATH = '/%s' % (self.SUB_PATH,)
@@ -643,6 +652,12 @@ class _Connection(object):
             raise NotFound('miss')
         else:
             return response
+
+    def subscription_create(self, subscription_path, topic_path,
+                            ack_deadline=None, push_endpoint=None):
+        self._subscription_created = (
+            subscription_path, topic_path, ack_deadline, push_endpoint)
+        return self._subscription_create_response
 
 
 class _Topic(object):

@@ -302,3 +302,40 @@ class Connection(base_connection.JSONConnection):
         path = '/%s:testIamPermissions' % (target_path,)
         resp = self.api_request(method='POST', path=path, data=wrapped)
         return resp.get('permissions', [])
+
+    def subscription_create(self, subscription_path, topic_path,
+                            ack_deadline=None, push_endpoint=None):
+        """API call:  create a subscription via a PUT request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic being
+                           subscribed, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type ack_deadline: int, or ``NoneType``
+        :param ack_deadline: the deadline (in seconds) by which messages pulled
+                            from the back-end must be acknowledged.
+
+        :type push_endpoint: string, or ``NoneType``
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end.  If not set, the application must pull
+                              messages.
+        """
+        path = '/%s' % (subscription_path,)
+        resource = {'topic': topic_path}
+
+        if ack_deadline is not None:
+            resource['ackDeadlineSeconds'] = ack_deadline
+
+        if push_endpoint is not None:
+            resource['pushConfig'] = {'pushEndpoint': push_endpoint}
+
+        return self.api_request(method='PUT', path=path, data=resource)
