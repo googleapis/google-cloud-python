@@ -647,7 +647,7 @@ class TestConnection(unittest2.TestCase):
         import base64
         import json
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
@@ -677,7 +677,7 @@ class TestConnection(unittest2.TestCase):
         import base64
         import json
         PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD)
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
