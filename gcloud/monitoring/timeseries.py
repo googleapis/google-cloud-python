@@ -40,6 +40,8 @@ TOP_RESOURCE_LABELS = [
     'zone',
 ]
 
+_NOW = datetime.datetime.utcnow  # To be replaced by tests.
+
 
 class Aligner(object):
     """Allowed values for the `supported aligners`_."""
@@ -133,8 +135,7 @@ class Query(object):
         start_time = None
         if days or hours or minutes:
             if end_time is None:
-                end_time = datetime.datetime.utcnow().replace(second=0,
-                                                              microsecond=0)
+                end_time = _NOW().replace(second=0, microsecond=0)
             start_time = end_time - datetime.timedelta(days=days,
                                                        hours=hours,
                                                        minutes=minutes)
@@ -349,18 +350,18 @@ class Query(object):
                                                               60 * hours)
         return new_query
 
-    def reduce(self, cross_series_reducer, group_by_fields=()):
+    def reduce(self, cross_series_reducer, *group_by_fields):
         """Copy the query and add cross-series reduction.
 
         :type cross_series_reducer: string
-        :param cross_series_reducer: The approach to be used to combine
-            time series. For example: ``"REDUCE_MEAN"``.
-            See the `supported reducers`_.
+        :param cross_series_reducer:
+            The approach to be used to combine time series. For example:
+            ``"REDUCE_MEAN"``. See the `supported reducers`_.
 
-        :type group_by_fields: string or list of strings
-        :param group_by_fields: An optional field or set of fields
-            to be preserved by the reduction. For example, a value of
-            ``"resource.zone"`` will result in one time series per zone.
+        :type group_by_fields: strings
+        :param group_by_fields:
+            Fields to be preserved by the reduction. For example, specifying
+            just ``"resource.zone"`` will result in one time series per zone.
             The default is to aggregate all of the time series into just one.
 
         :rtype: :class:`Query`
@@ -370,9 +371,6 @@ class Query(object):
             https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
             projects.timeSeries/list#Reducer
         """
-        if isinstance(group_by_fields, six.string_types):
-            group_by_fields = [group_by_fields]
-
         new_query = self.copy()
         new_query._cross_series_reducer = cross_series_reducer
         new_query._group_by_fields = group_by_fields
@@ -406,7 +404,7 @@ class Query(object):
         if self._end_time is None:
             raise ValueError('Query time interval not specified.')
 
-        path = '/projects/{project}/timeSeries'.format(
+        path = '/projects/{project}/timeSeries/'.format(
             project=self._client.project)
 
         def _fragments():
@@ -437,7 +435,8 @@ class Query(object):
             points.reverse()  # Order from oldest to newest.
             yield timeseries._replace(points=points)
 
-    def _build_query_params(self, headers_only, page_size, page_token):
+    def _build_query_params(self, headers_only=False,
+                            page_size=None, page_token=None):
         """Assemble the list of key-value pairs for the URL query string.
 
         We use a list of key-value pairs instead of a ``dict`` to allow for
@@ -457,40 +456,38 @@ class Query(object):
         :returns:
             A list of key-value pairs suitable for passing to ``urlencode``.
         """
-        params = {'filter': self.filter}
+        def _pairs():
+            yield 'filter', self.filter
 
-        params['interval.endTime'] = _format_timestamp(self._end_time)
-        if self._start_time is not None:
-            params['interval.startTime'] = _format_timestamp(self._start_time)
+            yield 'interval.endTime', _format_timestamp(self._end_time)
+            if self._start_time is not None:
+                yield 'interval.startTime', _format_timestamp(self._start_time)
 
-        if self._per_series_aligner is not None:
-            params['aggregation.perSeriesAligner'] = self._per_series_aligner
+            if self._per_series_aligner is not None:
+                yield 'aggregation.perSeriesAligner', self._per_series_aligner
 
-        if self._alignment_period_seconds is not None:
-            alignment_period = '{}s'.format(self._alignment_period_seconds)
-            params['aggregation.alignmentPeriod'] = alignment_period
+            if self._alignment_period_seconds is not None:
+                alignment_period = '{period}s'.format(
+                    period=self._alignment_period_seconds)
+                yield 'aggregation.alignmentPeriod', alignment_period
 
-        if self._cross_series_reducer is not None:
-            params['aggregation.crossSeriesReducer'] = \
-                self._cross_series_reducer
+            if self._cross_series_reducer is not None:
+                yield ('aggregation.crossSeriesReducer',
+                       self._cross_series_reducer)
 
-        if headers_only:
-            params['view'] = 'HEADERS'
+            for field in self._group_by_fields:
+                yield 'aggregation.groupByFields', field
 
-        if page_size is not None:
-            params['pageSize'] = page_size
+            if headers_only:
+                yield 'view', 'HEADERS'
 
-        if page_token is not None:
-            params['pageToken'] = page_token
+            if page_size is not None:
+                yield 'pageSize', page_size
 
-        # Convert to a list of tuples before adding repeated fields.
-        params = list(six.iteritems(params))
+            if page_token is not None:
+                yield 'pageToken', page_token
 
-        if self._group_by_fields:
-            params.extend(('aggregation.groupByFields', field)
-                          for field in self._group_by_fields)
-
-        return sorted(params)
+        return list(_pairs())
 
     def as_dataframe(self, label=None, labels=None):
         """Return all the selected time series as a ``pandas`` dataframe.
@@ -651,13 +648,18 @@ class TimeSeries(collections.namedtuple(
 
     def __repr__(self):
         """Return a representation string with the points elided."""
-        return '\n'.join([
-            'TimeSeries(',
-            '    {},'.format(self.metric),
-            '    {},'.format(self.resource),
-            '    {}, {}, Number of points={})'.format(
-                self.metric_kind, self.value_type, len(self.points)),
-        ])
+        return (
+            '<TimeSeries with {num} points:\n'
+            '    metric={metric},\n'
+            '    resource={resource},\n'
+            '    metric_kind={kind}, value_type={type}>'
+        ).format(
+            num=len(self.points),
+            metric=self.metric,
+            resource=self.resource,
+            kind=self.metric_kind,
+            type=self.value_type,
+        )
 
 
 class Point(collections.namedtuple('Point', 'end_time start_time value')):
@@ -720,12 +722,13 @@ class _Filter(object):
                                                        *args, **kwargs)
 
     def __str__(self):
-        filters = ['metric.type = "{}"'.format(self.metric_type)]
+        filters = ['metric.type = "{type}"'.format(type=self.metric_type)]
         if self.group_id is not None:
-            filters.append('group.id = "{}"'.format(self.group_id))
+            filters.append('group.id = "{id}"'.format(id=self.group_id))
         if self.projects:
-            filters.append(' OR '.join('project = "{}"'.format(project)
-                                       for project in self.projects))
+            filters.append(
+                ' OR '.join('project = "{project}"'.format(project=project)
+                            for project in self.projects))
         if self.resource_label_filter:
             filters.append(self.resource_label_filter)
         if self.metric_label_filter:
@@ -754,13 +757,13 @@ def _build_label_filter(category, *args, **kwargs):
             key = '.'.join((category, 'label', key))
 
         if suffix == 'prefix':
-            term = '{} = starts_with("{}")'
+            term = '{key} = starts_with("{value}")'
         elif suffix == 'suffix':
-            term = '{} = ends_with("{}")'
+            term = '{key} = ends_with("{value}")'
         else:
-            term = '{} = "{}"'
+            term = '{key} = "{value}"'
 
-        terms.append(term.format(key, value))
+        terms.append(term.format(key=key, value=value))
 
     return ' AND '.join(sorted(terms))
 

@@ -14,6 +14,8 @@
 
 import unittest2
 
+PROJECT = 'my-project'
+
 
 class TestClient(unittest2.TestCase):
 
@@ -24,8 +26,107 @@ class TestClient(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
+    def test_query(self):
+        import datetime
+
+        START_TIME = datetime.datetime(2016, 4, 6, 22, 5, 0)
+        END_TIME = datetime.datetime(2016, 4, 6, 22, 10, 0)
+        MINUTES = 5
+
+        METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
+        METRIC_LABELS = {'instance_name': 'instance-1'}
+        METRIC_LABELS2 = {'instance_name': 'instance-2'}
+
+        RESOURCE_TYPE = 'gce_instance'
+        RESOURCE_LABELS = {
+            'project_id': 'my-project',
+            'zone': 'us-east1-a',
+            'instance_id': '1234567890123456789',
+        }
+        RESOURCE_LABELS2 = {
+            'project_id': 'my-project',
+            'zone': 'us-east1-b',
+            'instance_id': '9876543210987654321',
+        }
+
+        METRIC_KIND = 'GAUGE'
+        VALUE_TYPE = 'DOUBLE'
+
+        TS1 = '2016-04-06T22:05:00.042Z'
+        TS2 = '2016-04-06T22:05:01.042Z'
+        TS3 = '2016-04-06T22:05:02.042Z'
+
+        VAL1 = 0.1
+        VAL2 = 0.2
+
+        def P(timestamp, value):
+            return {
+                'interval': {'startTime': timestamp, 'endTime': timestamp},
+                'value': {'doubleValue': value},
+            }
+
+        SERIES1 = {
+            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS},
+            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS},
+            'metricKind': METRIC_KIND,
+            'valueType': VALUE_TYPE,
+            'points': [P(TS3, VAL1), P(TS2, VAL1), P(TS1, VAL1)],
+        }
+        SERIES2 = {
+            'metric': {'type': METRIC_TYPE, 'labels': METRIC_LABELS2},
+            'resource': {'type': RESOURCE_TYPE, 'labels': RESOURCE_LABELS2},
+            'metricKind': METRIC_KIND,
+            'valueType': VALUE_TYPE,
+            'points': [P(TS3, VAL2), P(TS2, VAL2), P(TS1, VAL2)],
+        }
+
+        RESPONSE = {'timeSeries': [SERIES1, SERIES2]}
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        connection = client.connection = _Connection(RESPONSE)
+
+        # A simple query. In practice, it can be very convenient to let the
+        # end time default to the start of the current minute.
+        query = client.query(METRIC_TYPE, end_time=END_TIME, minutes=MINUTES)
+        response = list(query)
+
+        self.assertEqual(len(response), 2)
+        series1, series2 = response
+
+        self.assertEqual(series1.metric.type, METRIC_TYPE)
+        self.assertEqual(series2.metric.type, METRIC_TYPE)
+        self.assertEqual(series1.metric.labels, METRIC_LABELS)
+        self.assertEqual(series2.metric.labels, METRIC_LABELS2)
+
+        self.assertEqual(series1.resource.type, RESOURCE_TYPE)
+        self.assertEqual(series2.resource.type, RESOURCE_TYPE)
+        self.assertEqual(series1.resource.labels, RESOURCE_LABELS)
+        self.assertEqual(series2.resource.labels, RESOURCE_LABELS2)
+
+        self.assertEqual(series1.metric_kind, METRIC_KIND)
+        self.assertEqual(series2.metric_kind, METRIC_KIND)
+        self.assertEqual(series1.value_type, VALUE_TYPE)
+        self.assertEqual(series2.value_type, VALUE_TYPE)
+
+        self.assertEqual([p.value for p in series1.points], [VAL1, VAL1, VAL1])
+        self.assertEqual([p.value for p in series2.points], [VAL2, VAL2, VAL2])
+        self.assertEqual([p.end_time for p in series1.points], [TS1, TS2, TS3])
+        self.assertEqual([p.end_time for p in series2.points], [TS1, TS2, TS3])
+
+        expected_request = {
+            'method': 'GET',
+            'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
+            'query_params': [
+                ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
+                ('interval.endTime', END_TIME.isoformat() + 'Z'),
+                ('interval.startTime', START_TIME.isoformat() + 'Z'),
+            ],
+        }
+
+        request, = connection._requested
+        self.assertEqual(request, expected_request)
+
     def test_fetch_metric_descriptor(self):
-        PROJECT = 'my-project'
         TYPE = 'custom.googleapis.com/my-metric'
         NAME = 'projects/{project}/metricDescriptors/{type}'.format(
             project=PROJECT, type=TYPE)
@@ -54,7 +155,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_metric_descriptors(self):
-        PROJECT = 'my-project'
         PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
 
         TYPE1 = 'custom.googleapis.com/my-metric-1'
@@ -106,7 +206,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_fetch_resource_descriptor(self):
-        PROJECT = 'my-project'
         TYPE = 'gce_instance'
         NAME = 'projects/{project}/monitoredResourceDescriptors/{type}'.format(
             project=PROJECT, type=TYPE)
@@ -149,7 +248,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_resource_descriptors(self):
-        PROJECT = 'my-project'
         PATH = 'projects/{project}/monitoredResourceDescriptors/'.format(
             project=PROJECT)
 
