@@ -323,11 +323,8 @@ class Subscription(object):
                   ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:setIamPolicy' % (self.path,)
         resource = policy.to_api_repr()
-        wrapped = {'policy': resource}
-        resp = client.connection.api_request(
-            method='POST', path=path, data=wrapped)
+        resp = client.connection.set_iam_policy(self.full_name, resource)
         return Policy.from_api_repr(resp)
 
     def check_iam_permissions(self, permissions, client=None):

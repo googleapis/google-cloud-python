@@ -526,9 +526,8 @@ class TestSubscription(unittest2.TestCase):
         RESPONSE = POLICY.copy()
         RESPONSE['etag'] = 'ABACABAF'
         RESPONSE['version'] = 18
-        PATH = '/%s:setIamPolicy' % (self.SUB_PATH,)
-
-        conn = _Connection(RESPONSE)
+        conn = _Connection()
+        conn._set_iam_policy_response = RESPONSE
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
@@ -547,20 +546,15 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.owners), [OWNER1, OWNER2])
         self.assertEqual(sorted(new_policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
-
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], {'policy': POLICY})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._set_iam_policy, (self.SUB_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
         from gcloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
-        PATH = '/%s:setIamPolicy' % (self.SUB_PATH,)
-
         conn1 = _Connection()
-        conn2 = _Connection(RESPONSE)
+        conn2 = _Connection()
+        conn2._set_iam_policy_response = RESPONSE
         client1 = _Client(project=self.PROJECT, connection=conn1)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -574,13 +568,9 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.owners), [])
         self.assertEqual(sorted(new_policy.editors), [])
         self.assertEqual(sorted(new_policy.viewers), [])
-
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], {'policy': {}})
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._set_iam_policy, (self.SUB_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -687,6 +677,10 @@ class _Connection(object):  # pylint: disable=too-many-instance-attributes
     def get_iam_policy(self, target_path):
         self._got_iam_policy = target_path
         return self._get_iam_policy_response
+
+    def set_iam_policy(self, target_path, policy):
+        self._set_iam_policy = target_path, policy
+        return self._set_iam_policy_response
 
 
 class _Topic(object):
