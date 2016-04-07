@@ -290,6 +290,8 @@ good-names = i, j, k, ex, Run, _,
 
 # Regular expression matching correct method names
 # DEFAULT:  method-rgx=[a-z_][a-z0-9_]{2,30}$
+# RATIONALE:  mapping long API names onto connection methods
+method-rgx=[a-z_][a-z0-9_]{2,35}$
 
 # Naming hint for method names
 # DEFAULT:  method-name-hint=[a-z_][a-z0-9_]{2,30}$

@@ -301,8 +301,7 @@ class Subscription(object):
                   ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:getIamPolicy' % (self.path,)
-        resp = client.connection.api_request(method='GET', path=path)
+        resp = client.connection.get_iam_policy(self.full_name)
         return Policy.from_api_repr(resp)
 
     def set_iam_policy(self, policy, client=None):
