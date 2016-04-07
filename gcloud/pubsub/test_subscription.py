@@ -310,18 +310,20 @@ class TestSubscription(unittest2.TestCase):
     def test_pull_wo_return_immediately_max_messages_w_bound_client(self):
         import base64
         from gcloud.pubsub.message import Message
-        PATH = '/%s:pull' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
-        conn = _Connection({'receivedMessages': [REC_MESSAGE]})
+        conn = _Connection()
+        conn._subscription_pull_response = [REC_MESSAGE]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         pulled = subscription.pull()
+
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
@@ -329,17 +331,13 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {})
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'],
-                         {'returnImmediately': False, 'maxMessages': 1})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_pulled,
+                         (self.SUB_PATH, False, 1))
 
     def test_pull_w_return_immediately_w_max_messages_w_alt_client(self):
         import base64
         from gcloud.pubsub.message import Message
-        PATH = '/%s:pull' % (self.SUB_PATH,)
         ACK_ID = 'DEADBEEF'
         MSG_ID = 'BEADCAFE'
         PAYLOAD = b'This is the message text'
@@ -348,12 +346,15 @@ class TestSubscription(unittest2.TestCase):
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'receivedMessages': [REC_MESSAGE]})
+        conn2 = _Connection()
+        conn2._subscription_pull_response = [REC_MESSAGE]
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         pulled = subscription.pull(return_immediately=True, max_messages=3,
                                    client=client2)
+
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
@@ -362,27 +363,23 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {'a': 'b'})
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'],
-                         {'returnImmediately': True, 'maxMessages': 3})
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_pulled,
+                         (self.SUB_PATH, True, 3))
 
     def test_pull_wo_receivedMessages(self):
-        PATH = '/%s:pull' % (self.SUB_PATH,)
         conn = _Connection({})
+        conn._subscription_pull_response = {}
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         pulled = subscription.pull(return_immediately=False)
+
         self.assertEqual(len(pulled), 0)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'],
-                         {'returnImmediately': False, 'maxMessages': 1})
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_pulled,
+                         (self.SUB_PATH, False, 1))
 
     def test_acknowledge_w_bound_client(self):
         PATH = '/%s:acknowledge' % (self.SUB_PATH,)
@@ -676,6 +673,12 @@ class _Connection(object):
         self._subscription_modified_push_config = (
             subscription_path, push_endpoint)
         return self._subscription_modify_push_config_response
+
+    def subscription_pull(self, subscription_path, return_immediately,
+                          max_messages):
+        self._subscription_pulled = (
+            subscription_path, return_immediately, max_messages)
+        return self._subscription_pull_response
 
 
 class _Topic(object):

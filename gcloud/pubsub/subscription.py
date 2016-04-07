@@ -245,12 +245,10 @@ class Subscription(object):
                   is an instance of :class:`gcloud.pubsub.message.Message`.
         """
         client = self._require_client(client)
-        data = {'returnImmediately': return_immediately,
-                'maxMessages': max_messages}
-        response = client.connection.api_request(
-            method='POST', path='%s:pull' % (self.path,), data=data)
+        response = client.connection.subscription_pull(
+            self.full_name, return_immediately, max_messages)
         return [(info['ackId'], Message.from_api_repr(info['message']))
-                for info in response.get('receivedMessages', ())]
+                for info in response]
 
     def acknowledge(self, ack_ids, client=None):
         """API call:  acknowledge retrieved messages for the subscription.

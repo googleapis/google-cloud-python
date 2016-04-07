@@ -387,3 +387,35 @@ class Connection(base_connection.JSONConnection):
         path = '/%s:modifyPushConfig' % (subscription_path,)
         resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
         return self.api_request(method='POST', path=path, data=resource)
+
+    def subscription_pull(self, subscription_path, return_immediately=False,
+                          max_messages=1):
+        """API call:  update push config of a subscription via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type return_immediately: boolean
+        :param return_immediately: if True, the back-end returns even if no
+                                   messages are available;  if False, the API
+                                   call blocks until one or more messages are
+                                   available.
+
+        :type max_messages: int
+        :param max_messages: the maximum number of messages to return.
+
+        :rtype: list of dict
+        :returns:  the ``receivedMessages`` element of the response.
+        """
+        path = '/%s:pull' % (subscription_path,)
+        data = {
+            'returnImmediately': return_immediately,
+            'maxMessages': max_messages,
+        }
+        response = self.api_request(method='POST', path=path, data=data)
+        return response['receivedMessages']

@@ -643,6 +643,68 @@ class TestConnection(unittest2.TestCase):
                          '%s:modifyPushConfig' % (self.SUB_PATH,))
         self.assertEqual(http._called_with['body'], json.dumps(BODY))
 
+    def test_subscription_pull_defaults(self):
+        import base64
+        import json
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD)
+        ACK_ID = 'DEADBEEF'
+        MSG_ID = 'BEADCAFE'
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        RETURNED = {
+            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        BODY = {
+            'returnImmediately': False,
+            'maxMessages': 1,
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        received = conn.subscription_pull(self.SUB_PATH)
+
+        self.assertEqual(received, RETURNED['receivedMessages'])
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:pull' % (self.SUB_PATH,))
+        self.assertEqual(http._called_with['body'], json.dumps(BODY))
+
+    def test_subscription_pull_explicit(self):
+        import base64
+        import json
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD)
+        ACK_ID = 'DEADBEEF'
+        MSG_ID = 'BEADCAFE'
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        RETURNED = {
+            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        MAX_MESSAGES = 10
+        BODY = {
+            'returnImmediately': True,
+            'maxMessages': MAX_MESSAGES,
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        received = conn.subscription_pull(
+            self.SUB_PATH, return_immediately=True, max_messages=MAX_MESSAGES)
+
+        self.assertEqual(received, RETURNED['receivedMessages'])
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:pull' % (self.SUB_PATH,))
+        self.assertEqual(http._called_with['body'], json.dumps(BODY))
+
 
 class _Http(object):
 
