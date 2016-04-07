@@ -419,6 +419,8 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
+            # https://github.com/GoogleCloudPlatform/gcloud-python/issues/1701
+            del resource['schema']
 
         return resource
 

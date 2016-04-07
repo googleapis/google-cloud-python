@@ -511,9 +511,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
             'view': {'query': QUERY},
@@ -800,10 +797,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
         table.default_table_expiration_ms = DEF_TABLE_EXP
         table.location = LOCATION
         table.expires = self.EXP_TIME
@@ -821,9 +815,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 {'projectId': self.PROJECT,
                  'datasetId': self.DS_NAME,
                  'tableId': self.TABLE_NAME},
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'expirationTime': _millis(self.EXP_TIME),
             'location': 'EU',
             'view': {'query': QUERY},
