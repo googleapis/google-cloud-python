@@ -203,41 +203,46 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(conn2._subscription_got, self.SUB_PATH)
 
     def test_reload_w_bound_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        conn = _Connection({'name': self.SUB_PATH,
-                            'topic': self.TOPIC_PATH,
-                            'ackDeadlineSeconds': self.DEADLINE,
-                            'pushConfig': {'pushEndpoint': self.ENDPOINT}})
+        RESPONSE = {
+            'name': self.SUB_PATH,
+            'topic': self.TOPIC_PATH,
+            'ackDeadlineSeconds': self.DEADLINE,
+            'pushConfig': {'pushEndpoint': self.ENDPOINT},
+        }
+        conn = _Connection()
+        conn._subscription_get_response = RESPONSE
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         subscription.reload()
+
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_got, self.SUB_PATH)
 
     def test_reload_w_alternate_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
+        RESPONSE = {
+            'name': self.SUB_PATH,
+            'topic': self.TOPIC_PATH,
+        }
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': self.SUB_PATH,
-                             'topic': self.TOPIC_PATH,
-                             'ackDeadlineSeconds': self.DEADLINE,
-                             'pushConfig': {'pushEndpoint': self.ENDPOINT}})
+        conn2 = _Connection()
+        conn2._subscription_get_response = RESPONSE
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
+        subscription = self._makeOne(self.SUB_NAME, topic,
+                                     self.DEADLINE, self.ENDPOINT)
+
         subscription.reload(client=client2)
-        self.assertEqual(subscription.ack_deadline, self.DEADLINE)
-        self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
+
+        self.assertEqual(subscription.ack_deadline, None)
+        self.assertEqual(subscription.push_endpoint, None)
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_got, self.SUB_PATH)
 
     def test_modify_push_config_w_endpoint_w_bound_client(self):
         PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)

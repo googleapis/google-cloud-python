@@ -182,7 +182,7 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = client.connection.api_request(method='GET', path=self.path)
+        data = client.connection.subscription_get(self.full_name)
         self.ack_deadline = data.get('ackDeadlineSeconds')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
