@@ -44,6 +44,7 @@ pip-log.txt
 
 # Built documentation
 docs/_build
+docs/_build_doc2dash
 
 # Virtual environment
 env/
