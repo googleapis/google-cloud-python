@@ -176,33 +176,31 @@ class TestSubscription(unittest2.TestCase):
             (self.SUB_PATH, self.TOPIC_PATH, self.DEADLINE, self.ENDPOINT))
 
     def test_exists_miss_w_bound_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         self.assertFalse(subscription.exists())
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req.get('query_params'), None)
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_got, self.SUB_PATH)
 
     def test_exists_hit_w_alternate_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        conn1 = _Connection({'name': self.SUB_PATH, 'topic': self.TOPIC_PATH})
+        RESPONSE = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': self.SUB_PATH, 'topic': self.TOPIC_PATH})
+        conn2 = _Connection()
+        conn2._subscription_get_response = RESPONSE
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         self.assertTrue(subscription.exists(client=client2))
+
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req.get('query_params'), None)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_got, self.SUB_PATH)
 
     def test_reload_w_bound_client(self):
         PATH = '/%s' % (self.SUB_PATH,)
@@ -643,21 +641,24 @@ class _Connection(object):
         self._requested = []
 
     def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
         self._requested.append(kw)
 
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
         self._subscription_created = (
             subscription_path, topic_path, ack_deadline, push_endpoint)
         return self._subscription_create_response
+
+    def subscription_get(self, subscription_path):
+        from gcloud.exceptions import NotFound
+        self._subscription_got = subscription_path
+        try:
+            return self._subscription_get_response
+        except AttributeError:
+            raise NotFound(subscription_path)
 
 
 class _Topic(object):

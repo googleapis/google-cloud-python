@@ -165,7 +165,7 @@ class Subscription(object):
         """
         client = self._require_client(client)
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.connection.subscription_get(self.full_name)
         except NotFound:
             return False
         else:

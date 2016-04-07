@@ -339,3 +339,17 @@ class Connection(base_connection.JSONConnection):
             resource['pushConfig'] = {'pushEndpoint': push_endpoint}
 
         return self.api_request(method='PUT', path=path, data=resource)
+
+    def subscription_get(self, subscription_path):
+        """API call:  retrieve a subscription via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the subscription,
+                                  in format
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        """
+        path = '/%s' % (subscription_path,)
+        return self.api_request(method='GET', path=path)

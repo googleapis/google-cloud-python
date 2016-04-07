@@ -582,6 +582,30 @@ class TestConnection(unittest2.TestCase):
         self._verify_uri(http._called_with['uri'], self.SUB_PATH)
         self.assertEqual(http._called_with['body'], json.dumps(RESOURCE))
 
+    def test_subscription_get(self):
+        import json
+        ACK_DEADLINE = 90
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        RETURNED = {
+            'topic': self.TOPIC_PATH,
+            'name': self.SUB_PATH,
+            'ackDeadlineSeconds': ACK_DEADLINE,
+            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
+        }
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        resource = conn.subscription_get(self.SUB_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
+        self.assertEqual(http._called_with['body'], None)
+
 
 class _Http(object):
 
