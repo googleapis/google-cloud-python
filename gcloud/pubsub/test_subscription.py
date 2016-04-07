@@ -244,6 +244,36 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(conn2._subscription_got, self.SUB_PATH)
 
+    def test_delete_w_bound_client(self):
+        RESPONSE = {}
+        conn = _Connection()
+        conn._subscription_delete_response = RESPONSE
+        client = _Client(project=self.PROJECT, connection=conn)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+
+        subscription.delete()
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_deleted, self.SUB_PATH)
+
+    def test_delete_w_alternate_client(self):
+        RESPONSE = {}
+        conn1 = _Connection()
+        client1 = _Client(project=self.PROJECT, connection=conn1)
+        conn2 = _Connection()
+        conn2._subscription_delete_response = RESPONSE
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic,
+                                     self.DEADLINE, self.ENDPOINT)
+
+        subscription.delete(client=client2)
+
+        self.assertEqual(len(conn1._requested), 0)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_deleted, self.SUB_PATH)
+
     def test_modify_push_config_w_endpoint_w_bound_client(self):
         PATH = '/%s:modifyPushConfig' % (self.SUB_PATH,)
         conn = _Connection({})
@@ -420,33 +450,6 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], PATH)
         self.assertEqual(req['data'], SENT)
-
-    def test_delete_w_bound_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
-        topic = _Topic(self.TOPIC_NAME, client=client)
-        subscription = self._makeOne(self.SUB_NAME, topic)
-        subscription.delete()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], PATH)
-
-    def test_delete_w_alternate_client(self):
-        PATH = '/%s' % (self.SUB_PATH,)
-        conn1 = _Connection({})
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        client2 = _Client(project=self.PROJECT, connection=conn2)
-        topic = _Topic(self.TOPIC_NAME, client=client1)
-        subscription = self._makeOne(self.SUB_NAME, topic)
-        subscription.delete(client=client2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], PATH)
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -664,6 +667,10 @@ class _Connection(object):
             return self._subscription_get_response
         except AttributeError:
             raise NotFound(subscription_path)
+
+    def subscription_delete(self, subscription_path):
+        self._subscription_deleted = subscription_path
+        return self._subscription_delete_response
 
 
 class _Topic(object):

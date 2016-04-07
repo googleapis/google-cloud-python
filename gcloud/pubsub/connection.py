@@ -353,3 +353,17 @@ class Connection(base_connection.JSONConnection):
         """
         path = '/%s' % (subscription_path,)
         return self.api_request(method='GET', path=path)
+
+    def subscription_delete(self, subscription_path):
+        """API call:  delete a subscription via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the subscription,
+                                  in format
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        """
+        path = '/%s' % (subscription_path,)
+        return self.api_request(method='DELETE', path=path)

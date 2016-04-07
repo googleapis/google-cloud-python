@@ -187,6 +187,19 @@ class Subscription(object):
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
 
+    def delete(self, client=None):
+        """API call:  delete the subscription via a DELETE request.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current subscription's topic.
+        """
+        client = self._require_client(client)
+        client.connection.subscription_delete(self.full_name)
+
     def modify_push_configuration(self, push_endpoint, client=None):
         """API call:  update the push endpoint for the subscription.
 
@@ -283,19 +296,6 @@ class Subscription(object):
         client.connection.api_request(
             method='POST', path='%s:modifyAckDeadline' % (self.path,),
             data=data)
-
-    def delete(self, client=None):
-        """API call:  delete the subscription via a DELETE request.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
-
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current subscription's topic.
-        """
-        client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the subscription.
