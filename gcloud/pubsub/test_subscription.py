@@ -575,14 +575,8 @@ class TestSubscription(unittest2.TestCase):
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        PATH = '/%s:testIamPermissions' % (self.SUB_PATH,)
-        REQUESTED = {
-            'permissions': ROLES,
-        }
-        RESPONSE = {
-            'permissions': ROLES[:-1],
-        }
-        conn = _Connection(RESPONSE)
+        conn = _Connection()
+        conn._test_iam_permissions_response = ROLES[:-1]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
@@ -590,23 +584,17 @@ class TestSubscription(unittest2.TestCase):
         allowed = subscription.check_iam_permissions(ROLES)
 
         self.assertEqual(allowed, ROLES[:-1])
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], REQUESTED)
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._tested_iam_permissions,
+                         (self.SUB_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        PATH = '/%s:testIamPermissions' % (self.SUB_PATH,)
-        REQUESTED = {
-            'permissions': ROLES,
-        }
-        RESPONSE = {}
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESPONSE)
+        conn2 = _Connection()
+        conn2._test_iam_permissions_response = []
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
@@ -615,11 +603,9 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], REQUESTED)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._tested_iam_permissions,
+                         (self.SUB_PATH, ROLES))
 
 
 class _Connection(object):  # pylint: disable=too-many-instance-attributes
@@ -627,12 +613,6 @@ class _Connection(object):  # pylint: disable=too-many-instance-attributes
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
@@ -681,6 +661,10 @@ class _Connection(object):  # pylint: disable=too-many-instance-attributes
     def set_iam_policy(self, target_path, policy):
         self._set_iam_policy = target_path, policy
         return self._set_iam_policy_response
+
+    def test_iam_permissions(self, target_path, permissions):
+        self._tested_iam_permissions = target_path, permissions
+        return self._test_iam_permissions_response
 
 
 class _Topic(object):

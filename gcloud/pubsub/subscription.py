@@ -118,11 +118,6 @@ class Subscription(object):
         """URL path for the subscription's APIs"""
         return 'projects/%s/subscriptions/%s' % (self.project, self.name)
 
-    @property
-    def path(self):
-        """URL path for the subscription's APIs"""
-        return '/%s' % (self.full_name,)
-
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -344,10 +339,5 @@ class Subscription(object):
         :returns: subset of ``permissions`` allowed by current IAM policy.
         """
         client = self._require_client(client)
-        path = '%s:testIamPermissions' % (self.path,)
-        data = {
-            'permissions': list(permissions),
-        }
-        resp = client.connection.api_request(
-            method='POST', path=path, data=data)
-        return resp.get('permissions', ())
+        return client.connection.test_iam_permissions(
+            self.full_name, list(permissions))
