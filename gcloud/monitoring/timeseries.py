@@ -156,6 +156,11 @@ class Query(object):
         return self.iter()
 
     @property
+    def metric_type(self):
+        """The metric type name."""
+        return self._filter.metric_type
+
+    @property
     def filter(self):
         """The filter string.
 

@@ -151,6 +151,11 @@ class TestQuery(unittest2.TestCase):
         with self.assertRaises(ValueError):
             list(query)
 
+    def test_metric_type(self):
+        client = _Client(project=PROJECT, connection=_Connection())
+        query = self._makeOne(client, METRIC_TYPE)
+        self.assertEqual(query.metric_type, METRIC_TYPE)
+
     def test_filter(self):
         client = _Client(project=PROJECT, connection=_Connection())
         query = self._makeOne(client, METRIC_TYPE)
