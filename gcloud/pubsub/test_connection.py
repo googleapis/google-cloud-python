@@ -705,6 +705,53 @@ class TestConnection(unittest2.TestCase):
                          '%s:pull' % (self.SUB_PATH,))
         self.assertEqual(http._called_with['body'], json.dumps(BODY))
 
+    def test_subscription_acknowledge(self):
+        import json
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        BODY = {
+            'ackIds': [ACK_ID1, ACK_ID2],
+        }
+        RETURNED = {}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        conn.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
+
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:acknowledge' % (self.SUB_PATH,))
+        self.assertEqual(http._called_with['body'], json.dumps(BODY))
+
+    def test_subscription_modify_ack_deadline(self):
+        import json
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        NEW_DEADLINE = 90
+        BODY = {
+            'ackIds': [ACK_ID1, ACK_ID2],
+            'ackDeadlineSeconds': NEW_DEADLINE,
+        }
+        RETURNED = {}
+        HEADERS = {
+            'status': '200',
+            'content-type': 'application/json',
+        }
+        http = _Http(HEADERS, json.dumps(RETURNED))
+        conn = self._makeOne(http=http)
+
+        conn.subscription_modify_ack_deadline(
+            self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
+
+        self.assertEqual(http._called_with['method'], 'POST')
+        self._verify_uri(http._called_with['uri'],
+                         '%s:modifyAckDeadline' % (self.SUB_PATH,))
+        self.assertEqual(http._called_with['body'], json.dumps(BODY))
+
 
 class _Http(object):
 

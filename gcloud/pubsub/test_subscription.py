@@ -382,70 +382,71 @@ class TestSubscription(unittest2.TestCase):
                          (self.SUB_PATH, False, 1))
 
     def test_acknowledge_w_bound_client(self):
-        PATH = '/%s:acknowledge' % (self.SUB_PATH,)
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn = _Connection({})
+        conn = _Connection()
+        conn._subscription_acknowlege_response = {}
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         subscription.acknowledge([ACK_ID1, ACK_ID2])
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_acked,
+                         (self.SUB_PATH, [ACK_ID1, ACK_ID2]))
 
     def test_acknowledge_w_alternate_client(self):
-        PATH = '/%s:acknowledge' % (self.SUB_PATH,)
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn1 = _Connection({})
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _Connection()
+        conn2._subscription_acknowlege_response = {}
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
+
         subscription.acknowledge([ACK_ID1, ACK_ID2], client=client2)
+
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], {'ackIds': [ACK_ID1, ACK_ID2]})
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_acked,
+                         (self.SUB_PATH, [ACK_ID1, ACK_ID2]))
 
     def test_modify_ack_deadline_w_bound_client(self):
-        PATH = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
-        ACK_ID = 'DEADBEEF'
-        SENT = {'ackIds': [ACK_ID], 'ackDeadlineSeconds': self.DEADLINE}
-        conn = _Connection({})
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        conn = _Connection()
+        conn._subscription_modify_ack_deadline_response = {}
         client = _Client(project=self.PROJECT, connection=conn)
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
-        subscription.modify_ack_deadline(ACK_ID, self.DEADLINE)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], SENT)
+
+        subscription.modify_ack_deadline([ACK_ID1, ACK_ID2], self.DEADLINE)
+
+        self.assertEqual(len(conn._requested), 0)
+        self.assertEqual(conn._subscription_modified_ack_deadline,
+                         (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
     def test_modify_ack_deadline_w_alternate_client(self):
-        PATH = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
-        ACK_ID = 'DEADBEEF'
-        SENT = {'ackIds': [ACK_ID], 'ackDeadlineSeconds': self.DEADLINE}
-        conn1 = _Connection({})
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
+        conn2 = _Connection()
+        conn2._subscription_modify_ack_deadline_response = {}
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
-        subscription.modify_ack_deadline(ACK_ID, self.DEADLINE, client=client2)
+
+        subscription.modify_ack_deadline(
+            [ACK_ID1, ACK_ID2], self.DEADLINE, client=client2)
+
         self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], PATH)
-        self.assertEqual(req['data'], SENT)
+        self.assertEqual(len(conn2._requested), 0)
+        self.assertEqual(conn2._subscription_modified_ack_deadline,
+                         (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
     def test_get_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -638,7 +639,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(req['data'], REQUESTED)
 
 
-class _Connection(object):
+class _Connection(object):  # pylint: disable=too-many-instance-attributes
 
     def __init__(self, *responses):
         self._responses = responses
@@ -679,6 +680,16 @@ class _Connection(object):
         self._subscription_pulled = (
             subscription_path, return_immediately, max_messages)
         return self._subscription_pull_response
+
+    def subscription_acknowledge(self, subscription_path, ack_ids):
+        self._subscription_acked = (subscription_path, ack_ids)
+        return self._subscription_acknowlege_response
+
+    def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
+                                         ack_deadline):
+        self._subscription_modified_ack_deadline = (
+            subscription_path, ack_ids, ack_deadline)
+        return self._subscription_modify_ack_deadline_response
 
 
 class _Topic(object):

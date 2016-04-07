@@ -419,3 +419,49 @@ class Connection(base_connection.JSONConnection):
         }
         response = self.api_request(method='POST', path=path, data=data)
         return response['receivedMessages']
+
+    def subscription_acknowledge(self, subscription_path, ack_ids):
+        """API call:  acknowledge retrieved messages for the subscription.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being acknowledged
+        """
+        path = '/%s:acknowledge' % (subscription_path,)
+        data = {
+            'ackIds': ack_ids,
+        }
+        self.api_request(method='POST', path=path, data=data)
+
+    def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
+                                         ack_deadline):
+        """API call:  acknowledge retrieved messages for the subscription.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being acknowledged
+
+        :type ack_deadline: int
+        :param ack_deadline: the deadline (in seconds) by which messages pulled
+                            from the back-end must be acknowledged.
+        """
+        path = '/%s:modifyAckDeadline' % (subscription_path,)
+        data = {
+            'ackIds': ack_ids,
+            'ackDeadlineSeconds': ack_deadline,
+        }
+        self.api_request(method='POST', path=path, data=data)

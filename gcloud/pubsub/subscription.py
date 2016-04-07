@@ -264,18 +264,16 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {'ackIds': ack_ids}
-        client.connection.api_request(
-            method='POST', path='%s:acknowledge' % (self.path,), data=data)
+        client.connection.subscription_acknowledge(self.full_name, ack_ids)
 
-    def modify_ack_deadline(self, ack_id, ack_deadline, client=None):
+    def modify_ack_deadline(self, ack_ids, ack_deadline, client=None):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
-        :type ack_id: string
-        :param ack_id: ack ID of message being updated
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being updated
 
         :type ack_deadline: int
         :param ack_deadline: new deadline for the message, in seconds
@@ -285,10 +283,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {'ackIds': [ack_id], 'ackDeadlineSeconds': ack_deadline}
-        client.connection.api_request(
-            method='POST', path='%s:modifyAckDeadline' % (self.path,),
-            data=data)
+        client.connection.subscription_modify_ack_deadline(
+            self.full_name, ack_ids, ack_deadline)
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the subscription.
