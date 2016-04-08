@@ -15,6 +15,193 @@
 import unittest2
 
 
+PROJECT = 'my-project'
+
+INSTANCE_NAMES = ['instance-1', 'instance-2']
+INSTANCE_ZONES = ['us-east1-a', 'us-east1-b']
+INSTANCE_IDS = ['1234567890123456789', '9876543210987654321']
+
+M = len(INSTANCE_NAMES)
+
+METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
+METRIC_LABELS = [{'instance_name': INSTANCE_NAMES[i]}
+                 for i in range(M)]
+
+RESOURCE_TYPE = 'gce_instance'
+RESOURCE_LABELS = [{'project_id': PROJECT,
+                    'zone': INSTANCE_ZONES[i],
+                    'instance_id': INSTANCE_IDS[i]}
+                   for i in range(M)]
+
+METRIC_KIND = 'GAUGE'
+VALUE_TYPE = 'DOUBLE'
+VALUES = [0.1 * i for i in range(M)]
+
+TIMESTAMPS = [
+    '2016-04-06T22:05:00.042Z',
+    '2016-04-06T22:05:01.042Z',
+    '2016-04-06T22:05:02.042Z',
+]
+N = len(TIMESTAMPS)
+
+
+def parse_timestamps():
+    import datetime
+    return [datetime.datetime.strptime(t, '%Y-%m-%dT%H:%M:%S.%fZ')
+            for t in TIMESTAMPS]
+
+
+def generate_query_results():
+    from gcloud.monitoring.metric import Metric
+    from gcloud.monitoring.resource import Resource
+    from gcloud.monitoring.timeseries import Point, TimeSeries
+
+    def P(timestamp, value):
+        return Point(
+            start_time=timestamp,
+            end_time=timestamp,
+            value=value,
+        )
+
+    for i in range(M):
+        yield TimeSeries(
+            metric=Metric(type=METRIC_TYPE, labels=METRIC_LABELS[i]),
+            resource=Resource(type=RESOURCE_TYPE, labels=RESOURCE_LABELS[i]),
+            metric_kind=METRIC_KIND,
+            value_type=VALUE_TYPE,
+            points=[P(t, VALUES[i]) for t in TIMESTAMPS],
+        )
+
+
+class Test__build_dataframe(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud.monitoring._dataframe import _build_dataframe
+        return _build_dataframe(*args, **kwargs)
+
+    def test_both_label_and_labels_illegal(self):
+        with self.assertRaises(ValueError):
+            self._callFUT([], label='instance_name', labels=['zone'])
+
+    def test_empty_labels_illegal(self):
+        with self.assertRaises(ValueError):
+            self._callFUT([], labels=[])
+
+    def test_simple_label(self):
+        iterable = generate_query_results()
+        dataframe = self._callFUT(iterable, label='instance_name')
+
+        self.assertEqual(dataframe.shape, (N, M))
+        self.assertEqual(dataframe.as_matrix().tolist(),
+                         [VALUES for i in range(N)])
+
+        self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
+        self.assertIsNone(dataframe.columns.name)
+
+        self.assertEqual(list(dataframe.index), parse_timestamps())
+        self.assertIsNone(dataframe.index.name)
+
+    def test_multiple_labels(self):
+        NAMES = ['resource_type', 'instance_id']
+
+        iterable = generate_query_results()
+        dataframe = self._callFUT(iterable, labels=NAMES)
+
+        self.assertEqual(dataframe.shape, (N, M))
+        self.assertEqual(dataframe.as_matrix().tolist(),
+                         [VALUES for i in range(N)])
+
+        expected_headers = [(RESOURCE_TYPE, instance_id)
+                            for instance_id in INSTANCE_IDS]
+        self.assertEqual(list(dataframe.columns), expected_headers)
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertIsNone(dataframe.columns.name)
+
+        self.assertEqual(list(dataframe.index), parse_timestamps())
+        self.assertIsNone(dataframe.index.name)
+
+    def test_multiple_labels_with_just_one(self):
+        NAME = 'instance_id'
+        NAMES = [NAME]
+
+        iterable = generate_query_results()
+        dataframe = self._callFUT(iterable, labels=NAMES)
+
+        self.assertEqual(dataframe.shape, (N, M))
+        self.assertEqual(dataframe.as_matrix().tolist(),
+                         [VALUES for i in range(N)])
+
+        self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertEqual(dataframe.columns.name, NAME)
+
+        self.assertEqual(list(dataframe.index), parse_timestamps())
+        self.assertIsNone(dataframe.index.name)
+
+    def test_smart_labels(self):
+        NAMES = ['resource_type', 'project_id',
+                 'zone', 'instance_id',
+                 'instance_name']
+
+        iterable = generate_query_results()
+        dataframe = self._callFUT(iterable)
+
+        self.assertEqual(dataframe.shape, (N, M))
+        self.assertEqual(dataframe.as_matrix().tolist(),
+                         [VALUES for i in range(N)])
+
+        expected_headers = [
+            (RESOURCE_TYPE, PROJECT, zone, instance_id, instance_name)
+            for zone, instance_id, instance_name
+            in zip(INSTANCE_ZONES, INSTANCE_IDS, INSTANCE_NAMES)]
+        self.assertEqual(list(dataframe.columns), expected_headers)
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertIsNone(dataframe.columns.name)
+
+        self.assertEqual(list(dataframe.index), parse_timestamps())
+        self.assertIsNone(dataframe.index.name)
+
+    def test_empty_table_simple_label(self):
+        import pandas
+        dataframe = self._callFUT([], label='instance_name')
+        self.assertEqual(dataframe.shape, (0, 0))
+        self.assertIsNone(dataframe.columns.name)
+        self.assertIsNone(dataframe.index.name)
+        self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
+
+    def test_empty_table_multiple_labels(self):
+        import pandas
+        NAMES = ['resource_type', 'instance_id']
+        dataframe = self._callFUT([], labels=NAMES)
+        self.assertEqual(dataframe.shape, (0, 0))
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertIsNone(dataframe.columns.name)
+        self.assertIsNone(dataframe.index.name)
+        self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
+
+    def test_empty_table_multiple_labels_with_just_one(self):
+        import pandas
+        NAME = 'instance_id'
+        NAMES = [NAME]
+        dataframe = self._callFUT([], labels=NAMES)
+        self.assertEqual(dataframe.shape, (0, 0))
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.index.name)
+        self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
+
+    def test_empty_table_smart_labels(self):
+        import pandas
+        NAME = 'resource_type'
+        NAMES = [NAME]
+        dataframe = self._callFUT([])
+        self.assertEqual(dataframe.shape, (0, 0))
+        self.assertEqual(dataframe.columns.names, NAMES)
+        self.assertEqual(dataframe.columns.name, NAME)
+        self.assertIsNone(dataframe.index.name)
+        self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
+
+
 class Test__sorted_resource_labels(unittest2.TestCase):
 
     def _callFUT(self, labels):
