@@ -591,27 +591,6 @@ class Test__build_label_filter(unittest2.TestCase):
         self.assertEqual(actual, expected)
 
 
-class Test__sorted_resource_labels(unittest2.TestCase):
-
-    def _callFUT(self, labels):
-        from gcloud.monitoring.query import _sorted_resource_labels
-        return _sorted_resource_labels(labels)
-
-    def test_empty(self):
-        self.assertEqual(self._callFUT([]), [])
-
-    def test_sorted(self):
-        from gcloud.monitoring.query import TOP_RESOURCE_LABELS
-        EXPECTED = TOP_RESOURCE_LABELS + ['other-1', 'other-2']
-        self.assertEqual(self._callFUT(EXPECTED), EXPECTED)
-
-    def test_reversed(self):
-        from gcloud.monitoring.query import TOP_RESOURCE_LABELS
-        EXPECTED = TOP_RESOURCE_LABELS + ['other-1', 'other-2']
-        INPUT = list(reversed(EXPECTED))
-        self.assertEqual(self._callFUT(INPUT), EXPECTED)
-
-
 class Test__format_timestamp(unittest2.TestCase):
 
     def _callFUT(self, timestamp):

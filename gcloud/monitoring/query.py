@@ -23,15 +23,8 @@ import copy
 import datetime
 import itertools
 
+from gcloud.monitoring._dataframe import _build_dataframe
 from gcloud.monitoring.timeseries import TimeSeries
-
-TOP_RESOURCE_LABELS = [
-    'project_id',
-    'aws_account',
-    'location',
-    'region',
-    'zone',
-]
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
 
@@ -491,7 +484,7 @@ class Query(object):
         return list(_pairs())
 
     def as_dataframe(self, label=None, labels=None):
-        """Return all the selected time series as a ``pandas`` dataframe.
+        """Return all the selected time series as a `pandas`_ dataframe.
 
         .. note::
 
@@ -529,53 +522,10 @@ class Query(object):
 
         :rtype: :class:`pandas.DataFrame`
         :returns: A dataframe where each column represents one time series.
+
+        .. _pandas: http://pandas.pydata.org/pandas-docs/stable/
         """
-        import pandas   # pylint: disable=import-error
-
-        if label is not None and labels is not None:
-            raise ValueError('Cannot specify both "label" and "labels".')
-        elif not (labels or labels is None):
-            raise ValueError('"labels" must be non-empty or None.')
-
-        columns = []
-        headers = []
-        for time_series in self:
-            pandas_series = pandas.Series(
-                data=[p.value for p in time_series.points],
-                index=[p.end_time for p in time_series.points],
-            )
-            columns.append(pandas_series)
-            headers.append(time_series.header())
-
-        # Implement a smart default of using all available labels.
-        if label is None and labels is None:
-            resource_labels = set(itertools.chain.from_iterable(
-                header.resource.labels for header in headers))
-            metric_labels = set(itertools.chain.from_iterable(
-                header.metric.labels for header in headers))
-            labels = (['resource_type'] +
-                      _sorted_resource_labels(resource_labels) +
-                      sorted(metric_labels))
-
-        # Assemble the columns into a DataFrame.
-        dataframe = pandas.DataFrame(columns).T
-
-        # Convert the timestamp strings into a DatetimeIndex.
-        dataframe.index = pandas.to_datetime(dataframe.index)
-
-        # Build a column Index or MultiIndex from the label values. Do not
-        # include level names in the column header if the user requested a
-        # single-level header by specifying "label".
-        level_names = labels or None
-        label_keys = labels or [label]
-        dataframe.columns = pandas.MultiIndex.from_arrays(
-            [[header.labels.get(key, '') for header in headers]
-             for key in label_keys],
-            names=level_names)
-
-        # Sort the rows just in case (since the API doesn't guarantee the
-        # ordering), and sort the columns lexicographically.
-        return dataframe.sort_index(axis=0).sort_index(axis=1)
+        return _build_dataframe(self, label, labels)  # pragma: NO COVER
 
     def copy(self):
         """Copy the query object.
@@ -661,14 +611,6 @@ def _build_label_filter(category, *args, **kwargs):
         terms.append(term.format(key=key, value=value))
 
     return ' AND '.join(sorted(terms))
-
-
-def _sorted_resource_labels(labels):
-    """Sort label names, putting well-known resource labels first."""
-    head = [label for label in TOP_RESOURCE_LABELS if label in labels]
-    tail = sorted(label for label in labels
-                  if label not in TOP_RESOURCE_LABELS)
-    return head + tail
 
 
 def _format_timestamp(timestamp):
