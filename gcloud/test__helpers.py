@@ -54,9 +54,13 @@ class Test__UTC(unittest2.TestCase):
 
     def test_module_property(self):
         from gcloud import _helpers as MUT
-
         klass = self._getTargetClass()
-        self.assertTrue(isinstance(MUT.UTC, klass))
+        try:
+            import pytz
+        except ImportError:  # pragma: NO COVER
+            self.assertTrue(isinstance(MUT.UTC, klass))
+        else:
+            self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
 
     def test_dst(self):
         import datetime
