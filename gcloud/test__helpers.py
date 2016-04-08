@@ -57,7 +57,7 @@ class Test__UTC(unittest2.TestCase):
         klass = self._getTargetClass()
         try:
             import pytz
-        except ImportError:  # pragma: NO COVER
+        except ImportError:
             self.assertTrue(isinstance(MUT.UTC, klass))
         else:
             self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
