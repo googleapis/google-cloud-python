@@ -30,8 +30,8 @@ and monitored resource descriptors.
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
 from gcloud.monitoring.metric import MetricDescriptor
+from gcloud.monitoring.query import Query
 from gcloud.monitoring.resource import ResourceDescriptor
-from gcloud.monitoring.timeseries import Query
 
 
 class Client(JSONClient):
@@ -85,7 +85,7 @@ class Client(JSONClient):
 
             It is also allowed to omit the end time and duration here,
             in which case
-            :meth:`~gcloud.monitoring.timeseries.Query.select_interval`
+            :meth:`~gcloud.monitoring.query.Query.select_interval`
             must be called before the query is executed.
 
         :type days: integer
@@ -97,13 +97,13 @@ class Client(JSONClient):
         :type minutes: integer
         :param minutes: The number of minutes in the time interval.
 
-        :rtype: :class:`~gcloud.monitoring.timeseries.Query`
+        :rtype: :class:`~gcloud.monitoring.query.Query`
         :returns: The query object.
 
         :raises: :exc:`ValueError` if ``end_time`` is specified but
             ``days``, ``hours``, and ``minutes`` are all zero.
             If you really want to specify a point in time, use
-            :meth:`~gcloud.monitoring.timeseries.Query.select_interval`.
+            :meth:`~gcloud.monitoring.query.Query.select_interval`.
 
         .. _supported metrics: https://cloud.google.com/monitoring/api/metrics
         """

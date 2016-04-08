@@ -125,9 +125,10 @@
   :caption: Cloud Monitoring
 
   Client <monitoring-client>
-  monitoring-timeseries
   monitoring-metric
   monitoring-resource
+  monitoring-query
+  monitoring-timeseries
   monitoring-label
 
 .. toctree::
