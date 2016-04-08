@@ -432,13 +432,15 @@ class Query(object):
                 if not page_token:
                     break
 
+        # The following use of groupby() relies on equality comparison
+        # of time series as (named) tuples.
         for timeseries, fragments in itertools.groupby(
                 _fragments(),
-                lambda fragment: fragment._replace(points=None)):
+                lambda fragment: fragment.header()):
             points = list(itertools.chain.from_iterable(
                 fragment.points for fragment in fragments))
             points.reverse()  # Order from oldest to newest.
-            yield timeseries._replace(points=points)
+            yield timeseries.header(points=points)
 
     def _build_query_params(self, headers_only=False,
                             page_size=None, page_token=None):
@@ -549,7 +551,7 @@ class Query(object):
                 index=[p.end_time for p in time_series.points],
             )
             columns.append(pandas_series)
-            headers.append(time_series._replace(points=None))
+            headers.append(time_series.header())
 
         # Implement a smart default of using all available labels.
         if label is None and labels is None:
@@ -605,16 +607,46 @@ class TimeSeries(collections.namedtuple(
     :param resource: A resource object.
 
     :type metric_kind: string
-    :param metric_kind: The kind of measurement: ``"GAUGE"``, ``"DELTA"``,
-        or ``"CUMULATIVE"``.
+    :param metric_kind:
+        The kind of measurement: ``"GAUGE"``. ``"DELTA"``, or ``"CUMULATIVE"``.
 
     :type value_type: string
-    :param value_type: The value type of the metric: ``"BOOL"``, ``"INT64"``,
-        ``"DOUBLE"``, ``"STRING"``, ``"DISTRIBUTION"``, or ``"MONEY"``.
+    :param value_type:
+        The value type of the metric: ``"BOOL"``, ``"INT64"``, ``"DOUBLE"``,
+        ``"STRING"``, ``"DISTRIBUTION"``, or ``"MONEY"``.
 
     :type points: list of :class:`Point`
     :param points: A list of point objects.
     """
+
+    @property
+    def labels(self):
+        """A single dictionary with values for all the labels.
+
+        This combines ``resource.labels`` and ``metric.labels`` and also
+        adds ``"resource_type"``.
+        """
+        # pylint: disable=attribute-defined-outside-init
+        try:
+            return self._labels
+        except AttributeError:
+            labels = {'resource_type': self.resource.type}
+            labels.update(self.resource.labels)
+            labels.update(self.metric.labels)
+            self._labels = labels
+            return self._labels
+
+    def header(self, points=None):
+        """Copy everything but the point data.
+
+        :type points: list of :class:`Point`, or None
+        :param points: An optional point list.
+
+        :rtype: :class:`TimeSeries`
+        :returns: The new time series object.
+        """
+        points = list(points) if points else []
+        return self._replace(points=points)
 
     @classmethod
     def _from_dict(cls, info):
@@ -634,30 +666,13 @@ class TimeSeries(collections.namedtuple(
         points = [Point._from_dict(p) for p in info.get('points', [])]
         return cls(metric, resource, metric_kind, value_type, points)
 
-    @property
-    def labels(self):
-        """A single dictionary with values for all the labels.
-
-        This combines ``resource.labels`` and ``metric.labels`` and also
-        adds ``"resource_type"``.
-        """
-        # pylint: disable=attribute-defined-outside-init
-        try:
-            return self._labels
-        except AttributeError:
-            labels = {'resource_type': self.resource.type}
-            labels.update(self.resource.labels)
-            labels.update(self.metric.labels)
-            self._labels = labels
-            return self._labels
-
     def __repr__(self):
         """Return a representation string with the points elided."""
         return (
             '<TimeSeries with {num} points:\n'
-            '    metric={metric},\n'
-            '    resource={resource},\n'
-            '    metric_kind={kind}, value_type={type}>'
+            ' metric={metric!r},\n'
+            ' resource={resource!r},\n'
+            ' metric_kind={kind!r}, value_type={type!r}>'
         ).format(
             num=len(self.points),
             metric=self.metric,

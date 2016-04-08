@@ -56,33 +56,34 @@ class ValueType(object):
     MONEY = 'MONEY'
 
 
-class MetricDescriptor(collections.namedtuple(
-        'MetricDescriptor', ('name type labels metric_kind value_type unit'
-                             ' description display_name'))):
+class MetricDescriptor(object):
     """Specification of a metric type and its schema.
 
-    Metric descriptor instances are immutable.
-
     :type name: string
-    :param name: The "resource name" of the metric descriptor. For example:
-                 ``"projects/<project_id>/metricDescriptors/<type>"``
+    :param name:
+        The "resource name" of the metric descriptor. For example:
+        ``"projects/<project_id>/metricDescriptors/<type>"``
 
     :type type: string
-    :param type: The metric type including a DNS name prefix. For example:
-                 ``"compute.googleapis.com/instance/cpu/utilization"``
+    :param type:
+        The metric type including a DNS name prefix. For example:
+        ``"compute.googleapis.com/instance/cpu/utilization"``
 
     :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
-    :param labels: A sequence of label descriptors specifying the labels used
-                   to identify a specific instance of this metric.
+    :param labels:
+        A sequence of label descriptors specifying the labels used to
+        identify a specific instance of this metric.
 
     :type metric_kind: string
-    :param metric_kind: The kind of measurement. It must be one of ``"GAUGE"``,
-                        ``"DELTA"``, or ``"CUMULATIVE"``.
+    :param metric_kind:
+        The kind of measurement. It must be one of ``"GAUGE"``, ``"DELTA"``,
+        or ``"CUMULATIVE"``.
 
     :type value_type: string
-    :param value_type: The value type of the metric. It must be one of
-                       ``"BOOL"``, ``"INT64"``, ``"DOUBLE"``, ``"STRING"``,
-                       ``"DISTRIBUTION"``, or ``"MONEY"``.
+    :param value_type:
+        The value type of the metric. It must be one of ``"BOOL"``,
+        ``"INT64"``, ``"DOUBLE"``, ``"STRING"``, ``"DISTRIBUTION"``,
+        or ``"MONEY"``.
 
     :type unit: string
     :param unit: The unit in which the metric value is reported.
@@ -93,7 +94,18 @@ class MetricDescriptor(collections.namedtuple(
     :type display_name: string
     :param display_name: A concise name for the metric.
     """
-    __slots__ = ()
+
+    def __init__(self, name, type, labels, metric_kind, value_type,
+                 unit, description, display_name):
+        # Allow "type" as a parameter name: pylint: disable=redefined-builtin
+        self.name = name
+        self.type = type
+        self.labels = labels
+        self.metric_kind = metric_kind
+        self.value_type = value_type
+        self.unit = unit
+        self.description = description
+        self.display_name = display_name
 
     @classmethod
     def _fetch(cls, client, metric_type):
@@ -173,16 +185,27 @@ class MetricDescriptor(collections.namedtuple(
         :returns: A metric descriptor.
         """
         return cls(
-            type=info.get('type', ''),
             name=info.get('name', ''),
-            description=info.get('description', ''),
-            display_name=info.get('displayName', ''),
+            type=info.get('type', ''),
             labels=tuple(LabelDescriptor._from_dict(label)
                          for label in info.get('labels', [])),
             metric_kind=info['metricKind'],
             value_type=info['valueType'],
             unit=info.get('unit', ''),
+            description=info.get('description', ''),
+            display_name=info.get('displayName', ''),
         )
+
+    def __repr__(self):
+        return (
+            'MetricDescriptor(\n'
+            ' name={name!r},\n'
+            ' type={type!r},\n'
+            ' metric_kind={metric_kind!r}, value_type={value_type!r},\n'
+            ' labels={labels!r},\n'
+            ' display_name={display_name!r}, unit={unit!r},\n'
+            ' description={description!r})'
+        ).format(**self.__dict__)
 
 
 class Metric(collections.namedtuple('Metric', 'type labels')):

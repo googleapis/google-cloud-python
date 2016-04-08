@@ -18,8 +18,6 @@
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/LabelDescriptor
 """
 
-import collections
-
 
 class LabelValueType(object):
     """Allowed values for the `type of a label`_.
@@ -34,21 +32,25 @@ class LabelValueType(object):
     INT64 = 'INT64'
 
 
-class LabelDescriptor(collections.namedtuple('LabelDescriptor',
-                                             'key value_type description')):
+class LabelDescriptor(object):
     """Schema specification and documentation for a single label.
 
     :type key: string
     :param key: The name of the label.
 
     :type value_type: string
-    :param value_type: The type of the label. It must be one of ``"STRING"``,
-                       ``"BOOL"``, or ``"INT64"``.
+    :param value_type:
+        The type of the label. It must be one of ``"STRING"``, ``"BOOL"``,
+        or ``"INT64"``.
 
     :type description: string
     :param description: A human-readable description for the label.
     """
-    __slots__ = ()
+
+    def __init__(self, key, value_type, description):
+        self.key = key
+        self.value_type = value_type
+        self.description = description
 
     @classmethod
     def _from_dict(cls, info):
@@ -66,3 +68,9 @@ class LabelDescriptor(collections.namedtuple('LabelDescriptor',
             info.get('valueType', LabelValueType.STRING),
             info.get('description', ''),
         )
+
+    def __repr__(self):
+        return (
+            'LabelDescriptor(key={key!r}, value_type={value_type!r},'
+            ' description={description!r})'
+        ).format(**self.__dict__)

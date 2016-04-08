@@ -24,11 +24,8 @@ import collections
 from gcloud.monitoring.label import LabelDescriptor
 
 
-class ResourceDescriptor(collections.namedtuple(
-        'ResourceDescriptor', ('name type display_name description labels'))):
+class ResourceDescriptor(object):
     """Specification of a monitored resource type and its schema.
-
-    Resource descriptor instances are immutable.
 
     :type name: string
     :param name:
@@ -52,7 +49,14 @@ class ResourceDescriptor(collections.namedtuple(
         A sequence of label descriptors specifying the labels used
         to identify a specific instance of this monitored resource.
     """
-    __slots__ = ()
+
+    def __init__(self, name, type, display_name, description, labels):
+        # Allow "type" as a parameter name: pylint: disable=redefined-builtin
+        self.name = name
+        self.type = type
+        self.display_name = display_name
+        self.description = description
+        self.labels = labels
 
     @classmethod
     def _fetch(cls, client, resource_type):
@@ -139,6 +143,16 @@ class ResourceDescriptor(collections.namedtuple(
             labels=tuple(LabelDescriptor._from_dict(label)
                          for label in info.get('labels', [])),
         )
+
+    def __repr__(self):
+        return (
+            'ResourceDescriptor(\n'
+            ' name={name!r},\n'
+            ' type={type!r},\n'
+            ' labels={labels!r},\n'
+            ' display_name={display_name!r},\n'
+            ' description={description!r})'
+        ).format(**self.__dict__)
 
 
 class Resource(collections.namedtuple('Resource', 'type labels')):
