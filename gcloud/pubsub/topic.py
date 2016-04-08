@@ -191,9 +191,9 @@ class Topic(object):
         self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
-        response = client.connection.topic_publish(
+        message_ids = client.connection.topic_publish(
             self.full_name, [message_data])
-        return response['messageIds'][0]
+        return message_ids[0]
 
     def batch(self, client=None):
         """Return a batch to use as a context manager.
@@ -355,7 +355,7 @@ class Batch(object):
         """
         if client is None:
             client = self.client
-        response = client.connection.topic_publish(
+        message_ids = client.connection.topic_publish(
             self.topic.full_name, self.messages[:])
-        self.message_ids.extend(response['messageIds'])
+        self.message_ids.extend(message_ids)
         del self.messages[:]

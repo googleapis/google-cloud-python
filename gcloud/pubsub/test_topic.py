@@ -138,7 +138,7 @@ class TestTopic(unittest2.TestCase):
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID]}
+        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
@@ -169,7 +169,7 @@ class TestTopic(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = {'messageIds': [MSGID]}
+        conn2._topic_publish_response = [MSGID]
         client2 = _Client(project=self.PROJECT, connection=conn2)
 
         topic = self._makeOne(self.TOPIC_NAME, client=client1,
@@ -191,7 +191,7 @@ class TestTopic(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {'timestamp': OVERRIDE}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID]}
+        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client,
                               timestamp_messages=True)
@@ -210,7 +210,7 @@ class TestTopic(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID]}
+        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
@@ -233,7 +233,7 @@ class TestTopic(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID1, MSGID2]}
+        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project=self.PROJECT, connection=conn)
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
@@ -263,7 +263,7 @@ class TestTopic(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = {'messageIds': [MSGID1, MSGID2]}
+        conn2._topic_publish_response = [MSGID1, MSGID2]
         client2 = _Client(project=self.PROJECT, connection=conn2)
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
@@ -627,7 +627,7 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID1, MSGID2]}
+        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project='PROJECT', connection=conn)
         topic = _Topic()
         batch = self._makeOne(topic, client=client)
@@ -657,7 +657,7 @@ class TestBatch(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project='PROJECT', connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = {'messageIds': [MSGID1, MSGID2]}
+        conn2._topic_publish_response = [MSGID1, MSGID2]
         client2 = _Client(project='PROJECT', connection=conn2)
         topic = _Topic()
         batch = self._makeOne(topic, client=client1)
@@ -686,7 +686,7 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = {'messageIds': [MSGID1, MSGID2]}
+        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project='PROJECT', connection=conn)
         topic = _Topic()
         batch = self._makeOne(topic, client=client)

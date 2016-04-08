@@ -216,14 +216,13 @@ class Connection(base_connection.JSONConnection):
         :type messages: list of dict
         :param messages: messages to be published.
 
-        :rtype: dict
-        :returns: resource returned from the API:  a mapping with key,
-                  ``messageIds``, whose values is a list of opaque IDs for
-                  published messages.
+        :rtype: list of string
+        :returns: list of opaque IDs for published messages.
         """
         data = {'messages': messages}
-        return self.api_request(
+        response = self.api_request(
             method='POST', path='/%s:publish' % (topic_path,), data=data)
+        return response['messageIds']
 
     def topic_list_subscriptions(self, topic_path, page_size=None,
                                  page_token=None):
@@ -467,7 +466,7 @@ class Connection(base_connection.JSONConnection):
         """API call:  acknowledge retrieved messages for the subscription.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: string
         :param subscription_path: the fully-qualfied path of the new

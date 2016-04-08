@@ -334,7 +334,7 @@ class TestConnection(unittest2.TestCase):
 
         resource = conn.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
-        self.assertEqual(resource, RETURNED)
+        self.assertEqual(resource, [MSGID])
         self.assertEqual(http._called_with['method'], 'POST')
         self._verify_uri(http._called_with['uri'],
                          '%s:publish' % (self.TOPIC_PATH,))
