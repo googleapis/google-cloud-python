@@ -259,8 +259,8 @@ class Connection(base_connection.JSONConnection):
         :rtype: dict
         :returns: the resource returned by the ``getIamPolicy`` API request.
         """
-        return self.api_request(method='GET', path='/%s:getIamPolicy' % (
-            target_path,))
+        path = '/%s:getIamPolicy' % (target_path,)
+        return self.api_request(method='GET', path=path)
 
     def set_iam_policy(self, target_path, policy):
         """Update the IAM policy for the target.
@@ -279,8 +279,8 @@ class Connection(base_connection.JSONConnection):
         :returns: the resource returned by the ``getIamPolicy`` API request.
         """
         wrapped = {'policy': policy}
-        return self.api_request(method='POST', path='/%s:setIamPolicy' % (
-            target_path,), data=wrapped)
+        path = '/%s:setIamPolicy' % (target_path,)
+        return self.api_request(method='POST', path=path, data=wrapped)
 
     def test_iam_permissions(self, target_path, permissions):
         """Update the IAM policy for the target.
