@@ -20,32 +20,46 @@
 #
 # The only allowed edits are to method and file documentation. A 3-way
 # merge preserves those additions if the generated source changes.
+"""Accesses the google.logging.v2 LoggingServiceV2 API."""
 
+import json
 import os
 import pkg_resources
 import platform
 
 from google.gax import api_callable
 from google.gax import config
-from google.gax.path_template import PathTemplate
+from google.gax import path_template
 import google.gax
-import yaml
 
 from google.api import monitored_resource_pb2
 from google.logging.v2 import log_entry_pb2
 from google.logging.v2 import logging_pb2
 
+_PageDesc = google.gax.PageDescriptor
+
 
 class LoggingServiceV2Api(object):
     """Service for ingesting and querying logs."""
-
-    _CODE_GEN_NAME_VERSION = 'gapic/0.1.0'
 
     SERVICE_ADDRESS = 'logging.googleapis.com'
     """The default address of the service."""
 
     DEFAULT_SERVICE_PORT = 443
     """The default port of the service."""
+
+    _CODE_GEN_NAME_VERSION = 'gapic/0.1.0'
+
+    _GAX_VERSION = pkg_resources.get_distribution('google-gax').version
+
+    _DEFAULT_TIMEOUT = 30
+
+    _PAGE_DESCRIPTORS = {
+        'list_log_entries': _PageDesc('page_token', 'next_page_token',
+                                      'entries'),
+        'list_monitored_resource_descriptors': _PageDesc(
+            'page_token', 'next_page_token', 'resource_descriptors')
+    }
 
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
@@ -55,8 +69,9 @@ class LoggingServiceV2Api(object):
                    'https://www.googleapis.com/auth/cloud-platform.read-only',
                    'https://www.googleapis.com/auth/cloud-platform', )
 
-    _PROJECT_PATH_TEMPLATE = PathTemplate('projects/{project}')
-    _LOG_PATH_TEMPLATE = PathTemplate('projects/{project}/logs/{log}')
+    _PROJECT_PATH_TEMPLATE = path_template.PathTemplate('projects/{project}')
+    _LOG_PATH_TEMPLATE = path_template.PathTemplate(
+        'projects/{project}/logs/{log}')
 
     @classmethod
     def project_path(cls, project):
@@ -76,60 +91,58 @@ class LoggingServiceV2Api(object):
                  port=DEFAULT_SERVICE_PORT,
                  channel=None,
                  ssl_creds=None,
-                 scopes=_ALL_SCOPES,
+                 scopes=None,
                  retrying_override=None,
                  bundling_override=None,
-                 timeout=30,
-                 app_name=None,
-                 app_version=None):
+                 timeout=_DEFAULT_TIMEOUT,
+                 app_name='gax',
+                 app_version=_GAX_VERSION):
         """Constructor.
 
         Args:
-          :keyword service_path: The domain name of the API remote host.
-          :type service_path: string
-          :keyword port: The port on which to connect to the remote host.
-          :type port: int
-          :keyword channel: A Channel object through which to make calls.
-          :type channel: A grpc.beta.implementations.Channel object
-          :keyword ssl_creds: A ClientCredentials for use with an SSL-
-            enabled channel
-          :type ssl_creds: A grpc.beta.implementations.ClientCredentials
-            object
-          :keyword retrying_override: A dictionary that overrides default
-            retrying settings. ``retrying_override`` maps method names
-            (e.g., 'list_foo') to custom RetryOptions objects, or to None.
-            A value of None indicates that the method in question should not
-            retry.
-          :type retrying_override: dict
-          :keyword bundling_override: A dictionary that overrides default
-            bundling settings. ``bundling_override`` maps bundling method
-            names (e.g., 'publish_foo') to custom BundleOptions objects, or to
-            None. It is invalid to have a key for a method that is not
-            bundling-enabled. A value of None indicates that the method in
-            question should not bundle.
-          :type bundling_override: dict
-          :keyword timeout: The default timeout, in seconds, for calls made
+          service_path (string): The domain name of the API remote host.
+          port (int): The port on which to connect to the remote host.
+          channel (:class:`grpc.beta.implementations.Channel`): A ``Channel``
+            object through which to make calls.
+          ssl_creds (:class:`grpc.beta.implementations.ClientCredentials`):
+            A `ClientCredentials` for use with an SSL-enabled channel.
+          retrying_override (dict[string, :class:`google.gax.RetryOptions`]): A
+            dictionary that overrides default retrying settings.
+            ``retrying_override`` maps method names (e.g., ``'list_foo'``) to
+            custom RetryOptions objects, or to None. A value of None indicates
+            that the method in question should not retry.
+          bundling_override (dict[string, :class:`google.gax.BundleOptions`]): A
+            dictionary that overrides default bundling settings.
+            ``bundling_override`` maps bundling method names (e.g.,
+            'publish_foo') to custom BundleOptions objects, or to None. It is
+            invalid to have a key for a method that is not bundling-enabled. A
+            value of None indicates that the method in question should not
+            bundle.
+          timeout (int): The default timeout, in seconds, for calls made
             through this client
-          :type timeout: int
-          :keyword app_name: The codename of the calling service.
-          :type app_name: string
-          :keyword app_version: The version of the calling service.
-          :type app_version: string
+          app_name (string): The codename of the calling service.
+          app_version (string): The version of the calling service.
+
+        Returns:
+          A LoggingServiceV2Api object.
         """
-        if app_name is None:
-            app_name = 'gax'
-        if app_version is None:
-            app_version = google.gax.__version__
+        if scopes is None:
+            scopes = self._ALL_SCOPES
         bundling_override = bundling_override or {}
         retrying_override = retrying_override or {}
         client_config = pkg_resources.resource_string(
-            __name__, 'logging_service_v2_api.yaml')
+            __name__, 'logging_service_v2_client_config.json')
         self._defaults = api_callable.construct_settings(
-            yaml.load(client_config), bundling_override, retrying_override,
-            config.STATUS_CODE_NAMES, timeout)
+            'google.logging.v2.LoggingServiceV2',
+            json.loads(client_config),
+            bundling_override,
+            retrying_override,
+            config.STATUS_CODE_NAMES,
+            timeout,
+            page_descriptors=self._PAGE_DESCRIPTORS)
         google_apis_agent = '{}/{};{};gax/{};python/{}'.format(
             app_name, app_version, self._CODE_GEN_NAME_VERSION,
-            google.gax.__version__, platform.python_version())
+            self._GAX_VERSION, platform.python_version())
         self._headers = [('x-google-apis-agent', google_apis_agent)]
         self.stub = config.create_stub(
             logging_pb2.beta_create_LoggingServiceV2_stub,
@@ -145,15 +158,20 @@ class LoggingServiceV2Api(object):
         Deletes a log and all its log entries.
         The log will reappear if it receives new entries.
 
-        :type log_name: string
-        :type options: api_callable.CallOptions
+        Args:
+          log_name (string): Required. The resource name of the log to delete.  Example:
+            `"projects/my-project/logs/syslog"`.
+          options (:class:`google.gax.CallOptions`): Overrides the default
+            settings for this call, e.g, timeout, retries etc.
+
+        Raises:
+          :exc:`google.gax.errors.GaxError` if the RPC is aborted.
         """
         req = logging_pb2.DeleteLogRequest(log_name=log_name)
         settings = self._defaults['delete_log'].merge(options)
-        return api_callable.ApiCallable(
-            self.stub.DeleteLog,
-            settings=settings)(req,
-                               metadata=self._headers)
+        api_call = api_callable.create_api_call(self.stub.DeleteLog,
+                                                settings=settings)
+        api_call(req, metadata=self._headers)
 
     def write_log_entries(self,
                           log_name='',
@@ -165,11 +183,24 @@ class LoggingServiceV2Api(object):
         Writes log entries to Cloud Logging.
         All log entries in Cloud Logging are written by this method.
 
-        :type log_name: string
-        :type resource: monitored_resource_pb2.MonitoredResource
-        :type labels: list of logging_pb2.WriteLogEntriesRequest.LabelsEntry
-        :type entries: list of log_entry_pb2.LogEntry
-        :type options: api_callable.CallOptions
+        Args:
+          log_name (string): Optional. A default log resource name for those log entries in `entries`
+            that do not specify their own `logName`.  Example:
+            `"projects/my-project/logs/syslog"`.  See
+            [LogEntry][google.logging.v2.LogEntry].
+          resource (:class:`google.api.monitored_resource_pb2.MonitoredResource`): Optional. A default monitored resource for those log entries in `entries`
+            that do not specify their own `resource`.
+          labels (list[:class:`google.logging.v2.logging_pb2.WriteLogEntriesRequest.LabelsEntry`]): Optional. User-defined `key:value` items that are added to
+            the `labels` field of each log entry in `entries`, except when a log
+            entry specifies its own `key:value` item with the same key.
+            Example: `{ "size": "large", "color":"red" }`
+          entries (list[:class:`google.logging.v2.log_entry_pb2.LogEntry`]): Required. The log entries to write. The log entries must have values for
+            all required fields.
+          options (:class:`google.gax.CallOptions`): Overrides the default
+            settings for this call, e.g, timeout, retries etc.
+
+        Raises:
+          :exc:`google.gax.errors.GaxError` if the RPC is aborted.
         """
         if resource is None:
             resource = monitored_resource_pb2.MonitoredResource()
@@ -182,10 +213,9 @@ class LoggingServiceV2Api(object):
                                                  labels=labels,
                                                  entries=entries)
         settings = self._defaults['write_log_entries'].merge(options)
-        return api_callable.ApiCallable(
-            self.stub.WriteLogEntries,
-            settings=settings)(req,
-                               metadata=self._headers)
+        api_call = api_callable.create_api_call(self.stub.WriteLogEntries,
+                                                settings=settings)
+        api_call(req, metadata=self._headers)
 
     def list_log_entries(self,
                          project_ids=None,
@@ -195,12 +225,33 @@ class LoggingServiceV2Api(object):
         """
         Lists log entries.  Use this method to retrieve log entries from Cloud
         Logging.  For ways to export log entries, see
-        `Exporting Logs <https://cloud.google.com/logging/docs/export>`_
+        `Exporting Logs <https://cloud.google.com/logging/docs/export>`_.
 
-        :type project_ids: list of string
-        :type filter: string
-        :type order_by: string
-        :type options: api_callable.CallOptions
+        Args:
+          project_ids (list[string]): Required. One or more project IDs or project numbers from which to retrieve
+            log entries.  Examples of a project ID: `"my-project-1A"`, `"1234567890"`.
+          filter (string): Optional. An [advanced logs filter](/logging/docs/view/advanced_filters).
+            The filter is compared against all log entries in the projects specified by
+            `projectIds`.  Only entries that match the filter are retrieved.  An empty
+            filter matches all log entries.
+          order_by (string): Optional. How the results should be sorted.  Presently, the only permitted
+            values are `"timestamp"` (default) and `"timestamp desc"`.  The first
+            option returns entries in order of increasing values of
+            `LogEntry.timestamp` (oldest first), and the second option returns entries
+            in order of decreasing timestamps (newest first).  Entries with equal
+            timestamps are returned in order of `LogEntry.insertId`.
+          options (:class:`google.gax.CallOptions`): Overrides the default
+            settings for this call, e.g, timeout, retries etc.
+
+        Yields:
+          Instances of :class:`google.logging.v2.log_entry_pb2.LogEntry`
+          unless page streaming is disabled through the call options. If
+          page streaming is disabled, a single
+          :class:`google.logging.v2.logging_pb2.ListLogEntriesResponse` instance
+          is returned.
+
+        Raises:
+          :exc:`google.gax.errors.GaxError` if the RPC is aborted.
         """
         if project_ids is None:
             project_ids = []
@@ -208,21 +259,32 @@ class LoggingServiceV2Api(object):
                                                 filter=filter_,
                                                 order_by=order_by)
         settings = self._defaults['list_log_entries'].merge(options)
-        return api_callable.ApiCallable(
-            self.stub.ListLogEntries,
-            settings=settings)(req,
-                               metadata=self._headers)
+        api_call = api_callable.create_api_call(self.stub.ListLogEntries,
+                                                settings=settings)
+        return api_call(req, metadata=self._headers)
 
     def list_monitored_resource_descriptors(self, options=None):
         """
         Lists monitored resource descriptors that are used by Cloud Logging.
 
-        :type options: api_callable.CallOptions
+        Args:
+          options (:class:`google.gax.CallOptions`): Overrides the default
+            settings for this call, e.g, timeout, retries etc.
+
+        Yields:
+          Instances of :class:`google.api.monitored_resource_pb2.MonitoredResourceDescriptor`
+          unless page streaming is disabled through the call options. If
+          page streaming is disabled, a single
+          :class:`google.logging.v2.logging_pb2.ListMonitoredResourceDescriptorsResponse` instance
+          is returned.
+
+        Raises:
+          :exc:`google.gax.errors.GaxError` if the RPC is aborted.
         """
         req = logging_pb2.ListMonitoredResourceDescriptorsRequest()
         settings = self._defaults['list_monitored_resource_descriptors'].merge(
             options)
-        return api_callable.ApiCallable(
+        api_call = api_callable.create_api_call(
             self.stub.ListMonitoredResourceDescriptors,
-            settings=settings)(req,
-                               metadata=self._headers)
+            settings=settings)
+        return api_call(req, metadata=self._headers)

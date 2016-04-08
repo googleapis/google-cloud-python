@@ -1,0 +1,43 @@
+{
+  "interfaces": {
+    "google.logging.v2.MetricsServiceV2": {
+      "retry_codes": {
+        "idempotent": ["UNAVAILABLE", "DEADLINE_EXCEEDED"],
+        "non_idempotent": []
+      },
+      "retry_params": {
+        "default": {
+          "initial_retry_delay_millis": 100,
+          "retry_delay_multiplier": 1.2,
+          "max_retry_delay_millis": 1000,
+          "initial_rpc_timeout_millis": 7000,
+          "rpc_timeout_multiplier": 1.5,
+          "max_rpc_timeout_millis": 30000,
+          "total_timeout_millis": 45000
+        }
+      },
+      "methods": {
+        "ListLogMetrics": {
+          "retry_codes_name": "idempotent",
+          "retry_params_name": "default"
+        },
+        "GetLogMetric": {
+          "retry_codes_name": "idempotent",
+          "retry_params_name": "default"
+        },
+        "CreateLogMetric": {
+          "retry_codes_name": "non_idempotent",
+          "retry_params_name": "default"
+        },
+        "UpdateLogMetric": {
+          "retry_codes_name": "non_idempotent",
+          "retry_params_name": "default"
+        },
+        "DeleteLogMetric": {
+          "retry_codes_name": "idempotent",
+          "retry_params_name": "default"
+        }
+      }
+    }
+  }
+}
