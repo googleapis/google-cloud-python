@@ -170,6 +170,9 @@ class Connection(base_connection.JSONConnection):
         :type topic_path: string
         :param topic_path: the fully-qualfied path of the new topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
         """
         return self.api_request(method='PUT', path='/%s' % (topic_path,))
 
@@ -182,6 +185,9 @@ class Connection(base_connection.JSONConnection):
         :type topic_path: string
         :param topic_path: the fully-qualfied path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
         """
         return self.api_request(method='GET', path='/%s' % (topic_path,))
 
@@ -195,7 +201,7 @@ class Connection(base_connection.JSONConnection):
         :param topic_path: the fully-qualfied path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
-        return self.api_request(method='DELETE', path='/%s' % (topic_path,))
+        self.api_request(method='DELETE', path='/%s' % (topic_path,))
 
     def topic_publish(self, topic_path, messages):
         """API call:  publish a message to a topic via a POST request
@@ -209,6 +215,11 @@ class Connection(base_connection.JSONConnection):
 
         :type messages: list of dict
         :param messages: messages to be published.
+
+        :rtype: dict
+        :returns: resource returned from the API:  a mapping with key,
+                  ``messageIds``, whose values is a list of opaque IDs for
+                  published messages.
         """
         data = {'messages': messages}
         return self.api_request(
@@ -233,6 +244,10 @@ class Connection(base_connection.JSONConnection):
         :param page_token: opaque marker for the next "page" of topics. If not
                            passed, the API will return the first page of
                            topics.
+
+        :rtype: list of strings
+        :returns: fully-qualified names of subscriptions for the supplied
+                  topic.
         """
         params = {}
 
@@ -276,7 +291,7 @@ class Connection(base_connection.JSONConnection):
         :param policy: the new policy resource.
 
         :rtype: dict
-        :returns: the resource returned by the ``getIamPolicy`` API request.
+        :returns: the resource returned by the ``setIamPolicy`` API request.
         """
         wrapped = {'policy': policy}
         path = '/%s:setIamPolicy' % (target_path,)
@@ -328,6 +343,9 @@ class Connection(base_connection.JSONConnection):
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
                               messages.
+
+        :rtype: dict
+        :returns: ``Subscription`` resource returned from the API.
         """
         path = '/%s' % (subscription_path,)
         resource = {'topic': topic_path}
@@ -350,6 +368,9 @@ class Connection(base_connection.JSONConnection):
         :param subscription_path: the fully-qualfied path of the subscription,
                                   in format
                                   ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+
+        :rtype: dict
+        :returns: ``Subscription`` resource returned from the API.
         """
         path = '/%s' % (subscription_path,)
         return self.api_request(method='GET', path=path)
@@ -366,7 +387,7 @@ class Connection(base_connection.JSONConnection):
                                   ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
         path = '/%s' % (subscription_path,)
-        return self.api_request(method='DELETE', path=path)
+        self.api_request(method='DELETE', path=path)
 
     def subscription_modify_push_config(self, subscription_path,
                                         push_endpoint):
@@ -379,6 +400,7 @@ class Connection(base_connection.JSONConnection):
         :param subscription_path: the fully-qualfied path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
         :type push_endpoint: string, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end.  If not set, the application must pull
@@ -386,7 +408,7 @@ class Connection(base_connection.JSONConnection):
         """
         path = '/%s:modifyPushConfig' % (subscription_path,)
         resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
-        return self.api_request(method='POST', path=path, data=resource)
+        self.api_request(method='POST', path=path, data=resource)
 
     def subscription_pull(self, subscription_path, return_immediately=False,
                           max_messages=1):

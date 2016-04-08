@@ -304,17 +304,15 @@ class TestConnection(unittest2.TestCase):
 
     def test_topic_delete(self):
         import json
-        RETURNED = {}
         HEADERS = {
             'status': '200',
             'content-type': 'application/json',
         }
-        http = _Http(HEADERS, json.dumps(RETURNED))
+        http = _Http(HEADERS, json.dumps({}))
         conn = self._makeOne(http=http)
 
-        resource = conn.topic_delete(self.TOPIC_PATH)
+        conn.topic_delete(self.TOPIC_PATH)
 
-        self.assertEqual(resource, RETURNED)
         self.assertEqual(http._called_with['method'], 'DELETE')
         self._verify_uri(http._called_with['uri'], self.TOPIC_PATH)
         self.assertEqual(http._called_with['body'], None)
