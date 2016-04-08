@@ -57,14 +57,14 @@ class TestConnection(unittest2.TestCase):
         from gcloud.connection import API_BASE_URL
         from gcloud.environment_vars import GCD_HOST
 
-        HOST = object()
+        HOST = 'CURR_HOST'
         fake_environ = {GCD_HOST: HOST}
 
-        with _Monkey(os, getenv=fake_environ.get):
+        with _Monkey(os, environ=fake_environ):
             conn = self._makeOne()
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
-        self.assertEqual(conn.api_base_url, HOST)
+        self.assertEqual(conn.api_base_url, HOST + '/datastore')
 
     def test_custom_url_from_constructor(self):
         from gcloud.connection import API_BASE_URL
@@ -84,7 +84,7 @@ class TestConnection(unittest2.TestCase):
         HOST2 = object()
         fake_environ = {GCD_HOST: HOST1}
 
-        with _Monkey(os, getenv=fake_environ.get):
+        with _Monkey(os, environ=fake_environ):
             conn = self._makeOne(api_base_url=HOST2)
 
         self.assertNotEqual(conn.api_base_url, API_BASE_URL)
