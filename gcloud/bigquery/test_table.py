@@ -437,6 +437,15 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertTrue(table._dataset._client is client)
         self._verifyResourceProperties(table, RESOURCE)
 
+    def test_create_no_view_query_no_schema(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+
+        with self.assertRaises(ValueError):
+            table.create()
+
     def test_create_w_bound_client(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
