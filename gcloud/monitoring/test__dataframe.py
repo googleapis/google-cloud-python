@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+try:
+    import pandas
+except ImportError:
+    HAVE_PANDAS = False
+else:
+    HAVE_PANDAS = True
+
 import unittest2
 
 
@@ -73,6 +80,7 @@ def generate_query_results():
         )
 
 
+@unittest2.skipUnless(HAVE_PANDAS, 'No pandas')
 class Test__build_dataframe(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):
@@ -162,7 +170,6 @@ class Test__build_dataframe(unittest2.TestCase):
         self.assertIsNone(dataframe.index.name)
 
     def test_empty_table_simple_label(self):
-        import pandas
         dataframe = self._callFUT([], label='instance_name')
         self.assertEqual(dataframe.shape, (0, 0))
         self.assertIsNone(dataframe.columns.name)
@@ -170,7 +177,6 @@ class Test__build_dataframe(unittest2.TestCase):
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_multiple_labels(self):
-        import pandas
         NAMES = ['resource_type', 'instance_id']
         dataframe = self._callFUT([], labels=NAMES)
         self.assertEqual(dataframe.shape, (0, 0))
@@ -180,7 +186,6 @@ class Test__build_dataframe(unittest2.TestCase):
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_multiple_labels_with_just_one(self):
-        import pandas
         NAME = 'instance_id'
         NAMES = [NAME]
         dataframe = self._callFUT([], labels=NAMES)
@@ -191,7 +196,6 @@ class Test__build_dataframe(unittest2.TestCase):
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
     def test_empty_table_smart_labels(self):
-        import pandas
         NAME = 'resource_type'
         NAMES = [NAME]
         dataframe = self._callFUT([])
