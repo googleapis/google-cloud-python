@@ -31,18 +31,18 @@ INSTANCE_IDS = ['1234567890123456789', '9876543210987654321']
 M = len(INSTANCE_NAMES)
 
 METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
-METRIC_LABELS = [{'instance_name': INSTANCE_NAMES[i]}
-                 for i in range(M)]
+METRIC_LABELS = list({'instance_name': INSTANCE_NAMES[i]}
+                     for i in range(M))
 
 RESOURCE_TYPE = 'gce_instance'
-RESOURCE_LABELS = [{'project_id': PROJECT,
-                    'zone': INSTANCE_ZONES[i],
-                    'instance_id': INSTANCE_IDS[i]}
-                   for i in range(M)]
+RESOURCE_LABELS = list({'project_id': PROJECT,
+                        'zone': INSTANCE_ZONES[i],
+                        'instance_id': INSTANCE_IDS[i]}
+                       for i in range(M))
 
 METRIC_KIND = 'GAUGE'
 VALUE_TYPE = 'DOUBLE'
-VALUES = [0.1 * i for i in range(M)]
+VALUES = list(0.1 * i for i in range(M))
 
 TIMESTAMPS = [
     '2016-04-06T22:05:00.042Z',
@@ -100,8 +100,7 @@ class Test__build_dataframe(unittest2.TestCase):
         dataframe = self._callFUT(iterable, label='instance_name')
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(),
-                         [VALUES for i in range(N)])
+        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -116,8 +115,7 @@ class Test__build_dataframe(unittest2.TestCase):
         dataframe = self._callFUT(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(),
-                         [VALUES for i in range(N)])
+        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
 
         expected_headers = [(RESOURCE_TYPE, instance_id)
                             for instance_id in INSTANCE_IDS]
@@ -136,8 +134,7 @@ class Test__build_dataframe(unittest2.TestCase):
         dataframe = self._callFUT(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(),
-                         [VALUES for i in range(N)])
+        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
         self.assertEqual(dataframe.columns.names, NAMES)
@@ -155,8 +152,7 @@ class Test__build_dataframe(unittest2.TestCase):
         dataframe = self._callFUT(iterable)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(),
-                         [VALUES for i in range(N)])
+        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
 
         expected_headers = [
             (RESOURCE_TYPE, PROJECT, zone, instance_id, instance_name)
