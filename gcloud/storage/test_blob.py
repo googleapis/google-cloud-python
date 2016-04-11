@@ -418,7 +418,8 @@ class Test_Blob(unittest2.TestCase):
     def _upload_from_file_simple_test_helper(self, properties=None,
                                              content_type_arg=None,
                                              expected_content_type=None,
-                                             chunk_size=5):
+                                             chunk_size=5,
+                                             status=None):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -426,7 +427,9 @@ class Test_Blob(unittest2.TestCase):
 
         BLOB_NAME = 'blob-name'
         DATA = b'ABCDEF'
-        response = {'status': OK}
+        if status is None:
+            status = OK
+        response = {'status': status}
         connection = _Connection(
             (response, b'{}'),
         )
@@ -462,6 +465,12 @@ class Test_Blob(unittest2.TestCase):
     def test_upload_from_file_simple(self):
         self._upload_from_file_simple_test_helper(
             expected_content_type='application/octet-stream')
+
+    def test_upload_from_file_simple_not_found(self):
+        from six.moves.http_client import NOT_FOUND
+        from gcloud.exceptions import NotFound
+        with self.assertRaises(NotFound):
+            self._upload_from_file_simple_test_helper(status=NOT_FOUND)
 
     def test_upload_from_file_simple_w_chunk_size_None(self):
         self._upload_from_file_simple_test_helper(
@@ -568,6 +577,60 @@ class Test_Blob(unittest2.TestCase):
             'method': 'PUT',
             'uri': UPLOAD_URL,
             'body': DATA[5:],
+            'connection_type': None,
+            'redirections': 5,
+        })
+
+    def test_upload_from_file_resumable_w_error(self):
+        from six.moves.http_client import NOT_FOUND
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud._testing import _Monkey
+        from gcloud._testing import _NamedTemporaryFile
+        from gcloud.streaming import transfer
+        from gcloud.streaming.exceptions import HttpError
+
+        BLOB_NAME = 'blob-name'
+        DATA = b'ABCDEF'
+        loc_response = {'status': NOT_FOUND}
+        connection = _Connection(
+            (loc_response, b'{"error": "no such bucket"}'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
+
+        # Set the threshhold low enough that we force a resumable uploada.
+        with _Monkey(transfer, RESUMABLE_UPLOAD_THRESHOLD=5):
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'wb') as file_obj:
+                    file_obj.write(DATA)
+                with open(temp.name, 'rb') as file_obj:
+                    with self.assertRaises(HttpError):
+                        blob.upload_from_file(file_obj, rewind=True)
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+
+        # Requested[0]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        self.assertEqual(headers['X-Upload-Content-Length'], '6')
+        self.assertEqual(headers['X-Upload-Content-Type'],
+                         'application/octet-stream')
+
+        uri = rq[0].pop('uri')
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': BLOB_NAME})
+        self.assertEqual(rq[0], {
+            'method': 'POST',
+            'body': '',
             'connection_type': None,
             'redirections': 5,
         })

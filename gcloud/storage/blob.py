@@ -27,6 +27,7 @@ from six.moves.urllib.parse import quote
 from gcloud._helpers import _rfc3339_to_datetime
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
+from gcloud.exceptions import make_exception
 from gcloud.storage._helpers import _PropertyMixin
 from gcloud.storage._helpers import _scalar_property
 from gcloud.storage.acl import ObjectACL
@@ -346,6 +347,16 @@ class Blob(_PropertyMixin):
         self.download_to_file(string_buffer, client=client)
         return string_buffer.getvalue()
 
+    @staticmethod
+    def _check_response_error(request, http_response):
+        """Helper for :meth:`upload_from_file`."""
+        info = http_response.info
+        status = int(info['status'])
+        if not 200 <= status < 300:
+            faux_response = _FauxResponse(status)
+            raise make_exception(faux_response, http_response.content,
+                                 error_info=request.url)
+
     def upload_from_file(self, file_obj, rewind=False, size=None,
                          content_type=None, num_retries=6, client=None):
         """Upload the contents of this blob from a file-like object.
@@ -390,7 +401,8 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined
+                 determined; :class:`gcloud.exceptions.GCloudError` if the
+                 upload response returns an error status.
         """
         client = self._require_client(client)
         # Use the private ``_connection`` rather than the public
@@ -452,7 +464,10 @@ class Blob(_PropertyMixin):
         else:
             http_response = make_api_request(connection.http, request,
                                              retries=num_retries)
+
+        self._check_response_error(request, http_response)
         response_content = http_response.content
+
         if not isinstance(response_content,
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
@@ -822,3 +837,9 @@ class _UrlBuilder(object):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
         self._relative_path = ''
+
+
+class _FauxResponse(object):
+    """Emulate httplib2's response object, given its 'info' dict."""
+    def __init__(self, status):
+        self.status = status
