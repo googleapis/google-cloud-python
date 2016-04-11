@@ -17,7 +17,7 @@ try:
 except ImportError:
     HAVE_PANDAS = False
 else:
-    HAVE_PANDAS = True
+    HAVE_PANDAS = True  # pragma: NO COVER
 
 import unittest2
 
@@ -52,13 +52,13 @@ TIMESTAMPS = [
 N = len(TIMESTAMPS)
 
 
-def parse_timestamps():
+def parse_timestamps():  # pragma: NO COVER
     import datetime
     return [datetime.datetime.strptime(t, '%Y-%m-%dT%H:%M:%S.%fZ')
             for t in TIMESTAMPS]
 
 
-def generate_query_results():
+def generate_query_results():  # pragma: NO COVER
     from gcloud.monitoring.metric import Metric
     from gcloud.monitoring.resource import Resource
     from gcloud.monitoring.timeseries import Point, TimeSeries
@@ -81,7 +81,7 @@ def generate_query_results():
 
 
 @unittest2.skipUnless(HAVE_PANDAS, 'No pandas')
-class Test__build_dataframe(unittest2.TestCase):
+class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.monitoring._dataframe import _build_dataframe
