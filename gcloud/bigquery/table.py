@@ -422,6 +422,8 @@ class Table(object):
             resource['schema'] = {
                 'fields': _build_schema_resource(self._schema)
             }
+        else:
+            raise ValueError("Set either 'view_query' or 'schema'.")
 
         return resource
 
