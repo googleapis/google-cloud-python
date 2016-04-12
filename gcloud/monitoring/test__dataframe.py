@@ -100,7 +100,7 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         dataframe = self._callFUT(iterable, label='instance_name')
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -115,7 +115,7 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         dataframe = self._callFUT(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
 
         expected_headers = [(RESOURCE_TYPE, instance_id)
                             for instance_id in INSTANCE_IDS]
@@ -134,7 +134,7 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         dataframe = self._callFUT(iterable, labels=NAMES)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
         self.assertEqual(dataframe.columns.names, NAMES)
@@ -152,7 +152,7 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         dataframe = self._callFUT(iterable)
 
         self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.as_matrix().tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
 
         expected_headers = [
             (RESOURCE_TYPE, PROJECT, zone, instance_id, instance_name)
