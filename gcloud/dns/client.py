@@ -108,3 +108,29 @@ class Client(JSONClient):
         :returns: a new ``ManagedZone`` instance
         """
         return ManagedZone(name, dns_name, client=self)
+
+    def get_zone(self, zone_name):
+        """Get a zone by name.
+
+        If the zone isn't found, this will raise a
+        :class:`gcloud.exceptions.NotFound`.
+
+        For example::
+
+          >>> try:
+          >>>   zone = client.get_zone('my-zone')
+          >>> except gcloud.exceptions.NotFound:
+          >>>   print 'Sorry, that zone does not exist!'
+
+        This implements "dns.managedZones.get".
+
+        :type zone_name: string
+        :param zone_name: The name of the zone to get.
+
+        :rtype: :class:`gcloud.dns.zone.ManagedZone`
+        :returns: The zone matching the name provided.
+        :raises: :class:`gcloud.exceptions.NotFound`
+        """
+        zone = ManagedZone(name=zone_name, dns_name=None, client=self)
+        zone.reload(client=self)
+        return zone

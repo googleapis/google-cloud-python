@@ -281,6 +281,7 @@ class ManagedZone(object):
 
         api_response = client.connection.api_request(
             method='GET', path=self.path)
+        self.dns_name = api_response.get('dnsName')
         self._set_properties(api_response)
 
     def delete(self, client=None):

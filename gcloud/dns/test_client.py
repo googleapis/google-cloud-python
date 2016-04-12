@@ -204,6 +204,62 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(zone.dns_name, DNS_NAME)
         self.assertTrue(zone._client is client)
 
+    def test_get_zone_miss(self):
+        from gcloud.exceptions import NotFound
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        NONESUCH = 'nonesuch'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'dns',
+            client.connection.API_VERSION,
+            'projects',
+            PROJECT,
+            'managedZones',
+            'nonesuch',
+        ])
+        http = client.connection._http = _Http(
+            {'status': '404', 'content-type': 'application/json'},
+            b'{}',
+        )
+        self.assertRaises(NotFound, client.get_zone, NONESUCH)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
+    def test_get_zone_hit(self):
+        from gcloud.dns.zone import ManagedZone
+
+        PROJECT = 'PROJECT'
+        CREDENTIALS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=CREDENTIALS)
+
+        ZONE_NAME = 'zone-name'
+        ZONE_DNS_NAME = 'example.com.'
+        URI = '/'.join([
+            client.connection.API_BASE_URL,
+            'dns',
+            client.connection.API_VERSION,
+            'projects',
+            PROJECT,
+            'managedZones',
+            ZONE_NAME
+        ])
+        http = client.connection._http = _Http(
+            {'status': '200', 'content-type': 'application/json'},
+            '{{"name": "{0}", "dnsName": "{1}"}}'.format(
+                ZONE_NAME, ZONE_DNS_NAME).encode('utf-8'),
+        )
+
+        zone = client.get_zone(ZONE_NAME)
+        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertEqual(zone.name, ZONE_NAME)
+        self.assertEqual(zone.dns_name, ZONE_DNS_NAME)
+        self.assertEqual(http._called_with['method'], 'GET')
+        self.assertEqual(http._called_with['uri'], URI)
+
 
 class _Credentials(object):
 
@@ -228,3 +284,17 @@ class _Connection(object):
         self._requested.append(kw)
         response, self._responses = self._responses[0], self._responses[1:]
         return response
+
+
+class _Http(object):
+
+    _called_with = None
+
+    def __init__(self, headers, content):
+        from httplib2 import Response
+        self._response = Response(headers)
+        self._content = content
+
+    def request(self, **kw):
+        self._called_with = kw
+        return self._response, self._content
