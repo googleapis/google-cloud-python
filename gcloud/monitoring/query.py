@@ -159,6 +159,18 @@ class Query(object):
     def select_interval(self, end_time, start_time=None):
         """Copy the query and set the query time interval.
 
+        Example::
+
+            import datetime
+
+            now = datetime.datetime.utcnow()
+            query = query.select_interval(
+                end_time=now,
+                start_time=now - datetime.timedelta(minutes=5))
+
+        As a convenience, you can alternatively specify the end time and
+        an interval duration when you create the query initially.
+
         :type end_time: :class:`datetime.datetime`
         :param end_time: The end time (inclusive) of the time interval
             for which results should be returned, as a datetime object.
@@ -178,6 +190,10 @@ class Query(object):
 
     def select_group(self, group_id):
         """Copy the query and add filtering by group.
+
+        Example::
+
+            query = query.select_group('1234567')
 
         :type group_id: string
         :param group_id: The ID of a group to filter by.
@@ -307,17 +323,22 @@ class Query(object):
     def align(self, per_series_aligner, seconds=0, minutes=0, hours=0):
         """Copy the query and add temporal alignment.
 
-        If ``per_series_aligner`` is not ``"ALIGN_NONE"``, each time series
-        will contain data points only on the period boundaries.
+        If ``per_series_aligner`` is not ``Aligner.ALIGN_NONE``, each time
+        series will contain data points only on the period boundaries.
 
         Example::
+
+            query = query.align(Aligner.ALIGN_MEAN, minutes=5)
+
+        It is also possible to specify the aligner as a literal string::
 
             query = query.align('ALIGN_MEAN', minutes=5)
 
         :type per_series_aligner: string
         :param per_series_aligner: The approach to be used to align
-            individual time series. For example: ``"ALIGN_MEAN"``.
-            See the `supported aligners`_.
+            individual time series. For example: ``Aligner.ALIGN_MEAN``.
+            See :class:`Aligner` and the descriptions of the `supported
+            aligners`_.
 
         :type seconds: integer
         :param seconds: The number of seconds in the alignment period.
@@ -344,10 +365,20 @@ class Query(object):
     def reduce(self, cross_series_reducer, *group_by_fields):
         """Copy the query and add cross-series reduction.
 
+        Cross-series reduction combines time series by aggregating their
+        data points.
+
+        For example, you could request an aggregated time series for each
+        combination of project and zone as follows::
+
+            query = query.reduce(Reducer.REDUCE_MEAN,
+                                 'resource.project_id', 'resource.zone')
+
         :type cross_series_reducer: string
         :param cross_series_reducer:
             The approach to be used to combine time series. For example:
-            ``"REDUCE_MEAN"``. See the `supported reducers`_.
+            ``Reducer.REDUCE_MEAN``. See :class:`Reducer` and the descriptions
+            of the `supported reducers`_.
 
         :type group_by_fields: strings
         :param group_by_fields:

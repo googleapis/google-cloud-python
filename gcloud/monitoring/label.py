@@ -40,8 +40,9 @@ class LabelDescriptor(object):
 
     :type value_type: string
     :param value_type:
-        The type of the label. It must be one of ``"STRING"``, ``"BOOL"``,
-        or ``"INT64"``.
+        The type of the label. It must be one of ``LabelValueType.STRING``,
+        ``LabelValueType.BOOL``, or ``LabelValueType.INT64``.
+        See :class:`LabelValueType`.
 
     :type description: string
     :param description: A human-readable description for the label.
