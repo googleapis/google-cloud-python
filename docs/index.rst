@@ -124,6 +124,7 @@
   :hidden:
   :caption: Cloud Monitoring
 
+  monitoring-usage
   Client <monitoring-client>
   monitoring-metric
   monitoring-resource
