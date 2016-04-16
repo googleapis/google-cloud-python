@@ -44,12 +44,16 @@ class TimeSeries(collections.namedtuple(
 
     :type metric_kind: string
     :param metric_kind:
-        The kind of measurement: ``"GAUGE"``. ``"DELTA"``, or ``"CUMULATIVE"``.
+        The kind of measurement: ``MetricKind.GAUGE``, ``MetricKind.DELTA``,
+        or ``MetricKind.CUMULATIVE``.
+        See :class:`~gcloud.monitoring.metric.MetricKind`.
 
     :type value_type: string
     :param value_type:
-        The value type of the metric: ``"BOOL"``, ``"INT64"``, ``"DOUBLE"``,
-        ``"STRING"``, ``"DISTRIBUTION"``, or ``"MONEY"``.
+        The value type of the metric: ``ValueType.BOOL``, ``ValueType.INT64``,
+        ``ValueType.DOUBLE``, ``ValueType.STRING``, ``ValueType.DISTRIBUTION``,
+        or ``ValueType.MONEY``.
+        See :class:`~gcloud.monitoring.metric.ValueType`.
 
     :type points: list of :class:`Point`
     :param points: A list of point objects.
