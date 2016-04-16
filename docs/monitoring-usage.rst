@@ -49,9 +49,8 @@ more information.
 
 It is thus typical to create a client object as follows::
 
-    from gcloud import monitoring
-
-    client = monitoring.Client(project='target-project')
+    >>> from gcloud import monitoring
+    >>> client = monitoring.Client(project='target-project')
 
 If you are running in Google Compute Engine or Google App Engine,
 the current project is the default target project. This default
@@ -59,11 +58,11 @@ can be further overridden with the :envvar:`GCLOUD_PROJECT`
 environment variable. Using the default target project is
 even easier::
 
-    client = monitoring.Client()
+    >>> client = monitoring.Client()
 
 If necessary, you can pass in ``credentials`` and ``project`` explicitly::
 
-    client = monitoring.Client(project='target-project', credentials=...)
+    >>> client = monitoring.Client(project='target-project', credentials=...)
 
 .. _Stackdriver account: https://cloud.google.com/monitoring/accounts/
 
@@ -75,8 +74,8 @@ The available monitored resource types are defined by *monitored resource
 descriptors*. You can fetch a list of these with the
 :meth:`~gcloud.monitoring.client.Client.list_resource_descriptors` method::
 
-    for descriptor in client.list_resource_descriptors():
-        print descriptor.type
+    >>> for descriptor in client.list_resource_descriptors():
+    ...     print descriptor.type
 
 Each :class:`~gcloud.monitoring.resource.ResourceDescriptor`
 has a type, a display name, a description, and a list of
@@ -96,8 +95,8 @@ They include `platform metrics`_, `agent metrics`_, and `custom metrics`_.
 You can list all of these with the
 :meth:`~gcloud.monitoring.client.Client.list_metric_descriptors` method::
 
-    for descriptor in client.list_metric_descriptors():
-        print descriptor.type
+    >>> for descriptor in client.list_metric_descriptors():
+    ...     print descriptor.type
 
 See :class:`~gcloud.monitoring.metric.MetricDescriptor` and the
 `Metric Descriptors`_ API documentation for more information.
@@ -128,9 +127,9 @@ it is not a required dependency of ``gcloud-python``.
 You can display CPU utilization across your GCE instances during
 the last five minutes as follows::
 
-    METRIC = 'compute.googleapis.com/instance/cpu/utilization'
-    query = client.query(METRIC, minutes=5)
-    print query.as_dataframe()
+    >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
+    >>> query = client.query(METRIC, minutes=5)
+    >>> print query.as_dataframe()
 
 :class:`~gcloud.monitoring.query.Query` objects provide a variety of
 methods for refining the query. You can request temporal alignment
@@ -144,14 +143,13 @@ across GCE instances with names beginning with ``"mycluster-"``,
 averaged over five-minute intervals and aggregated per zone, as
 follows::
 
-    from gcloud.monitoring import Aligner, Reducer
-
-    METRIC = 'compute.googleapis.com/instance/cpu/utilization'
-    query = client.query(METRIC, hours=1) \
-                  .select_metrics(instance_name_prefix='mycluster-') \
-                  .align(Aligner.ALIGN_MEAN, minutes=5) \
-                  .reduce(Reducer.REDUCE_MEAN, 'resource.zone')
-    print query.as_dataframe()
+    >>> from gcloud.monitoring import Aligner, Reducer
+    >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
+    >>> query = client.query(METRIC, hours=1) \
+    ...               .select_metrics(instance_name_prefix='mycluster-') \
+    ...               .align(Aligner.ALIGN_MEAN, minutes=5) \
+    ...               .reduce(Reducer.REDUCE_MEAN, 'resource.zone')
+    >>> print query.as_dataframe()
 
 .. _Time Series:
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries

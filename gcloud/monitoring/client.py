@@ -16,10 +16,10 @@
 
 Example::
 
-    from gcloud import monitoring
-    client = monitoring.Client()
-    query = client.query(minutes=5)
-    print query.as_dataframe()  # Requires pandas.
+    >>> from gcloud import monitoring
+    >>> client = monitoring.Client()
+    >>> query = client.query(minutes=5)
+    >>> print query.as_dataframe()  # Requires pandas.
 
 At present, the client supports querying of time series, metric descriptors,
 and monitored resource descriptors.
@@ -64,8 +64,8 @@ class Client(JSONClient):
 
         Example::
 
-            query = client.query(minutes=5)
-            print query.as_dataframe()  # Requires pandas.
+            >>> query = client.query(minutes=5)
+            >>> print query.as_dataframe()  # Requires pandas.
 
         :type metric_type: string
         :param metric_type: The metric type name. The default value is
@@ -116,8 +116,8 @@ class Client(JSONClient):
 
         Example::
 
-            METRIC = 'compute.googleapis.com/instance/cpu/utilization'
-            print client.fetch_metric_descriptor(METRIC)
+            >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
+            >>> print client.fetch_metric_descriptor(METRIC)
 
         :type metric_type: string
         :param metric_type: The metric type name.
@@ -134,8 +134,8 @@ class Client(JSONClient):
 
         Example::
 
-            for descriptor in client.list_metric_descriptors():
-                print descriptor.type
+            >>> for descriptor in client.list_metric_descriptors():
+            ...     print descriptor.type
 
         :type filter: string or None
         :param filter: An optional filter string describing the metric
@@ -155,7 +155,7 @@ class Client(JSONClient):
 
         Example::
 
-            print client.fetch_resource_descriptor('gce_instance')
+            >>> print client.fetch_resource_descriptor('gce_instance')
 
         :type resource_type: string
         :param resource_type: The resource type name.
@@ -172,8 +172,8 @@ class Client(JSONClient):
 
         Example::
 
-            for descriptor in client.list_resource_descriptors():
-                print descriptor.type
+            >>> for descriptor in client.list_resource_descriptors():
+            ...     print descriptor.type
 
         :type filter: string or None
         :param filter: An optional filter string describing the resource
