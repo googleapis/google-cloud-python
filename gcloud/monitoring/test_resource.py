@@ -87,9 +87,17 @@ class TestResourceDescriptor(unittest2.TestCase):
         self.assertEqual(label3.key, LABEL3['key'])
 
     def test_from_dict_defaults(self):
-        descriptor = self._getTargetClass()._from_dict({})
-        self.assertEqual(descriptor.name, '')
-        self.assertEqual(descriptor.type, '')
+        TYPE = 'gce_instance'
+        NAME = 'projects/my-project/monitoredResourceDescriptors/' + TYPE
+
+        info = {
+            'name': NAME,
+            'type': TYPE,
+        }
+        descriptor = self._getTargetClass()._from_dict(info)
+
+        self.assertEqual(descriptor.name, NAME)
+        self.assertEqual(descriptor.type, TYPE)
         self.assertEqual(descriptor.display_name, '')
         self.assertEqual(descriptor.description, '')
         self.assertEqual(descriptor.labels, ())
@@ -297,9 +305,10 @@ class TestResource(unittest2.TestCase):
         self.assertEqual(resource.labels, LABELS)
 
     def test_from_dict_defaults(self):
-        info = {}
+        TYPE = 'gce_instance'
+        info = {'type': TYPE}
         resource = self._getTargetClass()._from_dict(info)
-        self.assertEqual(resource.type, '')
+        self.assertEqual(resource.type, TYPE)
         self.assertEqual(resource.labels, {})
 
 

@@ -136,8 +136,8 @@ class ResourceDescriptor(object):
         :returns: A resource descriptor.
         """
         return cls(
-            name=info.get('name', ''),
-            type=info.get('type', ''),
+            name=info['name'],
+            type=info['type'],
             display_name=info.get('displayName', ''),
             description=info.get('description', ''),
             labels=tuple(LabelDescriptor._from_dict(label)
@@ -181,6 +181,6 @@ class Resource(collections.namedtuple('Resource', 'type labels')):
         :returns: A resource object.
         """
         return cls(
-            type=info.get('type', ''),
+            type=info['type'],
             labels=info.get('labels', {}),
         )

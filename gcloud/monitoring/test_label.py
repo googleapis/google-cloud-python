@@ -64,8 +64,9 @@ class TestLabelDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.description, DESCRIPTION)
 
     def test_from_dict_defaults(self):
-        info = {}
+        KEY = 'response_code'
+        info = {'key': KEY}
         descriptor = self._getTargetClass()._from_dict(info)
-        self.assertEqual(descriptor.key, '')
+        self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, 'STRING')
         self.assertEqual(descriptor.description, '')

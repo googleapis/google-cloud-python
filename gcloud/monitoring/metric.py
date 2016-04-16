@@ -187,8 +187,8 @@ class MetricDescriptor(object):
         :returns: A metric descriptor.
         """
         return cls(
-            name=info.get('name', ''),
-            type=info.get('type', ''),
+            name=info['name'],
+            type=info['type'],
             labels=tuple(LabelDescriptor._from_dict(label)
                          for label in info.get('labels', [])),
             metric_kind=info['metricKind'],
@@ -236,6 +236,6 @@ class Metric(collections.namedtuple('Metric', 'type labels')):
         :returns: A metric object.
         """
         return cls(
-            type=info.get('type', ''),
+            type=info['type'],
             labels=info.get('labels', {}),
         )

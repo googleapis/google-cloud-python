@@ -138,17 +138,21 @@ class TestMetricDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.display_name, DISPLAY_NAME)
 
     def test_from_dict_defaults(self):
+        TYPE = 'appengine.googleapis.com/http/server/response_count'
+        NAME = 'projects/my-project/metricDescriptors/' + TYPE
         METRIC_KIND = 'CUMULATIVE'
         VALUE_TYPE = 'DOUBLE'
 
         info = {
+            'name': NAME,
+            'type': TYPE,
             'metricKind': METRIC_KIND,
             'valueType': VALUE_TYPE,
         }
         descriptor = self._getTargetClass()._from_dict(info)
 
-        self.assertEqual(descriptor.name, '')
-        self.assertEqual(descriptor.type, '')
+        self.assertEqual(descriptor.name, NAME)
+        self.assertEqual(descriptor.type, TYPE)
         self.assertEqual(descriptor.labels, ())
         self.assertEqual(descriptor.metric_kind, METRIC_KIND)
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
@@ -347,9 +351,10 @@ class TestMetric(unittest2.TestCase):
         self.assertEqual(metric.labels, LABELS)
 
     def test_from_dict_defaults(self):
-        info = {}
+        TYPE = 'appengine.googleapis.com/http/server/response_count'
+        info = {'type': TYPE}
         metric = self._getTargetClass()._from_dict(info)
-        self.assertEqual(metric.type, '')
+        self.assertEqual(metric.type, TYPE)
         self.assertEqual(metric.labels, {})
 
 

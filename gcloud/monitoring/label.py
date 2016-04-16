@@ -65,7 +65,7 @@ class LabelDescriptor(object):
         :returns: A label descriptor.
         """
         return cls(
-            info.get('key', ''),
+            info['key'],
             info.get('valueType', LabelValueType.STRING),
             info.get('description', ''),
         )
