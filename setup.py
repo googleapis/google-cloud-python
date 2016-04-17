@@ -15,7 +15,6 @@ REQUIREMENTS = [
     'googleapis-common-protos',
     'oauth2client >= 2.0.1',
     'protobuf >= 3.0.0b2, != 3.0.0.b2.post1',
-    'pyOpenSSL',
     'six',
 ]
 GRPC_EXTRAS = ['grpcio >= 0.13.1']
