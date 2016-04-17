@@ -138,21 +138,20 @@ The ``gcloud`` library is ``pip`` install-able:
 
     $ pip install gcloud
 
-If you have trouble installing
-``pycrypto`` or ``pyopenssl``
-(and you're on Ubuntu),
-you can try install the precompiled packages:
+If you have trouble installing ``cryptography``
+(and you're on Debian/Ubuntu),
+you can try installing the precompiled ``python-openssl`` package:
 
 .. code-block:: console
 
-    $ sudo apt-get install python-crypto python-openssl
+    $ sudo apt-get install python-openssl
 
 If you want to install everything with ``pip``,
 try installing the ``dev`` packages beforehand:
 
 .. code-block:: console
 
-    $ sudo apt-get install python-dev libssl-dev
+    $ sudo apt-get install build-essential libssl-dev libffi-dev python-dev
 
 If you want to install ``gcloud-python`` from source,
 you can clone the repository from GitHub:

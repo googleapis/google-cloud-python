@@ -68,16 +68,16 @@ I'm getting weird errors... Can you help?
 -----------------------------------------
 
 Chances are you have some dependency problems...
-If you're on Ubuntu,
+If you're on Debian/Ubuntu,
 try installing the pre-compiled packages::
 
-  $ sudo apt-get install python-crypto python-openssl libffi-dev
+  $ sudo apt-get install python-openssl
 
 or try installing the development packages
 (that have the header files included)
 and then ``pip install`` the dependencies again::
 
-  $ sudo apt-get install python-dev libssl-dev libffi-dev
+  $ sudo apt-get install build-essential libssl-dev libffi-dev python-dev
   $ pip install gcloud
 
 Adding Features
