@@ -30,15 +30,16 @@ class ManagedZone(object):
     :type name: string
     :param name: the name of the zone
 
-    :type dns_name: string
-    :param dns_name: the DNS name of the zone
+    :type dns_name: string or :class:`NoneType`
+    :param dns_name: the DNS name of the zone.  If not passed, then calls
+                     to :meth:`create` will fail.
 
     :type client: :class:`gcloud.dns.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the zone (which requires a project).
     """
 
-    def __init__(self, name, dns_name, client):
+    def __init__(self, name, dns_name=None, client=None):
         self.name = name
         self.dns_name = dns_name
         self._client = client

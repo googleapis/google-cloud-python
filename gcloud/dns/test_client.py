@@ -17,6 +17,9 @@ import unittest2
 
 class TestClient(unittest2.TestCase):
 
+    PROJECT = 'PROJECT'
+    ZONE_NAME = 'zone-name'
+
     def _getTargetClass(self):
         from gcloud.dns.client import Client
         return Client
@@ -26,17 +29,16 @@ class TestClient(unittest2.TestCase):
 
     def test_ctor(self):
         from gcloud.dns.connection import Connection
-        PROJECT = 'PROJECT'
         creds = _Credentials()
         http = object()
-        client = self._makeOne(project=PROJECT, credentials=creds, http=http)
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
+                               http=http)
         self.assertTrue(isinstance(client.connection, Connection))
         self.assertTrue(client.connection.credentials is creds)
         self.assertTrue(client.connection.http is http)
 
     def test_quotas_defaults(self):
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s' % PROJECT
+        PATH = 'projects/%s' % (self.PROJECT,)
         MANAGED_ZONES = 1234
         RRS_PER_RRSET = 23
         RRSETS_PER_ZONE = 345
@@ -56,7 +58,7 @@ class TestClient(unittest2.TestCase):
         CONVERTED = dict([(key, int(value))
                           for key, value in DATA['quota'].items()])
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         quotas = client.quotas()
@@ -69,8 +71,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_quotas_w_kind_key(self):
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s' % PROJECT
+        PATH = 'projects/%s' % (self.PROJECT,)
         MANAGED_ZONES = 1234
         RRS_PER_RRSET = 23
         RRSETS_PER_ZONE = 345
@@ -92,7 +93,7 @@ class TestClient(unittest2.TestCase):
         WITH_KIND = {'quota': DATA['quota'].copy()}
         WITH_KIND['quota']['kind'] = 'dns#quota'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(WITH_KIND)
 
         quotas = client.quotas()
@@ -106,14 +107,13 @@ class TestClient(unittest2.TestCase):
 
     def test_list_zones_defaults(self):
         from gcloud.dns.zone import ManagedZone
-        PROJECT = 'PROJECT'
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
         ID_2 = '234'
         ZONE_2 = 'zone_two'
         DNS_2 = 'two.example.com'
-        PATH = 'projects/%s/managedZones' % PROJECT
+        PATH = 'projects/%s/managedZones' % (self.PROJECT,)
         TOKEN = 'TOKEN'
         DATA = {
             'nextPageToken': TOKEN,
@@ -129,7 +129,7 @@ class TestClient(unittest2.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         zones, token = client.list_zones()
@@ -149,14 +149,13 @@ class TestClient(unittest2.TestCase):
 
     def test_list_zones_explicit(self):
         from gcloud.dns.zone import ManagedZone
-        PROJECT = 'PROJECT'
         ID_1 = '123'
         ZONE_1 = 'zone_one'
         DNS_1 = 'one.example.com'
         ID_2 = '234'
         ZONE_2 = 'zone_two'
         DNS_2 = 'two.example.com'
-        PATH = 'projects/%s/managedZones' % PROJECT
+        PATH = 'projects/%s/managedZones' % (self.PROJECT,)
         TOKEN = 'TOKEN'
         DATA = {
             'managedZones': [
@@ -171,7 +170,7 @@ class TestClient(unittest2.TestCase):
             ]
         }
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
+        client = self._makeOne(self.PROJECT, creds)
         conn = client.connection = _Connection(DATA)
 
         zones, token = client.list_zones(max_results=3, page_token=TOKEN)
@@ -191,17 +190,25 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_zone(self):
+    def test_zone_w_explicit_dns_name(self):
         from gcloud.dns.zone import ManagedZone
-        PROJECT = 'PROJECT'
-        ZONE_NAME = 'zone-name'
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
-        client = self._makeOne(PROJECT, creds)
-        zone = client.zone(ZONE_NAME, DNS_NAME)
+        client = self._makeOne(self.PROJECT, creds)
+        zone = client.zone(self.ZONE_NAME, DNS_NAME)
         self.assertTrue(isinstance(zone, ManagedZone))
-        self.assertEqual(zone.name, ZONE_NAME)
+        self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
+        self.assertTrue(zone._client is client)
+
+    def test_zone_wo_dns_name(self):
+        from gcloud.dns.zone import ManagedZone
+        creds = _Credentials()
+        client = self._makeOne(self.PROJECT, creds)
+        zone = client.zone(self.ZONE_NAME)
+        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertEqual(zone.name, self.ZONE_NAME)
+        self.assertEqual(zone.dns_name, None)
         self.assertTrue(zone._client is client)
 
 
