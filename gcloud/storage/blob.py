@@ -21,6 +21,7 @@ import mimetypes
 import os
 import time
 
+import httplib2
 import six
 from six.moves.urllib.parse import quote
 
@@ -353,7 +354,7 @@ class Blob(_PropertyMixin):
         info = http_response.info
         status = int(info['status'])
         if not 200 <= status < 300:
-            faux_response = _FauxResponse(status)
+            faux_response = httplib2.Response({'status': status})
             raise make_exception(faux_response, http_response.content,
                                  error_info=request.url)
 
@@ -837,9 +838,3 @@ class _UrlBuilder(object):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
         self._relative_path = ''
-
-
-class _FauxResponse(object):
-    """Emulate httplib2's response object, given its 'info' dict."""
-    def __init__(self, status):
-        self.status = status
