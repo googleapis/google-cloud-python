@@ -67,18 +67,11 @@ repo, from which you can submit a pull request.
 I'm getting weird errors... Can you help?
 -----------------------------------------
 
-Chances are you have some dependency problems...
-If you're on Ubuntu,
-try installing the pre-compiled packages::
+If the error mentions ``Python.h`` not being found,
+install ``python-dev`` and try again.
+On Debian/Ubuntu::
 
-  $ sudo apt-get install python-crypto python-openssl libffi-dev
-
-or try installing the development packages
-(that have the header files included)
-and then ``pip install`` the dependencies again::
-
-  $ sudo apt-get install python-dev libssl-dev libffi-dev
-  $ pip install gcloud
+  $ sudo apt-get install python-dev
 
 Adding Features
 ---------------
