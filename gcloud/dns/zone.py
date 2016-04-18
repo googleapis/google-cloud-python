@@ -37,13 +37,20 @@ class ManagedZone(object):
     :type client: :class:`gcloud.dns.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the zone (which requires a project).
+
+    :type description: string or :class:`NoneType`
+    :param description: the description for the zone.  If not passed, defaults
+                        to the value of 'dns_name'.
     """
 
-    def __init__(self, name, dns_name=None, client=None):
+    def __init__(self, name, dns_name=None, client=None, description=None):
         self.name = name
         self.dns_name = dns_name
         self._client = client
         self._properties = {}
+        if description is None:
+            description = dns_name
+        self.description = description
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -221,8 +228,10 @@ class ManagedZone(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'name': self.name,
-            'dnsName': self.dns_name,
         }
+
+        if self.dns_name is not None:
+            resource['dnsName'] = self.dns_name
 
         if self.description is not None:
             resource['description'] = self.description

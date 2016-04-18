@@ -95,7 +95,7 @@ class Client(JSONClient):
                  for resource in resp['managedZones']]
         return zones, resp.get('nextPageToken')
 
-    def zone(self, name, dns_name=None):
+    def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
 
         :type name: string
@@ -105,7 +105,12 @@ class Client(JSONClient):
         :param dns_name: DNS name of the zone.  If not passed, then calls
                          to :meth:`zone.create` will fail.
 
+        :type description: string or :class:`NoneType`
+        :param description: the description for the zone.  If not passed,
+                            defaults to the value of 'dns_name'.
+
         :rtype: :class:`gcloud.dns.zone.ManagedZone`
         :returns: a new ``ManagedZone`` instance
         """
-        return ManagedZone(name, dns_name, client=self)
+        return ManagedZone(name, dns_name, client=self,
+                           description=description)
