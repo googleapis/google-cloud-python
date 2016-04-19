@@ -399,7 +399,7 @@ class Query(object):
         new_query._group_by_fields = group_by_fields
         return new_query
 
-    def iter(self, headers_only=False, _page_size=None):
+    def iter(self, headers_only=False, page_size=None):
         """Yield all time series objects selected by the query.
 
         Note that the :class:`Query` object itself is an iterable, such that
@@ -415,8 +415,8 @@ class Query(object):
         :param headers_only:
              Whether to omit the point data from the time series objects.
 
-        :type _page_size: integer or None
-        :param _page_size:
+        :type page_size: integer or None
+        :param page_size:
             An optional positive number specifying the maximum number of
             points to return per page. This can be used to control how far
             the iterator reads ahead.
@@ -438,7 +438,7 @@ class Query(object):
             while True:
                 params = self._build_query_params(
                     headers_only=headers_only,
-                    page_size=_page_size,
+                    page_size=page_size,
                     page_token=page_token,
                 )
                 response = self._client.connection.api_request(
