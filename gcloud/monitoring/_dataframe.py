@@ -57,10 +57,11 @@ def _build_dataframe(time_series_iterable,
     """
     import pandas   # pylint: disable=import-error
 
-    if label is not None and labels is not None:
-        raise ValueError('Cannot specify both "label" and "labels".')
-    elif not (labels or labels is None):
-        raise ValueError('"labels" must be non-empty or None.')
+    if labels is not None:
+        if label is not None:
+            raise ValueError('Cannot specify both "label" and "labels".')
+        elif not labels:
+            raise ValueError('"labels" must be non-empty or None.')
 
     columns = []
     headers = []
