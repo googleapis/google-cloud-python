@@ -130,4 +130,4 @@ class TestMonitoring(unittest2.TestCase):
         query = client.query(METRIC_TYPE, hours=1)
         # There may be no data, but we can ask anyway.
         for _ in query:
-            pass
+            pass    # Not necessarily reached.
