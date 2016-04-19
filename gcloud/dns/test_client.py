@@ -190,7 +190,20 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['query_params'],
                          {'maxResults': 3, 'pageToken': TOKEN})
 
-    def test_zone_w_explicit_dns_name(self):
+    def test_zone_explicit(self):
+        from gcloud.dns.zone import ManagedZone
+        DESCRIPTION = 'DESCRIPTION'
+        DNS_NAME = 'test.example.com'
+        creds = _Credentials()
+        client = self._makeOne(self.PROJECT, creds)
+        zone = client.zone(self.ZONE_NAME, DNS_NAME, DESCRIPTION)
+        self.assertTrue(isinstance(zone, ManagedZone))
+        self.assertEqual(zone.name, self.ZONE_NAME)
+        self.assertEqual(zone.dns_name, DNS_NAME)
+        self.assertEqual(zone.description, DESCRIPTION)
+        self.assertTrue(zone._client is client)
+
+    def test_zone_w_dns_name_wo_description(self):
         from gcloud.dns.zone import ManagedZone
         DNS_NAME = 'test.example.com'
         creds = _Credentials()
@@ -199,6 +212,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(zone, ManagedZone))
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, DNS_NAME)
+        self.assertEqual(zone.description, DNS_NAME)
         self.assertTrue(zone._client is client)
 
     def test_zone_wo_dns_name(self):
@@ -209,6 +223,7 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(zone, ManagedZone))
         self.assertEqual(zone.name, self.ZONE_NAME)
         self.assertEqual(zone.dns_name, None)
+        self.assertEqual(zone.description, None)
         self.assertTrue(zone._client is client)
 
 

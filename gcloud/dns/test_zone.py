@@ -100,7 +100,7 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(zone.created, None)
         self.assertEqual(zone.description, None)
 
-    def test_ctor_explicit(self):
+    def test_ctor_wo_description(self):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         self.assertEqual(zone.name, self.ZONE_NAME)
@@ -112,7 +112,23 @@ class TestManagedZone(unittest2.TestCase):
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
         self.assertEqual(zone.zone_id, None)
         self.assertEqual(zone.created, None)
-        self.assertEqual(zone.description, None)
+        self.assertEqual(zone.description, self.DNS_NAME)
+
+    def test_ctor_explicit(self):
+        DESCRIPTION = 'DESCRIPTION'
+        client = _Client(self.PROJECT)
+        zone = self._makeOne(
+            self.ZONE_NAME, self.DNS_NAME, client, DESCRIPTION)
+        self.assertEqual(zone.name, self.ZONE_NAME)
+        self.assertEqual(zone.dns_name, self.DNS_NAME)
+        self.assertTrue(zone._client is client)
+        self.assertEqual(zone.project, client.project)
+        self.assertEqual(
+            zone.path,
+            '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
+        self.assertEqual(zone.zone_id, None)
+        self.assertEqual(zone.created, None)
+        self.assertEqual(zone.description, DESCRIPTION)
 
     def test_from_api_repr_missing_identity(self):
         self._setUpConstants()
@@ -207,6 +223,7 @@ class TestManagedZone(unittest2.TestCase):
         SENT = {
             'name': self.ZONE_NAME,
             'dnsName': self.DNS_NAME,
+            'description': self.DNS_NAME,
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(zone, RESOURCE)
@@ -242,6 +259,33 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(zone, RESOURCE)
 
+    def test_create_wo_dns_name_or_description(self):
+        from gcloud.exceptions import BadRequest
+        PATH = 'projects/%s/managedZones' % self.PROJECT
+
+        _requested = []
+
+        def _api_request(**kw):
+            _requested.append(kw)
+            raise BadRequest('missing dns_name / description')
+
+        conn = _Connection()
+        conn.api_request = _api_request
+        client = _Client(project=self.PROJECT, connection=conn)
+        zone = self._makeOne(self.ZONE_NAME, client=client)
+
+        with self.assertRaises(BadRequest):
+            zone.create()
+
+        self.assertEqual(len(_requested), 1)
+        req = _requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        SENT = {
+            'name': self.ZONE_NAME,
+        }
+        self.assertEqual(req['data'], SENT)
+
     def test_create_w_missing_output_properties(self):
         # In the wild, the resource returned from 'zone.create' sometimes
         # lacks 'creationTime' / 'lastModifiedTime'
@@ -264,6 +308,7 @@ class TestManagedZone(unittest2.TestCase):
         SENT = {
             'name': self.ZONE_NAME,
             'dnsName': self.DNS_NAME,
+            'description': self.DNS_NAME,
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(zone, RESOURCE)
