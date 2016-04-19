@@ -75,7 +75,7 @@ descriptors*. You can fetch a list of these with the
 :meth:`~gcloud.monitoring.client.Client.list_resource_descriptors` method::
 
     >>> for descriptor in client.list_resource_descriptors():
-    ...     print descriptor.type
+    ...     print(descriptor.type)
 
 Each :class:`~gcloud.monitoring.resource.ResourceDescriptor`
 has a type, a display name, a description, and a list of
@@ -96,7 +96,7 @@ You can list all of these with the
 :meth:`~gcloud.monitoring.client.Client.list_metric_descriptors` method::
 
     >>> for descriptor in client.list_metric_descriptors():
-    ...     print descriptor.type
+    ...     print(descriptor.type)
 
 See :class:`~gcloud.monitoring.metric.MetricDescriptor` and the
 `Metric Descriptors`_ API documentation for more information.
@@ -129,7 +129,7 @@ the last five minutes as follows::
 
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
     >>> query = client.query(METRIC, minutes=5)
-    >>> print query.as_dataframe()
+    >>> print(query.as_dataframe())
 
 :class:`~gcloud.monitoring.query.Query` objects provide a variety of
 methods for refining the query. You can request temporal alignment
@@ -149,7 +149,7 @@ follows::
     ...               .select_metrics(instance_name_prefix='mycluster-') \
     ...               .align(Aligner.ALIGN_MEAN, minutes=5) \
     ...               .reduce(Reducer.REDUCE_MEAN, 'resource.zone')
-    >>> print query.as_dataframe()
+    >>> print(query.as_dataframe())
 
 .. _Time Series:
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
