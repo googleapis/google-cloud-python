@@ -67,8 +67,8 @@ def _build_dataframe(time_series_iterable,
     headers = []
     for time_series in time_series_iterable:
         pandas_series = pandas.Series(
-            data=[p.value for p in time_series.points],
-            index=[p.end_time for p in time_series.points],
+            data=[point.value for point in time_series.points],
+            index=[point.end_time for point in time_series.points],
         )
         columns.append(pandas_series)
         headers.append(time_series.header())
