@@ -14,13 +14,13 @@
 
 """Metric Descriptors for the `Google Monitoring API (V3)`_.
 
+Features intentionally omitted from this first version of the client library:
+  * Creating and deleting metric descriptors.
+
 .. _Google Monitoring API (V3):
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
     projects.metricDescriptors
 """
-
-# Features intentionally omitted from this first version of the client library:
-#   - Creating and deleting metric descriptors.
 
 import collections
 
