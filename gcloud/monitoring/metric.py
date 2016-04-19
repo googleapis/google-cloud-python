@@ -122,7 +122,8 @@ class MetricDescriptor(object):
         :rtype: :class:`MetricDescriptor`
         :returns: The metric descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound` if the metric descriptor
+            is not found.
         """
         path = '/projects/{project}/metricDescriptors/{type}'.format(
             project=client.project,

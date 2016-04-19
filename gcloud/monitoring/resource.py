@@ -71,7 +71,8 @@ class ResourceDescriptor(object):
         :rtype: :class:`ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound` if the resource descriptor
+            is not found.
         """
         path = '/projects/{project}/monitoredResourceDescriptors/{type}' \
             .format(project=client.project,

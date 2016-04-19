@@ -126,7 +126,8 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.metric.MetricDescriptor`
         :returns: The metric descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound` if the metric descriptor
+            is not found.
         """
         return MetricDescriptor._fetch(self, metric_type)
 
@@ -164,7 +165,8 @@ class Client(JSONClient):
         :rtype: :class:`~gcloud.monitoring.resource.ResourceDescriptor`
         :returns: The resource descriptor instance.
 
-        :raises: :class:`gcloud.exceptions.NotFound`
+        :raises: :class:`gcloud.exceptions.NotFound` if the resource descriptor
+            is not found.
         """
         return ResourceDescriptor._fetch(self, resource_type)
 
