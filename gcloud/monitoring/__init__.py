@@ -23,8 +23,8 @@ from gcloud.monitoring.metric import MetricDescriptor
 from gcloud.monitoring.metric import MetricKind
 from gcloud.monitoring.metric import ValueType
 from gcloud.monitoring.query import Aligner
-from gcloud.monitoring.query import Reducer
 from gcloud.monitoring.query import Query
+from gcloud.monitoring.query import Reducer
 from gcloud.monitoring.resource import Resource
 from gcloud.monitoring.resource import ResourceDescriptor
 from gcloud.monitoring.timeseries import Point
