@@ -405,8 +405,11 @@ class Query(object):
         Note that the :class:`Query` object itself is an iterable, such that
         the following are equivalent::
 
-            for timeseries in query: ...
-            for timeseries in query.iter(): ...
+            for timeseries in query:
+                ...
+
+            for timeseries in query.iter():
+                ...
 
         :type headers_only: boolean
         :param headers_only:
