@@ -349,9 +349,11 @@ class TestManagedZone(unittest2.TestCase):
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
-        zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
+        zone = self._makeOne(self.ZONE_NAME, client=client)
 
         zone.reload()
+
+        self.assertEqual(zone.dns_name, self.DNS_NAME)
 
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]

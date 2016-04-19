@@ -219,6 +219,7 @@ class ManagedZone(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
+        self.dns_name = cleaned.pop('dnsName', None)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = _rfc3339_to_datetime(
                 cleaned['creationTime'])
