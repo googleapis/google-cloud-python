@@ -69,8 +69,9 @@ class Client(JSONClient):
 
         :type metric_type: string
         :param metric_type: The metric type name. The default value is
-            ``"compute.googleapis.com/instance/cpu/utilization"``, but
-            please note that this default value is provided only for
+            :data:`Query.DEFAULT_METRIC_TYPE
+            <gcloud.monitoring.query.Query.DEFAULT_METRIC_TYPE>`,
+            but please note that this default value is provided only for
             demonstration purposes and is subject to change. See the
             `supported metrics`_.
 
