@@ -324,7 +324,7 @@ class Query(object):
     def align(self, per_series_aligner, seconds=0, minutes=0, hours=0):
         """Copy the query and add temporal alignment.
 
-        If ``per_series_aligner`` is not ``Aligner.ALIGN_NONE``, each time
+        If ``per_series_aligner`` is not :data:`Aligner.ALIGN_NONE`, each time
         series will contain data points only on the period boundaries.
 
         Example::
@@ -337,7 +337,7 @@ class Query(object):
 
         :type per_series_aligner: string
         :param per_series_aligner: The approach to be used to align
-            individual time series. For example: ``Aligner.ALIGN_MEAN``.
+            individual time series. For example: :data:`Aligner.ALIGN_MEAN`.
             See :class:`Aligner` and the descriptions of the `supported
             aligners`_.
 
@@ -378,8 +378,8 @@ class Query(object):
         :type cross_series_reducer: string
         :param cross_series_reducer:
             The approach to be used to combine time series. For example:
-            ``Reducer.REDUCE_MEAN``. See :class:`Reducer` and the descriptions
-            of the `supported reducers`_.
+            :data:`Reducer.REDUCE_MEAN`. See :class:`Reducer` and the
+            descriptions of the `supported reducers`_.
 
         :type group_by_fields: strings
         :param group_by_fields:

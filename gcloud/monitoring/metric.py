@@ -76,15 +76,16 @@ class MetricDescriptor(object):
 
     :type metric_kind: string
     :param metric_kind:
-        The kind of measurement. It must be one of ``MetricKind.GAUGE``,
-        ``MetricKind.DELTA``, or ``MetricKind.CUMULATIVE``.
+        The kind of measurement. It must be one of :data:`MetricKind.GAUGE`,
+        :data:`MetricKind.DELTA`, or :data:`MetricKind.CUMULATIVE`.
         See :class:`MetricKind`.
 
     :type value_type: string
     :param value_type:
-        The value type of the metric. It must be one of ``ValueType.BOOL``,
-        ``ValueType.INT64``, ``ValueType.DOUBLE``, ``ValueType.STRING``,
-        ``ValueType.DISTRIBUTION``, or ``ValueType.MONEY``.
+        The value type of the metric. It must be one of :data:`ValueType.BOOL`,
+        :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
+        :data:`ValueType.STRING`, :data:`ValueType.DISTRIBUTION`,
+        or :data:`ValueType.MONEY`.
         See :class:`ValueType`.
 
     :type unit: string
