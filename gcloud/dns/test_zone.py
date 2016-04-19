@@ -84,7 +84,23 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(zone.zone_id, resource.get('id'))
         self.assertEqual(zone.name_server_set, resource.get('nameServerSet'))
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
+        zone = self._makeOne(self.ZONE_NAME)
+        self.assertEqual(zone.name, self.ZONE_NAME)
+        self.assertEqual(zone.dns_name, None)
+        self.assertTrue(zone._client is None)
+
+        with self.assertRaises(AttributeError):
+            _ = zone.project
+
+        with self.assertRaises(AttributeError):
+            _ = zone.path
+
+        self.assertEqual(zone.zone_id, None)
+        self.assertEqual(zone.created, None)
+        self.assertEqual(zone.description, None)
+
+    def test_ctor_explicit(self):
         client = _Client(self.PROJECT)
         zone = self._makeOne(self.ZONE_NAME, self.DNS_NAME, client)
         self.assertEqual(zone.name, self.ZONE_NAME)
@@ -94,10 +110,8 @@ class TestManagedZone(unittest2.TestCase):
         self.assertEqual(
             zone.path,
             '/projects/%s/managedZones/%s' % (self.PROJECT, self.ZONE_NAME))
-
         self.assertEqual(zone.zone_id, None)
         self.assertEqual(zone.created, None)
-
         self.assertEqual(zone.description, None)
 
     def test_from_api_repr_missing_identity(self):
