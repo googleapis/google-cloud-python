@@ -26,7 +26,7 @@ import itertools
 from gcloud.monitoring._dataframe import _build_dataframe
 from gcloud.monitoring.timeseries import TimeSeries
 
-_NOW = datetime.datetime.utcnow  # To be replaced by tests.
+_UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 
 
 class Aligner(object):
@@ -122,7 +122,7 @@ class Query(object):
         start_time = None
         if days or hours or minutes:
             if end_time is None:
-                end_time = _NOW().replace(second=0, microsecond=0)
+                end_time = _UTCNOW().replace(second=0, microsecond=0)
             start_time = end_time - datetime.timedelta(days=days,
                                                        hours=hours,
                                                        minutes=minutes)

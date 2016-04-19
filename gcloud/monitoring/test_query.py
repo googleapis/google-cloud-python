@@ -132,7 +132,7 @@ class TestQuery(unittest2.TestCase):
         ]
 
         client = _Client(project=PROJECT, connection=_Connection())
-        with _Monkey(MUT, _NOW=lambda: NOW):
+        with _Monkey(MUT, _UTCNOW=lambda: NOW):
             query = self._makeOne(client, METRIC_TYPE, minutes=MINUTES)
 
         self.assertEqual(query._start_time, T0)
