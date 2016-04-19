@@ -119,9 +119,9 @@ See :class:`~gcloud.monitoring.timeseries.TimeSeries` and the
 
 While you can obtain time series objects by iterating over a
 :class:`~gcloud.monitoring.query.Query` object, usually it is
-more useful to retrieve time series data in the form of a `pandas`_
-:class:`~pandas.DataFrame`, where each column corresponds to a
-single time series. For this, you must have ``pandas`` installed;
+more useful to retrieve time series data in the form of a
+:class:`pandas.DataFrame`, where each column corresponds to a
+single time series. For this, you must have :mod:`pandas` installed;
 it is not a required dependency of ``gcloud-python``.
 
 You can display CPU utilization across your GCE instances during
@@ -153,4 +153,3 @@ follows::
 
 .. _Time Series:
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
-.. _pandas: http://pandas.pydata.org/pandas-docs/stable/

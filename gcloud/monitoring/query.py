@@ -515,11 +515,11 @@ class Query(object):
         return list(_pairs())
 
     def as_dataframe(self, label=None, labels=None):
-        """Return all the selected time series as a `pandas`_ dataframe.
+        """Return all the selected time series as a :mod:`pandas` dataframe.
 
         .. note::
 
-            Use of this method requires that you have ``pandas`` installed.
+            Use of this method requires that you have :mod:`pandas` installed.
 
         Examples::
 
@@ -553,8 +553,6 @@ class Query(object):
 
         :rtype: :class:`pandas.DataFrame`
         :returns: A dataframe where each column represents one time series.
-
-        .. _pandas: http://pandas.pydata.org/pandas-docs/stable/
         """
         return _build_dataframe(self, label, labels)  # pragma: NO COVER
 

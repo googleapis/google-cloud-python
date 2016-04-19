@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Time series as `pandas`_ dataframes.
-
-.. _pandas: http://pandas.pydata.org/pandas-docs/stable/
-"""
+"""Time series as :mod:`pandas` dataframes."""
 
 import itertools
 
@@ -30,7 +27,7 @@ TOP_RESOURCE_LABELS = [
 
 def _build_dataframe(time_series_iterable,
                      label=None, labels=None):  # pragma: NO COVER
-    """Build a ``pandas`` dataframe out of time series.
+    """Build a :mod:`pandas` dataframe out of time series.
 
     :type time_series_iterable:
         iterable over :class:`~gcloud.monitoring.timeseries.TimeSeries`
