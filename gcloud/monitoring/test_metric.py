@@ -307,7 +307,7 @@ class TestMetricDescriptor(unittest2.TestCase):
 
         connection = _Connection(RESPONSE)
         client = _Client(project=PROJECT, connection=connection)
-        descriptors = self._getTargetClass()._list(client, filter=FILTER)
+        descriptors = self._getTargetClass()._list(client, FILTER)
 
         self.assertEqual(len(descriptors), 0)
 

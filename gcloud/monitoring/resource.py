@@ -81,14 +81,14 @@ class ResourceDescriptor(object):
         return cls._from_dict(info)
 
     @classmethod
-    def _list(cls, client, filter=None):
+    def _list(cls, client, filter_=None):
         """List all resource descriptors for the project.
 
         :type client: :class:`gcloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter: string or None
-        :param filter: An optional filter string describing the resource
+        :type filter_: string or None
+        :param filter_: An optional filter string describing the resource
             descriptors to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`ResourceDescriptor`
@@ -97,8 +97,6 @@ class ResourceDescriptor(object):
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
-
         path = '/projects/{project}/monitoredResourceDescriptors/'.format(
             project=client.project)
 
@@ -108,8 +106,8 @@ class ResourceDescriptor(object):
         while True:
             params = {}
 
-            if filter is not None:
-                params['filter'] = filter
+            if filter_ is not None:
+                params['filter'] = filter_
 
             if page_token is not None:
                 params['pageToken'] = page_token
