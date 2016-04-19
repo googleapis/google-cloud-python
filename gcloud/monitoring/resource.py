@@ -114,7 +114,7 @@ class ResourceDescriptor(object):
 
             response = client.connection.api_request(
                 method='GET', path=path, query_params=params)
-            for info in response.get('resourceDescriptors', []):
+            for info in response.get('resourceDescriptors', ()):
                 descriptors.append(cls._from_dict(info))
 
             page_token = response.get('nextPageToken')

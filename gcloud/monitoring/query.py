@@ -443,7 +443,7 @@ class Query(object):
                     path=path,
                     query_params=params,
                 )
-                for info in response.get('timeSeries', []):
+                for info in response.get('timeSeries', ()):
                     yield TimeSeries._from_dict(info)
 
                 page_token = response.get('nextPageToken')
