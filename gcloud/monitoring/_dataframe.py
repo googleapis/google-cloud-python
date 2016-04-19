@@ -84,7 +84,7 @@ def _build_dataframe(time_series_iterable,
                   sorted(metric_labels))
 
     # Assemble the columns into a DataFrame.
-    dataframe = pandas.DataFrame(columns).T
+    dataframe = pandas.DataFrame.from_records(columns).T
 
     # Convert the timestamp strings into a DatetimeIndex.
     dataframe.index = pandas.to_datetime(dataframe.index)
