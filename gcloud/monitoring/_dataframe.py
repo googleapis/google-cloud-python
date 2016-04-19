@@ -16,13 +16,13 @@
 
 import itertools
 
-TOP_RESOURCE_LABELS = [
+TOP_RESOURCE_LABELS = (
     'project_id',
     'aws_account',
     'location',
     'region',
     'zone',
-]
+)
 
 
 def _build_dataframe(time_series_iterable,

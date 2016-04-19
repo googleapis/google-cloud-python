@@ -213,11 +213,11 @@ class Test__sorted_resource_labels(unittest2.TestCase):
 
     def test_sorted(self):
         from gcloud.monitoring._dataframe import TOP_RESOURCE_LABELS
-        EXPECTED = TOP_RESOURCE_LABELS + ['other-1', 'other-2']
-        self.assertEqual(self._callFUT(EXPECTED), EXPECTED)
+        EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
+        self.assertSequenceEqual(self._callFUT(EXPECTED), EXPECTED)
 
     def test_reversed(self):
         from gcloud.monitoring._dataframe import TOP_RESOURCE_LABELS
-        EXPECTED = TOP_RESOURCE_LABELS + ['other-1', 'other-2']
+        EXPECTED = TOP_RESOURCE_LABELS + ('other-1', 'other-2')
         INPUT = list(reversed(EXPECTED))
-        self.assertEqual(self._callFUT(INPUT), EXPECTED)
+        self.assertSequenceEqual(self._callFUT(INPUT), EXPECTED)
