@@ -157,8 +157,6 @@ class ResourceDescriptor(object):
 class Resource(collections.namedtuple('Resource', 'type labels')):
     """A monitored resource identified by specifying values for all labels.
 
-    This is a named tuple. See :func:`collections.namedtuple`.
-
     :type type: string
     :param type: The resource type name.
 

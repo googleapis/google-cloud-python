@@ -213,8 +213,6 @@ class MetricDescriptor(object):
 class Metric(collections.namedtuple('Metric', 'type labels')):
     """A specific metric identified by specifying values for all labels.
 
-    This is a named tuple. See :func:`collections.namedtuple`.
-
     :type type: string
     :param type: The metric type name.
 

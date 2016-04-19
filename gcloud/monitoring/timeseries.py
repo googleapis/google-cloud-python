@@ -34,8 +34,6 @@ class TimeSeries(collections.namedtuple(
         'TimeSeries', 'metric resource metric_kind value_type points')):
     """A single time series of metric values.
 
-    This is a named tuple. See :func:`collections.namedtuple`.
-
     :type metric: :class:`~gcloud.monitoring.metric.Metric`
     :param metric: A metric object.
 
@@ -125,8 +123,6 @@ class TimeSeries(collections.namedtuple(
 
 class Point(collections.namedtuple('Point', 'end_time start_time value')):
     """A single point in a time series.
-
-    This is a named tuple. See :func:`collections.namedtuple`.
 
     :type end_time: string
     :param end_time: The end time in RFC3339 UTC "Zulu" format.
