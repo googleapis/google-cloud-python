@@ -89,105 +89,6 @@ class Connection(base_connection.JSONConnection):
             path, query_params=query_params,
             api_base_url=api_base_url, api_version=api_version)
 
-    def topic_create(self, topic_path):
-        """API call:  create a topic via a PUT request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
-
-        :type topic_path: string
-        :param topic_path: the fully-qualfied path of the new topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-
-        :rtype: dict
-        :returns: ``Topic`` resource returned from the API.
-        """
-        return self.api_request(method='PUT', path='/%s' % (topic_path,))
-
-    def topic_get(self, topic_path):
-        """API call:  retrieve a topic via a GET request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
-
-        :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-
-        :rtype: dict
-        :returns: ``Topic`` resource returned from the API.
-        """
-        return self.api_request(method='GET', path='/%s' % (topic_path,))
-
-    def topic_delete(self, topic_path):
-        """API call:  delete a topic via a DELETE request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
-
-        :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-        """
-        self.api_request(method='DELETE', path='/%s' % (topic_path,))
-
-    def topic_publish(self, topic_path, messages):
-        """API call:  publish a message to a topic via a POST request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
-
-        :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-
-        :type messages: list of dict
-        :param messages: messages to be published.
-
-        :rtype: list of string
-        :returns: list of opaque IDs for published messages.
-        """
-        data = {'messages': messages}
-        response = self.api_request(
-            method='POST', path='/%s:publish' % (topic_path,), data=data)
-        return response['messageIds']
-
-    def topic_list_subscriptions(self, topic_path, page_size=None,
-                                 page_token=None):
-        """API call:  list subscriptions bound to a topic via a GET request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
-
-        :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
-                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-
-        :type page_size: int
-        :param page_size: maximum number of topics to return, If not passed,
-                          defaults to a value set by the API.
-
-        :type page_token: string
-        :param page_token: opaque marker for the next "page" of topics. If not
-                           passed, the API will return the first page of
-                           topics.
-
-        :rtype: list of strings
-        :returns: fully-qualified names of subscriptions for the supplied
-                  topic.
-        """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/%s/subscriptions' % (topic_path,)
-        resp = self.api_request(method='GET', path=path, query_params=params)
-        return resp.get('subscriptions', ()), resp.get('nextPageToken')
-
     def get_iam_policy(self, target_path):
         """Fetch the IAM policy for the target.
 
@@ -462,6 +363,110 @@ class _PublisherAPI(object):
         path = '/projects/%s/topics' % (project,)
         resp = conn.api_request(method='GET', path=path, query_params=params)
         return resp.get('topics', ()), resp.get('nextPageToken')
+
+    def topic_create(self, topic_path):
+        """API call:  create a topic via a PUT request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the new topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
+        """
+        conn = self._connection
+        return conn.api_request(method='PUT', path='/%s' % (topic_path,))
+
+    def topic_get(self, topic_path):
+        """API call:  retrieve a topic via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
+        """
+        conn = self._connection
+        return conn.api_request(method='GET', path='/%s' % (topic_path,))
+
+    def topic_delete(self, topic_path):
+        """API call:  delete a topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+        """
+        conn = self._connection
+        conn.api_request(method='DELETE', path='/%s' % (topic_path,))
+
+    def topic_publish(self, topic_path, messages):
+        """API call:  publish a message to a topic via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type messages: list of dict
+        :param messages: messages to be published.
+
+        :rtype: list of string
+        :returns: list of opaque IDs for published messages.
+        """
+        conn = self._connection
+        data = {'messages': messages}
+        response = conn.api_request(
+            method='POST', path='/%s:publish' % (topic_path,), data=data)
+        return response['messageIds']
+
+    def topic_list_subscriptions(self, topic_path, page_size=None,
+                                 page_token=None):
+        """API call:  list subscriptions bound to a topic via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: list of strings
+        :returns: fully-qualified names of subscriptions for the supplied
+                  topic.
+        """
+        conn = self._connection
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/%s/subscriptions' % (topic_path,)
+        resp = conn.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
 
 class _SubscriberAPI(object):

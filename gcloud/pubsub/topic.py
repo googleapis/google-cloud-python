@@ -123,7 +123,8 @@ class Topic(object):
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
-        client.connection.topic_create(topic_path=self.full_name)
+        api = client.publisher_api
+        api.topic_create(topic_path=self.full_name)
 
     def exists(self, client=None):
         """API call:  test for the existence of the topic via a GET request
@@ -136,9 +137,10 @@ class Topic(object):
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
+        api = client.publisher_api
 
         try:
-            client.connection.topic_get(topic_path=self.full_name)
+            api.topic_get(topic_path=self.full_name)
         except NotFound:
             return False
         else:
@@ -155,7 +157,8 @@ class Topic(object):
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
-        client.connection.topic_delete(topic_path=self.full_name)
+        api = client.publisher_api
+        api.topic_delete(topic_path=self.full_name)
 
     def _timestamp_message(self, attrs):
         """Add a timestamp to ``attrs``, if the topic is so configured.
@@ -187,12 +190,12 @@ class Topic(object):
         :returns: message ID assigned by the server to the published message
         """
         client = self._require_client(client)
+        api = client.publisher_api
 
         self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
-        message_ids = client.connection.topic_publish(
-            self.full_name, [message_data])
+        message_ids = api.topic_publish(self.full_name, [message_data])
         return message_ids[0]
 
     def batch(self, client=None):
@@ -234,8 +237,8 @@ class Topic(object):
                   value as ``page_token``).
         """
         client = self._require_client(client)
-        conn = client.connection
-        sub_paths, next_token = conn.topic_list_subscriptions(
+        api = client.publisher_api
+        sub_paths, next_token = api.topic_list_subscriptions(
             self.full_name, page_size, page_token)
         subscriptions = []
         for sub_path in sub_paths:
@@ -355,7 +358,7 @@ class Batch(object):
         """
         if client is None:
             client = self.client
-        message_ids = client.connection.topic_publish(
-            self.topic.full_name, self.messages[:])
+        api = client.publisher_api
+        message_ids = api.topic_publish(self.topic.full_name, self.messages[:])
         self.message_ids.extend(message_ids)
         del self.messages[:]

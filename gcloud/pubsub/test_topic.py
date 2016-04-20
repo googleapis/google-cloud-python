@@ -59,77 +59,83 @@ class TestTopic(unittest2.TestCase):
 
     def test_create_w_bound_client(self):
         conn = _Connection()
-        conn._topic_create_response = {'name': self.TOPIC_PATH}
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_create_response = {'name': self.TOPIC_PATH}
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         topic.create()
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_created, self.TOPIC_PATH)
+        self.assertEqual(api._topic_created, self.TOPIC_PATH)
 
     def test_create_w_alternate_client(self):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_create_response = {'name': self.TOPIC_PATH}
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_create_response = {'name': self.TOPIC_PATH}
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
         topic.create(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_created, self.TOPIC_PATH)
+        self.assertEqual(api._topic_created, self.TOPIC_PATH)
 
     def test_exists_miss_w_bound_client(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         self.assertFalse(topic.exists())
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_got, self.TOPIC_PATH)
+        self.assertEqual(api._topic_got, self.TOPIC_PATH)
 
     def test_exists_hit_w_alternate_client(self):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_get_response = {'name': self.TOPIC_PATH}
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_get_response = {'name': self.TOPIC_PATH}
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
         self.assertTrue(topic.exists(client=client2))
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_got, self.TOPIC_PATH)
+        self.assertEqual(api._topic_got, self.TOPIC_PATH)
 
     def test_delete_w_bound_client(self):
         conn = _Connection()
-        conn._topic_delete_response = {}
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_delete_response = {}
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         topic.delete()
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_deleted, self.TOPIC_PATH)
+        self.assertEqual(api._topic_deleted, self.TOPIC_PATH)
 
     def test_delete_w_alternate_client(self):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_delete_response = {}
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_delete_response = {}
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
         topic.delete(client=client2)
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_deleted, self.TOPIC_PATH)
+        self.assertEqual(api._topic_deleted, self.TOPIC_PATH)
 
     def test_publish_single_bytes_wo_attrs_w_bound_client(self):
         import base64
@@ -138,15 +144,16 @@ class TestTopic(unittest2.TestCase):
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         msgid = topic.publish(PAYLOAD)
 
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_bytes_wo_attrs_w_add_timestamp_alt_client(self):
         import base64
@@ -169,8 +176,9 @@ class TestTopic(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = [MSGID]
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
 
         topic = self._makeOne(self.TOPIC_NAME, client=client1,
                               timestamp_messages=True)
@@ -180,7 +188,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_bytes_w_add_timestamp_w_ts_in_attrs(self):
         import base64
@@ -191,8 +199,9 @@ class TestTopic(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {'timestamp': OVERRIDE}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
         topic = self._makeOne(self.TOPIC_NAME, client=client,
                               timestamp_messages=True)
 
@@ -200,7 +209,7 @@ class TestTopic(unittest2.TestCase):
 
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_single_w_attrs(self):
         import base64
@@ -210,15 +219,16 @@ class TestTopic(unittest2.TestCase):
         MESSAGE = {'data': B64,
                    'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID]
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID]
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         msgid = topic.publish(PAYLOAD, attr1='value1', attr2='value2')
 
         self.assertEqual(msgid, MSGID)
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published, (self.TOPIC_PATH, [MESSAGE]))
+        self.assertEqual(api._topic_published, (self.TOPIC_PATH, [MESSAGE]))
 
     def test_publish_multiple_w_bound_client(self):
         import base64
@@ -233,8 +243,9 @@ class TestTopic(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID1, MSGID2]
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         with topic.batch() as batch:
@@ -244,7 +255,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published,
+        self.assertEqual(api._topic_published,
                          (self.TOPIC_PATH, [MESSAGE1, MESSAGE2]))
 
     def test_publish_multiple_w_alternate_client(self):
@@ -263,8 +274,10 @@ class TestTopic(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = [MSGID1, MSGID2]
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID1, MSGID2]
         topic = self._makeOne(self.TOPIC_NAME, client=client1)
 
         with topic.batch(client=client2) as batch:
@@ -275,7 +288,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_published,
+        self.assertEqual(api._topic_published,
                          (self.TOPIC_PATH, [MESSAGE1, MESSAGE2]))
 
     def test_publish_multiple_error(self):
@@ -283,6 +296,7 @@ class TestTopic(unittest2.TestCase):
         PAYLOAD2 = b'This is the second message text'
         conn = _Connection()
         client = _Client(project=self.PROJECT)
+        api = client.publisher_api = _FauxPublisherAPI()
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         try:
@@ -295,7 +309,7 @@ class TestTopic(unittest2.TestCase):
 
         self.assertEqual(list(batch), [])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(getattr(conn, '_topic_published', self), self)
+        self.assertEqual(getattr(api, '_topic_published', self), self)
 
     def test_subscription(self):
         from gcloud.pubsub.subscription import Subscription
@@ -320,8 +334,9 @@ class TestTopic(unittest2.TestCase):
         TOKEN = 'TOKEN'
 
         conn = _Connection()
-        conn._topic_list_subscriptions_response = SUBS_LIST, TOKEN
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_list_subscriptions_response = SUBS_LIST, TOKEN
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         subscriptions, next_page_token = topic.list_subscriptions()
@@ -340,7 +355,7 @@ class TestTopic(unittest2.TestCase):
 
         self.assertEqual(next_page_token, TOKEN)
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_listed,
+        self.assertEqual(api._topic_listed,
                          (self.TOPIC_PATH, None, None))
 
     def test_list_subscriptions_with_paging(self):
@@ -356,8 +371,9 @@ class TestTopic(unittest2.TestCase):
         TOKEN = 'TOKEN'
 
         conn = _Connection()
-        conn._topic_list_subscriptions_response = SUBS_LIST, None
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_list_subscriptions_response = SUBS_LIST, None
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         subscriptions, next_page_token = topic.list_subscriptions(
@@ -377,13 +393,14 @@ class TestTopic(unittest2.TestCase):
 
         self.assertEqual(next_page_token, None)
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_listed,
+        self.assertEqual(api._topic_listed,
                          (self.TOPIC_PATH, PAGE_SIZE, TOKEN))
 
     def test_list_subscriptions_missing_key(self):
         conn = _Connection()
-        conn._topic_list_subscriptions_response = (), None
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_list_subscriptions_response = (), None
         topic = self._makeOne(self.TOPIC_NAME, client=client)
 
         subscriptions, next_page_token = topic.list_subscriptions()
@@ -392,7 +409,7 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(next_page_token, None)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_listed,
+        self.assertEqual(api._topic_listed,
                          (self.TOPIC_PATH, None, None))
 
     def test_get_iam_policy_w_bound_client(self):
@@ -627,8 +644,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project='PROJECT', connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
         batch = self._makeOne(topic, client=client)
 
@@ -639,7 +657,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published,
+        self.assertEqual(api._topic_published,
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_commit_w_alternate_client(self):
@@ -657,8 +675,9 @@ class TestBatch(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project='PROJECT', connection=conn1)
         conn2 = _Connection()
-        conn2._topic_publish_response = [MSGID1, MSGID2]
         client2 = _Client(project='PROJECT', connection=conn2)
+        api = client2.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
         batch = self._makeOne(topic, client=client1)
 
@@ -670,7 +689,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._topic_published,
+        self.assertEqual(api._topic_published,
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_context_mgr_success(self):
@@ -686,8 +705,9 @@ class TestBatch(unittest2.TestCase):
         MESSAGE2 = {'data': B64_2.decode('ascii'),
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection()
-        conn._topic_publish_response = [MSGID1, MSGID2]
         client = _Client(project='PROJECT', connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = [MSGID1, MSGID2]
         topic = _Topic()
         batch = self._makeOne(topic, client=client)
 
@@ -699,7 +719,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(batch), [MSGID1, MSGID2])
         self.assertEqual(list(batch.messages), [])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._topic_published,
+        self.assertEqual(api._topic_published,
                          (topic.full_name, [MESSAGE1, MESSAGE2]))
 
     def test_context_mgr_failure(self):
@@ -716,6 +736,7 @@ class TestBatch(unittest2.TestCase):
                     'attributes': {'attr1': 'value1', 'attr2': 'value2'}}
         conn = _Connection({'messageIds': [MSGID1, MSGID2]})
         client = _Client(project='PROJECT', connection=conn)
+        api = client.publisher_api = _FauxPublisherAPI()
         topic = _Topic()
         batch = self._makeOne(topic, client=client)
 
@@ -731,7 +752,7 @@ class TestBatch(unittest2.TestCase):
         self.assertEqual(list(batch), [])
         self.assertEqual(list(batch.messages), [MESSAGE1, MESSAGE2])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(getattr(conn, '_topic_published', self), self)
+        self.assertEqual(getattr(api, '_topic_published', self), self)
 
 
 class _Connection(object):  # pylint: disable=too-many-instance-attributes
@@ -739,6 +760,21 @@ class _Connection(object):  # pylint: disable=too-many-instance-attributes
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
+
+    def get_iam_policy(self, target_path):
+        self._got_iam_policy = target_path
+        return self._get_iam_policy_response
+
+    def set_iam_policy(self, target_path, policy):
+        self._set_iam_policy = target_path, policy
+        return self._set_iam_policy_response
+
+    def test_iam_permissions(self, target_path, permissions):
+        self._tested_iam_permissions = target_path, permissions
+        return self._test_iam_permissions_response
+
+
+class _FauxPublisherAPI(object):
 
     def topic_create(self, topic_path):
         self._topic_created = topic_path
@@ -764,18 +800,6 @@ class _Connection(object):  # pylint: disable=too-many-instance-attributes
                                  page_token=None):
         self._topic_listed = topic_path, page_size, page_token
         return self._topic_list_subscriptions_response
-
-    def get_iam_policy(self, target_path):
-        self._got_iam_policy = target_path
-        return self._get_iam_policy_response
-
-    def set_iam_policy(self, target_path, policy):
-        self._set_iam_policy = target_path, policy
-        return self._set_iam_policy_response
-
-    def test_iam_permissions(self, target_path, permissions):
-        self._tested_iam_permissions = target_path, permissions
-        return self._test_iam_permissions_response
 
 
 class _Topic(object):
