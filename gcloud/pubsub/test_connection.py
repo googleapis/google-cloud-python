@@ -15,7 +15,7 @@
 import unittest2
 
 
-class TestConnection(unittest2.TestCase):
+class _Base(unittest2.TestCase):
     PROJECT = 'PROJECT'
     LIST_TOPICS_PATH = 'projects/%s/topics' % (PROJECT,)
     LIST_SUBSCRIPTIONS_PATH = 'projects/%s/subscriptions' % (PROJECT,)
@@ -25,12 +25,15 @@ class TestConnection(unittest2.TestCase):
     SUB_NAME = 'subscription_name'
     SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+
+class TestConnection(_Base):
+
     def _getTargetClass(self):
         from gcloud.pubsub.connection import Connection
         return Connection
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
 
     def test_default_url(self):
         conn = self._makeOne()
@@ -118,77 +121,6 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(path, '/%s/%s' % (klass.API_VERSION, expected_path))
         qs = dict(parse.parse_qsl(query))
         self.assertEqual(qs, expected_qs)
-
-    def test_list_topics_no_paging(self):
-        import json
-        RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        topics, next_token = conn.list_topics(self.PROJECT)
-
-        self.assertEqual(len(topics), 1)
-        topic = topics[0]
-        self.assertTrue(isinstance(topic, dict))
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'], self.LIST_TOPICS_PATH)
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_list_topics_with_paging(self):
-        import json
-        TOKEN1 = 'TOKEN1'
-        TOKEN2 = 'TOKEN2'
-        SIZE = 1
-        RETURNED = {
-            'topics': [{'name': self.TOPIC_PATH}],
-            'nextPageToken': 'TOKEN2',
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        topics, next_token = conn.list_topics(
-            self.PROJECT, page_token=TOKEN1, page_size=SIZE)
-
-        self.assertEqual(len(topics), 1)
-        topic = topics[0]
-        self.assertTrue(isinstance(topic, dict))
-        self.assertEqual(topic['name'], self.TOPIC_PATH)
-        self.assertEqual(next_token, TOKEN2)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'], self.LIST_TOPICS_PATH,
-                         pageToken=TOKEN1, pageSize=str(SIZE))
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_list_topics_missing_key(self):
-        import json
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        topics, next_token = conn.list_topics(self.PROJECT)
-
-        self.assertEqual(len(topics), 0)
-        self.assertEqual(next_token, None)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'], self.LIST_TOPICS_PATH)
-        self.assertEqual(http._called_with['body'], None)
 
     def test_list_subscriptions_no_paging(self):
         import json
@@ -751,7 +683,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], json.dumps(BODY))
 
 
-class Test_PublisherAPI(unittest2.TestCase):
+class Test_PublisherAPI(_Base):
 
     def _getTargetClass(self):
         from gcloud.pubsub.connection import _PublisherAPI
@@ -765,8 +697,67 @@ class Test_PublisherAPI(unittest2.TestCase):
         api = self._makeOne(connection)
         self.assertTrue(api._connection is connection)
 
+    def test_list_topics_no_paging(self):
+        RETURNED = {'topics': [{'name': self.TOPIC_PATH}]}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
 
-class Test_SubscriberAPI(unittest2.TestCase):
+        topics, next_token = api.list_topics(self.PROJECT)
+
+        self.assertEqual(len(topics), 1)
+        topic = topics[0]
+        self.assertTrue(isinstance(topic, dict))
+        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_TOPICS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
+
+    def test_list_topics_with_paging(self):
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        RETURNED = {
+            'topics': [{'name': self.TOPIC_PATH}],
+            'nextPageToken': 'TOKEN2',
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        topics, next_token = api.list_topics(
+            self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+
+        self.assertEqual(len(topics), 1)
+        topic = topics[0]
+        self.assertTrue(isinstance(topic, dict))
+        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertEqual(next_token, TOKEN2)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_TOPICS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'],
+                         {'pageToken': TOKEN1, 'pageSize': SIZE})
+
+    def test_list_topics_missing_key(self):
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        topics, next_token = api.list_topics(self.PROJECT)
+
+        self.assertEqual(len(topics), 0)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_TOPICS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
+
+
+class Test_SubscriberAPI(_Base):
 
     def _getTargetClass(self):
         from gcloud.pubsub.connection import _SubscriberAPI
@@ -781,14 +772,11 @@ class Test_SubscriberAPI(unittest2.TestCase):
         self.assertTrue(api._connection is connection)
 
 
-class Test_IAMPolicyAPI(unittest2.TestCase):
+class Test_IAMPolicyAPI(_Base):
 
     def _getTargetClass(self):
         from gcloud.pubsub.connection import _IAMPolicyAPI
         return _IAMPolicyAPI
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
         connection = _Connection()
@@ -816,3 +804,8 @@ class _Connection(object):
 
     def __init__(self, *responses):
         self._responses = responses
+
+    def api_request(self, **kw):
+        self._called_with = kw
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

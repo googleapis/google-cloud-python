@@ -90,8 +90,8 @@ class Client(JSONClient):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        conn = self.connection
-        resources, next_token = conn.list_topics(
+        api = self.publisher_api
+        resources, next_token = api.list_topics(
             self.project, page_size, page_token)
         topics = [Topic.from_api_repr(resource, self)
                   for resource in resources]

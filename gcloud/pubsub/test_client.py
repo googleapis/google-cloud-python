@@ -70,7 +70,8 @@ class TestClient(unittest2.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
-        conn._list_topics_response = [{'name': self.TOPIC_PATH}], None
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = [{'name': self.TOPIC_PATH}], None
 
         topics, next_page_token = client.list_topics()
 
@@ -80,7 +81,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, None)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_topics, (self.PROJECT, None, None))
+        self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_topics_with_paging(self):
         from gcloud.pubsub.topic import Topic
@@ -90,7 +91,8 @@ class TestClient(unittest2.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
-        conn._list_topics_response = [{'name': self.TOPIC_PATH}], TOKEN2
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = [{'name': self.TOPIC_PATH}], TOKEN2
 
         topics, next_page_token = client.list_topics(SIZE, TOKEN1)
 
@@ -100,13 +102,14 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, TOKEN2)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_topics, (self.PROJECT, 1, TOKEN1))
+        self.assertEqual(api._listed_topics, (self.PROJECT, 1, TOKEN1))
 
     def test_list_topics_missing_key(self):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
-        conn._list_topics_response = (), None
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = (), None
 
         topics, next_page_token = client.list_topics()
 
@@ -114,7 +117,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, None)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_topics, (self.PROJECT, None, None))
+        self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_subscriptions_no_paging(self):
         from gcloud.pubsub.subscription import Subscription
@@ -213,15 +216,18 @@ class _Credentials(object):
         return self
 
 
+class _FauxPublisherAPI(object):
+
+    def list_topics(self, project, page_size, page_token):
+        self._listed_topics = (project, page_size, page_token)
+        return self._list_topics_response
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-
-    def list_topics(self, project, page_size, page_token):
-        self._listed_topics = (project, page_size, page_token)
-        return self._list_topics_response
 
     def list_subscriptions(self, project, page_size, page_token):
         self._listed_subscriptions = (project, page_size, page_token)
