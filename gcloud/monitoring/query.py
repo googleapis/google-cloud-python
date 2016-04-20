@@ -427,41 +427,48 @@ class Query(object):
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
         """
+        # The following use of groupby() relies on equality comparison
+        # of time series as (named) tuples.
+        for timeseries, fragments in itertools.groupby(
+                self._iter_fragments(headers_only, page_size),
+                lambda fragment: fragment.header()):
+            points = list(itertools.chain.from_iterable(
+                fragment.points for fragment in fragments))
+            points.reverse()  # Order from oldest to newest.
+            yield timeseries.header(points=points)
+
+    def _iter_fragments(self, headers_only=False, page_size=None):
+        """Yield all time series fragments selected by the query.
+
+        There may be multiple fragments per time series. These will be
+        contiguous.
+
+        The parameters and return value are as for :meth:`Query.iter`.
+        """
         if self._end_time is None:
             raise ValueError('Query time interval not specified.')
 
         path = '/projects/{project}/timeSeries/'.format(
             project=self._client.project)
 
-        def _fragments():
-            page_token = None
-            while True:
-                params = self._build_query_params(
-                    headers_only=headers_only,
-                    page_size=page_size,
-                    page_token=page_token,
-                )
-                response = self._client.connection.api_request(
-                    method='GET',
-                    path=path,
-                    query_params=params,
-                )
-                for info in response.get('timeSeries', ()):
-                    yield TimeSeries._from_dict(info)
+        page_token = None
+        while True:
+            params = self._build_query_params(
+                headers_only=headers_only,
+                page_size=page_size,
+                page_token=page_token,
+            )
+            response = self._client.connection.api_request(
+                method='GET',
+                path=path,
+                query_params=params,
+            )
+            for info in response.get('timeSeries', ()):
+                yield TimeSeries._from_dict(info)
 
-                page_token = response.get('nextPageToken')
-                if not page_token:
-                    break
-
-        # The following use of groupby() relies on equality comparison
-        # of time series as (named) tuples.
-        for timeseries, fragments in itertools.groupby(
-                _fragments(),
-                lambda fragment: fragment.header()):
-            points = list(itertools.chain.from_iterable(
-                fragment.points for fragment in fragments))
-            points.reverse()  # Order from oldest to newest.
-            yield timeseries.header(points=points)
+            page_token = response.get('nextPageToken')
+            if not page_token:
+                break
 
     def _build_query_params(self, headers_only=False,
                             page_size=None, page_token=None):
