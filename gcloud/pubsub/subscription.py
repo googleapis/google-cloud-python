@@ -303,7 +303,8 @@ class Subscription(object):
                   ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
-        resp = client.connection.get_iam_policy(self.full_name)
+        api = client.iam_policy_api
+        resp = api.get_iam_policy(self.full_name)
         return Policy.from_api_repr(resp)
 
     def set_iam_policy(self, policy, client=None):
@@ -325,8 +326,9 @@ class Subscription(object):
                   ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
+        api = client.iam_policy_api
         resource = policy.to_api_repr()
-        resp = client.connection.set_iam_policy(self.full_name, resource)
+        resp = api.set_iam_policy(self.full_name, resource)
         return Policy.from_api_repr(resp)
 
     def check_iam_permissions(self, permissions, client=None):
@@ -346,5 +348,6 @@ class Subscription(object):
         :returns: subset of ``permissions`` allowed by current IAM policy.
         """
         client = self._require_client(client)
-        return client.connection.test_iam_permissions(
+        api = client.iam_policy_api
+        return api.test_iam_permissions(
             self.full_name, list(permissions))

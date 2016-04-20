@@ -483,8 +483,9 @@ class TestSubscription(unittest2.TestCase):
             ],
         }
         conn = _Connection()
-        conn._get_iam_policy_response = POLICY
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.iam_policy_api = _FauxIAMPolicy()
+        api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
@@ -496,7 +497,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._got_iam_policy, self.SUB_PATH)
+        self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
         POLICY = {
@@ -504,9 +505,10 @@ class TestSubscription(unittest2.TestCase):
         }
         conn1 = _Connection()
         conn2 = _Connection()
-        conn2._get_iam_policy_response = POLICY
         client1 = _Client(project=self.PROJECT, connection=conn1)
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.iam_policy_api = _FauxIAMPolicy()
+        api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
@@ -520,7 +522,7 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._got_iam_policy, self.SUB_PATH)
+        self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
@@ -544,8 +546,9 @@ class TestSubscription(unittest2.TestCase):
         RESPONSE['etag'] = 'ABACABAF'
         RESPONSE['version'] = 18
         conn = _Connection()
-        conn._set_iam_policy_response = RESPONSE
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.iam_policy_api = _FauxIAMPolicy()
+        api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
         policy = Policy('DEADBEEF', 17)
@@ -564,16 +567,17 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._set_iam_policy, (self.SUB_PATH, POLICY))
+        self.assertEqual(api._set_iam_policy, (self.SUB_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
         from gcloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
         conn1 = _Connection()
         conn2 = _Connection()
-        conn2._set_iam_policy_response = RESPONSE
         client1 = _Client(project=self.PROJECT, connection=conn1)
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.iam_policy_api = _FauxIAMPolicy()
+        api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
@@ -587,14 +591,15 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.viewers), [])
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._set_iam_policy, (self.SUB_PATH, {}))
+        self.assertEqual(api._set_iam_policy, (self.SUB_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
         conn = _Connection()
-        conn._test_iam_permissions_response = ROLES[:-1]
         client = _Client(project=self.PROJECT, connection=conn)
+        api = client.iam_policy_api = _FauxIAMPolicy()
+        api._test_iam_permissions_response = ROLES[:-1]
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
@@ -602,7 +607,7 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertEqual(allowed, ROLES[:-1])
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._tested_iam_permissions,
+        self.assertEqual(api._tested_iam_permissions,
                          (self.SUB_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
@@ -611,8 +616,9 @@ class TestSubscription(unittest2.TestCase):
         conn1 = _Connection()
         client1 = _Client(project=self.PROJECT, connection=conn1)
         conn2 = _Connection()
-        conn2._test_iam_permissions_response = []
         client2 = _Client(project=self.PROJECT, connection=conn2)
+        api = client2.iam_policy_api = _FauxIAMPolicy()
+        api._test_iam_permissions_response = []
         topic = _Topic(self.TOPIC_NAME, client=client1)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
@@ -621,27 +627,15 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(allowed), 0)
         self.assertEqual(len(conn1._requested), 0)
         self.assertEqual(len(conn2._requested), 0)
-        self.assertEqual(conn2._tested_iam_permissions,
+        self.assertEqual(api._tested_iam_permissions,
                          (self.SUB_PATH, ROLES))
 
 
-class _Connection(object):  # pylint: disable=too-many-instance-attributes
+class _Connection(object):
 
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-
-    def get_iam_policy(self, target_path):
-        self._got_iam_policy = target_path
-        return self._get_iam_policy_response
-
-    def set_iam_policy(self, target_path, policy):
-        self._set_iam_policy = target_path, policy
-        return self._set_iam_policy_response
-
-    def test_iam_permissions(self, target_path, permissions):
-        self._tested_iam_permissions = target_path, permissions
-        return self._test_iam_permissions_response
 
 
 class _FauxSubscribererAPI(object):
@@ -685,6 +679,21 @@ class _FauxSubscribererAPI(object):
         self._subscription_modified_ack_deadline = (
             subscription_path, ack_ids, ack_deadline)
         return self._subscription_modify_ack_deadline_response
+
+
+class _FauxIAMPolicy(object):
+
+    def get_iam_policy(self, target_path):
+        self._got_iam_policy = target_path
+        return self._get_iam_policy_response
+
+    def set_iam_policy(self, target_path, policy):
+        self._set_iam_policy = target_path, policy
+        return self._set_iam_policy_response
+
+    def test_iam_permissions(self, target_path, permissions):
+        self._tested_iam_permissions = target_path, permissions
+        return self._test_iam_permissions_response
 
 
 class _Topic(object):

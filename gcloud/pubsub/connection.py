@@ -89,63 +89,6 @@ class Connection(base_connection.JSONConnection):
             path, query_params=query_params,
             api_base_url=api_base_url, api_version=api_version)
 
-    def get_iam_policy(self, target_path):
-        """Fetch the IAM policy for the target.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
-
-        :type target_path: string
-        :param target_path: the path of the target object.
-
-        :rtype: dict
-        :returns: the resource returned by the ``getIamPolicy`` API request.
-        """
-        path = '/%s:getIamPolicy' % (target_path,)
-        return self.api_request(method='GET', path=path)
-
-    def set_iam_policy(self, target_path, policy):
-        """Update the IAM policy for the target.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
-
-        :type target_path: string
-        :param target_path: the path of the target object.
-
-        :type policy: dict
-        :param policy: the new policy resource.
-
-        :rtype: dict
-        :returns: the resource returned by the ``setIamPolicy`` API request.
-        """
-        wrapped = {'policy': policy}
-        path = '/%s:setIamPolicy' % (target_path,)
-        return self.api_request(method='POST', path=path, data=wrapped)
-
-    def test_iam_permissions(self, target_path, permissions):
-        """Update the IAM policy for the target.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
-
-        :type target_path: string
-        :param target_path: the path of the target object.
-
-        :type permissions: list of string
-        :param permissions: the permissions to check
-
-        :rtype: dict
-        :returns: the resource returned by the ``getIamPolicy`` API request.
-        """
-        wrapped = {'permissions': permissions}
-        path = '/%s:testIamPermissions' % (target_path,)
-        resp = self.api_request(method='POST', path=path, data=wrapped)
-        return resp.get('permissions', [])
-
 
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
@@ -533,3 +476,63 @@ class _IAMPolicyAPI(object):
 
     def __init__(self, connection):
         self._connection = connection
+
+    def get_iam_policy(self, target_path):
+        """Fetch the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        conn = self._connection
+        path = '/%s:getIamPolicy' % (target_path,)
+        return conn.api_request(method='GET', path=path)
+
+    def set_iam_policy(self, target_path, policy):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type policy: dict
+        :param policy: the new policy resource.
+
+        :rtype: dict
+        :returns: the resource returned by the ``setIamPolicy`` API request.
+        """
+        conn = self._connection
+        wrapped = {'policy': policy}
+        path = '/%s:setIamPolicy' % (target_path,)
+        return conn.api_request(method='POST', path=path, data=wrapped)
+
+    def test_iam_permissions(self, target_path, permissions):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type permissions: list of string
+        :param permissions: the permissions to check
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        conn = self._connection
+        wrapped = {'permissions': permissions}
+        path = '/%s:testIamPermissions' % (target_path,)
+        resp = conn.api_request(method='POST', path=path, data=wrapped)
+        return resp.get('permissions', [])

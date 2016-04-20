@@ -113,126 +113,6 @@ class TestConnection(_Base):
         self.assertEqual(conn.build_api_url('/foo', api_base_url=base_url2),
                          URI)
 
-    def _verify_uri(self, uri, expected_path, **expected_qs):
-        from six.moves.urllib import parse
-        klass = self._getTargetClass()
-        scheme, netloc, path, query, _ = parse.urlsplit(uri)
-        self.assertEqual('%s://%s' % (scheme, netloc), klass.API_BASE_URL)
-        self.assertEqual(path, '/%s/%s' % (klass.API_VERSION, expected_path))
-        qs = dict(parse.parse_qsl(query))
-        self.assertEqual(qs, expected_qs)
-
-    def test_get_iam_policy(self):
-        import json
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '%s:getIamPolicy' % (self.TOPIC_PATH,)
-        OWNER1 = 'user:phred@example.com'
-        OWNER2 = 'group:cloud-logs@google.com'
-        EDITOR1 = 'domain:google.com'
-        EDITOR2 = 'user:phred@example.com'
-        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        VIEWER2 = 'user:phred@example.com'
-        RETURNED = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
-            ],
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        policy = conn.get_iam_policy(self.TOPIC_PATH)
-
-        self.assertEqual(policy, RETURNED)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'], PATH)
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_set_iam_policy(self):
-        import json
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '%s:setIamPolicy' % (self.TOPIC_PATH,)
-        OWNER1 = 'user:phred@example.com'
-        OWNER2 = 'group:cloud-logs@google.com'
-        EDITOR1 = 'domain:google.com'
-        EDITOR2 = 'user:phred@example.com'
-        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
-        VIEWER2 = 'user:phred@example.com'
-        POLICY = {
-            'etag': 'DEADBEEF',
-            'version': 17,
-            'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
-            ],
-        }
-        RETURNED = POLICY.copy()
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        policy = conn.set_iam_policy(self.TOPIC_PATH, POLICY)
-
-        self.assertEqual(policy, RETURNED)
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'], PATH)
-        self.assertEqual(http._called_with['body'],
-                         json.dumps({'policy': POLICY}))
-
-    def test_test_iam_permissions(self):
-        import json
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '%s:testIamPermissions' % (self.TOPIC_PATH,)
-        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
-        ALLOWED = ALL_ROLES[1:]
-        RETURNED = {'permissions': ALLOWED}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        allowed = conn.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
-
-        self.assertEqual(allowed, ALLOWED)
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'], PATH)
-        self.assertEqual(http._called_with['body'],
-                         json.dumps({'permissions': ALL_ROLES}))
-
-    def test_test_iam_permissions_missing_key(self):
-        import json
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
-        PATH = '%s:testIamPermissions' % (self.TOPIC_PATH,)
-        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        allowed = conn.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
-
-        self.assertEqual(allowed, [])
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'], PATH)
-        self.assertEqual(http._called_with['body'],
-                         json.dumps({'permissions': ALL_ROLES}))
-
 
 class Test_PublisherAPI(_Base):
 
@@ -691,19 +571,95 @@ class Test_IAMPolicyAPI(_Base):
         api = self._makeOne(connection)
         self.assertTrue(api._connection is connection)
 
+    def test_get_iam_policy(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        RETURNED = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+            ],
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
 
-class _Http(object):
+        policy = api.get_iam_policy(self.TOPIC_PATH)
 
-    _called_with = None
+        self.assertEqual(policy, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s:getIamPolicy' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
 
-    def __init__(self, headers, content):
-        from httplib2 import Response
-        self._response = Response(headers)
-        self._content = content
+    def test_set_iam_policy(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        OWNER1 = 'user:phred@example.com'
+        OWNER2 = 'group:cloud-logs@google.com'
+        EDITOR1 = 'domain:google.com'
+        EDITOR2 = 'user:phred@example.com'
+        VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
+        VIEWER2 = 'user:phred@example.com'
+        POLICY = {
+            'etag': 'DEADBEEF',
+            'version': 17,
+            'bindings': [
+                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+            ],
+        }
+        RETURNED = POLICY.copy()
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
 
-    def request(self, **kw):
-        self._called_with = kw
-        return self._response, self._content
+        policy = api.set_iam_policy(self.TOPIC_PATH, POLICY)
+
+        self.assertEqual(policy, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:setIamPolicy' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'],
+                         {'policy': POLICY})
+
+    def test_test_iam_permissions(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
+        ALLOWED = ALL_ROLES[1:]
+        RETURNED = {'permissions': ALLOWED}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
+
+        self.assertEqual(allowed, ALLOWED)
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'],
+                         {'permissions': ALL_ROLES})
+
+    def test_test_iam_permissions_missing_key(self):
+        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        ALL_ROLES = [OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE]
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        allowed = api.test_iam_permissions(self.TOPIC_PATH, ALL_ROLES)
+
+        self.assertEqual(allowed, [])
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:testIamPermissions' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'],
+                         {'permissions': ALL_ROLES})
 
 
 class _Connection(object):
