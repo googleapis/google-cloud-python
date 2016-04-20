@@ -61,7 +61,8 @@ def parse_timestamps():  # pragma: NO COVER
 def generate_query_results():  # pragma: NO COVER
     from gcloud.monitoring.metric import Metric
     from gcloud.monitoring.resource import Resource
-    from gcloud.monitoring.timeseries import Point, TimeSeries
+    from gcloud.monitoring.timeseries import Point
+    from gcloud.monitoring.timeseries import TimeSeries
 
     def P(timestamp, value):
         return Point(
