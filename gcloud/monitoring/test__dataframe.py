@@ -28,28 +28,28 @@ INSTANCE_NAMES = ['instance-1', 'instance-2']
 INSTANCE_ZONES = ['us-east1-a', 'us-east1-b']
 INSTANCE_IDS = ['1234567890123456789', '9876543210987654321']
 
-M = len(INSTANCE_NAMES)
-
 METRIC_TYPE = 'compute.googleapis.com/instance/cpu/utilization'
-METRIC_LABELS = list({'instance_name': INSTANCE_NAMES[i]}
-                     for i in range(M))
+METRIC_LABELS = list({'instance_name': name} for name in INSTANCE_NAMES)
 
 RESOURCE_TYPE = 'gce_instance'
-RESOURCE_LABELS = list({'project_id': PROJECT,
-                        'zone': INSTANCE_ZONES[i],
-                        'instance_id': INSTANCE_IDS[i]}
-                       for i in range(M))
+RESOURCE_LABELS = list({
+    'project_id': PROJECT,
+    'zone': zone,
+    'instance_id': instance_id,
+} for zone, instance_id in zip(INSTANCE_ZONES, INSTANCE_IDS))
 
 METRIC_KIND = 'GAUGE'
 VALUE_TYPE = 'DOUBLE'
-VALUES = list(0.1 * i for i in range(M))
 
 TIMESTAMPS = [
     '2016-04-06T22:05:00.042Z',
     '2016-04-06T22:05:01.042Z',
     '2016-04-06T22:05:02.042Z',
 ]
-N = len(TIMESTAMPS)
+
+DIMENSIONS = len(TIMESTAMPS), len(INSTANCE_NAMES)
+VALUES = list(0.1 * i for i in range(DIMENSIONS[1]))
+ARRAY = [VALUES] * DIMENSIONS[0]
 
 
 def parse_timestamps():  # pragma: NO COVER
@@ -70,13 +70,14 @@ def generate_query_results():  # pragma: NO COVER
             value=value,
         )
 
-    for i in range(M):
+    for metric_labels, resource_labels, value in zip(
+            METRIC_LABELS, RESOURCE_LABELS, VALUES):
         yield TimeSeries(
-            metric=Metric(type=METRIC_TYPE, labels=METRIC_LABELS[i]),
-            resource=Resource(type=RESOURCE_TYPE, labels=RESOURCE_LABELS[i]),
+            metric=Metric(type=METRIC_TYPE, labels=metric_labels),
+            resource=Resource(type=RESOURCE_TYPE, labels=resource_labels),
             metric_kind=METRIC_KIND,
             value_type=VALUE_TYPE,
-            points=[P(t, VALUES[i]) for t in TIMESTAMPS],
+            points=[P(t, value) for t in TIMESTAMPS],
         )
 
 
@@ -99,8 +100,8 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         iterable = generate_query_results()
         dataframe = self._callFUT(iterable, label='instance_name')
 
-        self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.shape, DIMENSIONS)
+        self.assertEqual(dataframe.values.tolist(), ARRAY)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_NAMES)
         self.assertIsNone(dataframe.columns.name)
@@ -114,8 +115,8 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         iterable = generate_query_results()
         dataframe = self._callFUT(iterable, labels=NAMES)
 
-        self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.shape, DIMENSIONS)
+        self.assertEqual(dataframe.values.tolist(), ARRAY)
 
         expected_headers = [(RESOURCE_TYPE, instance_id)
                             for instance_id in INSTANCE_IDS]
@@ -133,8 +134,8 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         iterable = generate_query_results()
         dataframe = self._callFUT(iterable, labels=NAMES)
 
-        self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.shape, DIMENSIONS)
+        self.assertEqual(dataframe.values.tolist(), ARRAY)
 
         self.assertEqual(list(dataframe.columns), INSTANCE_IDS)
         self.assertEqual(dataframe.columns.names, NAMES)
@@ -151,8 +152,8 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         iterable = generate_query_results()
         dataframe = self._callFUT(iterable)
 
-        self.assertEqual(dataframe.shape, (N, M))
-        self.assertEqual(dataframe.values.tolist(), [VALUES] * N)
+        self.assertEqual(dataframe.shape, DIMENSIONS)
+        self.assertEqual(dataframe.values.tolist(), ARRAY)
 
         expected_headers = [
             (RESOURCE_TYPE, PROJECT, zone, instance_id, instance_name)
