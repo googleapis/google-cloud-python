@@ -214,11 +214,12 @@ class TestQuery(unittest2.TestCase):
         client = _Client(project=PROJECT, connection=_Connection())
         query = self._makeOne(client, METRIC_TYPE)
         query = query.select_interval(end_time=T1)
+        actual = list(query._build_query_params())
         expected = [
             ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
             ('interval.endTime', T1.isoformat() + 'Z'),
         ]
-        self.assertEqual(query._build_query_params(), expected)
+        self.assertEqual(actual, expected)
 
     def test_request_parameters_maximal(self):
         import datetime
@@ -240,9 +241,9 @@ class TestQuery(unittest2.TestCase):
         query = query.select_interval(start_time=T0, end_time=T1)
         query = query.align(ALIGNER, minutes=MINUTES, seconds=SECONDS)
         query = query.reduce(REDUCER, FIELD1, FIELD2)
-        actual = query._build_query_params(headers_only=True,
-                                           page_size=PAGE_SIZE,
-                                           page_token=PAGE_TOKEN)
+        actual = list(query._build_query_params(headers_only=True,
+                                                page_size=PAGE_SIZE,
+                                                page_token=PAGE_TOKEN))
         expected = [
             ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
             ('interval.endTime', T1.isoformat() + 'Z'),

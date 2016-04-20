@@ -453,11 +453,11 @@ class Query(object):
 
         page_token = None
         while True:
-            params = self._build_query_params(
+            params = list(self._build_query_params(
                 headers_only=headers_only,
                 page_size=page_size,
                 page_token=page_token,
-            )
+            ))
             response = self._client.connection.api_request(
                 method='GET',
                 path=path,
@@ -472,9 +472,9 @@ class Query(object):
 
     def _build_query_params(self, headers_only=False,
                             page_size=None, page_token=None):
-        """Assemble the list of key-value pairs for the URL query string.
+        """Yield key-value pairs for the URL query string.
 
-        We use a list of key-value pairs instead of a ``dict`` to allow for
+        We use a series of key-value pairs instead of a ``dict`` to allow for
         repeated fields.
 
         :type headers_only: boolean
@@ -488,42 +488,39 @@ class Query(object):
         :type page_token: string or None
         :param page_token: A token to continue the retrieval.
 
-        :rtype: list of tuples
+        :rtype: iterator over tuples
         :returns:
-            A list of key-value pairs suitable for passing to ``urlencode``.
+            Key-value pairs suitable for passing to ``urlencode``.
         """
-        def _pairs():
-            yield 'filter', self.filter
+        yield 'filter', self.filter
 
-            yield 'interval.endTime', _format_timestamp(self._end_time)
-            if self._start_time is not None:
-                yield 'interval.startTime', _format_timestamp(self._start_time)
+        yield 'interval.endTime', _format_timestamp(self._end_time)
+        if self._start_time is not None:
+            yield 'interval.startTime', _format_timestamp(self._start_time)
 
-            if self._per_series_aligner is not None:
-                yield 'aggregation.perSeriesAligner', self._per_series_aligner
+        if self._per_series_aligner is not None:
+            yield 'aggregation.perSeriesAligner', self._per_series_aligner
 
-            if self._alignment_period_seconds is not None:
-                alignment_period = '{period}s'.format(
-                    period=self._alignment_period_seconds)
-                yield 'aggregation.alignmentPeriod', alignment_period
+        if self._alignment_period_seconds is not None:
+            alignment_period = '{period}s'.format(
+                period=self._alignment_period_seconds)
+            yield 'aggregation.alignmentPeriod', alignment_period
 
-            if self._cross_series_reducer is not None:
-                yield ('aggregation.crossSeriesReducer',
-                       self._cross_series_reducer)
+        if self._cross_series_reducer is not None:
+            yield ('aggregation.crossSeriesReducer',
+                   self._cross_series_reducer)
 
-            for field in self._group_by_fields:
-                yield 'aggregation.groupByFields', field
+        for field in self._group_by_fields:
+            yield 'aggregation.groupByFields', field
 
-            if headers_only:
-                yield 'view', 'HEADERS'
+        if headers_only:
+            yield 'view', 'HEADERS'
 
-            if page_size is not None:
-                yield 'pageSize', page_size
+        if page_size is not None:
+            yield 'pageSize', page_size
 
-            if page_token is not None:
-                yield 'pageToken', page_token
-
-        return list(_pairs())
+        if page_token is not None:
+            yield 'pageToken', page_token
 
     def as_dataframe(self, label=None, labels=None):
         """Return all the selected time series as a :mod:`pandas` dataframe.
