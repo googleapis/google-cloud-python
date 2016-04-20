@@ -24,8 +24,6 @@ Features intentionally omitted from this first version of the client library:
 
 import collections
 
-import six
-
 from gcloud.monitoring.metric import Metric
 from gcloud.monitoring.resource import Resource
 
@@ -147,7 +145,7 @@ class Point(collections.namedtuple('Point', 'end_time start_time value')):
         """
         end_time = info['interval']['endTime']
         start_time = info['interval'].get('startTime')
-        value_type, value = next(six.iteritems(info['value']))
+        (value_type, value), = info['value'].items()
         if value_type == 'int64Value':
             value = int(value)  # Convert from string.
 
