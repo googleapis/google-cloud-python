@@ -122,84 +122,6 @@ class TestConnection(_Base):
         qs = dict(parse.parse_qsl(query))
         self.assertEqual(qs, expected_qs)
 
-    def test_list_subscriptions_no_paging(self):
-        import json
-        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        RETURNED = {'subscriptions': [SUB_INFO]}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        subscriptions, next_token = conn.list_subscriptions(self.PROJECT)
-
-        self.assertEqual(len(subscriptions), 1)
-        subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'],
-                         self.LIST_SUBSCRIPTIONS_PATH)
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_list_subscriptions_with_paging(self):
-        import json
-        TOKEN1 = 'TOKEN1'
-        TOKEN2 = 'TOKEN2'
-        SIZE = 1
-        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        RETURNED = {
-            'subscriptions': [SUB_INFO],
-            'nextPageToken': 'TOKEN2',
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        subscriptions, next_token = conn.list_subscriptions(
-            self.PROJECT, page_token=TOKEN1, page_size=SIZE)
-
-        self.assertEqual(len(subscriptions), 1)
-        subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
-        self.assertEqual(subscription['name'], self.SUB_PATH)
-        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(next_token, TOKEN2)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'],
-                         self.LIST_SUBSCRIPTIONS_PATH,
-                         pageToken=TOKEN1, pageSize=str(SIZE))
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_list_subscriptions_missing_key(self):
-        import json
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        subscriptions, next_token = conn.list_subscriptions(self.PROJECT)
-
-        self.assertEqual(len(subscriptions), 0)
-        self.assertEqual(next_token, None)
-
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'],
-                         self.LIST_SUBSCRIPTIONS_PATH)
-        self.assertEqual(http._called_with['body'], None)
-
     def test_topic_create(self):
         import json
         RETURNED = {'name': self.TOPIC_PATH}
@@ -770,6 +692,69 @@ class Test_SubscriberAPI(_Base):
         connection = _Connection()
         api = self._makeOne(connection)
         self.assertTrue(api._connection is connection)
+
+    def test_list_subscriptions_no_paging(self):
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        RETURNED = {'subscriptions': [SUB_INFO]}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertTrue(isinstance(subscription, dict))
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
+
+    def test_list_subscriptions_with_paging(self):
+        TOKEN1 = 'TOKEN1'
+        TOKEN2 = 'TOKEN2'
+        SIZE = 1
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        RETURNED = {
+            'subscriptions': [SUB_INFO],
+            'nextPageToken': 'TOKEN2',
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        subscriptions, next_token = api.list_subscriptions(
+            self.PROJECT, page_token=TOKEN1, page_size=SIZE)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertTrue(isinstance(subscription, dict))
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(next_token, TOKEN2)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'],
+                         {'pageToken': TOKEN1, 'pageSize': SIZE})
+
+    def test_list_subscriptions_missing_key(self):
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        subscriptions, next_token = api.list_subscriptions(self.PROJECT)
+
+        self.assertEqual(len(subscriptions), 0)
+        self.assertEqual(next_token, None)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
 
 
 class Test_IAMPolicyAPI(_Base):

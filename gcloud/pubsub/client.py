@@ -121,8 +121,8 @@ class Client(JSONClient):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        conn = self.connection
-        resources, next_token = conn.list_subscriptions(
+        api = self.subscriber_api
+        resources, next_token = api.list_subscriptions(
             self.project, page_size, page_token)
         topics = {}
         subscriptions = [Subscription.from_api_repr(resource, self,

@@ -89,42 +89,6 @@ class Connection(base_connection.JSONConnection):
             path, query_params=query_params,
             api_base_url=api_base_url, api_version=api_version)
 
-    def list_subscriptions(self, project, page_size=None, page_token=None):
-        """List subscriptions for the project associated with this client.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
-
-        :type project: string
-        :param project: project ID
-
-        :type page_size: int
-        :param page_size: maximum number of subscriptions to return, If not
-                          passed, defaults to a value set by the API.
-
-        :type page_token: string
-        :param page_token: opaque marker for the next "page" of subscriptions.
-                           If not passed, the API will return the first page
-                           of subscriptions.
-
-        :rtype: tuple, (list, str)
-        :returns: list of ``Subscription`` resource dicts, plus a
-                  "next page token" string:  if not None, indicates that
-                  more subscriptions can be retrieved with another call (pass
-                  that value as ``page_token``).
-        """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/subscriptions' % (project,)
-        resp = self.api_request(method='GET', path=path, query_params=params)
-        return resp.get('subscriptions', ()), resp.get('nextPageToken')
-
     def topic_create(self, topic_path):
         """API call:  create a topic via a PUT request
 
@@ -509,6 +473,43 @@ class _SubscriberAPI(object):
 
     def __init__(self, connection):
         self._connection = connection
+
+    def list_subscriptions(self, project, page_size=None, page_token=None):
+        """List subscriptions for the project associated with this API.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
+
+        :type project: string
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of subscriptions.
+                           If not passed, the API will return the first page
+                           of subscriptions.
+
+        :rtype: tuple, (list, str)
+        :returns: list of ``Subscription`` resource dicts, plus a
+                  "next page token" string:  if not None, indicates that
+                  more subscriptions can be retrieved with another call (pass
+                  that value as ``page_token``).
+        """
+        conn = self._connection
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/subscriptions' % (project,)
+        resp = conn.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
 
 class _IAMPolicyAPI(object):

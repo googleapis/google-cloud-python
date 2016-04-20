@@ -125,7 +125,8 @@ class TestClient(unittest2.TestCase):
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
-        conn._list_subscriptions_response = [SUB_INFO], None
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = [SUB_INFO], None
 
         subscriptions, next_page_token = client.list_subscriptions()
 
@@ -136,7 +137,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, None)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_subscriptions,
+        self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
 
     def test_list_subscriptions_with_paging(self):
@@ -154,7 +155,8 @@ class TestClient(unittest2.TestCase):
         TOKEN2 = 'TOKEN2'
         SIZE = 1
         conn = client.connection = _Connection()
-        conn._list_subscriptions_response = [SUB_INFO], TOKEN2
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = [SUB_INFO], TOKEN2
 
         subscriptions, next_page_token = client.list_subscriptions(
             SIZE, TOKEN1)
@@ -168,7 +170,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, TOKEN2)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_subscriptions,
+        self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, SIZE, TOKEN1))
 
     def test_list_subscriptions_w_missing_key(self):
@@ -177,7 +179,8 @@ class TestClient(unittest2.TestCase):
 
         client = self._makeOne(project=PROJECT, credentials=creds)
         conn = client.connection = _Connection()
-        conn._list_subscriptions_response = (), None
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = (), None
 
         subscriptions, next_page_token = client.list_subscriptions()
 
@@ -185,7 +188,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(next_page_token, None)
 
         self.assertEqual(len(conn._requested), 0)
-        self.assertEqual(conn._listed_subscriptions,
+        self.assertEqual(api._listed_subscriptions,
                          (self.PROJECT, None, None))
 
     def test_topic(self):
@@ -223,12 +226,15 @@ class _FauxPublisherAPI(object):
         return self._list_topics_response
 
 
+class _FauxSubscriberAPI(object):
+
+    def list_subscriptions(self, project, page_size, page_token):
+        self._listed_subscriptions = (project, page_size, page_token)
+        return self._list_subscriptions_response
+
+
 class _Connection(object):
 
     def __init__(self, *responses):
         self._responses = responses
         self._requested = []
-
-    def list_subscriptions(self, project, page_size, page_token):
-        self._listed_subscriptions = (project, page_size, page_token)
-        return self._list_subscriptions_response
