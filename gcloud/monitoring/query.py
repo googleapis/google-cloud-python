@@ -23,6 +23,8 @@ import copy
 import datetime
 import itertools
 
+import six
+
 from gcloud.monitoring._dataframe import _build_dataframe
 from gcloud.monitoring.timeseries import TimeSeries
 
@@ -624,8 +626,7 @@ class _Filter(object):
 def _build_label_filter(category, *args, **kwargs):
     """Construct a filter string to filter on metric or resource labels."""
     terms = list(args)
-    for key in kwargs:
-        value = kwargs[key]
+    for key, value in six.iteritems(kwargs):
         if value is None:
             continue
 
