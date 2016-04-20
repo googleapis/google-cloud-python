@@ -486,3 +486,36 @@ class Connection(base_connection.JSONConnection):
             'ackDeadlineSeconds': ack_deadline,
         }
         self.api_request(method='POST', path=path, data=data)
+
+
+class _PublisherAPI(object):
+    """Helper mapping publisher-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection
+
+
+class _SubscriberAPI(object):
+    """Helper mapping subscriber-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection
+
+
+class _IAMPolicyAPI(object):
+    """Helper mapping IAM policy-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection

@@ -751,6 +751,51 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(http._called_with['body'], json.dumps(BODY))
 
 
+class Test_PublisherAPI(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.pubsub.connection import _PublisherAPI
+        return _PublisherAPI
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        api = self._makeOne(connection)
+        self.assertTrue(api._connection is connection)
+
+
+class Test_SubscriberAPI(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.pubsub.connection import _SubscriberAPI
+        return _SubscriberAPI
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        api = self._makeOne(connection)
+        self.assertTrue(api._connection is connection)
+
+
+class Test_IAMPolicyAPI(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.pubsub.connection import _IAMPolicyAPI
+        return _IAMPolicyAPI
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor(self):
+        connection = _Connection()
+        api = self._makeOne(connection)
+        self.assertTrue(api._connection is connection)
+
+
 class _Http(object):
 
     _called_with = None
@@ -763,3 +808,11 @@ class _Http(object):
     def request(self, **kw):
         self._called_with = kw
         return self._response, self._content
+
+
+class _Connection(object):
+
+    _called_with = None
+
+    def __init__(self, *responses):
+        self._responses = responses

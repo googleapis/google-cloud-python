@@ -17,6 +17,9 @@
 
 from gcloud.client import JSONClient
 from gcloud.pubsub.connection import Connection
+from gcloud.pubsub.connection import _PublisherAPI
+from gcloud.pubsub.connection import _SubscriberAPI
+from gcloud.pubsub.connection import _IAMPolicyAPI
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
@@ -43,6 +46,28 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+    _publisher_api = _subscriber_api = _iam_policy_api = None
+
+    @property
+    def publisher_api(self):
+        """Helper for publisher-related API calls."""
+        if self._publisher_api is None:
+            self._publisher_api = _PublisherAPI(self.connection)
+        return self._publisher_api
+
+    @property
+    def subscriber_api(self):
+        """Helper for subscriber-related API calls."""
+        if self._subscriber_api is None:
+            self._subscriber_api = _SubscriberAPI(self.connection)
+        return self._subscriber_api
+
+    @property
+    def iam_policy_api(self):
+        """Helper for IAM policy-related API calls."""
+        if self._iam_policy_api is None:
+            self._iam_policy_api = _IAMPolicyAPI(self.connection)
+        return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.

@@ -29,6 +29,42 @@ class TestClient(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def test_publisher_api(self):
+        from gcloud.pubsub.connection import _PublisherAPI
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        api = client.publisher_api
+        self.assertTrue(isinstance(api, _PublisherAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.publisher_api
+        self.assertTrue(again is api)
+
+    def test_subscriber_api(self):
+        from gcloud.pubsub.connection import _SubscriberAPI
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        api = client.subscriber_api
+        self.assertTrue(isinstance(api, _SubscriberAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.subscriber_api
+        self.assertTrue(again is api)
+
+    def test_iam_policy_api(self):
+        from gcloud.pubsub.connection import _IAMPolicyAPI
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = _Connection()
+        api = client.iam_policy_api
+        self.assertTrue(isinstance(api, _IAMPolicyAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.iam_policy_api
+        self.assertTrue(again is api)
+
     def test_list_topics_no_paging(self):
         from gcloud.pubsub.topic import Topic
         creds = _Credentials()
