@@ -233,224 +233,6 @@ class TestConnection(_Base):
         self.assertEqual(http._called_with['body'],
                          json.dumps({'permissions': ALL_ROLES}))
 
-    def test_subscription_create_defaults(self):
-        import json
-        RESOURCE = {'topic': self.TOPIC_PATH}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        RETURNED = RESOURCE.copy()
-        RETURNED['name'] = self.SUB_PATH
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        resource = conn.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
-
-        self.assertEqual(resource, RETURNED)
-        self.assertEqual(http._called_with['method'], 'PUT')
-        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
-        self.assertEqual(http._called_with['body'], json.dumps(RESOURCE))
-
-    def test_subscription_create_explicit(self):
-        import json
-        ACK_DEADLINE = 90
-        PUSH_ENDPOINT = 'https://api.example.com/push'
-        RESOURCE = {
-            'topic': self.TOPIC_PATH,
-            'ackDeadlineSeconds': ACK_DEADLINE,
-            'pushConfig': {
-                'pushEndpoint': PUSH_ENDPOINT,
-            },
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        RETURNED = RESOURCE.copy()
-        RETURNED['name'] = self.SUB_PATH
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        resource = conn.subscription_create(
-            self.SUB_PATH, self.TOPIC_PATH,
-            ack_deadline=ACK_DEADLINE, push_endpoint=PUSH_ENDPOINT)
-
-        self.assertEqual(resource, RETURNED)
-        self.assertEqual(http._called_with['method'], 'PUT')
-        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
-        self.assertEqual(http._called_with['body'], json.dumps(RESOURCE))
-
-    def test_subscription_get(self):
-        import json
-        ACK_DEADLINE = 90
-        PUSH_ENDPOINT = 'https://api.example.com/push'
-        RETURNED = {
-            'topic': self.TOPIC_PATH,
-            'name': self.SUB_PATH,
-            'ackDeadlineSeconds': ACK_DEADLINE,
-            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        resource = conn.subscription_get(self.SUB_PATH)
-
-        self.assertEqual(resource, RETURNED)
-        self.assertEqual(http._called_with['method'], 'GET')
-        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_subscription_delete(self):
-        import json
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        conn.subscription_delete(self.SUB_PATH)
-
-        self.assertEqual(http._called_with['method'], 'DELETE')
-        self._verify_uri(http._called_with['uri'], self.SUB_PATH)
-        self.assertEqual(http._called_with['body'], None)
-
-    def test_subscription_modify_push_config(self):
-        import json
-        PUSH_ENDPOINT = 'https://api.example.com/push'
-        BODY = {
-            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
-        }
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        conn.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
-
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'],
-                         '%s:modifyPushConfig' % (self.SUB_PATH,))
-        self.assertEqual(http._called_with['body'], json.dumps(BODY))
-
-    def test_subscription_pull_defaults(self):
-        import base64
-        import json
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        ACK_ID = 'DEADBEEF'
-        MSG_ID = 'BEADCAFE'
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
-        RETURNED = {
-            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        BODY = {
-            'returnImmediately': False,
-            'maxMessages': 1,
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        received = conn.subscription_pull(self.SUB_PATH)
-
-        self.assertEqual(received, RETURNED['receivedMessages'])
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'],
-                         '%s:pull' % (self.SUB_PATH,))
-        self.assertEqual(http._called_with['body'], json.dumps(BODY))
-
-    def test_subscription_pull_explicit(self):
-        import base64
-        import json
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        ACK_ID = 'DEADBEEF'
-        MSG_ID = 'BEADCAFE'
-        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
-        RETURNED = {
-            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
-        }
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        MAX_MESSAGES = 10
-        BODY = {
-            'returnImmediately': True,
-            'maxMessages': MAX_MESSAGES,
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        received = conn.subscription_pull(
-            self.SUB_PATH, return_immediately=True, max_messages=MAX_MESSAGES)
-
-        self.assertEqual(received, RETURNED['receivedMessages'])
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'],
-                         '%s:pull' % (self.SUB_PATH,))
-        self.assertEqual(http._called_with['body'], json.dumps(BODY))
-
-    def test_subscription_acknowledge(self):
-        import json
-        ACK_ID1 = 'DEADBEEF'
-        ACK_ID2 = 'BEADCAFE'
-        BODY = {
-            'ackIds': [ACK_ID1, ACK_ID2],
-        }
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        conn.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
-
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'],
-                         '%s:acknowledge' % (self.SUB_PATH,))
-        self.assertEqual(http._called_with['body'], json.dumps(BODY))
-
-    def test_subscription_modify_ack_deadline(self):
-        import json
-        ACK_ID1 = 'DEADBEEF'
-        ACK_ID2 = 'BEADCAFE'
-        NEW_DEADLINE = 90
-        BODY = {
-            'ackIds': [ACK_ID1, ACK_ID2],
-            'ackDeadlineSeconds': NEW_DEADLINE,
-        }
-        RETURNED = {}
-        HEADERS = {
-            'status': '200',
-            'content-type': 'application/json',
-        }
-        http = _Http(HEADERS, json.dumps(RETURNED))
-        conn = self._makeOne(http=http)
-
-        conn.subscription_modify_ack_deadline(
-            self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
-
-        self.assertEqual(http._called_with['method'], 'POST')
-        self._verify_uri(http._called_with['uri'],
-                         '%s:modifyAckDeadline' % (self.SUB_PATH,))
-        self.assertEqual(http._called_with['body'], json.dumps(BODY))
-
 
 class Test_PublisherAPI(_Base):
 
@@ -721,6 +503,181 @@ class Test_SubscriberAPI(_Base):
         path = '/%s' % (self.LIST_SUBSCRIPTIONS_PATH,)
         self.assertEqual(connection._called_with['path'], path)
         self.assertEqual(connection._called_with['query_params'], {})
+
+    def test_subscription_create_defaults(self):
+        RESOURCE = {'topic': self.TOPIC_PATH}
+        RETURNED = RESOURCE.copy()
+        RETURNED['name'] = self.SUB_PATH
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        resource = api.subscription_create(self.SUB_PATH, self.TOPIC_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], RESOURCE)
+
+    def test_subscription_create_explicit(self):
+        ACK_DEADLINE = 90
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        RESOURCE = {
+            'topic': self.TOPIC_PATH,
+            'ackDeadlineSeconds': ACK_DEADLINE,
+            'pushConfig': {
+                'pushEndpoint': PUSH_ENDPOINT,
+            },
+        }
+        RETURNED = RESOURCE.copy()
+        RETURNED['name'] = self.SUB_PATH
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        resource = api.subscription_create(
+            self.SUB_PATH, self.TOPIC_PATH,
+            ack_deadline=ACK_DEADLINE, push_endpoint=PUSH_ENDPOINT)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], RESOURCE)
+
+    def test_subscription_get(self):
+        ACK_DEADLINE = 90
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        RETURNED = {
+            'topic': self.TOPIC_PATH,
+            'name': self.SUB_PATH,
+            'ackDeadlineSeconds': ACK_DEADLINE,
+            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        resource = api.subscription_get(self.SUB_PATH)
+
+        self.assertEqual(resource, RETURNED)
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+
+    def test_subscription_delete(self):
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        api.subscription_delete(self.SUB_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'DELETE')
+        path = '/%s' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+
+    def test_subscription_modify_push_config(self):
+        PUSH_ENDPOINT = 'https://api.example.com/push'
+        BODY = {
+            'pushConfig': {'pushEndpoint': PUSH_ENDPOINT},
+        }
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        api.subscription_modify_push_config(self.SUB_PATH, PUSH_ENDPOINT)
+
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:modifyPushConfig' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_subscription_pull_defaults(self):
+        import base64
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        ACK_ID = 'DEADBEEF'
+        MSG_ID = 'BEADCAFE'
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        RETURNED = {
+            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+        BODY = {
+            'returnImmediately': False,
+            'maxMessages': 1,
+        }
+
+        received = api.subscription_pull(self.SUB_PATH)
+
+        self.assertEqual(received, RETURNED['receivedMessages'])
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:pull' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_subscription_pull_explicit(self):
+        import base64
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        ACK_ID = 'DEADBEEF'
+        MSG_ID = 'BEADCAFE'
+        MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
+        RETURNED = {
+            'receivedMessages': [{'ackId': ACK_ID, 'message': MESSAGE}],
+        }
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+        MAX_MESSAGES = 10
+        BODY = {
+            'returnImmediately': True,
+            'maxMessages': MAX_MESSAGES,
+        }
+
+        received = api.subscription_pull(
+            self.SUB_PATH, return_immediately=True, max_messages=MAX_MESSAGES)
+
+        self.assertEqual(received, RETURNED['receivedMessages'])
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:pull' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_subscription_acknowledge(self):
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        BODY = {
+            'ackIds': [ACK_ID1, ACK_ID2],
+        }
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        api.subscription_acknowledge(self.SUB_PATH, [ACK_ID1, ACK_ID2])
+
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:acknowledge' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
+
+    def test_subscription_modify_ack_deadline(self):
+        ACK_ID1 = 'DEADBEEF'
+        ACK_ID2 = 'BEADCAFE'
+        NEW_DEADLINE = 90
+        BODY = {
+            'ackIds': [ACK_ID1, ACK_ID2],
+            'ackDeadlineSeconds': NEW_DEADLINE,
+        }
+        RETURNED = {}
+        connection = _Connection(RETURNED)
+        api = self._makeOne(connection)
+
+        api.subscription_modify_ack_deadline(
+            self.SUB_PATH, [ACK_ID1, ACK_ID2], NEW_DEADLINE)
+
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:modifyAckDeadline' % (self.SUB_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'], BODY)
 
 
 class Test_IAMPolicyAPI(_Base):

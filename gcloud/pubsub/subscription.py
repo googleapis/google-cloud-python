@@ -144,7 +144,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        client.connection.subscription_create(
+        api = client.subscriber_api
+        api.subscription_create(
             self.full_name, self.topic.full_name, self.ack_deadline,
             self.push_endpoint)
 
@@ -159,8 +160,9 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
+        api = client.subscriber_api
         try:
-            client.connection.subscription_get(self.full_name)
+            api.subscription_get(self.full_name)
         except NotFound:
             return False
         else:
@@ -177,7 +179,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = client.connection.subscription_get(self.full_name)
+        api = client.subscriber_api
+        data = api.subscription_get(self.full_name)
         self.ack_deadline = data.get('ackDeadlineSeconds')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
@@ -193,7 +196,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        client.connection.subscription_delete(self.full_name)
+        api = client.subscriber_api
+        api.subscription_delete(self.full_name)
 
     def modify_push_configuration(self, push_endpoint, client=None):
         """API call:  update the push endpoint for the subscription.
@@ -211,8 +215,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        client.connection.subscription_modify_push_config(
-            self.full_name, push_endpoint)
+        api = client.subscriber_api
+        api.subscription_modify_push_config(self.full_name, push_endpoint)
         self.push_endpoint = push_endpoint
 
     def pull(self, return_immediately=False, max_messages=1, client=None):
@@ -240,7 +244,8 @@ class Subscription(object):
                   is an instance of :class:`gcloud.pubsub.message.Message`.
         """
         client = self._require_client(client)
-        response = client.connection.subscription_pull(
+        api = client.subscriber_api
+        response = api.subscription_pull(
             self.full_name, return_immediately, max_messages)
         return [(info['ackId'], Message.from_api_repr(info['message']))
                 for info in response]
@@ -259,7 +264,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        client.connection.subscription_acknowledge(self.full_name, ack_ids)
+        api = client.subscriber_api
+        api.subscription_acknowledge(self.full_name, ack_ids)
 
     def modify_ack_deadline(self, ack_ids, ack_deadline, client=None):
         """API call:  update acknowledgement deadline for a retrieved message.
@@ -278,7 +284,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        client.connection.subscription_modify_ack_deadline(
+        api = client.subscriber_api
+        api.subscription_modify_ack_deadline(
             self.full_name, ack_ids, ack_deadline)
 
     def get_iam_policy(self, client=None):
