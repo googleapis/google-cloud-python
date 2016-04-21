@@ -30,5 +30,16 @@ from gcloud.monitoring.resource import ResourceDescriptor
 from gcloud.monitoring.timeseries import Point
 from gcloud.monitoring.timeseries import TimeSeries
 
+__all__ = (
+    'Client',
+    'Connection',
+    'LabelDescriptor', 'LabelValueType',
+    'Metric', 'MetricDescriptor', 'MetricKind', 'ValueType',
+    'Aligner', 'Query', 'Reducer',
+    'Resource', 'ResourceDescriptor',
+    'Point', 'TimeSeries',
+    'SCOPE',
+)
+
 
 SCOPE = Connection.SCOPE
