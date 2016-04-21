@@ -79,6 +79,18 @@ class TestMonitoring(unittest2.TestCase):
             self.assertTrue(label.value_type)
             self.assertTrue(label.description)
 
+    def test_list_metric_descriptors_filtered(self):
+        client = monitoring.Client()
+
+        PREFIX = 'compute.googleapis.com/'
+        descriptors = client.list_metric_descriptors(type_prefix=PREFIX)
+
+        # There are currently 18 types with this prefix, but that may change.
+        self.assertGreater(len(descriptors), 10)
+
+        for descriptor in descriptors:
+            self.assertTrue(descriptor.type.startswith(PREFIX))
+
     def test_fetch_resource_descriptor(self):
         client = monitoring.Client()
         descriptor = client.fetch_resource_descriptor(RESOURCE_TYPE)

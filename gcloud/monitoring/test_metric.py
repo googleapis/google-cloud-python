@@ -321,6 +321,28 @@ class TestMetricDescriptor(unittest2.TestCase):
                             'query_params': {'filter': FILTER}}
         self.assertEqual(request, expected_request)
 
+    def test_list_filtered_by_type_prefix(self):
+        PROJECT = 'my-project'
+        PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
+
+        # Request only custom metrics.
+        PREFIX = 'custom.googleapis.com/'
+        FILTER = 'metric.type = starts_with("{prefix}")'.format(prefix=PREFIX)
+
+        # But let's say there are no custom metrics.
+        RESPONSE = {'metricDescriptors': []}
+
+        connection = _Connection(RESPONSE)
+        client = _Client(project=PROJECT, connection=connection)
+        descriptors = self._getTargetClass()._list(client, type_prefix=PREFIX)
+
+        self.assertEqual(len(descriptors), 0)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + PATH,
+                            'query_params': {'filter': FILTER}}
+        self.assertEqual(request, expected_request)
+
 
 class TestMetric(unittest2.TestCase):
 
