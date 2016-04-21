@@ -149,7 +149,6 @@ class Client(JSONClient):
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
         return MetricDescriptor._list(self, filter)
 
     def fetch_resource_descriptor(self, resource_type):
@@ -188,5 +187,4 @@ class Client(JSONClient):
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        # Allow "filter" as a parameter name: pylint: disable=redefined-builtin
         return ResourceDescriptor._list(self, filter)

@@ -51,7 +51,6 @@ class ResourceDescriptor(object):
     """
 
     def __init__(self, name, type, display_name, description, labels):
-        # Allow "type" as a parameter name: pylint: disable=redefined-builtin
         self.name = name
         self.type = type
         self.display_name = display_name

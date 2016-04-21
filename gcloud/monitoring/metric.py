@@ -100,7 +100,6 @@ class MetricDescriptor(object):
 
     def __init__(self, name, type, labels, metric_kind, value_type,
                  unit, description, display_name):
-        # Allow "type" as a parameter name: pylint: disable=redefined-builtin
         self.name = name
         self.type = type
         self.labels = labels
