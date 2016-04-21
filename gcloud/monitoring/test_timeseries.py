@@ -142,6 +142,9 @@ class TestTimeSeries(unittest2.TestCase):
         labels.update(RESOURCE_LABELS)
         labels.update(METRIC_LABELS)
 
+        self.assertIsNone(series._labels)
+        self.assertEqual(series.labels, labels)
+        self.assertIsNotNone(series._labels)
         self.assertEqual(series.labels, labels)
 
 

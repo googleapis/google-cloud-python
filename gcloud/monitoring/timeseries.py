@@ -56,6 +56,8 @@ class TimeSeries(collections.namedtuple(
     :param points: A list of point objects.
     """
 
+    _labels = None
+
     @property
     def labels(self):
         """A single dictionary with values for all the labels.
@@ -63,15 +65,13 @@ class TimeSeries(collections.namedtuple(
         This combines ``resource.labels`` and ``metric.labels`` and also
         adds ``"resource_type"``.
         """
-        # pylint: disable=attribute-defined-outside-init
-        try:
-            return self._labels
-        except AttributeError:
+        if self._labels is None:
             labels = {'resource_type': self.resource.type}
             labels.update(self.resource.labels)
             labels.update(self.metric.labels)
             self._labels = labels
-            return self._labels
+
+        return self._labels
 
     def header(self, points=None):
         """Copy everything but the point data.
