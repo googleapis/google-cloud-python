@@ -28,6 +28,7 @@ class TestClient(unittest2.TestCase):
 
     def test_query(self):
         import datetime
+        from gcloud.exceptions import NotFound
 
         START_TIME = datetime.datetime(2016, 4, 6, 22, 5, 0)
         END_TIME = datetime.datetime(2016, 4, 6, 22, 10, 0)
@@ -125,6 +126,9 @@ class TestClient(unittest2.TestCase):
 
         request, = connection._requested
         self.assertEqual(request, expected_request)
+
+        with self.assertRaises(NotFound):
+            list(query)
 
     def test_fetch_metric_descriptor(self):
         TYPE = 'custom.googleapis.com/my-metric'
@@ -321,5 +325,5 @@ class _Connection(object):
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)
-        except IndexError:  # pragma: NO COVER
+        except IndexError:
             raise NotFound('miss')

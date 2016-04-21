@@ -329,6 +329,7 @@ class TestQuery(unittest2.TestCase):
     def test_iteration_paged(self):
         import copy
         import datetime
+        from gcloud.exceptions import NotFound
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
         T1 = datetime.datetime(2016, 4, 6, 22, 10, 0)
@@ -408,6 +409,9 @@ class TestQuery(unittest2.TestCase):
         request1, request2 = connection._requested
         self.assertEqual(request1, expected_request1)
         self.assertEqual(request2, expected_request2)
+
+        with self.assertRaises(NotFound):
+            list(query)
 
     def test_iteration_empty(self):
         import datetime
@@ -623,7 +627,7 @@ class _Connection(object):
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)
-        except IndexError:  # pragma: NO COVER
+        except IndexError:
             raise NotFound('miss')
 
 

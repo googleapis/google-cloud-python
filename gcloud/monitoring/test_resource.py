@@ -192,6 +192,8 @@ class TestResourceDescriptor(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
     def test_list_paged(self):
+        from gcloud.exceptions import NotFound
+
         PROJECT = 'my-project'
         PATH = 'projects/{project}/monitoredResourceDescriptors/'.format(
             project=PROJECT)
@@ -245,6 +247,9 @@ class TestResourceDescriptor(unittest2.TestCase):
                              'query_params': {'pageToken': TOKEN}}
         self.assertEqual(request1, expected_request1)
         self.assertEqual(request2, expected_request2)
+
+        with self.assertRaises(NotFound):
+            self._getTargetClass()._list(client)
 
     def test_list_filtered(self):
         PROJECT = 'my-project'
@@ -323,7 +328,7 @@ class _Connection(object):
         self._requested.append(kwargs)
         try:
             return self._responses.pop(0)
-        except IndexError:  # pragma: NO COVER
+        except IndexError:
             raise NotFound('miss')
 
 
