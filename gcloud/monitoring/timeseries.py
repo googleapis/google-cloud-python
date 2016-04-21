@@ -100,7 +100,7 @@ class TimeSeries(collections.namedtuple(
         resource = Resource._from_dict(info['resource'])
         metric_kind = info['metricKind']
         value_type = info['valueType']
-        points = [Point._from_dict(p) for p in info.get('points', [])]
+        points = [Point._from_dict(p) for p in info.get('points', ())]
         return cls(metric, resource, metric_kind, value_type, points)
 
     def __repr__(self):

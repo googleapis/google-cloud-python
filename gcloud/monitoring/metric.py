@@ -189,7 +189,7 @@ class MetricDescriptor(object):
             name=info['name'],
             type=info['type'],
             labels=tuple(LabelDescriptor._from_dict(label)
-                         for label in info.get('labels', [])),
+                         for label in info.get('labels', ())),
             metric_kind=info['metricKind'],
             value_type=info['valueType'],
             unit=info.get('unit', ''),

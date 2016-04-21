@@ -139,7 +139,7 @@ class ResourceDescriptor(object):
             display_name=info.get('displayName', ''),
             description=info.get('description', ''),
             labels=tuple(LabelDescriptor._from_dict(label)
-                         for label in info.get('labels', [])),
+                         for label in info.get('labels', ())),
         )
 
     def __repr__(self):
