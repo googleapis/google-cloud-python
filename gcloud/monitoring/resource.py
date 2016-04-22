@@ -32,8 +32,8 @@ class ResourceDescriptor(object):
         The "resource name" of the monitored resource descriptor:
         ``"projects/<project_id>/monitoredResourceDescriptors/<type>"``
 
-    :type type: string
-    :param type:
+    :type type_: string
+    :param type_:
         The monitored resource type. For example: ``"gce_instance"``
 
     :type display_name: string
@@ -50,9 +50,9 @@ class ResourceDescriptor(object):
         to identify a specific instance of this monitored resource.
     """
 
-    def __init__(self, name, type, display_name, description, labels):
+    def __init__(self, name, type_, display_name, description, labels):
         self.name = name
-        self.type = type
+        self.type = type_
         self.display_name = display_name
         self.description = description
         self.labels = labels
@@ -136,7 +136,7 @@ class ResourceDescriptor(object):
         """
         return cls(
             name=info['name'],
-            type=info['type'],
+            type_=info['type'],
             display_name=info.get('displayName', ''),
             description=info.get('description', ''),
             labels=tuple(LabelDescriptor._from_dict(label)

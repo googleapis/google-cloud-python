@@ -42,7 +42,7 @@ class TestResourceDescriptor(unittest2.TestCase):
 
         descriptor = self._makeOne(
             name=NAME,
-            type=TYPE,
+            type_=TYPE,
             display_name=DISPLAY_NAME,
             description=DESCRIPTION,
             labels=LABELS,

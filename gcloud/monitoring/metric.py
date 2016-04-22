@@ -64,8 +64,8 @@ class MetricDescriptor(object):
         The "resource name" of the metric descriptor. For example:
         ``"projects/<project_id>/metricDescriptors/<type>"``
 
-    :type type: string
-    :param type:
+    :type type_: string
+    :param type_:
         The metric type including a DNS name prefix. For example:
         ``"compute.googleapis.com/instance/cpu/utilization"``
 
@@ -98,10 +98,10 @@ class MetricDescriptor(object):
     :param display_name: A concise name for the metric.
     """
 
-    def __init__(self, name, type, labels, metric_kind, value_type,
+    def __init__(self, name, type_, labels, metric_kind, value_type,
                  unit, description, display_name):
         self.name = name
-        self.type = type
+        self.type = type_
         self.labels = labels
         self.metric_kind = metric_kind
         self.value_type = value_type
@@ -188,7 +188,7 @@ class MetricDescriptor(object):
         """
         return cls(
             name=info['name'],
-            type=info['type'],
+            type_=info['type'],
             labels=tuple(LabelDescriptor._from_dict(label)
                          for label in info.get('labels', ())),
             metric_kind=info['metricKind'],

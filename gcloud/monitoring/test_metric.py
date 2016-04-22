@@ -75,7 +75,7 @@ class TestMetricDescriptor(unittest2.TestCase):
 
         descriptor = self._makeOne(
             name=NAME,
-            type=TYPE,
+            type_=TYPE,
             labels=LABELS,
             metric_kind=METRIC_KIND,
             value_type=VALUE_TYPE,
