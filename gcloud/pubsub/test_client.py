@@ -35,7 +35,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
         api = client.publisher_api
-        self.assertTrue(isinstance(api, _PublisherAPI))
+        self.assertIsInstance(api, _PublisherAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.publisher_api
@@ -47,7 +47,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
         api = client.subscriber_api
-        self.assertTrue(isinstance(api, _SubscriberAPI))
+        self.assertIsInstance(api, _SubscriberAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.subscriber_api
@@ -59,7 +59,7 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = _Connection()
         api = client.iam_policy_api
-        self.assertTrue(isinstance(api, _IAMPolicyAPI))
+        self.assertIsInstance(api, _IAMPolicyAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.iam_policy_api
@@ -76,7 +76,7 @@ class TestClient(unittest2.TestCase):
         topics, next_page_token = client.list_topics()
 
         self.assertEqual(len(topics), 1)
-        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertIsInstance(topics[0], Topic)
         self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, None)
 
@@ -97,7 +97,7 @@ class TestClient(unittest2.TestCase):
         topics, next_page_token = client.list_topics(SIZE, TOKEN1)
 
         self.assertEqual(len(topics), 1)
-        self.assertTrue(isinstance(topics[0], Topic))
+        self.assertIsInstance(topics[0], Topic)
         self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, TOKEN2)
 
@@ -131,7 +131,7 @@ class TestClient(unittest2.TestCase):
         subscriptions, next_page_token = client.list_subscriptions()
 
         self.assertEqual(len(subscriptions), 1)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
+        self.assertIsInstance(subscriptions[0], Subscription)
         self.assertEqual(subscriptions[0].name, self.SUB_NAME)
         self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, None)
@@ -162,7 +162,7 @@ class TestClient(unittest2.TestCase):
             SIZE, TOKEN1)
 
         self.assertEqual(len(subscriptions), 1)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
+        self.assertIsInstance(subscriptions[0], Subscription)
         self.assertEqual(subscriptions[0].name, self.SUB_NAME)
         self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
         self.assertEqual(subscriptions[0].ack_deadline, ACK_DEADLINE)

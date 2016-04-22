@@ -78,7 +78,7 @@ class TestSubscription(unittest2.TestCase):
         subscription = klass.from_api_repr(resource, client)
         self.assertEqual(subscription.name, self.SUB_NAME)
         topic = subscription.topic
-        self.assertTrue(isinstance(topic, Topic))
+        self.assertIsInstance(topic, Topic)
         self.assertEqual(topic.name, self.TOPIC_NAME)
         self.assertEqual(topic.project, self.PROJECT)
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
@@ -110,7 +110,7 @@ class TestSubscription(unittest2.TestCase):
         subscription = klass.from_api_repr(resource, client, topics=topics)
         self.assertEqual(subscription.name, self.SUB_NAME)
         topic = subscription.topic
-        self.assertTrue(isinstance(topic, Topic))
+        self.assertIsInstance(topic, Topic)
         self.assertTrue(topic is topics[self.TOPIC_PATH])
         self.assertEqual(topic.name, self.TOPIC_NAME)
         self.assertEqual(topic.project, self.PROJECT)
@@ -338,7 +338,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
-        self.assertTrue(isinstance(message, Message))
+        self.assertIsInstance(message, Message)
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {})
@@ -370,7 +370,7 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(len(pulled), 1)
         ack_id, message = pulled[0]
         self.assertEqual(ack_id, ACK_ID)
-        self.assertTrue(isinstance(message, Message))
+        self.assertIsInstance(message, Message)
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {'a': 'b'})

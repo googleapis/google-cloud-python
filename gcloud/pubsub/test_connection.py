@@ -137,7 +137,7 @@ class Test_PublisherAPI(_Base):
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertTrue(isinstance(topic, dict))
+        self.assertIsInstance(topic, dict)
         self.assertEqual(topic['name'], self.TOPIC_PATH)
         self.assertEqual(next_token, None)
 
@@ -162,7 +162,7 @@ class Test_PublisherAPI(_Base):
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
-        self.assertTrue(isinstance(topic, dict))
+        self.assertIsInstance(topic, dict)
         self.assertEqual(topic['name'], self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN2)
 
@@ -252,7 +252,7 @@ class Test_PublisherAPI(_Base):
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
+        self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, None)
@@ -279,7 +279,7 @@ class Test_PublisherAPI(_Base):
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
+        self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN2)
@@ -331,7 +331,7 @@ class Test_SubscriberAPI(_Base):
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
+        self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, None)
@@ -358,7 +358,7 @@ class Test_SubscriberAPI(_Base):
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, dict))
+        self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN2)

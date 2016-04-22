@@ -318,7 +318,7 @@ class TestTopic(unittest2.TestCase):
 
         SUBSCRIPTION_NAME = 'subscription_name'
         subscription = topic.subscription(SUBSCRIPTION_NAME)
-        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscription.name, SUBSCRIPTION_NAME)
         self.assertTrue(subscription.topic is topic)
 
@@ -344,12 +344,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(subscriptions), 2)
 
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[0].name, SUB_NAME_1)
         self.assertTrue(subscription.topic is topic)
 
         subscription = subscriptions[1]
-        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[1].name, SUB_NAME_2)
         self.assertTrue(subscription.topic is topic)
 
@@ -382,12 +382,12 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(len(subscriptions), 2)
 
         subscription = subscriptions[0]
-        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[0].name, SUB_NAME_1)
         self.assertTrue(subscription.topic is topic)
 
         subscription = subscriptions[1]
-        self.assertTrue(isinstance(subscription, Subscription))
+        self.assertIsInstance(subscription, Subscription)
         self.assertEqual(subscriptions[1].name, SUB_NAME_2)
         self.assertTrue(subscription.topic is topic)
 
