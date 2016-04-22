@@ -145,10 +145,10 @@ follows::
 
     >>> from gcloud.monitoring import Aligner, Reducer
     >>> METRIC = 'compute.googleapis.com/instance/cpu/utilization'
-    >>> query = client.query(METRIC, hours=1) \
-    ...               .select_metrics(instance_name_prefix='mycluster-') \
-    ...               .align(Aligner.ALIGN_MEAN, minutes=5) \
-    ...               .reduce(Reducer.REDUCE_MEAN, 'resource.zone')
+    >>> query = (client.query(METRIC, hours=1)
+    ...          .select_metrics(instance_name_prefix='mycluster-')
+    ...          .align(Aligner.ALIGN_MEAN, minutes=5)
+    ...          .reduce(Reducer.REDUCE_MEAN, 'resource.zone'))
     >>> print(query.as_dataframe())
 
 .. _Time Series:

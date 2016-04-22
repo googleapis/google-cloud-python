@@ -73,9 +73,9 @@ class ResourceDescriptor(object):
         :raises: :class:`gcloud.exceptions.NotFound` if the resource descriptor
             is not found.
         """
-        path = '/projects/{project}/monitoredResourceDescriptors/{type}' \
-            .format(project=client.project,
-                    type=resource_type)
+        path = ('/projects/{project}/monitoredResourceDescriptors/{type}'
+                .format(project=client.project,
+                        type=resource_type))
         info = client.connection.api_request(method='GET', path=path)
         return cls._from_dict(info)
 
