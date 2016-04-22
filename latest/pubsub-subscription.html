@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Subscriptions &mdash; gcloud eb21b2e documentation</title>
+    <title>Subscriptions &mdash; gcloud 18c92fe documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'eb21b2e',
+        VERSION:     '18c92fe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud eb21b2e documentation" href="index.html" />
+    <link rel="top" title="gcloud 18c92fe documentation" href="index.html" />
     <link rel="next" title="Message" href="pubsub-message.html" />
     <link rel="prev" title="Topics" href="pubsub-topic.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%20eb21b2e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%2018c92fe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (eb21b2e)
+              Version History (18c92fe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -246,6 +246,12 @@ the subscription will have a newly-created topic.</li>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.pubsub.subscription.Subscription.full_name">
+<code class="descname">full_name</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.full_name" title="Permalink to this definition">#</a></dt>
+<dd><p>URL path for the subscription&#8217;s APIs</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.get_iam_policy">
 <code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.get_iam_policy" title="Permalink to this definition">#</a></dt>
@@ -270,7 +276,7 @@ the subscription will have a newly-created topic.</li>
 
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.modify_ack_deadline">
-<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_id</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
@@ -279,7 +285,7 @@ the subscription will have a newly-created topic.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ack_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; ack ID of message being updated</li>
+<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being updated</li>
 <li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
@@ -311,12 +317,6 @@ messages.</li>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.pubsub.subscription.Subscription.path">
-<code class="descname">path</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.path" title="Permalink to this definition">#</a></dt>
-<dd><p>URL path for the subscription&#8217;s APIs</p>
 </dd></dl>
 
 <dl class="attribute">

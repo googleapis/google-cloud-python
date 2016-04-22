@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.connection &mdash; gcloud eb21b2e documentation</title>
+    <title>gcloud.pubsub.connection &mdash; gcloud 18c92fe documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'eb21b2e',
+        VERSION:     '18c92fe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud eb21b2e documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 18c92fe documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%20eb21b2e" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%2018c92fe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (eb21b2e)
+              Version History (18c92fe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -180,7 +180,405 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">api_base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_base_url</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">)</span><span class="o">.</span><span class="n">build_api_url</span><span class="p">(</span>
             <span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-            <span class="n">api_base_url</span><span class="o">=</span><span class="n">api_base_url</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="n">api_version</span><span class="p">)</span></div></div>
+            <span class="n">api_base_url</span><span class="o">=</span><span class="n">api_base_url</span><span class="p">,</span> <span class="n">api_version</span><span class="o">=</span><span class="n">api_version</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.list_topics"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list</span>
+
+<span class="sd">        :type project: string</span>
+<span class="sd">        :param project: project ID</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
+<span class="sd">                          defaults to a value set by the API.</span>
+
+<span class="sd">        :type page_token: string</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
+<span class="sd">                           passed, the API will return the first page of</span>
+<span class="sd">                           topics.</span>
+
+<span class="sd">        :rtype: tuple, (list, str)</span>
+<span class="sd">        :returns: list of ``Topic`` resource dicts, plus a</span>
+<span class="sd">                  &quot;next page token&quot; string:  if not None, indicates that</span>
+<span class="sd">                  more topics can be retrieved with another call (pass that</span>
+<span class="sd">                  value as ``page_token``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/topics&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;topics&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.list_subscriptions"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List subscriptions for the project associated with this client.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list</span>
+
+<span class="sd">        :type project: string</span>
+<span class="sd">        :param project: project ID</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: maximum number of subscriptions to return, If not</span>
+<span class="sd">                          passed, defaults to a value set by the API.</span>
+
+<span class="sd">        :type page_token: string</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of subscriptions.</span>
+<span class="sd">                           If not passed, the API will return the first page</span>
+<span class="sd">                           of subscriptions.</span>
+
+<span class="sd">        :rtype: tuple, (list, str)</span>
+<span class="sd">        :returns: list of ``Subscription`` resource dicts, plus a</span>
+<span class="sd">                  &quot;next page token&quot; string:  if not None, indicates that</span>
+<span class="sd">                  more subscriptions can be retrieved with another call (pass</span>
+<span class="sd">                  that value as ``page_token``).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.topic_create"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.topic_create">[docs]</a>    <span class="k">def</span> <span class="nf">topic_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create a topic via a PUT request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the new topic, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: ``Topic`` resource returned from the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span></div>
+
+<div class="viewcode-block" id="Connection.topic_get"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.topic_get">[docs]</a>    <span class="k">def</span> <span class="nf">topic_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  retrieve a topic via a GET request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: ``Topic`` resource returned from the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span></div>
+
+<div class="viewcode-block" id="Connection.topic_delete"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.topic_delete">[docs]</a>    <span class="k">def</span> <span class="nf">topic_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  delete a topic via a DELETE request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span></div>
+
+<div class="viewcode-block" id="Connection.topic_publish"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.topic_publish">[docs]</a>    <span class="k">def</span> <span class="nf">topic_publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">messages</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  publish a message to a topic via a POST request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type messages: list of dict</span>
+<span class="sd">        :param messages: messages to be published.</span>
+
+<span class="sd">        :rtype: list of string</span>
+<span class="sd">        :returns: list of opaque IDs for published messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;messages&#39;</span><span class="p">:</span> <span class="n">messages</span><span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
+            <span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:publish&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;messageIds&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Connection.topic_list_subscriptions"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.topic_list_subscriptions">[docs]</a>    <span class="k">def</span> <span class="nf">topic_list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                 <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  list subscriptions bound to a topic via a GET request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type page_size: int</span>
+<span class="sd">        :param page_size: maximum number of topics to return, If not passed,</span>
+<span class="sd">                          defaults to a value set by the API.</span>
+
+<span class="sd">        :type page_token: string</span>
+<span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of topics. If not</span>
+<span class="sd">                           passed, the API will return the first page of</span>
+<span class="sd">                           topics.</span>
+
+<span class="sd">        :rtype: list of strings</span>
+<span class="sd">        :returns: fully-qualified names of subscriptions for the supplied</span>
+<span class="sd">                  topic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
+
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">/subscriptions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">query_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;subscriptions&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.get_iam_policy"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the target.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
+
+<span class="sd">        :type target_path: string</span>
+<span class="sd">        :param target_path: the path of the target object.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: the resource returned by the ``getIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:getIamPolicy&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">target_path</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.set_iam_policy"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the target.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
+
+<span class="sd">        :type target_path: string</span>
+<span class="sd">        :param target_path: the path of the target object.</span>
+
+<span class="sd">        :type policy: dict</span>
+<span class="sd">        :param policy: the new policy resource.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: the resource returned by the ``setIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wrapped</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;policy&#39;</span><span class="p">:</span> <span class="n">policy</span><span class="p">}</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:setIamPolicy&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">target_path</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">wrapped</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.test_iam_permissions"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.test_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">permissions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the target.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
+
+<span class="sd">        :type target_path: string</span>
+<span class="sd">        :param target_path: the path of the target object.</span>
+
+<span class="sd">        :type permissions: list of string</span>
+<span class="sd">        :param permissions: the permissions to check</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: the resource returned by the ``getIamPolicy`` API request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wrapped</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;permissions&#39;</span><span class="p">:</span> <span class="n">permissions</span><span class="p">}</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:testIamPermissions&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">target_path</span><span class="p">,)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">wrapped</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;permissions&#39;</span><span class="p">,</span> <span class="p">[])</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_create"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_create">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span>
+                            <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create a subscription via a PUT request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
+<span class="sd">                                  subscription, in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type topic_path: string</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic being</span>
+<span class="sd">                           subscribed, in format</span>
+<span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type ack_deadline: int, or ``NoneType``</span>
+<span class="sd">        :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
+<span class="sd">                            from the back-end must be acknowledged.</span>
+
+<span class="sd">        :type push_endpoint: string, or ``NoneType``</span>
+<span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
+<span class="sd">                              back-end.  If not set, the application must pull</span>
+<span class="sd">                              messages.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: ``Subscription`` resource returned from the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;topic&#39;</span><span class="p">:</span> <span class="n">topic_path</span><span class="p">}</span>
+
+        <span class="k">if</span> <span class="n">ack_deadline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ack_deadline</span>
+
+        <span class="k">if</span> <span class="n">push_endpoint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">:</span> <span class="n">push_endpoint</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_get"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_get">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  retrieve a subscription via a GET request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the subscription,</span>
+<span class="sd">                                  in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        :returns: ``Subscription`` resource returned from the API.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_delete"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_delete">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  delete a subscription via a DELETE request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the subscription,</span>
+<span class="sd">                                  in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_modify_push_config"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_modify_push_config">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_modify_push_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span>
+                                        <span class="n">push_endpoint</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  update push config of a subscription via a POST request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
+<span class="sd">                                  subscription, in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type push_endpoint: string, or ``NoneType``</span>
+<span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
+<span class="sd">                              back-end.  If not set, the application must pull</span>
+<span class="sd">                              messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:modifyPushConfig&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">:</span> <span class="n">push_endpoint</span><span class="p">}}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_pull"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_pull">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                          <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  update push config of a subscription via a POST request</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
+<span class="sd">                                  subscription, in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type return_immediately: boolean</span>
+<span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
+<span class="sd">                                   messages are available;  if False, the API</span>
+<span class="sd">                                   call blocks until one or more messages are</span>
+<span class="sd">                                   available.</span>
+
+<span class="sd">        :type max_messages: int</span>
+<span class="sd">        :param max_messages: the maximum number of messages to return.</span>
+
+<span class="sd">        :rtype: list of dict</span>
+<span class="sd">        :returns:  the ``receivedMessages`` element of the response.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:pull&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;returnImmediately&#39;</span><span class="p">:</span> <span class="n">return_immediately</span><span class="p">,</span>
+            <span class="s1">&#39;maxMessages&#39;</span><span class="p">:</span> <span class="n">max_messages</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;receivedMessages&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_acknowledge"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
+<span class="sd">                                  subscription, in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type ack_ids: list of string</span>
+<span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:acknowledge&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ackIds&#39;</span><span class="p">:</span> <span class="n">ack_ids</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.subscription_modify_ack_deadline"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.connection.Connection.subscription_modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">subscription_modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span>
+                                         <span class="n">ack_deadline</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
+
+<span class="sd">        See:</span>
+<span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
+
+<span class="sd">        :type subscription_path: string</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
+<span class="sd">                                  subscription, in format</span>
+<span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
+
+<span class="sd">        :type ack_ids: list of string</span>
+<span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
+
+<span class="sd">        :type ack_deadline: int</span>
+<span class="sd">        :param ack_deadline: the deadline (in seconds) by which messages pulled</span>
+<span class="sd">                            from the back-end must be acknowledged.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">:modifyAckDeadline&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subscription_path</span><span class="p">,)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ackIds&#39;</span><span class="p">:</span> <span class="n">ack_ids</span><span class="p">,</span>
+            <span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">:</span> <span class="n">ack_deadline</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
