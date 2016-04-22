@@ -15,6 +15,11 @@ for search operations.
 The API supports full text matching on string fields and allows indexing
 any number of documents in any number of indexes.
 
+.. note::
+
+   The Google Cloud Search API is an alpha API. To use it, accounts must
+   be whitelisted.
+
 Client
 ------
 
