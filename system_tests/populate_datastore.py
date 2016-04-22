@@ -19,7 +19,7 @@ from __future__ import print_function
 
 import os
 
-from six.moves import zip
+import six
 
 from gcloud import datastore
 from gcloud.environment_vars import TESTS_PROJECT
@@ -93,7 +93,7 @@ def add_characters(client=None):
         # Get a client that uses the test dataset.
         client = datastore.Client(project=os.getenv(TESTS_PROJECT))
     with client.transaction() as xact:
-        for key_path, character in zip(KEY_PATHS, CHARACTERS):
+        for key_path, character in six.moves.zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))

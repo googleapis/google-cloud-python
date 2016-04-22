@@ -204,8 +204,9 @@ class Document(object):
             return TimestampValue(value)
         if 'geoValue' in resource:
             lat_long = resource['geoValue']
-            lat, long = [float(coord.strip()) for coord in lat_long.split(',')]
-            return GeoValue((lat, long))
+            latitude, longitude = [float(coord.strip())
+                                   for coord in lat_long.split(',')]
+            return GeoValue((latitude, longitude))
         raise ValueError("Unknown value type")
 
     def _parse_fields_resource(self, resource):

@@ -22,11 +22,11 @@ class TestConnection(unittest2.TestCase):
 
         return Connection
 
-    def _make_key_pb(self, project, id=1234):
+    def _make_key_pb(self, project, id_=1234):
         from gcloud.datastore.key import Key
         path_args = ('Kind',)
-        if id is not None:
-            path_args += (id,)
+        if id_ is not None:
+            path_args += (id_,)
         return Key(*path_args, project=project).to_protobuf()
 
     def _make_query_pb(self, kind):
@@ -362,7 +362,7 @@ class TestConnection(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
-        key_pb2 = self._make_key_pb(PROJECT, id=2345)
+        key_pb2 = self._make_key_pb(PROJECT, id_=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         conn = self._makeOne()
         URI = '/'.join([
@@ -391,7 +391,7 @@ class TestConnection(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
-        key_pb2 = self._make_key_pb(PROJECT, id=2345)
+        key_pb2 = self._make_key_pb(PROJECT, id_=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         er_1 = rsp_pb.missing.add()
         er_1.entity.key.CopyFrom(key_pb1)
@@ -425,7 +425,7 @@ class TestConnection(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         key_pb1 = self._make_key_pb(PROJECT)
-        key_pb2 = self._make_key_pb(PROJECT, id=2345)
+        key_pb2 = self._make_key_pb(PROJECT, id_=2345)
         rsp_pb = datastore_pb2.LookupResponse()
         rsp_pb.deferred.add().CopyFrom(key_pb1)
         rsp_pb.deferred.add().CopyFrom(key_pb2)
@@ -778,12 +778,12 @@ class TestConnection(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         before_key_pbs = [
-            self._make_key_pb(PROJECT, id=None),
-            self._make_key_pb(PROJECT, id=None),
+            self._make_key_pb(PROJECT, id_=None),
+            self._make_key_pb(PROJECT, id_=None),
             ]
         after_key_pbs = [
             self._make_key_pb(PROJECT),
-            self._make_key_pb(PROJECT, id=2345),
+            self._make_key_pb(PROJECT, id_=2345),
             ]
         rsp_pb = datastore_pb2.AllocateIdsResponse()
         rsp_pb.keys.add().CopyFrom(after_key_pbs[0])

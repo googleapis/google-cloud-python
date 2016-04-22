@@ -298,14 +298,14 @@ class TestBatch(unittest2.TestCase):
 
 class _PathElementPB(object):
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, id_):
+        self.id = id_
 
 
 class _KeyPB(object):
 
-    def __init__(self, id):
-        self.path = [_PathElementPB(id)]
+    def __init__(self, id_):
+        self.path = [_PathElementPB(id_)]
 
 
 class _Connection(object):

@@ -147,7 +147,7 @@ class InternalServerError(ServerError):
     code = 500
 
 
-class NotImplemented(ServerError):
+class MethodNotImplemented(ServerError):
     """Exception mapping a '501 Not Implemented' response."""
     code = 501
 

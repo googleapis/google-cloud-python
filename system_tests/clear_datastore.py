@@ -18,7 +18,7 @@ from __future__ import print_function
 
 import os
 
-from six.moves import input
+import six
 
 from gcloud import datastore
 from gcloud.environment_vars import TESTS_PROJECT
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     print_func('This command will remove all entities for '
                'the following kinds:')
     print_func('\n'.join(['- ' + val for val in ALL_KINDS]))
-    response = input('Is this OK [y/n]? ')
+    response = six.moves.input('Is this OK [y/n]? ')
     if response.lower() == 'y':
         remove_all_entities()
     else:
