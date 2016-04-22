@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud 8a7eea8 documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud 4e242ec documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8a7eea8',
+        VERSION:     '4e242ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8a7eea8 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 4e242ec documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%208a7eea8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%204e242ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8a7eea8)
+              Version History (4e242ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -208,8 +208,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;URL path for the subscription&#39;s APIs&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Fully-qualified name used in subscription APIs&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;projects/</span><span class="si">%s</span><span class="s1">/subscriptions/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;URL path for the subscription&#39;s APIs&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
@@ -232,6 +237,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</span>
 
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_create]</span>
+<span class="sd">           :end-before: [END subscription_create]</span>
+
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
@@ -247,6 +258,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_exists]</span>
+<span class="sd">           :end-before: [END subscription_exists]</span>
 
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
@@ -267,6 +284,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
 
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_reload]</span>
+<span class="sd">           :end-before: [END subscription_reload]</span>
+
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
@@ -284,6 +307,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</span>
 
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_delete]</span>
+<span class="sd">           :end-before: [END subscription_delete]</span>
+
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
@@ -297,6 +326,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_push_pull]</span>
+<span class="sd">           :end-before: [END subscription_push_pull]</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_pull_push]</span>
+<span class="sd">           :end-before: [END subscription_pull_push]</span>
 
 <span class="sd">        :type push_endpoint: string</span>
 <span class="sd">        :param push_endpoint: URL to which messages will be pushed by the</span>
@@ -317,6 +356,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_pull]</span>
+<span class="sd">           :end-before: [END subscription_pull]</span>
 
 <span class="sd">        :type return_immediately: boolean</span>
 <span class="sd">        :param return_immediately: if True, the back-end returns even if no</span>
@@ -348,6 +393,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_acknowledge]</span>
+<span class="sd">           :end-before: [END subscription_acknowledge]</span>
 
 <span class="sd">        :type ack_ids: list of string</span>
 <span class="sd">        :param ack_ids: ack IDs of messages being acknowledged</span>
@@ -387,6 +438,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</span>
 
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_get_iam_policy]</span>
+<span class="sd">           :end-before: [END subscription_get_iam_policy]</span>
+
 <span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current subscription&#39;s topic.</span>
@@ -405,6 +462,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_set_iam_policy]</span>
+<span class="sd">           :end-before: [END subscription_set_iam_policy]</span>
 
 <span class="sd">        :type policy: :class:`gcloud.pubsub.iam.Policy`</span>
 <span class="sd">        :param policy: the new policy, typically fetched via</span>
@@ -429,6 +492,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. literalinclude:: pubsub_snippets.py</span>
+<span class="sd">           :start-after: [START subscription_check_iam_permissions]</span>
+<span class="sd">           :end-before: [END subscription_check_iam_permissions]</span>
 
 <span class="sd">        :type permissions: list of string</span>
 <span class="sd">        :param permissions: list of permissions to be tested</span>

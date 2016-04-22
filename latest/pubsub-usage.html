@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud 8a7eea8 documentation</title>
+    <title>Using the API &mdash; gcloud 4e242ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8a7eea8',
+        VERSION:     '4e242ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8a7eea8 documentation" href="index.html" />
+    <link rel="top" title="gcloud 4e242ec documentation" href="index.html" />
     <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
     <link rel="prev" title="Batches" href="storage-batch.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%208a7eea8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%204e242ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8a7eea8)
+              Version History (4e242ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -119,279 +119,181 @@ environment variables, create a <a class="reference internal" href="pubsub-clien
 </div>
 <div class="section" id="manage-topics-for-a-project">
 <h2>Manage topics for a project<a class="headerlink" href="#manage-topics-for-a-project" title="Permalink to this headline">#</a></h2>
+<p>List topics for the default project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topics</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">topics</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
 <p>Create a new topic for the default project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">TOPIC_NAME</span><span class="p">)</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Check for the existence of a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>List topics for the default project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topics</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">]</span>
-<span class="go">[&#39;topic_name&#39;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Delete a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
+    <span class="n">topic</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">topic</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Fetch the IAM policy for a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">etag</span>
-<span class="go">&#39;DEADBEEF&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">owners</span>
-<span class="go">[&#39;user:phred@example.com&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">writers</span>
-<span class="go">[&#39;systemAccount:abc-1234@systemaccounts.example.com&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">readers</span>
-<span class="go">[&#39;domain:example.com&#39;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Update the IAM policy for a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">writers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;editors-list@example.com&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Test permissions allowed by the current IAM policy on a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">OWNER_ROLE</span><span class="p">])</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">==</span> <span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">]</span>
-<span class="go">True</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="publish-messages-to-a-topic">
 <h2>Publish messages to a topic<a class="headerlink" href="#publish-messages-to-a-topic" title="Permalink to this headline">#</a></h2>
 <p>Publish a single message to a topic, without attributes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the message_payload&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="go">&lt;message_id&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;This is the message payload&#39;</span><span class="p">)</span>               <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Publish a single message to a topic, with attributes:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is another message_payload&#39;</span><span class="p">,</span>
-<span class="gp">... </span>              <span class="n">attr1</span><span class="o">=</span><span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="go">&lt;message_id&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;Another message payload&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;EXTRA&#39;</span><span class="p">)</span>    <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Publish a set of messages to a topic (as a single request):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-<span class="go">[&lt;message_id1&gt;, &lt;message_id2&gt;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;This is the message payload&#39;</span><span class="p">)</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;Another message payload&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;EXTRA&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The only API request happens during the <code class="docutils literal"><span class="pre">__exit__()</span></code> of the topic
-used as a context manager.</p>
+used as a context manager, and only if the block exits without raising
+an exception.</p>
 </div>
 </div>
 <div class="section" id="manage-subscriptions-to-topics">
 <h2>Manage subscriptions to topics<a class="headerlink" href="#manage-subscriptions-to-topics" title="Permalink to this headline">#</a></h2>
-<p>Create a new pull subscription for a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<p>List all subscriptions for the default project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<p>Create a new pull subscription for a topic with a non-default ACK deadline:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Create a new push subscription for a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Check for the existence of a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>Convert a pull subscription to push:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>  <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Convert a push subscription to pull:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://example.com/hook&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                                  <span class="n">push_endpoint</span><span class="o">=</span><span class="n">ENDPOINT</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>                           <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>List subscriptions for a topic:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscriptions</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
-<span class="go">[&#39;subscription_name&#39;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>                           <span class="c1"># API request</span>
 </pre></div>
 </div>
-<p>List all subscriptions for the default project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="p">,</span> <span class="n">next_page_tokens</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">subscription</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">]</span>
-<span class="go">[&#39;subscription_name&#39;]</span>
+<p>Create a new pull subscription for a topic, with defaults:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sub_defaults</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_DEFAULTS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new pull subscription for a topic with a non-default ACK deadline:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sub_ack90</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_ACK90</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a new push subscription for a topic:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_PUSH</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="n">PUSH_URL</span><span class="p">)</span>
+    <span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>               <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Check for the existence of a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>                        <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Convert a pull subscription to push:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span>
+        <span class="n">push_endpoint</span><span class="o">=</span><span class="n">PUSH_URL</span><span class="p">)</span>                                 <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Convert a push subscription to pull:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Re-synchronize a subscription with the back-end:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Delete a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="pull-messages-from-a-subscription">
 <h2>Pull messages from a subscription<a class="headerlink" href="#pull-messages-from-a-subscription" title="Permalink to this headline">#</a></h2>
 <p>Fetch pending messages for a pull subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
-<span class="go">[&lt;message_id1&gt;, &lt;message_id2&gt;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
-<span class="go">[&#39;this is the first message_payload&#39;, &#39;this is the second message_payload&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">attributes</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
-<span class="go">[{}, {&#39;attr1&#39;: &#39;value1&#39;, &#39;attr2&#39;: &#39;value2&#39;}]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Note that received messages must be acknowledged, or else the back-end
 will re-send them later:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ack_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="n">ack_ids</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Fetch a limited number of pending messages for a pull subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the first message_payload&#39;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s1">&#39;this is the second message_payload&#39;</span><span class="p">,</span>
-<span class="gp">... </span>                  <span class="n">attr1</span><span class="o">=</span><span class="s1">&#39;value1&#39;</span><span class="p">,</span> <span class="n">attr2</span><span class="o">=</span><span class="s1">&#39;value2&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApplicationException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">([</span><span class="n">ack_id</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Fetch messages for a pull subscription without blocking (none pending):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">received</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">return_immediately</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">messages</span> <span class="o">=</span> <span class="p">[</span><span class="n">recv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">recv</span> <span class="ow">in</span> <span class="n">received</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">message_id</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">]</span>
-<span class="go">[]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">return_immediately</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Update the acknowlegement deadline for pulled messages:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
+        <span class="n">subscription</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="n">ack_id</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>    <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Fetch the IAM policy for a subscription</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">etag</span>
-<span class="go">&#39;DEADBEEF&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">owners</span>
-<span class="go">[&#39;user:phred@example.com&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">writers</span>
-<span class="go">[&#39;systemAccount:abc-1234@systemaccounts.example.com&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">readers</span>
-<span class="go">[&#39;domain:example.com&#39;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Update the IAM policy for a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">writers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;editors-list@example.com&#39;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Test permissions allowed by the current IAM policy on a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="s1">&#39;subscription_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">OWNER_ROLE</span><span class="p">])</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">allowed</span> <span class="o">==</span> <span class="p">[</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">]</span>
-<span class="go">True</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

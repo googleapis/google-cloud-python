@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pub/Sub Client &mdash; gcloud 8a7eea8 documentation</title>
+    <title>Pub/Sub Client &mdash; gcloud 4e242ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8a7eea8',
+        VERSION:     '4e242ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8a7eea8 documentation" href="index.html" />
+    <link rel="top" title="gcloud 4e242ec documentation" href="index.html" />
     <link rel="next" title="Topics" href="pubsub-topic.html" />
     <link rel="prev" title="Using the API" href="pubsub-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-client%0ARelease%3A%208a7eea8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-client%0ARelease%3A%204e242ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8a7eea8)
+              Version History (4e242ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -132,8 +132,17 @@ from the environment.</li>
 <dd><p>List subscriptions for the project associated with this client.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list</a></p>
-<p>and (where <code class="docutils literal"><span class="pre">topic_name</span></code> is passed):
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">subscription</span> <span class="ow">in</span> <span class="n">subscriptions</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">subscription</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">subscriptions</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
+            <span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>                           <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -166,6 +175,16 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <dd><p>List topics for the project associated with this client.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topics</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">topics</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_topics</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -208,6 +227,10 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <dt id="gcloud.pubsub.client.Client.topic">
 <code class="descname">topic</code><span class="sig-paren">(</span><em>name</em>, <em>timestamp_messages=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/client.html#Client.topic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.client.Client.topic" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a topic bound to the current client.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="n">TOPIC_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

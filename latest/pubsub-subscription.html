@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Subscriptions &mdash; gcloud 8a7eea8 documentation</title>
+    <title>Subscriptions &mdash; gcloud 4e242ec documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8a7eea8',
+        VERSION:     '4e242ec',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8a7eea8 documentation" href="index.html" />
+    <link rel="top" title="gcloud 4e242ec documentation" href="index.html" />
     <link rel="next" title="Message" href="pubsub-message.html" />
     <link rel="prev" title="Topics" href="pubsub-topic.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%208a7eea8" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%204e242ec" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8a7eea8)
+              Version History (4e242ec)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -120,105 +120,6 @@ If not set, the application must pull messages.</li>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.acknowledge">
-<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.check_iam_permissions">
-<code class="descname">check_iam_permissions</code><span class="sig-paren">(</span><em>permissions</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.check_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.check_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Verify permissions allowed for the current user.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>permissions</strong> (<em>list of string</em>) &#8211; list of permissions to be tested</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">sequence of string</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">subset of <code class="docutils literal"><span class="pre">permissions</span></code> allowed by current IAM policy.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  create the subscription via a PUT request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.delete">
-<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  delete the subscription via a DELETE request.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.exists">
-<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  test existence of the subscription via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="gcloud.pubsub.subscription.Subscription.from_api_repr">
 <em class="property">classmethod </em><code class="descname">from_api_repr</code><span class="sig-paren">(</span><em>resource</em>, <em>client</em>, <em>topics=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.from_api_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.from_api_repr" title="Permalink to this definition">#</a></dt>
@@ -247,17 +148,34 @@ the subscription will have a newly-created topic.</li>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="gcloud.pubsub.subscription.Subscription.project">
+<code class="descname">project</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.project" title="Permalink to this definition">#</a></dt>
+<dd><p>Project bound to the subscription.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="gcloud.pubsub.subscription.Subscription.full_name">
 <code class="descname">full_name</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.full_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Fully-qualified name used in subscription APIs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.pubsub.subscription.Subscription.path">
+<code class="descname">path</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.path" title="Permalink to this definition">#</a></dt>
 <dd><p>URL path for the subscription&#8217;s APIs</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.get_iam_policy">
-<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.get_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Fetch the IAM policy for the subscription.</p>
+<dt id="gcloud.pubsub.subscription.Subscription.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.create" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  create the subscription via a PUT request</p>
 <p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</a></p>
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">subscription</span><span class="p">(</span><span class="n">SUB_NAME</span><span class="p">)</span>
+    <span class="n">subscription</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>                               <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -265,32 +183,68 @@ the subscription will have a newly-created topic.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pubsub-iam.html#gcloud.pubsub.iam.Policy" title="gcloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.iam.Policy</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">policy created from the resource returned by the
-<code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.subscription.Subscription.exists">
+<code class="descname">exists</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.exists" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  test existence of the subscription via a GET request</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">subscription</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>                        <span class="c1"># API request</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.modify_ack_deadline">
-<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
+<dt id="gcloud.pubsub.subscription.Subscription.reload">
+<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  sync local subscription configuration via a GET request</p>
+<p>See
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                               <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being updated</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
-<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
-<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
-</ul>
-</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.subscription.Subscription.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  delete the subscription via a DELETE request.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>                               <span class="c1"># API request</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
 </tr>
 </tbody>
 </table>
@@ -302,6 +256,14 @@ the subscription will have a newly-created topic.</li>
 <dd><p>API call:  update the push endpoint for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span><span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">modify_push_configuration</span><span class="p">(</span>
+        <span class="n">push_endpoint</span><span class="o">=</span><span class="n">PUSH_URL</span><span class="p">)</span>                                 <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -319,18 +281,16 @@ messages.</li>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="gcloud.pubsub.subscription.Subscription.project">
-<code class="descname">project</code><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.project" title="Permalink to this definition">#</a></dt>
-<dd><p>Project bound to the subscription.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="gcloud.pubsub.subscription.Subscription.pull">
 <code class="descname">pull</code><span class="sig-paren">(</span><em>return_immediately=False</em>, <em>max_messages=1</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.pull" title="Permalink to this definition">#</a></dt>
 <dd><p>API call:  retrieve messages for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/pull</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pulled</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span><span class="n">max_messages</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -359,17 +319,79 @@ is an instance of <a class="reference internal" href="pubsub-message.html#gcloud
 </dd></dl>
 
 <dl class="method">
-<dt id="gcloud.pubsub.subscription.Subscription.reload">
-<code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.reload" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  sync local subscription configuration via a GET request</p>
-<p>See
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
+<dt id="gcloud.pubsub.subscription.Subscription.acknowledge">
+<code class="descname">acknowledge</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.acknowledge" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/acknowledge</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">pulled</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ApplicationException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log_exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">([</span><span class="n">ack_id</span><span class="p">])</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.subscription.Subscription.modify_ack_deadline">
+<code class="descname">modify_ack_deadline</code><span class="sig-paren">(</span><em>ack_ids</em>, <em>ack_deadline</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.modify_ack_deadline" title="Permalink to this definition">#</a></dt>
+<dd><p>API call:  update acknowledgement deadline for a retrieved message.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being updated</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.subscription.Subscription.get_iam_policy">
+<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.get_iam_policy" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch the IAM policy for the subscription.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="pubsub-iam.html#gcloud.pubsub.iam.Policy" title="gcloud.pubsub.iam.Policy"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.iam.Policy</span></code></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">policy created from the resource returned by the
+<code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
 </tr>
 </tbody>
 </table>
@@ -381,6 +403,14 @@ is an instance of <a class="reference internal" href="pubsub-message.html#gcloud
 <dd><p>Update the IAM policy for the subscription.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -398,6 +428,40 @@ is an instance of <a class="reference internal" href="pubsub-message.html#gcloud
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">updated policy created from the resource returned by the
 <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API request.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.pubsub.subscription.Subscription.check_iam_permissions">
+<code class="descname">check_iam_permissions</code><span class="sig-paren">(</span><em>permissions</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription.check_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription.check_iam_permissions" title="Permalink to this definition">#</a></dt>
+<dd><p>Verify permissions allowed for the current user.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</a></p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>permissions</strong> (<em>list of string</em>) &#8211; list of permissions to be tested</li>
+<li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
+<code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">sequence of string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">subset of <code class="docutils literal"><span class="pre">permissions</span></code> allowed by current IAM policy.</p>
 </td>
 </tr>
 </tbody>
