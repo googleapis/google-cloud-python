@@ -137,8 +137,7 @@ class TestSubscription(unittest2.TestCase):
             'topic': self.TOPIC_PATH,
             'name': self.SUB_PATH,
         }
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_create_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -146,7 +145,6 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.create()
 
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_created,
                          (self.SUB_PATH, self.TOPIC_PATH, None, None))
 
@@ -157,12 +155,8 @@ class TestSubscription(unittest2.TestCase):
             'ackDeadlineSeconds': self.DEADLINE,
             'pushConfig': {'pushEndpoint': self.ENDPOINT}
         }
-        conn = _Connection()
-        conn._subscription_create_response = RESPONSE
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_create_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -171,30 +165,24 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.create(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(
             api._subscription_created,
             (self.SUB_PATH, self.TOPIC_PATH, self.DEADLINE, self.ENDPOINT))
 
     def test_exists_miss_w_bound_client(self):
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         topic = _Topic(self.TOPIC_NAME, client=client)
         subscription = self._makeOne(self.SUB_NAME, topic)
 
         self.assertFalse(subscription.exists())
 
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
     def test_exists_hit_w_alternate_client(self):
         RESPONSE = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -202,8 +190,6 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertTrue(subscription.exists(client=client2))
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
     def test_reload_w_bound_client(self):
@@ -213,8 +199,7 @@ class TestSubscription(unittest2.TestCase):
             'ackDeadlineSeconds': self.DEADLINE,
             'pushConfig': {'pushEndpoint': self.ENDPOINT},
         }
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -224,7 +209,6 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertEqual(subscription.ack_deadline, self.DEADLINE)
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
     def test_reload_w_alternate_client(self):
@@ -232,10 +216,8 @@ class TestSubscription(unittest2.TestCase):
             'name': self.SUB_PATH,
             'topic': self.TOPIC_PATH,
         }
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_get_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -246,14 +228,11 @@ class TestSubscription(unittest2.TestCase):
 
         self.assertEqual(subscription.ack_deadline, None)
         self.assertEqual(subscription.push_endpoint, None)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_got, self.SUB_PATH)
 
     def test_delete_w_bound_client(self):
         RESPONSE = {}
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_delete_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -261,15 +240,12 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.delete()
 
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_deleted, self.SUB_PATH)
 
     def test_delete_w_alternate_client(self):
         RESPONSE = {}
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_delete_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -278,13 +254,10 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.delete(client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_deleted, self.SUB_PATH)
 
     def test_modify_push_config_w_endpoint_w_bound_client(self):
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_push_config_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -293,15 +266,12 @@ class TestSubscription(unittest2.TestCase):
         subscription.modify_push_configuration(push_endpoint=self.ENDPOINT)
 
         self.assertEqual(subscription.push_endpoint, self.ENDPOINT)
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_modified_push_config,
                          (self.SUB_PATH, self.ENDPOINT))
 
     def test_modify_push_config_wo_endpoint_w_alternate_client(self):
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_push_config_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -312,8 +282,6 @@ class TestSubscription(unittest2.TestCase):
                                                client=client2)
 
         self.assertEqual(subscription.push_endpoint, None)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_modified_push_config,
                          (self.SUB_PATH, None))
 
@@ -326,8 +294,7 @@ class TestSubscription(unittest2.TestCase):
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'messageId': MSG_ID, 'data': B64}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = [REC_MESSAGE]
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -342,7 +309,6 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {})
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_pulled,
                          (self.SUB_PATH, False, 1))
 
@@ -355,10 +321,8 @@ class TestSubscription(unittest2.TestCase):
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'messageId': MSG_ID, 'data': B64, 'attributes': {'a': 'b'}}
         REC_MESSAGE = {'ackId': ACK_ID, 'message': MESSAGE}
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = [REC_MESSAGE]
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -374,14 +338,11 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(message.data, PAYLOAD)
         self.assertEqual(message.message_id, MSG_ID)
         self.assertEqual(message.attributes, {'a': 'b'})
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_pulled,
                          (self.SUB_PATH, True, 3))
 
     def test_pull_wo_receivedMessages(self):
-        conn = _Connection({})
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_pull_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -390,15 +351,13 @@ class TestSubscription(unittest2.TestCase):
         pulled = subscription.pull(return_immediately=False)
 
         self.assertEqual(len(pulled), 0)
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_pulled,
                          (self.SUB_PATH, False, 1))
 
     def test_acknowledge_w_bound_client(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_acknowlege_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -406,17 +365,14 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.acknowledge([ACK_ID1, ACK_ID2])
 
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_acked,
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2]))
 
     def test_acknowledge_w_alternate_client(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_acknowlege_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -424,16 +380,13 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.acknowledge([ACK_ID1, ACK_ID2], client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_acked,
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2]))
 
     def test_modify_ack_deadline_w_bound_client(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_ack_deadline_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -441,17 +394,14 @@ class TestSubscription(unittest2.TestCase):
 
         subscription.modify_ack_deadline([ACK_ID1, ACK_ID2], self.DEADLINE)
 
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._subscription_modified_ack_deadline,
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
     def test_modify_ack_deadline_w_alternate_client(self):
         ACK_ID1 = 'DEADBEEF'
         ACK_ID2 = 'BEADCAFE'
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.subscriber_api = _FauxSubscribererAPI()
         api._subscription_modify_ack_deadline_response = {}
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -460,8 +410,6 @@ class TestSubscription(unittest2.TestCase):
         subscription.modify_ack_deadline(
             [ACK_ID1, ACK_ID2], self.DEADLINE, client=client2)
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._subscription_modified_ack_deadline,
                          (self.SUB_PATH, [ACK_ID1, ACK_ID2], self.DEADLINE))
 
@@ -482,8 +430,7 @@ class TestSubscription(unittest2.TestCase):
                 {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
             ],
         }
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -496,17 +443,14 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
         POLICY = {
             'etag': 'ACAB',
         }
-        conn1 = _Connection()
-        conn2 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._get_iam_policy_response = POLICY
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -520,8 +464,6 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(policy.editors), [])
         self.assertEqual(sorted(policy.viewers), [])
 
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._got_iam_policy, self.SUB_PATH)
 
     def test_set_iam_policy_w_bound_client(self):
@@ -545,8 +487,7 @@ class TestSubscription(unittest2.TestCase):
         RESPONSE = POLICY.copy()
         RESPONSE['etag'] = 'ABACABAF'
         RESPONSE['version'] = 18
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -566,16 +507,13 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.owners), [OWNER1, OWNER2])
         self.assertEqual(sorted(new_policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._set_iam_policy, (self.SUB_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
         from gcloud.pubsub.iam import Policy
         RESPONSE = {'etag': 'ACAB'}
-        conn1 = _Connection()
-        conn2 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._set_iam_policy_response = RESPONSE
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -589,15 +527,12 @@ class TestSubscription(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.owners), [])
         self.assertEqual(sorted(new_policy.editors), [])
         self.assertEqual(sorted(new_policy.viewers), [])
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._set_iam_policy, (self.SUB_PATH, {}))
 
     def test_check_iam_permissions_w_bound_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        conn = _Connection()
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
         api = client.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = ROLES[:-1]
         topic = _Topic(self.TOPIC_NAME, client=client)
@@ -606,17 +541,14 @@ class TestSubscription(unittest2.TestCase):
         allowed = subscription.check_iam_permissions(ROLES)
 
         self.assertEqual(allowed, ROLES[:-1])
-        self.assertEqual(len(conn._requested), 0)
         self.assertEqual(api._tested_iam_permissions,
                          (self.SUB_PATH, ROLES))
 
     def test_check_iam_permissions_w_alternate_client(self):
         from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
         ROLES = [VIEWER_ROLE, EDITOR_ROLE, OWNER_ROLE]
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection()
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         api = client2.iam_policy_api = _FauxIAMPolicy()
         api._test_iam_permissions_response = []
         topic = _Topic(self.TOPIC_NAME, client=client1)
@@ -625,17 +557,8 @@ class TestSubscription(unittest2.TestCase):
         allowed = subscription.check_iam_permissions(ROLES, client=client2)
 
         self.assertEqual(len(allowed), 0)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 0)
         self.assertEqual(api._tested_iam_permissions,
                          (self.SUB_PATH, ROLES))
-
-
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
 
 
 class _FauxSubscribererAPI(object):
@@ -708,9 +631,10 @@ class _Topic(object):
 
 class _Client(object):
 
-    def __init__(self, project, connection=None):
+    connection = None
+
+    def __init__(self, project):
         self.project = project
-        self.connection = connection
 
     def topic(self, name, timestamp_messages=False):
         from gcloud.pubsub.topic import Topic
