@@ -20,15 +20,17 @@ from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import logging
 
+from system_test_utils import unique_resource_id
 
-_MILLIS = 1000 * time.time()
-DEFAULT_METRIC_NAME = 'system-tests-metric-%d' % (_MILLIS,)
-DEFAULT_SINK_NAME = 'system-tests-sink-%d' % (_MILLIS,)
+
+_RESOURCE_ID = unique_resource_id('-')
+DEFAULT_METRIC_NAME = 'system-tests-metric%s' % (_RESOURCE_ID,)
+DEFAULT_SINK_NAME = 'system-tests-sink%s' % (_RESOURCE_ID,)
 DEFAULT_FILTER = 'logName:syslog AND severity>=INFO'
 DEFAULT_DESCRIPTION = 'System testing'
-BUCKET_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
-DATASET_NAME = 'system_testing_dataset_%d' % (_MILLIS,)
-TOPIC_NAME = 'gcloud-python-system-testing-%d' % (_MILLIS,)
+BUCKET_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
+DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
+TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
 class Config(object):
@@ -66,8 +68,7 @@ class TestLogging(unittest2.TestCase):
 
     @staticmethod
     def _logger_name():
-        _millis = 1000 * time.time()
-        return 'system-tests-logger-%d' % (_millis,)
+        return 'system-tests-logger' + unique_resource_id('-')
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'

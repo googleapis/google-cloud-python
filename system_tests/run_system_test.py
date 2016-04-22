@@ -16,8 +16,6 @@ import argparse
 import sys
 import unittest2
 
-# This assumes the command is being run via tox hence the
-# repository root is the current directory.
 import bigquery
 import bigtable
 import bigtable_happybase

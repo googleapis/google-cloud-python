@@ -26,6 +26,8 @@ from gcloud import exceptions
 from gcloud import storage
 from gcloud.storage._helpers import _base64_md5hash
 
+from system_test_utils import unique_resource_id
+
 
 HTTP = httplib2.Http()
 _helpers.PROJECT = TESTS_PROJECT
@@ -43,8 +45,7 @@ class Config(object):
 
 def setUpModule():
     Config.CLIENT = storage.Client()
-    # %d rounds milliseconds to nearest integer.
-    bucket_name = 'new%d' % (1000 * time.time(),)
+    bucket_name = 'new' + unique_resource_id()
     # In the **very** rare case the bucket name is reserved, this
     # fails with a ConnectionError.
     Config.TEST_BUCKET = Config.CLIENT.create_bucket(bucket_name)
@@ -65,7 +66,7 @@ class TestStorageBuckets(unittest2.TestCase):
                 Config.CLIENT.bucket(bucket_name).delete()
 
     def test_create_bucket(self):
-        new_bucket_name = 'a-new-bucket'
+        new_bucket_name = 'a-new-bucket' + unique_resource_id('-')
         self.assertRaises(exceptions.NotFound,
                           Config.CLIENT.get_bucket, new_bucket_name)
         created = Config.CLIENT.create_bucket(new_bucket_name)
@@ -74,9 +75,9 @@ class TestStorageBuckets(unittest2.TestCase):
 
     def test_list_buckets(self):
         buckets_to_create = [
-            'new%d' % (1000 * time.time(),),
-            'newer%d' % (1000 * time.time(),),
-            'newest%d' % (1000 * time.time(),),
+            'new' + unique_resource_id(),
+            'newer' + unique_resource_id(),
+            'newest' + unique_resource_id(),
         ]
         created_buckets = []
         for bucket_name in buckets_to_create:
@@ -193,7 +194,7 @@ class TestStorageWriteFiles(TestStorageFiles):
 
 class TestStorageListFiles(TestStorageFiles):
 
-    FILENAMES = ['CloudLogo1', 'CloudLogo2', 'CloudLogo3']
+    FILENAMES = ('CloudLogo1', 'CloudLogo2', 'CloudLogo3')
 
     @classmethod
     def setUpClass(cls):
@@ -238,14 +239,14 @@ class TestStorageListFiles(TestStorageFiles):
 
 class TestStoragePseudoHierarchy(TestStorageFiles):
 
-    FILENAMES = [
+    FILENAMES = (
         'file01.txt',
         'parent/file11.txt',
         'parent/child/file21.txt',
         'parent/child/file22.txt',
         'parent/child/grand/file31.txt',
         'parent/child/other/file32.txt',
-        ]
+    )
 
     @classmethod
     def setUpClass(cls):

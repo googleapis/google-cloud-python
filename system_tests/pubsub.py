@@ -22,10 +22,12 @@ from gcloud import _helpers
 from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
+
 from system_test_utils import EmulatorCreds
+from system_test_utils import unique_resource_id
 
 
-DEFAULT_TOPIC_NAME = 'subscribe-me%d' % (1000 * time.time(),)
+DEFAULT_TOPIC_NAME = 'subscribe-me' + unique_resource_id('-')
 
 
 class Config(object):
@@ -58,7 +60,7 @@ class TestPubsub(unittest2.TestCase):
             doomed.delete()
 
     def test_create_topic(self):
-        topic_name = 'a-new-topic%d' % (1000 * time.time(),)
+        topic_name = 'a-new-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         self.assertFalse(topic.exists())
         topic.create()
@@ -68,9 +70,9 @@ class TestPubsub(unittest2.TestCase):
 
     def test_list_topics(self):
         topics_to_create = [
-            'new%d' % (1000 * time.time(),),
-            'newer%d' % (1000 * time.time(),),
-            'newest%d' % (1000 * time.time(),),
+            'new' + unique_resource_id(),
+            'newer' + unique_resource_id(),
+            'newest' + unique_resource_id(),
         ]
         for topic_name in topics_to_create:
             topic = Config.CLIENT.topic(topic_name)
@@ -89,7 +91,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
-        SUBSCRIPTION_NAME = 'subscribing-now-%d' % (1000 * time.time(),)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id('-')
         subscription = topic.subscription(SUBSCRIPTION_NAME)
         self.assertFalse(subscription.exists())
         subscription.create()
@@ -103,7 +105,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
-        SUBSCRIPTION_NAME = 'subscribing-now-%d' % (1000 * time.time(),)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id()
         subscription = topic.subscription(SUBSCRIPTION_NAME, ack_deadline=120)
         self.assertFalse(subscription.exists())
         subscription.create()
@@ -121,9 +123,9 @@ class TestPubsub(unittest2.TestCase):
         empty, _ = topic.list_subscriptions()
         self.assertEqual(len(empty), 0)
         subscriptions_to_create = [
-            'new%d' % (1000 * time.time(),),
-            'newer%d' % (1000 * time.time(),),
-            'newest%d' % (1000 * time.time(),),
+            'new' + unique_resource_id(),
+            'newer' + unique_resource_id(),
+            'newest' + unique_resource_id(),
         ]
         for subscription_name in subscriptions_to_create:
             subscription = topic.subscription(subscription_name)
@@ -142,7 +144,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertFalse(topic.exists())
         topic.create()
         self.to_delete.append(topic)
-        SUBSCRIPTION_NAME = 'subscribing-now-%d' % (1000 * time.time(),)
+        SUBSCRIPTION_NAME = 'subscribing-now' + unique_resource_id('-')
         subscription = topic.subscription(SUBSCRIPTION_NAME)
         self.assertFalse(subscription.exists())
         subscription.create()
@@ -170,7 +172,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(message2.attributes['extra'], EXTRA_2)
 
     def test_topic_iam_policy(self):
-        topic_name = 'test-topic-iam-policy-topic-%d' % (1000 * time.time(),)
+        topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
         count = 5
@@ -185,7 +187,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_subscription_iam_policy(self):
-        topic_name = 'test-sub-iam-policy-topic-%d' % (1000 * time.time(),)
+        topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
         count = 5
@@ -194,7 +196,7 @@ class TestPubsub(unittest2.TestCase):
             count -= 1
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
-        SUB_NAME = 'test-sub-iam-policy-sub-%d' % (1000 * time.time(),)
+        SUB_NAME = 'test-sub-iam-policy-sub' + unique_resource_id('-')
         subscription = topic.subscription(SUB_NAME)
         subscription.create()
         count = 5
@@ -209,8 +211,8 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_fetch_delete_subscription_w_deleted_topic(self):
-        TO_DELETE = 'delete-me-%d' % (1000 * time.time(),)
-        ORPHANED = 'orphaned-%d' % (1000 * time.time(),)
+        TO_DELETE = 'delete-me' + unique_resource_id('-')
+        ORPHANED = 'orphaned' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TO_DELETE)
         topic.create()
         subscription = topic.subscription(ORPHANED)

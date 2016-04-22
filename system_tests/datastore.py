@@ -14,7 +14,6 @@
 
 import datetime
 import os
-import time
 
 import httplib2
 import unittest2
@@ -26,11 +25,11 @@ from gcloud.datastore.helpers import GeoPoint
 from gcloud.environment_vars import GCD_DATASET
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud.exceptions import Conflict
-# This assumes the command is being run via tox hence the
-# repository root is the current directory.
+
 import clear_datastore
 import populate_datastore
 from system_test_utils import EmulatorCreds
+from system_test_utils import unique_resource_id
 
 
 class Config(object):
@@ -54,7 +53,7 @@ def clone_client(client):
 def setUpModule():
     emulator_dataset = os.getenv(GCD_DATASET)
     # Isolated namespace so concurrent test runs don't collide.
-    test_namespace = 'ns%d' % (1000 * time.time(),)
+    test_namespace = 'ns' + unique_resource_id()
     if emulator_dataset is None:
         _helpers.PROJECT = TESTS_PROJECT
         Config.CLIENT = datastore.Client(namespace=test_namespace)

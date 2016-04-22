@@ -25,13 +25,13 @@ from gcloud.environment_vars import TESTS_PROJECT
 
 
 FETCH_MAX = 20
-ALL_KINDS = [
+ALL_KINDS = (
     'Character',
     'Company',
     'Kind',
     'Person',
     'Post',
-]
+)
 TRANSACTION_MAX_GROUPS = 5
 
 
@@ -98,7 +98,7 @@ def remove_all_entities(client=None):
 if __name__ == '__main__':
     print_func('This command will remove all entities for '
                'the following kinds:')
-    print_func('\n'.join(['- ' + val for val in ALL_KINDS]))
+    print_func('\n'.join('- ' + val for val in ALL_KINDS))
     response = six.moves.input('Is this OK [y/n]? ')
     if response.lower() == 'y':
         remove_all_entities()

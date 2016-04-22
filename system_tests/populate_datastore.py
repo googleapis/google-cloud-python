@@ -28,7 +28,7 @@ from gcloud.environment_vars import TESTS_PROJECT
 ANCESTOR = ('Book', 'GoT')
 RICKARD = ANCESTOR + ('Character', 'Rickard')
 EDDARD = RICKARD + ('Character', 'Eddard')
-KEY_PATHS = [
+KEY_PATHS = (
     RICKARD,
     EDDARD,
     ANCESTOR + ('Character', 'Catelyn'),
@@ -37,8 +37,8 @@ KEY_PATHS = [
     EDDARD + ('Character', 'Robb'),
     EDDARD + ('Character', 'Bran'),
     EDDARD + ('Character', 'Jon Snow'),
-]
-CHARACTERS = [
+)
+CHARACTERS = (
     {
         'name': u'Rickard',
         'family': u'Stark',
@@ -80,7 +80,7 @@ CHARACTERS = [
         'appearances': 32,
         'alive': True,
     },
-]
+)
 
 
 def print_func(message):

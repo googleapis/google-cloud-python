@@ -21,8 +21,10 @@ from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
 
+from system_test_utils import unique_resource_id
 
-DATASET_NAME = 'system_tests_%012d' % (1000 * time.time(),)
+
+DATASET_NAME = 'system_tests' + unique_resource_id()
 
 
 class Config(object):
@@ -97,9 +99,9 @@ class TestBigQuery(unittest2.TestCase):
 
     def test_list_datasets(self):
         datasets_to_create = [
-            'new%d' % (1000 * time.time(),),
-            'newer%d' % (1000 * time.time(),),
-            'newest%d' % (1000 * time.time(),),
+            'new' + unique_resource_id(),
+            'newer' + unique_resource_id(),
+            'newest' + unique_resource_id(),
         ]
         for dataset_name in datasets_to_create:
             dataset = Config.CLIENT.dataset(dataset_name)
@@ -143,9 +145,9 @@ class TestBigQuery(unittest2.TestCase):
 
         # Insert some tables to be listed.
         tables_to_create = [
-            'new%d' % (1000 * time.time(),),
-            'newer%d' % (1000 * time.time(),),
-            'newest%d' % (1000 * time.time(),),
+            'new' + unique_resource_id(),
+            'newer' + unique_resource_id(),
+            'newest' + unique_resource_id(),
         ]
         full_name = bigquery.SchemaField('full_name', 'STRING',
                                          mode='REQUIRED')
@@ -259,8 +261,8 @@ class TestBigQuery(unittest2.TestCase):
         import csv
         import tempfile
         from gcloud.storage import Client as StorageClient
-        TIMESTAMP = 1000 * time.time()
-        BUCKET_NAME = 'bq_load_test_%d' % (TIMESTAMP,)
+        local_id = unique_resource_id()
+        BUCKET_NAME = 'bq_load_test' + local_id
         BLOB_NAME = 'person_ages.csv'
         GS_URL = 'gs://%s/%s' % (BUCKET_NAME, BLOB_NAME)
         ROWS = [
@@ -301,7 +303,7 @@ class TestBigQuery(unittest2.TestCase):
         self.to_delete.insert(0, table)
 
         job = Config.CLIENT.load_table_from_storage(
-            'bq_load_storage_test_%d' % (TIMESTAMP,), table, GS_URL)
+            'bq_load_storage_test_' + local_id, table, GS_URL)
         job.create_disposition = 'CREATE_NEVER'
         job.skip_leading_rows = 1
         job.source_format = 'CSV'
