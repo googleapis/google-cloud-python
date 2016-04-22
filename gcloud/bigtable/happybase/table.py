@@ -296,7 +296,7 @@ class Table(object):
                 curr_cells, include_timestamp=include_timestamp)
 
     def scan(self, row_start=None, row_stop=None, row_prefix=None,
-             columns=None, filter=None, timestamp=None,
+             columns=None, timestamp=None,
              include_timestamp=False, limit=None, **kwargs):
         """Create a scanner for data in this table.
 
@@ -313,6 +313,15 @@ class Table(object):
             the start and the end of the table respectively. If both are
             omitted, a full table scan is done. Note that this usually results
             in severe performance problems.
+
+        The keyword argument ``filter`` is also supported (beyond column and
+        row range filters supported here). HappyBase / HBase users will have
+        used this as an HBase filter string. (See the `Thrift docs`_ for more
+        details on those filters.) However, Google Cloud Bigtable doesn't
+        support those filter strings so a
+        :class:`~gcloud.bigtable.row.RowFilter` should be used instead.
+
+        .. _Thrift docs: http://hbase.apache.org/0.94/book/thrift.html
 
         The arguments ``batch_size``, ``scan_batching`` and ``sorted_columns``
         are allowed (as keyword arguments) for compatibility with
@@ -348,13 +357,6 @@ class Table(object):
                           * an entire column family: ``fam`` or ``fam:``
                           * a single column: ``fam:col``
 
-        :type filter: :class:`RowFilter <gcloud.bigtable.row.RowFilter>`
-        :param filter: (Optional) An additional filter (beyond column and
-                       row range filters supported here). HappyBase / HBase
-                       users will have used this as an HBase filter string. See
-                       http://hbase.apache.org/0.94/book/thrift.html
-                       for more details on those filters.
-
         :type timestamp: int
         :param timestamp: (Optional) Timestamp (in milliseconds since the
                           epoch). If specified, only cells returned before (or
@@ -376,6 +378,7 @@ class Table(object):
                  :class:`TypeError <exceptions.TypeError>` if a string
                  ``filter`` is used.
         """
+        filter_ = kwargs.pop('filter', None)
         legacy_args = []
         for kw_name in ('batch_size', 'scan_batching', 'sorted_columns'):
             if kw_name in kwargs:
@@ -399,22 +402,22 @@ class Table(object):
             row_stop = _string_successor(row_prefix)
 
         filters = []
-        if isinstance(filter, six.string_types):
+        if isinstance(filter_, six.string_types):
             raise TypeError('Specifying filters as a string is not supported '
                             'by Cloud Bigtable. Use a '
                             'gcloud.bigtable.row.RowFilter instead.')
-        elif filter is not None:
-            filters.append(filter)
+        elif filter_ is not None:
+            filters.append(filter_)
 
         if columns is not None:
             filters.append(_columns_filter_helper(columns))
         # versions == 1 since we only want the latest.
-        filter_ = _filter_chain_helper(versions=1, timestamp=timestamp,
-                                       filters=filters)
+        filter_chain = _filter_chain_helper(versions=1, timestamp=timestamp,
+                                            filters=filters)
 
         partial_rows_data = self._low_level_table.read_rows(
             start_key=row_start, end_key=row_stop,
-            limit=limit, filter_=filter_)
+            limit=limit, filter_=filter_chain)
 
         # Mutable copy of data.
         rows_dict = partial_rows_data.rows

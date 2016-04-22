@@ -68,8 +68,6 @@ load-plugins=pylint.extensions.check_docs
 # - maybe-no-member:  bi-modal functions confuse pylint type inference.
 # - no-member:  indirections in protobuf-generated code
 # - protected-access: helpers use '_foo' of classes from generated code.
-# - redefined-builtin:  use of 'id', 'type', 'filter' args in API-bound funcs;
-#                       use of 'NotImplemented' to map HTTP response code.
 # - similarities:  'Bucket' and 'Blob' define 'metageneration' and 'owner' with
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
@@ -93,7 +91,6 @@ disable =
     maybe-no-member,
     no-member,
     protected-access,
-    redefined-builtin,
     similarities,
     star-args,
     redefined-variable-type,
