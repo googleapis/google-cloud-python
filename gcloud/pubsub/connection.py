@@ -88,3 +88,401 @@ class Connection(base_connection.JSONConnection):
         return super(Connection, self.__class__).build_api_url(
             path, query_params=query_params,
             api_base_url=api_base_url, api_version=api_version)
+
+    def list_topics(self, project, page_size=None, page_token=None):
+        """List topics for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
+
+        :type project: string
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of ``Topic`` resource dicts, plus a
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/topics' % (project,)
+        resp = self.api_request(method='GET', path=path, query_params=params)
+        return resp.get('topics', ()), resp.get('nextPageToken')
+
+    def list_subscriptions(self, project, page_size=None, page_token=None):
+        """List subscriptions for the project associated with this client.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
+
+        :type project: string
+        :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of subscriptions.
+                           If not passed, the API will return the first page
+                           of subscriptions.
+
+        :rtype: tuple, (list, str)
+        :returns: list of ``Subscription`` resource dicts, plus a
+                  "next page token" string:  if not None, indicates that
+                  more subscriptions can be retrieved with another call (pass
+                  that value as ``page_token``).
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/projects/%s/subscriptions' % (project,)
+        resp = self.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')
+
+    def topic_create(self, topic_path):
+        """API call:  create a topic via a PUT request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the new topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
+        """
+        return self.api_request(method='PUT', path='/%s' % (topic_path,))
+
+    def topic_get(self, topic_path):
+        """API call:  retrieve a topic via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :rtype: dict
+        :returns: ``Topic`` resource returned from the API.
+        """
+        return self.api_request(method='GET', path='/%s' % (topic_path,))
+
+    def topic_delete(self, topic_path):
+        """API call:  delete a topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+        """
+        self.api_request(method='DELETE', path='/%s' % (topic_path,))
+
+    def topic_publish(self, topic_path, messages):
+        """API call:  publish a message to a topic via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type messages: list of dict
+        :param messages: messages to be published.
+
+        :rtype: list of string
+        :returns: list of opaque IDs for published messages.
+        """
+        data = {'messages': messages}
+        response = self.api_request(
+            method='POST', path='/%s:publish' % (topic_path,), data=data)
+        return response['messageIds']
+
+    def topic_list_subscriptions(self, topic_path, page_size=None,
+                                 page_token=None):
+        """API call:  list subscriptions bound to a topic via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
+        :rtype: list of strings
+        :returns: fully-qualified names of subscriptions for the supplied
+                  topic.
+        """
+        params = {}
+
+        if page_size is not None:
+            params['pageSize'] = page_size
+
+        if page_token is not None:
+            params['pageToken'] = page_token
+
+        path = '/%s/subscriptions' % (topic_path,)
+        resp = self.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')
+
+    def get_iam_policy(self, target_path):
+        """Fetch the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        path = '/%s:getIamPolicy' % (target_path,)
+        return self.api_request(method='GET', path=path)
+
+    def set_iam_policy(self, target_path, policy):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type policy: dict
+        :param policy: the new policy resource.
+
+        :rtype: dict
+        :returns: the resource returned by the ``setIamPolicy`` API request.
+        """
+        wrapped = {'policy': policy}
+        path = '/%s:setIamPolicy' % (target_path,)
+        return self.api_request(method='POST', path=path, data=wrapped)
+
+    def test_iam_permissions(self, target_path, permissions):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type permissions: list of string
+        :param permissions: the permissions to check
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        wrapped = {'permissions': permissions}
+        path = '/%s:testIamPermissions' % (target_path,)
+        resp = self.api_request(method='POST', path=path, data=wrapped)
+        return resp.get('permissions', [])
+
+    def subscription_create(self, subscription_path, topic_path,
+                            ack_deadline=None, push_endpoint=None):
+        """API call:  create a subscription via a PUT request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type topic_path: string
+        :param topic_path: the fully-qualfied path of the topic being
+                           subscribed, in format
+                           ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type ack_deadline: int, or ``NoneType``
+        :param ack_deadline: the deadline (in seconds) by which messages pulled
+                            from the back-end must be acknowledged.
+
+        :type push_endpoint: string, or ``NoneType``
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end.  If not set, the application must pull
+                              messages.
+
+        :rtype: dict
+        :returns: ``Subscription`` resource returned from the API.
+        """
+        path = '/%s' % (subscription_path,)
+        resource = {'topic': topic_path}
+
+        if ack_deadline is not None:
+            resource['ackDeadlineSeconds'] = ack_deadline
+
+        if push_endpoint is not None:
+            resource['pushConfig'] = {'pushEndpoint': push_endpoint}
+
+        return self.api_request(method='PUT', path=path, data=resource)
+
+    def subscription_get(self, subscription_path):
+        """API call:  retrieve a subscription via a GET request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the subscription,
+                                  in format
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+
+        :rtype: dict
+        :returns: ``Subscription`` resource returned from the API.
+        """
+        path = '/%s' % (subscription_path,)
+        return self.api_request(method='GET', path=path)
+
+    def subscription_delete(self, subscription_path):
+        """API call:  delete a subscription via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the subscription,
+                                  in format
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
+        """
+        path = '/%s' % (subscription_path,)
+        self.api_request(method='DELETE', path=path)
+
+    def subscription_modify_push_config(self, subscription_path,
+                                        push_endpoint):
+        """API call:  update push config of a subscription via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type push_endpoint: string, or ``NoneType``
+        :param push_endpoint: URL to which messages will be pushed by the
+                              back-end.  If not set, the application must pull
+                              messages.
+        """
+        path = '/%s:modifyPushConfig' % (subscription_path,)
+        resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
+        self.api_request(method='POST', path=path, data=resource)
+
+    def subscription_pull(self, subscription_path, return_immediately=False,
+                          max_messages=1):
+        """API call:  update push config of a subscription via a POST request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type return_immediately: boolean
+        :param return_immediately: if True, the back-end returns even if no
+                                   messages are available;  if False, the API
+                                   call blocks until one or more messages are
+                                   available.
+
+        :type max_messages: int
+        :param max_messages: the maximum number of messages to return.
+
+        :rtype: list of dict
+        :returns:  the ``receivedMessages`` element of the response.
+        """
+        path = '/%s:pull' % (subscription_path,)
+        data = {
+            'returnImmediately': return_immediately,
+            'maxMessages': max_messages,
+        }
+        response = self.api_request(method='POST', path=path, data=data)
+        return response['receivedMessages']
+
+    def subscription_acknowledge(self, subscription_path, ack_ids):
+        """API call:  acknowledge retrieved messages for the subscription.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being acknowledged
+        """
+        path = '/%s:acknowledge' % (subscription_path,)
+        data = {
+            'ackIds': ack_ids,
+        }
+        self.api_request(method='POST', path=path, data=data)
+
+    def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
+                                         ack_deadline):
+        """API call:  acknowledge retrieved messages for the subscription.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
+
+        :type subscription_path: string
+        :param subscription_path: the fully-qualfied path of the new
+                                  subscription, in format
+                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being acknowledged
+
+        :type ack_deadline: int
+        :param ack_deadline: the deadline (in seconds) by which messages pulled
+                            from the back-end must be acknowledged.
+        """
+        path = '/%s:modifyAckDeadline' % (subscription_path,)
+        data = {
+            'ackIds': ack_ids,
+            'ackDeadlineSeconds': ack_deadline,
+        }
+        self.api_request(method='POST', path=path, data=data)

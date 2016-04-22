@@ -114,9 +114,9 @@ class Subscription(object):
         return self._client.project
 
     @property
-    def path(self):
+    def full_name(self):
         """URL path for the subscription's APIs"""
-        return '/projects/%s/subscriptions/%s' % (self.project, self.name)
+        return 'projects/%s/subscriptions/%s' % (self.project, self.name)
 
     def _require_client(self, client):
         """Check client or verify over-ride.
@@ -143,16 +143,10 @@ class Subscription(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
         """
-        data = {'topic': self.topic.full_name}
-
-        if self.ack_deadline is not None:
-            data['ackDeadlineSeconds'] = self.ack_deadline
-
-        if self.push_endpoint is not None:
-            data['pushConfig'] = {'pushEndpoint': self.push_endpoint}
-
         client = self._require_client(client)
-        client.connection.api_request(method='PUT', path=self.path, data=data)
+        client.connection.subscription_create(
+            self.full_name, self.topic.full_name, self.ack_deadline,
+            self.push_endpoint)
 
     def exists(self, client=None):
         """API call:  test existence of the subscription via a GET request
@@ -166,7 +160,7 @@ class Subscription(object):
         """
         client = self._require_client(client)
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.connection.subscription_get(self.full_name)
         except NotFound:
             return False
         else:
@@ -183,10 +177,23 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = client.connection.api_request(method='GET', path=self.path)
+        data = client.connection.subscription_get(self.full_name)
         self.ack_deadline = data.get('ackDeadlineSeconds')
         push_config = data.get('pushConfig', {})
         self.push_endpoint = push_config.get('pushEndpoint')
+
+    def delete(self, client=None):
+        """API call:  delete the subscription via a DELETE request.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current subscription's topic.
+        """
+        client = self._require_client(client)
+        client.connection.subscription_delete(self.full_name)
 
     def modify_push_configuration(self, push_endpoint, client=None):
         """API call:  update the push endpoint for the subscription.
@@ -204,13 +211,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {}
-        config = data['pushConfig'] = {}
-        if push_endpoint is not None:
-            config['pushEndpoint'] = push_endpoint
-        client.connection.api_request(
-            method='POST', path='%s:modifyPushConfig' % (self.path,),
-            data=data)
+        client.connection.subscription_modify_push_config(
+            self.full_name, push_endpoint)
         self.push_endpoint = push_endpoint
 
     def pull(self, return_immediately=False, max_messages=1, client=None):
@@ -238,12 +240,10 @@ class Subscription(object):
                   is an instance of :class:`gcloud.pubsub.message.Message`.
         """
         client = self._require_client(client)
-        data = {'returnImmediately': return_immediately,
-                'maxMessages': max_messages}
-        response = client.connection.api_request(
-            method='POST', path='%s:pull' % (self.path,), data=data)
+        response = client.connection.subscription_pull(
+            self.full_name, return_immediately, max_messages)
         return [(info['ackId'], Message.from_api_repr(info['message']))
-                for info in response.get('receivedMessages', ())]
+                for info in response]
 
     def acknowledge(self, ack_ids, client=None):
         """API call:  acknowledge retrieved messages for the subscription.
@@ -259,18 +259,16 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {'ackIds': ack_ids}
-        client.connection.api_request(
-            method='POST', path='%s:acknowledge' % (self.path,), data=data)
+        client.connection.subscription_acknowledge(self.full_name, ack_ids)
 
-    def modify_ack_deadline(self, ack_id, ack_deadline, client=None):
+    def modify_ack_deadline(self, ack_ids, ack_deadline, client=None):
         """API call:  update acknowledgement deadline for a retrieved message.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
-        :type ack_id: string
-        :param ack_id: ack ID of message being updated
+        :type ack_ids: list of string
+        :param ack_ids: ack IDs of messages being updated
 
         :type ack_deadline: int
         :param ack_deadline: new deadline for the message, in seconds
@@ -280,23 +278,8 @@ class Subscription(object):
                        ``client`` stored on the current subscription's topic.
         """
         client = self._require_client(client)
-        data = {'ackIds': [ack_id], 'ackDeadlineSeconds': ack_deadline}
-        client.connection.api_request(
-            method='POST', path='%s:modifyAckDeadline' % (self.path,),
-            data=data)
-
-    def delete(self, client=None):
-        """API call:  delete the subscription via a DELETE request.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
-
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current subscription's topic.
-        """
-        client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client.connection.subscription_modify_ack_deadline(
+            self.full_name, ack_ids, ack_deadline)
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the subscription.
@@ -313,8 +296,7 @@ class Subscription(object):
                   ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:getIamPolicy' % (self.path,)
-        resp = client.connection.api_request(method='GET', path=path)
+        resp = client.connection.get_iam_policy(self.full_name)
         return Policy.from_api_repr(resp)
 
     def set_iam_policy(self, policy, client=None):
@@ -336,11 +318,8 @@ class Subscription(object):
                   ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:setIamPolicy' % (self.path,)
         resource = policy.to_api_repr()
-        wrapped = {'policy': resource}
-        resp = client.connection.api_request(
-            method='POST', path=path, data=wrapped)
+        resp = client.connection.set_iam_policy(self.full_name, resource)
         return Policy.from_api_repr(resp)
 
     def check_iam_permissions(self, permissions, client=None):
@@ -360,10 +339,5 @@ class Subscription(object):
         :returns: subset of ``permissions`` allowed by current IAM policy.
         """
         client = self._require_client(client)
-        path = '%s:testIamPermissions' % (self.path,)
-        data = {
-            'permissions': list(permissions),
-        }
-        resp = client.connection.api_request(
-            method='POST', path=path, data=data)
-        return resp.get('permissions', ())
+        return client.connection.test_iam_permissions(
+            self.full_name, list(permissions))

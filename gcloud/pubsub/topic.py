@@ -98,11 +98,6 @@ class Topic(object):
         """Fully-qualified name used in topic / subscription APIs"""
         return 'projects/%s/topics/%s' % (self.project, self.name)
 
-    @property
-    def path(self):
-        """URL path for the topic's APIs"""
-        return '/%s' % (self.full_name)
-
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -128,7 +123,7 @@ class Topic(object):
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='PUT', path=self.path)
+        client.connection.topic_create(topic_path=self.full_name)
 
     def exists(self, client=None):
         """API call:  test for the existence of the topic via a GET request
@@ -143,11 +138,24 @@ class Topic(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.connection.topic_get(topic_path=self.full_name)
         except NotFound:
             return False
         else:
             return True
+
+    def delete(self, client=None):
+        """API call:  delete the topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current topic.
+        """
+        client = self._require_client(client)
+        client.connection.topic_delete(topic_path=self.full_name)
 
     def _timestamp_message(self, attrs):
         """Add a timestamp to ``attrs``, if the topic is so configured.
@@ -183,10 +191,9 @@ class Topic(object):
         self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
-        data = {'messages': [message_data]}
-        response = client.connection.api_request(
-            method='POST', path='%s:publish' % (self.path,), data=data)
-        return response['messageIds'][0]
+        message_ids = client.connection.topic_publish(
+            self.full_name, [message_data])
+        return message_ids[0]
 
     def batch(self, client=None):
         """Return a batch to use as a context manager.
@@ -200,19 +207,6 @@ class Topic(object):
         """
         client = self._require_client(client)
         return Batch(self, client)
-
-    def delete(self, client=None):
-        """API call:  delete the topic via a DELETE request
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
-
-        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
-        :param client: the client to use.  If not passed, falls back to the
-                       ``client`` stored on the current topic.
-        """
-        client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
 
     def list_subscriptions(self, page_size=None, page_token=None, client=None):
         """List subscriptions for the project associated with this client.
@@ -240,24 +234,14 @@ class Topic(object):
                   value as ``page_token``).
         """
         client = self._require_client(client)
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/topics/%s/subscriptions' % (
-            self.project, self.name)
-
-        resp = client.connection.api_request(method='GET', path=path,
-                                             query_params=params)
+        conn = client.connection
+        sub_paths, next_token = conn.topic_list_subscriptions(
+            self.full_name, page_size, page_token)
         subscriptions = []
-        for sub_path in resp.get('subscriptions', ()):
+        for sub_path in sub_paths:
             sub_name = subscription_name_from_path(sub_path, self.project)
             subscriptions.append(Subscription(sub_name, self))
-        return subscriptions, resp.get('nextPageToken')
+        return subscriptions, next_token
 
     def get_iam_policy(self, client=None):
         """Fetch the IAM policy for the topic.
@@ -274,8 +258,7 @@ class Topic(object):
                   ``getIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:getIamPolicy' % (self.path,)
-        resp = client.connection.api_request(method='GET', path=path)
+        resp = client.connection.get_iam_policy(self.full_name)
         return Policy.from_api_repr(resp)
 
     def set_iam_policy(self, policy, client=None):
@@ -297,11 +280,8 @@ class Topic(object):
                   ``setIamPolicy`` API request.
         """
         client = self._require_client(client)
-        path = '%s:setIamPolicy' % (self.path,)
         resource = policy.to_api_repr()
-        wrapped = {'policy': resource}
-        resp = client.connection.api_request(
-            method='POST', path=path, data=wrapped)
+        resp = client.connection.set_iam_policy(self.full_name, resource)
         return Policy.from_api_repr(resp)
 
     def check_iam_permissions(self, permissions, client=None):
@@ -321,13 +301,8 @@ class Topic(object):
         :returns: subset of ``permissions`` allowed by current IAM policy.
         """
         client = self._require_client(client)
-        path = '%s:testIamPermissions' % (self.path,)
-        data = {
-            'permissions': list(permissions),
-        }
-        resp = client.connection.api_request(
-            method='POST', path=path, data=data)
-        return resp.get('permissions', ())
+        return client.connection.test_iam_permissions(
+            self.full_name, list(permissions))
 
 
 class Batch(object):
@@ -380,8 +355,7 @@ class Batch(object):
         """
         if client is None:
             client = self.client
-        response = client.connection.api_request(
-            method='POST', path='%s:publish' % self.topic.path,
-            data={'messages': self.messages[:]})
-        self.message_ids.extend(response['messageIds'])
+        message_ids = client.connection.topic_publish(
+            self.topic.full_name, self.messages[:])
+        self.message_ids.extend(message_ids)
         del self.messages[:]
