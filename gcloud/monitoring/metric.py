@@ -132,15 +132,16 @@ class MetricDescriptor(object):
         return cls._from_dict(info)
 
     @classmethod
-    def _list(cls, client, filter_=None):
+    def _list(cls, client, filter_string=None):
         """List all metric descriptors for the project.
 
         :type client: :class:`gcloud.monitoring.client.Client`
         :param client: The client to use.
 
-        :type filter_: string or None
-        :param filter_: An optional filter string describing the metric
-            descriptors to be returned. See the `filter documentation`_.
+        :type filter_string: string or None
+        :param filter_string:
+            An optional filter expression describing the metric descriptors
+            to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`MetricDescriptor`
         :returns: A list of metric descriptor instances.
@@ -157,8 +158,8 @@ class MetricDescriptor(object):
         while True:
             params = {}
 
-            if filter_ is not None:
-                params['filter'] = filter_
+            if filter_string is not None:
+                params['filter'] = filter_string
 
             if page_token is not None:
                 params['pageToken'] = page_token

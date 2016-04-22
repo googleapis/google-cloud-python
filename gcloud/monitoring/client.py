@@ -131,7 +131,7 @@ class Client(JSONClient):
         """
         return MetricDescriptor._fetch(self, metric_type)
 
-    def list_metric_descriptors(self, filter=None):
+    def list_metric_descriptors(self, filter_string=None):
         """List all metric descriptors for the project.
 
         Example::
@@ -139,9 +139,10 @@ class Client(JSONClient):
             >>> for descriptor in client.list_metric_descriptors():
             ...     print(descriptor.type)
 
-        :type filter: string or None
-        :param filter: An optional filter string describing the metric
-            descriptors to be returned. See the `filter documentation`_.
+        :type filter_string: string or None
+        :param filter_string:
+            An optional filter expression describing the metric descriptors
+            to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`~gcloud.monitoring.metric.MetricDescriptor`
         :returns: A list of metric descriptor instances.
@@ -149,7 +150,7 @@ class Client(JSONClient):
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        return MetricDescriptor._list(self, filter)
+        return MetricDescriptor._list(self, filter_string)
 
     def fetch_resource_descriptor(self, resource_type):
         """Look up a resource descriptor by type.
@@ -169,7 +170,7 @@ class Client(JSONClient):
         """
         return ResourceDescriptor._fetch(self, resource_type)
 
-    def list_resource_descriptors(self, filter=None):
+    def list_resource_descriptors(self, filter_string=None):
         """List all resource descriptors for the project.
 
         Example::
@@ -177,9 +178,10 @@ class Client(JSONClient):
             >>> for descriptor in client.list_resource_descriptors():
             ...     print(descriptor.type)
 
-        :type filter: string or None
-        :param filter: An optional filter string describing the resource
-            descriptors to be returned. See the `filter documentation`_.
+        :type filter_string: string or None
+        :param filter_string:
+            An optional filter expression describing the resource descriptors
+            to be returned. See the `filter documentation`_.
 
         :rtype: list of :class:`~gcloud.monitoring.resource.ResourceDescriptor`
         :returns: A list of resource descriptor instances.
@@ -187,4 +189,4 @@ class Client(JSONClient):
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        return ResourceDescriptor._list(self, filter)
+        return ResourceDescriptor._list(self, filter_string)
