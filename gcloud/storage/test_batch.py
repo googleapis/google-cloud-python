@@ -565,22 +565,9 @@ class _Connection(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-    def build_api_url(self, path, **_):  # pragma: NO COVER
-        return 'http://api.example.com%s' % path
-
-    def _make_request(self, method, url, data=None, content_type=None,
-                      headers=None):
-        if content_type is not None:  # pragma: NO COVER
-            headers['Content-Type'] = content_type
-
+    def _make_request(self, method, url, data=None, headers=None):
         return self.http.request(uri=url, method=method,
                                  headers=headers, body=data)
-
-    def api_request(self, method, path, query_params=None,
-                    data=None, content_type=None,
-                    api_base_url=None, api_version=None,
-                    expect_json=True):  # pragma: NO COVER
-        pass
 
 
 class _Response(dict):

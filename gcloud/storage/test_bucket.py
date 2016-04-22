@@ -1000,10 +1000,8 @@ class _Connection(object):
 
     @staticmethod
     def _is_bucket_path(path):
-        if not path.startswith('/b/'):  # pragma: NO COVER
-            return False
         # Now just ensure the path only has /b/ and one more segment.
-        return path.count('/') == 2
+        return path.startswith('/b/') and path.count('/') == 2
 
     def api_request(self, **kw):
         from gcloud.exceptions import NotFound

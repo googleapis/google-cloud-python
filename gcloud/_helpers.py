@@ -304,7 +304,7 @@ def _total_seconds(offset):
     :returns: The total seconds (including microseconds) in the
               duration.
     """
-    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER
+    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER Python 2.6
         return _total_seconds_backport(offset)
     else:
         return offset.total_seconds()
