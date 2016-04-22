@@ -138,7 +138,7 @@ class TestSubscription(unittest2.TestCase):
         SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
         SUB_PATH = '/%s' % (SUB_FULL,)
         TOPIC_NAME = 'topic_name'
-        CLIENT = _Client(project=PROJECT, connection=None)
+        CLIENT = _Client(project=PROJECT)
         topic = _Topic(TOPIC_NAME, client=CLIENT)
         subscription = self._makeOne(SUB_NAME, topic)
         self.assertEqual(subscription.full_name, SUB_FULL)
