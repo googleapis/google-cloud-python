@@ -122,6 +122,19 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Cloud Monitoring
+
+  monitoring-usage
+  Client <monitoring-client>
+  monitoring-metric
+  monitoring-resource
+  monitoring-query
+  monitoring-timeseries
+  monitoring-label
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
