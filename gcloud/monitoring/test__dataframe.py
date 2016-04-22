@@ -54,7 +54,8 @@ ARRAY = [VALUES] * DIMENSIONS[0]
 
 def parse_timestamps():  # pragma: NO COVER
     import datetime
-    return [datetime.datetime.strptime(t, '%Y-%m-%dT%H:%M:%S.%fZ')
+    from gcloud._helpers import _RFC3339_MICROS
+    return [datetime.datetime.strptime(t, _RFC3339_MICROS)
             for t in TIMESTAMPS]
 
 
