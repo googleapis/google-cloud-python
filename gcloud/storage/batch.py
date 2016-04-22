@@ -60,11 +60,11 @@ class MIMEApplicationHTTP(MIMEApplication):
         lines.append('')
         lines.append(body)
         payload = '\r\n'.join(lines)
-        if six.PY2:  # pragma: NO COVER  Python2
-            # Sigh.  email.message.Message is an old-style class, so we
-            #        cannot use 'super()'.
+        if six.PY2:
+            # email.message.Message is an old-style class, so we
+            # cannot use 'super()'.
             MIMEApplication.__init__(self, payload, 'http', encode_noop)
-        else:                        # pragma: NO COVER  Python3
+        else:  # pragma: NO COVER  Python3
             super_init = super(MIMEApplicationHTTP, self).__init__
             super_init(payload, 'http', encode_noop)
 
@@ -190,9 +190,9 @@ class Batch(Connection):
             multi.attach(subrequest)
 
         # The `email` package expects to deal with "native" strings
-        if six.PY3:             # pragma: NO COVER  Python3
+        if six.PY3:  # pragma: NO COVER  Python3
             buf = io.StringIO()
-        else:                   # pragma: NO COVER  Python2
+        else:
             buf = io.BytesIO()
         generator = Generator(buf, False, 0)
         generator.flatten(multi)

@@ -802,13 +802,8 @@ class _Connection(object):
     def api_request(self, **kw):
         from gcloud.exceptions import NotFound
         self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:  # pragma: NO COVER
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
 
 class _Client(object):

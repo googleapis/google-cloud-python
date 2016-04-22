@@ -313,7 +313,7 @@ class _Connection(object):
 
         try:
             response, self._responses = self._responses[0], self._responses[1:]
-        except:  # pragma: NO COVER
+        except:
             raise NotFound('miss')
         else:
             return response

@@ -462,7 +462,7 @@ class Test__pb_attr_value(unittest2.TestCase):
         name, value = self._callFUT('str')
         if six.PY2:
             self.assertEqual(name, 'blob_value')
-        else:  # pragma: NO COVER
+        else:  # pragma: NO COVER Python 3
             self.assertEqual(name, 'string_value')
         self.assertEqual(value, 'str')
 
@@ -696,7 +696,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self._callFUT(pb, 'str')
         if six.PY2:
             value = pb.blob_value
-        else:  # pragma: NO COVER
+        else:  # pragma: NO COVER Python 3
             value = pb.string_value
         self.assertEqual(value, 'str')
 
