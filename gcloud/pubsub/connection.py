@@ -89,8 +89,19 @@ class Connection(base_connection.JSONConnection):
             path, query_params=query_params,
             api_base_url=api_base_url, api_version=api_version)
 
+
+class _PublisherAPI(object):
+    """Helper mapping publisher-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection
+
     def list_topics(self, project, page_size=None, page_token=None):
-        """List topics for the project associated with this client.
+        """List topics for the project associated with this API.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
@@ -113,6 +124,7 @@ class Connection(base_connection.JSONConnection):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
+        conn = self._connection
         params = {}
 
         if page_size is not None:
@@ -122,44 +134,8 @@ class Connection(base_connection.JSONConnection):
             params['pageToken'] = page_token
 
         path = '/projects/%s/topics' % (project,)
-        resp = self.api_request(method='GET', path=path, query_params=params)
+        resp = conn.api_request(method='GET', path=path, query_params=params)
         return resp.get('topics', ()), resp.get('nextPageToken')
-
-    def list_subscriptions(self, project, page_size=None, page_token=None):
-        """List subscriptions for the project associated with this client.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
-
-        :type project: string
-        :param project: project ID
-
-        :type page_size: int
-        :param page_size: maximum number of subscriptions to return, If not
-                          passed, defaults to a value set by the API.
-
-        :type page_token: string
-        :param page_token: opaque marker for the next "page" of subscriptions.
-                           If not passed, the API will return the first page
-                           of subscriptions.
-
-        :rtype: tuple, (list, str)
-        :returns: list of ``Subscription`` resource dicts, plus a
-                  "next page token" string:  if not None, indicates that
-                  more subscriptions can be retrieved with another call (pass
-                  that value as ``page_token``).
-        """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/subscriptions' % (project,)
-        resp = self.api_request(method='GET', path=path, query_params=params)
-        return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
     def topic_create(self, topic_path):
         """API call:  create a topic via a PUT request
@@ -174,7 +150,8 @@ class Connection(base_connection.JSONConnection):
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
         """
-        return self.api_request(method='PUT', path='/%s' % (topic_path,))
+        conn = self._connection
+        return conn.api_request(method='PUT', path='/%s' % (topic_path,))
 
     def topic_get(self, topic_path):
         """API call:  retrieve a topic via a GET request
@@ -189,7 +166,8 @@ class Connection(base_connection.JSONConnection):
         :rtype: dict
         :returns: ``Topic`` resource returned from the API.
         """
-        return self.api_request(method='GET', path='/%s' % (topic_path,))
+        conn = self._connection
+        return conn.api_request(method='GET', path='/%s' % (topic_path,))
 
     def topic_delete(self, topic_path):
         """API call:  delete a topic via a DELETE request
@@ -201,7 +179,8 @@ class Connection(base_connection.JSONConnection):
         :param topic_path: the fully-qualfied path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
-        self.api_request(method='DELETE', path='/%s' % (topic_path,))
+        conn = self._connection
+        conn.api_request(method='DELETE', path='/%s' % (topic_path,))
 
     def topic_publish(self, topic_path, messages):
         """API call:  publish a message to a topic via a POST request
@@ -219,8 +198,9 @@ class Connection(base_connection.JSONConnection):
         :rtype: list of string
         :returns: list of opaque IDs for published messages.
         """
+        conn = self._connection
         data = {'messages': messages}
-        response = self.api_request(
+        response = conn.api_request(
             method='POST', path='/%s:publish' % (topic_path,), data=data)
         return response['messageIds']
 
@@ -248,6 +228,7 @@ class Connection(base_connection.JSONConnection):
         :returns: fully-qualified names of subscriptions for the supplied
                   topic.
         """
+        conn = self._connection
         params = {}
 
         if page_size is not None:
@@ -257,65 +238,56 @@ class Connection(base_connection.JSONConnection):
             params['pageToken'] = page_token
 
         path = '/%s/subscriptions' % (topic_path,)
-        resp = self.api_request(method='GET', path=path, query_params=params)
+        resp = conn.api_request(method='GET', path=path, query_params=params)
         return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
-    def get_iam_policy(self, target_path):
-        """Fetch the IAM policy for the target.
+
+class _SubscriberAPI(object):
+    """Helper mapping subscriber-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection
+
+    def list_subscriptions(self, project, page_size=None, page_token=None):
+        """List subscriptions for the project associated with this API.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
 
-        :type target_path: string
-        :param target_path: the path of the target object.
+        :type project: string
+        :param project: project ID
 
-        :rtype: dict
-        :returns: the resource returned by the ``getIamPolicy`` API request.
+        :type page_size: int
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of subscriptions.
+                           If not passed, the API will return the first page
+                           of subscriptions.
+
+        :rtype: tuple, (list, str)
+        :returns: list of ``Subscription`` resource dicts, plus a
+                  "next page token" string:  if not None, indicates that
+                  more subscriptions can be retrieved with another call (pass
+                  that value as ``page_token``).
         """
-        path = '/%s:getIamPolicy' % (target_path,)
-        return self.api_request(method='GET', path=path)
+        conn = self._connection
+        params = {}
 
-    def set_iam_policy(self, target_path, policy):
-        """Update the IAM policy for the target.
+        if page_size is not None:
+            params['pageSize'] = page_size
 
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+        if page_token is not None:
+            params['pageToken'] = page_token
 
-        :type target_path: string
-        :param target_path: the path of the target object.
-
-        :type policy: dict
-        :param policy: the new policy resource.
-
-        :rtype: dict
-        :returns: the resource returned by the ``setIamPolicy`` API request.
-        """
-        wrapped = {'policy': policy}
-        path = '/%s:setIamPolicy' % (target_path,)
-        return self.api_request(method='POST', path=path, data=wrapped)
-
-    def test_iam_permissions(self, target_path, permissions):
-        """Update the IAM policy for the target.
-
-        See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
-
-        :type target_path: string
-        :param target_path: the path of the target object.
-
-        :type permissions: list of string
-        :param permissions: the permissions to check
-
-        :rtype: dict
-        :returns: the resource returned by the ``getIamPolicy`` API request.
-        """
-        wrapped = {'permissions': permissions}
-        path = '/%s:testIamPermissions' % (target_path,)
-        resp = self.api_request(method='POST', path=path, data=wrapped)
-        return resp.get('permissions', [])
+        path = '/projects/%s/subscriptions' % (project,)
+        resp = conn.api_request(method='GET', path=path, query_params=params)
+        return resp.get('subscriptions', ()), resp.get('nextPageToken')
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
@@ -346,6 +318,7 @@ class Connection(base_connection.JSONConnection):
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
+        conn = self._connection
         path = '/%s' % (subscription_path,)
         resource = {'topic': topic_path}
 
@@ -355,7 +328,7 @@ class Connection(base_connection.JSONConnection):
         if push_endpoint is not None:
             resource['pushConfig'] = {'pushEndpoint': push_endpoint}
 
-        return self.api_request(method='PUT', path=path, data=resource)
+        return conn.api_request(method='PUT', path=path, data=resource)
 
     def subscription_get(self, subscription_path):
         """API call:  retrieve a subscription via a GET request
@@ -371,8 +344,9 @@ class Connection(base_connection.JSONConnection):
         :rtype: dict
         :returns: ``Subscription`` resource returned from the API.
         """
+        conn = self._connection
         path = '/%s' % (subscription_path,)
-        return self.api_request(method='GET', path=path)
+        return conn.api_request(method='GET', path=path)
 
     def subscription_delete(self, subscription_path):
         """API call:  delete a subscription via a DELETE request
@@ -385,8 +359,9 @@ class Connection(base_connection.JSONConnection):
                                   in format
                                   ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
+        conn = self._connection
         path = '/%s' % (subscription_path,)
-        self.api_request(method='DELETE', path=path)
+        conn.api_request(method='DELETE', path=path)
 
     def subscription_modify_push_config(self, subscription_path,
                                         push_endpoint):
@@ -405,9 +380,10 @@ class Connection(base_connection.JSONConnection):
                               back-end.  If not set, the application must pull
                               messages.
         """
+        conn = self._connection
         path = '/%s:modifyPushConfig' % (subscription_path,)
         resource = {'pushConfig': {'pushEndpoint': push_endpoint}}
-        self.api_request(method='POST', path=path, data=resource)
+        conn.api_request(method='POST', path=path, data=resource)
 
     def subscription_pull(self, subscription_path, return_immediately=False,
                           max_messages=1):
@@ -433,12 +409,13 @@ class Connection(base_connection.JSONConnection):
         :rtype: list of dict
         :returns:  the ``receivedMessages`` element of the response.
         """
+        conn = self._connection
         path = '/%s:pull' % (subscription_path,)
         data = {
             'returnImmediately': return_immediately,
             'maxMessages': max_messages,
         }
-        response = self.api_request(method='POST', path=path, data=data)
+        response = conn.api_request(method='POST', path=path, data=data)
         return response['receivedMessages']
 
     def subscription_acknowledge(self, subscription_path, ack_ids):
@@ -455,11 +432,12 @@ class Connection(base_connection.JSONConnection):
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
         """
+        conn = self._connection
         path = '/%s:acknowledge' % (subscription_path,)
         data = {
             'ackIds': ack_ids,
         }
-        self.api_request(method='POST', path=path, data=data)
+        conn.api_request(method='POST', path=path, data=data)
 
     def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
                                          ack_deadline):
@@ -480,9 +458,81 @@ class Connection(base_connection.JSONConnection):
         :param ack_deadline: the deadline (in seconds) by which messages pulled
                             from the back-end must be acknowledged.
         """
+        conn = self._connection
         path = '/%s:modifyAckDeadline' % (subscription_path,)
         data = {
             'ackIds': ack_ids,
             'ackDeadlineSeconds': ack_deadline,
         }
-        self.api_request(method='POST', path=path, data=data)
+        conn.api_request(method='POST', path=path, data=data)
+
+
+class _IAMPolicyAPI(object):
+    """Helper mapping IAM policy-related APIs.
+
+    :type connection: :class:`Connection`
+    :param connection: the connection used to make API requests.
+    """
+
+    def __init__(self, connection):
+        self._connection = connection
+
+    def get_iam_policy(self, target_path):
+        """Fetch the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        conn = self._connection
+        path = '/%s:getIamPolicy' % (target_path,)
+        return conn.api_request(method='GET', path=path)
+
+    def set_iam_policy(self, target_path, policy):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type policy: dict
+        :param policy: the new policy resource.
+
+        :rtype: dict
+        :returns: the resource returned by the ``setIamPolicy`` API request.
+        """
+        conn = self._connection
+        wrapped = {'policy': policy}
+        path = '/%s:setIamPolicy' % (target_path,)
+        return conn.api_request(method='POST', path=path, data=wrapped)
+
+    def test_iam_permissions(self, target_path, permissions):
+        """Update the IAM policy for the target.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions
+
+        :type target_path: string
+        :param target_path: the path of the target object.
+
+        :type permissions: list of string
+        :param permissions: the permissions to check
+
+        :rtype: dict
+        :returns: the resource returned by the ``getIamPolicy`` API request.
+        """
+        conn = self._connection
+        wrapped = {'permissions': permissions}
+        path = '/%s:testIamPermissions' % (target_path,)
+        resp = conn.api_request(method='POST', path=path, data=wrapped)
+        return resp.get('permissions', [])
