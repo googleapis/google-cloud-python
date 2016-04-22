@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pub/Sub Client &mdash; gcloud 7983938 documentation</title>
+    <title>Pub/Sub Client &mdash; gcloud d97cffe documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '7983938',
+        VERSION:     'd97cffe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7983938 documentation" href="index.html" />
+    <link rel="top" title="gcloud d97cffe documentation" href="index.html" />
     <link rel="next" title="Topics" href="pubsub-topic.html" />
     <link rel="prev" title="Using the API" href="pubsub-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-client%0ARelease%3A%207983938" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-client%0ARelease%3A%20d97cffe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7983938)
+              Version History (d97cffe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -120,6 +120,12 @@ from the environment.</li>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="gcloud.pubsub.client.Client.iam_policy_api">
+<code class="descname">iam_policy_api</code><a class="headerlink" href="#gcloud.pubsub.client.Client.iam_policy_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for IAM policy-related API calls.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.pubsub.client.Client.list_subscriptions">
 <code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/client.html#Client.list_subscriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.client.Client.list_subscriptions" title="Permalink to this definition">#</a></dt>
@@ -184,6 +190,18 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.pubsub.client.Client.publisher_api">
+<code class="descname">publisher_api</code><a class="headerlink" href="#gcloud.pubsub.client.Client.publisher_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for publisher-related API calls.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.pubsub.client.Client.subscriber_api">
+<code class="descname">subscriber_api</code><a class="headerlink" href="#gcloud.pubsub.client.Client.subscriber_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for subscriber-related API calls.</p>
 </dd></dl>
 
 <dl class="method">
@@ -284,442 +302,6 @@ use the default for the library.</li>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The URL assembled from the pieces provided.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.get_iam_policy">
-<code class="descname">get_iam_policy</code><span class="sig-paren">(</span><em>target_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.get_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.get_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Fetch the IAM policy for the target.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy</a>
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/getIamPolicy</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the path of the target object.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the resource returned by the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.list_subscriptions">
-<code class="descname">list_subscriptions</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.list_subscriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.list_subscriptions" title="Permalink to this definition">#</a></dt>
-<dd><p>List subscriptions for the project associated with this client.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; project ID</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of subscriptions to return, If not
-passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of subscriptions.
-If not passed, the API will return the first page
-of subscriptions.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <code class="docutils literal"><span class="pre">Subscription</span></code> resource dicts, plus a
-&#8220;next page token&#8221; string:  if not None, indicates that
-more subscriptions can be retrieved with another call (pass
-that value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.list_topics">
-<code class="descname">list_topics</code><span class="sig-paren">(</span><em>project</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.list_topics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.list_topics" title="Permalink to this definition">#</a></dt>
-<dd><p>List topics for the project associated with this client.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; project ID</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
-defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
-passed, the API will return the first page of
-topics.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">tuple, (list, str)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <code class="docutils literal"><span class="pre">Topic</span></code> resource dicts, plus a
-&#8220;next page token&#8221; string:  if not None, indicates that
-more topics can be retrieved with another call (pass that
-value as <code class="docutils literal"><span class="pre">page_token</span></code>).</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.set_iam_policy">
-<code class="descname">set_iam_policy</code><span class="sig-paren">(</span><em>target_path</em>, <em>policy</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.set_iam_policy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.set_iam_policy" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the IAM policy for the target.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy</a>
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/setIamPolicy</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>target_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the path of the target object.</li>
-<li><strong>policy</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; the new policy resource.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the resource returned by the <code class="docutils literal"><span class="pre">setIamPolicy</span></code> API request.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_acknowledge">
-<code class="descname">subscription_acknowledge</code><span class="sig-paren">(</span><em>subscription_path</em>, <em>ack_ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_acknowledge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_acknowledge" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new
-subscription, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_create">
-<code class="descname">subscription_create</code><span class="sig-paren">(</span><em>subscription_path</em>, <em>topic_path</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_create" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  create a subscription via a PUT request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new
-subscription, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the topic being
-subscribed, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>ack_deadline</strong> (int, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the deadline (in seconds) by which messages pulled
-from the back-end must be acknowledged.</li>
-<li><strong>push_endpoint</strong> (string, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; URL to which messages will be pushed by the
-back-end.  If not set, the application must pull
-messages.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal"><span class="pre">Subscription</span></code> resource returned from the API.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_delete">
-<code class="descname">subscription_delete</code><span class="sig-paren">(</span><em>subscription_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_delete" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  delete a subscription via a DELETE request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the subscription,
-in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;</span></code>.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_get">
-<code class="descname">subscription_get</code><span class="sig-paren">(</span><em>subscription_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_get" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  retrieve a subscription via a GET request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the subscription,
-in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Subscription</span></code> resource returned from the API.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_modify_ack_deadline">
-<code class="descname">subscription_modify_ack_deadline</code><span class="sig-paren">(</span><em>subscription_path</em>, <em>ack_ids</em>, <em>ack_deadline</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_modify_ack_deadline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_modify_ack_deadline" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  acknowledge retrieved messages for the subscription.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new
-subscription, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being acknowledged</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the deadline (in seconds) by which messages pulled
-from the back-end must be acknowledged.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_modify_push_config">
-<code class="descname">subscription_modify_push_config</code><span class="sig-paren">(</span><em>subscription_path</em>, <em>push_endpoint</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_modify_push_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_modify_push_config" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  update push config of a subscription via a POST request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new
-subscription, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>push_endpoint</strong> (string, or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; URL to which messages will be pushed by the
-back-end.  If not set, the application must pull
-messages.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.subscription_pull">
-<code class="descname">subscription_pull</code><span class="sig-paren">(</span><em>subscription_path</em>, <em>return_immediately=False</em>, <em>max_messages=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.subscription_pull"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.subscription_pull" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  update push config of a subscription via a POST request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>subscription_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new
-subscription, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>return_immediately</strong> (<em>boolean</em>) &#8211; if True, the back-end returns even if no
-messages are available;  if False, the API
-call blocks until one or more messages are
-available.</li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the maximum number of messages to return.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of dict</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the <code class="docutils literal"><span class="pre">receivedMessages</span></code> element of the response.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.test_iam_permissions">
-<code class="descname">test_iam_permissions</code><span class="sig-paren">(</span><em>target_path</em>, <em>permissions</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.test_iam_permissions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.test_iam_permissions" title="Permalink to this definition">#</a></dt>
-<dd><p>Update the IAM policy for the target.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions</a>
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/testIamPermissions</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>target_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the path of the target object.</li>
-<li><strong>permissions</strong> (<em>list of string</em>) &#8211; the permissions to check</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the resource returned by the <code class="docutils literal"><span class="pre">getIamPolicy</span></code> API request.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.topic_create">
-<code class="descname">topic_create</code><span class="sig-paren">(</span><em>topic_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.topic_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.topic_create" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  create a topic via a PUT request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the new topic, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Topic</span></code> resource returned from the API.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.topic_delete">
-<code class="descname">topic_delete</code><span class="sig-paren">(</span><em>topic_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.topic_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.topic_delete" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  delete a topic via a DELETE request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the topic, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.topic_get">
-<code class="descname">topic_get</code><span class="sig-paren">(</span><em>topic_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.topic_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.topic_get" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  retrieve a topic via a GET request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the topic, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><code class="docutils literal"><span class="pre">Topic</span></code> resource returned from the API.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.topic_list_subscriptions">
-<code class="descname">topic_list_subscriptions</code><span class="sig-paren">(</span><em>topic_path</em>, <em>page_size=None</em>, <em>page_token=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.topic_list_subscriptions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.topic_list_subscriptions" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  list subscriptions bound to a topic via a GET request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the topic, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of topics to return, If not passed,
-defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of topics. If not
-passed, the API will return the first page of
-topics.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of strings</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">fully-qualified names of subscriptions for the supplied
-topic.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="gcloud.pubsub.connection.Connection.topic_publish">
-<code class="descname">topic_publish</code><span class="sig-paren">(</span><em>topic_path</em>, <em>messages</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/connection.html#Connection.topic_publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.connection.Connection.topic_publish" title="Permalink to this definition">#</a></dt>
-<dd><p>API call:  publish a message to a topic via a POST request</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish">https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>topic_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the fully-qualfied path of the topic, in format
-<code class="docutils literal"><span class="pre">projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;</span></code>.</li>
-<li><strong>messages</strong> (<em>list of dict</em>) &#8211; messages to be published.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list of string</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of opaque IDs for published messages.</p>
 </td>
 </tr>
 </tbody>

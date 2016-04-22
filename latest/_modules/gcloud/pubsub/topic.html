@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.topic &mdash; gcloud 7983938 documentation</title>
+    <title>gcloud.pubsub.topic &mdash; gcloud d97cffe documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7983938',
+        VERSION:     'd97cffe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7983938 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d97cffe documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%207983938" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/topic%0ARelease%3A%20d97cffe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7983938)
+              Version History (d97cffe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -216,7 +216,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">topic_create</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">topic_create</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Topic.exists"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test for the existence of the topic via a GET request</span>
@@ -229,9 +230,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">topic_get</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+            <span class="n">api</span><span class="o">.</span><span class="n">topic_get</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">else</span><span class="p">:</span>
@@ -248,7 +250,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       ``client`` stored on the current topic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">topic_delete</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
+        <span class="n">api</span><span class="o">.</span><span class="n">topic_delete</span><span class="p">(</span><span class="n">topic_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_timestamp_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a timestamp to ``attrs``, if the topic is so configured.</span>
@@ -280,12 +283,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: message ID assigned by the server to the published message</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp_message</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
         <span class="n">message_b</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
         <span class="n">message_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">message_b</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">attrs</span><span class="p">}</span>
-        <span class="n">message_ids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">topic_publish</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="p">[</span><span class="n">message_data</span><span class="p">])</span>
+        <span class="n">message_ids</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">topic_publish</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="p">[</span><span class="n">message_data</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">message_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="Topic.batch"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -327,8 +330,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">sub_paths</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">topic_list_subscriptions</span><span class="p">(</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
+        <span class="n">sub_paths</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">topic_list_subscriptions</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
         <span class="n">subscriptions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">sub_path</span> <span class="ow">in</span> <span class="n">sub_paths</span><span class="p">:</span>
@@ -351,7 +354,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  ``getIamPolicy`` API request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">iam_policy_api</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Topic.set_iam_policy"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -373,8 +377,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  ``setIamPolicy`` API request.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">iam_policy_api</span>
         <span class="n">resource</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">to_api_repr</span><span class="p">()</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Topic.check_iam_permissions"><a class="viewcode-back" href="../../../pubsub-topic.html#gcloud.pubsub.topic.Topic.check_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">check_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -394,7 +399,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: subset of ``permissions`` allowed by current IAM policy.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">iam_policy_api</span>
+        <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">permissions</span><span class="p">))</span></div></div>
 
 
@@ -448,8 +454,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
-        <span class="n">message_ids</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">topic_publish</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:])</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">publisher_api</span>
+        <span class="n">message_ids</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">topic_publish</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">message_ids</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[:]</span></div></div>
 </pre></div>

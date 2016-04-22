@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.client &mdash; gcloud 7983938 documentation</title>
+    <title>gcloud.pubsub.client &mdash; gcloud d97cffe documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7983938',
+        VERSION:     'd97cffe',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7983938 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d97cffe documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%207983938" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/client%0ARelease%3A%20d97cffe" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7983938)
+              Version History (d97cffe)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,6 +110,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">JSONClient</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">_PublisherAPI</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">_SubscriberAPI</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.connection</span> <span class="kn">import</span> <span class="n">_IAMPolicyAPI</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="kn">import</span> <span class="n">Subscription</span>
 <span class="kn">from</span> <span class="nn">gcloud.pubsub.topic</span> <span class="kn">import</span> <span class="n">Topic</span>
 
@@ -136,6 +139,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">_connection_class</span> <span class="o">=</span> <span class="n">Connection</span>
+    <span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">publisher_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for publisher-related API calls.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span> <span class="o">=</span> <span class="n">_PublisherAPI</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_publisher_api</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">subscriber_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for subscriber-related API calls.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span> <span class="o">=</span> <span class="n">_SubscriberAPI</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscriber_api</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">iam_policy_api</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Helper for IAM policy-related API calls.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span> <span class="o">=</span> <span class="n">_IAMPolicyAPI</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iam_policy_api</span>
 
 <div class="viewcode-block" id="Client.list_topics"><a class="viewcode-back" href="../../../pubsub-client.html#gcloud.pubsub.client.Client.list_topics">[docs]</a>    <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List topics for the project associated with this client.</span>
@@ -158,8 +183,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  more topics can be retrieved with another call (pass that</span>
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">resources</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_topics</span><span class="p">(</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">publisher_api</span>
+        <span class="n">resources</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">list_topics</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
         <span class="n">topics</span> <span class="o">=</span> <span class="p">[</span><span class="n">Topic</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
@@ -189,8 +214,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  more topics can be retrieved with another call (pass that</span>
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>
-        <span class="n">resources</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
+        <span class="n">api</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscriber_api</span>
+        <span class="n">resources</span><span class="p">,</span> <span class="n">next_token</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">list_subscriptions</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
         <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">subscriptions</span> <span class="o">=</span> <span class="p">[</span><span class="n">Subscription</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
