@@ -53,6 +53,24 @@ class Topic(object):
     def subscription(self, name, ack_deadline=None, push_endpoint=None):
         """Creates a subscription bound to the current topic.
 
+        Example:  pull-mode subcription, default paramter values
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_defaults]
+           :end-before: [END topic_subscription_defaults]
+
+        Example:  pull-mode subcription, override ``ack_deadline`` default
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_ack90]
+           :end-before: [END topic_subscription_ack90]
+
+        Example:  push-mode subcription
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_push]
+           :end-before: [END topic_subscription_push]
+
         :type name: string
         :param name: the name of the subscription
 
@@ -118,6 +136,12 @@ class Topic(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_create]
+           :end-before: [END topic_create]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
@@ -131,6 +155,12 @@ class Topic(object):
 
         See
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_exists]
+           :end-before: [END topic_exists]
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -151,6 +181,12 @@ class Topic(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_delete]
+           :end-before: [END topic_delete]
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -175,6 +211,18 @@ class Topic(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
+
+        Example without message attributes:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_publish_simple_message]
+           :end-before: [END topic_publish_simple_message]
+
+        With message attributes:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_publish_message_with_attrs]
+           :end-before: [END topic_publish_message_with_attrs]
 
         :type message: bytes
         :param message: the message payload
@@ -201,6 +249,18 @@ class Topic(object):
     def batch(self, client=None):
         """Return a batch to use as a context manager.
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_batch]
+           :end-before: [END topic_batch]
+
+        .. note::
+
+           The only API request happens during the ``__exit__()`` of the topic
+           used as a context manager, and only if the block exits without
+           raising an exception.
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
@@ -216,6 +276,12 @@ class Topic(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_list_subscriptions]
+           :end-before: [END topic_list_subscriptions]
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -252,6 +318,12 @@ class Topic(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_get_iam_policy]
+           :end-before: [END topic_get_iam_policy]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
@@ -270,6 +342,12 @@ class Topic(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_set_iam_policy]
+           :end-before: [END topic_set_iam_policy]
 
         :type policy: :class:`gcloud.pubsub.iam.Policy`
         :param policy: the new policy, typically fetched via
@@ -294,6 +372,12 @@ class Topic(object):
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_check_iam_permissions]
+           :end-before: [END topic_check_iam_permissions]
 
         :type permissions: list of string
         :param permissions: list of permissions to be tested
