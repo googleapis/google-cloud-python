@@ -89,15 +89,19 @@ def _build_dataframe(time_series_iterable,
     # Convert the timestamp strings into a DatetimeIndex.
     dataframe.index = pandas.to_datetime(dataframe.index)
 
-    # Build a column Index or MultiIndex from the label values. Do not
-    # include level names in the column header if the user requested a
-    # single-level header by specifying "label".
-    level_names = labels or None
-    label_keys = labels or [label]
+    # Build a multi-level stack of column headers. Some labels may
+    # be undefined for some time series.
+    levels = []
+    for key in labels or [label]:
+        level = [header.labels.get(key, '') for header in headers]
+        levels.append(level)
+
+    # Build a column Index or MultiIndex. Do not include level names
+    # in the column header if the user requested a single-level header
+    # by specifying "label".
     dataframe.columns = pandas.MultiIndex.from_arrays(
-        [[header.labels.get(key, '') for header in headers]
-         for key in label_keys],
-        names=level_names)
+        levels,
+        names=labels or None)
 
     # Sort the rows just in case (since the API doesn't guarantee the
     # ordering), and sort the columns lexicographically.
