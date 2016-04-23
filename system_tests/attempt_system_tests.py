@@ -30,10 +30,12 @@ from run_system_test import run_module_tests
 
 
 MODULES = (
-    'datastore',
-    'storage',
-    'pubsub',
     'bigquery',
+    'datastore',
+    'logging',
+    'monitoring',
+    'pubsub',
+    'storage',
 )
 if sys.version_info[:2] == (2, 7):
     MODULES += ('bigtable', 'bigtable-happybase')
