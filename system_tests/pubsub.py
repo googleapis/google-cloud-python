@@ -171,7 +171,16 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(message2.data, MESSAGE_2)
         self.assertEqual(message2.attributes['extra'], EXTRA_2)
 
+    def _maybe_emulator_skip(self):
+        # NOTE: We check at run-time rather than using the @unittest2.skipIf
+        #       decorator. This matches the philosophy behind using
+        #       setUpModule to determine the environment at run-time
+        #       rather than at import time.
+        if os.getenv(PUBSUB_EMULATOR) is not None:
+            self.skipTest('IAM not supported by Pub/Sub emulator')
+
     def test_topic_iam_policy(self):
+        self._maybe_emulator_skip()
         topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
@@ -187,6 +196,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_subscription_iam_policy(self):
+        self._maybe_emulator_skip()
         topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
