@@ -14,9 +14,6 @@
 
 """Metric Descriptors for the `Google Monitoring API (V3)`_.
 
-Features intentionally omitted from this first version of the client library:
-  * Creating and deleting metric descriptors.
-
 .. _Google Monitoring API (V3):
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
     projects.metricDescriptors
@@ -28,12 +25,15 @@ from gcloud.monitoring.label import LabelDescriptor
 
 
 class MetricKind(object):
-    """Allowed values for the `kind of measurement`_.
+    """Choices for the `kind of measurement`_.
 
     .. _kind of measurement:
         https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
         projects.metricDescriptors#MetricKind
     """
+
+    METRIC_KIND_UNSPECIFIED = 'METRIC_KIND_UNSPECIFIED'
+    """.. note:: An unspecified kind is not allowed in metric descriptors."""
 
     GAUGE = 'GAUGE'
     DELTA = 'DELTA'
@@ -41,12 +41,15 @@ class MetricKind(object):
 
 
 class ValueType(object):
-    """Allowed values for the `metric value type`_.
+    """Choices for the `metric value type`_.
 
     .. _metric value type:
         https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
         projects.metricDescriptors#ValueType
     """
+
+    VALUE_TYPE_UNSPECIFIED = 'VALUE_TYPE_UNSPECIFIED'
+    """.. note:: An unspecified type is not allowed in metric descriptors."""
 
     BOOL = 'BOOL'
     INT64 = 'INT64'
@@ -58,46 +61,62 @@ class ValueType(object):
 class MetricDescriptor(object):
     """Specification of a metric type and its schema.
 
-    :type name: string
-    :param name:
-        The "resource name" of the metric descriptor. For example:
-        ``"projects/<project_id>/metricDescriptors/<type>"``
+    The preferred way to construct a metric descriptor object is using the
+    :meth:`~gcloud.monitoring.client.Client.metric_descriptor` factory method
+    of the :class:`~gcloud.monitoring.client.Client` class.
+
+    :type client: :class:`gcloud.monitoring.client.Client`
+    :param client: A client for operating on the metric descriptor.
 
     :type type_: string
     :param type_:
         The metric type including a DNS name prefix. For example:
         ``"compute.googleapis.com/instance/cpu/utilization"``
 
-    :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
-    :param labels:
-        A sequence of label descriptors specifying the labels used to
-        identify a specific instance of this metric.
-
     :type metric_kind: string
     :param metric_kind:
-        The kind of measurement. It must be one of :data:`MetricKind.GAUGE`,
-        :data:`MetricKind.DELTA`, or :data:`MetricKind.CUMULATIVE`.
-        See :class:`MetricKind`.
+        The kind of measurement. It must be one of
+        :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,
+        or :data:`MetricKind.CUMULATIVE`. See :class:`MetricKind`.
 
     :type value_type: string
     :param value_type:
-        The value type of the metric. It must be one of :data:`ValueType.BOOL`,
-        :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
-        :data:`ValueType.STRING`, or :data:`ValueType.DISTRIBUTION`.
+        The value type of the metric. It must be one of
+        :data:`ValueType.BOOL`, :data:`ValueType.INT64`,
+        :data:`ValueType.DOUBLE`, :data:`ValueType.STRING`,
+        or :data:`ValueType.DISTRIBUTION`.
         See :class:`ValueType`.
 
+    :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
+    :param labels:
+        A sequence of zero or more label descriptors specifying the labels
+        used to identify a specific instance of this metric.
+
     :type unit: string
-    :param unit: The unit in which the metric value is reported.
+    :param unit: An optional unit in which the metric value is reported.
 
     :type description: string
-    :param description: A detailed description of the metric.
+    :param description: An optional detailed description of the metric.
 
     :type display_name: string
-    :param display_name: A concise name for the metric.
+    :param display_name: An optional concise name for the metric.
+
+    :type name: string or None
+    :param name:
+        The "resource name" of the metric descriptor. For example:
+        ``"projects/<project_id>/metricDescriptors/<type>"``. As
+        retrieved from the service, this will always be specified.
+        You can and should omit it when constructing an instance for
+        the purpose of creating a new metric descriptor.
     """
 
-    def __init__(self, name, type_, labels, metric_kind, value_type,
-                 unit, description, display_name):
+    def __init__(self, client, type_,
+                 metric_kind=MetricKind.METRIC_KIND_UNSPECIFIED,
+                 value_type=ValueType.VALUE_TYPE_UNSPECIFIED,
+                 labels=(),
+                 unit='', description='', display_name='',
+                 name=None):
+        self.client = client
         self.name = name
         self.type = type_
         self.labels = labels
@@ -106,6 +125,48 @@ class MetricDescriptor(object):
         self.unit = unit
         self.description = description
         self.display_name = display_name
+
+    def create(self):
+        """Create a new metric descriptor based on this object.
+
+        Example::
+
+            >>> descriptor = client.metric_descriptor(
+            ...     'custom.googleapis.com/my_metric',
+            ...     metric_kind=MetricKind.GAUGE,
+            ...     value_type=ValueType.DOUBLE,
+            ...     description='This is a simple example of a custom metric.')
+            >>> descriptor.create()
+
+        The metric kind must not be :data:`MetricKind.METRIC_KIND_UNSPECIFIED`,
+        and the value type must not be
+        :data:`ValueType.VALUE_TYPE_UNSPECIFIED`.
+
+        The ``name`` attribute is ignored in preparing the creation request.
+        All attributes are overwritten by the values received in the response
+        (normally affecting only ``name``).
+        """
+        path = '/projects/{project}/metricDescriptors/'.format(
+            project=self.client.project)
+        response = self.client.connection.api_request(method='POST', path=path,
+                                                      data=self._to_dict())
+        self._init_from_dict(response)
+
+    def delete(self):
+        """Delete the metric descriptor identified by this object.
+
+        Example::
+
+            >>> descriptor = client.metric_descriptor(
+            ...     'custom.googleapis.com/my_metric')
+            >>> descriptor.delete()
+
+        Only the ``client`` and ``type`` attributes are used.
+        """
+        path = '/projects/{project}/metricDescriptors/{type}'.format(
+            project=self.client.project,
+            type=self.type)
+        self.client.connection.api_request(method='DELETE', path=path)
 
     @classmethod
     def _fetch(cls, client, metric_type):
@@ -127,7 +188,7 @@ class MetricDescriptor(object):
             project=client.project,
             type=metric_type)
         info = client.connection.api_request(method='GET', path=path)
-        return cls._from_dict(info)
+        return cls._from_dict(client, info)
 
     @classmethod
     def _list(cls, client, filter_string=None, type_prefix=None):
@@ -177,7 +238,7 @@ class MetricDescriptor(object):
             response = client.connection.api_request(
                 method='GET', path=path, query_params=params)
             for info in response.get('metricDescriptors', ()):
-                descriptors.append(cls._from_dict(info))
+                descriptors.append(cls._from_dict(client, info))
 
             page_token = response.get('nextPageToken')
             if not page_token:
@@ -186,8 +247,11 @@ class MetricDescriptor(object):
         return descriptors
 
     @classmethod
-    def _from_dict(cls, info):
+    def _from_dict(cls, client, info):
         """Construct a metric descriptor from the parsed JSON representation.
+
+        :type client: :class:`gcloud.monitoring.client.Client`
+        :param client: A client to be included in the returned object.
 
         :type info: dict
         :param info:
@@ -196,27 +260,59 @@ class MetricDescriptor(object):
         :rtype: :class:`MetricDescriptor`
         :returns: A metric descriptor.
         """
-        return cls(
-            name=info['name'],
-            type_=info['type'],
-            labels=tuple(LabelDescriptor._from_dict(label)
-                         for label in info.get('labels', ())),
-            metric_kind=info['metricKind'],
-            value_type=info['valueType'],
-            unit=info.get('unit', ''),
-            description=info.get('description', ''),
-            display_name=info.get('displayName', ''),
-        )
+        descriptor = cls(client, None)
+        descriptor._init_from_dict(info)
+        return descriptor
+
+    def _init_from_dict(self, info):
+        """Initialize attributes from the parsed JSON representation.
+
+        :type info: dict
+        :param info:
+            A ``dict`` parsed from the JSON wire-format representation.
+        """
+        self.name = info['name']
+        self.type = info['type']
+        self.labels = tuple(LabelDescriptor._from_dict(label)
+                            for label in info.get('labels', []))
+        self.metric_kind = info['metricKind']
+        self.value_type = info['valueType']
+        self.unit = info.get('unit', '')
+        self.description = info.get('description', '')
+        self.display_name = info.get('displayName', '')
+
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON wire format.
+
+        :rtype: dict
+        :returns: A dictionary.
+        """
+        info = {
+            'type': self.type,
+            'metricKind': self.metric_kind,
+            'valueType': self.value_type,
+        }
+
+        if self.labels:
+            info['labels'] = [label._to_dict() for label in self.labels]
+        if self.unit:
+            info['unit'] = self.unit
+        if self.description:
+            info['description'] = self.description
+        if self.display_name:
+            info['displayName'] = self.display_name
+
+        return info
 
     def __repr__(self):
         return (
-            'MetricDescriptor(\n'
+            '<MetricDescriptor:\n'
             ' name={name!r},\n'
             ' type={type!r},\n'
             ' metric_kind={metric_kind!r}, value_type={value_type!r},\n'
             ' labels={labels!r},\n'
             ' display_name={display_name!r}, unit={unit!r},\n'
-            ' description={description!r})'
+            ' description={description!r}>'
         ).format(**self.__dict__)
 
 

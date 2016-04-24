@@ -73,7 +73,9 @@ class TestMetricDescriptor(unittest2.TestCase):
         DESCRIPTION = 'Delta HTTP response count.'
         DISPLAY_NAME = 'Response count'
 
+        client = object()
         descriptor = self._makeOne(
+            client=client,
             name=NAME,
             type_=TYPE,
             labels=LABELS,
@@ -83,6 +85,8 @@ class TestMetricDescriptor(unittest2.TestCase):
             description=DESCRIPTION,
             display_name=DISPLAY_NAME,
         )
+
+        self.assertIs(descriptor.client, client)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -94,6 +98,25 @@ class TestMetricDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.unit, UNIT)
         self.assertEqual(descriptor.description, DESCRIPTION)
         self.assertEqual(descriptor.display_name, DISPLAY_NAME)
+
+    def test_constructor_defaults(self):
+        TYPE = 'appengine.googleapis.com/http/server/response_count'
+
+        client = object()
+        descriptor = self._makeOne(client=client, type_=TYPE)
+
+        self.assertIs(descriptor.client, client)
+
+        self.assertIsNone(descriptor.name)
+        self.assertEqual(descriptor.type, TYPE)
+        self.assertEqual(descriptor.labels, ())
+
+        self.assertEqual(descriptor.metric_kind, 'METRIC_KIND_UNSPECIFIED')
+        self.assertEqual(descriptor.value_type, 'VALUE_TYPE_UNSPECIFIED')
+
+        self.assertEqual(descriptor.unit, '')
+        self.assertEqual(descriptor.description, '')
+        self.assertEqual(descriptor.display_name, '')
 
     def test_from_dict(self):
         TYPE = 'appengine.googleapis.com/http/server/response_count'
@@ -120,7 +143,10 @@ class TestMetricDescriptor(unittest2.TestCase):
             'description': DESCRIPTION,
             'displayName': DISPLAY_NAME,
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        client = object()
+        descriptor = self._getTargetClass()._from_dict(client, info)
+
+        self.assertIs(descriptor.client, client)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -149,7 +175,10 @@ class TestMetricDescriptor(unittest2.TestCase):
             'metricKind': METRIC_KIND,
             'valueType': VALUE_TYPE,
         }
-        descriptor = self._getTargetClass()._from_dict(info)
+        client = object()
+        descriptor = self._getTargetClass()._from_dict(client, info)
+
+        self.assertIs(descriptor.client, client)
 
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
@@ -160,9 +189,123 @@ class TestMetricDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.description, '')
         self.assertEqual(descriptor.display_name, '')
 
+    def test_to_dict(self):
+        TYPE = 'appengine.googleapis.com/http/server/response_count'
+        NAME = 'projects/my-project/metricDescriptors/' + TYPE
+        LABEL1 = {'key': 'loading', 'valueType': 'BOOL',
+                  'description': 'Loaded a new instance?'}
+        LABEL2 = {'key': 'response_code', 'valueType': 'INT64',
+                  'description': 'HTTP status code for the request.'}
+
+        METRIC_KIND = 'DELTA'
+        VALUE_TYPE = 'INT64'
+
+        UNIT = '{responses}/s'
+        DESCRIPTION = 'Delta HTTP response count.'
+        DISPLAY_NAME = 'Response count'
+
+        info = {
+            'name': NAME,
+            'type': TYPE,
+            'labels': [LABEL1, LABEL2],
+            'metricKind': METRIC_KIND,
+            'valueType': VALUE_TYPE,
+            'unit': UNIT,
+            'description': DESCRIPTION,
+            'displayName': DISPLAY_NAME,
+        }
+        client = object()
+        descriptor = self._getTargetClass()._from_dict(client, info)
+
+        del info['name']
+        self.assertEqual(descriptor._to_dict(), info)
+
+    def test_to_dict_defaults(self):
+        TYPE = 'appengine.googleapis.com/http/server/response_count'
+        NAME = 'projects/my-project/metricDescriptors/' + TYPE
+        METRIC_KIND = 'DELTA'
+        VALUE_TYPE = 'INT64'
+
+        info = {
+            'name': NAME,
+            'type': TYPE,
+            'metricKind': METRIC_KIND,
+            'valueType': VALUE_TYPE,
+        }
+        client = object()
+        descriptor = self._getTargetClass()._from_dict(client, info)
+
+        del info['name']
+        self.assertEqual(descriptor._to_dict(), info)
+
+    def test_create(self):
+        PROJECT = 'my-project'
+        TYPE = 'custom.googleapis.com/my_metric'
+        PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
+        NAME = PATH + TYPE
+
+        METRIC_KIND = 'GAUGE'
+        VALUE_TYPE = 'DOUBLE'
+        DESCRIPTION = 'This is my metric.'
+
+        REQUEST = {
+            'type': TYPE,
+            'metricKind': METRIC_KIND,
+            'valueType': VALUE_TYPE,
+            'description': DESCRIPTION,
+        }
+        RESPONSE = dict(REQUEST, name=NAME)
+
+        connection = _Connection(RESPONSE)
+        client = _Client(project=PROJECT, connection=connection)
+        descriptor = self._makeOne(
+            client=client,
+            type_=TYPE,
+            metric_kind=METRIC_KIND,
+            value_type=VALUE_TYPE,
+            description=DESCRIPTION,
+        )
+        descriptor.create()
+
+        self.assertEqual(descriptor.name, NAME)
+        self.assertEqual(descriptor.type, TYPE)
+        self.assertEqual(descriptor.labels, ())
+
+        self.assertEqual(descriptor.metric_kind, METRIC_KIND)
+        self.assertEqual(descriptor.value_type, VALUE_TYPE)
+
+        self.assertEqual(descriptor.unit, '')
+        self.assertEqual(descriptor.description, DESCRIPTION)
+        self.assertEqual(descriptor.display_name, '')
+
+        request, = connection._requested
+        expected_request = {'method': 'POST', 'path': '/' + PATH,
+                            'data': REQUEST}
+        self.assertEqual(request, expected_request)
+
+    def test_delete(self):
+        PROJECT = 'my-project'
+        TYPE = 'custom.googleapis.com/my_metric'
+        NAME = 'projects/{project}/metricDescriptors/{type}'.format(
+            project=PROJECT, type=TYPE)
+
+        connection = _Connection({})
+        client = _Client(project=PROJECT, connection=connection)
+        descriptor = self._makeOne(
+            client=client,
+            type_=TYPE,
+            metric_kind='NOTUSED',
+            value_type='NOTUSED',
+        )
+        descriptor.delete()
+
+        request, = connection._requested
+        expected_request = {'method': 'DELETE', 'path': '/' + NAME}
+        self.assertEqual(request, expected_request)
+
     def test_fetch(self):
         PROJECT = 'my-project'
-        TYPE = 'custom.googleapis.com/my-metric'
+        TYPE = 'custom.googleapis.com/my_metric'
         NAME = 'projects/{project}/metricDescriptors/{type}'.format(
             project=PROJECT, type=TYPE)
         DESCRIPTION = 'This is my metric.'
@@ -179,6 +322,7 @@ class TestMetricDescriptor(unittest2.TestCase):
         client = _Client(project=PROJECT, connection=connection)
         descriptor = self._getTargetClass()._fetch(client, TYPE)
 
+        self.assertIs(descriptor.client, client)
         self.assertEqual(descriptor.name, NAME)
         self.assertEqual(descriptor.type, TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
@@ -191,7 +335,7 @@ class TestMetricDescriptor(unittest2.TestCase):
         PROJECT = 'my-project'
         PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
 
-        TYPE1 = 'custom.googleapis.com/my-metric-1'
+        TYPE1 = 'custom.googleapis.com/my_metric_1'
         DESCRIPTION1 = 'This is my first metric.'
         NAME1 = PATH + TYPE1
         METRIC_DESCRIPTOR1 = {
@@ -202,7 +346,7 @@ class TestMetricDescriptor(unittest2.TestCase):
             'description': DESCRIPTION1,
         }
 
-        TYPE2 = 'custom.googleapis.com/my-metric-2'
+        TYPE2 = 'custom.googleapis.com/my_metric_2'
         DESCRIPTION2 = 'This is my second metric.'
         NAME2 = PATH + TYPE2
         METRIC_DESCRIPTOR2 = {
@@ -224,10 +368,12 @@ class TestMetricDescriptor(unittest2.TestCase):
         self.assertEqual(len(descriptors), 2)
         descriptor1, descriptor2 = descriptors
 
+        self.assertIs(descriptor1.client, client)
         self.assertEqual(descriptor1.name, NAME1)
         self.assertEqual(descriptor1.type, TYPE1)
         self.assertEqual(descriptor1.description, DESCRIPTION1)
 
+        self.assertIs(descriptor2.client, client)
         self.assertEqual(descriptor2.name, NAME2)
         self.assertEqual(descriptor2.type, TYPE2)
         self.assertEqual(descriptor2.description, DESCRIPTION2)
@@ -243,7 +389,7 @@ class TestMetricDescriptor(unittest2.TestCase):
         PROJECT = 'my-project'
         PATH = 'projects/{project}/metricDescriptors/'.format(project=PROJECT)
 
-        TYPE1 = 'custom.googleapis.com/my-metric-1'
+        TYPE1 = 'custom.googleapis.com/my_metric_1'
         DESCRIPTION1 = 'This is my first metric.'
         NAME1 = PATH + TYPE1
         METRIC_DESCRIPTOR1 = {
@@ -254,7 +400,7 @@ class TestMetricDescriptor(unittest2.TestCase):
             'description': DESCRIPTION1,
         }
 
-        TYPE2 = 'custom.googleapis.com/my-metric-2'
+        TYPE2 = 'custom.googleapis.com/my_metric_2'
         DESCRIPTION2 = 'This is my second metric.'
         NAME2 = PATH + TYPE2
         METRIC_DESCRIPTOR2 = {

@@ -48,7 +48,7 @@ class LabelDescriptor(object):
     :param description: A human-readable description for the label.
     """
 
-    def __init__(self, key, value_type, description):
+    def __init__(self, key, value_type=LabelValueType.STRING, description=''):
         self.key = key
         self.value_type = value_type
         self.description = description
@@ -69,6 +69,28 @@ class LabelDescriptor(object):
             info.get('valueType', LabelValueType.STRING),
             info.get('description', ''),
         )
+
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON wire format.
+
+        :rtype: dict
+        :returns: A dictionary.
+        """
+        info = {
+            'key': self.key,
+            'valueType': self.value_type,
+        }
+
+        if self.description:
+            info['description'] = self.description
+
+        return info
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return self.__dict__ != other.__dict__
 
     def __repr__(self):
         return (
