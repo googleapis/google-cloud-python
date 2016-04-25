@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.monitoring.metric &mdash; gcloud bc1a3e1 documentation</title>
+    <title>gcloud.monitoring.metric &mdash; gcloud bd96bdc documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'bc1a3e1',
+        VERSION:     'bd96bdc',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud bc1a3e1 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud bd96bdc documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/metric%0ARelease%3A%20bc1a3e1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/metric%0ARelease%3A%20bd96bdc" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (bc1a3e1)
+              Version History (bd96bdc)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -223,7 +223,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_from_dict</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_list</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">type_prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all metric descriptors for the project.</span>
 
 <span class="sd">        :type client: :class:`gcloud.monitoring.client.Client`</span>
@@ -234,6 +234,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">            An optional filter expression describing the metric descriptors</span>
 <span class="sd">            to be returned. See the `filter documentation`_.</span>
 
+<span class="sd">        :type type_prefix: string or None</span>
+<span class="sd">        :param type_prefix: An optional prefix constraining the selected</span>
+<span class="sd">            metric types. This adds ``metric.type = starts_with(&quot;&lt;prefix&gt;&quot;)``</span>
+<span class="sd">            to the filter.</span>
+
 <span class="sd">        :rtype: list of :class:`MetricDescriptor`</span>
 <span class="sd">        :returns: A list of metric descriptor instances.</span>
 
@@ -243,14 +248,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/{project}/metricDescriptors/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
-        <span class="n">descriptors</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">filter_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_string</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">type_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;metric.type = starts_with(&quot;{prefix}&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">prefix</span><span class="o">=</span><span class="n">type_prefix</span><span class="p">))</span>
+
+        <span class="n">descriptors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">page_token</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
-            <span class="k">if</span> <span class="n">filter_string</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_string</span>
+            <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
+                <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39; AND &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
