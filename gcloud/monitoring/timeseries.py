@@ -48,8 +48,7 @@ class TimeSeries(collections.namedtuple(
     :param value_type:
         The value type of the metric: :data:`ValueType.BOOL`,
         :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
-        :data:`ValueType.STRING`, :data:`ValueType.DISTRIBUTION`,
-        or :data:`ValueType.MONEY`.
+        :data:`ValueType.STRING`, or :data:`ValueType.DISTRIBUTION`.
         See :class:`~gcloud.monitoring.metric.ValueType`.
 
     :type points: list of :class:`Point`
