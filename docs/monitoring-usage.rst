@@ -24,8 +24,13 @@ Essential concepts:
 Please refer to the documentation for the `Monitoring API`_ for
 more information.
 
-At present, this client library supports querying of time series,
-metric descriptors, and resource descriptors.
+At present, this client library supports the following features
+of the API:
+
+- Querying of time series.
+- Querying of metric descriptors and monitored resource descriptors.
+- Creation and deletion of metric descriptors for custom metrics.
+- (Writing of custom metric data will be coming soon.)
 
 .. _Monitoring API: https://cloud.google.com/monitoring/api/
 
@@ -100,6 +105,46 @@ You can list all of these with the
 
 See :class:`~gcloud.monitoring.metric.MetricDescriptor` and the
 `Metric Descriptors`_ API documentation for more information.
+
+You can create new metric descriptors to define custom metrics in
+the ``custom.googleapis.com`` namespace. You do this by creating a
+:class:`~gcloud.monitoring.metric.MetricDescriptor` object using the
+client's :meth:`~gcloud.monitoring.client.Client.metric_descriptor`
+factory and then calling the object's
+:meth:`~gcloud.monitoring.metric.MetricDescriptor.create` method::
+
+    >>> from gcloud.monitoring import MetricKind, ValueType
+    >>> descriptor = client.metric_descriptor(
+    ...     'custom.googleapis.com/my_metric',
+    ...     metric_kind=MetricKind.GAUGE,
+    ...     value_type=ValueType.DOUBLE,
+    ...     description='This is a simple example of a custom metric.')
+    >>> descriptor.create()
+
+You can delete such a metric descriptor as follows::
+
+    >>> descriptor = client.metric_descriptor(
+    ...     'custom.googleapis.com/my_metric')
+    >>> descriptor.delete()
+
+To define a custom metric parameterized by one or more labels,
+you must build the appropriate
+:class:`~gcloud.monitoring.label.LabelDescriptor` objects
+and include them in the
+:class:`~gcloud.monitoring.metric.MetricDescriptor` object
+before you call
+:meth:`~gcloud.monitoring.metric.MetricDescriptor.create`::
+
+    >>> from gcloud.monitoring import LabelDescriptor, LabelValueType
+    >>> label = LabelDescriptor('response_code', LabelValueType.INT64,
+    ...                         description='HTTP status code')
+    >>> descriptor = client.metric_descriptor(
+    ...     'custom.googleapis.com/my_app/response_count',
+    ...     metric_kind=MetricKind.CUMULATIVE,
+    ...     value_type=ValueType.INT64,
+    ...     labels=[label],
+    ...     description='Cumulative count of HTTP responses.')
+    >>> descriptor.create()
 
 .. _platform metrics: https://cloud.google.com/monitoring/api/metrics
 .. _agent metrics: https://cloud.google.com/monitoring/agent/
