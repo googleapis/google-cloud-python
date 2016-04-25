@@ -40,7 +40,6 @@ IGNORED_MODULES = frozenset([
     'gcloud.monitoring.__init__',
     'gcloud.pubsub.__init__',
     'gcloud.resource_manager.__init__',
-    'gcloud.search.__init__',
     'gcloud.storage.__init__',
     'gcloud.streaming.__init__',
     'gcloud.streaming.buffered_stream',

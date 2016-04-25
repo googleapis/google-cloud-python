@@ -219,10 +219,6 @@ you need a `Google Developers Service Account`_.
 
         * Google Cloud Pub/Sub
 
-      * **Search**
-
-        * Google Cloud Search API
-
       * **Storage**
 
         * Google Cloud Storage
