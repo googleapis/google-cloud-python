@@ -53,7 +53,6 @@ class ValueType(object):
     DOUBLE = 'DOUBLE'
     STRING = 'STRING'
     DISTRIBUTION = 'DISTRIBUTION'
-    MONEY = 'MONEY'
 
 
 class MetricDescriptor(object):
@@ -84,8 +83,7 @@ class MetricDescriptor(object):
     :param value_type:
         The value type of the metric. It must be one of :data:`ValueType.BOOL`,
         :data:`ValueType.INT64`, :data:`ValueType.DOUBLE`,
-        :data:`ValueType.STRING`, :data:`ValueType.DISTRIBUTION`,
-        or :data:`ValueType.MONEY`.
+        :data:`ValueType.STRING`, or :data:`ValueType.DISTRIBUTION`.
         See :class:`ValueType`.
 
     :type unit: string
