@@ -130,7 +130,7 @@ class MetricDescriptor(object):
         return cls._from_dict(info)
 
     @classmethod
-    def _list(cls, client, filter_string=None):
+    def _list(cls, client, filter_string=None, type_prefix=None):
         """List all metric descriptors for the project.
 
         :type client: :class:`gcloud.monitoring.client.Client`
@@ -141,6 +141,11 @@ class MetricDescriptor(object):
             An optional filter expression describing the metric descriptors
             to be returned. See the `filter documentation`_.
 
+        :type type_prefix: string or None
+        :param type_prefix: An optional prefix constraining the selected
+            metric types. This adds ``metric.type = starts_with("<prefix>")``
+            to the filter.
+
         :rtype: list of :class:`MetricDescriptor`
         :returns: A list of metric descriptor instances.
 
@@ -150,14 +155,21 @@ class MetricDescriptor(object):
         path = '/projects/{project}/metricDescriptors/'.format(
             project=client.project)
 
-        descriptors = []
+        filters = []
+        if filter_string is not None:
+            filters.append(filter_string)
 
+        if type_prefix is not None:
+            filters.append('metric.type = starts_with("{prefix}")'.format(
+                prefix=type_prefix))
+
+        descriptors = []
         page_token = None
         while True:
             params = {}
 
-            if filter_string is not None:
-                params['filter'] = filter_string
+            if filters:
+                params['filter'] = ' AND '.join(filters)
 
             if page_token is not None:
                 params['pageToken'] = page_token

@@ -131,12 +131,16 @@ class Client(JSONClient):
         """
         return MetricDescriptor._fetch(self, metric_type)
 
-    def list_metric_descriptors(self, filter_string=None):
+    def list_metric_descriptors(self, filter_string=None, type_prefix=None):
         """List all metric descriptors for the project.
 
-        Example::
+        Examples::
 
             >>> for descriptor in client.list_metric_descriptors():
+            ...     print(descriptor.type)
+
+            >>> for descriptor in client.list_metric_descriptors(
+            ...         type_prefix='custom.'):
             ...     print(descriptor.type)
 
         :type filter_string: string or None
@@ -144,13 +148,19 @@ class Client(JSONClient):
             An optional filter expression describing the metric descriptors
             to be returned. See the `filter documentation`_.
 
+        :type type_prefix: string or None
+        :param type_prefix: An optional prefix constraining the selected
+            metric types. This adds ``metric.type = starts_with("<prefix>")``
+            to the filter.
+
         :rtype: list of :class:`~gcloud.monitoring.metric.MetricDescriptor`
         :returns: A list of metric descriptor instances.
 
         .. _filter documentation:
             https://cloud.google.com/monitoring/api/v3/filters
         """
-        return MetricDescriptor._list(self, filter_string)
+        return MetricDescriptor._list(self, filter_string,
+                                      type_prefix=type_prefix)
 
     def fetch_resource_descriptor(self, resource_type):
         """Look up a resource descriptor by type.
