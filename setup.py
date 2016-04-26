@@ -20,7 +20,7 @@ REQUIREMENTS = [
 
 GRPC_EXTRAS = [
     'grpcio >= 0.13.1',
-    'grpc-google-pubsub-v1',
+    'gax-google-pubsub-v1',
 ]
 
 setup(
