@@ -101,7 +101,7 @@ class _PublisherAPI(object):
         self._connection = connection
 
     def list_topics(self, project, page_size=None, page_token=None):
-        """List topics for the project associated with this API.
+        """API call:  list topics for a given project
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
@@ -138,7 +138,7 @@ class _PublisherAPI(object):
         return resp.get('topics', ()), resp.get('nextPageToken')
 
     def topic_create(self, topic_path):
-        """API call:  create a topic via a PUT request
+        """API call:  create a topic
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
@@ -154,7 +154,7 @@ class _PublisherAPI(object):
         return conn.api_request(method='PUT', path='/%s' % (topic_path,))
 
     def topic_get(self, topic_path):
-        """API call:  retrieve a topic via a GET request
+        """API call:  retrieve a topic
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
@@ -170,7 +170,7 @@ class _PublisherAPI(object):
         return conn.api_request(method='GET', path='/%s' % (topic_path,))
 
     def topic_delete(self, topic_path):
-        """API call:  delete a topic via a DELETE request
+        """API call:  delete a topic
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
@@ -183,7 +183,7 @@ class _PublisherAPI(object):
         conn.api_request(method='DELETE', path='/%s' % (topic_path,))
 
     def topic_publish(self, topic_path, messages):
-        """API call:  publish a message to a topic via a POST request
+        """API call:  publish one or more messages to a topic
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
@@ -206,7 +206,7 @@ class _PublisherAPI(object):
 
     def topic_list_subscriptions(self, topic_path, page_size=None,
                                  page_token=None):
-        """API call:  list subscriptions bound to a topic via a GET request
+        """API call:  list subscriptions bound to a topic
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
@@ -253,7 +253,7 @@ class _SubscriberAPI(object):
         self._connection = connection
 
     def list_subscriptions(self, project, page_size=None, page_token=None):
-        """List subscriptions for the project associated with this API.
+        """API call:  list subscriptions for a given project
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list
@@ -291,7 +291,7 @@ class _SubscriberAPI(object):
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
-        """API call:  create a subscription via a PUT request
+        """API call:  create a subscription
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
@@ -331,7 +331,7 @@ class _SubscriberAPI(object):
         return conn.api_request(method='PUT', path=path, data=resource)
 
     def subscription_get(self, subscription_path):
-        """API call:  retrieve a subscription via a GET request
+        """API call:  retrieve a subscription
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
@@ -349,7 +349,7 @@ class _SubscriberAPI(object):
         return conn.api_request(method='GET', path=path)
 
     def subscription_delete(self, subscription_path):
-        """API call:  delete a subscription via a DELETE request
+        """API call:  delete a subscription
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
@@ -365,7 +365,7 @@ class _SubscriberAPI(object):
 
     def subscription_modify_push_config(self, subscription_path,
                                         push_endpoint):
-        """API call:  update push config of a subscription via a POST request
+        """API call:  update push config of a subscription
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
@@ -387,7 +387,7 @@ class _SubscriberAPI(object):
 
     def subscription_pull(self, subscription_path, return_immediately=False,
                           max_messages=1):
-        """API call:  update push config of a subscription via a POST request
+        """API call:  retrieve messages for a subscription
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
@@ -419,7 +419,7 @@ class _SubscriberAPI(object):
         return response.get('receivedMessages', ())
 
     def subscription_acknowledge(self, subscription_path, ack_ids):
-        """API call:  acknowledge retrieved messages for the subscription.
+        """API call:  acknowledge retrieved messages
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
@@ -441,7 +441,7 @@ class _SubscriberAPI(object):
 
     def subscription_modify_ack_deadline(self, subscription_path, ack_ids,
                                          ack_deadline):
-        """API call:  acknowledge retrieved messages for the subscription.
+        """API call:  update ack deadline for retrieved messages
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
@@ -478,7 +478,7 @@ class _IAMPolicyAPI(object):
         self._connection = connection
 
     def get_iam_policy(self, target_path):
-        """Fetch the IAM policy for the target.
+        """API call:  fetch the IAM policy for the target
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
@@ -495,7 +495,7 @@ class _IAMPolicyAPI(object):
         return conn.api_request(method='GET', path=path)
 
     def set_iam_policy(self, target_path, policy):
-        """Update the IAM policy for the target.
+        """API call:  update the IAM policy for the target
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
@@ -516,7 +516,7 @@ class _IAMPolicyAPI(object):
         return conn.api_request(method='POST', path=path, data=wrapped)
 
     def test_iam_permissions(self, target_path, permissions):
-        """Update the IAM policy for the target.
+        """API call:  test permissions
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
