@@ -24,7 +24,7 @@ Example::
 At present, the client supports querying of time series, metric descriptors,
 and monitored resource descriptors.
 
-.. _Google Monitoring API (V3): https://cloud.google.com/monitoring/api/
+.. _Google Monitoring API (V3): https://cloud.google.com/monitoring/api/v3/
 """
 
 from gcloud.client import JSONClient
