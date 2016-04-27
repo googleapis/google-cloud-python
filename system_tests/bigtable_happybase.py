@@ -15,7 +15,6 @@
 
 import operator
 import struct
-import time
 
 import unittest2
 
@@ -24,13 +23,15 @@ from gcloud.bigtable import client as client_mod
 from gcloud.bigtable.happybase.connection import Connection
 from gcloud.environment_vars import TESTS_PROJECT
 
+from bigtable import _operation_wait
+from system_test_utils import unique_resource_id
+
 
 _PACK_I64 = struct.Struct('>q').pack
 _FIRST_ELT = operator.itemgetter(0)
 _helpers.PROJECT = TESTS_PROJECT
 ZONE = 'us-central1-c'
-NOW_MILLIS = int(1000 * time.time())
-CLUSTER_ID = 'gcloud-python-%d' % (NOW_MILLIS,)
+CLUSTER_ID = 'gcloud-py' + unique_resource_id('-')
 TABLE_NAME = 'table-name'
 ALT_TABLE_NAME = 'other-table'
 TTL_FOR_TEST = 3
@@ -59,26 +60,6 @@ class Config(object):
     """
     CONNECTION = None
     TABLE = None
-
-
-def _operation_wait(operation, max_attempts=5):
-    """Wait until an operation has completed.
-
-    :type operation: :class:`gcloud.bigtable.cluster.Operation`
-    :param operation: Operation that has not finished.
-
-    :type max_attempts: int
-    :param max_attempts: (Optional) The maximum number of times to check if
-                         the operation has finished. Defaults to 5.
-    """
-    total_sleep = 0
-    while not operation.finished():
-        if total_sleep > max_attempts:
-            return False
-        time.sleep(1)
-        total_sleep += 1
-
-    return True
 
 
 def set_connection():
@@ -646,7 +627,7 @@ class TestTable_put(BaseTableTest):
         value1 = 'value1'
         value2 = 'value2'
         row1_data = {COL1: value1, COL2: value2}
-        ts = NOW_MILLIS
+        ts = 1461367402
 
         # Need to clean-up row1 after.
         self.rows_to_delete.append(ROW_KEY1)

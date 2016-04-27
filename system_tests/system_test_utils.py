@@ -15,6 +15,7 @@
 from __future__ import print_function
 import os
 import sys
+import time
 
 from gcloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
 from gcloud.environment_vars import TESTS_PROJECT
@@ -56,3 +57,17 @@ def check_environ():
     if missing:
         print(ENVIRON_ERROR_MSG % ', '.join(missing), file=sys.stderr)
         sys.exit(1)
+
+
+def unique_resource_id(delimiter='_'):
+    """A unique identifier for a resource.
+
+    Intended to help locate resources created in particular
+    testing environments and at particular times.
+    """
+    build_id = os.getenv('TRAVIS_BUILD_ID', '')
+    if build_id == '':
+        return '%s%d' % (delimiter, 1000 * time.time())
+    else:
+        return '%s%d%s%s' % (delimiter, time.time(),
+                             delimiter, build_id)

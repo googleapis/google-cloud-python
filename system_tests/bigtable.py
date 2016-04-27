@@ -32,11 +32,11 @@ from gcloud.bigtable.row_data import Cell
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.environment_vars import TESTS_PROJECT
 
+from system_test_utils import unique_resource_id
 
-_helpers.PROJECT = TESTS_PROJECT
+
 CENTRAL_1C_ZONE = 'us-central1-c'
-NOW_MILLIS = int(1000 * time.time())
-CLUSTER_ID = 'gcloud-python-%d' % (NOW_MILLIS,)
+CLUSTER_ID = 'gcloud-py' + unique_resource_id('-')
 TABLE_ID = 'gcloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -89,6 +89,7 @@ def _operation_wait(operation, max_attempts=5):
 
 
 def setUpModule():
+    _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = Client(admin=True)
     Config.CLUSTER = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID,
                                            display_name=CLUSTER_ID)

@@ -62,7 +62,7 @@ def get_start_command(package):
     :rtype: tuple
     :returns: The arguments to be used, in a tuple.
     """
-    return ('gcloud', 'beta', 'emulators', package, 'start')
+    return 'gcloud', 'beta', 'emulators', package, 'start'
 
 
 def get_env_init_command(package):
@@ -74,7 +74,7 @@ def get_env_init_command(package):
     :rtype: tuple
     :returns: The arguments to be used, in a tuple.
     """
-    return ('gcloud', 'beta', 'emulators', package, 'env-init')
+    return 'gcloud', 'beta', 'emulators', package, 'env-init'
 
 
 def datastore_wait_ready(popen):
