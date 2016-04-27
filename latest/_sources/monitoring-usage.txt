@@ -27,7 +27,7 @@ more information.
 At present, this client library supports querying of time series,
 metric descriptors, and resource descriptors.
 
-.. _Monitoring API: https://cloud.google.com/monitoring/api/
+.. _Monitoring API: https://cloud.google.com/monitoring/api/v3/
 
 
 The Monitoring Client Object
