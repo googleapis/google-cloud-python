@@ -18,6 +18,7 @@ The non-private functions are part of the API.
 """
 
 import datetime
+import itertools
 
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
@@ -45,10 +46,9 @@ def _get_meaning(value_pb, is_list=False):
 
     :rtype: int
     :returns: The meaning for the ``value_pb`` if one is set, else
-              :data:`None`.
-    :raises: :class:`ValueError <exceptions.ValueError>` if a list value
-             has disagreeing meanings (in sub-elements) or has some
-             elements with meanings and some without.
+              :data:`None`. For a list value, if there are disagreeing
+              means it just returns a list of meanings. If all the
+              list meanings agree, it just condenses them.
     """
     meaning = None
     if is_list:
@@ -59,15 +59,15 @@ def _get_meaning(value_pb, is_list=False):
 
         # We check among all the meanings, some of which may be None,
         # the rest which may be enum/int values.
-        all_meanings = set(_get_meaning(sub_value_pb)
-                           for sub_value_pb in value_pb.array_value.values)
-        meaning = all_meanings.pop()
-        # The value we popped off should have been unique. If not
-        # then we can't handle a list with values that have more
-        # than one meaning.
-        if all_meanings:
-            raise ValueError('Different meanings set on values '
-                             'within an array_value')
+        all_meanings = [_get_meaning(sub_value_pb)
+                        for sub_value_pb in value_pb.array_value.values]
+        unique_meanings = set(all_meanings)
+        if len(unique_meanings) == 1:
+            # If there is a unique meaning, we preserve it.
+            meaning = unique_meanings.pop()
+        else:  # We know len(value_pb.array_value.values) > 0.
+            # If the meaning is not unique, just return all of them.
+            meaning = all_meanings
     elif value_pb.meaning:  # Simple field (int32)
         meaning = value_pb.meaning
 
@@ -155,6 +155,48 @@ def entity_from_protobuf(pb):
     return entity
 
 
+def _set_pb_meaning_from_entity(entity, name, value, value_pb,
+                                is_list=False):
+    """Add meaning information (from an entity) to a protobuf.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity: The entity to be turned into a protobuf.
+
+    :type name: string
+    :param name: The name of the property.
+
+    :type value: object
+    :param value: The current value stored as property ``name``.
+
+    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
+    :param value_pb: The protobuf value to add meaning / meanings to.
+
+    :type is_list: bool
+    :param is_list: (Optional) Boolean indicating if the ``value`` is
+                    a list value.
+    """
+    if name not in entity._meanings:
+        return
+
+    meaning, orig_value = entity._meanings[name]
+    # Only add the meaning back to the protobuf if the value is
+    # unchanged from when it was originally read from the API.
+    if orig_value is not value:
+        return
+
+    # For lists, we set meaning on each sub-element.
+    if is_list:
+        if not isinstance(meaning, list):
+            meaning = itertools.repeat(meaning)
+        val_iter = six.moves.zip(value_pb.array_value.values,
+                                 meaning)
+        for sub_value_pb, sub_meaning in val_iter:
+            if sub_meaning is not None:
+                sub_value_pb.meaning = sub_meaning
+    else:
+        value_pb.meaning = meaning
+
+
 def entity_to_protobuf(entity):
     """Converts an entity into a protobuf.
 
@@ -187,17 +229,8 @@ def entity_to_protobuf(entity):
                 sub_value.exclude_from_indexes = True
 
         # Add meaning information to protobuf.
-        if name in entity._meanings:
-            meaning, orig_value = entity._meanings[name]
-            # Only add the meaning back to the protobuf if the value is
-            # unchanged from when it was originally read from the API.
-            if orig_value is value:
-                # For lists, we set meaning on each sub-element.
-                if value_is_list:
-                    for sub_value_pb in value_pb.array_value.values:
-                        sub_value_pb.meaning = meaning
-                else:
-                    value_pb.meaning = meaning
+        _set_pb_meaning_from_entity(entity, name, value, value_pb,
+                                    is_list=value_is_list)
 
     return entity_pb
 

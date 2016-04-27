@@ -341,6 +341,32 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         #       value stored.
         self._compareEntityProto(entity_pb, expected_pb)
 
+    def test_variable_meanings(self):
+        from gcloud.datastore._generated import entity_pb2
+        from gcloud.datastore.entity import Entity
+        from gcloud.datastore.helpers import _new_value_pb
+
+        entity = Entity()
+        name = 'quux'
+        entity[name] = values = [1, 20, 300]
+        meaning = 9
+        entity._meanings[name] = ([None, meaning, None], values)
+        entity_pb = self._callFUT(entity)
+
+        # Construct the expected protobuf.
+        expected_pb = entity_pb2.Entity()
+        value_pb = _new_value_pb(expected_pb, name)
+        value0 = value_pb.array_value.values.add()
+        value0.integer_value = values[0]
+        # The only array entry with a meaning is the middle one.
+        value1 = value_pb.array_value.values.add()
+        value1.integer_value = values[1]
+        value1.meaning = meaning
+        value2 = value_pb.array_value.values.add()
+        value2.integer_value = values[2]
+
+        self._compareEntityProto(entity_pb, expected_pb)
+
 
 class Test_key_from_protobuf(unittest2.TestCase):
 
@@ -813,7 +839,7 @@ class Test__get_meaning(unittest2.TestCase):
         result = self._callFUT(value_pb, is_list=True)
         self.assertEqual(meaning, result)
 
-    def test_array_value_disagreeing(self):
+    def test_array_value_multiple_meanings(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
@@ -827,10 +853,10 @@ class Test__get_meaning(unittest2.TestCase):
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, is_list=True)
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(result, [meaning1, meaning2])
 
-    def test_array_value_partially_unset(self):
+    def test_array_value_meaning_partially_unset(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
@@ -842,8 +868,8 @@ class Test__get_meaning(unittest2.TestCase):
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, is_list=True)
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(result, [meaning1, None])
 
 
 class TestGeoPoint(unittest2.TestCase):
