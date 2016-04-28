@@ -311,11 +311,6 @@ def subscription_pull(client, to_delete):
     subscription.create()
     to_delete.append(subscription)
 
-    # [START subscription_pull_none_pending]
-    pulled = subscription.pull(max_messages=1)
-    # [END subscription_pull_none_pending]
-    assert len(pulled) == 0
-
     # [START subscription_pull_return_immediately]
     pulled = subscription.pull(return_immediately=True)
     # [END subscription_pull_return_immediately]
