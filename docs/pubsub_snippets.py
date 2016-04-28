@@ -314,16 +314,18 @@ def subscription_pull(client, to_delete):
     # [START subscription_pull_return_immediately]
     pulled = subscription.pull(return_immediately=True)
     # [END subscription_pull_return_immediately]
-    assert len(pulled) == 0
+    assert len(pulled) == 0, "unexpeccted message"
 
     topic.publish(PAYLOAD1)
     topic.publish(PAYLOAD2, extra=EXTRA)
+
+    time.sleep(1)  # eventually-consistent
 
     # [START subscription_pull]
     pulled = subscription.pull(max_messages=2)
     # [END subscription_pull]
 
-    assert len(pulled) == 2
+    assert len(pulled) == 2, "eventual consistency"
 
     # [START subscription_modify_ack_deadline]
     for ack_id, _ in pulled:
