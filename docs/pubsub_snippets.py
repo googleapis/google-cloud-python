@@ -314,7 +314,7 @@ def subscription_pull(client, to_delete):
     # [START subscription_pull_return_immediately]
     pulled = subscription.pull(return_immediately=True)
     # [END subscription_pull_return_immediately]
-    assert len(pulled) == 0, "unexpeccted message"
+    assert len(pulled) == 0, "unexpected message"
 
     topic.publish(PAYLOAD1)
     topic.publish(PAYLOAD2, extra=EXTRA)
