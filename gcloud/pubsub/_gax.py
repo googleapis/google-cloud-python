@@ -27,6 +27,7 @@ else:
 
     from gcloud.exceptions import Conflict
     from gcloud.exceptions import NotFound
+    from gcloud._helpers import _to_bytes
 
     class _PublisherAPI(object):
         """Helper mapping publisher-related APIs.
@@ -172,7 +173,6 @@ else:
 
 
 def _message_pb_from_dict(message):
-    data = message['data']
-    if not isinstance(data, str):
-        data = data.encode('ascii')
-    return PubsubMessage(data=data, attributes=message['attributes'])
+    """Helper for :meth:`_PublisherAPI.topic_publish`."""
+    return PubsubMessage(data=_to_bytes(message['data']),
+                         attributes=message['attributes'])
