@@ -144,7 +144,7 @@ class _PublisherAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the new topic, in format
+        :param topic_path: the fully-qualified path of the new topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
         :rtype: dict
@@ -160,7 +160,7 @@ class _PublisherAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
+        :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
         :rtype: dict
@@ -176,7 +176,7 @@ class _PublisherAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
+        :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
         """
         conn = self._connection
@@ -189,7 +189,7 @@ class _PublisherAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
+        :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
         :type messages: list of dict
@@ -212,7 +212,7 @@ class _PublisherAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic, in format
+        :param topic_path: the fully-qualified path of the topic, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
         :type page_size: int
@@ -297,12 +297,12 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the new
+        :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
 
         :type topic_path: string
-        :param topic_path: the fully-qualfied path of the topic being
+        :param topic_path: the fully-qualified path of the topic being
                            subscribed, in format
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
@@ -337,7 +337,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the subscription,
+        :param subscription_path: the fully-qualified path of the subscription,
                                   in format
                                   ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
@@ -355,7 +355,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the subscription,
+        :param subscription_path: the fully-qualified path of the subscription,
                                   in format
                                   ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
         """
@@ -371,7 +371,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the new
+        :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
 
@@ -393,7 +393,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the new
+        :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
 
@@ -425,7 +425,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the new
+        :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
 
@@ -447,7 +447,7 @@ class _SubscriberAPI(object):
         https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline
 
         :type subscription_path: string
-        :param subscription_path: the fully-qualfied path of the new
+        :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
                                   ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
 

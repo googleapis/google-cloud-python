@@ -65,7 +65,7 @@ else:
             https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
             :type topic_path: string
-            :param topic_path: fully-qualfied path of the new topic, in format
+            :param topic_path: fully-qualified path of the new topic, in format
                                ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
             :rtype: dict
@@ -86,7 +86,7 @@ else:
             https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
 
             :type topic_path: string
-            :param topic_path: fully-qualfied path of the topic, in format
+            :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
             :rtype: dict
@@ -107,7 +107,7 @@ else:
             https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
             :type topic_path: string
-            :param topic_path: fully-qualfied path of the new topic, in format
+            :param topic_path: fully-qualified path of the new topic, in format
                                ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
             :rtype: dict
@@ -125,7 +125,7 @@ else:
             https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
 
             :type topic_path: string
-            :param topic_path: fully-qualfied path of the topic, in format
+            :param topic_path: fully-qualified path of the topic, in format
                                ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
             :type messages: list of dict
@@ -151,7 +151,7 @@ else:
             https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
 
             :type topic_path: string
-            :param topic_path: fully-qualfied path of the topic, in format
+            :param topic_path: fully-qualified path of the topic, in format
                                ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
             :rtype: list of strings
