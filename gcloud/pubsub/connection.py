@@ -416,7 +416,7 @@ class _SubscriberAPI(object):
             'maxMessages': max_messages,
         }
         response = conn.api_request(method='POST', path=path, data=data)
-        return response['receivedMessages']
+        return response.get('receivedMessages', ())
 
     def subscription_acknowledge(self, subscription_path, ack_ids):
         """API call:  acknowledge retrieved messages for the subscription.
