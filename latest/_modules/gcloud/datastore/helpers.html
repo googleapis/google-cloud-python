@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.helpers &mdash; gcloud 023f316 documentation</title>
+    <title>gcloud.datastore.helpers &mdash; gcloud c3331eb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '023f316',
+        VERSION:     'c3331eb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 023f316 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud c3331eb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/helpers%0ARelease%3A%20023f316" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/helpers%0ARelease%3A%20c3331eb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (023f316)
+              Version History (c3331eb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,6 +111,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="kn">import</span> <span class="n">struct_pb2</span>
 <span class="kn">from</span> <span class="nn">google.type</span> <span class="kn">import</span> <span class="n">latlng_pb2</span>
@@ -138,10 +139,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    :rtype: int</span>
 <span class="sd">    :returns: The meaning for the ``value_pb`` if one is set, else</span>
-<span class="sd">              :data:`None`.</span>
-<span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if a list value</span>
-<span class="sd">             has disagreeing meanings (in sub-elements) or has some</span>
-<span class="sd">             elements with meanings and some without.</span>
+<span class="sd">              :data:`None`. For a list value, if there are disagreeing</span>
+<span class="sd">              means it just returns a list of meanings. If all the</span>
+<span class="sd">              list meanings agree, it just condenses them.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">meaning</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
@@ -152,15 +152,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># We check among all the meanings, some of which may be None,</span>
         <span class="c1"># the rest which may be enum/int values.</span>
-        <span class="n">all_meanings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">_get_meaning</span><span class="p">(</span><span class="n">sub_value_pb</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">sub_value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-        <span class="n">meaning</span> <span class="o">=</span> <span class="n">all_meanings</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="c1"># The value we popped off should have been unique. If not</span>
-        <span class="c1"># then we can&#39;t handle a list with values that have more</span>
-        <span class="c1"># than one meaning.</span>
-        <span class="k">if</span> <span class="n">all_meanings</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Different meanings set on values &#39;</span>
-                             <span class="s1">&#39;within an array_value&#39;</span><span class="p">)</span>
+        <span class="n">all_meanings</span> <span class="o">=</span> <span class="p">[</span><span class="n">_get_meaning</span><span class="p">(</span><span class="n">sub_value_pb</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">sub_value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+        <span class="n">unique_meanings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">all_meanings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_meanings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># If there is a unique meaning, we preserve it.</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="n">unique_meanings</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># We know len(value_pb.array_value.values) &gt; 0.</span>
+            <span class="c1"># If the meaning is not unique, just return all of them.</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="n">all_meanings</span>
     <span class="k">elif</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span><span class="p">:</span>  <span class="c1"># Simple field (int32)</span>
         <span class="n">meaning</span> <span class="o">=</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span>
 
@@ -248,6 +248,48 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">return</span> <span class="n">entity</span></div>
 
 
+<span class="k">def</span> <span class="nf">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
+                                <span class="n">is_list</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add meaning information (from an entity) to a protobuf.</span>
+
+<span class="sd">    :type entity: :class:`gcloud.datastore.entity.Entity`</span>
+<span class="sd">    :param entity: The entity to be turned into a protobuf.</span>
+
+<span class="sd">    :type name: string</span>
+<span class="sd">    :param name: The name of the property.</span>
+
+<span class="sd">    :type value: object</span>
+<span class="sd">    :param value: The current value stored as property ``name``.</span>
+
+<span class="sd">    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`</span>
+<span class="sd">    :param value_pb: The protobuf value to add meaning / meanings to.</span>
+
+<span class="sd">    :type is_list: bool</span>
+<span class="sd">    :param is_list: (Optional) Boolean indicating if the ``value`` is</span>
+<span class="sd">                    a list value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">_meanings</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">meaning</span><span class="p">,</span> <span class="n">orig_value</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">_meanings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="c1"># Only add the meaning back to the protobuf if the value is</span>
+    <span class="c1"># unchanged from when it was originally read from the API.</span>
+    <span class="k">if</span> <span class="n">orig_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># For lists, we set meaning on each sub-element.</span>
+    <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">meaning</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">meaning</span><span class="p">)</span>
+        <span class="n">val_iter</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                 <span class="n">meaning</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">sub_value_pb</span><span class="p">,</span> <span class="n">sub_meaning</span> <span class="ow">in</span> <span class="n">val_iter</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sub_meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">sub_value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">sub_meaning</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span>
+
+
 <span class="k">def</span> <span class="nf">entity_to_protobuf</span><span class="p">(</span><span class="n">entity</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts an entity into a protobuf.</span>
 
@@ -280,17 +322,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="n">sub_value</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="c1"># Add meaning information to protobuf.</span>
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">_meanings</span><span class="p">:</span>
-            <span class="n">meaning</span><span class="p">,</span> <span class="n">orig_value</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">_meanings</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-            <span class="c1"># Only add the meaning back to the protobuf if the value is</span>
-            <span class="c1"># unchanged from when it was originally read from the API.</span>
-            <span class="k">if</span> <span class="n">orig_value</span> <span class="ow">is</span> <span class="n">value</span><span class="p">:</span>
-                <span class="c1"># For lists, we set meaning on each sub-element.</span>
-                <span class="k">if</span> <span class="n">value_is_list</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">sub_value_pb</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
-                        <span class="n">sub_value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span>
+        <span class="n">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
+                                    <span class="n">is_list</span><span class="o">=</span><span class="n">value_is_list</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">entity_pb</span>
 
