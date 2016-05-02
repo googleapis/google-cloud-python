@@ -143,7 +143,7 @@ bundling additions to or deletions from the set.
      ...    'www.example.com', 'CNAME', TWO_HOURS, 'www1.example.com')
      >>> changes = zone.changes()
      >>> changes.add_record_set(record_set)
-     >>> changes.begin()  # API request
+     >>> changes.create()  # API request
      >>> while changes.status != 'done':
      ...     print('Waiting for changes to complete')
      ...     time.sleep(60)     # or whatever interval is appropriate
