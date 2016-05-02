@@ -30,6 +30,8 @@ and monitored resource descriptors.
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
 from gcloud.monitoring.metric import MetricDescriptor
+from gcloud.monitoring.metric import MetricKind
+from gcloud.monitoring.metric import ValueType
 from gcloud.monitoring.query import Query
 from gcloud.monitoring.resource import ResourceDescriptor
 
@@ -60,7 +62,7 @@ class Client(JSONClient):
               metric_type=Query.DEFAULT_METRIC_TYPE,
               end_time=None,
               days=0, hours=0, minutes=0):
-        """Construct a query object for listing time series.
+        """Construct a query object for retrieving metric data.
 
         Example::
 
@@ -111,6 +113,82 @@ class Client(JSONClient):
         return Query(self, metric_type,
                      end_time=end_time,
                      days=days, hours=hours, minutes=minutes)
+
+    def metric_descriptor(self, type_,
+                          metric_kind=MetricKind.METRIC_KIND_UNSPECIFIED,
+                          value_type=ValueType.VALUE_TYPE_UNSPECIFIED,
+                          labels=(), unit='', description='', display_name=''):
+        """Construct a metric descriptor object.
+
+        Metric descriptors specify the schema for a particular metric type.
+
+        This factory method is used most often in conjunction with the metric
+        descriptor :meth:`~gcloud.monitoring.metric.MetricDescriptor.create`
+        method to define custom metrics::
+
+            >>> descriptor = client.metric_descriptor(
+            ...     'custom.googleapis.com/my_metric',
+            ...     metric_kind=MetricKind.GAUGE,
+            ...     value_type=ValueType.DOUBLE,
+            ...     description='This is a simple example of a custom metric.')
+            >>> descriptor.create()
+
+        Here is an example where the custom metric is parameterized by a
+        metric label::
+
+            >>> label = LabelDescriptor('response_code', LabelValueType.INT64,
+            ...                         description='HTTP status code')
+            >>> descriptor = client.metric_descriptor(
+            ...     'custom.googleapis.com/my_app/response_count',
+            ...     metric_kind=MetricKind.CUMULATIVE,
+            ...     value_type=ValueType.INT64,
+            ...     labels=[label],
+            ...     description='Cumulative count of HTTP responses.')
+            >>> descriptor.create()
+
+        :type type_: string
+        :param type_:
+            The metric type including a DNS name prefix. For example:
+            ``"custom.googleapis.com/my_metric"``
+
+        :type metric_kind: string
+        :param metric_kind:
+            The kind of measurement. It must be one of
+            :data:`MetricKind.GAUGE`, :data:`MetricKind.DELTA`,
+            or :data:`MetricKind.CUMULATIVE`.
+            See :class:`~gcloud.monitoring.metric.MetricKind`.
+
+        :type value_type: string
+        :param value_type:
+            The value type of the metric. It must be one of
+            :data:`ValueType.BOOL`, :data:`ValueType.INT64`,
+            :data:`ValueType.DOUBLE`, :data:`ValueType.STRING`,
+            or :data:`ValueType.DISTRIBUTION`.
+            See :class:`ValueType`.
+
+        :type labels: list of :class:`~gcloud.monitoring.label.LabelDescriptor`
+        :param labels:
+            A sequence of zero or more label descriptors specifying the labels
+            used to identify a specific instance of this metric.
+
+        :type unit: string
+        :param unit: An optional unit in which the metric value is reported.
+
+        :type description: string
+        :param description: An optional detailed description of the metric.
+
+        :type display_name: string
+        :param display_name: An optional concise name for the metric.
+        """
+        return MetricDescriptor(
+            self, type_,
+            metric_kind=metric_kind,
+            value_type=value_type,
+            labels=labels,
+            unit=unit,
+            description=description,
+            display_name=display_name,
+        )
 
     def fetch_metric_descriptor(self, metric_type):
         """Look up a metric descriptor by type.
@@ -163,7 +241,7 @@ class Client(JSONClient):
                                       type_prefix=type_prefix)
 
     def fetch_resource_descriptor(self, resource_type):
-        """Look up a resource descriptor by type.
+        """Look up a monitored resource descriptor by type.
 
         Example::
 
@@ -181,7 +259,7 @@ class Client(JSONClient):
         return ResourceDescriptor._fetch(self, resource_type)
 
     def list_resource_descriptors(self, filter_string=None):
-        """List all resource descriptors for the project.
+        """List all monitored resource descriptors for the project.
 
         Example::
 

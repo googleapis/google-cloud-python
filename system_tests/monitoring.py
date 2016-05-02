@@ -16,14 +16,10 @@ import unittest2
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
+from gcloud.exceptions import NotFound
 from gcloud import monitoring
 
-
-METRIC_TYPE = 'pubsub.googleapis.com/topic/send_message_operation_count'
-METRIC_KIND = monitoring.MetricKind.DELTA
-VALUE_TYPE = monitoring.ValueType.INT64
-
-RESOURCE_TYPE = 'pubsub_topic'
+from system_test_utils import unique_resource_id
 
 
 def setUpModule():
@@ -33,6 +29,11 @@ def setUpModule():
 class TestMonitoring(unittest2.TestCase):
 
     def test_fetch_metric_descriptor(self):
+        METRIC_TYPE = (
+            'pubsub.googleapis.com/topic/send_message_operation_count')
+        METRIC_KIND = monitoring.MetricKind.DELTA
+        VALUE_TYPE = monitoring.ValueType.INT64
+
         client = monitoring.Client()
         descriptor = client.fetch_metric_descriptor(METRIC_TYPE)
 
@@ -53,6 +54,11 @@ class TestMonitoring(unittest2.TestCase):
             self.assertTrue(label.description)
 
     def test_list_metric_descriptors(self):
+        METRIC_TYPE = (
+            'pubsub.googleapis.com/topic/send_message_operation_count')
+        METRIC_KIND = monitoring.MetricKind.DELTA
+        VALUE_TYPE = monitoring.ValueType.INT64
+
         client = monitoring.Client()
 
         descriptor = None
@@ -92,6 +98,8 @@ class TestMonitoring(unittest2.TestCase):
             self.assertTrue(descriptor.type.startswith(PREFIX))
 
     def test_fetch_resource_descriptor(self):
+        RESOURCE_TYPE = 'pubsub_topic'
+
         client = monitoring.Client()
         descriptor = client.fetch_resource_descriptor(RESOURCE_TYPE)
 
@@ -112,6 +120,8 @@ class TestMonitoring(unittest2.TestCase):
             self.assertTrue(label.description)
 
     def test_list_resource_descriptors(self):
+        RESOURCE_TYPE = 'pubsub_topic'
+
         client = monitoring.Client()
 
         descriptor = None
@@ -138,8 +148,30 @@ class TestMonitoring(unittest2.TestCase):
             self.assertTrue(label.description)
 
     def test_query(self):
+        METRIC_TYPE = (
+            'pubsub.googleapis.com/topic/send_message_operation_count')
         client = monitoring.Client()
         query = client.query(METRIC_TYPE, hours=1)
         # There may be no data, but we can ask anyway.
         for _ in query:
             pass    # Not necessarily reached.
+
+    def test_create_and_delete_metric_descriptor(self):
+        METRIC_TYPE = ('custom.googleapis.com/tmp/system_test_example' +
+                       unique_resource_id())
+        METRIC_KIND = monitoring.MetricKind.GAUGE
+        VALUE_TYPE = monitoring.ValueType.DOUBLE
+        DESCRIPTION = 'System test example -- DELETE ME!'
+
+        client = monitoring.Client()
+        descriptor = client.metric_descriptor(
+            METRIC_TYPE,
+            metric_kind=METRIC_KIND,
+            value_type=VALUE_TYPE,
+            description=DESCRIPTION,
+        )
+
+        descriptor.create()
+        descriptor.delete()
+        with self.assertRaises(NotFound):
+            descriptor.delete()

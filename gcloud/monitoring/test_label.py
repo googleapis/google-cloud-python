@@ -49,6 +49,13 @@ class TestLabelDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.value_type, VALUE_TYPE)
         self.assertEqual(descriptor.description, DESCRIPTION)
 
+    def test_constructor_defaults(self):
+        KEY = 'response_code'
+        descriptor = self._makeOne(key=KEY)
+        self.assertEqual(descriptor.key, KEY)
+        self.assertEqual(descriptor.value_type, 'STRING')
+        self.assertEqual(descriptor.description, '')
+
     def test_from_dict(self):
         KEY = 'response_code'
         VALUE_TYPE = 'INT64'
@@ -70,3 +77,36 @@ class TestLabelDescriptor(unittest2.TestCase):
         self.assertEqual(descriptor.key, KEY)
         self.assertEqual(descriptor.value_type, 'STRING')
         self.assertEqual(descriptor.description, '')
+
+    def test_to_dict(self):
+        KEY = 'response_code'
+        VALUE_TYPE = 'INT64'
+        DESCRIPTION = 'HTTP status code for the request.'
+        descriptor = self._makeOne(key=KEY, value_type=VALUE_TYPE,
+                                   description=DESCRIPTION)
+        expected = {
+            'key': KEY,
+            'valueType': VALUE_TYPE,
+            'description': DESCRIPTION,
+        }
+        self.assertEqual(descriptor._to_dict(), expected)
+
+    def test_to_dict_defaults(self):
+        KEY = 'response_code'
+        descriptor = self._makeOne(key=KEY)
+        expected = {
+            'key': KEY,
+            'valueType': 'STRING',
+        }
+        self.assertEqual(descriptor._to_dict(), expected)
+
+    def test_equality(self):
+        KEY = 'response_code'
+        VALUE_TYPE = 'INT64'
+        DESCRIPTION = 'HTTP status code for the request.'
+        descriptor1 = self._makeOne(key=KEY, value_type=VALUE_TYPE,
+                                    description=DESCRIPTION)
+        descriptor2 = self._makeOne(key=KEY, value_type=VALUE_TYPE,
+                                    description=DESCRIPTION)
+        self.assertTrue(descriptor1 == descriptor2)
+        self.assertFalse(descriptor1 != descriptor2)

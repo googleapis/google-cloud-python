@@ -68,7 +68,7 @@ class Reducer(object):
 
 
 class Query(object):
-    """Query object for listing time series.
+    """Query object for retrieving metric data.
 
     The preferred way to construct a query object is using the
     :meth:`~gcloud.monitoring.client.Client.query` method
