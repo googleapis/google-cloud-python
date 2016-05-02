@@ -1,5 +1,5 @@
-Resource Descriptors
-====================
+Monitored Resource Descriptors
+==============================
 
 .. automodule:: gcloud.monitoring.resource
   :members:

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud c3331eb documentation</title>
+    <title>Using the API &mdash; gcloud 62ea7bc documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c3331eb',
+        VERSION:     '62ea7bc',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c3331eb documentation" href="index.html" />
+    <link rel="top" title="gcloud 62ea7bc documentation" href="index.html" />
     <link rel="next" title="Monitoring Client" href="monitoring-client.html" />
     <link rel="prev" title="Sinks" href="logging-sink.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-usage%0ARelease%3A%20c3331eb" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-usage%0ARelease%3A%2062ea7bc" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c3331eb)
+              Version History (62ea7bc)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,8 +112,14 @@ points or intervals in time.</li>
 </ul>
 <p>Please refer to the documentation for the <a class="reference external" href="https://cloud.google.com/monitoring/api/v3/">Monitoring API</a> for
 more information.</p>
-<p>At present, this client library supports querying of time series,
-metric descriptors, and resource descriptors.</p>
+<p>At present, this client library supports the following features
+of the API:</p>
+<ul class="simple">
+<li>Querying of time series.</li>
+<li>Querying of metric descriptors and monitored resource descriptors.</li>
+<li>Creation and deletion of metric descriptors for custom metrics.</li>
+<li>(Writing of custom metric data will be coming soon.)</li>
+</ul>
 </div>
 <div class="section" id="the-monitoring-client-object">
 <h2>The Monitoring Client Object<a class="headerlink" href="#the-monitoring-client-object" title="Permalink to this headline">#</a></h2>
@@ -174,6 +180,46 @@ You can list all of these with the
 </div>
 <p>See <a class="reference internal" href="monitoring-metric.html#gcloud.monitoring.metric.MetricDescriptor" title="gcloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> and the
 <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors">Metric Descriptors</a> API documentation for more information.</p>
+<p>You can create new metric descriptors to define custom metrics in
+the <code class="docutils literal"><span class="pre">custom.googleapis.com</span></code> namespace. You do this by creating a
+<a class="reference internal" href="monitoring-metric.html#gcloud.monitoring.metric.MetricDescriptor" title="gcloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> object using the
+client&#8217;s <a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client.metric_descriptor" title="gcloud.monitoring.client.Client.metric_descriptor"><code class="xref py py-meth docutils literal"><span class="pre">metric_descriptor()</span></code></a>
+factory and then calling the object&#8217;s
+<a class="reference internal" href="monitoring-metric.html#gcloud.monitoring.metric.MetricDescriptor.create" title="gcloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> method:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.monitoring</span> <span class="k">import</span> <span class="n">MetricKind</span><span class="p">,</span> <span class="n">ValueType</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">GAUGE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">value_type</span><span class="o">=</span><span class="n">ValueType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is a simple example of a custom metric.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can delete such a metric descriptor as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To define a custom metric parameterized by one or more labels,
+you must build the appropriate
+<a class="reference internal" href="monitoring-label.html#gcloud.monitoring.label.LabelDescriptor" title="gcloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a> objects
+and include them in the
+<a class="reference internal" href="monitoring-metric.html#gcloud.monitoring.metric.MetricDescriptor" title="gcloud.monitoring.metric.MetricDescriptor"><code class="xref py py-class docutils literal"><span class="pre">MetricDescriptor</span></code></a> object
+before you call
+<a class="reference internal" href="monitoring-metric.html#gcloud.monitoring.metric.MetricDescriptor.create" title="gcloud.monitoring.metric.MetricDescriptor.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.monitoring</span> <span class="k">import</span> <span class="n">LabelDescriptor</span><span class="p">,</span> <span class="n">LabelValueType</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">label</span> <span class="o">=</span> <span class="n">LabelDescriptor</span><span class="p">(</span><span class="s1">&#39;response_code&#39;</span><span class="p">,</span> <span class="n">LabelValueType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;HTTP status code&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_app/response_count&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">CUMULATIVE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">value_type</span><span class="o">=</span><span class="n">ValueType</span><span class="o">.</span><span class="n">INT64</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="n">label</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Cumulative count of HTTP responses.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="time-series-queries">
 <h2>Time Series Queries<a class="headerlink" href="#time-series-queries" title="Permalink to this headline">#</a></h2>
@@ -308,7 +354,7 @@ follows:</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-metric.html">Metric Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>

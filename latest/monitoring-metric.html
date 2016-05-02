@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Metric Descriptors &mdash; gcloud c3331eb documentation</title>
+    <title>Metric Descriptors &mdash; gcloud 62ea7bc documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'c3331eb',
+        VERSION:     '62ea7bc',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,8 +22,8 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud c3331eb documentation" href="index.html" />
-    <link rel="next" title="Resource Descriptors" href="monitoring-resource.html" />
+    <link rel="top" title="gcloud 62ea7bc documentation" href="index.html" />
+    <link rel="next" title="Monitored Resource Descriptors" href="monitoring-resource.html" />
     <link rel="prev" title="Monitoring Client" href="monitoring-client.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-metric%0ARelease%3A%20c3331eb" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-metric%0ARelease%3A%2062ea7bc" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (c3331eb)
+              Version History (62ea7bc)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -94,13 +94,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
   <div class="section" id="module-gcloud.monitoring.metric">
 <span id="metric-descriptors"></span><h1>Metric Descriptors<a class="headerlink" href="#module-gcloud.monitoring.metric" title="Permalink to this headline">#</a></h1>
 <p>Metric Descriptors for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors">Google Monitoring API (V3)</a>.</p>
-<dl class="docutils">
-<dt>Features intentionally omitted from this first version of the client library:</dt>
-<dd><ul class="first last simple">
-<li>Creating and deleting metric descriptors.</li>
-</ul>
-</dd>
-</dl>
 <dl class="class">
 <dt id="gcloud.monitoring.metric.Metric">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.metric.</code><code class="descname">Metric</code><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#Metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.Metric" title="Permalink to this definition">#</a></dt>
@@ -124,42 +117,84 @@ enumerated in the associated <a class="reference internal" href="#gcloud.monitor
 
 <dl class="class">
 <dt id="gcloud.monitoring.metric.MetricDescriptor">
-<em class="property">class </em><code class="descclassname">gcloud.monitoring.metric.</code><code class="descname">MetricDescriptor</code><span class="sig-paren">(</span><em>name</em>, <em>type_</em>, <em>labels</em>, <em>metric_kind</em>, <em>value_type</em>, <em>unit</em>, <em>description</em>, <em>display_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#MetricDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.MetricDescriptor" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.monitoring.metric.</code><code class="descname">MetricDescriptor</code><span class="sig-paren">(</span><em>client</em>, <em>type_</em>, <em>metric_kind='METRIC_KIND_UNSPECIFIED'</em>, <em>value_type='VALUE_TYPE_UNSPECIFIED'</em>, <em>labels=()</em>, <em>unit=''</em>, <em>description=''</em>, <em>display_name=''</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#MetricDescriptor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.MetricDescriptor" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Specification of a metric type and its schema.</p>
+<p>The preferred way to construct a metric descriptor object is using the
+<a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client.metric_descriptor" title="gcloud.monitoring.client.Client.metric_descriptor"><code class="xref py py-meth docutils literal"><span class="pre">metric_descriptor()</span></code></a> factory method
+of the <a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client" title="gcloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The &#8220;resource name&#8221; of the metric descriptor. For example:
-<code class="docutils literal"><span class="pre">&quot;projects/&lt;project_id&gt;/metricDescriptors/&lt;type&gt;&quot;</span></code></li>
+<li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client" title="gcloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.monitoring.client.Client</span></code></a>) &#8211; A client for operating on the metric descriptor.</li>
 <li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type including a DNS name prefix. For example:
 <code class="docutils literal"><span class="pre">&quot;compute.googleapis.com/instance/cpu/utilization&quot;</span></code></li>
-<li><strong>labels</strong> (list of <a class="reference internal" href="monitoring-label.html#gcloud.monitoring.label.LabelDescriptor" title="gcloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) &#8211; A sequence of label descriptors specifying the labels used to
-identify a specific instance of this metric.</li>
-<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The kind of measurement. It must be one of <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.GAUGE" title="gcloud.monitoring.metric.MetricKind.GAUGE"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.GAUGE</span></code></a>,
-<a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.DELTA" title="gcloud.monitoring.metric.MetricKind.DELTA"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.DELTA</span></code></a>, or <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.CUMULATIVE" title="gcloud.monitoring.metric.MetricKind.CUMULATIVE"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.CUMULATIVE</span></code></a>.
-See <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind" title="gcloud.monitoring.metric.MetricKind"><code class="xref py py-class docutils literal"><span class="pre">MetricKind</span></code></a>.</li>
-<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The value type of the metric. It must be one of <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.BOOL" title="gcloud.monitoring.metric.ValueType.BOOL"><code class="xref py py-data docutils literal"><span class="pre">ValueType.BOOL</span></code></a>,
-<a class="reference internal" href="#gcloud.monitoring.metric.ValueType.INT64" title="gcloud.monitoring.metric.ValueType.INT64"><code class="xref py py-data docutils literal"><span class="pre">ValueType.INT64</span></code></a>, <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.DOUBLE" title="gcloud.monitoring.metric.ValueType.DOUBLE"><code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code></a>,
-<a class="reference internal" href="#gcloud.monitoring.metric.ValueType.STRING" title="gcloud.monitoring.metric.ValueType.STRING"><code class="xref py py-data docutils literal"><span class="pre">ValueType.STRING</span></code></a>, or <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.DISTRIBUTION" title="gcloud.monitoring.metric.ValueType.DISTRIBUTION"><code class="xref py py-data docutils literal"><span class="pre">ValueType.DISTRIBUTION</span></code></a>.
+<li><strong>metric_kind</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The kind of measurement. It must be one of
+<a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.GAUGE" title="gcloud.monitoring.metric.MetricKind.GAUGE"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.GAUGE</span></code></a>, <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.DELTA" title="gcloud.monitoring.metric.MetricKind.DELTA"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.DELTA</span></code></a>,
+or <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.CUMULATIVE" title="gcloud.monitoring.metric.MetricKind.CUMULATIVE"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.CUMULATIVE</span></code></a>. See <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind" title="gcloud.monitoring.metric.MetricKind"><code class="xref py py-class docutils literal"><span class="pre">MetricKind</span></code></a>.</li>
+<li><strong>value_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The value type of the metric. It must be one of
+<a class="reference internal" href="#gcloud.monitoring.metric.ValueType.BOOL" title="gcloud.monitoring.metric.ValueType.BOOL"><code class="xref py py-data docutils literal"><span class="pre">ValueType.BOOL</span></code></a>, <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.INT64" title="gcloud.monitoring.metric.ValueType.INT64"><code class="xref py py-data docutils literal"><span class="pre">ValueType.INT64</span></code></a>,
+<a class="reference internal" href="#gcloud.monitoring.metric.ValueType.DOUBLE" title="gcloud.monitoring.metric.ValueType.DOUBLE"><code class="xref py py-data docutils literal"><span class="pre">ValueType.DOUBLE</span></code></a>, <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.STRING" title="gcloud.monitoring.metric.ValueType.STRING"><code class="xref py py-data docutils literal"><span class="pre">ValueType.STRING</span></code></a>,
+or <a class="reference internal" href="#gcloud.monitoring.metric.ValueType.DISTRIBUTION" title="gcloud.monitoring.metric.ValueType.DISTRIBUTION"><code class="xref py py-data docutils literal"><span class="pre">ValueType.DISTRIBUTION</span></code></a>.
 See <a class="reference internal" href="#gcloud.monitoring.metric.ValueType" title="gcloud.monitoring.metric.ValueType"><code class="xref py py-class docutils literal"><span class="pre">ValueType</span></code></a>.</li>
-<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The unit in which the metric value is reported.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A detailed description of the metric.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A concise name for the metric.</li>
+<li><strong>labels</strong> (list of <a class="reference internal" href="monitoring-label.html#gcloud.monitoring.label.LabelDescriptor" title="gcloud.monitoring.label.LabelDescriptor"><code class="xref py py-class docutils literal"><span class="pre">LabelDescriptor</span></code></a>) &#8211; A sequence of zero or more label descriptors specifying the labels
+used to identify a specific instance of this metric.</li>
+<li><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional unit in which the metric value is reported.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional detailed description of the metric.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An optional concise name for the metric.</li>
+<li><strong>name</strong> (<em>string or None</em>) &#8211; The &#8220;resource name&#8221; of the metric descriptor. For example:
+<code class="docutils literal"><span class="pre">&quot;projects/&lt;project_id&gt;/metricDescriptors/&lt;type&gt;&quot;</span></code>. As
+retrieved from the service, this will always be specified.
+You can and should omit it when constructing an instance for
+the purpose of creating a new metric descriptor.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="gcloud.monitoring.metric.MetricDescriptor.create">
+<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#MetricDescriptor.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.MetricDescriptor.create" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a new metric descriptor based on this object.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">metric_kind</span><span class="o">=</span><span class="n">MetricKind</span><span class="o">.</span><span class="n">GAUGE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">value_type</span><span class="o">=</span><span class="n">ValueType</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;This is a simple example of a custom metric.&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The metric kind must not be <a class="reference internal" href="#gcloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED" title="gcloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED"><code class="xref py py-data docutils literal"><span class="pre">MetricKind.METRIC_KIND_UNSPECIFIED</span></code></a>,
+and the value type must not be
+<a class="reference internal" href="#gcloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED" title="gcloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED"><code class="xref py py-data docutils literal"><span class="pre">ValueType.VALUE_TYPE_UNSPECIFIED</span></code></a>.</p>
+<p>The <code class="docutils literal"><span class="pre">name</span></code> attribute is ignored in preparing the creation request.
+All attributes are overwritten by the values received in the response
+(normally affecting only <code class="docutils literal"><span class="pre">name</span></code>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gcloud.monitoring.metric.MetricDescriptor.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#MetricDescriptor.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.MetricDescriptor.delete" title="Permalink to this definition">#</a></dt>
+<dd><p>Delete the metric descriptor identified by this object.</p>
+<p>Example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">metric_descriptor</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;custom.googleapis.com/my_metric&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Only the <code class="docutils literal"><span class="pre">client</span></code> and <code class="docutils literal"><span class="pre">type</span></code> attributes are used.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="gcloud.monitoring.metric.MetricKind">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.metric.</code><code class="descname">MetricKind</code><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#MetricKind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.MetricKind" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Allowed values for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind">kind of measurement</a>.</p>
+<p>Choices for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#MetricKind">kind of measurement</a>.</p>
 <dl class="attribute">
 <dt id="gcloud.monitoring.metric.MetricKind.CUMULATIVE">
 <code class="descname">CUMULATIVE</code><em class="property"> = 'CUMULATIVE'</em><a class="headerlink" href="#gcloud.monitoring.metric.MetricKind.CUMULATIVE" title="Permalink to this definition">#</a></dt>
@@ -175,13 +210,22 @@ See <a class="reference internal" href="#gcloud.monitoring.metric.ValueType" tit
 <code class="descname">GAUGE</code><em class="property"> = 'GAUGE'</em><a class="headerlink" href="#gcloud.monitoring.metric.MetricKind.GAUGE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED">
+<code class="descname">METRIC_KIND_UNSPECIFIED</code><em class="property"> = 'METRIC_KIND_UNSPECIFIED'</em><a class="headerlink" href="#gcloud.monitoring.metric.MetricKind.METRIC_KIND_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An unspecified kind is not allowed in metric descriptors.</p>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="gcloud.monitoring.metric.ValueType">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.metric.</code><code class="descname">ValueType</code><a class="reference internal" href="_modules/gcloud/monitoring/metric.html#ValueType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.metric.ValueType" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Allowed values for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#ValueType">metric value type</a>.</p>
+<p>Choices for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors#ValueType">metric value type</a>.</p>
 <dl class="attribute">
 <dt id="gcloud.monitoring.metric.ValueType.BOOL">
 <code class="descname">BOOL</code><em class="property"> = 'BOOL'</em><a class="headerlink" href="#gcloud.monitoring.metric.ValueType.BOOL" title="Permalink to this definition">#</a></dt>
@@ -206,6 +250,15 @@ See <a class="reference internal" href="#gcloud.monitoring.metric.ValueType" tit
 <dt id="gcloud.monitoring.metric.ValueType.STRING">
 <code class="descname">STRING</code><em class="property"> = 'STRING'</em><a class="headerlink" href="#gcloud.monitoring.metric.ValueType.STRING" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED">
+<code class="descname">VALUE_TYPE_UNSPECIFIED</code><em class="property"> = 'VALUE_TYPE_UNSPECIFIED'</em><a class="headerlink" href="#gcloud.monitoring.metric.ValueType.VALUE_TYPE_UNSPECIFIED" title="Permalink to this definition">#</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">An unspecified type is not allowed in metric descriptors.</p>
+</div>
+</dd></dl>
 
 </dd></dl>
 
@@ -303,7 +356,7 @@ See <a class="reference internal" href="#gcloud.monitoring.metric.ValueType" tit
 <li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Metric Descriptors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Resource Descriptors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitoring-resource.html">Monitored Resource Descriptors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-query.html">Time Series Query</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-timeseries.html">Time Series</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
