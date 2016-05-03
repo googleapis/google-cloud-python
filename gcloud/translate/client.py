@@ -50,7 +50,7 @@ def _zip_assert(values1, values2):
 class Client(object):
     """Client to bundle configuration needed for API requests.
 
-    :type key: string
+    :type key: str
     :param key: The key used to send with requests as a query
                 parameter.
 
@@ -91,19 +91,18 @@ class Client(object):
             method='GET', path='/languages', query_params=query_params)
         return response.get('data', {}).get('languages', ())
 
-    def detect_language(self, values):
+    def detect_language(self, *values):
         """Detect the language of a string or list of strings.
 
         See: https://cloud.google.com/translate/v2/\
         detecting-language-with-rest
 
-        :type values: str or list
-        :param values: String or list of strings that will have
-                       language detected.
+        :type values: tuple
+        :param values: Tuple of strings that will have language detected.
 
         :rtype: list
         :returns: A list of dictionaries for each queried value. Each
-                  dictionary typically contains four keys (though not
+                  dictionary typically contains three keys (though not
                   all will be present in all cases)
 
                   * ``confidence``: The confidence in language detection, a
@@ -118,8 +117,6 @@ class Client(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  detections is not equal to the number of values.
         """
-        if isinstance(values, six.string_types):
-            values = [values]
         query_params = [('key', self.key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
@@ -145,38 +142,42 @@ class Client(object):
 
         return detections
 
-    def translate(self, values, target_language=ENGLISH_ISO_639,
-                  format_=None, source_language=None,
-                  customization_ids=()):
+    def translate(self, *values, **kwargs):
         """Translate a string or list of strings.
 
         See: https://cloud.google.com/translate/v2/\
         translating-text-with-rest
 
-        :type values: str or list
-        :param values: String or list of strings that will have
-                       language detected.
+        Accepted keyword arguments are:
 
-        :type target_language: str
-        :param target_language: The language to translate results into. This
-                                is required by the API and defaults to
-                                :data:`ENGLISH_ISO_639`.
+        * ``target_language`` (str): The language to translate results into.
+          This is required by the API and defaults to :data:`ENGLISH_ISO_639`.
+        * ``format`` (str): (Optional) One of ``text`` or ``html``, to specify
+          if the input text is plain text or HTML.
+        * ``source_language`` (str): (Optional) The language of the text to
+          be translated.
+        * ``customization_ids`` (list): (Optional) List of customization IDs
+          for translation. Sets the ``cid`` parameter in the query.
 
-        :type format_: str
-        :param format_: (Optional) One of ``text`` or ``html``, to specify
-                        if the input text is plain text or HTML.
+        :type values: tuple
+        :param values: Tuple of strings to translate.
 
-        :type source_language: str
-        :param source_language: (Optional) The language of the text to
-                                be translated.
+        :type kwargs: dict
+        :param kwargs: Keyword arguments to be passed in.
 
-        :type customization_ids: list
-        :param customization_ids: (Optional) List of customization IDs for
-                                  translation. Sets the ``cid`` parameter
-                                  in the query.
+        :rtype: list
+        :returns: A list of dictionaries for each queried value. Each
+                  dictionary typically contains three keys (though not
+                  all will be present in all cases)
+
+                  * ``detectedSourceLanguage``: The detected language (as an
+                    ISO 639-1 language code) of the text.
+                  * ``translatedText``: The translation of the text into the
+                    target language.
+                  * ``input``: The corresponding input value.
         """
-        if isinstance(values, six.string_types):
-            values = [values]
+        target_language = kwargs.get('target_language', ENGLISH_ISO_639)
+        customization_ids = kwargs.get('customization_ids', ())
         if isinstance(customization_ids, six.string_types):
             customization_ids = [customization_ids]
 
@@ -184,10 +185,10 @@ class Client(object):
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         query_params.extend(('cid', cid) for cid in customization_ids)
-        if format_ is not None:
-            query_params.append(('format', format_))
-        if source_language is not None:
-            query_params.append(('source', source_language))
+        if 'format' in kwargs:
+            query_params.append(('format', kwargs['format']))
+        if 'source_language' in kwargs:
+            query_params.append(('source', kwargs['source_language']))
 
         response = self.connection.api_request(
             method='GET', path='', query_params=query_params)
