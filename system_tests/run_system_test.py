@@ -25,6 +25,7 @@ import monitoring
 import pubsub
 import storage
 import system_test_utils
+import translate
 
 
 TEST_MODULES = {
@@ -36,6 +37,7 @@ TEST_MODULES = {
     'bigtable-happybase': bigtable_happybase,
     'logging': logging_,
     'monitoring': monitoring,
+    'translate': translate,
 }
 
 

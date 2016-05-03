@@ -36,6 +36,7 @@ MODULES = (
     'monitoring',
     'pubsub',
     'storage',
+    'translate',
 )
 if sys.version_info[:2] == (2, 7):
     MODULES += ('bigtable', 'bigtable-happybase')
