@@ -199,7 +199,20 @@ class Test_PublisherAPI(_Base):
         path = '/%s' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
 
-    def test_topic_get(self):
+    def test_topic_create_already_exists(self):
+        from gcloud.exceptions import Conflict
+        connection = _Connection()
+        connection._no_response_error = Conflict
+        api = self._makeOne(connection)
+
+        with self.assertRaises(Conflict):
+            api.topic_create(self.TOPIC_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'PUT')
+        path = '/%s' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+
+    def test_topic_get_hit(self):
         RETURNED = {'name': self.TOPIC_PATH}
         connection = _Connection(RETURNED)
         api = self._makeOne(connection)
@@ -211,7 +224,19 @@ class Test_PublisherAPI(_Base):
         path = '/%s' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
 
-    def test_topic_delete(self):
+    def test_topic_get_miss(self):
+        from gcloud.exceptions import NotFound
+        connection = _Connection()
+        api = self._makeOne(connection)
+
+        with self.assertRaises(NotFound):
+            api.topic_get(self.TOPIC_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+
+    def test_topic_delete_hit(self):
         RETURNED = {}
         connection = _Connection(RETURNED)
         api = self._makeOne(connection)
@@ -222,7 +247,19 @@ class Test_PublisherAPI(_Base):
         path = '/%s' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
 
-    def test_topic_publish(self):
+    def test_topic_delete_miss(self):
+        from gcloud.exceptions import NotFound
+        connection = _Connection()
+        api = self._makeOne(connection)
+
+        with self.assertRaises(NotFound):
+            api.topic_delete(self.TOPIC_PATH)
+
+        self.assertEqual(connection._called_with['method'], 'DELETE')
+        path = '/%s' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+
+    def test_topic_publish_hit(self):
         import base64
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
@@ -235,6 +272,24 @@ class Test_PublisherAPI(_Base):
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
 
         self.assertEqual(resource, [MSGID])
+        self.assertEqual(connection._called_with['method'], 'POST')
+        path = '/%s:publish' % (self.TOPIC_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['data'],
+                         {'messages': [MESSAGE]})
+
+    def test_topic_publish_miss(self):
+        import base64
+        from gcloud.exceptions import NotFound
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MESSAGE = {'data': B64, 'attributes': {}}
+        connection = _Connection()
+        api = self._makeOne(connection)
+
+        with self.assertRaises(NotFound):
+            api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+
         self.assertEqual(connection._called_with['method'], 'POST')
         path = '/%s:publish' % (self.TOPIC_PATH,)
         self.assertEqual(connection._called_with['path'], path)
@@ -300,6 +355,19 @@ class Test_PublisherAPI(_Base):
 
         self.assertEqual(len(subscriptions), 0)
         self.assertEqual(next_token, None)
+
+        self.assertEqual(connection._called_with['method'], 'GET')
+        path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
+        self.assertEqual(connection._called_with['path'], path)
+        self.assertEqual(connection._called_with['query_params'], {})
+
+    def test_topic_list_subscriptions_miss(self):
+        from gcloud.exceptions import NotFound
+        connection = _Connection()
+        api = self._makeOne(connection)
+
+        with self.assertRaises(NotFound):
+            api.topic_list_subscriptions(self.TOPIC_PATH)
 
         self.assertEqual(connection._called_with['method'], 'GET')
         path = '/%s' % (self.LIST_TOPIC_SUBSCRIPTIONS_PATH,)
@@ -665,11 +733,17 @@ class Test_IAMPolicyAPI(_Base):
 class _Connection(object):
 
     _called_with = None
+    _no_response_error = None
 
     def __init__(self, *responses):
         self._responses = responses
 
     def api_request(self, **kw):
+        from gcloud.exceptions import NotFound
         self._called_with = kw
-        response, self._responses = self._responses[0], self._responses[1:]
+        try:
+            response, self._responses = self._responses[0], self._responses[1:]
+        except IndexError:
+            err_class = self._no_response_error or NotFound
+            raise err_class('miss')
         return response
