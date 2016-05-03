@@ -117,7 +117,7 @@ else:
             try:
                 self._gax_api.delete_topic(topic_path)
             except GaxError:
-                pass
+                raise NotFound(topic_path)
 
         def topic_publish(self, topic_path, messages):
             """API call:  publish one or more messages to a topic

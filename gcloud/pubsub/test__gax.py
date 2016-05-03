@@ -122,10 +122,12 @@ class Test_PublisherAPI(unittest2.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_delete_miss(self):
+        from gcloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI(_delete_topic_ok=False)
         api = self._makeOne(gax_api)
 
-        api.topic_delete(self.TOPIC_PATH)
+        with self.assertRaises(NotFound):
+            api.topic_delete(self.TOPIC_PATH)
 
         topic_path, options = gax_api._delete_topic_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
