@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="_x2E_NET_logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+   y="0px" width="24px" height="24px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+  .st0{fill:#FFFFFF;}
+</style>
+<g>
+  <path class="st0" d="M3.8,15.1c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.3-0.2-0.4c0-0.2,0.1-0.3,0.2-0.4s0.3-0.2,0.4-0.2
+    c0.2,0,0.3,0.1,0.5,0.2c0.1,0.1,0.2,0.3,0.2,0.4c0,0.2-0.1,0.3-0.2,0.4C4.1,15.1,4,15.1,3.8,15.1z"/>
+  <path class="st0" d="M10.9,15H9.8l-3-4.6c-0.1-0.1-0.1-0.2-0.2-0.4h0c0,0.1,0,0.4,0,0.9V15h-1V8.7h1.2l2.9,4.5
+    c0.1,0.2,0.2,0.3,0.2,0.4h0c0-0.2,0-0.5,0-0.8V8.7h1V15z"/>
+  <path class="st0" d="M16,15h-3.5V8.7h3.4v0.9h-2.4v1.8h2.2v0.9h-2.2v1.9H16V15z"/>
+  <path class="st0" d="M21.2,9.6h-1.8V15h-1V9.6h-1.8V8.7h4.7V9.6z"/>
+</g>
+<g>
+  <path class="st0" d="M23,1v22H1V1H23 M24,0H0v24h24V0L24,0z"/>
+</g>
+</svg>

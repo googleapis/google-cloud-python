@@ -13,6 +13,7 @@ script:
   - tox -e system-tests
   - tox -e system-tests3
   - scripts/update_docs.sh
+  - scripts/update_json_docs.sh
 
 after_success:
   - tox -e coveralls

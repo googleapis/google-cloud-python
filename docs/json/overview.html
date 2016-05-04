@@ -1,0 +1,57 @@
+<h2>Getting started</h2>
+
+<p>
+The <code>gcloud</code> library is <code>pip</code> install-able:
+</p>
+
+<div hljs>
+    $ pip install gcloud
+</div>
+
+<p>
+If you want to install <code>gcloud-python</code> from source,
+you can clone the repository from GitHub:
+</p>
+
+<div hljs>
+    $ git clone git://github.com/GoogleCloudPlatform/gcloud-python.git
+    $ cd gcloud-python
+    $ python setup.py install
+</div>
+
+<hr>
+
+<h3>Cloud Datastore</h3>
+
+<p>
+<a href="https://developers.google.com/datastore/">Google Cloud Datastore</a> is a fully managed,
+ schemaless database for storing non-relational data.
+</p>
+
+<div hljs>
+
+  from gcloud import datastore
+
+  client = datastore.Client()
+  key = client.key('Person')
+
+  entity = datastore.Entity(key=key)
+  entity['name'] = 'Your name'
+  entity['age'] = 25
+  client.put(entity)
+</div>
+
+<h3>Cloud Storage</h3>
+
+<p>
+<a href="https://developers.google.com/storage/">Google Cloud Storage</a> allows you to store data on Google infrastructure.
+</p>
+
+<div hljs>
+  from gcloud import storage
+
+  client = storage.Client()
+  bucket = client.get_bucket('<your-bucket-name>')
+  blob = bucket.blob('my-test-file.txt')
+  blob.upload_from_string('this is test content!')
+</div>
