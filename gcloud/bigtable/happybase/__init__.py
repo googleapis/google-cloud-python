@@ -36,10 +36,6 @@ could not be implemented:
 * :meth:`Connection.compact_table() \
       <gcloud.bigtable.happybase.connection.Connection.compact_table>` -
   table storage is opaque to user
-* :func:`make_row() <gcloud.bigtable.happybase.table.make_row>` - helper
-  needed for Thrift library
-* :func:`make_ordered_row() <gcloud.bigtable.happybase.table.make_ordered_row>`
-  - helper needed for Thrift library
 * :meth:`Table.regions() <gcloud.bigtable.happybase.table.Table.regions>`
   - tables in Cloud Bigtable do not expose internal storage details
 * :meth:`Table.counter_set() \
