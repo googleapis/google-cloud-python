@@ -28,7 +28,7 @@ from gcloud.logging.sink import Sink
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of.
                     If not passed, falls back to the default inferred
                     from the environment.
@@ -51,7 +51,7 @@ class Client(JSONClient):
     def logger(self, name):
         """Creates a logger bound to the current client.
 
-        :type name: string
+        :type name: str
         :param name: the name of the logger to be constructed.
 
         :rtype: :class:`gcloud.logging.logger.Logger`
@@ -69,7 +69,7 @@ class Client(JSONClient):
         :param loggers: A mapping of logger fullnames -> loggers.  If not
                         passed, the entry will have a newly-created logger.
 
-        :rtype; One of:
+        :rtype: One of:
                 :class:`gcloud.logging.entries.TextEntry`,
                 :class:`gcloud.logging.entries.StructEntry`,
                 :class:`gcloud.logging.entries.ProtobufEntry`
@@ -94,11 +94,11 @@ class Client(JSONClient):
         :param projects: project IDs to include. If not passed,
                             defaults to the project bound to the client.
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: a filter expression. See:
                         https://cloud.google.com/logging/docs/view/advanced_filters
 
-        :type order_by: string
+        :type order_by: str
         :param order_by: One of :data:`gcloud.logging.ASCENDING` or
                          :data:`gcloud.logging.DESCENDING`.
 
@@ -106,7 +106,7 @@ class Client(JSONClient):
         :param page_size: maximum number of entries to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of entries. If not
                            passed, the API will return the first page of
                            entries.
@@ -144,14 +144,14 @@ class Client(JSONClient):
     def sink(self, name, filter_, destination):
         """Creates a sink bound to the current client.
 
-        :type name: string
+        :type name: str
         :param name: the name of the sink to be constructed.
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries exported by the sink.
 
-        :type destination: string
+        :type destination: str
         :param destination: destination URI for the entries exported by
                             the sink.
 
@@ -170,7 +170,7 @@ class Client(JSONClient):
         :param page_size: maximum number of sinks to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of sinks. If not
                            passed, the API will return the first page of
                            sinks.
@@ -199,14 +199,14 @@ class Client(JSONClient):
     def metric(self, name, filter_, description=''):
         """Creates a metric bound to the current client.
 
-        :type name: string
+        :type name: str
         :param name: the name of the metric to be constructed.
 
-        :type filter_: string
+        :type filter_: str
         :param filter_: the advanced logs filter expression defining the
                         entries tracked by the metric.
 
-        :type description: string
+        :type description: str
         :param description: the description of the metric to be constructed.
 
         :rtype: :class:`gcloud.logging.metric.Metric`
@@ -224,7 +224,7 @@ class Client(JSONClient):
         :param page_size: maximum number of metrics to return, If not passed,
                           defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of metrics. If not
                            passed, the API will return the first page of
                            metrics.

@@ -115,16 +115,16 @@ def _httplib2_debug_level(http_request, level, http=None):
 class Request(object):
     """Encapsulates the data for an HTTP request.
 
-    :type url: string
+    :type url: str
     :param url: the URL for the request
 
-    :type http_method: string
+    :type http_method: str
     :param http_method: the HTTP method to use for the request
 
     :type headers: mapping or None
     :param headers: headers to be sent with the request
 
-    :type body: string
+    :type body: str
     :param body: body to be sent with the request
     """
     def __init__(self, url='', http_method='GET', headers=None, body=''):
@@ -139,7 +139,7 @@ class Request(object):
     def loggable_body(self):
         """Request body for logging purposes
 
-        :rtype: string
+        :rtype: str
         """
         return self.__loggable_body
 
@@ -147,7 +147,7 @@ class Request(object):
     def loggable_body(self, value):
         """Update request body for logging purposes
 
-        :type value: string
+        :type value: str
         :param value: updated body
 
         :raises: :exc:`RequestError` if the request does not have a body.
@@ -161,7 +161,7 @@ class Request(object):
     def body(self):
         """Request body
 
-        :rtype: string
+        :rtype: str
         """
         return self.__body
 
@@ -171,7 +171,7 @@ class Request(object):
 
         Handles logging and length measurement.
 
-        :type value: string
+        :type value: str
         :param value: updated body
         """
         self.__body = value
@@ -192,7 +192,7 @@ def _process_content_range(content_range):
 
     Helper for :meth:`Response.length`.
 
-    :type content_range: string
+    :type content_range: str
     :param content_range: the header value being parsed.
 
     :rtype: integer
@@ -434,6 +434,7 @@ def _register_http_factory(factory):
 def get_http(**kwds):
     """Construct an Http instance.
 
+    :type kwds: str, int
     :param kwds:  keyword arguments to pass to factories.
 
     :rtype: :class:`httplib2.Http` (or a workalike)

@@ -35,17 +35,18 @@ class MIMEApplicationHTTP(MIMEApplication):
 
     Constructs payload from headers and body
 
-    :type method: string
+    :type method: str
     :param method: HTTP method
 
-    :type uri: string
+    :type uri: str
     :param uri: URI for HTTP request
 
     :type headers:  dict
     :param headers: HTTP headers
 
-    :type body: text or None
+    :type body: str or None
     :param body: HTTP payload
+
     """
     def __init__(self, method, uri, headers, body):
         if isinstance(body, dict):
@@ -141,16 +142,16 @@ class Batch(Connection):
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP method to use in the request.
 
-        :type url: string
+        :type url: str
         :param url: The URL to send the request to.
 
         :type headers: dict
         :param headers: A dictionary of HTTP headers to send with the request.
 
-        :type data: string
+        :type data: str
         :param data: The data to send as the body of the request.
 
         :type target_object: object or :class:`NoneType`
@@ -176,7 +177,7 @@ class Batch(Connection):
     def _prepare_batch_request(self):
         """Prepares headers and body for a batch request.
 
-        :rtype: tuple (dict, string)
+        :rtype: tuple (dict, str)
         :returns: The pair of headers and body of the batch request to be sent.
         :raises: :class:`ValueError` if no requests have been deferred.
         """
@@ -300,7 +301,7 @@ def _unpack_batch_response(response, content):
     :type response: :class:`httplib2.Response`
     :param response: HTTP response / headers from a request.
 
-    :type content: string
+    :type content: str
     :param content: Response payload with a batch response.
 
     :rtype: generator

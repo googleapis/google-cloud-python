@@ -28,7 +28,7 @@ from gcloud.bigquery.query import QueryResults
 class Client(JSONClient):
     """Client to bundle configuration needed for API requests.
 
-    :type project: string
+    :type project: str
     :param project: the project which the client acts on behalf of. Will be
                     passed when creating a dataset / job.  If not passed,
                     falls back to the default inferred from the environment.
@@ -62,7 +62,7 @@ class Client(JSONClient):
         :param max_results: maximum number of datasets to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of datasets. If
                            not passed, the API will return the first page of
                            datasets.
@@ -94,7 +94,7 @@ class Client(JSONClient):
     def dataset(self, dataset_name):
         """Construct a dataset bound to this client.
 
-        :type dataset_name: string
+        :type dataset_name: str
         :param dataset_name: Name of the dataset.
 
         :rtype: :class:`gcloud.bigquery.dataset.Dataset`
@@ -108,7 +108,7 @@ class Client(JSONClient):
         :type resource: dict
         :param resource: one job resource from API response
 
-        :rtype; One of:
+        :rtype: One of:
                 :class:`gcloud.bigquery.job.LoadTableFromStorageJob`,
                 :class:`gcloud.bigquery.job.CopyJob`,
                 :class:`gcloud.bigquery.job.ExtractTableToStorageJob`,
@@ -138,7 +138,7 @@ class Client(JSONClient):
         :param max_results: maximum number of jobs to return, If not
                             passed, defaults to a value set by the API.
 
-        :type page_token: string
+        :type page_token: str
         :param page_token: opaque marker for the next "page" of jobs. If
                            not passed, the API will return the first page of
                            jobs.
@@ -147,7 +147,7 @@ class Client(JSONClient):
         :param all_users: if true, include jobs owned by all users in the
                           project.
 
-        :type state_filter: string
+        :type state_filter: str
         :param state_filter: if passed, include only jobs matching the given
                              state.  One of
 
@@ -187,7 +187,7 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load
 
-        :type job_name: string
+        :type job_name: str
         :param job_name: Name of the job.
 
         :type destination: :class:`gcloud.bigquery.table.Table`
@@ -209,7 +209,7 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy
 
-        :type job_name: string
+        :type job_name: str
         :param job_name: Name of the job.
 
         :type destination: :class:`gcloud.bigquery.table.Table`
@@ -229,7 +229,7 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract
 
-        :type job_name: string
+        :type job_name: str
         :param job_name: Name of the job.
 
         :type source: :class:`gcloud.bigquery.table.Table`
@@ -252,10 +252,10 @@ class Client(JSONClient):
         See:
         https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query
 
-        :type job_name: string
+        :type job_name: str
         :param job_name: Name of the job.
 
-        :type query: string
+        :type query: str
         :param query: SQL query to be executed
 
         :rtype: :class:`gcloud.bigquery.job.QueryJob`
@@ -266,7 +266,7 @@ class Client(JSONClient):
     def run_sync_query(self, query):
         """Run a SQL query synchronously.
 
-        :type query: string
+        :type query: str
         :param query: SQL query to be executed
 
         :rtype: :class:`gcloud.bigquery.query.QueryResults`
