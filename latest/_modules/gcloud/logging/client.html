@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.client &mdash; gcloud 819b696 documentation</title>
+    <title>gcloud.logging.client &mdash; gcloud 77123bb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '819b696',
+        VERSION:     '77123bb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 819b696 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 77123bb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%20819b696" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (819b696)
+              Version History (77123bb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -121,7 +121,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of.</span>
 <span class="sd">                    If not passed, falls back to the default inferred</span>
 <span class="sd">                    from the environment.</span>
@@ -144,7 +144,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.logger"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.logger">[docs]</a>    <span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a logger bound to the current client.</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: the name of the logger to be constructed.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.logging.logger.Logger`</span>
@@ -162,7 +162,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param loggers: A mapping of logger fullnames -&gt; loggers.  If not</span>
 <span class="sd">                        passed, the entry will have a newly-created logger.</span>
 
-<span class="sd">        :rtype; One of:</span>
+<span class="sd">        :rtype: One of:</span>
 <span class="sd">                :class:`gcloud.logging.entries.TextEntry`,</span>
 <span class="sd">                :class:`gcloud.logging.entries.StructEntry`,</span>
 <span class="sd">                :class:`gcloud.logging.entries.ProtobufEntry`</span>
@@ -187,11 +187,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param projects: project IDs to include. If not passed,</span>
 <span class="sd">                            defaults to the project bound to the client.</span>
 
-<span class="sd">        :type filter_: string</span>
+<span class="sd">        :type filter_: str</span>
 <span class="sd">        :param filter_: a filter expression. See:</span>
 <span class="sd">                        https://cloud.google.com/logging/docs/view/advanced_filters</span>
 
-<span class="sd">        :type order_by: string</span>
+<span class="sd">        :type order_by: str</span>
 <span class="sd">        :param order_by: One of :data:`gcloud.logging.ASCENDING` or</span>
 <span class="sd">                         :data:`gcloud.logging.DESCENDING`.</span>
 
@@ -199,7 +199,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param page_size: maximum number of entries to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of entries. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           entries.</span>
@@ -237,14 +237,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.sink"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.sink">[docs]</a>    <span class="k">def</span> <span class="nf">sink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a sink bound to the current client.</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: the name of the sink to be constructed.</span>
 
-<span class="sd">        :type filter_: string</span>
+<span class="sd">        :type filter_: str</span>
 <span class="sd">        :param filter_: the advanced logs filter expression defining the</span>
 <span class="sd">                        entries exported by the sink.</span>
 
-<span class="sd">        :type destination: string</span>
+<span class="sd">        :type destination: str</span>
 <span class="sd">        :param destination: destination URI for the entries exported by</span>
 <span class="sd">                            the sink.</span>
 
@@ -263,7 +263,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param page_size: maximum number of sinks to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of sinks. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           sinks.</span>
@@ -292,14 +292,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.metric"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a metric bound to the current client.</span>
 
-<span class="sd">        :type name: string</span>
+<span class="sd">        :type name: str</span>
 <span class="sd">        :param name: the name of the metric to be constructed.</span>
 
-<span class="sd">        :type filter_: string</span>
+<span class="sd">        :type filter_: str</span>
 <span class="sd">        :param filter_: the advanced logs filter expression defining the</span>
 <span class="sd">                        entries tracked by the metric.</span>
 
-<span class="sd">        :type description: string</span>
+<span class="sd">        :type description: str</span>
 <span class="sd">        :param description: the description of the metric to be constructed.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.logging.metric.Metric`</span>
@@ -317,7 +317,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param page_size: maximum number of metrics to return, If not passed,</span>
 <span class="sd">                          defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of metrics. If not</span>
 <span class="sd">                           passed, the API will return the first page of</span>
 <span class="sd">                           metrics.</span>

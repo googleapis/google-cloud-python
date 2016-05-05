@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud 819b696 documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud 77123bb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '819b696',
+        VERSION:     '77123bb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 819b696 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 77123bb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20819b696" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (819b696)
+              Version History (77123bb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -130,18 +130,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="SchemaField"><a class="viewcode-back" href="../../../bigquery-table.html#gcloud.bigquery.table.SchemaField">[docs]</a><span class="k">class</span> <span class="nc">SchemaField</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Describe a single field within a table schema.</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the field</span>
 
-<span class="sd">    :type field_type: string</span>
+<span class="sd">    :type field_type: str</span>
 <span class="sd">    :param field_type: the type of the field (one of &#39;STRING&#39;, &#39;INTEGER&#39;,</span>
 <span class="sd">                       &#39;FLOAT&#39;, &#39;BOOLEAN&#39;, &#39;TIMESTAMP&#39; or &#39;RECORD&#39;)</span>
 
-<span class="sd">    :type mode: string</span>
+<span class="sd">    :type mode: str</span>
 <span class="sd">    :param mode: the type of the field (one of &#39;NULLABLE&#39;, &#39;REQUIRED&#39;,</span>
 <span class="sd">                 or &#39;REPEATED&#39;)</span>
 
-<span class="sd">    :type description: string</span>
+<span class="sd">    :type description: str</span>
 <span class="sd">    :param description: optional description for the field</span>
 
 <span class="sd">    :type fields: list of :class:`SchemaField`, or None</span>
@@ -162,7 +162,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/tables</span>
 
-<span class="sd">    :type name: string</span>
+<span class="sd">    :type name: str</span>
 <span class="sd">    :param name: the name of the table</span>
 
 <span class="sd">    :type dataset: :class:`gcloud.bigquery.dataset.Dataset`</span>
@@ -185,7 +185,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Project bound to the table.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the project (derived from the dataset).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">project</span>
@@ -194,7 +194,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">dataset_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Name of dataset containing the table.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the ID (derived from the dataset).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">name</span>
@@ -203,7 +203,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the table&#39;s APIs.</span>
 
-<span class="sd">        :rtype: string</span>
+<span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: the path based on project and dataste name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">/tables/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dataset</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -247,7 +247,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">etag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ETag for the table resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ETag (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;etag&#39;</span><span class="p">)</span>
@@ -290,7 +290,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">self_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL for the table resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;selfLink&#39;</span><span class="p">)</span>
@@ -299,7 +299,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">table_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;ID for the table resource.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the ID (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
@@ -310,7 +310,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        Possible values are &quot;TABLE&quot; or &quot;VIEW&quot;.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: the URL (None until set from the server).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
@@ -319,7 +319,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Description of the table.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The description as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
@@ -328,7 +328,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update description of the table.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new description</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -364,7 +364,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Title of the table.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The name as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;friendlyName&#39;</span><span class="p">)</span>
@@ -373,7 +373,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">friendly_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update title of the table.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new title</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -386,7 +386,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Location in which the table is hosted.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The location as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;location&#39;</span><span class="p">)</span>
@@ -395,7 +395,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update location in which the table is hosted.</span>
 
-<span class="sd">        :type value: string, or ``NoneType``</span>
+<span class="sd">        :type value: str, or ``NoneType``</span>
 <span class="sd">        :param value: new location</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -408,7 +408,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;SQL query defining the table as a view.</span>
 
-<span class="sd">        :rtype: string, or ``NoneType``</span>
+<span class="sd">        :rtype: str, or ``NoneType``</span>
 <span class="sd">        :returns: The query as set by the user, or None (the default).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;view&#39;</span><span class="p">)</span>
@@ -419,7 +419,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">view_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update SQL query defining the table as a view.</span>
 
-<span class="sd">        :type value: string</span>
+<span class="sd">        :type value: str</span>
 <span class="sd">        :param value: new query</span>
 
 <span class="sd">        :raises: ValueError for invalid value types.</span>
@@ -590,19 +590,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current dataset.</span>
 
-<span class="sd">        :type friendly_name: string or ``NoneType``</span>
+<span class="sd">        :type friendly_name: str or ``NoneType``</span>
 <span class="sd">        :param friendly_name: point in time at which the table expires.</span>
 
-<span class="sd">        :type description: string or ``NoneType``</span>
+<span class="sd">        :type description: str or ``NoneType``</span>
 <span class="sd">        :param description: point in time at which the table expires.</span>
 
-<span class="sd">        :type location: string or ``NoneType``</span>
+<span class="sd">        :type location: str or ``NoneType``</span>
 <span class="sd">        :param location: point in time at which the table expires.</span>
 
 <span class="sd">        :type expires: :class:`datetime.datetime` or ``NoneType``</span>
 <span class="sd">        :param expires: point in time at which the table expires.</span>
 
-<span class="sd">        :type view_query: string</span>
+<span class="sd">        :type view_query: str</span>
 <span class="sd">        :param view_query: SQL query defining the table as a view</span>
 
 <span class="sd">        :type schema: list of :class:`SchemaField`</span>
@@ -691,7 +691,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type max_results: integer or ``NoneType``</span>
 <span class="sd">        :param max_results: maximum number of rows to return.</span>
 
-<span class="sd">        :type page_token: string or ``NoneType``</span>
+<span class="sd">        :type page_token: str or ``NoneType``</span>
 <span class="sd">        :param page_token: token representing a cursor into the table&#39;s rows.</span>
 
 <span class="sd">        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``</span>
@@ -751,7 +751,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type ignore_unknown_values: boolean or ``NoneType``</span>
 <span class="sd">        :param ignore_unknown_values: ignore columns beyond schema?</span>
 
-<span class="sd">        :type template_suffix: string or ``NoneType``</span>
+<span class="sd">        :type template_suffix: str or ``NoneType``</span>
 <span class="sd">        :param template_suffix: treat ``name`` as a template table and provide</span>
 <span class="sd">                                a suffix. BigQuery will create the table</span>
 <span class="sd">                                ``&lt;name&gt; + &lt;template_suffix&gt;`` based on the</span>
@@ -836,7 +836,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
-<span class="sd">        :type source_format: string</span>
+<span class="sd">        :type source_format: str</span>
 <span class="sd">        :param source_format: one of &#39;CSV&#39; or &#39;NEWLINE_DELIMITED_JSON&#39;.</span>
 <span class="sd">                              job configuration option; see</span>
 <span class="sd">                              :meth:`gcloud.bigquery.job.LoadJob`</span>
@@ -862,15 +862,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param allow_quoted_newlines: job configuration option; see</span>
 <span class="sd">                                      :meth:`gcloud.bigquery.job.LoadJob`</span>
 
-<span class="sd">        :type create_disposition: string</span>
+<span class="sd">        :type create_disposition: str</span>
 <span class="sd">        :param create_disposition: job configuration option; see</span>
 <span class="sd">                                   :meth:`gcloud.bigquery.job.LoadJob`</span>
 
-<span class="sd">        :type encoding: string</span>
+<span class="sd">        :type encoding: str</span>
 <span class="sd">        :param encoding: job configuration option; see</span>
 <span class="sd">                         :meth:`gcloud.bigquery.job.LoadJob`</span>
 
-<span class="sd">        :type field_delimiter: string</span>
+<span class="sd">        :type field_delimiter: str</span>
 <span class="sd">        :param field_delimiter: job configuration option; see</span>
 <span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
 
@@ -882,7 +882,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param max_bad_records: job configuration option; see</span>
 <span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
 
-<span class="sd">        :type quote_character: string</span>
+<span class="sd">        :type quote_character: str</span>
 <span class="sd">        :param quote_character: job configuration option; see</span>
 <span class="sd">                                :meth:`gcloud.bigquery.job.LoadJob`</span>
 
@@ -890,7 +890,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param skip_leading_rows: job configuration option; see</span>
 <span class="sd">                                  :meth:`gcloud.bigquery.job.LoadJob`</span>
 
-<span class="sd">        :type write_disposition: string</span>
+<span class="sd">        :type write_disposition: str</span>
 <span class="sd">        :param write_disposition: job configuration option; see</span>
 <span class="sd">                                  :meth:`gcloud.bigquery.job.LoadJob`</span>
 
@@ -1062,7 +1062,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param fields: schema to be dumped</span>
 
 <span class="sd">    :rtype: mapping</span>
-<span class="sd">    :returns; a mapping describing the schema of the supplied fields.</span>
+<span class="sd">    :returns: a mapping describing the schema of the supplied fields.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">infos</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>

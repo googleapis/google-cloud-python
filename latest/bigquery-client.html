@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>BigQuery Client &mdash; gcloud 819b696 documentation</title>
+    <title>BigQuery Client &mdash; gcloud 77123bb documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '819b696',
+        VERSION:     '77123bb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 819b696 documentation" href="index.html" />
+    <link rel="top" title="gcloud 77123bb documentation" href="index.html" />
     <link rel="next" title="Datasets" href="bigquery-dataset.html" />
     <link rel="prev" title="Using the API" href="bigquery-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%20819b696" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-client%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (819b696)
+              Version History (77123bb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,7 +104,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the project which the client acts on behalf of. Will be
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of. Will be
 passed when creating a dataset / job.  If not passed,
 falls back to the default inferred from the environment.</li>
 <li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
@@ -131,7 +131,7 @@ from the environment.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be copied.</li>
 <li><strong>sources</strong> (sequence of <a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; tables to be copied.</li>
 </ul>
@@ -155,7 +155,7 @@ from the environment.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the dataset.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the dataset.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="bigquery-dataset.html#gcloud.bigquery.dataset.Dataset" title="gcloud.bigquery.dataset.Dataset"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.dataset.Dataset</span></code></a></td>
 </tr>
@@ -176,7 +176,7 @@ from the environment.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
 <li><strong>source</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; table to be extracted.</li>
 <li><strong>destination_uris</strong> (<em>sequence of string</em>) &#8211; URIs of CloudStorage file(s) into which
 table data is to be extracted; in format
@@ -204,7 +204,8 @@ table data is to be extracted; in format
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; one job resource from API response</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Rtype; One of:</th><td class="field-body"><a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.LoadTableFromStorageJob" title="gcloud.bigquery.job.LoadTableFromStorageJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.LoadTableFromStorageJob</span></code></a>,
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">One of:
+<a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.LoadTableFromStorageJob" title="gcloud.bigquery.job.LoadTableFromStorageJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.LoadTableFromStorageJob</span></code></a>,
 <a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.CopyJob" title="gcloud.bigquery.job.CopyJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.CopyJob</span></code></a>,
 <a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.ExtractTableToStorageJob" title="gcloud.bigquery.job.ExtractTableToStorageJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.ExtractTableToStorageJob</span></code></a>,
 <a class="reference internal" href="bigquery-job.html#gcloud.bigquery.job.QueryJob" title="gcloud.bigquery.job.QueryJob"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.job.QueryJob</span></code></a>,
@@ -230,7 +231,7 @@ table data is to be extracted; in format
 <li><strong>include_all</strong> (<em>boolean</em>) &#8211; True if results include hidden datasets.</li>
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of datasets to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of datasets. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of datasets. If
 not passed, the API will return the first page of
 datasets.</li>
 </ul>
@@ -262,12 +263,12 @@ call (pass that value as <code class="docutils literal"><span class="pre">page_t
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>max_results</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of jobs to return, If not
 passed, defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of jobs. If
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of jobs. If
 not passed, the API will return the first page of
 jobs.</li>
 <li><strong>all_users</strong> (<em>boolean</em>) &#8211; if true, include jobs owned by all users in the
 project.</li>
-<li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; <p>if passed, include only jobs matching the given
+<li><strong>state_filter</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; <p>if passed, include only jobs matching the given
 state.  One of</p>
 <ul>
 <li><code class="docutils literal"><span class="pre">&quot;done&quot;</span></code></li>
@@ -302,7 +303,7 @@ retrieved with another call, passing that value as
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
 <li><strong>destination</strong> (<a class="reference internal" href="bigquery-table.html#gcloud.bigquery.table.Table" title="gcloud.bigquery.table.Table"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.table.Table</span></code></a>) &#8211; Table into which data is to be loaded.</li>
 <li><strong>source_uris</strong> (<em>sequence of string</em>) &#8211; URIs of data files to be loaded; in format
 <code class="docutils literal"><span class="pre">gs://&lt;bucket_name&gt;/&lt;object_name_or_glob&gt;</span></code>.</li>
@@ -330,8 +331,8 @@ retrieved with another call, passing that value as
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Name of the job.</li>
-<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query to be executed</li>
+<li><strong>job_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the job.</li>
+<li><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query to be executed</li>
 </ul>
 </td>
 </tr>
@@ -353,7 +354,7 @@ retrieved with another call, passing that value as
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; SQL query to be executed</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>query</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; SQL query to be executed</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="bigquery-query.html#gcloud.bigquery.query.QueryResults" title="gcloud.bigquery.query.QueryResults"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.query.QueryResults</span></code></a></td>
 </tr>

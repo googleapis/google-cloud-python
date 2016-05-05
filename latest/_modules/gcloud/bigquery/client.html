@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.client &mdash; gcloud 819b696 documentation</title>
+    <title>gcloud.bigquery.client &mdash; gcloud 77123bb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '819b696',
+        VERSION:     '77123bb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 819b696 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 77123bb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/client%0ARelease%3A%20819b696" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/client%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (819b696)
+              Version History (77123bb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -121,7 +121,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Client to bundle configuration needed for API requests.</span>
 
-<span class="sd">    :type project: string</span>
+<span class="sd">    :type project: str</span>
 <span class="sd">    :param project: the project which the client acts on behalf of. Will be</span>
 <span class="sd">                    passed when creating a dataset / job.  If not passed,</span>
 <span class="sd">                    falls back to the default inferred from the environment.</span>
@@ -155,7 +155,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param max_results: maximum number of datasets to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of datasets. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           datasets.</span>
@@ -187,7 +187,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.dataset"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.dataset">[docs]</a>    <span class="k">def</span> <span class="nf">dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a dataset bound to this client.</span>
 
-<span class="sd">        :type dataset_name: string</span>
+<span class="sd">        :type dataset_name: str</span>
 <span class="sd">        :param dataset_name: Name of the dataset.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.bigquery.dataset.Dataset`</span>
@@ -201,7 +201,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type resource: dict</span>
 <span class="sd">        :param resource: one job resource from API response</span>
 
-<span class="sd">        :rtype; One of:</span>
+<span class="sd">        :rtype: One of:</span>
 <span class="sd">                :class:`gcloud.bigquery.job.LoadTableFromStorageJob`,</span>
 <span class="sd">                :class:`gcloud.bigquery.job.CopyJob`,</span>
 <span class="sd">                :class:`gcloud.bigquery.job.ExtractTableToStorageJob`,</span>
@@ -231,7 +231,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param max_results: maximum number of jobs to return, If not</span>
 <span class="sd">                            passed, defaults to a value set by the API.</span>
 
-<span class="sd">        :type page_token: string</span>
+<span class="sd">        :type page_token: str</span>
 <span class="sd">        :param page_token: opaque marker for the next &quot;page&quot; of jobs. If</span>
 <span class="sd">                           not passed, the API will return the first page of</span>
 <span class="sd">                           jobs.</span>
@@ -240,7 +240,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param all_users: if true, include jobs owned by all users in the</span>
 <span class="sd">                          project.</span>
 
-<span class="sd">        :type state_filter: string</span>
+<span class="sd">        :type state_filter: str</span>
 <span class="sd">        :param state_filter: if passed, include only jobs matching the given</span>
 <span class="sd">                             state.  One of</span>
 
@@ -280,7 +280,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.load</span>
 
-<span class="sd">        :type job_name: string</span>
+<span class="sd">        :type job_name: str</span>
 <span class="sd">        :param job_name: Name of the job.</span>
 
 <span class="sd">        :type destination: :class:`gcloud.bigquery.table.Table`</span>
@@ -302,7 +302,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.copy</span>
 
-<span class="sd">        :type job_name: string</span>
+<span class="sd">        :type job_name: str</span>
 <span class="sd">        :param job_name: Name of the job.</span>
 
 <span class="sd">        :type destination: :class:`gcloud.bigquery.table.Table`</span>
@@ -322,7 +322,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.extract</span>
 
-<span class="sd">        :type job_name: string</span>
+<span class="sd">        :type job_name: str</span>
 <span class="sd">        :param job_name: Name of the job.</span>
 
 <span class="sd">        :type source: :class:`gcloud.bigquery.table.Table`</span>
@@ -345,10 +345,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query</span>
 
-<span class="sd">        :type job_name: string</span>
+<span class="sd">        :type job_name: str</span>
 <span class="sd">        :param job_name: Name of the job.</span>
 
-<span class="sd">        :type query: string</span>
+<span class="sd">        :type query: str</span>
 <span class="sd">        :param query: SQL query to be executed</span>
 
 <span class="sd">        :rtype: :class:`gcloud.bigquery.job.QueryJob`</span>
@@ -359,7 +359,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Client.run_sync_query"><a class="viewcode-back" href="../../../bigquery-client.html#gcloud.bigquery.client.Client.run_sync_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_sync_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run a SQL query synchronously.</span>
 
-<span class="sd">        :type query: string</span>
+<span class="sd">        :type query: str</span>
 <span class="sd">        :param query: SQL query to be executed</span>
 
 <span class="sd">        :rtype: :class:`gcloud.bigquery.query.QueryResults`</span>

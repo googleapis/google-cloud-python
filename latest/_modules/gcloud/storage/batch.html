@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.batch &mdash; gcloud 819b696 documentation</title>
+    <title>gcloud.storage.batch &mdash; gcloud 77123bb documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '819b696',
+        VERSION:     '77123bb',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 819b696 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 77123bb documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/batch%0ARelease%3A%20819b696" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/batch%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (819b696)
+              Version History (77123bb)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -128,17 +128,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    Constructs payload from headers and body</span>
 
-<span class="sd">    :type method: string</span>
+<span class="sd">    :type method: str</span>
 <span class="sd">    :param method: HTTP method</span>
 
-<span class="sd">    :type uri: string</span>
+<span class="sd">    :type uri: str</span>
 <span class="sd">    :param uri: URI for HTTP request</span>
 
 <span class="sd">    :type headers:  dict</span>
 <span class="sd">    :param headers: HTTP headers</span>
 
-<span class="sd">    :type body: text or None</span>
+<span class="sd">    :type body: str or None</span>
 <span class="sd">    :param body: HTTP payload</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">headers</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
@@ -234,16 +235,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.</span>
 
-<span class="sd">        :type method: string</span>
+<span class="sd">        :type method: str</span>
 <span class="sd">        :param method: The HTTP method to use in the request.</span>
 
-<span class="sd">        :type url: string</span>
+<span class="sd">        :type url: str</span>
 <span class="sd">        :param url: The URL to send the request to.</span>
 
 <span class="sd">        :type headers: dict</span>
 <span class="sd">        :param headers: A dictionary of HTTP headers to send with the request.</span>
 
-<span class="sd">        :type data: string</span>
+<span class="sd">        :type data: str</span>
 <span class="sd">        :param data: The data to send as the body of the request.</span>
 
 <span class="sd">        :type target_object: object or :class:`NoneType`</span>
@@ -269,7 +270,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">_prepare_batch_request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prepares headers and body for a batch request.</span>
 
-<span class="sd">        :rtype: tuple (dict, string)</span>
+<span class="sd">        :rtype: tuple (dict, str)</span>
 <span class="sd">        :returns: The pair of headers and body of the batch request to be sent.</span>
 <span class="sd">        :raises: :class:`ValueError` if no requests have been deferred.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -393,7 +394,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type response: :class:`httplib2.Response`</span>
 <span class="sd">    :param response: HTTP response / headers from a request.</span>
 
-<span class="sd">    :type content: string</span>
+<span class="sd">    :type content: str</span>
 <span class="sd">    :param content: Response payload with a batch response.</span>
 
 <span class="sd">    :rtype: generator</span>
