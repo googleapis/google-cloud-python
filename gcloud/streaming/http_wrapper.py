@@ -434,7 +434,7 @@ def _register_http_factory(factory):
 def get_http(**kwds):
     """Construct an Http instance.
 
-    :type kwds: str, int
+    :type kwds: dict
     :param kwds:  keyword arguments to pass to factories.
 
     :rtype: :class:`httplib2.Http` (or a workalike)
