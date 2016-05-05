@@ -1,0 +1,1 @@
+This directory contains third-party code included in the gcloud-python distribution. Code here may be under a different license than gcloud-python's license. Refer to LICENSE under individual directories.
