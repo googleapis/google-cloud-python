@@ -11,16 +11,87 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""PubSub API IAM policy definitions"""
+"""PubSub API IAM policy definitions
+
+For allowed roles / permissions, see:
+https://cloud.google.com/pubsub/access_control#permissions
+"""
+
+# Generic IAM roles
 
 OWNER_ROLE = 'roles/owner'
-"""IAM permission implying all rights to an object."""
+"""Generic role implying all rights to an object."""
 
 EDITOR_ROLE = 'roles/editor'
-"""IAM permission implying rights to modify an object."""
+"""Generic role implying rights to modify an object."""
 
 VIEWER_ROLE = 'roles/viewer'
-"""IAM permission implying rights to access an object without modifying it."""
+"""Generic role implying rights to access an object."""
+
+# Pubsub-specific IAM roles
+
+PUBSUB_ADMIN_ROLE = 'roles/pubsub.admin'
+"""Role implying all rights to an object."""
+
+PUBSUB_EDITOR_ROLE = 'roles/pubsub.editor'
+"""Role implying rights to modify an object."""
+
+PUBSUB_VIEWER_ROLE = 'roles/pubsub.viewer'
+"""Role implying rights to access an object."""
+
+PUBSUB_PUBLISHER_ROLE = 'roles/pubsub.publisher'
+"""Role implying rights to publish to a topic."""
+
+PUBSUB_SUBSCRIBER_ROLE = 'roles/pubsub.subscriber'
+"""Role implying rights to subscribe to a topic."""
+
+
+# Pubsub-specific permissions
+
+PUBSUB_TOPICS_CONSUME = 'pubsub.topics.consume'
+"""Permission: consume events from a subscription."""
+
+PUBSUB_TOPICS_CREATE = 'pubsub.topics.create'
+"""Permission: create topics."""
+
+PUBSUB_TOPICS_DELETE = 'pubsub.topics.delete'
+"""Permission: delete topics."""
+
+PUBSUB_TOPICS_GET = 'pubsub.topics.get'
+"""Permission: retrieve topics."""
+
+PUBSUB_TOPICS_GET_IAM_POLICY = 'pubsub.topics.getIamPolicy'
+"""Permission: retrieve subscription IAM policies."""
+
+PUBSUB_TOPICS_LIST = 'pubsub.topics.list'
+"""Permission: list topics."""
+
+PUBSUB_TOPICS_SET_IAM_POLICY = 'pubsub.topics.setIamPolicy'
+"""Permission: update subscription IAM policies."""
+
+PUBSUB_SUBSCRIPTIONS_CONSUME = 'pubsub.subscriptions.consume'
+"""Permission: consume events from a subscription."""
+
+PUBSUB_SUBSCRIPTIONS_CREATE = 'pubsub.subscriptions.create'
+"""Permission: create subscriptions."""
+
+PUBSUB_SUBSCRIPTIONS_DELETE = 'pubsub.subscriptions.delete'
+"""Permission: delete subscriptions."""
+
+PUBSUB_SUBSCRIPTIONS_GET = 'pubsub.subscriptions.get'
+"""Permission: retrieve subscriptions."""
+
+PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY = 'pubsub.subscriptions.getIamPolicy'
+"""Permission: retrieve subscription IAM policies."""
+
+PUBSUB_SUBSCRIPTIONS_LIST = 'pubsub.subscriptions.list'
+"""Permission: list subscriptions."""
+
+PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY = 'pubsub.subscriptions.setIamPolicy'
+"""Permission: update subscription IAM policies."""
+
+PUBSUB_SUBSCRIPTIONS_UPDATE = 'pubsub.subscriptions.update'
+"""Permission: update subscriptions."""
 
 
 class Policy(object):
@@ -42,6 +113,8 @@ class Policy(object):
         self.owners = set()
         self.editors = set()
         self.viewers = set()
+        self.publishers = set()
+        self.subscribers = set()
 
     @staticmethod
     def user(email):
@@ -125,12 +198,16 @@ class Policy(object):
         for binding in resource.get('bindings', ()):
             role = binding['role']
             members = set(binding['members'])
-            if role == OWNER_ROLE:
-                policy.owners = members
-            elif role == EDITOR_ROLE:
-                policy.editors = members
-            elif role == VIEWER_ROLE:
-                policy.viewers = members
+            if role in (OWNER_ROLE, PUBSUB_ADMIN_ROLE):
+                policy.owners |= members
+            elif role in (EDITOR_ROLE, PUBSUB_EDITOR_ROLE):
+                policy.editors |= members
+            elif role in (VIEWER_ROLE, PUBSUB_VIEWER_ROLE):
+                policy.viewers |= members
+            elif role == PUBSUB_PUBLISHER_ROLE:
+                policy.publishers |= members
+            elif role == PUBSUB_SUBSCRIBER_ROLE:
+                policy.subscribers |= members
             else:
                 raise ValueError('Unknown role: %s' % (role,))
         return policy
@@ -153,15 +230,28 @@ class Policy(object):
 
         if self.owners:
             bindings.append(
-                {'role': OWNER_ROLE, 'members': sorted(self.owners)})
+                {'role': PUBSUB_ADMIN_ROLE,
+                 'members': sorted(self.owners)})
 
         if self.editors:
             bindings.append(
-                {'role': EDITOR_ROLE, 'members': sorted(self.editors)})
+                {'role': PUBSUB_EDITOR_ROLE,
+                 'members': sorted(self.editors)})
 
         if self.viewers:
             bindings.append(
-                {'role': VIEWER_ROLE, 'members': sorted(self.viewers)})
+                {'role': PUBSUB_VIEWER_ROLE,
+                 'members': sorted(self.viewers)})
+
+        if self.publishers:
+            bindings.append(
+                {'role': PUBSUB_PUBLISHER_ROLE,
+                 'members': sorted(self.publishers)})
+
+        if self.subscribers:
+            bindings.append(
+                {'role': PUBSUB_SUBSCRIBER_ROLE,
+                 'members': sorted(self.subscribers)})
 
         if bindings:
             resource['bindings'] = bindings
