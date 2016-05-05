@@ -219,6 +219,7 @@ class Query(object):
             query = query.select_projects('project-1')
             query = query.select_projects('project-1', 'project-2')
 
+        :type args: str
         :param args: Project IDs limiting the resources to be included
             in the query.
 
@@ -268,10 +269,12 @@ class Query(object):
             not a resource label. You would filter on it using
             ``select_metrics(instance_name=...)``.
 
+        :type args: str
         :param args: Raw filter expression strings to include in the
             conjunction. If just one is provided and no keyword arguments
             are provided, it can be a disjunction.
 
+        :type kwargs: str
         :param kwargs: Label filters to include in the conjunction as
             described above.
 
@@ -309,10 +312,12 @@ class Query(object):
 
             metric.label.<label> = ends_with("<value>")
 
+        :type args: str
         :param args: Raw filter expression strings to include in the
             conjunction. If just one is provided and no keyword arguments
             are provided, it can be a disjunction.
 
+        :type kwargs: str
         :param kwargs: Label filters to include in the conjunction as
             described above.
 
