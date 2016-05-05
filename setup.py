@@ -23,6 +23,11 @@ GRPC_EXTRAS = [
     'gax-google-pubsub-v1',
 ]
 
+THIRD_PARTY_PACKAGES = {
+    'gcloud.bigtable.happybase': 'third_party/happybase'
+}
+
+
 setup(
     name='gcloud',
     version='0.13.0',
@@ -32,7 +37,8 @@ setup(
     long_description=README,
     scripts=[],
     url='https://github.com/GoogleCloudPlatform/gcloud-python',
-    packages=find_packages(),
+    packages=find_packages() + list(THIRD_PARTY_PACKAGES.keys()),
+    package_dir=THIRD_PARTY_PACKAGES,
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
