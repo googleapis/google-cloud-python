@@ -1029,7 +1029,7 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(request.loggable_body, '<media body>')
 
     def test_configure_request_w_simple_w_body(self):
-        from email.parser import Parser
+        from gcloud._helpers import _to_bytes
         from gcloud.streaming.transfer import SIMPLE_UPLOAD
         CONTENT = b'CONTENT'
         BODY = b'BODY'
@@ -1045,7 +1045,6 @@ class Test_Upload(unittest2.TestCase):
         self.assertEqual(url_builder.query_params, {'uploadType': 'multipart'})
         self.assertEqual(url_builder.relative_path, config.simple_path)
 
-        parser = Parser()
         self.assertEqual(list(request.headers), ['content-type'])
         ctype, boundary = [x.strip()
                            for x in request.headers['content-type'].split(';')]
@@ -1053,23 +1052,24 @@ class Test_Upload(unittest2.TestCase):
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
 
-        divider = '--' + boundary[len('boundary="'):-1]
+        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
         chunks = request.body.split(divider)[1:-1]  # discard prolog / epilog
         self.assertEqual(len(chunks), 2)
 
-        text_msg = parser.parsestr(chunks[0].strip())
+        parse_chunk = _email_chunk_parser()
+        text_msg = parse_chunk(chunks[0].strip())
         self.assertEqual(dict(text_msg._headers),
                          {'Content-Type': 'text/plain',
                           'MIME-Version': '1.0'})
         self.assertEqual(text_msg._payload, BODY.decode('ascii'))
 
-        app_msg = parser.parsestr(chunks[1].strip())
+        app_msg = parse_chunk(chunks[1].strip())
         self.assertEqual(dict(app_msg._headers),
                          {'Content-Type': self.MIME_TYPE,
                           'Content-Transfer-Encoding': 'binary',
                           'MIME-Version': '1.0'})
         self.assertEqual(app_msg._payload, CONTENT.decode('ascii'))
-        self.assertTrue('<media body>' in request.loggable_body)
+        self.assertTrue(b'<media body>' in request.loggable_body)
 
     def test_configure_request_w_resumable_wo_total_size(self):
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
@@ -1782,6 +1782,18 @@ class Test_Upload(unittest2.TestCase):
                           'Content-Type': self.MIME_TYPE,
                           'Content-Range': 'bytes */%d' % (SIZE,)})
         self.assertEqual(end, SIZE)
+
+
+def _email_chunk_parser():
+    import six
+    if six.PY3:  # pragma: NO COVER  Python3
+        from email.parser import BytesParser  # pylint: disable=E0611
+        parser = BytesParser()
+        return parser.parsebytes
+    else:
+        from email.parser import Parser
+        parser = Parser()
+        return parser.parsestr
 
 
 class _Dummy(object):
