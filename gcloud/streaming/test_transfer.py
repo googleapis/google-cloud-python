@@ -1,4 +1,3 @@
-# pylint: disable=C0302
 import unittest2
 
 

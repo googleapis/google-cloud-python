@@ -1404,7 +1404,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         payload_lines = app_msg._payload.rstrip().splitlines()
         self.assertEqual(payload_lines, body_lines)
 
-    # pylint: disable=R0915
+    # pylint: disable=too-many-statements
     def test_upload_from_file_w_explicit_client_resumable(self):
         import json
         from six.moves.http_client import OK
@@ -1490,6 +1490,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                          'bytes 0-%d/%d' % (length - 1, length))
         self.assertEqual(headers['content-length'], '%d' % (length,))
         self.assertEqual(req['body'], BODY)
+    # pylint: enable=too-many-statements
 
 
 class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
@@ -1606,7 +1607,7 @@ class _Client(object):
         self.project = project
         self.connection = connection
 
-    def job_from_resource(self, resource):  # pylint: disable=W0613
+    def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job
 
 

@@ -231,10 +231,8 @@ class TestTableAdminAPI(unittest2.TestCase):
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_rename_table(self):
-        # pylint: disable=no-name-in-module
         from grpc.beta import interfaces
         from grpc.framework.interfaces.face import face
-        # pylint: enable=no-name-in-module
 
         temp_table_id = 'foo-bar-baz-table'
         temp_table = Config.CLUSTER.table(temp_table_id)
