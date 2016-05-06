@@ -742,7 +742,7 @@ class Table(object):
         - ``text/csv``.
 
         :type file_obj: file
-        :param file_obj: A file handle open for reading.
+        :param file_obj: A file handle opened in binary mode for reading.
 
         :type source_format: str
         :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
