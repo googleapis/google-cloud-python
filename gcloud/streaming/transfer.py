@@ -852,7 +852,7 @@ class Upload(_Transfer):
 
         # NOTE: generate multipart message as bytes, not text
         stream = six.BytesIO()
-        if six.PY3:  # pragma: NO COVER  Pythone
+        if six.PY3:  # pragma: NO COVER  Python3
             generator_class = email_generator.BytesGenerator
         else:
             generator_class = email_generator.Generator
