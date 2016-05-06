@@ -180,6 +180,7 @@ class TestPubsub(unittest2.TestCase):
             self.skipTest('IAM not supported by Pub/Sub emulator')
 
     def test_topic_iam_policy(self):
+        from gcloud.pubsub.iam import PUBSUB_TOPICS_GET_IAM_POLICY
         self._maybe_emulator_skip()
         topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
@@ -190,12 +191,14 @@ class TestPubsub(unittest2.TestCase):
             count -= 1
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
-        policy = topic.get_iam_policy()
-        policy.viewers.add(policy.user('jjg@google.com'))
-        new_policy = topic.set_iam_policy(policy)
-        self.assertEqual(new_policy.viewers, policy.viewers)
+        if topic.check_iam_permissions([PUBSUB_TOPICS_GET_IAM_POLICY]):
+            policy = topic.get_iam_policy()
+            policy.viewers.add(policy.user('jjg@google.com'))
+            new_policy = topic.set_iam_policy(policy)
+            self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_subscription_iam_policy(self):
+        from gcloud.pubsub.iam import PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY
         self._maybe_emulator_skip()
         topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
@@ -215,10 +218,12 @@ class TestPubsub(unittest2.TestCase):
             count -= 1
         self.assertTrue(subscription.exists())
         self.to_delete.insert(0, subscription)
-        policy = subscription.get_iam_policy()
-        policy.viewers.add(policy.user('jjg@google.com'))
-        new_policy = subscription.set_iam_policy(policy)
-        self.assertEqual(new_policy.viewers, policy.viewers)
+        if subscription.check_iam_permissions(
+                [PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY]):
+            policy = subscription.get_iam_policy()
+            policy.viewers.add(policy.user('jjg@google.com'))
+            new_policy = subscription.set_iam_policy(policy)
+            self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_fetch_delete_subscription_w_deleted_topic(self):
         TO_DELETE = 'delete-me' + unique_resource_id('-')
