@@ -370,20 +370,30 @@ class TestTopic(unittest2.TestCase):
                          (self.TOPIC_PATH, None, None))
 
     def test_get_iam_policy_w_bound_client(self):
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import (
+            PUBSUB_ADMIN_ROLE,
+            PUBSUB_EDITOR_ROLE,
+            PUBSUB_VIEWER_ROLE,
+            PUBSUB_PUBLISHER_ROLE,
+            PUBSUB_SUBSCRIBER_ROLE,
+        )
         OWNER1 = 'user:phred@example.com'
         OWNER2 = 'group:cloud-logs@google.com'
         EDITOR1 = 'domain:google.com'
         EDITOR2 = 'user:phred@example.com'
         VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
         VIEWER2 = 'user:phred@example.com'
+        PUBLISHER = 'user:phred@example.com'
+        SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
         POLICY = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+                {'role': PUBSUB_ADMIN_ROLE, 'members': [OWNER1, OWNER2]},
+                {'role': PUBSUB_EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
+                {'role': PUBSUB_VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+                {'role': PUBSUB_PUBLISHER_ROLE, 'members': [PUBLISHER]},
+                {'role': PUBSUB_SUBSCRIBER_ROLE, 'members': [SUBSCRIBER]},
             ],
         }
 
@@ -399,6 +409,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(sorted(policy.owners), [OWNER2, OWNER1])
         self.assertEqual(sorted(policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(policy.viewers), [VIEWER1, VIEWER2])
+        self.assertEqual(sorted(policy.publishers), [PUBLISHER])
+        self.assertEqual(sorted(policy.subscribers), [SUBSCRIBER])
         self.assertEqual(api._got_iam_policy, self.TOPIC_PATH)
 
     def test_get_iam_policy_w_alternate_client(self):
@@ -424,20 +436,35 @@ class TestTopic(unittest2.TestCase):
 
     def test_set_iam_policy_w_bound_client(self):
         from gcloud.pubsub.iam import Policy
-        from gcloud.pubsub.iam import OWNER_ROLE, EDITOR_ROLE, VIEWER_ROLE
+        from gcloud.pubsub.iam import (
+            PUBSUB_ADMIN_ROLE,
+            PUBSUB_EDITOR_ROLE,
+            PUBSUB_VIEWER_ROLE,
+            PUBSUB_PUBLISHER_ROLE,
+            PUBSUB_SUBSCRIBER_ROLE,
+        )
         OWNER1 = 'group:cloud-logs@google.com'
         OWNER2 = 'user:phred@example.com'
         EDITOR1 = 'domain:google.com'
         EDITOR2 = 'user:phred@example.com'
         VIEWER1 = 'serviceAccount:1234-abcdef@service.example.com'
         VIEWER2 = 'user:phred@example.com'
+        PUBLISHER = 'user:phred@example.com'
+        SUBSCRIBER = 'serviceAccount:1234-abcdef@service.example.com'
         POLICY = {
             'etag': 'DEADBEEF',
             'version': 17,
             'bindings': [
-                {'role': OWNER_ROLE, 'members': [OWNER1, OWNER2]},
-                {'role': EDITOR_ROLE, 'members': [EDITOR1, EDITOR2]},
-                {'role': VIEWER_ROLE, 'members': [VIEWER1, VIEWER2]},
+                {'role': PUBSUB_ADMIN_ROLE,
+                 'members': [OWNER1, OWNER2]},
+                {'role': PUBSUB_EDITOR_ROLE,
+                 'members': [EDITOR1, EDITOR2]},
+                {'role': PUBSUB_VIEWER_ROLE,
+                 'members': [VIEWER1, VIEWER2]},
+                {'role': PUBSUB_PUBLISHER_ROLE,
+                 'members': [PUBLISHER]},
+                {'role': PUBSUB_SUBSCRIBER_ROLE,
+                 'members': [SUBSCRIBER]},
             ],
         }
         RESPONSE = POLICY.copy()
@@ -455,6 +482,8 @@ class TestTopic(unittest2.TestCase):
         policy.editors.add(EDITOR2)
         policy.viewers.add(VIEWER1)
         policy.viewers.add(VIEWER2)
+        policy.publishers.add(PUBLISHER)
+        policy.subscribers.add(SUBSCRIBER)
 
         new_policy = topic.set_iam_policy(policy)
 
@@ -463,6 +492,8 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(sorted(new_policy.owners), [OWNER1, OWNER2])
         self.assertEqual(sorted(new_policy.editors), [EDITOR1, EDITOR2])
         self.assertEqual(sorted(new_policy.viewers), [VIEWER1, VIEWER2])
+        self.assertEqual(sorted(new_policy.publishers), [PUBLISHER])
+        self.assertEqual(sorted(new_policy.subscribers), [SUBSCRIBER])
         self.assertEqual(api._set_iam_policy, (self.TOPIC_PATH, POLICY))
 
     def test_set_iam_policy_w_alternate_client(self):
