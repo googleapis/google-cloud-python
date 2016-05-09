@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.iam &mdash; gcloud 77123bb documentation</title>
+    <title>gcloud.pubsub.iam &mdash; gcloud 02a2361 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '77123bb',
+        VERSION:     '02a2361',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 77123bb documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 02a2361 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/iam%0ARelease%3A%2077123bb" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/iam%0ARelease%3A%2002a2361" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (77123bb)
+              Version History (02a2361)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,16 +104,87 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-<span class="sd">&quot;&quot;&quot;PubSub API IAM policy definitions&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;PubSub API IAM policy definitions</span>
+
+<span class="sd">For allowed roles / permissions, see:</span>
+<span class="sd">https://cloud.google.com/pubsub/access_control#permissions</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Generic IAM roles</span>
 
 <span class="n">OWNER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/owner&#39;</span>
-<span class="sd">&quot;&quot;&quot;IAM permission implying all rights to an object.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Generic role implying all rights to an object.&quot;&quot;&quot;</span>
 
 <span class="n">EDITOR_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/editor&#39;</span>
-<span class="sd">&quot;&quot;&quot;IAM permission implying rights to modify an object.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Generic role implying rights to modify an object.&quot;&quot;&quot;</span>
 
 <span class="n">VIEWER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/viewer&#39;</span>
-<span class="sd">&quot;&quot;&quot;IAM permission implying rights to access an object without modifying it.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Generic role implying rights to access an object.&quot;&quot;&quot;</span>
+
+<span class="c1"># Pubsub-specific IAM roles</span>
+
+<span class="n">PUBSUB_ADMIN_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/pubsub.admin&#39;</span>
+<span class="sd">&quot;&quot;&quot;Role implying all rights to an object.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_EDITOR_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/pubsub.editor&#39;</span>
+<span class="sd">&quot;&quot;&quot;Role implying rights to modify an object.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_VIEWER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/pubsub.viewer&#39;</span>
+<span class="sd">&quot;&quot;&quot;Role implying rights to access an object.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_PUBLISHER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/pubsub.publisher&#39;</span>
+<span class="sd">&quot;&quot;&quot;Role implying rights to publish to a topic.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIBER_ROLE</span> <span class="o">=</span> <span class="s1">&#39;roles/pubsub.subscriber&#39;</span>
+<span class="sd">&quot;&quot;&quot;Role implying rights to subscribe to a topic.&quot;&quot;&quot;</span>
+
+
+<span class="c1"># Pubsub-specific permissions</span>
+
+<span class="n">PUBSUB_TOPICS_CONSUME</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.consume&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: consume events from a subscription.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_CREATE</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.create&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: create topics.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_DELETE</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.delete&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: delete topics.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_GET</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.get&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: retrieve topics.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_GET_IAM_POLICY</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.getIamPolicy&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: retrieve subscription IAM policies.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_LIST</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.list&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: list topics.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_TOPICS_SET_IAM_POLICY</span> <span class="o">=</span> <span class="s1">&#39;pubsub.topics.setIamPolicy&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: update subscription IAM policies.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_CONSUME</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.consume&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: consume events from a subscription.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_CREATE</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.create&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: create subscriptions.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_DELETE</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.delete&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: delete subscriptions.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_GET</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.get&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: retrieve subscriptions.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.getIamPolicy&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: retrieve subscription IAM policies.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_LIST</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.list&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: list subscriptions.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_SET_IAM_POLICY</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.setIamPolicy&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: update subscription IAM policies.&quot;&quot;&quot;</span>
+
+<span class="n">PUBSUB_SUBSCRIPTIONS_UPDATE</span> <span class="o">=</span> <span class="s1">&#39;pubsub.subscriptions.update&#39;</span>
+<span class="sd">&quot;&quot;&quot;Permission: update subscriptions.&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="Policy"><a class="viewcode-back" href="../../../pubsub-iam.html#gcloud.pubsub.iam.Policy">[docs]</a><span class="k">class</span> <span class="nc">Policy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -135,6 +206,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">owners</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publishers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
     <span class="nd">@staticmethod</span>
 <div class="viewcode-block" id="Policy.user"><a class="viewcode-back" href="../../../pubsub-iam.html#gcloud.pubsub.iam.Policy.user">[docs]</a>    <span class="k">def</span> <span class="nf">user</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
@@ -218,12 +291,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">for</span> <span class="n">binding</span> <span class="ow">in</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bindings&#39;</span><span class="p">,</span> <span class="p">()):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="n">binding</span><span class="p">[</span><span class="s1">&#39;role&#39;</span><span class="p">]</span>
             <span class="n">members</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">binding</span><span class="p">[</span><span class="s1">&#39;members&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">OWNER_ROLE</span><span class="p">:</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">owners</span> <span class="o">=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">EDITOR_ROLE</span><span class="p">:</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">=</span> <span class="n">members</span>
-            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">VIEWER_ROLE</span><span class="p">:</span>
-                <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">=</span> <span class="n">members</span>
+            <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_ADMIN_ROLE</span><span class="p">):</span>
+                <span class="n">policy</span><span class="o">.</span><span class="n">owners</span> <span class="o">|=</span> <span class="n">members</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_EDITOR_ROLE</span><span class="p">):</span>
+                <span class="n">policy</span><span class="o">.</span><span class="n">editors</span> <span class="o">|=</span> <span class="n">members</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="ow">in</span> <span class="p">(</span><span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="n">PUBSUB_VIEWER_ROLE</span><span class="p">):</span>
+                <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span> <span class="o">|=</span> <span class="n">members</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">:</span>
+                <span class="n">policy</span><span class="o">.</span><span class="n">publishers</span> <span class="o">|=</span> <span class="n">members</span>
+            <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">:</span>
+                <span class="n">policy</span><span class="o">.</span><span class="n">subscribers</span> <span class="o">|=</span> <span class="n">members</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown role: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">role</span><span class="p">,))</span>
         <span class="k">return</span> <span class="n">policy</span></div>
@@ -246,15 +323,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_ADMIN_ROLE</span><span class="p">,</span>
+                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">owners</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">editors</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editors</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_EDITOR_ROLE</span><span class="p">,</span>
+                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">editors</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewers</span><span class="p">:</span>
             <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">VIEWER_ROLE</span><span class="p">,</span> <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewers</span><span class="p">)})</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_VIEWER_ROLE</span><span class="p">,</span>
+                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewers</span><span class="p">)})</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">publishers</span><span class="p">:</span>
+            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_PUBLISHER_ROLE</span><span class="p">,</span>
+                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">publishers</span><span class="p">)})</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span><span class="p">:</span>
+            <span class="n">bindings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span><span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="n">PUBSUB_SUBSCRIBER_ROLE</span><span class="p">,</span>
+                 <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subscribers</span><span class="p">)})</span>
 
         <span class="k">if</span> <span class="n">bindings</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;bindings&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindings</span>
