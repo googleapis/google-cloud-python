@@ -87,6 +87,9 @@ load-plugins=pylint.extensions.check_docs
 #                                      """Hi everyone"""
 #                          and thus causes subsequent imports to be
 #                          diagnosed as out-of-order.
+# - no-name-in-module: Error gives a lot of false positives for names which
+#                      are defined dynamically. Also, any truly missing names
+#                      will be detected by our 100% code coverage.
 disable =
     maybe-no-member,
     no-member,
@@ -95,6 +98,7 @@ disable =
     star-args,
     redefined-variable-type,
     wrong-import-position,
+    no-name-in-module,
 
 
 [REPORTS]

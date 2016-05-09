@@ -717,7 +717,8 @@ class Table(object):
 
         return errors
 
-    def upload_from_file(self,  # pylint: disable=R0913,R0914
+    # pylint: disable=too-many-arguments,too-many-locals
+    def upload_from_file(self,
                          file_obj,
                          source_format,
                          rewind=False,
@@ -890,9 +891,10 @@ class Table(object):
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
         return client.job_from_resource(json.loads(response_content))
+    # pylint: enable=too-many-arguments,too-many-locals
 
 
-def _configure_job_metadata(metadata,  # pylint: disable=R0913
+def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             allow_jagged_rows,
                             allow_quoted_newlines,
                             create_disposition,
