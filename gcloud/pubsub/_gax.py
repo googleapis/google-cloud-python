@@ -13,17 +13,19 @@
 # limitations under the License.
 
 """GAX wrapper for Pubsub API requests."""
-
 try:
     # pylint: disable=no-name-in-module
     from google.gax import CallOptions
     from google.gax.errors import GaxError
-    from google.pubsub.v1.pubsub_pb2 import PubsubMessage
+    from google.gax.grpc import exc_to_code
     # pylint: enable=no-name-in-module
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
 else:
     _HAVE_GAX = True
+
+    from google.pubsub.v1.pubsub_pb2 import PubsubMessage
+    from grpc.beta.interfaces import StatusCode
 
     from gcloud.exceptions import Conflict
     from gcloud.exceptions import NotFound
@@ -76,8 +78,10 @@ else:
             """
             try:
                 topic_pb = self._gax_api.create_topic(topic_path)
-            except GaxError:
-                raise Conflict(topic_path)
+            except GaxError as exc:
+                if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                    raise Conflict(topic_path)
+                raise  # pragma: NO COVER
             return {'name': topic_pb.name}
 
         def topic_get(self, topic_path):
@@ -97,8 +101,10 @@ else:
             """
             try:
                 topic_pb = self._gax_api.get_topic(topic_path)
-            except GaxError:
-                raise NotFound(topic_path)
+            except GaxError as exc:
+                if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                    raise NotFound(topic_path)
+                raise  # pragma: NO COVER
             return {'name': topic_pb.name}
 
         def topic_delete(self, topic_path):
@@ -116,8 +122,10 @@ else:
             """
             try:
                 self._gax_api.delete_topic(topic_path)
-            except GaxError:
-                raise NotFound(topic_path)
+            except GaxError as exc:
+                if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                    raise NotFound(topic_path)
+                raise  # pragma: NO COVER
 
         def topic_publish(self, topic_path, messages):
             """API call:  publish one or more messages to a topic
@@ -141,8 +149,10 @@ else:
                            for message in messages]
             try:
                 response = self._gax_api.publish(topic_path, message_pbs)
-            except GaxError:
-                raise NotFound(topic_path)
+            except GaxError as exc:
+                if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                    raise NotFound(topic_path)
+                raise  # pragma: NO COVER
             return response.message_ids
 
         def topic_list_subscriptions(self, topic_path):
@@ -165,8 +175,10 @@ else:
             try:
                 response = self._gax_api.list_topic_subscriptions(
                     topic_path, options)
-            except GaxError:
-                raise NotFound(topic_path)
+            except GaxError as exc:
+                if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                    raise NotFound(topic_path)
+                raise  # pragma: NO COVER
             subs = [{'topic': topic_path, 'name': subscription}
                     for subscription in response.subscriptions]
             return subs, response.next_page_token

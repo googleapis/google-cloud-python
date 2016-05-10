@@ -215,12 +215,31 @@ class _GAXPublisherAPI(object):
         self._list_topics_called_with = name, options
         return self._list_topics_response
 
+    def _make_grpc_error(self, status_code):
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        class _DummyException(AbortionError):
+            code = status_code
+
+            def __init__(self):
+                pass
+
+        return _DummyException()
+
+    def _make_grpc_not_found(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.NOT_FOUND)
+
+    def _make_grpc_failed_precondition(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
+
     def create_topic(self, name, options=None):
         # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._create_topic_called_with = name, options
         if self._create_topic_conflict:
-            raise GaxError('conflict')
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
         return self._create_topic_response
 
     def get_topic(self, name, options=None):
@@ -230,14 +249,14 @@ class _GAXPublisherAPI(object):
         try:
             return self._get_topic_response
         except AttributeError:
-            raise GaxError('miss')
+            raise GaxError('miss', self._make_grpc_not_found())
 
     def delete_topic(self, name, options=None):
         # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._delete_topic_called_with = name, options
         if not self._delete_topic_ok:
-            raise GaxError('miss')
+            raise GaxError('miss', self._make_grpc_not_found())
 
     def publish(self, topic, messages, options=None):
         # pylint: disable=no-name-in-module
@@ -246,7 +265,7 @@ class _GAXPublisherAPI(object):
         try:
             return self._publish_response
         except AttributeError:
-            raise GaxError('miss')
+            raise GaxError('miss', self._make_grpc_not_found())
 
     def list_topic_subscriptions(self, topic, options=None):
         # pylint: disable=no-name-in-module
@@ -255,7 +274,7 @@ class _GAXPublisherAPI(object):
         try:
             return self._list_topic_subscriptions_response
         except AttributeError:
-            raise GaxError('miss')
+            raise GaxError('miss', self._make_grpc_not_found())
 
 
 class _TopicPB(object):
