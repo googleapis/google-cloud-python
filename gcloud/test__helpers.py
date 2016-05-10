@@ -483,7 +483,9 @@ class Test__rfc3339_nanos_to_datetime(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT(dt_str)
 
-    def test_w_microseconds(self):
+    def test_w_truncated_nanos(self):
+        import datetime
+        from gcloud._helpers import UTC
 
         year = 2009
         month = 12
@@ -491,12 +493,24 @@ class Test__rfc3339_nanos_to_datetime(unittest2.TestCase):
         hour = 12
         minute = 44
         seconds = 32
-        micros = 123456
+        truncateds_and_micros = [
+            ('12345678', 123456),
+            ('1234567', 123456),
+            ('123456', 123456),
+            ('12345', 123450),
+            ('1234', 123400),
+            ('123', 123000),
+            ('12', 120000),
+            ('1', 100000),
+        ]
 
-        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
-            year, month, day, hour, minute, seconds, micros)
-        with self.assertRaises(ValueError):
-            self._callFUT(dt_str)
+        for truncated, micros in truncateds_and_micros:
+            dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%sZ' % (
+                year, month, day, hour, minute, seconds, truncated)
+            result = self._callFUT(dt_str)
+            expected_result = datetime.datetime(
+                year, month, day, hour, minute, seconds, micros, UTC)
+            self.assertEqual(result, expected_result)
 
     def test_w_naonseconds(self):
         import datetime
