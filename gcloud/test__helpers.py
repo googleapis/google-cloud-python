@@ -511,7 +511,7 @@ class Test__rfc3339_nanos_to_datetime(unittest2.TestCase):
         nanos = 123456789
         micros = nanos // 1000
 
-        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%09dZ' % (
             year, month, day, hour, minute, seconds, nanos)
         result = self._callFUT(dt_str)
         expected_result = datetime.datetime(
