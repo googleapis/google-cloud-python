@@ -1787,9 +1787,7 @@ class Test_Upload(unittest2.TestCase):
 def _email_chunk_parser():
     import six
     if six.PY3:  # pragma: NO COVER  Python3
-        # pylint: disable=no-name-in-module
         from email.parser import BytesParser
-        # pylint: enable=no-name-in-module
         parser = BytesParser()
         return parser.parsebytes
     else:
