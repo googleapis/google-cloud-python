@@ -28,14 +28,55 @@ class TestClient(unittest2.TestCase):
 
     def test_ctor(self):
         from gcloud.translate.connection import Connection
+        from gcloud.translate.client import ENGLISH_ISO_639
+
         http = object()
         client = self._makeOne(self.KEY, http=http)
         self.assertTrue(isinstance(client.connection, Connection))
         self.assertIsNone(client.connection.credentials)
         self.assertTrue(client.connection.http is http)
+        self.assertEqual(client.target_language, ENGLISH_ISO_639)
+
+    def test_ctor_non_default(self):
+        from gcloud.translate.connection import Connection
+
+        http = object()
+        target = 'es'
+        client = self._makeOne(self.KEY, http=http, target_language=target)
+        self.assertTrue(isinstance(client.connection, Connection))
+        self.assertIsNone(client.connection.credentials)
+        self.assertTrue(client.connection.http is http)
+        self.assertEqual(client.target_language, target)
 
     def test_get_languages(self):
+        from gcloud.translate.client import ENGLISH_ISO_639
+
         client = self._makeOne(self.KEY)
+        supported = [
+            {'language': 'en', 'name': 'English'},
+            {'language': 'af', 'name': 'Afrikaans'},
+            {'language': 'am', 'name': 'Amharic'},
+        ]
+        data = {
+            'data': {
+                'languages': supported,
+            },
+        }
+        conn = client.connection = _Connection(data)
+
+        result = client.get_languages()
+        self.assertEqual(result, supported)
+
+        # Verify requested.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '/languages')
+        self.assertEqual(req['query_params'],
+                         {'key': self.KEY, 'target': ENGLISH_ISO_639})
+
+    def test_get_languages_no_target(self):
+        client = self._makeOne(self.KEY, target_language=None)
         supported = [
             {'language': 'en'},
             {'language': 'af'},
@@ -190,16 +231,8 @@ class TestClient(unittest2.TestCase):
         }
         conn = client.connection = _Connection(data)
 
-        result = client.detect_language(value)
-        self.assertEqual(result, [[detection1, detection2]])
-
-        # Verify requested.
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/detect')
-        self.assertEqual(req['query_params'],
-                         [('key', self.KEY), ('q', value)])
+        with self.assertRaises(ValueError):
+            client.detect_language(value)
 
     def test_translate_bad_result(self):
         client = self._makeOne(self.KEY)

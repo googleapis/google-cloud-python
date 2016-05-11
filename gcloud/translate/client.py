@@ -26,27 +26,6 @@ ENGLISH_ISO_639 = 'en'
 """ISO 639-1 language code for English."""
 
 
-def _zip_assert(values1, values2):
-    """Zips two iterables and asserts they are the same length.
-
-    :type values1: list
-    :param values1: Iterable (with a length) to be zipped.
-
-    :type values2: list
-    :param values2: Iterable (with a length) to be zipped.
-
-    :rtype: iterator
-    :returns: Zip iterator for each pair of values.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the number of
-             values in each list is not the same.
-    """
-    if len(values1) != len(values2):
-        raise ValueError('Expected iterations to have same length',
-                         values1, values2)
-
-    return six.moves.zip(values1, values2)
-
-
 class Client(object):
     """Client to bundle configuration needed for API requests.
 
@@ -57,13 +36,19 @@ class Client(object):
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: (Optional) HTTP object to make requests. If not
                  passed, an :class:`httplib.Http` object is created.
+
+    :type target_language: str
+    :param target_language: (Optional) The target language used for
+                            translations and language names. (Defaults to
+                            :data:`ENGLISH_ISO_639`.)
     """
 
-    def __init__(self, key, http=None):
+    def __init__(self, key, http=None, target_language=ENGLISH_ISO_639):
         self.key = key
         if http is None:
             http = httplib2.Http()
         self.connection = Connection(http=http)
+        self.target_language = target_language
 
     def get_languages(self, target_language=None):
         """Get list of supported languages for translation.
@@ -75,7 +60,8 @@ class Client(object):
 
         :type target_language: str
         :param target_language: (Optional) The language used to localize
-                                returned language names.
+                                returned language names. Defaults to the
+                                target language on the current client.
 
         :rtype: list
         :returns: List of dictionaries. Each dictionary contains a supported
@@ -85,6 +71,8 @@ class Client(object):
                   language (localized to the target language).
         """
         query_params = {'key': self.key}
+        if target_language is None:
+            target_language = self.target_language
         if target_language is not None:
             query_params['target'] = target_language
         response = self.connection.api_request(
@@ -116,6 +104,8 @@ class Client(object):
                   dictionary) for that queried value.
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  detections is not equal to the number of values.
+                 :class:`ValueError <exceptions.ValueError>` if a value
+                 produces a list of detections with 0 or multiple results in it.
         """
         query_params = [('key', self.key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
@@ -129,16 +119,19 @@ class Client(object):
                              values, detections)
 
         for index, value in enumerate(values):
-            for detection in detections[index]:
-                detection['input'] = value
-                # The ``isReliable`` field is deprecated.
-                detection.pop('isReliable', None)
-            # If there was only one detected match, replace the
-            # list of matches with the single match. Empirically, even
-            # clearly ambiguous text like "no" only returns a single
-            # detection.
+            # Empirically, even clearly ambiguous text like "no" only returns
+            # a single detection, so we replace the list of detections with
+            # the single detection contained.
             if len(detections[index]) == 1:
                 detections[index] = detections[index][0]
+            else:
+                message = ('Expected a single detection per value, API '
+                           'returned %d') % (len(detections[index]),)
+                raise ValueError(message, value, detections[index])
+
+            detections[index]['input'] = value
+            # The ``isReliable`` field is deprecated.
+            detections[index].pop('isReliable', None)
 
         return detections
 
@@ -175,8 +168,10 @@ class Client(object):
                   * ``translatedText``: The translation of the text into the
                     target language.
                   * ``input``: The corresponding input value.
+        :raises: :class:`ValueError <exceptions.ValueError>` if the number of
+                 values and translations differ.
         """
-        target_language = kwargs.get('target_language', ENGLISH_ISO_639)
+        target_language = kwargs.get('target_language', self.target_language)
         customization_ids = kwargs.get('customization_ids', ())
         if isinstance(customization_ids, six.string_types):
             customization_ids = [customization_ids]
@@ -194,6 +189,9 @@ class Client(object):
             method='GET', path='', query_params=query_params)
 
         translations = response.get('data', {}).get('translations', ())
-        for value, translation in _zip_assert(values, translations):
+        if len(values) != len(translations):
+            raise ValueError('Expected iterations to have same length',
+                             values, translations)
+        for value, translation in six.moves.zip(values, translations):
             translation['input'] = value
         return translations
