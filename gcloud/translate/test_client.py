@@ -138,8 +138,11 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/detect')
-        self.assertEqual(req['query_params'],
-                         [('key', self.KEY), ('q', value)])
+        query_params = [
+            ('key', self.KEY),
+            ('q', value.encode('utf-8')),
+        ]
+        self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_single_value(self):
         client = self._makeOne(self.KEY)
@@ -165,8 +168,11 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '/detect')
-        self.assertEqual(req['query_params'],
-                         [('key', self.KEY), ('q', value)])
+        query_params = [
+            ('key', self.KEY),
+            ('q', value.encode('utf-8')),
+        ]
+        self.assertEqual(req['query_params'], query_params)
 
     def test_detect_language_multiple_values(self):
         client = self._makeOne(self.KEY)
@@ -205,7 +211,7 @@ class TestClient(unittest2.TestCase):
         query_params = [
             ('key', self.KEY),
             ('q', value1.encode('utf-8')),
-            ('q', value2),
+            ('q', value2.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
@@ -247,8 +253,12 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
-        self.assertEqual(req['query_params'],
-                         [('key', self.KEY), ('target', 'en'), ('q', value)])
+        query_params = [
+            ('key', self.KEY),
+            ('target', 'en'),
+            ('q', value.encode('utf-8')),
+        ]
+        self.assertEqual(req['query_params'], query_params)
 
     def test_translate_defaults(self):
         client = self._makeOne(self.KEY)
@@ -273,8 +283,12 @@ class TestClient(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'GET')
         self.assertEqual(req['path'], '')
-        self.assertEqual(req['query_params'],
-                         [('key', self.KEY), ('target', 'en'), ('q', value)])
+        query_params = [
+            ('key', self.KEY),
+            ('target', 'en'),
+            ('q', value.encode('utf-8')),
+        ]
+        self.assertEqual(req['query_params'], query_params)
 
     def test_translate_explicit(self):
         client = self._makeOne(self.KEY)
@@ -307,7 +321,7 @@ class TestClient(unittest2.TestCase):
         query_params = [
             ('key', self.KEY),
             ('target', target_language),
-            ('q', value),
+            ('q', value.encode('utf-8')),
             ('cid', cid),
             ('format', format_),
             ('source', source_language),
