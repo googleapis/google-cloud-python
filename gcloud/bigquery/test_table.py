@@ -1289,6 +1289,19 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_upload_from_file_text_mode_file_failure(self):
+
+        class TextModeFile(object):
+            mode = 'r'
+
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        file_obj = TextModeFile()
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        with self.assertRaises(ValueError):
+            table.upload_from_file(file_obj, 'CSV', size=1234)
+
     def test_upload_from_file_size_failure(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
