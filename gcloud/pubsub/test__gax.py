@@ -16,11 +16,13 @@ import unittest2
 
 
 try:
-    # pylint: disable=no-name-in-module
-    from gcloud.pubsub._gax import _HAVE_GAX
-    # pylint: enable=no-name-in-module
+    # pylint: disable=unused-import
+    import gcloud.pubsub._gax
+    # pylint: enable=unused-import
 except ImportError:  # pragma: NO COVER
     _HAVE_GAX = False
+else:
+    _HAVE_GAX = True
 
 
 @unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -235,7 +237,6 @@ class _GAXPublisherAPI(object):
         return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
 
     def create_topic(self, name, options=None):
-        # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._create_topic_called_with = name, options
         if self._create_topic_conflict:
@@ -243,7 +244,6 @@ class _GAXPublisherAPI(object):
         return self._create_topic_response
 
     def get_topic(self, name, options=None):
-        # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._get_topic_called_with = name, options
         try:
@@ -252,14 +252,12 @@ class _GAXPublisherAPI(object):
             raise GaxError('miss', self._make_grpc_not_found())
 
     def delete_topic(self, name, options=None):
-        # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._delete_topic_called_with = name, options
         if not self._delete_topic_ok:
             raise GaxError('miss', self._make_grpc_not_found())
 
     def publish(self, topic, messages, options=None):
-        # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._publish_called_with = topic, messages, options
         try:
@@ -268,7 +266,6 @@ class _GAXPublisherAPI(object):
             raise GaxError('miss', self._make_grpc_not_found())
 
     def list_topic_subscriptions(self, topic, options=None):
-        # pylint: disable=no-name-in-module
         from google.gax.errors import GaxError
         self._list_topic_subscriptions_called_with = topic, options
         try:
