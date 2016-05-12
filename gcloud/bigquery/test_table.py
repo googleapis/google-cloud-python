@@ -1289,6 +1289,19 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_upload_from_file_text_mode_file_failure(self):
+
+        class TextModeFile(object):
+            mode = 'r'
+
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        file_obj = TextModeFile()
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        with self.assertRaises(ValueError):
+            table.upload_from_file(file_obj, 'CSV', size=1234)
+
     def test_upload_from_file_size_failure(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
@@ -1351,12 +1364,14 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         return conn.http._requested, PATH, BODY
 
     def test_upload_from_file_w_bound_client_multipart(self):
-        from email.parser import Parser
         import json
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
+        from gcloud._helpers import _to_bytes
+        from gcloud.streaming.test_transfer import _email_chunk_parser
 
         requested, PATH, BODY = self._upload_from_file_helper()
+        parse_chunk = _email_chunk_parser()
 
         self.assertEqual(len(requested), 1)
         req = requested[0]
@@ -1369,18 +1384,17 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'multipart'})
 
-        parser = Parser()
         ctype, boundary = [x.strip()
                            for x in req['headers']['content-type'].split(';')]
         self.assertEqual(ctype, 'multipart/related')
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
 
-        divider = '--' + boundary[len('boundary="'):-1]
+        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
         chunks = req['body'].split(divider)[1:-1]  # discard prolog / epilog
         self.assertEqual(len(chunks), 2)
 
-        text_msg = parser.parsestr(chunks[0].strip())
+        text_msg = parse_chunk(chunks[0].strip())
         self.assertEqual(dict(text_msg._headers),
                          {'Content-Type': 'application/json',
                           'MIME-Version': '1.0'})
@@ -1394,7 +1408,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(load_config['destinationTable'], DESTINATION_TABLE)
         self.assertEqual(load_config['sourceFormat'], 'CSV')
 
-        app_msg = parser.parsestr(chunks[1].strip())
+        app_msg = parse_chunk(chunks[1].strip())
         self.assertEqual(dict(app_msg._headers),
                          {'Content-Type': 'application/octet-stream',
                           'Content-Transfer-Encoding': 'binary',

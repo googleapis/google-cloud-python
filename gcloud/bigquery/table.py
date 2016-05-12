@@ -742,7 +742,7 @@ class Table(object):
         - ``text/csv``.
 
         :type file_obj: file
-        :param file_obj: A file handle open for reading.
+        :param file_obj: A file handle opened in binary mode for reading.
 
         :type source_format: str
         :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
@@ -809,8 +809,9 @@ class Table(object):
         :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
                   querying status)
-        :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined
+        :raises: :class:`ValueError` if ``size`` is not passed in and can not
+                 be determined, or if the ``file_obj`` can be detected to be
+                 a file opened in text mode.
         """
         client = self._require_client(client)
         connection = client.connection
@@ -819,6 +820,12 @@ class Table(object):
         # Rewind the file if desired.
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
+
+        mode = getattr(file_obj, 'mode', None)
+        if mode is not None and mode != 'rb':
+            raise ValueError(
+                "Cannot upload files opened in text mode:  use "
+                "open(filename, mode='rb')")
 
         # Get the basic stats about the file.
         total_bytes = size

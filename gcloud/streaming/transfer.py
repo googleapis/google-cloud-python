@@ -9,6 +9,7 @@ import os
 import six
 from six.moves import http_client
 
+from gcloud._helpers import _to_bytes
 from gcloud.streaming.buffered_stream import BufferedStream
 from gcloud.streaming.exceptions import CommunicationError
 from gcloud.streaming.exceptions import HttpError
@@ -849,13 +850,13 @@ class Upload(_Transfer):
         msg.set_payload(self.stream.read())
         msg_root.attach(msg)
 
-        # NOTE: We encode the body, but can't use
-        #       `email.message.Message.as_string` because it prepends
-        #       `> ` to `From ` lines.
-        # NOTE: We must use six.StringIO() instead of io.StringIO() since the
-        #       `email` library uses cStringIO in Py2 and io.StringIO in Py3.
-        stream = six.StringIO()
-        generator = email_generator.Generator(stream, mangle_from_=False)
+        # NOTE: generate multipart message as bytes, not text
+        stream = six.BytesIO()
+        if six.PY3:  # pragma: NO COVER  Python3
+            generator_class = email_generator.BytesGenerator
+        else:
+            generator_class = email_generator.Generator
+        generator = generator_class(stream, mangle_from_=False)
         generator.flatten(msg_root, unixfrom=False)
         http_request.body = stream.getvalue()
 
@@ -863,10 +864,11 @@ class Upload(_Transfer):
         http_request.headers['content-type'] = (
             'multipart/related; boundary="%s"' % multipart_boundary)
 
-        body_components = http_request.body.split(multipart_boundary)
-        headers, _, _ = body_components[-2].partition('\n\n')
-        body_components[-2] = '\n\n'.join([headers, '<media body>\n\n--'])
-        http_request.loggable_body = multipart_boundary.join(body_components)
+        boundary_bytes = _to_bytes(multipart_boundary)
+        body_components = http_request.body.split(boundary_bytes)
+        headers, _, _ = body_components[-2].partition(b'\n\n')
+        body_components[-2] = b'\n\n'.join([headers, b'<media body>\n\n--'])
+        http_request.loggable_body = boundary_bytes.join(body_components)
 
     def _configure_resumable_request(self, http_request):
         """Helper for 'configure_request': set up resumable request."""
