@@ -89,6 +89,18 @@ class Test_PublisherAPI(unittest2.TestCase):
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(options, None)
 
+    def test_topic_create_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXPublisherAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.topic_create(self.TOPIC_PATH)
+
+        topic_path, options = gax_api._create_topic_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(options, None)
+
     def test_topic_get_hit(self):
         topic_pb = _TopicPB(self.TOPIC_PATH)
         gax_api = _GAXPublisherAPI(_get_topic_response=topic_pb)
@@ -113,6 +125,18 @@ class Test_PublisherAPI(unittest2.TestCase):
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertEqual(options, None)
 
+    def test_topic_get_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXPublisherAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.topic_get(self.TOPIC_PATH)
+
+        topic_path, options = gax_api._get_topic_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(options, None)
+
     def test_topic_delete_hit(self):
         gax_api = _GAXPublisherAPI(_delete_topic_ok=True)
         api = self._makeOne(gax_api)
@@ -129,6 +153,18 @@ class Test_PublisherAPI(unittest2.TestCase):
         api = self._makeOne(gax_api)
 
         with self.assertRaises(NotFound):
+            api.topic_delete(self.TOPIC_PATH)
+
+        topic_path, options = gax_api._delete_topic_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(options, None)
+
+    def test_topic_delete_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXPublisherAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
             api.topic_delete(self.TOPIC_PATH)
 
         topic_path, options = gax_api._delete_topic_called_with
@@ -174,6 +210,25 @@ class Test_PublisherAPI(unittest2.TestCase):
         self.assertEqual(message_pb.attributes, {'foo': 'bar'})
         self.assertEqual(options, None)
 
+    def test_topic_publish_error(self):
+        import base64
+        from google.gax.errors import GaxError
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MESSAGE = {'data': B64, 'attributes': {}}
+        gax_api = _GAXPublisherAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+
+        topic_path, message_pbs, options = gax_api._publish_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        message_pb, = message_pbs
+        self.assertEqual(message_pb.data, B64)
+        self.assertEqual(message_pb.attributes, {})
+        self.assertEqual(options, None)
+
     def test_topic_list_subscriptions_no_paging(self):
         response = _ListTopicSubscriptionsResponsePB([self.SUB_PATH])
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
@@ -205,10 +260,23 @@ class Test_PublisherAPI(unittest2.TestCase):
         self.assertEqual(topic_path, self.TOPIC_PATH)
         self.assertFalse(options.is_page_streaming)
 
+    def test_topic_list_subscriptions_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXPublisherAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.topic_list_subscriptions(self.TOPIC_PATH)
+
+        topic_path, options = gax_api._list_topic_subscriptions_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertFalse(options.is_page_streaming)
+
 
 class _GAXPublisherAPI(object):
 
     _create_topic_conflict = False
+    _random_gax_error = False
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
@@ -239,6 +307,8 @@ class _GAXPublisherAPI(object):
     def create_topic(self, name, options=None):
         from google.gax.errors import GaxError
         self._create_topic_called_with = name, options
+        if self._random_gax_error:
+            raise GaxError('error')
         if self._create_topic_conflict:
             raise GaxError('conflict', self._make_grpc_failed_precondition())
         return self._create_topic_response
@@ -246,6 +316,8 @@ class _GAXPublisherAPI(object):
     def get_topic(self, name, options=None):
         from google.gax.errors import GaxError
         self._get_topic_called_with = name, options
+        if self._random_gax_error:
+            raise GaxError('error')
         try:
             return self._get_topic_response
         except AttributeError:
@@ -254,12 +326,16 @@ class _GAXPublisherAPI(object):
     def delete_topic(self, name, options=None):
         from google.gax.errors import GaxError
         self._delete_topic_called_with = name, options
+        if self._random_gax_error:
+            raise GaxError('error')
         if not self._delete_topic_ok:
             raise GaxError('miss', self._make_grpc_not_found())
 
     def publish(self, topic, messages, options=None):
         from google.gax.errors import GaxError
         self._publish_called_with = topic, messages, options
+        if self._random_gax_error:
+            raise GaxError('error')
         try:
             return self._publish_response
         except AttributeError:
@@ -268,6 +344,8 @@ class _GAXPublisherAPI(object):
     def list_topic_subscriptions(self, topic, options=None):
         from google.gax.errors import GaxError
         self._list_topic_subscriptions_called_with = topic, options
+        if self._random_gax_error:
+            raise GaxError('error')
         try:
             return self._list_topic_subscriptions_response
         except AttributeError:

@@ -77,7 +77,7 @@ class _PublisherAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
                 raise Conflict(topic_path)
-            raise  # pragma: NO COVER
+            raise
         return {'name': topic_pb.name}
 
     def topic_get(self, topic_path):
@@ -100,7 +100,7 @@ class _PublisherAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
-            raise  # pragma: NO COVER
+            raise
         return {'name': topic_pb.name}
 
     def topic_delete(self, topic_path):
@@ -121,7 +121,7 @@ class _PublisherAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
-            raise  # pragma: NO COVER
+            raise
 
     def topic_publish(self, topic_path, messages):
         """API call:  publish one or more messages to a topic
@@ -148,7 +148,7 @@ class _PublisherAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
-            raise  # pragma: NO COVER
+            raise
         return response.message_ids
 
     def topic_list_subscriptions(self, topic_path):
@@ -174,7 +174,7 @@ class _PublisherAPI(object):
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
-            raise  # pragma: NO COVER
+            raise
         subs = [{'topic': topic_path, 'name': subscription}
                 for subscription in response.subscriptions]
         return subs, response.next_page_token
