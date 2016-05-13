@@ -235,7 +235,7 @@ class TestClient(unittest2.TestCase):
                 'detections': [[detection1, detection2]],
             },
         }
-        conn = client.connection = _Connection(data)
+        client.connection = _Connection(data)
 
         with self.assertRaises(ValueError):
             client.detect_language(value)

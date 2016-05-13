@@ -105,7 +105,8 @@ class Client(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  detections is not equal to the number of values.
                  :class:`ValueError <exceptions.ValueError>` if a value
-                 produces a list of detections with 0 or multiple results in it.
+                 produces a list of detections with 0 or multiple results
+                 in it.
         """
         query_params = [('key', self.key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
