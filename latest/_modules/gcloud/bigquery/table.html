@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.table &mdash; gcloud cd8e645 documentation</title>
+    <title>gcloud.bigquery.table &mdash; gcloud 6064270 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'cd8e645',
+        VERSION:     '6064270',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud cd8e645 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 6064270 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%20cd8e645" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/table%0ARelease%3A%206064270" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (cd8e645)
+              Version History (6064270)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -835,7 +835,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        - ``text/csv``.</span>
 
 <span class="sd">        :type file_obj: file</span>
-<span class="sd">        :param file_obj: A file handle open for reading.</span>
+<span class="sd">        :param file_obj: A file handle opened in binary mode for reading.</span>
 
 <span class="sd">        :type source_format: str</span>
 <span class="sd">        :param source_format: one of &#39;CSV&#39; or &#39;NEWLINE_DELIMITED_JSON&#39;.</span>
@@ -902,8 +902,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`</span>
 <span class="sd">        :returns: the job instance used to load the data (e.g., for</span>
 <span class="sd">                  querying status)</span>
-<span class="sd">        :raises: :class:`ValueError` if size is not passed in and can not be</span>
-<span class="sd">                 determined</span>
+<span class="sd">        :raises: :class:`ValueError` if ``size`` is not passed in and can not</span>
+<span class="sd">                 be determined, or if the ``file_obj`` can be detected to be</span>
+<span class="sd">                 a file opened in text mode.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span>
@@ -912,6 +913,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Rewind the file if desired.</span>
         <span class="k">if</span> <span class="n">rewind</span><span class="p">:</span>
             <span class="n">file_obj</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_SET</span><span class="p">)</span>
+
+        <span class="n">mode</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="s1">&#39;mode&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s1">&#39;rb&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Cannot upload files opened in text mode:  use &quot;</span>
+                <span class="s2">&quot;open(filename, mode=&#39;rb&#39;)&quot;</span><span class="p">)</span>
 
         <span class="c1"># Get the basic stats about the file.</span>
         <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span>

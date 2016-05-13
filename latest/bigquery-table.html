@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tables &mdash; gcloud cd8e645 documentation</title>
+    <title>Tables &mdash; gcloud 6064270 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'cd8e645',
+        VERSION:     '6064270',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud cd8e645 documentation" href="index.html" />
+    <link rel="top" title="gcloud 6064270 documentation" href="index.html" />
     <link rel="next" title="Query" href="bigquery-query.html" />
     <link rel="prev" title="Jobs" href="bigquery-job.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-table%0ARelease%3A%20cd8e645" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-table%0ARelease%3A%206064270" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (cd8e645)
+              Version History (6064270)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -627,7 +627,7 @@ row.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle open for reading.</li>
+<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle opened in binary mode for reading.</li>
 <li><strong>source_format</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; one of &#8216;CSV&#8217; or &#8216;NEWLINE_DELIMITED_JSON&#8217;.
 job configuration option; see
 <code class="xref py py-meth docutils literal"><span class="pre">gcloud.bigquery.job.LoadJob()</span></code></li>
@@ -670,8 +670,9 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 querying status)</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if size is not passed in and can not be
-determined</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if <code class="docutils literal"><span class="pre">size</span></code> is not passed in and can not
+be determined, or if the <code class="docutils literal"><span class="pre">file_obj</span></code> can be detected to be
+a file opened in text mode.</p>
 </td>
 </tr>
 </tbody>
