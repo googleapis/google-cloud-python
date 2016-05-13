@@ -299,7 +299,7 @@ class _SubscriberAPI(object):
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type topic_path: string
         :param topic_path: the fully-qualified path of the topic being
@@ -373,7 +373,7 @@ class _SubscriberAPI(object):
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type push_endpoint: string, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
@@ -395,7 +395,7 @@ class _SubscriberAPI(object):
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type return_immediately: boolean
         :param return_immediately: if True, the back-end returns even if no
@@ -427,7 +427,7 @@ class _SubscriberAPI(object):
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
@@ -449,7 +449,7 @@ class _SubscriberAPI(object):
         :type subscription_path: string
         :param subscription_path: the fully-qualified path of the new
                                   subscription, in format
-                                  ``projects/<PROJECT>/subscriptions/<TOPIC_NAME>``.
+                                  ``projects/<PROJECT>/subscriptions/<SUB_NAME>``.
 
         :type ack_ids: list of string
         :param ack_ids: ack IDs of messages being acknowledged
