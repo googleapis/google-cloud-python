@@ -422,11 +422,11 @@ def _subscription_pb_to_mapping(sub_pb):
     mapping = {
         'name': sub_pb.name,
         'topic': sub_pb.topic,
-        'ack_deadline': sub_pb.ack_deadline,
+        'ackDeadlineSeconds': sub_pb.ack_deadline_seconds,
     }
     if sub_pb.push_config.push_endpoint != '':
-        mapping['push_config'] = {
-            'push_endpoint': sub_pb.push_config.push_endpoint,
+        mapping['pushConfig'] = {
+            'pushEndpoint': sub_pb.push_config.push_endpoint,
         }
     return mapping
 
