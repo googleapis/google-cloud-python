@@ -303,9 +303,9 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertIsInstance(subscription, dict)
         self.assertEqual(subscription['name'], self.SUB_PATH)
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
-        self.assertEqual(subscription['push_config'],
-                         {'push_endpoint': self.PUSH_ENDPOINT})
-        self.assertEqual(subscription['ack_deadline'], 0)
+        self.assertEqual(subscription['pushConfig'],
+                         {'pushEndpoint': self.PUSH_ENDPOINT})
+        self.assertEqual(subscription['ackDeadlineSeconds'], 0)
         self.assertEqual(next_token, None)
 
         name, options = gax_api._list_subscriptions_called_with
@@ -322,7 +322,7 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         expected = {
             'name': self.SUB_PATH,
             'topic': self.TOPIC_PATH,
-            'ack_deadline': 0,
+            'ackDeadlineSeconds': 0,
         }
         self.assertEqual(resource, expected)
         name, topic, push_config, ack_deadline, options = (
@@ -368,7 +368,8 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
     def test_subscription_get_hit(self):
-        sub_pb = _SubscriptionPB(self.SUB_PATH, self.TOPIC_PATH, '', 0)
+        sub_pb = _SubscriptionPB(
+            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)
         gax_api = _GAXSubscriberAPI(_get_subscription_response=sub_pb)
         api = self._makeOne(gax_api)
 
@@ -377,7 +378,10 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         expected = {
             'name': self.SUB_PATH,
             'topic': self.TOPIC_PATH,
-            'ack_deadline': 0,
+            'ackDeadlineSeconds': 0,
+            'pushConfig': {
+                'pushEndpoint': self.PUSH_ENDPOINT,
+            },
         }
         self.assertEqual(resource, expected)
         sub_path, options = gax_api._get_subscription_called_with
@@ -851,11 +855,11 @@ class _PullResponsePB(object):
 
 class _SubscriptionPB(object):
 
-    def __init__(self, name, topic, push_endpoint, ack_deadline):
+    def __init__(self, name, topic, push_endpoint, ack_deadline_seconds):
         self.name = name
         self.topic = topic
         self.push_config = _PushConfigPB(push_endpoint)
-        self.ack_deadline = ack_deadline
+        self.ack_deadline_seconds = ack_deadline_seconds
 
 
 class _ListSubscriptionsResponsePB(object):
