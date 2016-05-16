@@ -48,9 +48,9 @@ class _PublisherAPI(object):
 
         :rtype: tuple, (list, str)
         :returns: list of ``Topic`` resource dicts, plus a
-                "next page token" string:  if not None, indicates that
-                more topics can be retrieved with another call (pass that
-                value as ``page_token``).
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
         """
         options = CallOptions(is_page_streaming=False)
         path = 'projects/%s' % (project,)
@@ -201,9 +201,9 @@ class _SubscriberAPI(object):
 
         :rtype: tuple, (list, str)
         :returns: list of ``Subscription`` resource dicts, plus a
-                "next page token" string:  if not None, indicates that
-                more topics can be retrieved with another call (pass that
-                value as ``page_token``).
+                  "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
         """
         options = CallOptions(is_page_streaming=False)
         path = 'projects/%s' % (project,)
@@ -231,7 +231,7 @@ class _SubscriberAPI(object):
 
         :type ack_deadline: int, or ``NoneType``
         :param ack_deadline: the deadline (in seconds) by which messages pulled
-                            from the back-end must be acknowledged.
+                             from the back-end must be acknowledged.
 
         :type push_endpoint: string, or ``NoneType``
         :param push_endpoint: URL to which messages will be pushed by the
