@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.connection &mdash; gcloud 14b1143 documentation</title>
+    <title>gcloud.pubsub.connection &mdash; gcloud a411069 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '14b1143',
+        VERSION:     'a411069',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 14b1143 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud a411069 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%2014b1143" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/connection%0ARelease%3A%20a411069" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (14b1143)
+              Version History (a411069)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -194,7 +194,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_topics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  list topics for a given project</span>
+        <span class="sd">&quot;&quot;&quot;List topics for the project associated with this API.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list</span>
@@ -231,13 +231,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;topics&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">topic_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  create a topic</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create a topic via a PUT request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the new topic, in format</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the new topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -247,13 +247,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span>
 
     <span class="k">def</span> <span class="nf">topic_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  retrieve a topic</span>
+        <span class="sd">&quot;&quot;&quot;API call:  retrieve a topic via a GET request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
 <span class="sd">        :rtype: dict</span>
@@ -263,26 +263,26 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span>
 
     <span class="k">def</span> <span class="nf">topic_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  delete a topic</span>
+        <span class="sd">&quot;&quot;&quot;API call:  delete a topic via a DELETE request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">topic_path</span><span class="p">,))</span>
 
     <span class="k">def</span> <span class="nf">topic_publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">messages</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  publish one or more messages to a topic</span>
+        <span class="sd">&quot;&quot;&quot;API call:  publish a message to a topic via a POST request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
 <span class="sd">        :type messages: list of dict</span>
@@ -299,13 +299,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">topic_list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                                  <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  list subscriptions bound to a topic</span>
+        <span class="sd">&quot;&quot;&quot;API call:  list subscriptions bound to a topic via a GET request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic, in format</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
 <span class="sd">        :type page_size: int</span>
@@ -346,7 +346,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">list_subscriptions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  list subscriptions for a given project</span>
+        <span class="sd">&quot;&quot;&quot;List subscriptions for the project associated with this API.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/list</span>
@@ -384,18 +384,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">subscription_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span>
                             <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  create a subscription</span>
+        <span class="sd">&quot;&quot;&quot;API call:  create a subscription via a PUT request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/create</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
 <span class="sd">                                  subscription, in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
 
 <span class="sd">        :type topic_path: string</span>
-<span class="sd">        :param topic_path: the fully-qualified path of the topic being</span>
+<span class="sd">        :param topic_path: the fully-qualfied path of the topic being</span>
 <span class="sd">                           subscribed, in format</span>
 <span class="sd">                           ``projects/&lt;PROJECT&gt;/topics/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -424,13 +424,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;PUT&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">subscription_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  retrieve a subscription</span>
+        <span class="sd">&quot;&quot;&quot;API call:  retrieve a subscription via a GET request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/get</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the subscription,</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the subscription,</span>
 <span class="sd">                                  in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 
@@ -442,13 +442,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">subscription_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  delete a subscription</span>
+        <span class="sd">&quot;&quot;&quot;API call:  delete a subscription via a DELETE request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/delete</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the subscription,</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the subscription,</span>
 <span class="sd">                                  in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;SUB_NAME&gt;``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -458,13 +458,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">subscription_modify_push_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span>
                                         <span class="n">push_endpoint</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update push config of a subscription</span>
+        <span class="sd">&quot;&quot;&quot;API call:  update push config of a subscription via a POST request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
 <span class="sd">                                  subscription, in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -480,13 +480,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">subscription_pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                           <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  retrieve messages for a subscription</span>
+        <span class="sd">&quot;&quot;&quot;API call:  update push config of a subscription via a POST request</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
 <span class="sd">                                  subscription, in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -512,13 +512,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;receivedMessages&#39;</span><span class="p">,</span> <span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">subscription_acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages</span>
+        <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyPushConfig</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
 <span class="sd">                                  subscription, in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -534,13 +534,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">subscription_modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription_path</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span>
                                          <span class="n">ack_deadline</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update ack deadline for retrieved messages</span>
+        <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions/modifyAckDeadline</span>
 
 <span class="sd">        :type subscription_path: string</span>
-<span class="sd">        :param subscription_path: the fully-qualified path of the new</span>
+<span class="sd">        :param subscription_path: the fully-qualfied path of the new</span>
 <span class="sd">                                  subscription, in format</span>
 <span class="sd">                                  ``projects/&lt;PROJECT&gt;/subscriptions/&lt;TOPIC_NAME&gt;``.</span>
 
@@ -571,7 +571,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
     <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  fetch the IAM policy for the target</span>
+        <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the target.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy</span>
@@ -588,7 +588,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">policy</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  update the IAM policy for the target</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the target.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy</span>
@@ -609,7 +609,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">conn</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">wrapped</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">test_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_path</span><span class="p">,</span> <span class="n">permissions</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;API call:  test permissions</span>
+        <span class="sd">&quot;&quot;&quot;Update the IAM policy for the target.</span>
 
 <span class="sd">        See:</span>
 <span class="sd">        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions</span>
