@@ -341,6 +341,10 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
             self._operations_stub_internal.__enter__()
             self._table_stub_internal.__enter__()
 
+    def __enter__(self):
+        """Starts the client as a context manager."""
+        self.start()
+
     def stop(self):
         """Closes all the open gRPC clients."""
         if not self.is_started():
@@ -358,6 +362,10 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self._cluster_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
+
+    def __exit__(self, exc_type, exc_val, exc_t):
+        """Stops the client as a context manager."""
+        self.stop()
 
     def cluster(self, zone, cluster_id, display_name=None, serve_nodes=3):
         """Factory to create a cluster associated with this client.

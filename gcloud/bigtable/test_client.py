@@ -110,6 +110,41 @@ class TestClient(unittest2.TestCase):
         expected_scopes = None
         self._constructor_test_helper(expected_scopes, creds)
 
+    def _context_manager_helper(self):
+        credentials = _Credentials()
+        project = 'PROJECT'
+        client = self._makeOne(project=project, credentials=credentials)
+
+        def mock_start():
+            client._data_stub_internal = object()
+        client.start = mock_start
+
+        def mock_stop():
+            client._data_stub_internal = None
+        client.stop = mock_stop
+        return client
+
+    def test_context_manager(self):
+        client = self._context_manager_helper()
+        self.assertFalse(client.is_started())
+        with client:
+            self.assertTrue(client.is_started())
+        self.assertFalse(client.is_started())
+
+    def test_context_manager_with_exception(self):
+        client = self._context_manager_helper()
+        self.assertFalse(client.is_started())
+
+        class DummyException(Exception):
+            pass
+        try:
+            with client:
+                self.assertTrue(client.is_started())
+                raise DummyException()
+        except DummyException:
+            pass
+        self.assertFalse(client.is_started())
+
     def _copy_test_helper(self, read_only=False, admin=False):
         credentials = _Credentials('value')
         project = 'PROJECT'
