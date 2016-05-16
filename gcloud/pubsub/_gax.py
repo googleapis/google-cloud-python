@@ -16,6 +16,7 @@
 
 # pylint: disable=import-error
 from google.gax import CallOptions
+from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
@@ -37,7 +38,7 @@ class _PublisherAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_topics(self, project):
+    def list_topics(self, project, page_token=None):
         """List topics for the project associated with this API.
 
         See:
@@ -46,13 +47,21 @@ class _PublisherAPI(object):
         :type project: string
         :param project: project ID
 
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
+
         :rtype: tuple, (list, str)
         :returns: list of ``Topic`` resource dicts, plus a
                   "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        options = CallOptions(is_page_streaming=False)
+        if page_token is None:
+            page_token = INITIAL_PAGE
+        options = {'page_token': page_token}
+        options = CallOptions(**options)
         path = 'projects/%s' % (project,)
         response = self._gax_api.list_topics(path, options)
         topics = [{'name': topic_pb.name} for topic_pb in response.topics]
@@ -152,7 +161,7 @@ class _PublisherAPI(object):
             raise
         return response.message_ids
 
-    def topic_list_subscriptions(self, topic_path):
+    def topic_list_subscriptions(self, topic_path, page_token=None):
         """API call:  list subscriptions bound to a topic
 
         See:
@@ -162,13 +171,21 @@ class _PublisherAPI(object):
         :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of subscriptions.
+                           If not passed, the API will return the first page
+                           of subscriptions.
+
         :rtype: list of strings
         :returns: fully-qualified names of subscriptions for the supplied
                 topic.
         :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        options = CallOptions(is_page_streaming=False)
+        if page_token is None:
+            page_token = INITIAL_PAGE
+        options = {'page_token': page_token}
+        options = CallOptions(**options)
         try:
             response = self._gax_api.list_topic_subscriptions(
                 topic_path, options)
@@ -190,7 +207,7 @@ class _SubscriberAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_subscriptions(self, project):
+    def list_subscriptions(self, project, page_token=None):
         """List subscriptions for the project associated with this API.
 
         See:
@@ -199,13 +216,21 @@ class _SubscriberAPI(object):
         :type project: string
         :param project: project ID
 
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of subscriptions.
+                           If not passed, the API will return the first page
+                           of subscriptions.
+
         :rtype: tuple, (list, str)
         :returns: list of ``Subscription`` resource dicts, plus a
                   "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        options = CallOptions(is_page_streaming=False)
+        if page_token is None:
+            page_token = INITIAL_PAGE
+        options = {'page_token': page_token}
+        options = CallOptions(**options)
         path = 'projects/%s' % (project,)
         response = self._gax_api.list_subscriptions(path, options)
         subscriptions = [_subscription_pb_to_mapping(sub_pb)
