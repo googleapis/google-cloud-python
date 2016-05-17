@@ -91,14 +91,15 @@ class Client(object):
 
         :rtype: str or list
         :returns: A list of dictionaries for each queried value. Each
-                  dictionary typically contains three keys (though not
-                  all will be present in all cases)
+                  dictionary typically contains three keys
 
                   * ``confidence``: The confidence in language detection, a
                     float between 0 and 1.
                   * ``input``: The corresponding input value.
                   * ``language``: The detected language (as an ISO 639-1
                     language code).
+
+                  though the key ``confidence`` may not always be present.
 
                   If only a single value is passed, then only a single
                   dictionary will be returned.

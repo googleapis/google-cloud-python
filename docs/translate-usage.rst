@@ -79,6 +79,10 @@ To detect the language that some given text is written in:
          },
      ]
 
+The `confidence`_ value is an optional floating point value between 0 and 1.
+The closer this value is to 1, the higher the confidence level for the
+language detection. This member is not always available.
+
 To translate text:
 
   .. code::
@@ -116,3 +120,4 @@ or to use a non-default target language:
 .. _Pricing: https://cloud.google.com/translate/v2/pricing.html
 .. _FAQ: https://cloud.google.com/translate/v2/faq.html
 .. _Identifying your application to Google: https://cloud.google.com/translate/v2/using_rest#auth
+.. _confidence: https://cloud.google.com/translate/v2/detecting-language-with-rest
