@@ -69,5 +69,5 @@ def unique_resource_id(delimiter='_'):
     if build_id == '':
         return '%s%d' % (delimiter, 1000 * time.time())
     else:
-        return '%s%d%s%s' % (delimiter, time.time(),
-                             delimiter, build_id)
+        return '%s%s%s%d' % (delimiter, build_id,
+                             delimiter, time.time())
