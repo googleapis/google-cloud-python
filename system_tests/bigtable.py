@@ -36,7 +36,8 @@ from system_test_utils import unique_resource_id
 
 
 CENTRAL_1C_ZONE = 'us-central1-c'
-CLUSTER_ID = 'gcloud-py' + unique_resource_id('-')
+CLUSTER_ID = 'gcloud' + unique_resource_id('-')
+CLUSTER_ID = CLUSTER_ID[:30]  # Cluster IDs can't exceed 30 chars.
 TABLE_ID = 'gcloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -148,7 +149,8 @@ class TestClusterAdminAPI(unittest2.TestCase):
         self.assertEqual(cluster.serve_nodes, Config.CLUSTER.serve_nodes)
 
     def test_create_cluster(self):
-        cluster_id = '%s-a' % (CLUSTER_ID,)
+        cluster_id = 'new' + unique_resource_id('-')
+        cluster_id = cluster_id[:30]  # Cluster IDs can't exceed 30 chars.
         cluster = Config.CLIENT.cluster(CENTRAL_1C_ZONE, cluster_id)
         operation = cluster.create()
         # Make sure this cluster gets deleted after the test case.
