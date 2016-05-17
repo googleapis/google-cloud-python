@@ -7,7 +7,6 @@ Client
 
 .. automodule:: gcloud.resource_manager.client
   :members:
-  :undoc-members:
   :show-inheritance:
 
 Connection
@@ -15,5 +14,4 @@ Connection
 
 .. automodule:: gcloud.resource_manager.connection
   :members:
-  :undoc-members:
   :show-inheritance:
