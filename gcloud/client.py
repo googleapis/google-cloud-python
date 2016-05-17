@@ -150,6 +150,7 @@ class _ClientProjectMixin(object):
 
     @staticmethod
     def _determine_default(project):
+        """Helper:  use default project detection."""
         return _determine_default_project(project)
 
 
