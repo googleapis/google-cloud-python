@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery._helpers &mdash; gcloud 763a90c documentation</title>
+    <title>gcloud.bigquery._helpers &mdash; gcloud fcb7085 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '763a90c',
+        VERSION:     'fcb7085',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 763a90c documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud fcb7085 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/_helpers%0ARelease%3A%20763a90c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/_helpers%0ARelease%3A%20fcb7085" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (763a90c)
+              Version History (fcb7085)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,31 +111,37 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 
 <span class="k">def</span> <span class="nf">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check whether &#39;value&#39; should be coerced to &#39;field&#39; type.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">field</span><span class="o">.</span><span class="n">mode</span> <span class="o">!=</span> <span class="s1">&#39;NULLABLE&#39;</span>
 
 
 <span class="k">def</span> <span class="nf">_int_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to an int, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_float_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a float, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_bool_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a bool, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">_datetime_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a datetime, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="c1"># value will be a float in seconds, to microsecond precision, in UTC.</span>
         <span class="k">return</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mf">1e6</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">_record_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Coerce &#39;value&#39; to a mapping, if set or not nullable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">_not_null</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
         <span class="n">record</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">subfield</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">fields</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]):</span>
@@ -149,6 +155,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 
 <span class="k">def</span> <span class="nf">_string_from_json</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;NOOP string -&gt; string coercion&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">value</span>
 
 
@@ -163,6 +170,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 
 <span class="k">def</span> <span class="nf">_rows_from_json</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">schema</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert JSON row data to rows w/ appropriate types.&quot;&quot;&quot;</span>
     <span class="n">rows_data</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
         <span class="n">row_data</span> <span class="o">=</span> <span class="p">[]</span>
@@ -225,6 +233,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span> <span class="o">=</span> <span class="n">property_type</span>
 
     <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Ensure that &#39;value&#39; is of the appropriate type.</span>
+
+<span class="sd">        :raises: ValueError on a type mismatch.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Required type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">property_type</span><span class="p">,))</span>
 

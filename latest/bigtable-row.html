@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bigtable Row &mdash; gcloud 763a90c documentation</title>
+    <title>Bigtable Row &mdash; gcloud fcb7085 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '763a90c',
+        VERSION:     'fcb7085',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 763a90c documentation" href="index.html" />
+    <link rel="top" title="gcloud fcb7085 documentation" href="index.html" />
     <link rel="next" title="Bigtable Row Filters" href="bigtable-row-filters.html" />
     <link rel="prev" title="Column Families" href="bigtable-column-family.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-row%0ARelease%3A%20763a90c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-row%0ARelease%3A%20fcb7085" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (763a90c)
+              Version History (fcb7085)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -288,11 +288,6 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#gc
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="gcloud.bigtable.row.ConditionalRow.ALL_COLUMNS">
-<code class="descname">ALL_COLUMNS</code><em class="property"> = &lt;object object&gt;</em><a class="headerlink" href="#gcloud.bigtable.row.ConditionalRow.ALL_COLUMNS" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="gcloud.bigtable.row.ConditionalRow.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/row.html#ConditionalRow.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.row.ConditionalRow.clear" title="Permalink to this definition">#</a></dt>
@@ -404,7 +399,7 @@ or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
 <a class="reference external" href="https://docs.python.org/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
-cells deleted. If <a class="reference internal" href="#gcloud.bigtable.row.ConditionalRow.ALL_COLUMNS" title="gcloud.bigtable.row.ConditionalRow.ALL_COLUMNS"><code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code></a> is used then the
+cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then the
 entire column family will be deleted from the row.</li>
 <li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) &#8211; (Optional) The range of time within which cells
 should be deleted.</li>
@@ -494,11 +489,6 @@ Google Cloud Bigtable API, you must call <a class="reference internal" href="#gc
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="gcloud.bigtable.row.DirectRow.ALL_COLUMNS">
-<code class="descname">ALL_COLUMNS</code><em class="property"> = &lt;object object&gt;</em><a class="headerlink" href="#gcloud.bigtable.row.DirectRow.ALL_COLUMNS" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="gcloud.bigtable.row.DirectRow.clear">
 <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/row.html#DirectRow.clear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.row.DirectRow.clear" title="Permalink to this definition">#</a></dt>
@@ -590,7 +580,7 @@ or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
 <a class="reference external" href="https://docs.python.org/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
-cells deleted. If <a class="reference internal" href="#gcloud.bigtable.row.DirectRow.ALL_COLUMNS" title="gcloud.bigtable.row.DirectRow.ALL_COLUMNS"><code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code></a> is used then
+cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then
 the entire column family will be deleted from the row.</li>
 <li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) &#8211; (Optional) The range of time within which cells
 should be deleted.</li>

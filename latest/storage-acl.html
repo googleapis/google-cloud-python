@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>ACL &mdash; gcloud 763a90c documentation</title>
+    <title>ACL &mdash; gcloud fcb7085 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '763a90c',
+        VERSION:     'fcb7085',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 763a90c documentation" href="index.html" />
+    <link rel="top" title="gcloud fcb7085 documentation" href="index.html" />
     <link rel="next" title="Batches" href="storage-batch.html" />
     <link rel="prev" title="Buckets" href="storage-buckets.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%20763a90c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-acl%0ARelease%3A%20fcb7085" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (763a90c)
+              Version History (fcb7085)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -163,15 +163,10 @@ when sending metadata for ACLs to the API.</p>
 <p>Container class representing a list of access controls.</p>
 <dl class="attribute">
 <dt id="gcloud.storage.acl.ACL.PREDEFINED_JSON_ACLS">
-<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['bucketOwnerFullControl', 'private', 'bucketOwnerRead', 'projectPrivate', 'authenticatedRead', 'publicRead', 'publicReadWrite'])</em><a class="headerlink" href="#gcloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
+<code class="descname">PREDEFINED_JSON_ACLS</code><em class="property"> = frozenset(['authenticatedRead', 'bucketOwnerRead', 'publicReadWrite', 'private', 'publicRead', 'projectPrivate', 'bucketOwnerFullControl'])</em><a class="headerlink" href="#gcloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="Permalink to this definition">#</a></dt>
 <dd><p>See:
 <a class="reference external" href="https://cloud.google.com/storage/docs/access-control#predefined-acl">https://cloud.google.com/storage/docs/access-control#predefined-acl</a></p>
 </dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.PREDEFINED_XML_ACLS">
-<code class="descname">PREDEFINED_XML_ACLS</code><em class="property"> = {'bucket-owner-full-control': 'bucketOwnerFullControl', 'public-read-write': 'publicReadWrite', 'project-private': 'projectPrivate', 'authenticated-read': 'authenticatedRead', 'public-read': 'publicRead', 'bucket-owner-read': 'bucketOwnerRead'}</em><a class="headerlink" href="#gcloud.storage.acl.ACL.PREDEFINED_XML_ACLS" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.add_entity">
@@ -391,11 +386,6 @@ to <code class="docutils literal"><span class="pre">default</span></code>.</p>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.loaded">
-<code class="descname">loaded</code><em class="property"> = False</em><a class="headerlink" href="#gcloud.storage.acl.ACL.loaded" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.reload" title="Permalink to this definition">#</a></dt>
@@ -410,11 +400,6 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </tbody>
 </table>
 </dd></dl>
-
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.reload_path">
-<code class="descname">reload_path</code><em class="property"> = None</em><a class="headerlink" href="#gcloud.storage.acl.ACL.reload_path" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.reset">
@@ -442,11 +427,6 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="gcloud.storage.acl.ACL.save_path">
-<code class="descname">save_path</code><em class="property"> = None</em><a class="headerlink" href="#gcloud.storage.acl.ACL.save_path" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="gcloud.storage.acl.ACL.save_predefined">
 <code class="descname">save_predefined</code><span class="sig-paren">(</span><em>predefined</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/storage/acl.html#ACL.save_predefined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.storage.acl.ACL.save_predefined" title="Permalink to this definition">#</a></dt>
@@ -458,7 +438,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>predefined</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; An identifier for a predefined ACL.  Must be one
 of the keys in <a class="reference internal" href="#gcloud.storage.acl.ACL.PREDEFINED_JSON_ACLS" title="gcloud.storage.acl.ACL.PREDEFINED_JSON_ACLS"><code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_JSON_ACLS</span></code></a>
-or <a class="reference internal" href="#gcloud.storage.acl.ACL.PREDEFINED_XML_ACLS" title="gcloud.storage.acl.ACL.PREDEFINED_XML_ACLS"><code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_XML_ACLS</span></code></a> (which will be
+or <code class="xref py py-attr docutils literal"><span class="pre">PREDEFINED_XML_ACLS</span></code> (which will be
 aliased to the corresponding JSON name).
 If passed, <cite>acl</cite> must be None.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
