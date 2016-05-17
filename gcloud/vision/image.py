@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import httplib2
 
 from base64 import b64encode
 
@@ -33,14 +34,13 @@ class Image(object):
 
         # TODO: string index out of range for len(string) < 4.
         # TODO: Support file path.
-        if image[:4] == 'http':
-            import httplib2
+        if image.startswith('http'):
             http = httplib2.Http()
             response, downloaded_image = http.request(image, 'GET')
             self._content = b64encode(downloaded_image)
-        elif image[:5] == 'gs://':
+        elif image.startswith('gs://'):
             self._source = image
-        elif type(image) == str:
+        elif isinstance(image, str):
             self._content = b64encode(image)
 
     def as_dict(self):
@@ -48,12 +48,12 @@ class Image(object):
 
         if self.content:
             return {
-                "content": self.content
+                'content': self.content
             }
         else:
             return {
-                "source": {
-                    "gcs_image_uri": self.source
+                'source': {
+                    'gcs_image_uri': self.source
                 }
             }
 

@@ -36,15 +36,15 @@ class VisionRequest(object):
         self._features = []
         self._image = image
 
-        if type(feature) == list:
+        if isinstance(feature, list):
             self._features.extend(feature)
-        elif type(feature) == Feature:
+        elif isinstance(feature, Feature):
             self._features.append(feature)
 
     def as_dict(self):
         return {
-            "image": self.image,
-            "features": self.features
+            'image': self.image,
+            'features': self.features
         }
 
     @property
@@ -77,18 +77,22 @@ class Client(JSONClient):
                  ``credentials`` for the current object.
 
     Usage:
-    >>> from gcloud import vision
-    >>> vision_client = vision.Client()
-    >>> f = open('/tmp/car.jpg', 'r')
-    >>> vision_client.annotate(f.read(), "LABEL_DETECTION", 3)
+    .. code::
+        >>> from gcloud import vision
+        >>> vision_client = vision.Client()
+        >>> with open('/tmp/car.jpg', 'r') as f:
+        ...     vision_client.annotate(f.read(), vision.LABEL_DETECTION, 3)
 
     Multiple images example:
-    >>> images = (("./image.jpg", ["LABEL_DETECTION", "LANDMARK_DETECTION"]),
-    >>>           ("./image2.jpg", ["FACE_DETECTION", "TEXT_DETECTION"]),)
-    >>> annotated_images = []
-    >>> for image, feature_types in images:
-    >>>     annotated_images.append(vision_client.annotate(image,
-    >>>                                                    feature_types))
+    .. code::
+        >>> images = (('./image.jpg', [vision.FeatureTypes.LABEL_DETECTION,
+        ...                            vision.FeatureTypes.LANDMARK_DETECTION]),
+        ...           ('./image2.jpg', [vision.FeatureTypes.FACE_DETECTION,
+                                        vision.FeatureTypes.TEXT_DETECTION]),)
+        >>> annotated_images = []
+        >>> for image, feature_types in images:
+        ...     annotated_images.append(vision_client.annotate(image,
+        ...                                                    feature_types))
     """
 
     _connection_class = Connection
@@ -113,24 +117,23 @@ class Client(JSONClient):
         :param max_results: The number of results per feature type to be
                             returned.
         """
-        vision_requests = []
+        data = {'requests': []}
         features = []
 
-        if type(image) == str:
+        if isinstance(image, str):
             img = Image(image)
 
-            if type(feature_type) == list:
+            if isinstance(feature_type, list):
                 for feature in feature_type:
                     features.append(Feature(feature, max_results))
             else:
                 features.append(Feature(feature_type, max_results))
 
-            vision_requests.append(VisionRequest(img, features))
+            data['requests'].append(VisionRequest(img, features))
 
-        data = {"requests": vision_requests}
         data = json.dumps(data, cls=VisionJSONEncoder)
-        resp = self.connection.api_request(method="POST",
-                                           path="/images:annotate",
+        resp = self.connection.api_request(method='POST',
+                                           path='/images:annotate',
                                            data=data)
         resp = resp['responses']
         return resp

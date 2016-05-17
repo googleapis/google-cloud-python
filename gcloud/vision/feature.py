@@ -19,17 +19,16 @@ class FeatureTypes(object):
     See:
     https://cloud.google.com/vision/reference/rest/v1/images/annotate#Type
     """
-    FACE_DETECTION = "FACE_DETECTION"
-    LANDMARK_DETECTION = "LANDMARK_DETECTION"
-    LOGO_DETECTION = "LOGO_DETECTION"
-    LABEL_DETECTION = "LABEL_DETECTION"
-    TEXT_DETECTION = "TEXT_DETECTION"
-    SAFE_SEARCH_DETECTION = "SAFE_SEARCH_DETECTION"
+    FACE_DETECTION = 'FACE_DETECTION'
+    LANDMARK_DETECTION = 'LANDMARK_DETECTION'
+    LOGO_DETECTION = 'LOGO_DETECTION'
+    LABEL_DETECTION = 'LABEL_DETECTION'
+    TEXT_DETECTION = 'TEXT_DETECTION'
+    SAFE_SEARCH_DETECTION = 'SAFE_SEARCH_DETECTION'
 
 
 class Feature(object):
-    """Feature object specifying the annotation and number of results for the
-    specified feature type.
+    """Feature object specifying the annotation type and maximum results.
 
     :type feature_type: str
     :param feature_type: String representation of feature type.
@@ -48,8 +47,8 @@ class Feature(object):
     def as_dict(self):
         """Generate dictionary for Feature request format."""
         return {
-            "type": self.feature_type,
-            "maxResults": self.max_results
+            'type': self.feature_type,
+            'maxResults': self.max_results
         }
 
     @property

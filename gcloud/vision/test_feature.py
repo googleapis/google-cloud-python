@@ -23,8 +23,8 @@ class TestFeature(unittest2.TestCase):
     def test_construct_feature(self):
         feature = Feature(FeatureTypes.LABEL_DETECTION)
         self.assertEqual(1, feature.max_results)
-        self.assertEqual("LABEL_DETECTION", feature.feature_type)
+        self.assertEqual('LABEL_DETECTION', feature.feature_type)
 
         feature = Feature(FeatureTypes.FACE_DETECTION, 3)
         self.assertEqual(3, feature.max_results)
-        self.assertEqual("FACE_DETECTION", feature.feature_type)
+        self.assertEqual('FACE_DETECTION', feature.feature_type)

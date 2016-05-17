@@ -19,8 +19,8 @@ from gcloud.vision.image import Image
 
 
 class TestVisionImage(unittest2.TestCase):
-    IMAGE_SOURCE = "gs://some/image.jpg"
-    IMAGE_CONTENT = "/9j/4QNURXhpZgAASUkq"
+    IMAGE_SOURCE = 'gs://some/image.jpg'
+    IMAGE_CONTENT = '/9j/4QNURXhpZgAASUkq'
     B64_IMAGE_CONTENT = base64.b64encode(IMAGE_CONTENT)
 
     def test_image_source_type_content(self):

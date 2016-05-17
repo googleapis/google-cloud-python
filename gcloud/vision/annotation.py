@@ -16,16 +16,6 @@
 
 
 class EntityAnnotation(object):
-    _mid = None
-    _locale = None
-    _description = None
-    _score = None
-    _confidence = None
-    _topicality = None
-    _bounding_poly = None
-    _locations = []
-    _properties = []
-
     def __init__(self, mid, locale, description, score, confidence, topicality,
                  bounding_poly, locations, properties):
         self._mid = mid

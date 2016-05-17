@@ -16,3 +16,4 @@
 
 
 from gcloud.vision.client import Client
+from gcloud.vision.feature import FeatureTypes
