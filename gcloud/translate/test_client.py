@@ -161,7 +161,7 @@ class TestClient(unittest2.TestCase):
         conn = client.connection = _Connection(data)
 
         result = client.detect_language(value)
-        self.assertEqual(result, [detection])
+        self.assertEqual(result, detection)
 
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
@@ -200,7 +200,7 @@ class TestClient(unittest2.TestCase):
         }
         conn = client.connection = _Connection(data)
 
-        result = client.detect_language(value1, value2)
+        result = client.detect_language([value1, value2])
         self.assertEqual(result, [detection1, detection2])
 
         # Verify requested.
@@ -276,7 +276,7 @@ class TestClient(unittest2.TestCase):
         conn = client.connection = _Connection(data)
 
         result = client.translate(value)
-        self.assertEqual(result, [translation])
+        self.assertEqual(result, translation)
 
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)
@@ -287,6 +287,43 @@ class TestClient(unittest2.TestCase):
             ('key', self.KEY),
             ('target', 'en'),
             ('q', value.encode('utf-8')),
+        ]
+        self.assertEqual(req['query_params'], query_params)
+
+    def test_translate_multiple(self):
+        client = self._makeOne(self.KEY)
+        value1 = 'hvala ti'
+        translation1 = {
+            'detectedSourceLanguage': 'hr',
+            'translatedText': 'thank you',
+            'input': value1,
+        }
+        value2 = 'Dankon'
+        translation2 = {
+            'detectedSourceLanguage': 'eo',
+            'translatedText': 'thank you',
+            'input': value2,
+        }
+        data = {
+            'data': {
+                'translations': [translation1, translation2],
+            },
+        }
+        conn = client.connection = _Connection(data)
+
+        result = client.translate([value1, value2])
+        self.assertEqual(result, [translation1, translation2])
+
+        # Verify requested.
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'GET')
+        self.assertEqual(req['path'], '')
+        query_params = [
+            ('key', self.KEY),
+            ('target', 'en'),
+            ('q', value1.encode('utf-8')),
+            ('q', value2.encode('utf-8')),
         ]
         self.assertEqual(req['query_params'], query_params)
 
@@ -310,8 +347,8 @@ class TestClient(unittest2.TestCase):
         format_ = 'text'
         result = client.translate(value, target_language=target_language,
                                   source_language=source_language,
-                                  format=format_, customization_ids=cid)
-        self.assertEqual(result, [translation])
+                                  format_=format_, customization_ids=cid)
+        self.assertEqual(result, translation)
 
         # Verify requested.
         self.assertEqual(len(conn._requested), 1)

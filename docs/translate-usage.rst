@@ -30,7 +30,17 @@ To create a client:
      >>> from gcloud import translate
      >>> client = translate.Client('my-api-key')
 
-The API has three supported methods:
+By default, the client targets English when doing detections
+and translations, but a non-default value can be used as
+well:
+
+  .. code::
+
+     >>> from gcloud import translate
+     >>> client = translate.Client('my-api-key', target_language='es')
+
+The Google Translate API has three supported methods, and they
+map to three methods on a client:
 :meth:`~gcloud.translate.client.Client.get_languages`,
 :meth:`~gcloud.translate.client.Client.detect_language` and
 :meth:`~gcloud.translate.client.Client.translate`.
@@ -41,7 +51,7 @@ To get a list of languages supported by Google Translate
 
      >>> from gcloud import translate
      >>> client = translate.Client('my-api-key')
-     >>> client.get_languages('en')
+     >>> client.get_languages()
      [
          {
              'language': 'af',
@@ -76,13 +86,11 @@ To translate text:
      >>> from gcloud import translate
      >>> client = translate.Client('my-api-key')
      >>> client.translate('koszula')
-     [
-         {
-             'translatedText': 'shirt',
-             'detectedSourceLanguage': 'pl',
-             'input': 'koszula',
-         },
-     ]
+     {
+         'translatedText': 'shirt',
+         'detectedSourceLanguage': 'pl',
+         'input': 'koszula',
+     }
 
 or to use a non-default target language:
 
@@ -90,7 +98,8 @@ or to use a non-default target language:
 
      >>> from gcloud import translate
      >>> client = translate.Client('my-api-key')
-     >>> client.translate(['Me llamo Jeff', 'My name is Jeff'], 'de')
+     >>> client.translate(['Me llamo Jeff', 'My name is Jeff'],
+     ...                  target_language='de')
      [
          {
              'translatedText': 'Mein Name ist Jeff',

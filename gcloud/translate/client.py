@@ -79,16 +79,17 @@ class Client(object):
             method='GET', path='/languages', query_params=query_params)
         return response.get('data', {}).get('languages', ())
 
-    def detect_language(self, *values):
+    def detect_language(self, values):
         """Detect the language of a string or list of strings.
 
         See: https://cloud.google.com/translate/v2/\
         detecting-language-with-rest
 
-        :type values: tuple
-        :param values: Tuple of strings that will have language detected.
+        :type values: str or list
+        :param values: String or list of strings that will have
+                       language detected.
 
-        :rtype: list
+        :rtype: str or list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys (though not
                   all will be present in all cases)
@@ -99,15 +100,19 @@ class Client(object):
                   * ``language``: The detected language (as an ISO 639-1
                     language code).
 
-                  If multiple languages are detected for a given input, then
-                  the there will be a list of dictionaries (instead of a single
-                  dictionary) for that queried value.
+                  If only a single value is passed, then only a single
+                  dictionary will be returned.
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  detections is not equal to the number of values.
                  :class:`ValueError <exceptions.ValueError>` if a value
                  produces a list of detections with 0 or multiple results
                  in it.
         """
+        single_value = False
+        if isinstance(values, six.string_types):
+            single_value = True
+            values = [values]
+
         query_params = [('key', self.key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
@@ -134,32 +139,40 @@ class Client(object):
             # The ``isReliable`` field is deprecated.
             detections[index].pop('isReliable', None)
 
-        return detections
+        if single_value:
+            return detections[0]
+        else:
+            return detections
 
-    def translate(self, *values, **kwargs):
+    def translate(self, values, target_language=None, format_=None,
+                  source_language=None, customization_ids=()):
         """Translate a string or list of strings.
 
         See: https://cloud.google.com/translate/v2/\
         translating-text-with-rest
 
-        Accepted keyword arguments are:
+        :type values: str or list
+        :param values: String or list of strings to translate.
 
-        * ``target_language`` (str): The language to translate results into.
-          This is required by the API and defaults to :data:`ENGLISH_ISO_639`.
-        * ``format`` (str): (Optional) One of ``text`` or ``html``, to specify
-          if the input text is plain text or HTML.
-        * ``source_language`` (str): (Optional) The language of the text to
-          be translated.
-        * ``customization_ids`` (list): (Optional) List of customization IDs
-          for translation. Sets the ``cid`` parameter in the query.
+        :type target_language: str
+        :param target_language: The language to translate results into. This
+                                is required by the API and defaults to
+                                the target language of the current instance.
 
-        :type values: tuple
-        :param values: Tuple of strings to translate.
+        :type format_: str
+        :param format_: (Optional) One of ``text`` or ``html``, to specify
+                        if the input text is plain text or HTML.
 
-        :type kwargs: dict
-        :param kwargs: Keyword arguments to be passed in.
+        :type source_language: str
+        :param source_language: (Optional) The language of the text to
+                                be translated.
 
-        :rtype: list
+        :type customization_ids: str or list
+        :param customization_ids: (Optional) ID or list of customization IDs
+                                  for translation. Sets the ``cid`` parameter
+                                  in the query.
+
+        :rtype: str or list list
         :returns: A list of dictionaries for each queried value. Each
                   dictionary typically contains three keys (though not
                   all will be present in all cases)
@@ -169,11 +182,19 @@ class Client(object):
                   * ``translatedText``: The translation of the text into the
                     target language.
                   * ``input``: The corresponding input value.
+
+                  If only a single value is passed, then only a single
+                  dictionary will be returned.
         :raises: :class:`ValueError <exceptions.ValueError>` if the number of
                  values and translations differ.
         """
-        target_language = kwargs.get('target_language', self.target_language)
-        customization_ids = kwargs.get('customization_ids', ())
+        single_value = False
+        if isinstance(values, six.string_types):
+            single_value = True
+            values = [values]
+
+        if target_language is None:
+            target_language = self.target_language
         if isinstance(customization_ids, six.string_types):
             customization_ids = [customization_ids]
 
@@ -181,10 +202,10 @@ class Client(object):
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         query_params.extend(('cid', cid) for cid in customization_ids)
-        if 'format' in kwargs:
-            query_params.append(('format', kwargs['format']))
-        if 'source_language' in kwargs:
-            query_params.append(('source', kwargs['source_language']))
+        if format_ is not None:
+            query_params.append(('format', format_))
+        if source_language is not None:
+            query_params.append(('source', source_language))
 
         response = self.connection.api_request(
             method='GET', path='', query_params=query_params)
@@ -195,4 +216,8 @@ class Client(object):
                              values, translations)
         for value, translation in six.moves.zip(values, translations):
             translation['input'] = value
-        return translations
+
+        if single_value:
+            return translations[0]
+        else:
+            return translations
