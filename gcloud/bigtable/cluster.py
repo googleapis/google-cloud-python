@@ -241,6 +241,10 @@ class Cluster(object):
         return Table(table_id, self)
 
     def _update_from_pb(self, cluster_pb):
+        """Refresh self from the server-provided protobuf.
+
+        Helper for :meth:`from_pb` and :meth:`reload`.
+        """
         if not cluster_pb.display_name:  # Simple field (string)
             raise ValueError('Cluster protobuf does not contain display_name')
         if not cluster_pb.serve_nodes:  # Simple field (int32)

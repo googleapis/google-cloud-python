@@ -3,7 +3,6 @@ Storage Client
 
 .. automodule:: gcloud.storage.client
   :members:
-  :undoc-members:
   :show-inheritance:
 
 Connection
@@ -11,5 +10,4 @@ Connection
 
 .. automodule:: gcloud.storage.connection
   :members:
-  :undoc-members:
   :show-inheritance:

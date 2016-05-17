@@ -46,5 +46,4 @@ at the lowest level of the nesting:
 
 .. automodule:: gcloud.bigtable.column_family
   :members:
-  :undoc-members:
   :show-inheritance:

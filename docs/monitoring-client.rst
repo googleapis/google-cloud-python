@@ -3,7 +3,6 @@ Monitoring Client
 
 .. automodule:: gcloud.monitoring.client
   :members:
-  :undoc-members:
   :show-inheritance:
 
 Connection
@@ -11,6 +10,5 @@ Connection
 
 .. automodule:: gcloud.monitoring.connection
   :members:
-  :undoc-members:
   :show-inheritance:
 

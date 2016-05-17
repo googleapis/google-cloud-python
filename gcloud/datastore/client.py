@@ -174,6 +174,7 @@ class Client(_BaseClient, _ClientProjectMixin):
 
     @staticmethod
     def _determine_default(project):
+        """Helper:  override default project detection."""
         return _determine_default_project(project)
 
     def _push_batch(self, batch):

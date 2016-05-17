@@ -933,6 +933,11 @@ class QueryJob(_AsyncJob):
     """
 
     def _destination_table_resource(self):
+        """Create a JSON resource for the destination table.
+
+        Helper for :meth:`_populate_config_resource` and
+        :meth:`_scrub_local_properties`
+        """
         if self.destination is not None:
             return {
                 'projectId': self.destination.project,
