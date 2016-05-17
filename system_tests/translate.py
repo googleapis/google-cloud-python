@@ -33,8 +33,8 @@ class Config(object):
 
 
 def setUpModule():
-    key = os.getenv(ENV_VAR)
-    Config.CLIENT = translate.Client(key=key)
+    api_key = os.getenv(ENV_VAR)
+    Config.CLIENT = translate.Client(api_key=api_key)
 
 
 class TestTranslate(unittest2.TestCase):
