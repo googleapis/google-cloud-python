@@ -18,7 +18,6 @@ import os
 import unittest2
 
 from gcloud import translate
-from gcloud.translate.client import ENGLISH_ISO_639
 
 
 ENV_VAR = 'GCLOUD_TESTS_API_KEY'
@@ -41,7 +40,7 @@ def setUpModule():
 class TestTranslate(unittest2.TestCase):
 
     def test_get_languages(self):
-        result = Config.CLIENT.get_languages(ENGLISH_ISO_639)
+        result = Config.CLIENT.get_languages()
         # There are **many** more than 10 languages.
         self.assertGreater(len(result), 10)
 
@@ -53,7 +52,7 @@ class TestTranslate(unittest2.TestCase):
 
     def test_detect_language(self):
         values = ['takoy', u'fa\xe7ade', 's\'il vous plait']
-        detections = Config.CLIENT.detect_language(*values)
+        detections = Config.CLIENT.detect_language(values)
         self.assertEqual(len(values), len(detections))
         self.assertEqual(detections[0]['language'], 'ru')
         self.assertEqual(detections[1]['language'], 'fr')
@@ -62,7 +61,7 @@ class TestTranslate(unittest2.TestCase):
     def test_translate(self):
         values = ['hvala ti', 'dankon',
                   'Me llamo Jeff', 'My name is Jeff']
-        translations = Config.CLIENT.translate(*values,
+        translations = Config.CLIENT.translate(values,
                                                target_language='de')
         self.assertEqual(len(values), len(translations))
 
