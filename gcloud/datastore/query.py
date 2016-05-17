@@ -363,8 +363,7 @@ class Iterator(object):
     :param limit: (Optional) Limit the number of results returned.
 
     :type offset: integer
-    :param offset: (Optional) Defaults to 0. Offset used to begin
-                   a query.
+    :param offset: (Optional) Offset used to begin a query.
 
     :type start_cursor: bytes
     :param start_cursor: (Optional) Cursor to begin paging through
@@ -380,9 +379,10 @@ class Iterator(object):
     _FINISHED = (
         _query_pb2.QueryResultBatch.NO_MORE_RESULTS,
         _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT,
+        _query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_CURSOR,
     )
 
-    def __init__(self, query, client, limit=None, offset=0,
+    def __init__(self, query, client, limit=None, offset=None,
                  start_cursor=None, end_cursor=None):
         self._query = query
         self._client = client
@@ -391,6 +391,7 @@ class Iterator(object):
         self._start_cursor = start_cursor
         self._end_cursor = end_cursor
         self._page = self._more_results = None
+        self._skipped_results = None
 
     def next_page(self):
         """Fetch a single "page" of query results.
@@ -413,7 +414,8 @@ class Iterator(object):
         if self._limit is not None:
             pb.limit.value = self._limit
 
-        pb.offset = self._offset
+        if self._offset is not None:
+            pb.offset = self._offset
 
         transaction = self._client.current_transaction
 
@@ -423,16 +425,8 @@ class Iterator(object):
             namespace=self._query.namespace,
             transaction_id=transaction and transaction.id,
             )
-        # NOTE: `query_results` contains an extra value that we don't use,
-        #       namely `skipped_results`.
-        #
-        # NOTE: The value of `more_results` is not currently useful because
-        #       the back-end always returns an enum
-        #       value of MORE_RESULTS_AFTER_LIMIT even if there are no more
-        #       results. See
-        #       https://github.com/GoogleCloudPlatform/gcloud-python/issues/280
-        #       for discussion.
-        entity_pbs, cursor_as_bytes, more_results_enum = query_results[:3]
+        (entity_pbs, cursor_as_bytes,
+         more_results_enum, self._skipped_results) = query_results
 
         if cursor_as_bytes == b'':
             self._start_cursor = None
@@ -457,13 +451,19 @@ class Iterator(object):
 
         :rtype: sequence of :class:`gcloud.datastore.entity.Entity`
         """
-        self.next_page()
         while True:
+            self.next_page()
             for entity in self._page:
                 yield entity
             if not self._more_results:
                 break
-            self.next_page()
+            num_results = len(self._page)
+            if self._limit is not None:
+                self._limit -= num_results
+            if self._offset is not None and self._skipped_results is not None:
+                # NOTE: The offset goes down relative to the location
+                #       because we are updating the cursor each time.
+                self._offset -= self._skipped_results
 
 
 def _pb_from_query(query):

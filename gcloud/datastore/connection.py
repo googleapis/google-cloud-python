@@ -263,6 +263,11 @@ class Connection(connection.Connection):
         :param transaction_id: If passed, make the request in the scope of
                                the given transaction.  Incompatible with
                                ``eventual==True``.
+
+        :rtype: tuple
+        :returns: Four-tuple containing the entities returned,
+                  the end cursor of the query, a ``more_results``
+                  enum and a count of the number of skipped results.
         """
         request = _datastore_pb2.RunQueryRequest()
         _set_read_options(request, eventual, transaction_id)
