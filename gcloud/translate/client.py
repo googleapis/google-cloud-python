@@ -29,9 +29,9 @@ ENGLISH_ISO_639 = 'en'
 class Client(object):
     """Client to bundle configuration needed for API requests.
 
-    :type key: str
-    :param key: The key used to send with requests as a query
-                parameter.
+    :type api_key: str
+    :param api_key: The key used to send with requests as a query
+                    parameter.
 
     :type http: :class:`httplib2.Http` or class that defines ``request()``.
     :param http: (Optional) HTTP object to make requests. If not
@@ -43,8 +43,8 @@ class Client(object):
                             :data:`ENGLISH_ISO_639`.)
     """
 
-    def __init__(self, key, http=None, target_language=ENGLISH_ISO_639):
-        self.key = key
+    def __init__(self, api_key, http=None, target_language=ENGLISH_ISO_639):
+        self.api_key = api_key
         if http is None:
             http = httplib2.Http()
         self.connection = Connection(http=http)
@@ -70,7 +70,7 @@ class Client(object):
                   dictionary will also contain the name of each supported
                   language (localized to the target language).
         """
-        query_params = {'key': self.key}
+        query_params = {'key': self.api_key}
         if target_language is None:
             target_language = self.target_language
         if target_language is not None:
@@ -113,7 +113,7 @@ class Client(object):
             single_value = True
             values = [values]
 
-        query_params = [('key', self.key)]
+        query_params = [('key', self.api_key)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         response = self.connection.api_request(
@@ -198,7 +198,7 @@ class Client(object):
         if isinstance(customization_ids, six.string_types):
             customization_ids = [customization_ids]
 
-        query_params = [('key', self.key), ('target', target_language)]
+        query_params = [('key', self.api_key), ('target', target_language)]
         query_params.extend(('q', _to_bytes(value, 'utf-8'))
                             for value in values)
         query_params.extend(('cid', cid) for cid in customization_ids)
