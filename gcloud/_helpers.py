@@ -433,9 +433,10 @@ def _name_from_project_path(path, project, template):
     :type path: string
     :param path: URI path containing the name.
 
-    :type project: string
+    :type project: string or NoneType
     :param project: The project associated with the request. It is
-                    included for validation purposes.
+                    included for validation purposes.  If passed as None,
+                    disables validation.
 
     :type template: string
     :param template: Template regex describing the expected form of the path.
@@ -457,11 +458,12 @@ def _name_from_project_path(path, project, template):
         raise ValueError('path "%s" did not match expected pattern "%s"' % (
             path, template.pattern,))
 
-    found_project = match.group('project')
-    if found_project != project:
-        raise ValueError(
-            'Project from client (%s) should agree with '
-            'project from resource(%s).' % (project, found_project))
+    if project is not None:
+        found_project = match.group('project')
+        if found_project != project:
+            raise ValueError(
+                'Project from client (%s) should agree with '
+                'project from resource(%s).' % (project, found_project))
 
     return match.group('name')
 
