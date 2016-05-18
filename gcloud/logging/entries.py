@@ -82,8 +82,7 @@ class _BaseEntry(object):
         logger_fullname = resource['logName']
         logger = loggers.get(logger_fullname)
         if logger is None:
-            logger_name = logger_name_from_path(
-                logger_fullname, client.project)
+            logger_name = logger_name_from_path(logger_fullname)
             logger = loggers[logger_fullname] = client.logger(logger_name)
         payload = resource[cls._PAYLOAD_KEY]
         insert_id = resource.get('insertId')
