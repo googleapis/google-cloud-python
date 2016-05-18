@@ -123,6 +123,13 @@
   monitoring-label
 
 .. toctree::
+    :maxdepth: 0
+    :hidden:
+    :caption: Vision
+
+    vision-usage
+
+.. toctree::
   :maxdepth: 0
   :hidden:
   :caption: External Links
