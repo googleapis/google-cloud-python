@@ -131,6 +131,10 @@ class TestClient(unittest2.TestCase):
             self.assertTrue(client.is_started())
         self.assertFalse(client.is_started())
 
+    def test_context_manager_as_keyword(self):
+        with self._context_manager_helper() as client:
+            self.assertIsNotNone(client)
+
     def test_context_manager_with_exception(self):
         client = self._context_manager_helper()
         self.assertFalse(client.is_started())

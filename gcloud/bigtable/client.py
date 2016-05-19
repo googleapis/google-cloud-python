@@ -344,6 +344,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
     def __enter__(self):
         """Starts the client as a context manager."""
         self.start()
+        return self
 
     def stop(self):
         """Closes all the open gRPC clients."""
