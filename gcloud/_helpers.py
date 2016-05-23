@@ -169,10 +169,10 @@ def _file_project_id():
     """
     credentials_file_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
     if credentials_file_path:
-        credentials_file = open(credentials_file_path, 'r')
-        credentials_data = credentials_file.read()
-        credentials = json.loads(credentials_data)
-        return credentials.get('project_id')
+        with open(credentials_file_path, 'r') as credentials_file:
+            credentials_data = credentials_file.read()
+            credentials = json.loads(credentials_data)
+            return credentials.get('project_id')
     else:
         return None
 
@@ -222,6 +222,8 @@ def _determine_default_project(project=None):
     implicit environments are:
 
     * GCLOUD_PROJECT environment variable
+    * GOOGLE_APPLICATION_CREDENTIALS JSON file
+    * Get from oauth defaults
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
@@ -236,6 +238,9 @@ def _determine_default_project(project=None):
 
     if project is None:
         project = _file_project_id()
+
+    # if project is None:
+    #     print oauth2client.get_application_default()
 
     if project is None:
         project = _app_engine_id()

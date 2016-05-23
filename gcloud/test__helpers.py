@@ -156,27 +156,30 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 
     def setUp(self):
         import os
-
-        self.old_env = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS', '')
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = ''
+        self.old_env = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
     def tearDown(self):
         import os
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = self.old_env
+        if self.old_env:
+            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = self.old_env
+        elif (not self.old_env and
+              'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
+            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     def test_success(self):
         import os
         import tempfile
-        with tempfile.NamedTemporaryFile() as credential_file:
+        with tempfile.NamedTemporaryFile(mode='w') as credential_file:
             credential_file.write('{"project_id": "test-project-id"}')
             credential_file.seek(0)
             os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_file.name
 
             self.assertEqual('test-project-id', self._callFUT())
 
-    def test_failure(self):
+    def test_no_environment(self):
         import os
-        del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+        if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
+            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
         self.assertEqual(None, self._callFUT())
 
 

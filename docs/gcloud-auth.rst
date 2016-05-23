@@ -39,10 +39,6 @@ Overview
 
         $ export GOOGLE_APPLICATION_CREDENTIALS="/path/to/keyfile.json"
 
-    The default project ID will be the project that keyfile.json was genereated
-    from. This can be overridded by setting the ``GCLOUD_PROJECT`` environment
-    variable.
-
 .. _service account: https://cloud.google.com/storage/docs/authentication#generating-a-private-key
 
 Client-Provided Authentication
