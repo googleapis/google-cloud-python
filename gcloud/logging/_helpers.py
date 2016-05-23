@@ -27,15 +27,11 @@ _LOGGER_TEMPLATE = re.compile(r"""
 """, re.VERBOSE)
 
 
-def logger_name_from_path(path, project):
+def logger_name_from_path(path):
     """Validate a logger URI path and get the logger name.
 
     :type path: string
     :param path: URI path for a logger API request.
-
-    :type project: string
-    :param project: The project associated with the request. It is
-                    included for validation purposes.
 
     :rtype: string
     :returns: Logger name parsed from ``path``.
@@ -43,4 +39,4 @@ def logger_name_from_path(path, project):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    return _name_from_project_path(path, project, _LOGGER_TEMPLATE)
+    return _name_from_project_path(path, None, _LOGGER_TEMPLATE)

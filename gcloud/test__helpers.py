@@ -662,6 +662,13 @@ class Test__name_from_project_path(unittest2.TestCase):
         name = self._callFUT(PATH, self.PROJECT, template)
         self.assertEqual(name, self.THING_NAME)
 
+    def test_w_project_passed_as_none(self):
+        PROJECT1 = 'PROJECT1'
+        PATH = 'projects/%s/things/%s' % (PROJECT1, self.THING_NAME)
+        self._callFUT(PATH, None, self.TEMPLATE)
+        name = self._callFUT(PATH, None, self.TEMPLATE)
+        self.assertEqual(name, self.THING_NAME)
+
 
 class _AppIdentity(object):
 
