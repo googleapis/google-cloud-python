@@ -18,6 +18,7 @@ This module is not part of the public API surface of `gcloud`.
 
 import calendar
 import datetime
+import json
 import os
 import re
 import socket
@@ -159,6 +160,23 @@ def _app_engine_id():
     return app_identity.get_application_id()
 
 
+def _file_project_id():
+    """Gets the project id from the credentials file if one is available.
+
+    :rtype: string or ``NoneType``
+    :returns: Project-ID from JSON credentials file if value exists,
+              else ``None``.
+    """
+    credentials_file_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    if credentials_file_path:
+        credentials_file = open(credentials_file_path, 'r')
+        credentials_data = credentials_file.read()
+        credentials = json.loads(credentials_data)
+        return credentials.get('project_id')
+    else:
+        return None
+
+
 def _compute_engine_id():
     """Gets the Compute Engine project ID if it can be inferred.
 
@@ -215,6 +233,9 @@ def _determine_default_project(project=None):
     """
     if project is None:
         project = _get_production_project()
+
+    if project is None:
+        project = _file_project_id()
 
     if project is None:
         project = _app_engine_id()
