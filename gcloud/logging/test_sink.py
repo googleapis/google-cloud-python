@@ -63,8 +63,7 @@ class TestSink(unittest2.TestCase):
 
     def test_ctor(self):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn = _Connection()
-        client = _Client(self.PROJECT, conn)
+        client = _Client(self.PROJECT)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
@@ -76,7 +75,7 @@ class TestSink(unittest2.TestCase):
         self.assertEqual(sink.path, '/%s' % (FULL,))
 
     def test_from_api_repr_minimal(self):
-        CLIENT = _Client(project=self.PROJECT)
+        client = _Client(project=self.PROJECT)
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         RESOURCE = {
             'name': FULL,
@@ -84,16 +83,16 @@ class TestSink(unittest2.TestCase):
             'destination': self.DESTINATION_URI,
         }
         klass = self._getTargetClass()
-        sink = klass.from_api_repr(RESOURCE, client=CLIENT)
+        sink = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertTrue(sink._client is CLIENT)
+        self.assertTrue(sink._client is client)
         self.assertEqual(sink.project, self.PROJECT)
         self.assertEqual(sink.full_name, FULL)
 
     def test_from_api_repr_w_description(self):
-        CLIENT = _Client(project=self.PROJECT)
+        client = _Client(project=self.PROJECT)
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         RESOURCE = {
             'name': FULL,
@@ -101,18 +100,18 @@ class TestSink(unittest2.TestCase):
             'destination': self.DESTINATION_URI,
         }
         klass = self._getTargetClass()
-        sink = klass.from_api_repr(RESOURCE, client=CLIENT)
+        sink = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(sink.name, self.SINK_NAME)
         self.assertEqual(sink.filter_, self.FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertTrue(sink._client is CLIENT)
+        self.assertTrue(sink._client is client)
         self.assertEqual(sink.project, self.PROJECT)
         self.assertEqual(sink.full_name, FULL)
 
     def test_from_api_repr_with_mismatched_project(self):
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
-        CLIENT = _Client(project=PROJECT1)
+        client = _Client(project=PROJECT1)
         FULL = 'projects/%s/sinks/%s' % (PROJECT2, self.SINK_NAME)
         RESOURCE = {
             'name': FULL,
@@ -121,76 +120,63 @@ class TestSink(unittest2.TestCase):
         }
         klass = self._getTargetClass()
         self.assertRaises(ValueError, klass.from_api_repr,
-                          RESOURCE, client=CLIENT)
+                          RESOURCE, client=client)
 
     def test_create_w_bound_client(self):
-        TARGET = 'projects/%s/sinks' % (self.PROJECT,)
-        RESOURCE = {
-            'name': self.SINK_NAME,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=client)
+
         sink.create()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % TARGET)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._sink_create_called_with,
+            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
 
     def test_create_w_alternate_client(self):
-        TARGET = 'projects/%s/sinks' % (self.PROJECT,)
-        RESOURCE = {
-            'name': self.SINK_NAME,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
                              client=client1)
+        api = client2.sinks_api = _DummySinksAPI()
+
         sink.create(client=client2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % TARGET)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._sink_create_called_with,
+            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
 
     def test_exists_miss_w_bound_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn = _Connection()
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT)
+                             client=client)
+
         self.assertFalse(sink.exists())
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+
+        self.assertEqual(api._sink_get_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
     def test_exists_hit_w_alternate_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': FULL})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        RESOURCE = {
+            'name': self.SINK_NAME,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.sinks_api = _DummySinksAPI()
+        api._sink_get_response = RESOURCE
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT1)
-        self.assertTrue(sink.exists(client=CLIENT2))
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+                             client=client1)
+
+        self.assertTrue(sink.exists(client=client2))
+
+        self.assertEqual(api._sink_get_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
     def test_reload_w_bound_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         NEW_FILTER = 'logName:syslog AND severity>=INFO'
         NEW_DESTINATION_URI = 'faux.googleapis.com/other'
         RESOURCE = {
@@ -198,20 +184,20 @@ class TestSink(unittest2.TestCase):
             'filter': NEW_FILTER,
             'destination': NEW_DESTINATION_URI,
         }
-        conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.sinks_api = _DummySinksAPI()
+        api._sink_get_response = RESOURCE
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT)
+                             client=client)
+
         sink.reload()
+
         self.assertEqual(sink.filter_, NEW_FILTER)
         self.assertEqual(sink.destination, NEW_DESTINATION_URI)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(api._sink_get_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
     def test_reload_w_alternate_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         NEW_FILTER = 'logName:syslog AND severity>=INFO'
         NEW_DESTINATION_URI = 'faux.googleapis.com/other'
         RESOURCE = {
@@ -219,108 +205,92 @@ class TestSink(unittest2.TestCase):
             'filter': NEW_FILTER,
             'destination': NEW_DESTINATION_URI,
         }
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.sinks_api = _DummySinksAPI()
+        api._sink_get_response = RESOURCE
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT1)
-        sink.reload(client=CLIENT2)
+                             client=client1)
+
+        sink.reload(client=client2)
+
         self.assertEqual(sink.filter_, NEW_FILTER)
         self.assertEqual(sink.destination, NEW_DESTINATION_URI)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(api._sink_get_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
     def test_update_w_bound_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        RESOURCE = {
-            'name': self.SINK_NAME,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }
-        conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT)
+                             client=client)
+
         sink.update()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._sink_update_called_with,
+            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
 
     def test_update_w_alternate_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        RESOURCE = {
-            'name': self.SINK_NAME,
-            'filter': self.FILTER,
-            'destination': self.DESTINATION_URI,
-        }
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT1)
-        sink.update(client=CLIENT2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
-        self.assertEqual(req['data'], RESOURCE)
+                             client=client1)
+
+        sink.update(client=client2)
+
+        self.assertEqual(
+            api._sink_update_called_with,
+            (self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI))
 
     def test_delete_w_bound_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT)
+                             client=client)
+
         sink.delete()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % FULL)
+
+        self.assertEqual(api._sink_delete_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
     def test_delete_w_alternate_client(self):
-        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.sinks_api = _DummySinksAPI()
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,
-                             client=CLIENT1)
-        sink.delete(client=CLIENT2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % FULL)
+                             client=client1)
 
+        sink.delete(client=client2)
 
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
-        self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFound('miss')
-        else:
-            return response
+        self.assertEqual(api._sink_delete_called_with,
+                         (self.PROJECT, self.SINK_NAME))
 
 
 class _Client(object):
 
-    def __init__(self, project, connection=None):
+    def __init__(self, project):
         self.project = project
-        self.connection = connection
+
+
+class _DummySinksAPI(object):
+
+    def sink_create(self, project, sink_name, filter_, destination):
+        self._sink_create_called_with = (
+            project, sink_name, filter_, destination)
+
+    def sink_get(self, project, sink_name):
+        from gcloud.exceptions import NotFound
+        self._sink_get_called_with = (project, sink_name)
+        try:
+            return self._sink_get_response
+        except AttributeError:
+            raise NotFound('miss')
+
+    def sink_update(self, project, sink_name, filter_, destination):
+        self._sink_update_called_with = (
+            project, sink_name, filter_, destination)
+
+    def sink_delete(self, project, sink_name):
+        self._sink_delete_called_with = (project, sink_name)

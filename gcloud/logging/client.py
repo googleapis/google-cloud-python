@@ -14,9 +14,11 @@
 
 """Client for interacting with the Google Cloud Logging API."""
 
-
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
+from gcloud.logging.connection import _LoggingAPI
+from gcloud.logging.connection import _MetricsAPI
+from gcloud.logging.connection import _SinksAPI
 from gcloud.logging.entries import ProtobufEntry
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry
@@ -47,6 +49,28 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+    _logging_api = _sinks_api = _metrics_api = None
+
+    @property
+    def logging_api(self):
+        """Helper for logging-related API calls."""
+        if self._logging_api is None:
+            self._logging_api = _LoggingAPI(self.connection)
+        return self._logging_api
+
+    @property
+    def sinks_api(self):
+        """Helper for logging-related API calls."""
+        if self._sinks_api is None:
+            self._sinks_api = _SinksAPI(self.connection)
+        return self._sinks_api
+
+    @property
+    def metrics_api(self):
+        """Helper for logging-related API calls."""
+        if self._metrics_api is None:
+            self._metrics_api = _MetricsAPI(self.connection)
+        return self._metrics_api
 
     def logger(self, name):
         """Creates a logger bound to the current client.
@@ -120,22 +144,9 @@ class Client(JSONClient):
         if projects is None:
             projects = [self.project]
 
-        params = {'projectIds': projects}
-
-        if filter_ is not None:
-            params['filter'] = filter_
-
-        if order_by is not None:
-            params['orderBy'] = order_by
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        resp = self.connection.api_request(method='POST', path='/entries:list',
-                                           data=params)
+        resp = self.logging_api.list_entries(
+            projects=projects, filter_=filter_, order_by=order_by,
+            page_size=page_size, page_token=page_token)
         loggers = {}
         entries = [self._entry_from_resource(resource, loggers)
                    for resource in resp.get('entries', ())]
@@ -181,17 +192,7 @@ class Client(JSONClient):
                   more sinks can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/sinks' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
+        resp = self.sinks_api.list_sinks(self.project, page_size, page_token)
         sinks = [Sink.from_api_repr(resource, self)
                  for resource in resp.get('sinks', ())]
         return sinks, resp.get('nextPageToken')
@@ -235,17 +236,8 @@ class Client(JSONClient):
                   more metrics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/metrics' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
+        resp = self.metrics_api.list_metrics(
+            self.project, page_size, page_token)
         metrics = [Metric.from_api_repr(resource, self)
                    for resource in resp.get('metrics', ())]
         return metrics, resp.get('nextPageToken')

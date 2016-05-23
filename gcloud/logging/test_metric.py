@@ -63,8 +63,7 @@ class TestMetric(unittest2.TestCase):
 
     def test_ctor_defaults(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn = _Connection()
-        client = _Client(self.PROJECT, conn)
+        client = _Client(self.PROJECT)
         metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
@@ -76,8 +75,7 @@ class TestMetric(unittest2.TestCase):
 
     def test_ctor_explicit(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn = _Connection()
-        client = _Client(self.PROJECT, conn)
+        client = _Client(self.PROJECT)
         metric = self._makeOne(self.METRIC_NAME, self.FILTER,
                                client=client, description=self.DESCRIPTION)
         self.assertEqual(metric.name, self.METRIC_NAME)
@@ -89,23 +87,23 @@ class TestMetric(unittest2.TestCase):
         self.assertEqual(metric.path, '/%s' % (FULL,))
 
     def test_from_api_repr_minimal(self):
-        CLIENT = _Client(project=self.PROJECT)
+        client = _Client(project=self.PROJECT)
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         RESOURCE = {
             'name': self.METRIC_NAME,
             'filter': self.FILTER,
         }
         klass = self._getTargetClass()
-        metric = klass.from_api_repr(RESOURCE, client=CLIENT)
+        metric = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, '')
-        self.assertTrue(metric._client is CLIENT)
+        self.assertTrue(metric._client is client)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
 
     def test_from_api_repr_w_description(self):
-        CLIENT = _Client(project=self.PROJECT)
+        client = _Client(project=self.PROJECT)
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         DESCRIPTION = 'DESCRIPTION'
         RESOURCE = {
@@ -114,203 +112,172 @@ class TestMetric(unittest2.TestCase):
             'description': DESCRIPTION,
         }
         klass = self._getTargetClass()
-        metric = klass.from_api_repr(RESOURCE, client=CLIENT)
+        metric = klass.from_api_repr(RESOURCE, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, DESCRIPTION)
-        self.assertTrue(metric._client is CLIENT)
+        self.assertTrue(metric._client is client)
         self.assertEqual(metric.project, self.PROJECT)
         self.assertEqual(metric.full_name, FULL)
 
     def test_create_w_bound_client(self):
-        TARGET = 'projects/%s/metrics' % (self.PROJECT,)
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-        }
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
+        client = _Client(project=self.PROJECT)
+        api = client.metrics_api = _DummyMetricsAPI()
         metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
+
         metric.create()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % TARGET)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._metric_create_called_with,
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, ''))
 
     def test_create_w_alternate_client(self):
-        TARGET = 'projects/%s/metrics' % (self.PROJECT,)
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-            'description': self.DESCRIPTION,
-        }
-        conn1 = _Connection()
-        client1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        client2 = _Client(project=self.PROJECT, connection=conn2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.metrics_api = _DummyMetricsAPI()
         metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client1,
                                description=self.DESCRIPTION)
+
         metric.create(client=client2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/%s' % TARGET)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._metric_create_called_with,
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION))
 
     def test_exists_miss_w_bound_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn = _Connection()
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT)
+        client = _Client(project=self.PROJECT)
+        api = client.metrics_api = _DummyMetricsAPI()
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
+
         self.assertFalse(metric.exists())
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+
+        self.assertEqual(api._metric_get_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
     def test_exists_hit_w_alternate_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({'name': FULL})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
-        self.assertTrue(metric.exists(client=CLIENT2))
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        RESOURCE = {
+            'name': self.METRIC_NAME,
+            'filter': self.FILTER,
+        }
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.metrics_api = _DummyMetricsAPI()
+        api._metric_get_response = RESOURCE
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client1)
+
+        self.assertTrue(metric.exists(client=client2))
+
+        self.assertEqual(api._metric_get_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
     def test_reload_w_bound_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        DESCRIPTION = 'DESCRIPTION'
         NEW_FILTER = 'logName:syslog AND severity>=INFO'
         RESOURCE = {
             'name': self.METRIC_NAME,
             'filter': NEW_FILTER,
         }
-        conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT,
-                               description=DESCRIPTION)
+        client = _Client(project=self.PROJECT)
+        api = client.metrics_api = _DummyMetricsAPI()
+        api._metric_get_response = RESOURCE
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client,
+                               description=self.DESCRIPTION)
+
         metric.reload()
+
         self.assertEqual(metric.filter_, NEW_FILTER)
         self.assertEqual(metric.description, '')
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(api._metric_get_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
     def test_reload_w_alternate_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        DESCRIPTION = 'DESCRIPTION'
         NEW_FILTER = 'logName:syslog AND severity>=INFO'
         RESOURCE = {
             'name': self.METRIC_NAME,
-            'description': DESCRIPTION,
+            'description': self.DESCRIPTION,
             'filter': NEW_FILTER,
         }
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
-        metric.reload(client=CLIENT2)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.metrics_api = _DummyMetricsAPI()
+        api._metric_get_response = RESOURCE
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client1)
+
+        metric.reload(client=client2)
+
         self.assertEqual(metric.filter_, NEW_FILTER)
-        self.assertEqual(metric.description, DESCRIPTION)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertEqual(api._metric_get_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
     def test_update_w_bound_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'filter': self.FILTER,
-        }
-        conn = _Connection(RESOURCE)
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT)
+        client = _Client(project=self.PROJECT)
+        api = client.metrics_api = _DummyMetricsAPI()
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
+
         metric.update()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
-        self.assertEqual(req['data'], RESOURCE)
+
+        self.assertEqual(
+            api._metric_update_called_with,
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, ''))
 
     def test_update_w_alternate_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        DESCRIPTION = 'DESCRIPTION'
-        RESOURCE = {
-            'name': self.METRIC_NAME,
-            'description': DESCRIPTION,
-            'filter': self.FILTER,
-        }
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection(RESOURCE)
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1,
-                               description=DESCRIPTION)
-        metric.update(client=CLIENT2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'PUT')
-        self.assertEqual(req['path'], '/%s' % FULL)
-        self.assertEqual(req['data'], RESOURCE)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.metrics_api = _DummyMetricsAPI()
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client1,
+                               description=self.DESCRIPTION)
+
+        metric.update(client=client2)
+
+        self.assertEqual(
+            api._metric_update_called_with,
+            (self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION))
 
     def test_delete_w_bound_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn = _Connection({})
-        CLIENT = _Client(project=self.PROJECT, connection=conn)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT)
+        client = _Client(project=self.PROJECT)
+        api = client.metrics_api = _DummyMetricsAPI()
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
+
         metric.delete()
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % FULL)
+
+        self.assertEqual(api._metric_delete_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
     def test_delete_w_alternate_client(self):
-        FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
-        conn1 = _Connection()
-        CLIENT1 = _Client(project=self.PROJECT, connection=conn1)
-        conn2 = _Connection({})
-        CLIENT2 = _Client(project=self.PROJECT, connection=conn2)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=CLIENT1)
-        metric.delete(client=CLIENT2)
-        self.assertEqual(len(conn1._requested), 0)
-        self.assertEqual(len(conn2._requested), 1)
-        req = conn2._requested[0]
-        self.assertEqual(req['method'], 'DELETE')
-        self.assertEqual(req['path'], '/%s' % FULL)
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        api = client2.metrics_api = _DummyMetricsAPI()
+        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client1)
 
+        metric.delete(client=client2)
 
-class _Connection(object):
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        from gcloud.exceptions import NotFound
-        self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:
-            raise NotFound('miss')
-        else:
-            return response
+        self.assertEqual(api._metric_delete_called_with,
+                         (self.PROJECT, self.METRIC_NAME))
 
 
 class _Client(object):
 
-    def __init__(self, project, connection=None):
+    def __init__(self, project):
         self.project = project
-        self.connection = connection
+
+
+class _DummyMetricsAPI(object):
+
+    def metric_create(self, project, metric_name, filter_, description):
+        self._metric_create_called_with = (
+            project, metric_name, filter_, description)
+
+    def metric_get(self, project, metric_name):
+        from gcloud.exceptions import NotFound
+        self._metric_get_called_with = (project, metric_name)
+        try:
+            return self._metric_get_response
+        except AttributeError:
+            raise NotFound('miss')
+
+    def metric_update(self, project, metric_name, filter_, description):
+        self._metric_update_called_with = (
+            project, metric_name, filter_, description)
+
+    def metric_delete(self, project, metric_name):
+        self._metric_delete_called_with = (project, metric_name)

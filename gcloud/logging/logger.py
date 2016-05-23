@@ -183,10 +183,7 @@ class Logger(object):
         entry_resource = self._make_entry_resource(
             text=text, labels=labels, insert_id=insert_id, severity=severity,
             http_request=http_request)
-        data = {'entries': [entry_resource]}
-
-        client.connection.api_request(
-            method='POST', path='/entries:write', data=data)
+        client.logging_api.write_entries([entry_resource])
 
     def log_struct(self, info, client=None, labels=None, insert_id=None,
                    severity=None, http_request=None):
@@ -219,10 +216,7 @@ class Logger(object):
         entry_resource = self._make_entry_resource(
             info=info, labels=labels, insert_id=insert_id, severity=severity,
             http_request=http_request)
-        data = {'entries': [entry_resource]}
-
-        client.connection.api_request(
-            method='POST', path='/entries:write', data=data)
+        client.logging_api.write_entries([entry_resource])
 
     def log_proto(self, message, client=None, labels=None, insert_id=None,
                   severity=None, http_request=None):
@@ -255,10 +249,7 @@ class Logger(object):
         entry_resource = self._make_entry_resource(
             message=message, labels=labels, insert_id=insert_id,
             severity=severity, http_request=http_request)
-        data = {'entries': [entry_resource]}
-
-        client.connection.api_request(
-            method='POST', path='/entries:write', data=data)
+        client.logging_api.write_entries([entry_resource])
 
     def delete(self, client=None):
         """API call:  delete all entries in a logger via a DELETE request
@@ -271,7 +262,7 @@ class Logger(object):
                        ``client`` stored on the current logger.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client.logging_api.logger_delete(self.project, self.name)
 
     def list_entries(self, projects=None, filter_=None, order_by=None,
                      page_size=None, page_token=None):
@@ -419,14 +410,14 @@ class Batch(object):
         if client is None:
             client = self.client
 
-        data = {
-            'logName': self.logger.path,
+        kwargs = {
+            'logger_name': self.logger.path,
             'resource': {'type': 'global'},
         }
         if self.logger.labels is not None:
-            data['labels'] = self.logger.labels
+            kwargs['labels'] = self.logger.labels
 
-        entries = data['entries'] = []
+        entries = []
         for entry_type, entry, labels, iid, severity, http_req in self.entries:
             if entry_type == 'text':
                 info = {'textPayload': entry}
@@ -448,6 +439,5 @@ class Batch(object):
                 info['httpRequest'] = http_req
             entries.append(info)
 
-        client.connection.api_request(
-            method='POST', path='/entries:write', data=data)
+        client.logging_api.write_entries(entries, **kwargs)
         del self.entries[:]

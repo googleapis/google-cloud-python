@@ -137,13 +137,8 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        target = '/projects/%s/sinks' % (self.project,)
-        data = {
-            'name': self.name,
-            'filter': self.filter_,
-            'destination': self.destination,
-        }
-        client.connection.api_request(method='POST', path=target, data=data)
+        client.sinks_api.sink_create(
+            self.project, self.name, self.filter_, self.destination)
 
     def exists(self, client=None):
         """API call:  test for the existence of the sink via a GET request
@@ -158,7 +153,7 @@ class Sink(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.sinks_api.sink_get(self.project, self.name)
         except NotFound:
             return False
         else:
@@ -175,7 +170,7 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        data = client.connection.api_request(method='GET', path=self.path)
+        data = client.sinks_api.sink_get(self.project, self.name)
         self.filter_ = data['filter']
         self.destination = data['destination']
 
@@ -190,12 +185,8 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        data = {
-            'name': self.name,
-            'filter': self.filter_,
-            'destination': self.destination,
-        }
-        client.connection.api_request(method='PUT', path=self.path, data=data)
+        client.sinks_api.sink_update(
+            self.project, self.name, self.filter_, self.destination)
 
     def delete(self, client=None):
         """API call:  delete a sink via a DELETE request
@@ -208,4 +199,4 @@ class Sink(object):
                        ``client`` stored on the current sink.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client.sinks_api.sink_delete(self.project, self.name)
