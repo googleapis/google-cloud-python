@@ -126,9 +126,11 @@ def main():
     public_mods = set(public_mods)
 
     if not sphinx_mods <= public_mods:
-        message = ('Unexpected error. There were modules referenced by '
-                   'Sphinx that are not among the public modules.')
-        print(message, file=sys.stderr)
+        unexpected_mods = sphinx_mods - public_mods
+        message = ['Unexpected error. There were modules referenced by '
+                   'Sphinx that are not among the public modules.']
+        message.extend(['- %s' % (mod,) for mod in unexpected_mods])
+        print('\n'.join(message), file=sys.stderr)
         sys.exit(1)
 
     undocumented_mods = public_mods - sphinx_mods

@@ -16,3 +16,11 @@
 
 
 from gcloud.bigtable.client import Client
+
+try:
+    import grpc.beta.implementations
+except ImportError as exc:
+    message = ('gRPC is required for using the Cloud Bigtable API. '
+               'Importing the grpc library (grpcio in PyPI) has failed. '
+               'As of May 2016, grpcio is only supported in Python 2.7.')
+    raise ImportError(message, exc)

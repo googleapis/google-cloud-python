@@ -1,4 +1,5 @@
 import os
+import sys
 
 from setuptools import setup
 from setuptools import find_packages
@@ -22,6 +23,9 @@ GRPC_EXTRAS = [
     'grpcio == 0.13.1',
     'gax-google-pubsub-v1',
 ]
+
+if sys.version_info[:2] == (2, 7):
+    REQUIREMENTS.extend(GRPC_EXTRAS)
 
 setup(
     name='gcloud',

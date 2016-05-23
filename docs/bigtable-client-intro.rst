@@ -1,6 +1,12 @@
 Base for Everything
 ===================
 
+.. warning::
+
+    gRPC is required for using the Cloud Bigtable API. As of May 2016,
+    ``grpcio`` is only supported in Python 2.7, so importing
+    :mod:`gcloud.bigtable` will fail.
+
 To use the API, the :class:`Client <gcloud.bigtable.client.Client>`
 class defines a high-level interface which handles authorization
 and creating other objects:
