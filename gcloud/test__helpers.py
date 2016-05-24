@@ -183,6 +183,37 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
         self.assertEqual(None, self._callFUT())
 
 
+class Test__get_default_service_project_id(unittest2.TestCase):
+
+    def callFUT(self, project_result=''):
+        from gcloud._helpers import _default_service_project_id
+        import subprocess
+        self.check_output_called_with = []
+
+        def check_output_mock(called_with=None):
+            self.check_output_called_with = called_with
+            return project_result
+
+        from gcloud._testing import _Monkey
+        with _Monkey(subprocess, check_output=check_output_mock):
+            return _default_service_project_id(), self.check_output_called_with
+
+    def test_read_from_cli_info(self):
+        project_id, called_with = self.callFUT('Project: [test-project-id]')
+        self.assertEqual('test-project-id', project_id)
+        self.assertEqual(['gcloud', 'info'], called_with)
+
+    def test_cli_info_not_set(self):
+        project_id, called_with = self.callFUT()
+        self.assertEqual(None, project_id)
+        self.assertEqual(['gcloud', 'info'], called_with)
+
+    def test_info_value_not_present(self):
+        project_id, called_with = self.callFUT('Active Configuration')
+        self.assertEqual(None, project_id)
+        self.assertEqual(['gcloud', 'info'], called_with)
+
+
 class Test__compute_engine_id(unittest2.TestCase):
 
     def _callFUT(self):
@@ -254,7 +285,7 @@ class Test__determine_default_project(unittest2.TestCase):
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
-                                  project=None):
+                                  file_id=None, srv_id=None, project=None):
         from gcloud._testing import _Monkey
         from gcloud import _helpers
 
@@ -263,6 +294,14 @@ class Test__determine_default_project(unittest2.TestCase):
         def prod_mock():
             _callers.append('prod_mock')
             return prod
+
+        def file_id_mock():
+            _callers.append('file_id_mock')
+            return file_id
+
+        def srv_id_mock():
+            _callers.append('srv_id_mock')
+            return srv_id
 
         def gae_mock():
             _callers.append('gae_mock')
@@ -274,6 +313,8 @@ class Test__determine_default_project(unittest2.TestCase):
 
         patched_methods = {
             '_get_production_project': prod_mock,
+            '_file_project_id': file_id_mock,
+            '_default_service_project_id': srv_id_mock,
             '_app_engine_id': gae_mock,
             '_compute_engine_id': gce_mock,
         }
@@ -286,7 +327,8 @@ class Test__determine_default_project(unittest2.TestCase):
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
     def test_explicit(self):
         PROJECT = object()
@@ -304,13 +346,15 @@ class Test__determine_default_project(unittest2.TestCase):
         PROJECT = object()
         project, callers = self._determine_default_helper(gae=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock',
+                                   'srv_id_mock', 'gae_mock'])
 
     def test_gce(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(gce=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
 
 class Test__millis(unittest2.TestCase):

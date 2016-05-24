@@ -22,6 +22,7 @@ import json
 import os
 import re
 import socket
+import subprocess
 import sys
 from threading import local as Local
 
@@ -130,13 +131,13 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     This effectively reduces the iterable types allowed to a very short
     whitelist: list and tuple.
 
-    :type arg_name: string
+    :type arg_name: str
     :param arg_name: Name of argument to use in error message.
 
-    :type tuple_or_list: sequence of string
+    :type tuple_or_list: sequence of str
     :param tuple_or_list: Sequence to be verified.
 
-    :rtype: list of string
+    :rtype: list of str
     :returns: The ``tuple_or_list`` passed in cast to a ``list``.
     :raises: class:`TypeError` if the ``tuple_or_list`` is not a tuple or
              list.
@@ -150,7 +151,7 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
 def _app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: App Engine application ID if running in App Engine,
               else ``None``.
     """
@@ -163,7 +164,7 @@ def _app_engine_id():
 def _file_project_id():
     """Gets the project id from the credentials file if one is available.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Project-ID from JSON credentials file if value exists,
               else ``None``.
     """
@@ -175,6 +176,22 @@ def _file_project_id():
             return credentials.get('project_id')
     else:
         return None
+
+
+def _default_service_project_id():
+    """Retrieves the project ID from the gcloud command line tool.
+
+    :rtype: str or ``NoneType``
+    :returns: Project-ID from ``gcloud info`` else ``None``
+    """
+    gcloud_project_conf = subprocess.check_output(['gcloud', 'info'])
+    gcloud_project_conf = gcloud_project_conf.split('\n')
+
+    for key in gcloud_project_conf:
+        if key.startswith('Project:'):
+            return key[10:-1]
+
+    return None
 
 
 def _compute_engine_id():
@@ -190,7 +207,7 @@ def _compute_engine_id():
     See https://github.com/google/oauth2client/issues/93 for context about
     DNS latency.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Compute Engine project ID if the metadata service is available,
               else ``None``.
     """
@@ -223,14 +240,14 @@ def _determine_default_project(project=None):
 
     * GCLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get from oauth defaults
+    * Get from `gcloud auth login` defaults
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
-    :type project: string
+    :type project: str
     :param project: Optional. The project name to use as default.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Default project if it can be determined.
     """
     if project is None:
@@ -239,8 +256,8 @@ def _determine_default_project(project=None):
     if project is None:
         project = _file_project_id()
 
-    # if project is None:
-    #     print oauth2client.get_application_default()
+    if project is None:
+        project = _default_service_project_id()
 
     if project is None:
         project = _app_engine_id()
@@ -257,7 +274,7 @@ def _millis(when):
     :type when: :class:`datetime.datetime`
     :param when: the datetime to convert
 
-    :rtype: integer
+    :rtype: int
     :returns: milliseconds since epoch for ``when``
     """
     micros = _microseconds_from_datetime(when)
@@ -282,7 +299,7 @@ def _microseconds_from_datetime(value):
     :type value: :class:`datetime.datetime`
     :param value: The timestamp to convert.
 
-    :rtype: integer
+    :rtype: int
     :returns: The timestamp, in microseconds.
     """
     if not value.tzinfo:
@@ -299,7 +316,7 @@ def _millis_from_datetime(value):
     :type value: :class:`datetime.datetime`, or None
     :param value: the timestamp
 
-    :rtype: integer, or ``NoneType``
+    :rtype: int, or ``NoneType``
     :returns: the timestamp, in milliseconds, or None
     """
     if value is not None:
@@ -456,20 +473,20 @@ def _datetime_to_pb_timestamp(when):
 def _name_from_project_path(path, project, template):
     """Validate a URI path and get the leaf object's name.
 
-    :type path: string
+    :type path: str
     :param path: URI path containing the name.
 
-    :type project: string or NoneType
+    :type project: str or NoneType
     :param project: The project associated with the request. It is
                     included for validation purposes.  If passed as None,
                     disables validation.
 
-    :type template: string
+    :type template: str
     :param template: Template regex describing the expected form of the path.
                      The regex must have two named groups, 'project' and
                      'name'.
 
-    :rtype: string
+    :rtype: str
     :returns: Name parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the
