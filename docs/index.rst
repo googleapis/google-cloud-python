@@ -125,6 +125,14 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Translate
+
+  translate-usage
+  Client <translate-client>
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
