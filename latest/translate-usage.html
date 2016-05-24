@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Entries &mdash; gcloud 503cd32 documentation</title>
+    <title>Using the API &mdash; gcloud 503cd32 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
     <link rel="top" title="gcloud 503cd32 documentation" href="index.html" />
-    <link rel="next" title="Metrics" href="logging-metric.html" />
-    <link rel="prev" title="Logger" href="logging-logger.html" /> 
+    <link rel="next" title="Translate Client" href="translate-client.html" />
+    <link rel="prev" title="Label Descriptors" href="monitoring-label.html" /> 
   </head>
   <body role="document">
     <header class="page-header fixed" role="banner">
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-entries%0ARelease%3A%20503cd32" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+translate-usage%0ARelease%3A%20503cd32" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -91,51 +91,119 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <div class="section" id="module-gcloud.logging.entries">
-<span id="entries"></span><h1>Entries<a class="headerlink" href="#module-gcloud.logging.entries" title="Permalink to this headline">#</a></h1>
-<p>Log entries within the Google Cloud Logging API.</p>
-<dl class="class">
-<dt id="gcloud.logging.entries.ProtobufEntry">
-<em class="property">class </em><code class="descclassname">gcloud.logging.entries.</code><code class="descname">ProtobufEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/entries.html#ProtobufEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.entries.ProtobufEntry" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.entries._BaseEntry</span></code></p>
-<p>Entry created with <code class="docutils literal"><span class="pre">protoPayload</span></code>.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry</a></p>
-<dl class="method">
-<dt id="gcloud.logging.entries.ProtobufEntry.parse_message">
-<code class="descname">parse_message</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/entries.html#ProtobufEntry.parse_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.entries.ProtobufEntry.parse_message" title="Permalink to this definition">#</a></dt>
-<dd><p>Parse payload into a protobuf message.</p>
-<p>Mutates the passed-in <code class="docutils literal"><span class="pre">message</span></code> in place.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> (<em>Protobuf message</em>) &#8211; the message to be logged</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="gcloud.logging.entries.StructEntry">
-<em class="property">class </em><code class="descclassname">gcloud.logging.entries.</code><code class="descname">StructEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/entries.html#StructEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.entries.StructEntry" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.entries._BaseEntry</span></code></p>
-<p>Entry created with <code class="docutils literal"><span class="pre">jsonPayload</span></code>.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry</a></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="gcloud.logging.entries.TextEntry">
-<em class="property">class </em><code class="descclassname">gcloud.logging.entries.</code><code class="descname">TextEntry</code><span class="sig-paren">(</span><em>payload</em>, <em>logger</em>, <em>insert_id=None</em>, <em>timestamp=None</em>, <em>labels=None</em>, <em>severity=None</em>, <em>http_request=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/entries.html#TextEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.entries.TextEntry" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.entries._BaseEntry</span></code></p>
-<p>Entry created with <code class="docutils literal"><span class="pre">textPayload</span></code>.</p>
-<p>See:
-<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry</a></p>
-</dd></dl>
-
+  <div class="section" id="using-the-api">
+<h1>Using the API<a class="headerlink" href="#using-the-api" title="Permalink to this headline">#</a></h1>
+<p>With <a class="reference external" href="https://cloud.google.com/translate">Google Translate</a>, you can dynamically translate text
+between thousands of language pairs. The Google Translate API
+lets websites and programs integrate with Google Translate
+programmatically. Google Translate API is available as a
+paid service. See the <a class="reference external" href="https://cloud.google.com/translate/v2/pricing.html">Pricing</a> and <a class="reference external" href="https://cloud.google.com/translate/v2/faq.html">FAQ</a> pages for details.</p>
+<div class="section" id="authentication-configuration">
+<h2>Authentication / Configuration<a class="headerlink" href="#authentication-configuration" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li>Use <a class="reference internal" href="translate-client.html#gcloud.translate.client.Client" title="gcloud.translate.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects to configure
+your applications.</li>
+<li><a class="reference internal" href="translate-client.html#gcloud.translate.client.Client" title="gcloud.translate.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> objects hold both a <code class="docutils literal"><span class="pre">key</span></code>
+and a connection to the Translate service.</li>
+<li><strong>An API key is required for Translate.</strong> See
+<a class="reference external" href="https://cloud.google.com/translate/v2/using_rest#auth">Identifying your application to Google</a> for details. This is
+significantly different than the other clients in <code class="docutils literal"><span class="pre">gcloud-python</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">#</a></h2>
+<p>To create a client:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>By default, the client targets English when doing detections
+and translations, but a non-default value can be used as
+well:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">,</span> <span class="n">target_language</span><span class="o">=</span><span class="s1">&#39;es&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The Google Translate API has three supported methods, and they
+map to three methods on a client:
+<a class="reference internal" href="translate-client.html#gcloud.translate.client.Client.get_languages" title="gcloud.translate.client.Client.get_languages"><code class="xref py py-meth docutils literal"><span class="pre">get_languages()</span></code></a>,
+<a class="reference internal" href="translate-client.html#gcloud.translate.client.Client.detect_language" title="gcloud.translate.client.Client.detect_language"><code class="xref py py-meth docutils literal"><span class="pre">detect_language()</span></code></a> and
+<a class="reference internal" href="translate-client.html#gcloud.translate.client.Client.translate" title="gcloud.translate.client.Client.translate"><code class="xref py py-meth docutils literal"><span class="pre">translate()</span></code></a>.</p>
+<p>To get a list of languages supported by Google Translate</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">get_languages</span><span class="p">()</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &#39;language&#39;: &#39;af&#39;,</span>
+<span class="go">        &#39;name&#39;: &#39;Afrikaans&#39;,</span>
+<span class="go">    },</span>
+<span class="go">     ...</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>To detect the language that some given text is written in:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">detect_language</span><span class="p">([</span><span class="s1">&#39;Me llamo&#39;</span><span class="p">,</span> <span class="s1">&#39;I am&#39;</span><span class="p">])</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &#39;confidence&#39;: 0.25830904,</span>
+<span class="go">        &#39;input&#39;: &#39;Me llamo&#39;,</span>
+<span class="go">        &#39;language&#39;: &#39;es&#39;,</span>
+<span class="go">    }, {</span>
+<span class="go">        &#39;confidence&#39;: 0.17112699,</span>
+<span class="go">        &#39;input&#39;: &#39;I am&#39;,</span>
+<span class="go">        &#39;language&#39;: &#39;en&#39;,</span>
+<span class="go">    },</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <a class="reference external" href="https://cloud.google.com/translate/v2/detecting-language-with-rest">confidence</a> value is an optional floating point value between 0 and 1.
+The closer this value is to 1, the higher the confidence level for the
+language detection. This member is not always available.</p>
+<p>To translate text:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;koszula&#39;</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &#39;translatedText&#39;: &#39;shirt&#39;,</span>
+<span class="go">    &#39;detectedSourceLanguage&#39;: &#39;pl&#39;,</span>
+<span class="go">    &#39;input&#39;: &#39;koszula&#39;,</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>or to use a non-default target language:</p>
+<blockquote>
+<div><div class="code highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="s1">&#39;my-api-key&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">translate</span><span class="p">([</span><span class="s1">&#39;Me llamo Jeff&#39;</span><span class="p">,</span> <span class="s1">&#39;My name is Jeff&#39;</span><span class="p">],</span>
+<span class="gp">... </span>                 <span class="n">target_language</span><span class="o">=</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+<span class="go">[</span>
+<span class="go">    {</span>
+<span class="go">        &#39;translatedText&#39;: &#39;Mein Name ist Jeff&#39;,</span>
+<span class="go">        &#39;detectedSourceLanguage&#39;: &#39;es&#39;,</span>
+<span class="go">        &#39;input&#39;: &#39;Me llamo Jeff&#39;,</span>
+<span class="go">    }, {</span>
+<span class="go">        &#39;translatedText&#39;: &#39;Mein Name ist Jeff&#39;,</span>
+<span class="go">        &#39;detectedSourceLanguage&#39;: &#39;en&#39;,</span>
+<span class="go">        &#39;input&#39;: &#39;My name is Jeff&#39;,</span>
+<span class="go">    },</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
 </div>
 
 
@@ -217,11 +285,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Cloud Logging</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-client.html">Client</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-logger.html">Logger</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Entries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-entries.html">Entries</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
 </ul>
@@ -236,8 +304,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="monitoring-label.html">Label Descriptors</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Translate</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="translate-usage.html">Using the API</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="translate-client.html">Client</a></li>
 </ul>
 <p class="caption"><span class="caption-text">External Links</span></p>

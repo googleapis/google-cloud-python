@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.connection &mdash; gcloud 503cd32 documentation</title>
+    <title>gcloud.translate.connection &mdash; gcloud 503cd32 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/connection%0ARelease%3A%20503cd32" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/translate/connection%0ARelease%3A%20503cd32" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -90,7 +90,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
       <section class="content">
         
-  <h1>Source code for gcloud.logging.connection</h1><div class="highlight"><pre>
+  <h1>Source code for gcloud.translate.connection</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Copyright 2016 Google Inc. All rights reserved.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -105,40 +105,22 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
 
-<span class="sd">&quot;&quot;&quot;Create / interact with gcloud logging connections.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Translate connections.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
-<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Logging via the JSON REST API.</span>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../translate-client.html#gcloud.translate.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A connection to Google Cloud Translate via the JSON REST API.&quot;&quot;&quot;</span>
 
-<span class="sd">    :type credentials: :class:`oauth2client.client.OAuth2Credentials`</span>
-<span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        connection.</span>
-
-<span class="sd">    :type http: :class:`httplib2.Http` or class that defines ``request()``.</span>
-<span class="sd">    :param http: (Optional) HTTP object to make requests.</span>
-
-<span class="sd">    :type api_base_url: string</span>
-<span class="sd">    :param api_base_url: The base of the API call URL. Defaults to the value</span>
-<span class="sd">                         :attr:`Connection.API_BASE_URL`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://logging.googleapis.com&#39;</span>
+    <span class="n">API_BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com&#39;</span>
     <span class="sd">&quot;&quot;&quot;The base of the API call URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v2beta1&#39;</span>
+    <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v2&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;{api_base_url}/{api_version}{path}&#39;</span>
-    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
-
-    <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/logging.read&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/logging.write&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/logging.admin&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;https://www.googleapis.com/auth/cloud-platform&#39;</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Logging consumer.&quot;&quot;&quot;</span></div>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;{api_base_url}/language/translate/{api_version}{path}&#39;</span>
+    <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span></div>
 </pre></div>
 
       </section><!-- end of .content -->
