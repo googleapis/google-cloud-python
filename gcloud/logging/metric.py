@@ -138,14 +138,8 @@ class Metric(object):
                        ``client`` stored on the current metric.
         """
         client = self._require_client(client)
-        target = '/projects/%s/metrics' % (self.project,)
-        data = {
-            'name': self.name,
-            'filter': self.filter_,
-        }
-        if self.description:
-            data['description'] = self.description
-        client.connection.api_request(method='POST', path=target, data=data)
+        client.metrics_api.metric_create(
+            self.project, self.name, self.filter_, self.description)
 
     def exists(self, client=None):
         """API call:  test for the existence of the metric via a GET request
@@ -160,7 +154,7 @@ class Metric(object):
         client = self._require_client(client)
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            client.metrics_api.metric_get(self.project, self.name)
         except NotFound:
             return False
         else:
@@ -177,7 +171,7 @@ class Metric(object):
                        ``client`` stored on the current metric.
         """
         client = self._require_client(client)
-        data = client.connection.api_request(method='GET', path=self.path)
+        data = client.metrics_api.metric_get(self.project, self.name)
         self.description = data.get('description', '')
         self.filter_ = data['filter']
 
@@ -192,10 +186,8 @@ class Metric(object):
                        ``client`` stored on the current metric.
         """
         client = self._require_client(client)
-        data = {'name': self.name, 'filter': self.filter_}
-        if self.description:
-            data['description'] = self.description
-        client.connection.api_request(method='PUT', path=self.path, data=data)
+        client.metrics_api.metric_update(
+            self.project, self.name, self.filter_, self.description)
 
     def delete(self, client=None):
         """API call:  delete a metric via a DELETE request
@@ -208,4 +200,4 @@ class Metric(object):
                        ``client`` stored on the current metric.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        client.metrics_api.metric_delete(self.project, self.name)

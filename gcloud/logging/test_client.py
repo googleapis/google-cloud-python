@@ -38,6 +38,39 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         self.assertEqual(client.project, self.PROJECT)
 
+    def test_logging_api(self):
+        from gcloud.logging.connection import _LoggingAPI
+        client = self._makeOne(self.PROJECT, credentials=_Credentials())
+        conn = client.connection = object()
+        api = client.logging_api
+        self.assertTrue(isinstance(api, _LoggingAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.logging_api
+        self.assertTrue(again is api)
+
+    def test_sinks_api(self):
+        from gcloud.logging.connection import _SinksAPI
+        client = self._makeOne(self.PROJECT, credentials=_Credentials())
+        conn = client.connection = object()
+        api = client.sinks_api
+        self.assertTrue(isinstance(api, _SinksAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.sinks_api
+        self.assertTrue(again is api)
+
+    def test_metrics_api(self):
+        from gcloud.logging.connection import _MetricsAPI
+        client = self._makeOne(self.PROJECT, credentials=_Credentials())
+        conn = client.connection = object()
+        api = client.metrics_api
+        self.assertTrue(isinstance(api, _MetricsAPI))
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.metrics_api
+        self.assertTrue(again is api)
+
     def test_logger(self):
         from gcloud.logging.logger import Logger
         creds = _Credentials()
@@ -57,26 +90,17 @@ class TestClient(unittest2.TestCase):
             client._entry_from_resource({'unknownPayload': {}}, loggers)
 
     def test_list_entries_defaults(self):
-        from datetime import datetime
-        from gcloud._helpers import UTC
         from gcloud.logging.entries import TextEntry
-        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
-        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
-        IID1 = 'IID1'
+        IID = 'IID'
         TEXT = 'TEXT'
-        SENT = {
-            'projectIds': [self.PROJECT],
-        }
         TOKEN = 'TOKEN'
         RETURNED = {
             'entries': [{
                 'textPayload': TEXT,
-                'insertId': IID1,
+                'insertId': IID,
                 'resource': {
                     'type': 'global',
                 },
-                'timestamp': TIMESTAMP,
                 'logName': 'projects/%s/logs/%s' % (
                     self.PROJECT, self.LOGGER_NAME),
             }],
@@ -84,39 +108,34 @@ class TestClient(unittest2.TestCase):
         }
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
-        conn = client.connection = _Connection(RETURNED)
+        api = client._logging_api = _DummyLoggingAPI()
+        api._list_entries_response = RETURNED
+
         entries, token = client.list_entries()
+
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertTrue(isinstance(entry, TextEntry))
-        self.assertEqual(entry.insert_id, IID1)
+        self.assertEqual(entry.insert_id, IID)
         self.assertEqual(entry.payload, TEXT)
-        self.assertEqual(entry.timestamp, NOW)
         logger = entry.logger
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
         self.assertEqual(logger.project, self.PROJECT)
         self.assertEqual(token, TOKEN)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/entries:list')
-        self.assertEqual(req['data'], SENT)
+
+        self.assertEqual(
+            api._list_entries_called_with,
+            ([self.PROJECT], None, None, None, None))
 
     def test_list_entries_explicit(self):
-        # pylint: disable=too-many-statements
-        from datetime import datetime
-        from gcloud._helpers import UTC
         from gcloud.logging import DESCENDING
         from gcloud.logging.entries import ProtobufEntry
         from gcloud.logging.entries import StructEntry
         from gcloud.logging.logger import Logger
-        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
         PROJECT1 = 'PROJECT1'
         PROJECT2 = 'PROJECT2'
         FILTER = 'logName:LOGNAME'
-        NOW = datetime.utcnow().replace(tzinfo=UTC)
-        TIMESTAMP = _datetime_to_rfc3339_w_nanos(NOW)
         IID1 = 'IID1'
         IID2 = 'IID2'
         PAYLOAD = {'message': 'MESSAGE', 'weather': 'partly cloudy'}
@@ -124,13 +143,6 @@ class TestClient(unittest2.TestCase):
         PROTO_PAYLOAD['@type'] = 'type.googleapis.com/testing.example'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        SENT = {
-            'projectIds': [PROJECT1, PROJECT2],
-            'filter': FILTER,
-            'orderBy': DESCENDING,
-            'pageSize': PAGE_SIZE,
-            'pageToken': TOKEN,
-        }
         RETURNED = {
             'entries': [{
                 'jsonPayload': PAYLOAD,
@@ -138,7 +150,6 @@ class TestClient(unittest2.TestCase):
                 'resource': {
                     'type': 'global',
                 },
-                'timestamp': TIMESTAMP,
                 'logName': 'projects/%s/logs/%s' % (
                     self.PROJECT, self.LOGGER_NAME),
             }, {
@@ -147,14 +158,14 @@ class TestClient(unittest2.TestCase):
                 'resource': {
                     'type': 'global',
                 },
-                'timestamp': TIMESTAMP,
                 'logName': 'projects/%s/logs/%s' % (
                     self.PROJECT, self.LOGGER_NAME),
             }],
         }
-        creds = _Credentials()
-        client = self._makeOne(project=self.PROJECT, credentials=creds)
-        conn = client.connection = _Connection(RETURNED)
+        client = self._makeOne(self.PROJECT, credentials=_Credentials())
+        api = client._logging_api = _DummyLoggingAPI()
+        api._list_entries_response = RETURNED
+
         entries, token = client.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
             page_size=PAGE_SIZE, page_token=TOKEN)
@@ -164,7 +175,6 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(entry, StructEntry))
         self.assertEqual(entry.insert_id, IID1)
         self.assertEqual(entry.payload, PAYLOAD)
-        self.assertEqual(entry.timestamp, NOW)
         logger = entry.logger
         self.assertTrue(isinstance(logger, Logger))
         self.assertEqual(logger.name, self.LOGGER_NAME)
@@ -175,7 +185,6 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(isinstance(entry, ProtobufEntry))
         self.assertEqual(entry.insert_id, IID2)
         self.assertEqual(entry.payload, PROTO_PAYLOAD)
-        self.assertEqual(entry.timestamp, NOW)
         logger = entry.logger
         self.assertEqual(logger.name, self.LOGGER_NAME)
         self.assertTrue(logger.client is client)
@@ -184,11 +193,9 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(entries[0].logger is entries[1].logger)
 
         self.assertEqual(token, None)
-        self.assertEqual(len(conn._requested), 1)
-        req = conn._requested[0]
-        self.assertEqual(req['method'], 'POST')
-        self.assertEqual(req['path'], '/entries:list')
-        self.assertEqual(req['data'], SENT)
+        self.assertEqual(
+            api._list_entries_called_with,
+            ([PROJECT1, PROJECT2], FILTER, DESCENDING, PAGE_SIZE, TOKEN))
 
     def test_sink(self):
         from gcloud.logging.sink import Sink
@@ -205,101 +212,78 @@ class TestClient(unittest2.TestCase):
     def test_list_sinks_no_paging(self):
         from gcloud.logging.sink import Sink
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
+        TOKEN = 'TOKEN'
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
         SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
-
         RETURNED = {
             'sinks': [{
                 'name': SINK_PATH,
                 'filter': FILTER,
                 'destination': self.DESTINATION_URI,
             }],
+            'nextPageToken': TOKEN,
         }
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._sinks_api = _DummySinksAPI()
+        api._list_sinks_response = RETURNED
 
-        # Execute request.
-        sinks, next_page_token = CLIENT_OBJ.list_sinks()
-        # Test values are correct.
+        sinks, token = client.list_sinks()
+
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertTrue(isinstance(sink, Sink))
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/sinks' % (PROJECT,))
-        self.assertEqual(req['query_params'], {})
+
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(api._list_sinks_called_with,
+                         (PROJECT, None, None))
 
     def test_list_sinks_with_paging(self):
         from gcloud.logging.sink import Sink
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
         SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
-        TOKEN1 = 'TOKEN1'
-        TOKEN2 = 'TOKEN2'
-        SIZE = 1
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
         RETURNED = {
             'sinks': [{
                 'name': SINK_PATH,
                 'filter': FILTER,
                 'destination': self.DESTINATION_URI,
             }],
-            'nextPageToken': TOKEN2,
         }
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._sinks_api = _DummySinksAPI()
+        api._list_sinks_response = RETURNED
 
-        # Execute request.
-        sinks, next_page_token = CLIENT_OBJ.list_sinks(SIZE, TOKEN1)
-        # Test values are correct.
+        sinks, token = client.list_sinks(PAGE_SIZE, TOKEN)
+
         self.assertEqual(len(sinks), 1)
         sink = sinks[0]
         self.assertTrue(isinstance(sink, Sink))
         self.assertEqual(sink.name, SINK_NAME)
         self.assertEqual(sink.filter_, FILTER)
         self.assertEqual(sink.destination, self.DESTINATION_URI)
-        self.assertEqual(next_page_token, TOKEN2)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/sinks' % (PROJECT,))
-        self.assertEqual(req['query_params'],
-                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+        self.assertEqual(token, None)
+        self.assertEqual(api._list_sinks_called_with,
+                         (PROJECT, PAGE_SIZE, TOKEN))
 
     def test_list_sinks_missing_key(self):
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._sinks_api = _DummySinksAPI()
+        api._list_sinks_response = {}
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        sinks, token = client.list_sinks()
 
-        RETURNED = {}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        sinks, next_page_token = CLIENT_OBJ.list_sinks()
-        # Test values are correct.
         self.assertEqual(len(sinks), 0)
-        self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/sinks' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(token, None)
+        self.assertEqual(api._list_sinks_called_with,
+                         (PROJECT, None, None))
 
     def test_metric(self):
         from gcloud.logging.metric import Metric
@@ -318,59 +302,49 @@ class TestClient(unittest2.TestCase):
     def test_list_metrics_no_paging(self):
         from gcloud.logging.metric import Metric
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
+        TOKEN = 'TOKEN'
         RETURNED = {
             'metrics': [{
                 'name': self.METRIC_NAME,
                 'filter': self.FILTER,
                 'description': self.DESCRIPTION,
             }],
+            'nextPageToken': TOKEN,
         }
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._metrics_api = _DummyMetricsAPI()
+        api._list_metrics_response = RETURNED
 
-        # Execute request.
-        metrics, next_page_token = CLIENT_OBJ.list_metrics()
-        # Test values are correct.
+        metrics, token = client.list_metrics()
+
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
         self.assertTrue(isinstance(metric, Metric))
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(token, TOKEN)
+        self.assertEqual(api._list_metrics_called_with,
+                         (PROJECT, None, None))
 
     def test_list_metrics_with_paging(self):
         from gcloud.logging.metric import Metric
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        TOKEN1 = 'TOKEN1'
-        TOKEN2 = 'TOKEN2'
-        SIZE = 1
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
         RETURNED = {
             'metrics': [{
                 'name': self.METRIC_NAME,
                 'filter': self.FILTER,
                 'description': self.DESCRIPTION,
             }],
-            'nextPageToken': TOKEN2,
         }
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._metrics_api = _DummyMetricsAPI()
+        api._list_metrics_response = RETURNED
 
         # Execute request.
-        metrics, next_page_token = CLIENT_OBJ.list_metrics(SIZE, TOKEN1)
+        metrics, token = client.list_metrics(PAGE_SIZE, TOKEN)
         # Test values are correct.
         self.assertEqual(len(metrics), 1)
         metric = metrics[0]
@@ -378,32 +352,22 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(metric.name, self.METRIC_NAME)
         self.assertEqual(metric.filter_, self.FILTER)
         self.assertEqual(metric.description, self.DESCRIPTION)
-        self.assertEqual(next_page_token, TOKEN2)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
-        self.assertEqual(req['query_params'],
-                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+        self.assertEqual(token, None)
+        self.assertEqual(api._list_metrics_called_with,
+                         (PROJECT, PAGE_SIZE, TOKEN))
 
     def test_list_metrics_missing_key(self):
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        api = client._metrics_api = _DummyMetricsAPI()
+        api._list_metrics_response = {}
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        metrics, token = client.list_metrics()
 
-        RETURNED = {}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        metrics, next_page_token = CLIENT_OBJ.list_metrics()
-        # Test values are correct.
         self.assertEqual(len(metrics), 0)
-        self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/metrics' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(token, None)
+        self.assertEqual(api._list_metrics_called_with,
+                         (PROJECT, None, None))
 
 
 class _Credentials(object):
@@ -419,13 +383,23 @@ class _Credentials(object):
         return self
 
 
-class _Connection(object):
+class _DummyLoggingAPI(object):
 
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
+    def list_entries(self, projects, filter_, order_by, page_size, page_token):
+        self._list_entries_called_with = (
+            projects, filter_, order_by, page_size, page_token)
+        return self._list_entries_response
 
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+
+class _DummySinksAPI(object):
+
+    def list_sinks(self, project, page_size, page_token):
+        self._list_sinks_called_with = (project, page_size, page_token)
+        return self._list_sinks_response
+
+
+class _DummyMetricsAPI(object):
+
+    def list_metrics(self, project, page_size, page_token):
+        self._list_metrics_called_with = (project, page_size, page_token)
+        return self._list_metrics_response
