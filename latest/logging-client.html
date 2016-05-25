@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Logging Client &mdash; gcloud 503cd32 documentation</title>
+    <title>Logging Client &mdash; gcloud 88daa08 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '503cd32',
+        VERSION:     '88daa08',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 503cd32 documentation" href="index.html" />
+    <link rel="top" title="gcloud 88daa08 documentation" href="index.html" />
     <link rel="next" title="Logger" href="logging-logger.html" />
     <link rel="prev" title="Using the API" href="logging-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20503cd32" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%2088daa08" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (503cd32)
+              Version History (88daa08)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -240,6 +240,15 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="gcloud.logging.client.Client.logging_api">
+<code class="descname">logging_api</code><a class="headerlink" href="#gcloud.logging.client.Client.logging_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for logging-related API calls.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries</a>
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs</a></p>
+</dd></dl>
+
 <dl class="method">
 <dt id="gcloud.logging.client.Client.metric">
 <code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
@@ -264,6 +273,14 @@ entries tracked by the metric.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.logging.client.Client.metrics_api">
+<code class="descname">metrics_api</code><a class="headerlink" href="#gcloud.logging.client.Client.metrics_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for log metric-related API calls.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics</a></p>
 </dd></dl>
 
 <dl class="method">
@@ -291,6 +308,14 @@ the sink.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gcloud.logging.client.Client.sinks_api">
+<code class="descname">sinks_api</code><a class="headerlink" href="#gcloud.logging.client.Client.sinks_api" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper for log sink-related API calls.</p>
+<p>See:
+<a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks</a></p>
 </dd></dl>
 
 </dd></dl>
