@@ -51,6 +51,10 @@ class Connection(base_connection.JSONConnection):
 class _LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
+    See:
+    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries
+    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
+
     :type connection: :class:`gcloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.
     """
@@ -163,6 +167,9 @@ class _LoggingAPI(object):
 
 class _SinksAPI(object):
     """Helper mapping sink-related APIs.
+
+    See:
+    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
 
     :type connection: :class:`gcloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.
@@ -297,6 +304,9 @@ class _SinksAPI(object):
 
 class _MetricsAPI(object):
     """Helper mapping sink-related APIs.
+
+    See:
+    https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
 
     :type connection: :class:`gcloud.logging.connection.Connection`
     :param connection: the connection used to make API requests.

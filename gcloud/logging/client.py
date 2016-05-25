@@ -53,21 +53,34 @@ class Client(JSONClient):
 
     @property
     def logging_api(self):
-        """Helper for logging-related API calls."""
+        """Helper for logging-related API calls.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
+        """
         if self._logging_api is None:
             self._logging_api = _LoggingAPI(self.connection)
         return self._logging_api
 
     @property
     def sinks_api(self):
-        """Helper for logging-related API calls."""
+        """Helper for log sink-related API calls.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
+        """
         if self._sinks_api is None:
             self._sinks_api = _SinksAPI(self.connection)
         return self._sinks_api
 
     @property
     def metrics_api(self):
-        """Helper for logging-related API calls."""
+        """Helper for log metric-related API calls.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
+        """
         if self._metrics_api is None:
             self._metrics_api = _MetricsAPI(self.connection)
         return self._metrics_api
