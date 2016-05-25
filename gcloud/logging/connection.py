@@ -92,7 +92,7 @@ class _LoggingAPI(object):
         :rtype: tuple, (list, str)
         :returns: list of mappings, plus a "next page token" string:
                   if not None, indicates that more entries can be retrieved
-                   with another call (pass that value as ``page_token``).
+                  with another call (pass that value as ``page_token``).
         """
         params = {'projectIds': projects}
 
@@ -115,7 +115,7 @@ class _LoggingAPI(object):
 
     def write_entries(self, entries, logger_name=None, resource=None,
                       labels=None):
-        """API call:  log an entry resourc3 via a POST request
+        """API call:  log an entry resource via a POST request
 
         See:
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/entries/write
@@ -196,10 +196,9 @@ class _SinksAPI(object):
                            sinks.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.sink.Sink`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more sinks can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :returns: list of mappings, plus a "next page token" string:
+                  if not None, indicates that more sinks can be retrieved
+                  with another call (pass that value as ``page_token``).
         """
         params = {}
 
@@ -333,10 +332,9 @@ class _MetricsAPI(object):
                            metrics.
 
         :rtype: tuple, (list, str)
-        :returns: list of :class:`gcloud.logging.metric.Metric`, plus a
-                  "next page token" string:  if not None, indicates that
-                  more metrics can be retrieved with another call (pass that
-                  value as ``page_token``).
+        :returns: list of mappings, plus a "next page token" string:
+                  if not None, indicates that more metrics can be retrieved
+                  with another call (pass that value as ``page_token``).
         """
         params = {}
 
