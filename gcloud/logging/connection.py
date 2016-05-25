@@ -88,7 +88,7 @@ class _LoggingAPI(object):
         :rtype: tuple, (list, str)
         :returns: list of mappings, plus a "next page token" string:
                   if not None, indicates that more entries can be retrieved
-                    with another call (pass that value as ``page_token``).
+                   with another call (pass that value as ``page_token``).
         """
         params = {'projectIds': projects}
 
