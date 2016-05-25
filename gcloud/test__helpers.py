@@ -160,10 +160,8 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 
     def tearDown(self):
         import os
-        if self.old_env:
-            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = self.old_env
-        elif (not self.old_env and
-              'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
+        if (not self.old_env and
+                'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
             del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
 
     def test_success(self):
@@ -177,9 +175,6 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
             self.assertEqual('test-project-id', self._callFUT())
 
     def test_no_environment(self):
-        import os
-        if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
-            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
         self.assertEqual(None, self._callFUT())
 
 
@@ -188,30 +183,22 @@ class Test__get_default_service_project_id(unittest2.TestCase):
     def callFUT(self, project_result=''):
         from gcloud._helpers import _default_service_project_id
         import subprocess
-        self.check_output_called_with = []
 
-        def check_output_mock(called_with=None):
-            self.check_output_called_with = called_with
-            return project_result
+        def popen_communicate_mock(popen_object):
+            popen_object.kill()
+            return (project_result,)
 
         from gcloud._testing import _Monkey
-        with _Monkey(subprocess, check_output=check_output_mock):
-            return _default_service_project_id(), self.check_output_called_with
+        with _Monkey(subprocess.Popen, communicate=popen_communicate_mock):
+            return _default_service_project_id()
 
     def test_read_from_cli_info(self):
-        project_id, called_with = self.callFUT('Project: [test-project-id]')
+        project_id = self.callFUT(b'Project: [test-project-id]')
         self.assertEqual('test-project-id', project_id)
-        self.assertEqual(['gcloud', 'info'], called_with)
-
-    def test_cli_info_not_set(self):
-        project_id, called_with = self.callFUT()
-        self.assertEqual(None, project_id)
-        self.assertEqual(['gcloud', 'info'], called_with)
 
     def test_info_value_not_present(self):
-        project_id, called_with = self.callFUT('Active Configuration')
+        project_id = self.callFUT(b'Active Configuration')
         self.assertEqual(None, project_id)
-        self.assertEqual(['gcloud', 'info'], called_with)
 
 
 class Test__compute_engine_id(unittest2.TestCase):
