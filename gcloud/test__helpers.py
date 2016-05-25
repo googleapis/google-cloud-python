@@ -193,7 +193,7 @@ class Test__get_default_service_project_id(unittest2.TestCase):
             return _default_service_project_id()
 
     def test_read_from_cli_info(self):
-        project_id = self.callFUT(b'Project: [test-project-id]')
+        project_id = self.callFUT(b'project = test-project-id')
         self.assertEqual('test-project-id', project_id)
 
     def test_info_value_not_present(self):

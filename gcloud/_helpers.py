@@ -184,14 +184,15 @@ def _default_service_project_id():
     :rtype: str or ``NoneType``
     :returns: Project-ID from ``gcloud info`` else ``None``
     """
-    command = subprocess.Popen(['gcloud info'],
-                               stdout=subprocess.PIPE, shell=True)
+    command = subprocess.Popen(['gcloud', 'config', 'list', 'project'],
+                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               shell=True)
     gcloud_project_conf = command.communicate()[0].decode('utf-8')
     gcloud_project_conf = gcloud_project_conf.split('\n')
 
     for key in gcloud_project_conf:
-        if key.startswith('Project:'):
-            return key[10:-1]
+        if key.startswith('project = '):
+            return key[10:]
 
     return None
 
