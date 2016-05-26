@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.client &mdash; gcloud 88daa08 documentation</title>
+    <title>gcloud.logging.client &mdash; gcloud d4ff022 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '88daa08',
+        VERSION:     'd4ff022',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 88daa08 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d4ff022 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%2088daa08" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%20d4ff022" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (88daa08)
+              Version History (d4ff022)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -250,13 +250,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">projects</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">projects</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">]</span>
 
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span>
+        <span class="n">resources</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">list_entries</span><span class="p">(</span>
             <span class="n">projects</span><span class="o">=</span><span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="n">order_by</span><span class="p">,</span>
             <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="n">page_token</span><span class="p">)</span>
         <span class="n">loggers</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_entry_from_resource</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="n">loggers</span><span class="p">)</span>
-                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entries&#39;</span><span class="p">,</span> <span class="p">())]</span>
-        <span class="k">return</span> <span class="n">entries</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">entries</span><span class="p">,</span> <span class="n">token</span></div>
 
 <div class="viewcode-block" id="Client.sink"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.sink">[docs]</a>    <span class="k">def</span> <span class="nf">sink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a sink bound to the current client.</span>
@@ -298,10 +298,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  more sinks can be retrieved with another call (pass that</span>
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sinks_api</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
+        <span class="n">resources</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sinks_api</span><span class="o">.</span><span class="n">list_sinks</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
         <span class="n">sinks</span> <span class="o">=</span> <span class="p">[</span><span class="n">Sink</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                 <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;sinks&#39;</span><span class="p">,</span> <span class="p">())]</span>
-        <span class="k">return</span> <span class="n">sinks</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div>
+                 <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">sinks</span><span class="p">,</span> <span class="n">token</span></div>
 
 <div class="viewcode-block" id="Client.metric"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a metric bound to the current client.</span>
@@ -342,11 +343,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  more metrics can be retrieved with another call (pass that</span>
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_api</span><span class="o">.</span><span class="n">list_metrics</span><span class="p">(</span>
+        <span class="n">resources</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metrics_api</span><span class="o">.</span><span class="n">list_metrics</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="p">,</span> <span class="n">page_token</span><span class="p">)</span>
         <span class="n">metrics</span> <span class="o">=</span> <span class="p">[</span><span class="n">Metric</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metrics&#39;</span><span class="p">,</span> <span class="p">())]</span>
-        <span class="k">return</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span></div></div>
+                   <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">token</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
