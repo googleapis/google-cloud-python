@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.sink &mdash; gcloud d4ff022 documentation</title>
+    <title>gcloud.logging.sink &mdash; gcloud 0fe6657 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'd4ff022',
+        VERSION:     '0fe6657',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d4ff022 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 0fe6657 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/sink%0ARelease%3A%20d4ff022" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/sink%0ARelease%3A%200fe6657" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d4ff022)
+              Version History (0fe6657)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -107,34 +107,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">&quot;&quot;&quot;Define Logging API Sinks.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
-
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_name_from_project_path</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
-
-
-<span class="n">_SINK_TEMPLATE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s2">r&quot;&quot;&quot;</span>
-<span class="s2">    projects/            # static prefix</span>
-<span class="s2">    (?P&lt;project&gt;[^/]+)   # initial letter, wordchars + hyphen</span>
-<span class="s2">    /sinks/              # static midfix</span>
-<span class="s2">    (?P&lt;name&gt;[^/]+)      # initial letter, wordchars + allowed punc</span>
-<span class="s2">&quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">_sink_name_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">project</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Validate a sink URI path and get the sink name.</span>
-<span class="sd">    :type path: string</span>
-<span class="sd">    :param path: URI path for a sink API request.</span>
-<span class="sd">    :type project: string</span>
-<span class="sd">    :param project: The project associated with the request. It is</span>
-<span class="sd">                    included for validation purposes.</span>
-<span class="sd">    :rtype: string</span>
-<span class="sd">    :returns: Metric name parsed from ``path``.</span>
-<span class="sd">    :raises: :class:`ValueError` if the ``path`` is ill-formed or if</span>
-<span class="sd">             the project from the ``path`` does not agree with the</span>
-<span class="sd">             ``project`` passed in.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">_name_from_project_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">_SINK_TEMPLATE</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Sink"><a class="viewcode-back" href="../../../logging-sink.html#gcloud.logging.sink.Sink">[docs]</a><span class="k">class</span> <span class="nc">Sink</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -200,7 +173,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 project from the resource does not agree with the project</span>
 <span class="sd">                 from the client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sink_name</span> <span class="o">=</span> <span class="n">_sink_name_from_path</span><span class="p">(</span><span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
+        <span class="n">sink_name</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
         <span class="n">filter_</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span>
         <span class="n">destination</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;destination&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sink_name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
