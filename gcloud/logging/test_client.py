@@ -210,9 +210,8 @@ class TestClient(unittest2.TestCase):
         TOKEN = 'TOKEN'
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
-        SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
         SINKS = [{
-            'name': SINK_PATH,
+            'name': SINK_NAME,
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]
@@ -238,11 +237,10 @@ class TestClient(unittest2.TestCase):
         PROJECT = 'PROJECT'
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
-        SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
         SINKS = [{
-            'name': SINK_PATH,
+            'name': SINK_NAME,
             'filter': FILTER,
             'destination': self.DESTINATION_URI,
         }]

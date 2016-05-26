@@ -14,37 +14,7 @@
 
 """Define Logging API Metrics."""
 
-import re
-
-from gcloud._helpers import _name_from_project_path
 from gcloud.exceptions import NotFound
-
-
-_METRIC_TEMPLATE = re.compile(r"""
-    projects/            # static prefix
-    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
-    /metrics/            # static midfix
-    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
-""", re.VERBOSE)
-
-
-def _metric_name_from_path(path, project):
-    """Validate a metric URI path and get the metric name.
-
-    :type path: string
-    :param path: URI path for a metric API request.
-
-    :type project: string
-    :param project: The project associated with the request. It is
-                    included for validation purposes.
-
-    :rtype: string
-    :returns: Metric name parsed from ``path``.
-    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
-             the project from the ``path`` does not agree with the
-             ``project`` passed in.
-    """
-    return _name_from_project_path(path, project, _METRIC_TEMPLATE)
 
 
 class Metric(object):

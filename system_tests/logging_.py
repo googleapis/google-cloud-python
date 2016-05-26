@@ -277,6 +277,20 @@ class TestLogging(unittest2.TestCase):
         self.to_delete.append(sink)
         self.assertTrue(sink.exists())
 
+    def test_list_sinks(self):
+        uri = self._init_storage_bucket()
+        sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
+        self.assertFalse(sink.exists())
+        before_sinks, _ = Config.CLIENT.list_sinks()
+        before_names = set(sink.name for sink in before_sinks)
+        sink.create()
+        self.to_delete.append(sink)
+        self.assertTrue(sink.exists())
+        after_sinks, _ = Config.CLIENT.list_sinks()
+        after_names = set(sink.name for sink in after_sinks)
+        self.assertEqual(after_names - before_names,
+                         set([DEFAULT_SINK_NAME]))
+
     def test_reload_sink(self):
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
