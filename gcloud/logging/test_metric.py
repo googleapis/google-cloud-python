@@ -15,38 +15,6 @@
 import unittest2
 
 
-class Test__metric_name_from_path(unittest2.TestCase):
-
-    def _callFUT(self, path, project):
-        from gcloud.logging.metric import _metric_name_from_path
-        return _metric_name_from_path(path, project)
-
-    def test_invalid_path_length(self):
-        PATH = 'projects/foo'
-        PROJECT = None
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_path_format(self):
-        METRIC_NAME = 'METRIC_NAME'
-        PROJECT = 'PROJECT'
-        PATH = 'foo/%s/bar/%s' % (PROJECT, METRIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT)
-
-    def test_invalid_project(self):
-        METRIC_NAME = 'METRIC_NAME'
-        PROJECT1 = 'PROJECT1'
-        PROJECT2 = 'PROJECT2'
-        PATH = 'projects/%s/metrics/%s' % (PROJECT1, METRIC_NAME)
-        self.assertRaises(ValueError, self._callFUT, PATH, PROJECT2)
-
-    def test_valid_data(self):
-        METRIC_NAME = 'METRIC_NAME'
-        PROJECT = 'PROJECT'
-        PATH = 'projects/%s/metrics/%s' % (PROJECT, METRIC_NAME)
-        metric_name = self._callFUT(PATH, PROJECT)
-        self.assertEqual(metric_name, METRIC_NAME)
-
-
 class TestMetric(unittest2.TestCase):
 
     PROJECT = 'test-project'

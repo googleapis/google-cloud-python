@@ -14,34 +14,7 @@
 
 """Define Logging API Sinks."""
 
-import re
-
-from gcloud._helpers import _name_from_project_path
 from gcloud.exceptions import NotFound
-
-
-_SINK_TEMPLATE = re.compile(r"""
-    projects/            # static prefix
-    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
-    /sinks/              # static midfix
-    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
-""", re.VERBOSE)
-
-
-def _sink_name_from_path(path, project):
-    """Validate a sink URI path and get the sink name.
-    :type path: string
-    :param path: URI path for a sink API request.
-    :type project: string
-    :param project: The project associated with the request. It is
-                    included for validation purposes.
-    :rtype: string
-    :returns: Metric name parsed from ``path``.
-    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
-             the project from the ``path`` does not agree with the
-             ``project`` passed in.
-    """
-    return _name_from_project_path(path, project, _SINK_TEMPLATE)
 
 
 class Sink(object):
@@ -107,7 +80,7 @@ class Sink(object):
                  project from the resource does not agree with the project
                  from the client.
         """
-        sink_name = _sink_name_from_path(resource['name'], client.project)
+        sink_name = resource['name']
         filter_ = resource['filter']
         destination = resource['destination']
         return cls(sink_name, filter_, destination, client=client)
