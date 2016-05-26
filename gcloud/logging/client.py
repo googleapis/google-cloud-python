@@ -157,13 +157,13 @@ class Client(JSONClient):
         if projects is None:
             projects = [self.project]
 
-        resp = self.logging_api.list_entries(
+        resources, token = self.logging_api.list_entries(
             projects=projects, filter_=filter_, order_by=order_by,
             page_size=page_size, page_token=page_token)
         loggers = {}
         entries = [self._entry_from_resource(resource, loggers)
-                   for resource in resp.get('entries', ())]
-        return entries, resp.get('nextPageToken')
+                   for resource in resources]
+        return entries, token
 
     def sink(self, name, filter_, destination):
         """Creates a sink bound to the current client.
@@ -205,10 +205,11 @@ class Client(JSONClient):
                   more sinks can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        resp = self.sinks_api.list_sinks(self.project, page_size, page_token)
+        resources, token = self.sinks_api.list_sinks(
+            self.project, page_size, page_token)
         sinks = [Sink.from_api_repr(resource, self)
-                 for resource in resp.get('sinks', ())]
-        return sinks, resp.get('nextPageToken')
+                 for resource in resources]
+        return sinks, token
 
     def metric(self, name, filter_, description=''):
         """Creates a metric bound to the current client.
@@ -249,8 +250,8 @@ class Client(JSONClient):
                   more metrics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        resp = self.metrics_api.list_metrics(
+        resources, token = self.metrics_api.list_metrics(
             self.project, page_size, page_token)
         metrics = [Metric.from_api_repr(resource, self)
-                   for resource in resp.get('metrics', ())]
-        return metrics, resp.get('nextPageToken')
+                   for resource in resources]
+        return metrics, token
