@@ -94,22 +94,19 @@ class TestClient(unittest2.TestCase):
         IID = 'IID'
         TEXT = 'TEXT'
         TOKEN = 'TOKEN'
-        RETURNED = {
-            'entries': [{
-                'textPayload': TEXT,
-                'insertId': IID,
-                'resource': {
-                    'type': 'global',
-                },
-                'logName': 'projects/%s/logs/%s' % (
-                    self.PROJECT, self.LOGGER_NAME),
-            }],
-            'nextPageToken': TOKEN,
-        }
+        ENTRIES = [{
+            'textPayload': TEXT,
+            'insertId': IID,
+            'resource': {
+                'type': 'global',
+            },
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+        }]
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         api = client._logging_api = _DummyLoggingAPI()
-        api._list_entries_response = RETURNED
+        api._list_entries_response = ENTRIES, TOKEN
 
         entries, token = client.list_entries()
 
@@ -143,28 +140,26 @@ class TestClient(unittest2.TestCase):
         PROTO_PAYLOAD['@type'] = 'type.googleapis.com/testing.example'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        RETURNED = {
-            'entries': [{
-                'jsonPayload': PAYLOAD,
-                'insertId': IID1,
-                'resource': {
-                    'type': 'global',
-                },
-                'logName': 'projects/%s/logs/%s' % (
-                    self.PROJECT, self.LOGGER_NAME),
-            }, {
-                'protoPayload': PROTO_PAYLOAD,
-                'insertId': IID2,
-                'resource': {
-                    'type': 'global',
-                },
-                'logName': 'projects/%s/logs/%s' % (
-                    self.PROJECT, self.LOGGER_NAME),
-            }],
-        }
+        ENTRIES = [{
+            'jsonPayload': PAYLOAD,
+            'insertId': IID1,
+            'resource': {
+                'type': 'global',
+            },
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+        }, {
+            'protoPayload': PROTO_PAYLOAD,
+            'insertId': IID2,
+            'resource': {
+                'type': 'global',
+            },
+            'logName': 'projects/%s/logs/%s' % (
+                self.PROJECT, self.LOGGER_NAME),
+        }]
         client = self._makeOne(self.PROJECT, credentials=_Credentials())
         api = client._logging_api = _DummyLoggingAPI()
-        api._list_entries_response = RETURNED
+        api._list_entries_response = ENTRIES, None
 
         entries, token = client.list_entries(
             projects=[PROJECT1, PROJECT2], filter_=FILTER, order_by=DESCENDING,
@@ -216,17 +211,14 @@ class TestClient(unittest2.TestCase):
         SINK_NAME = 'sink_name'
         FILTER = 'logName:syslog AND severity>=ERROR'
         SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
-        RETURNED = {
-            'sinks': [{
-                'name': SINK_PATH,
-                'filter': FILTER,
-                'destination': self.DESTINATION_URI,
-            }],
-            'nextPageToken': TOKEN,
-        }
+        SINKS = [{
+            'name': SINK_PATH,
+            'filter': FILTER,
+            'destination': self.DESTINATION_URI,
+        }]
         client = self._makeOne(project=PROJECT, credentials=_Credentials())
         api = client._sinks_api = _DummySinksAPI()
-        api._list_sinks_response = RETURNED
+        api._list_sinks_response = SINKS, TOKEN
 
         sinks, token = client.list_sinks()
 
@@ -249,16 +241,14 @@ class TestClient(unittest2.TestCase):
         SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        RETURNED = {
-            'sinks': [{
-                'name': SINK_PATH,
-                'filter': FILTER,
-                'destination': self.DESTINATION_URI,
-            }],
-        }
+        SINKS = [{
+            'name': SINK_PATH,
+            'filter': FILTER,
+            'destination': self.DESTINATION_URI,
+        }]
         client = self._makeOne(project=PROJECT, credentials=_Credentials())
         api = client._sinks_api = _DummySinksAPI()
-        api._list_sinks_response = RETURNED
+        api._list_sinks_response = SINKS, None
 
         sinks, token = client.list_sinks(PAGE_SIZE, TOKEN)
 
@@ -271,19 +261,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(token, None)
         self.assertEqual(api._list_sinks_called_with,
                          (PROJECT, PAGE_SIZE, TOKEN))
-
-    def test_list_sinks_missing_key(self):
-        PROJECT = 'PROJECT'
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._sinks_api = _DummySinksAPI()
-        api._list_sinks_response = {}
-
-        sinks, token = client.list_sinks()
-
-        self.assertEqual(len(sinks), 0)
-        self.assertEqual(token, None)
-        self.assertEqual(api._list_sinks_called_with,
-                         (PROJECT, None, None))
 
     def test_metric(self):
         from gcloud.logging.metric import Metric
@@ -303,17 +280,14 @@ class TestClient(unittest2.TestCase):
         from gcloud.logging.metric import Metric
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
-        RETURNED = {
-            'metrics': [{
-                'name': self.METRIC_NAME,
-                'filter': self.FILTER,
-                'description': self.DESCRIPTION,
-            }],
-            'nextPageToken': TOKEN,
-        }
+        METRICS = [{
+            'name': self.METRIC_NAME,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }]
         client = self._makeOne(project=PROJECT, credentials=_Credentials())
         api = client._metrics_api = _DummyMetricsAPI()
-        api._list_metrics_response = RETURNED
+        api._list_metrics_response = METRICS, TOKEN
 
         metrics, token = client.list_metrics()
 
@@ -332,16 +306,14 @@ class TestClient(unittest2.TestCase):
         PROJECT = 'PROJECT'
         TOKEN = 'TOKEN'
         PAGE_SIZE = 42
-        RETURNED = {
-            'metrics': [{
-                'name': self.METRIC_NAME,
-                'filter': self.FILTER,
-                'description': self.DESCRIPTION,
-            }],
-        }
+        METRICS = [{
+            'name': self.METRIC_NAME,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }]
         client = self._makeOne(project=PROJECT, credentials=_Credentials())
         api = client._metrics_api = _DummyMetricsAPI()
-        api._list_metrics_response = RETURNED
+        api._list_metrics_response = METRICS, None
 
         # Execute request.
         metrics, token = client.list_metrics(PAGE_SIZE, TOKEN)
@@ -355,19 +327,6 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(token, None)
         self.assertEqual(api._list_metrics_called_with,
                          (PROJECT, PAGE_SIZE, TOKEN))
-
-    def test_list_metrics_missing_key(self):
-        PROJECT = 'PROJECT'
-        client = self._makeOne(project=PROJECT, credentials=_Credentials())
-        api = client._metrics_api = _DummyMetricsAPI()
-        api._list_metrics_response = {}
-
-        metrics, token = client.list_metrics()
-
-        self.assertEqual(len(metrics), 0)
-        self.assertEqual(token, None)
-        self.assertEqual(api._list_metrics_called_with,
-                         (PROJECT, None, None))
 
 
 class _Credentials(object):
