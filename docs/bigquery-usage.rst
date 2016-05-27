@@ -120,107 +120,64 @@ Tables
 
 Tables exist within datasets.  List tables for the dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> tables, next_page_token = dataset.list_tables()  # API request
-   >>> [table.name for table in tables]
-   ['table_name']
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_list_tables]
+   :end-before: [END dataset_list_tables]
 
 Create a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.create()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_create]
+   :end-before: [END table_create]
 
 Check for the existence of a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.exists()  # API request
-   True
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_exists]
+   :end-before: [END table_exists]
 
 Refresh metadata for a table (to pick up changes made by another client):
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.reload()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_reload]
+   :end-before: [END table_reload]
 
 Patch specific properties for a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.patch(friendly_name='Person Ages',
-   ...             description='Ages of persons')  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_patch]
+   :end-before: [END table_patch]
 
 Update all writable metadata for a table
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> table.update()  # API request
-
-Upload table data from a file:
-
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> with open('person_ages.csv', 'rb') as csv_file:
-   ...     table.upload_from_file(csv_file, 'CSV',
-   ...                            create_disposition='CREATE_IF_NEEDED')
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_update]
+   :end-before: [END table_update]
 
 Get rows from a table's data:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_fetch_data]
+   :end-before: [END table_fetch_data]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> rows, next_page_token = table.fetch_data(max_results=100)  # API request
-   >>> for row in rows:
-   ...     for field, value in zip(table.schema, row):
-   ...         do_something(field, value)
+Insert rows into a table's data:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_insert_data]
+   :end-before: [END table_insert_data]
+
+Upload table data from a file:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_upload_from_file]
+   :end-before: [END table_upload_from_file]
 
 Delete a table:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_delete]
+   :end-before: [END table_delete]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.delete()  # API request
 
 Jobs
 ----
