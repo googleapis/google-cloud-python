@@ -368,6 +368,9 @@ class Dataset(object):
             cleaned['creationTime'] = float(cleaned['creationTime'])
         if 'lastModifiedTime' in cleaned:
             cleaned['lastModifiedTime'] = float(cleaned['lastModifiedTime'])
+        if 'defaultTableExpirationMs' in cleaned:
+            cleaned['defaultTableExpirationMs'] = int(
+                cleaned['defaultTableExpirationMs'])
         self._properties.update(cleaned)
 
     def _build_access_resource(self):
