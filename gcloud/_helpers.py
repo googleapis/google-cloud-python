@@ -50,6 +50,7 @@ _RFC3339_NANOS = re.compile(r"""
     (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
     Z                                        # Zulu
 """, re.VERBOSE)
+_PROJECT_KEY = 'project = '
 
 
 class _LocalStack(Local):
@@ -191,8 +192,8 @@ def _default_service_project_id():
     gcloud_project_conf = gcloud_project_conf.split('\n')
 
     for key in gcloud_project_conf:
-        if key.startswith('project = '):
-            return key[10:]
+        if key.startswith(_PROJECT_KEY):
+            return key[len(_PROJECT_KEY):]
 
     return None
 
