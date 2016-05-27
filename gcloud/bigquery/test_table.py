@@ -932,7 +932,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
             return '%0.15E' % (ts_float,)
 
         DATA = {
-            'totalRows': ROWS,
+            'totalRows': str(ROWS),
             'pageToken': TOKEN,
             'rows': [
                 {'f': [
@@ -987,10 +987,8 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
-        ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            'totalRows': ROWS,
             'rows': [
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
@@ -1039,7 +1037,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
-        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(total_rows, None)
         self.assertEqual(page_token, None)
 
         self.assertEqual(len(conn1._requested), 0)
