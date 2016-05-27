@@ -61,6 +61,54 @@ class TestSchemaField(unittest2.TestCase):
         self.assertEqual(field.fields[1].description, None)
         self.assertEqual(field.fields[1].fields, None)
 
+    def test___eq___name_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('other', 'STRING')
+        self.assertNotEqual(field, other)
+
+    def test___eq___field_type_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('test', 'INTEGER')
+        self.assertNotEqual(field, other)
+
+    def test___eq___mode_mismatch(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED')
+        other = self._makeOne('test', 'STRING', mode='NULLABLE')
+        self.assertNotEqual(field, other)
+
+    def test___eq___description_mismatch(self):
+        field = self._makeOne('test', 'STRING', description='Testing')
+        other = self._makeOne('test', 'STRING', description='Other')
+        self.assertNotEqual(field, other)
+
+    def test___eq___fields_mismatch(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1])
+        other = self._makeOne('test', 'RECORD', fields=[sub2])
+        self.assertNotEqual(field, other)
+
+    def test___eq___hit(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_case_diff_on_type(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'string', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_w_fields(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        other = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        self.assertEqual(field, other)
+
 
 class _SchemaBase(object):
 
