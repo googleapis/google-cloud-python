@@ -25,24 +25,6 @@ Authentication / Configuration
      >>> from gcloud import bigquery
      >>> client = bigquery.Client()
 
-- Override the credentials inferred from the environment by passing explicit
-  ``credentials`` to one of the alternative ``classmethod`` factories,
-  :meth:`gcloud.bigquery.client.Client.from_service_account_json`:
-
-  .. doctest::
-
-     >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_json('/path/to/creds.json')
-
-  or :meth:`gcloud.bigquery.client.Client.from_service_account_p12`:
-
-  .. doctest::
-
-     >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_p12(
-     ...     '/path/to/creds.p12', 'jrandom@example.com')
-
-
 Projects
 --------
 
@@ -83,54 +65,37 @@ policies to tables as they are created:
 Dataset operations
 ~~~~~~~~~~~~~~~~~~
 
+List datasets for the client's project:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_list_datasets]
+   :end-before: [END client_list_datasets]
+
 Create a new dataset for the client's project:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.create()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_create]
+   :end-before: [END dataset_create]
 
 Check for the existence of a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.exists()  # API request
-   True
-
-List datasets for the client's project:
-
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> datasets, next_page_token = client.list_datasets()  # API request
-   >>> [dataset.name for dataset in datasets]
-   ['dataset_name']
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_exists]
+   :end-before: [END dataset_exists]
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
-.. doctest::
+Check for the existence of a dataset:
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.reload()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_reload]
+   :end-before: [END dataset_reload]
 
 Patch metadata for a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> one_day_ms = 24 * 60 * 60 * 1000
-   >>> dataset.patch(description='Description goes here',
-   ...               default_table_expiration_ms=one_day_ms)  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_patch]
+   :end-before: [END dataset_patch]
 
 Replace the ACL for a dataset, and update all writeable fields:
 
@@ -147,12 +112,9 @@ Replace the ACL for a dataset, and update all writeable fields:
 
 Delete a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.delete()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_delete]
+   :end-before: [END dataset_delete]
 
 
 Tables
