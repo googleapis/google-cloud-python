@@ -141,7 +141,7 @@ def dataset_update(client, to_delete):
     # [START dataset_update]
     from gcloud.bigquery import AccessGrant
     assert dataset.description == ORIGINAL_DESCRIPTION
-    assert dataset.default_table_expiration_ms == None
+    assert dataset.default_table_expiration_ms is None
     grant = AccessGrant(
         role='READER', entity_type='domain', entity_id='example.com')
     assert grant not in dataset.access_grants
