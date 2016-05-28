@@ -93,11 +93,7 @@ def topic_create(client, to_delete):
 def topic_exists(client, to_delete):
     """Test existence of a topic."""
     TOPIC_NAME = 'topic_exists-%d' % (_millis(),)
-
-    # [START client_topic]
     topic = client.topic(TOPIC_NAME)
-    # [END client_topic]
-
     to_delete.append(topic)
 
     # [START topic_exists]

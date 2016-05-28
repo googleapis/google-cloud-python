@@ -62,6 +62,14 @@ class SchemaField(object):
         self.description = description
         self.fields = fields
 
+    def __eq__(self, other):
+        return (
+            self.name == other.name and
+            self.field_type.lower() == other.field_type.lower() and
+            self.mode == other.mode and
+            self.description == other.description and
+            self.fields == other.fields)
+
 
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
@@ -626,6 +634,8 @@ class Table(object):
                                                  path='%s/data' % self.path,
                                                  query_params=params)
         total_rows = response.get('totalRows')
+        if total_rows is not None:
+            total_rows = int(total_rows)
         page_token = response.get('pageToken')
         rows_data = _rows_from_json(response.get('rows', ()), self._schema)
 

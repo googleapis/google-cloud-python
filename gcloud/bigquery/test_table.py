@@ -61,6 +61,54 @@ class TestSchemaField(unittest2.TestCase):
         self.assertEqual(field.fields[1].description, None)
         self.assertEqual(field.fields[1].fields, None)
 
+    def test___eq___name_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('other', 'STRING')
+        self.assertNotEqual(field, other)
+
+    def test___eq___field_type_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('test', 'INTEGER')
+        self.assertNotEqual(field, other)
+
+    def test___eq___mode_mismatch(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED')
+        other = self._makeOne('test', 'STRING', mode='NULLABLE')
+        self.assertNotEqual(field, other)
+
+    def test___eq___description_mismatch(self):
+        field = self._makeOne('test', 'STRING', description='Testing')
+        other = self._makeOne('test', 'STRING', description='Other')
+        self.assertNotEqual(field, other)
+
+    def test___eq___fields_mismatch(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1])
+        other = self._makeOne('test', 'RECORD', fields=[sub2])
+        self.assertNotEqual(field, other)
+
+    def test___eq___hit(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_case_diff_on_type(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'string', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_w_fields(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        other = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        self.assertEqual(field, other)
+
 
 class _SchemaBase(object):
 
@@ -884,7 +932,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
             return '%0.15E' % (ts_float,)
 
         DATA = {
-            'totalRows': ROWS,
+            'totalRows': str(ROWS),
             'pageToken': TOKEN,
             'rows': [
                 {'f': [
@@ -939,10 +987,8 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
-        ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            'totalRows': ROWS,
             'rows': [
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
@@ -991,7 +1037,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
-        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(total_rows, None)
         self.assertEqual(page_token, None)
 
         self.assertEqual(len(conn1._requested), 0)
