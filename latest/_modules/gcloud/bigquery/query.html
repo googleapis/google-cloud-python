@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigquery.query &mdash; gcloud d8735e1 documentation</title>
+    <title>gcloud.bigquery.query &mdash; gcloud b27907b documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'd8735e1',
+        VERSION:     'b27907b',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d8735e1 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud b27907b documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/query%0ARelease%3A%20d8735e1" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigquery/query%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d8735e1)
+              Version History (b27907b)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -122,6 +122,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    Values which are ``None`` -&gt; server defaults.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_default_dataset</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_dry_run</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_max_results</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_timeout_ms</span> <span class="o">=</span> <span class="bp">None</span>
     <span class="n">_preserve_nulls</span> <span class="o">=</span> <span class="bp">None</span>
@@ -300,6 +301,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">dry_run</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;dry_run&#39;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;See:</span>
+<span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#dryRun</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">max_results</span> <span class="o">=</span> <span class="n">_TypedProperty</span><span class="p">(</span><span class="s1">&#39;max_results&#39;</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;See:</span>
 <span class="sd">    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults</span>
@@ -350,6 +356,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;useQueryCache&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_query_cache</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;dryRun&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_run</span>
 
         <span class="k">return</span> <span class="n">resource</span>
 
