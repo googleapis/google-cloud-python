@@ -179,25 +179,49 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 
 
 class Test__get_default_service_project_id(unittest2.TestCase):
+    temp_config_path = None
+    config_path = '.config/gcloud/configurations/'
+    config_file = 'config_default'
 
-    def callFUT(self, project_result=''):
+    def setUp(self):
+        import tempfile
+        import os
+        self.temp_config_path = tempfile.gettempdir()
+
+        conf_path = os.path.join(self.temp_config_path, self.config_path)
+        os.makedirs(conf_path)
+        full_config_path = os.path.join(conf_path, self.config_file)
+
+        with open(full_config_path, 'w') as conf_file:
+            conf_file.write('[core]\nproject = test-project-id')
+
+    def tearDown(self):
+        import os
+        import shutil
+
+        if self.temp_config_path:
+            shutil.rmtree(os.path.join(self.temp_config_path,
+                                       '.config'))
+
+    def callFUT(self, project_id=None):
         from gcloud._helpers import _default_service_project_id
-        import subprocess
+        import os
 
-        def popen_communicate_mock(popen_object):
-            popen_object.kill()
-            return (project_result,)
+        def mock_expanduser(path=''):
+            if project_id and path == '~':
+                return self.temp_config_path
+            return ''
 
         from gcloud._testing import _Monkey
-        with _Monkey(subprocess.Popen, communicate=popen_communicate_mock):
+        with _Monkey(os.path, expanduser=mock_expanduser):
             return _default_service_project_id()
 
     def test_read_from_cli_info(self):
-        project_id = self.callFUT(b'project = test-project-id')
+        project_id = self.callFUT('test-project-id')
         self.assertEqual('test-project-id', project_id)
 
     def test_info_value_not_present(self):
-        project_id = self.callFUT(b'Active Configuration')
+        project_id = self.callFUT()
         self.assertEqual(None, project_id)
 
 

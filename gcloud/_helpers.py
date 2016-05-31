@@ -17,12 +17,15 @@ This module is not part of the public API surface of `gcloud`.
 """
 
 import calendar
+try:
+    import configparser
+except ImportError:
+    import ConfigParser as configparser
 import datetime
 import json
 import os
 import re
 import socket
-import subprocess
 import sys
 from threading import local as Local
 
@@ -185,16 +188,15 @@ def _default_service_project_id():
     :rtype: str or ``NoneType``
     :returns: Project-ID from ``gcloud info`` else ``None``
     """
-    command = subprocess.Popen(['gcloud', 'config', 'list', 'project'],
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               shell=True)
-    gcloud_project_conf = command.communicate()[0].decode('utf-8')
-    gcloud_project_conf = gcloud_project_conf.split('\n')
+    home_path = os.path.expanduser('~')
+    default_config_path = '.config/gcloud/configurations/config_default'
+    full_config_path = os.path.join(home_path, default_config_path)
 
-    for key in gcloud_project_conf:
-        if key.startswith(_PROJECT_KEY):
-            return key[len(_PROJECT_KEY):]
+    config = configparser.RawConfigParser()
+    config.read(full_config_path)
 
+    if config.has_section('core'):
+        return config.get('core', 'project')
     return None
 
 
@@ -244,7 +246,7 @@ def _determine_default_project(project=None):
 
     * GCLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get from `gcloud auth login` defaults
+    * Get default service project
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
