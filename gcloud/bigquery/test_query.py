@@ -47,7 +47,7 @@ class TestQueryResults(unittest2.TestCase):
         }
 
         if complete:
-            resource['totalRows'] = 1000
+            resource['totalRows'] = '1000'
             resource['rows'] = [
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
@@ -240,6 +240,7 @@ class TestQueryResults(unittest2.TestCase):
         PATH = 'projects/%s/queries/%s' % (self.PROJECT, self.JOB_NAME)
         BEFORE = self._makeResource(complete=False)
         AFTER = self._makeResource(complete=True)
+        del AFTER['totalRows']
 
         conn = _Connection(AFTER)
         client = _Client(project=self.PROJECT, connection=conn)
@@ -255,7 +256,7 @@ class TestQueryResults(unittest2.TestCase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
-        self.assertEqual(total_rows, AFTER['totalRows'])
+        self.assertEqual(total_rows, None)
         self.assertEqual(page_token, AFTER['pageToken'])
 
         self.assertEqual(len(conn._requested), 1)
@@ -290,7 +291,7 @@ class TestQueryResults(unittest2.TestCase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27))
-        self.assertEqual(total_rows, AFTER['totalRows'])
+        self.assertEqual(total_rows, int(AFTER['totalRows']))
         self.assertEqual(page_token, AFTER['pageToken'])
 
         self.assertEqual(len(conn1._requested), 0)
