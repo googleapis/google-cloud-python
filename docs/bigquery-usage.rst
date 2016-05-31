@@ -354,25 +354,6 @@ Poll until the job is complete:
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
 
-Inserting data (synchronous)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Load data synchronously from a local CSV file into a new table:
-
-.. doctest::
-
-   >>> import csv
-   >>> from gcloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
-   >>> client = bigquery.Client()
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
-   ...     reader = csv.reader(file_obj)
-   ...     rows = list(reader)
-   >>> table.insert_data(rows)  # API request
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
