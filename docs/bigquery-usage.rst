@@ -25,6 +25,7 @@ Authentication / Configuration
      >>> from gcloud import bigquery
      >>> client = bigquery.Client()
 
+
 Projects
 --------
 
@@ -43,12 +44,14 @@ To override the project inferred from the environment, pass an explicit
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
+
 Project ACLs
 ~~~~~~~~~~~~
 
 Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
 via the API:  it must be managed using the Google Developer Console.
+
 
 Datasets
 --------
@@ -61,6 +64,7 @@ policies to tables as they are created:
 
 - A default table expiration period.  If set, tables created within the
   dataset will have the value as their expiration period.
+
 
 Dataset operations
 ~~~~~~~~~~~~~~~~~~
@@ -430,6 +434,7 @@ Poll until the job is complete:
    'done'
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+
 
 Exporting data (async)
 ~~~~~~~~~~~~~~~~~~~~~~
