@@ -18,6 +18,8 @@
 import datetime
 import warnings
 
+from grpc.beta import interfaces
+from grpc.framework.interfaces.face import face
 import six
 
 from gcloud.bigtable.client import Client
@@ -338,7 +340,14 @@ class Connection(object):
         # Create table instance and then make API calls.
         name = self._table_name(name)
         low_level_table = _LowLevelTable(name, self._cluster)
-        low_level_table.create()
+        try:
+            low_level_table.create()
+        except face.NetworkError as network_err:
+            if network_err.code == interfaces.StatusCode.ALREADY_EXISTS:
+                from happybase.hbase import ttypes
+                raise ttypes.AlreadyExists(name)
+            else:
+                raise
 
         for column_family_name, gc_rule in gc_rule_dict.items():
             column_family = low_level_table.column_family(

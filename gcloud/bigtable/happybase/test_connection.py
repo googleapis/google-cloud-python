@@ -395,6 +395,49 @@ class TestConnection(unittest2.TestCase):
         with self.assertRaises(ValueError):
             connection.create_table(name, families)
 
+    def _create_table_error_helper(self, err_val, err_type):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
+        cluster = _Cluster()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, cluster=cluster)
+
+        tables_created = []
+
+        def make_table(*args, **kwargs):
+            kwargs['create_error'] = err_val
+            result = _MockLowLevelTable(*args, **kwargs)
+            tables_created.append(result)
+            return result
+
+        name = 'table-name'
+        families = {'foo': {}}
+        with _Monkey(MUT, _LowLevelTable=make_table):
+            with self.assertRaises(err_type):
+                connection.create_table(name, families)
+
+        self.assertEqual(len(tables_created), 1)
+        self.assertEqual(tables_created[0].create_calls, 1)
+
+    def test_create_table_already_exists(self):
+        from grpc.beta import interfaces
+        from grpc.framework.interfaces.face import face
+        from happybase.hbase import ttypes
+
+        err_val = face.NetworkError(None, None,
+                                    interfaces.StatusCode.ALREADY_EXISTS, None)
+        self._create_table_error_helper(err_val, ttypes.AlreadyExists)
+
+    def test_create_table_connection_error(self):
+        from grpc.beta import interfaces
+        from grpc.framework.interfaces.face import face
+        err_val = face.NetworkError(None, None,
+                                    interfaces.StatusCode.INTERNAL, None)
+        self._create_table_error_helper(err_val, face.NetworkError)
+
+    def test_create_table_other_error(self):
+        self._create_table_error_helper(RuntimeError, RuntimeError)
+
     def _delete_table_helper(self, disable=False):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
@@ -612,6 +655,7 @@ class _MockLowLevelTable(object):
     def __init__(self, *args, **kwargs):
         self.args = args
         self.kwargs = kwargs
+        self.create_error = kwargs.get('create_error')
         self.delete_calls = 0
         self.create_calls = 0
         self.col_fam_created = []
@@ -621,6 +665,8 @@ class _MockLowLevelTable(object):
 
     def create(self):
         self.create_calls += 1
+        if self.create_error:
+            raise self.create_error
 
     def column_family(self, column_family_id, gc_rule=None):
         result = _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)
