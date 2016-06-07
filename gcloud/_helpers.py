@@ -17,10 +17,6 @@ This module is not part of the public API surface of `gcloud`.
 """
 
 import calendar
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
 import datetime
 import json
 import os
@@ -32,8 +28,10 @@ from threading import local as Local
 from google.protobuf import timestamp_pb2
 import six
 from six.moves.http_client import HTTPConnection
+from six.moves import configparser
 
 from gcloud.environment_vars import PROJECT
+from gcloud.environment_vars import CREDENTIALS
 
 try:
     from google.appengine.api import app_identity
@@ -53,7 +51,7 @@ _RFC3339_NANOS = re.compile(r"""
     (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
     Z                                        # Zulu
 """, re.VERBOSE)
-_PROJECT_KEY = 'project = '
+DEFAULT_CONFIGURATION_PATH = '~/.config/gcloud/configurations/config_default'
 
 
 class _LocalStack(Local):
@@ -172,32 +170,25 @@ def _file_project_id():
     :returns: Project-ID from JSON credentials file if value exists,
               else ``None``.
     """
-    credentials_file_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    credentials_file_path = os.getenv(CREDENTIALS)
     if credentials_file_path:
-        with open(credentials_file_path, 'r') as credentials_file:
-            credentials_data = credentials_file.read()
-            credentials = json.loads(credentials_data)
+        with open(credentials_file_path, 'rb') as credentials_file:
+            credentials = json.load(credentials_file)
             return credentials.get('project_id')
-    else:
-        return None
 
 
 def _default_service_project_id():
     """Retrieves the project ID from the gcloud command line tool.
 
     :rtype: str or ``NoneType``
-    :returns: Project-ID from ``gcloud info`` else ``None``
+    :returns: Project-ID from default configuration file else ``None``
     """
-    home_path = os.path.expanduser('~')
-    default_config_path = '.config/gcloud/configurations/config_default'
-    full_config_path = os.path.join(home_path, default_config_path)
-
+    full_config_path = os.path.expanduser(DEFAULT_CONFIGURATION_PATH)
     config = configparser.RawConfigParser()
     config.read(full_config_path)
 
     if config.has_section('core'):
         return config.get('core', 'project')
-    return None
 
 
 def _compute_engine_id():
@@ -246,7 +237,7 @@ def _determine_default_project(project=None):
 
     * GCLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get default service project
+    * Get default service project from gcloud CLI tool
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 

@@ -192,6 +192,8 @@ class Test__get_default_service_project_id(unittest2.TestCase):
         os.makedirs(conf_path)
         full_config_path = os.path.join(conf_path, self.config_file)
 
+        self.temp_config_file = full_config_path
+
         with open(full_config_path, 'w') as conf_file:
             conf_file.write('[core]\nproject = test-project-id')
 
@@ -208,8 +210,8 @@ class Test__get_default_service_project_id(unittest2.TestCase):
         import os
 
         def mock_expanduser(path=''):
-            if project_id and path == '~':
-                return self.temp_config_path
+            if project_id and path.startswith('~'):
+                return self.temp_config_file
             return ''
 
         from gcloud._testing import _Monkey
