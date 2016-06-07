@@ -18,7 +18,7 @@ Each example function takes a ``client`` argument (which must be an instance
 of :class:`gcloud.pubsub.client.Client`) and uses it to perform a task with
 the API.
 
-To facility running the examples as system tests, each example is also passed
+To facilitate running the examples as system tests, each example is also passed
 a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
