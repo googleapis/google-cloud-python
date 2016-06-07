@@ -213,7 +213,7 @@ author = message_from_string(metadata).get('Author')
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'gcloud.tex', u'gCloud Documentation',
+    ('index', 'gcloud.tex', u'gcloud-python Documentation',
      author, 'manual'),
 ]
 
@@ -243,7 +243,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'gcloud', u'gCloud Documentation',
+    ('index', 'gcloud', u'gcloud-python Documentation',
      [author], 1)
 ]
 
@@ -257,7 +257,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    ('index', 'gcloud', u'gCloud Documentation',
+    ('index', 'gcloud', u'gcloud-python Documentation',
      author, 'gcloud', 'Python API for Google Cloud.',
      'Miscellaneous'),
 ]

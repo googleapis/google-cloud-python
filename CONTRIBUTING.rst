@@ -27,8 +27,8 @@ using a Git checkout:
   as "hack-on-gcloud".  E.g.::
 
    $ cd ~
-   $ git clone git@github.com:USERNAME/gcloud-python.git hack-on-gcloud
-   $ cd hack-on-gcloud
+   $ git clone git@github.com:USERNAME/gcloud-python.git hack-on-gcloud-python
+   $ cd hack-on-gcloud-python
    # Configure remotes such that you can pull changes from the gcloud-python
    # repository into your local repository.
    $ git remote add upstream https://github.com:GoogleCloudPlatform/gcloud-python
@@ -41,7 +41,7 @@ repo, from which you can submit a pull request.
 
 - Create a virtualenv in which to install ``gcloud-python``::
 
-   $ cd ~/hack-on-gcloud
+   $ cd ~/hack-on-gcloud-python
    $ virtualenv --python python2.7 env
 
   Note that very old versions of virtualenv (virtualenv versions below, say,
@@ -52,16 +52,16 @@ repo, from which you can submit a pull request.
   flag to ``virtualenv``.  For example, ``virtualenv --python python2.7``
   chooses the Python 2.7 interpreter to be installed.
 
-  From here on in within these instructions, the ``~/hack-on-gcloud/env``
+  From here on in within these instructions, the ``~/hack-on-gcloud-python/env``
   virtual environment you created above will be referred to as ``$VENV``.
   To use the instructions in the steps that follow literally, use the
-  ``export VENV=~/hack-on-gcloud/env`` command.
+  ``export VENV=~/hack-on-gcloud-python/env`` command.
 
 - Install ``gcloud-python`` from the checkout into the virtualenv using
   ``setup.py develop``.  Running ``setup.py develop`` *must* be done while
   the current working directory is the ``gcloud-python`` checkout directory::
 
-   $ cd ~/hack-on-gcloud
+   $ cd ~/hack-on-gcloud-python
    $ $VENV/bin/python setup.py develop
 
 I'm getting weird errors... Can you help?
@@ -131,7 +131,7 @@ Running Tests
   combination.  For example::
 
    $ sudo /usr/bin/pip install tox
-   $ cd ~/hack-on-gcloud/
+   $ cd ~/hack-on-gcloud-python/
    $ /usr/bin/tox
 
 Running System Tests
@@ -291,13 +291,13 @@ using to develop ``gcloud-python``):
 1. After following the steps above in "Using a Development Checkout", install
    Sphinx and all development requirements in your virtualenv::
 
-     $ cd ~/hack-on-gcloud
+     $ cd ~/hack-on-gcloud-python
      $ $VENV/bin/pip install Sphinx
 
 2. Change into the ``docs`` directory within your ``gcloud-python`` checkout and
    execute the ``make`` command with some flags::
 
-     $ cd ~/hack-on-gcloud/gcloud-python/docs
+     $ cd ~/hack-on-gcloud-python/gcloud-python/docs
      $ make clean html SPHINXBUILD=$VENV/bin/sphinx-build
 
    The ``SPHINXBUILD=...`` argument tells Sphinx to use the virtualenv Python,
