@@ -85,8 +85,6 @@ Check for the existence of a dataset:
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
-Check for the existence of a dataset:
-
 .. literalinclude:: bigquery_snippets.py
    :start-after: [START dataset_reload]
    :end-before: [END dataset_reload]
