@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Subscriptions &mdash; gcloud b27907b documentation</title>
+    <title>Subscriptions &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Message" href="pubsub-message.html" />
     <link rel="prev" title="Topics" href="pubsub-topic.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-subscription%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,7 +97,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.pubsub.subscription.Subscription">
 <em class="property">class </em><code class="descclassname">gcloud.pubsub.subscription.</code><code class="descname">Subscription</code><span class="sig-paren">(</span><em>name</em>, <em>topic=None</em>, <em>ack_deadline=None</em>, <em>push_endpoint=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/pubsub/subscription.html#Subscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.pubsub.subscription.Subscription" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Subscriptions receive messages published to their topics.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions">https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions</a></p>
@@ -106,12 +106,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the subscription</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the subscription</li>
 <li><strong>topic</strong> (<a class="reference internal" href="pubsub-topic.html#gcloud.pubsub.topic.Topic" title="gcloud.pubsub.topic.Topic"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.topic.Topic</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the topic to which the subscription belongs;  if <code class="docutils literal"><span class="pre">None</span></code>,
 the subscription&#8217;s topic has been deleted.</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the deadline (in seconds) by which messages pulled
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the deadline (in seconds) by which messages pulled
 from the back-end must be acknowledged.</li>
-<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; URL to which messages will be pushed by the back-end.
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; URL to which messages will be pushed by the back-end.
 If not set, the application must pull messages.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the topic.</li>
@@ -129,7 +129,7 @@ If not set, the application must pull messages.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; topic resource representation returned from the API</li>
+<li><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; topic resource representation returned from the API</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a>) &#8211; Client which holds credentials and project
 configuration for a topic.</li>
 <li><strong>topics</strong> (<em>dict or None</em>) &#8211; A mapping of topic names -&gt; topics.  If not passed,
@@ -269,7 +269,7 @@ the subscription will have a newly-created topic.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; URL to which messages will be pushed by the
+<li><strong>push_endpoint</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; URL to which messages will be pushed by the
 back-end.  If None, the application must pull
 messages.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
@@ -300,7 +300,7 @@ messages.</li>
 messages are available;  if False, the API
 call blocks until one or more messages are
 available.</li>
-<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the maximum number of messages to return.</li>
+<li><strong>max_messages</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the maximum number of messages to return.</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>
@@ -361,7 +361,7 @@ is an instance of <a class="reference internal" href="pubsub-message.html#gcloud
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>ack_ids</strong> (<em>list of string</em>) &#8211; ack IDs of messages being updated</li>
-<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
+<li><strong>ack_deadline</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; new deadline for the message, in seconds</li>
 <li><strong>client</strong> (<a class="reference internal" href="pubsub-client.html#gcloud.pubsub.client.Client" title="gcloud.pubsub.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.pubsub.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current subscription&#8217;s topic.</li>
 </ul>

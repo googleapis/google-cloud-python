@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Time Series Query &mdash; gcloud b27907b documentation</title>
+    <title>Time Series Query &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Time Series" href="monitoring-timeseries.html" />
     <link rel="prev" title="Monitored Resource Descriptors" href="monitoring-resource.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-query%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-query%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,14 +97,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.monitoring.query.Aligner">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.query.</code><code class="descname">Aligner</code><a class="reference internal" href="_modules/gcloud/monitoring/query.html#Aligner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.query.Aligner" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Allowed values for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Aligner">supported aligners</a>.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="gcloud.monitoring.query.Query">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.query.</code><code class="descname">Query</code><span class="sig-paren">(</span><em>client</em>, <em>metric_type='compute.googleapis.com/instance/cpu/utilization'</em>, <em>end_time=None</em>, <em>days=0</em>, <em>hours=0</em>, <em>minutes=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/query.html#Query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.query.Query" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Query object for retrieving metric data.</p>
 <p>The preferred way to construct a query object is using the
 <a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client.query" title="gcloud.monitoring.client.Client.query"><code class="xref py py-meth docutils literal"><span class="pre">query()</span></code></a> method
@@ -115,12 +115,12 @@ of the <a class="reference internal" href="monitoring-client.html#gcloud.monitor
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>client</strong> (<a class="reference internal" href="monitoring-client.html#gcloud.monitoring.client.Client" title="gcloud.monitoring.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.monitoring.client.Client</span></code></a>) &#8211; The client to use.</li>
-<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name. The default value is
+<li><strong>metric_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The metric type name. The default value is
 <code class="xref py py-data docutils literal"><span class="pre">Query.DEFAULT_METRIC_TYPE</span></code>,
 but please note that this default value is provided only for
 demonstration purposes and is subject to change. See the
 <a class="reference external" href="https://cloud.google.com/monitoring/api/metrics">supported metrics</a>.</li>
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; <p>The end time (inclusive) of the time interval
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; <p>The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.
 The default is the start of the current minute.</p>
 <p>The start time (exclusive) is determined by combining the
@@ -164,7 +164,7 @@ series will contain data points only on the period boundaries.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to align
+<li><strong>per_series_aligner</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to align
 individual time series. For example: <code class="xref py py-data docutils literal"><span class="pre">Aligner.ALIGN_MEAN</span></code>.
 See <a class="reference internal" href="#gcloud.monitoring.query.Aligner" title="gcloud.monitoring.query.Aligner"><code class="xref py py-class docutils literal"><span class="pre">Aligner</span></code></a> and the descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Aligner">supported
 aligners</a>.</li>
@@ -324,7 +324,7 @@ combination of project and zone as follows:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to combine time series. For example:
+<li><strong>cross_series_reducer</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The approach to be used to combine time series. For example:
 <code class="xref py py-data docutils literal"><span class="pre">Reducer.REDUCE_MEAN</span></code>. See <a class="reference internal" href="#gcloud.monitoring.query.Reducer" title="gcloud.monitoring.query.Reducer"><code class="xref py py-class docutils literal"><span class="pre">Reducer</span></code></a> and the
 descriptions of the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Reducer">supported reducers</a>.</li>
 <li><strong>group_by_fields</strong> (<em>strings</em>) &#8211; Fields to be preserved by the reduction. For example, specifying
@@ -355,7 +355,7 @@ The default is to aggregate all of the time series into just one.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of a group to filter by.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The ID of a group to filter by.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.monitoring.query.Query" title="gcloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
 </tr>
@@ -385,9 +385,9 @@ an interval duration when you create the query initially.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The end time (inclusive) of the time interval
+<li><strong>end_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The end time (inclusive) of the time interval
 for which results should be returned, as a datetime object.</li>
-<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; The start time (exclusive) of the time interval
+<li><strong>start_time</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or None) &#8211; The start time (exclusive) of the time interval
 for which results should be returned, as a datetime object.
 If not specified, the interval is a point in time.</li>
 </ul>
@@ -432,10 +432,10 @@ you can specify a partial match.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
 conjunction. If just one is provided and no keyword arguments
 are provided, it can be a disjunction.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
 described above.</li>
 </ul>
 </td>
@@ -465,7 +465,7 @@ account containing the specified monitored projects.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Project IDs limiting the resources to be included
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Project IDs limiting the resources to be included
 in the query.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#gcloud.monitoring.query.Query" title="gcloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a></td>
@@ -519,10 +519,10 @@ not a resource label. You would filter on it using
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; Raw filter expression strings to include in the
 conjunction. If just one is provided and no keyword arguments
 are provided, it can be a disjunction.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Label filters to include in the conjunction as
 described above.</li>
 </ul>
 </td>
@@ -542,7 +542,7 @@ described above.</li>
 <dl class="class">
 <dt id="gcloud.monitoring.query.Reducer">
 <em class="property">class </em><code class="descclassname">gcloud.monitoring.query.</code><code class="descname">Reducer</code><a class="reference internal" href="_modules/gcloud/monitoring/query.html#Reducer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.query.Reducer" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Allowed values for the <a class="reference external" href="https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list#Reducer">supported reducers</a>.</p>
 </dd></dl>
 

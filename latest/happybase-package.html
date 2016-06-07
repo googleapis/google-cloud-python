@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Package &mdash; gcloud b27907b documentation</title>
+    <title>HappyBase Package &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Base for Everything" href="bigtable-client-intro.html" />
     <link rel="prev" title="Using the API" href="bigtable-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-package%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-package%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -114,13 +114,13 @@ table storage is opaque to user</li>
 - tables in Cloud Bigtable do not expose internal storage details</li>
 <li><a class="reference internal" href="happybase-table.html#gcloud.bigtable.happybase.table.Table.counter_set" title="gcloud.bigtable.happybase.table.Table.counter_set"><code class="xref py py-meth docutils literal"><span class="pre">Table.counter_set()</span></code></a> - method can&#8217;t
 be atomic, so we disable it</li>
-<li>The <code class="docutils literal"><span class="pre">__version__</span></code> value for the HappyBase package is <a class="reference external" href="https://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.
+<li>The <code class="docutils literal"><span class="pre">__version__</span></code> value for the HappyBase package is <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.
 However, it&#8217;s worth nothing this implementation was based off HappyBase
 0.9.</li>
 </ul>
 <p>In addition, many of the constants from
 <a class="reference internal" href="happybase-connection.html#module-gcloud.bigtable.happybase.connection" title="gcloud.bigtable.happybase.connection"><code class="xref py py-mod docutils literal"><span class="pre">connection</span></code></a>
-are specific to HBase and are defined as <a class="reference external" href="https://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> in our module:</p>
+are specific to HBase and are defined as <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> in our module:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">COMPAT_MODES</span></code></li>
 <li><code class="docutils literal"><span class="pre">THRIFT_TRANSPORTS</span></code></li>
@@ -216,13 +216,13 @@ accepts the following arguments (which will result in a warning):</p>
 <li><p class="first">Using a HBase filter string in
 <a class="reference internal" href="happybase-table.html#gcloud.bigtable.happybase.table.Table.scan" title="gcloud.bigtable.happybase.table.Table.scan"><code class="xref py py-meth docutils literal"><span class="pre">Table.scan()</span></code></a> is
 not possible with Cloud Bigtable and will result in a
-<a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.TypeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a>. However, the method now accepts
+<a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.TypeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a>. However, the method now accepts
 instances of <a class="reference internal" href="bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilter" title="gcloud.bigtable.row_filters.RowFilter"><code class="xref py py-class docutils literal"><span class="pre">RowFilter</span></code></a> and subclasses.</p>
 </li>
 <li><p class="first"><a class="reference internal" href="happybase-batch.html#gcloud.bigtable.happybase.batch.Batch.delete" title="gcloud.bigtable.happybase.batch.Batch.delete"><code class="xref py py-meth docutils literal"><span class="pre">Batch.delete()</span></code></a> (and
 hence
 <a class="reference internal" href="happybase-table.html#gcloud.bigtable.happybase.table.Table.delete" title="gcloud.bigtable.happybase.table.Table.delete"><code class="xref py py-meth docutils literal"><span class="pre">Table.delete()</span></code></a>)
-will fail with a <a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> when either a
+will fail with a <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> when either a
 row or column family delete is attempted with a <code class="docutils literal"><span class="pre">timestamp</span></code>. This is
 because the Cloud Bigtable API uses the <code class="docutils literal"><span class="pre">DeleteFromFamily</span></code> and
 <code class="docutils literal"><span class="pre">DeleteFromRow</span></code> mutations for these deletes, and neither of these

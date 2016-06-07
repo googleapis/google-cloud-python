@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Logging Client &mdash; gcloud b27907b documentation</title>
+    <title>Logging Client &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Logger" href="logging-logger.html" />
     <link rel="prev" title="Using the API" href="logging-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,10 +104,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of.
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the project which the client acts on behalf of.
 If not passed, falls back to the default inferred
 from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; The OAuth2 Credentials to use for the connection
 owned by this client. If not passed (and if no <code class="docutils literal"><span class="pre">http</span></code>
 object is passed), falls back to the default inferred
@@ -133,13 +133,13 @@ from the environment.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>projects</strong> (<em>list of strings</em>) &#8211; project IDs to include. If not passed,
 defaults to the project bound to the client.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; a filter expression. See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/view/advanced_filters">https://cloud.google.com/logging/docs/view/advanced_filters</a></li>
-<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">gcloud.logging.ASCENDING</span></code> or
+<li><strong>order_by</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; One of <code class="xref py py-data docutils literal"><span class="pre">gcloud.logging.ASCENDING</span></code> or
 <code class="xref py py-data docutils literal"><span class="pre">gcloud.logging.DESCENDING</span></code>.</li>
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of entries to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of entries. If not
 passed, the API will return the first page of
 entries.</li>
 </ul>
@@ -169,9 +169,9 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of metrics to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of metrics to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of metrics. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of metrics. If not
 passed, the API will return the first page of
 metrics.</li>
 </ul>
@@ -201,9 +201,9 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of sinks to return, If not passed,
+<li><strong>page_size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of sinks to return, If not passed,
 defaults to a value set by the API.</li>
-<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of sinks. If not
+<li><strong>page_token</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; opaque marker for the next &#8220;page&#8221; of sinks. If not
 passed, the API will return the first page of
 sinks.</li>
 </ul>
@@ -230,7 +230,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger to be constructed.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the logger to be constructed.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="logging-logger.html#gcloud.logging.logger.Logger" title="gcloud.logging.logger.Logger"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.logger.Logger</span></code></a></td>
 </tr>
@@ -258,10 +258,10 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the metric to be constructed.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the metric to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
 entries tracked by the metric.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the description of the metric to be constructed.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the description of the metric to be constructed.</li>
 </ul>
 </td>
 </tr>
@@ -292,10 +292,10 @@ entries tracked by the metric.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the sink to be constructed.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the sink to be constructed.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
 entries exported by the sink.</li>
-<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; destination URI for the entries exported by
+<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; destination URI for the entries exported by
 the sink.</li>
 </ul>
 </td>
@@ -333,10 +333,10 @@ the sink.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 connection.</li>
 <li><strong>http</strong> (<a class="reference external" href="http://bitworking.org/projects/httplib2/doc/html/libhttplib2.html#httplib2.Http" title="(in httplib2 v0.4)"><code class="xref py py-class docutils literal"><span class="pre">httplib2.Http</span></code></a> or class that defines <code class="docutils literal"><span class="pre">request()</span></code>.) &#8211; (Optional) HTTP object to make requests.</li>
-<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base of the API call URL. Defaults to the value
+<li><strong>api_base_url</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The base of the API call URL. Defaults to the value
 <a class="reference internal" href="#gcloud.logging.connection.Connection.API_BASE_URL" title="gcloud.logging.connection.Connection.API_BASE_URL"><code class="xref py py-attr docutils literal"><span class="pre">Connection.API_BASE_URL</span></code></a>.</li>
 </ul>
 </td>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blobs / Objects &mdash; gcloud b27907b documentation</title>
+    <title>Blobs / Objects &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Buckets" href="storage-buckets.html" />
     <link rel="prev" title="Storage Client" href="storage-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+storage-blobs%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -104,7 +104,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The name of the blob.  This corresponds to the
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The name of the blob.  This corresponds to the
 unique path of the object in the bucket.</li>
 <li><strong>bucket</strong> (<a class="reference internal" href="storage-buckets.html#gcloud.storage.bucket.Bucket" title="gcloud.storage.bucket.Bucket"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.bucket.Bucket</span></code></a>) &#8211; The bucket to which this blob belongs.</li>
 <li><strong>chunk_size</strong> (<em>integer</em>) &#8211; The size of a chunk of data whenever iterating (1 MB).
@@ -334,7 +334,7 @@ initialized, makes an additional API request to load it.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle to which to write the blob&#8217;s data.</li>
+<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle to which to write the blob&#8217;s data.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
 </ul>
@@ -356,7 +356,7 @@ to the <code class="docutils literal"><span class="pre">client</span></code> sto
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; A filename to be passed to <code class="docutils literal"><span class="pre">open</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
 </ul>
@@ -431,30 +431,30 @@ log in.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>expiration</strong> (<em>int, long, datetime.datetime, datetime.timedelta</em>) &#8211; When the signed URL should expire.</li>
-<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The content type of the object
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The HTTP verb that will be used when requesting the URL.</li>
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The content type of the object
 referenced by <code class="docutils literal"><span class="pre">resource</span></code>.</li>
-<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) A value that indicates which generation
+<li><strong>generation</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) A value that indicates which generation
 of the resource to fetch.</li>
-<li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content disposition of
+<li><strong>response_disposition</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content disposition of
 responses to requests for the signed URL.
 For example, to enable the signed URL
 to initiate a file of <code class="docutils literal"><span class="pre">blog.png</span></code>, use
 the value
 <code class="docutils literal"><span class="pre">'attachment;</span> <span class="pre">filename=blob.png'</span></code>.</li>
-<li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content type of responses to requests
+<li><strong>response_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Content type of responses to requests
 for the signed URL. Used to over-ride the content
 type of the underlying blob/object.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; (Optional) The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">oauth2client.client.OAuth2Credentials</span></code></a> or
 <code class="xref py py-class docutils literal"><span class="pre">NoneType</span></code>) &#8211; (Optional) The OAuth2 credentials to use to sign
 the URL. Defaults to the credentials stored on the
 client used.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)">str</a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A signed URL you can use to access the resource
@@ -615,7 +615,7 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The URL path to this Blob.</td>
 </tr>
@@ -632,12 +632,12 @@ locally, returns <code class="docutils literal"><span class="pre">None</span></c
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>bucket_path</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The URL path for a bucket.</li>
-<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The name of the blob.</li>
+<li><strong>bucket_path</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The URL path for a bucket.</li>
+<li><strong>blob_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The name of the blob.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)">string</a></p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The relative URL path for <code class="docutils literal"><span class="pre">blob_name</span></code>.</p>
@@ -728,7 +728,7 @@ is not set locally.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
 <code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally. If the blob has
@@ -747,7 +747,7 @@ not been deleted, this will never be set.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Datetime object parsed from RFC3339 valid timestamp, or
 <code class="docutils literal"><span class="pre">None</span></code> if the property is not set locally.</td>
@@ -779,12 +779,12 @@ API documents for details.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle open for reading.</li>
+<li><strong>file_obj</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; A file handle open for reading.</li>
 <li><strong>rewind</strong> (<em>boolean</em>) &#8211; If True, seek to the beginning of the file handle before
 writing the file to Cloud Storage.</li>
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of bytes to read from the file handle.
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The number of bytes to read from the file handle.
 If not provided, we&#8217;ll try to guess the size using
-<a class="reference external" href="https://docs.python.org/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
+<a class="reference external" href="https://docs.python.org/2/library/os.html#os.fstat" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">os.fstat()</span></code></a>. (If the file handle is not from the
 filesystem this won&#8217;t be possible.)</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
 <li><strong>num_retries</strong> (<em>integer</em>) &#8211; Number of upload retries. Defaults to 6.</li>
@@ -825,7 +825,7 @@ API documents for details.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to the file.</li>
+<li><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The path to the file.</li>
 <li><strong>content_type</strong> (string or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional type of content being uploaded.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>
@@ -857,7 +857,7 @@ API documents for details.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>data</strong> (<em>bytes or text</em>) &#8211; The data to store in this blob.  If the value is
 text, it will be encoded as UTF-8.</li>
-<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional type of content being uploaded. Defaults
+<li><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Optional type of content being uploaded. Defaults
 to <code class="docutils literal"><span class="pre">'text/plain'</span></code>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="storage-client.html#gcloud.storage.client.Client" title="gcloud.storage.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.storage.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; Optional. The client to use.  If not passed, falls back
 to the <code class="docutils literal"><span class="pre">client</span></code> stored on the blob&#8217;s bucket.</li>

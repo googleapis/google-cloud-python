@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Connection Pool &mdash; gcloud b27907b documentation</title>
+    <title>HappyBase Connection Pool &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="HappyBase Table" href="happybase-table.html" />
     <link rel="prev" title="HappyBase Connection" href="happybase-connection.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-pool%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-pool%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,7 +97,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.bigtable.happybase.pool.ConnectionPool">
 <em class="property">class </em><code class="descclassname">gcloud.bigtable.happybase.pool.</code><code class="descname">ConnectionPool</code><span class="sig-paren">(</span><em>size</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/happybase/pool.html#ConnectionPool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.happybase.pool.ConnectionPool" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Thread-safe connection pool.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -114,16 +114,16 @@ determined by the pool and then passed to each
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum number of concurrently open connections.</li>
-<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Keyword arguments passed to
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The maximum number of concurrently open connections.</li>
+<li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Keyword arguments passed to
 <code class="xref py py-class docutils literal"><span class="pre">Connection</span></code>
 constructor.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.TypeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if <code class="docutils literal"><span class="pre">size</span></code>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.TypeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">TypeError</span></code></a> if <code class="docutils literal"><span class="pre">size</span></code>
 is non an integer.
-<a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">size</span></code>
+<a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if <code class="docutils literal"><span class="pre">size</span></code>
 is not positive.</p>
 </td>
 </tr>
@@ -144,7 +144,7 @@ to become available from the local queue.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Time (in seconds) to wait for a connection
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Time (in seconds) to wait for a connection
 to open.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection" title="gcloud.bigtable.happybase.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a></td>
@@ -164,7 +164,7 @@ a timeout is specified).</td>
 <dl class="exception">
 <dt id="gcloud.bigtable.happybase.pool.NoConnectionsAvailable">
 <em class="property">exception </em><code class="descclassname">gcloud.bigtable.happybase.pool.</code><code class="descname">NoConnectionsAvailable</code><a class="reference internal" href="_modules/gcloud/bigtable/happybase/pool.html#NoConnectionsAvailable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.happybase.pool.NoConnectionsAvailable" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.RuntimeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.RuntimeError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.RuntimeError</span></code></a></p>
 <p>Exception raised when no connections are available.</p>
 <p>This happens if a timeout was specified when obtaining a connection,
 and no connection became available within the specified timeout.</p>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Client &mdash; gcloud b27907b documentation</title>
+    <title>Client &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Cluster" href="bigtable-cluster.html" />
     <link rel="prev" title="Data API" href="bigtable-data-api.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-client%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -124,7 +124,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <dl class="class">
 <dt id="gcloud.bigtable.client.Client">
-<em class="property">class </em><code class="descclassname">gcloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent='gcloud-python/0.14.0'</em>, <em>timeout_seconds=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.bigtable.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>read_only=False</em>, <em>admin=False</em>, <em>user_agent='gcloud-python/0.15.0'</em>, <em>timeout_seconds=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.client.Client" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.client._ClientFactoryMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">gcloud.client._ClientProjectMixin</span></code></p>
 <p>Client for interacting with Google Cloud Bigtable API.</p>
 <div class="admonition note">
@@ -137,29 +137,29 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) &#8211; (Optional) The ID of the project which owns the
+<li><strong>project</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>) &#8211; (Optional) The ID of the project which owns the
 clusters, tables and data. If not provided, will
 attempt to determine from the environment.</li>
-<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a> or
-<a class="reference external" href="https://docs.python.org/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
+<li><strong>credentials</strong> (<a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a> or
+<a class="reference external" href="https://docs.python.org/2/library/types.html#types.NoneType" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">NoneType</span></code></a>) &#8211; (Optional) The OAuth2 Credentials to use for this
 cluster. If not provided, defaults to the Google
 Application Default Credentials.</li>
-<li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the data scope should be
+<li><strong>read_only</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the data scope should be
 for reading only (or for writing as well). Defaults to
-<a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
-<li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the client will be used to
+<a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
+<li><strong>admin</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) Boolean indicating if the client will be used to
 interact with the Cluster Admin or Table Admin APIs. This
-requires the <a class="reference internal" href="#gcloud.bigtable.client.ADMIN_SCOPE" title="gcloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
-<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The user agent to be used with API request.
+requires the <a class="reference internal" href="#gcloud.bigtable.client.ADMIN_SCOPE" title="gcloud.bigtable.client.ADMIN_SCOPE"><code class="xref py py-const docutils literal"><span class="pre">ADMIN_SCOPE</span></code></a>. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.</li>
+<li><strong>user_agent</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The user agent to be used with API request.
 Defaults to <a class="reference internal" href="#gcloud.bigtable.client.DEFAULT_USER_AGENT" title="gcloud.bigtable.client.DEFAULT_USER_AGENT"><code class="xref py py-const docutils literal"><span class="pre">DEFAULT_USER_AGENT</span></code></a>.</li>
-<li><strong>timeout_seconds</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of seconds for request time-out. If not
+<li><strong>timeout_seconds</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of seconds for request time-out. If not
 passed, defaults to
 <a class="reference internal" href="#gcloud.bigtable.client.DEFAULT_TIMEOUT_SECONDS" title="gcloud.bigtable.client.DEFAULT_TIMEOUT_SECONDS"><code class="xref py py-const docutils literal"><span class="pre">DEFAULT_TIMEOUT_SECONDS</span></code></a>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if both <code class="docutils literal"><span class="pre">read_only</span></code>
-and <code class="docutils literal"><span class="pre">admin</span></code> are <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a></p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if both <code class="docutils literal"><span class="pre">read_only</span></code>
+and <code class="docutils literal"><span class="pre">admin</span></code> are <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a></p>
 </td>
 </tr>
 </tbody>
@@ -173,13 +173,13 @@ and <code class="docutils literal"><span class="pre">admin</span></code> are <a 
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the zone where the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the cluster.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the cluster in the
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the zone where the cluster resides.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the cluster.</li>
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the cluster in the
 Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the cluster ID.</li>
-<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the cluster.
+<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the cluster.
 Defaults to 3.</li>
 </ul>
 </td>
@@ -220,7 +220,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://oauth2client.readthedocs.org/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.OAuth2Credentials" title="(in oauth2client v2.1.0)"><code class="xref py py-class docutils literal"><span class="pre">OAuth2Credentials</span></code></a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The credentials stored on the client.</td>
 </tr>
@@ -236,7 +236,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating if the client has been started.</td>
 </tr>
@@ -252,7 +252,7 @@ current state of any open connections with the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#tuple" title="(in Python v2.7)">tuple</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A pair of results, the first is a list of <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> s
 returned and the second is a list of strings (the failed
@@ -270,11 +270,11 @@ zones in the request).</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)">list</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)">list</a></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The names (as <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>) of the zones</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The names (as <a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a>) of the zones</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one of the
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one of the
 zones is not in <code class="docutils literal"><span class="pre">OK</span></code> state.</td>
 </tr>
 </tbody>
@@ -297,7 +297,7 @@ return value is not cached.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The project name to be used with the Cloud Bigtable Admin
 API RPC service.</td>
@@ -348,7 +348,7 @@ Service(s).</p>
 
 <dl class="data">
 <dt id="gcloud.bigtable.client.DEFAULT_USER_AGENT">
-<code class="descclassname">gcloud.bigtable.client.</code><code class="descname">DEFAULT_USER_AGENT</code><em class="property"> = 'gcloud-python/0.14.0'</em><a class="headerlink" href="#gcloud.bigtable.client.DEFAULT_USER_AGENT" title="Permalink to this definition">#</a></dt>
+<code class="descclassname">gcloud.bigtable.client.</code><code class="descname">DEFAULT_USER_AGENT</code><em class="property"> = 'gcloud-python/0.15.0'</em><a class="headerlink" href="#gcloud.bigtable.client.DEFAULT_USER_AGENT" title="Permalink to this definition">#</a></dt>
 <dd><p>The default user agent for API requests.</p>
 </dd></dl>
 

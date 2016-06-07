@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Cluster &mdash; gcloud b27907b documentation</title>
+    <title>Cluster &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Table" href="bigtable-table.html" />
     <link rel="prev" title="Client" href="bigtable-client.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-cluster%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-cluster%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -97,7 +97,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <dl class="class">
 <dt id="gcloud.bigtable.cluster.Cluster">
 <em class="property">class </em><code class="descclassname">gcloud.bigtable.cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>zone</em>, <em>cluster_id</em>, <em>client</em>, <em>display_name=None</em>, <em>serve_nodes=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/cluster.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.cluster.Cluster" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google Cloud Bigtable Cluster.</p>
 <p>We can use a <a class="reference internal" href="#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> to:</p>
 <ul class="simple">
@@ -117,15 +117,15 @@ which if not sent will end up as <code class="xref py py-data docutils literal">
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the zone where the cluster resides.</li>
-<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the cluster.</li>
+<li><strong>zone</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of the zone where the cluster resides.</li>
+<li><strong>cluster_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the cluster.</li>
 <li><strong>client</strong> (<a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>) &#8211; The client that owns the cluster. Provides
 authorization and a project ID.</li>
-<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the cluster in the
+<li><strong>display_name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) The display name for the cluster in the
 Cloud Console UI. (Must be between 4 and 30
 characters.) If this value is not set in the
 constructor, will fall back to the cluster ID.</li>
-<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the cluster.
+<li><strong>serve_nodes</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) The number of nodes in the cluster.
 Defaults to <a class="reference internal" href="#gcloud.bigtable.cluster.DEFAULT_SERVE_NODES" title="gcloud.bigtable.cluster.DEFAULT_SERVE_NODES"><code class="xref py py-data docutils literal"><span class="pre">DEFAULT_SERVE_NODES</span></code></a>.</li>
 </ul>
 </td>
@@ -226,7 +226,7 @@ permanently deleted.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The cluster parsed from the protobuf response.</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the cluster
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the cluster
 name does not match
 <code class="docutils literal"><span class="pre">projects/{project}/zones/{zone}/clusters/{cluster_id}</span></code>
 or if the parsed project ID does not match the project ID
@@ -249,7 +249,7 @@ on the client.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of tables owned by the cluster.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one of the
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if one of the
 returned tables has a name that is not of the expected format.</td>
 </tr>
 </tbody>
@@ -272,7 +272,7 @@ but the return value is not cached.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The cluster name.</td>
 </tr>
@@ -294,7 +294,7 @@ but the return value is not cached.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the table.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the table.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a></td>
 </tr>
@@ -376,7 +376,7 @@ update operation.</td>
 <dl class="class">
 <dt id="gcloud.bigtable.cluster.Operation">
 <em class="property">class </em><code class="descclassname">gcloud.bigtable.cluster.</code><code class="descname">Operation</code><span class="sig-paren">(</span><em>op_type</em>, <em>op_id</em>, <em>begin</em>, <em>cluster=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/cluster.html#Operation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.cluster.Operation" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Representation of a Google API Long-Running Operation.</p>
 <p>In particular, these will be the result of operations on
 clusters using the Cloud Bigtable API.</p>
@@ -385,10 +385,10 @@ clusters using the Cloud Bigtable API.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>op_type</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of operation being performed. Expect
+<li><strong>op_type</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The type of operation being performed. Expect
 <code class="docutils literal"><span class="pre">create</span></code>, <code class="docutils literal"><span class="pre">update</span></code> or <code class="docutils literal"><span class="pre">undelete</span></code>.</li>
-<li><strong>op_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The ID of the operation.</li>
-<li><strong>begin</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The time when the operation was started.</li>
+<li><strong>op_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The ID of the operation.</li>
+<li><strong>begin</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; The time when the operation was started.</li>
 <li><strong>cluster</strong> (<a class="reference internal" href="#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a>) &#8211; The cluster that created the operation.</li>
 </ul>
 </td>
@@ -403,11 +403,11 @@ clusters using the Cloud Bigtable API.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A boolean indicating if the current operation has completed.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the operation
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the operation
 has already completed.</td>
 </tr>
 </tbody>

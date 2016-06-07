@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Bigtable Row &mdash; gcloud b27907b documentation</title>
+    <title>Bigtable Row &mdash; gcloud 92e9362 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'b27907b',
+        VERSION:     '92e9362',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud b27907b documentation" href="index.html" />
+    <link rel="top" title="gcloud 92e9362 documentation" href="index.html" />
     <link rel="next" title="Bigtable Row Filters" href="bigtable-row-filters.html" />
     <link rel="prev" title="Column Families" href="bigtable-column-family.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-row%0ARelease%3A%20b27907b" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-row%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (b27907b)
+              Version History (92e9362)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -137,7 +137,7 @@ Google Cloud Bigtable API, call <a class="reference internal" href="#gcloud.bigt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
 Must be of the form
 <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family where the cell
@@ -194,7 +194,7 @@ exceeds the server time).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)">dict</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The new contents of all modified cells. Returned as a
 dictionary of column families, each of which holds a
@@ -202,7 +202,7 @@ dictionary of columns. Each column contains a list of cells
 modified. Each cell is represented with a two-tuple with the
 value (in bytes) and the timestamp for the cell.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
 mutations exceeds the <a class="reference internal" href="#gcloud.bigtable.row.MAX_MUTATIONS" title="gcloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
@@ -227,12 +227,12 @@ Google Cloud Bigtable API, call <a class="reference internal" href="#gcloud.bigt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
 Must be of the form
 <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family where the cell
 is located.</li>
-<li><strong>int_value</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The value to increment the existing value in the cell
+<li><strong>int_value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The value to increment the existing value in the cell
 by. If the targeted cell is unset, it will be treated
 as containing a zero. Otherwise, the targeted cell
 must contain an 8-byte value (interpreted as a 64-bit
@@ -252,10 +252,10 @@ will fail.</li>
 <em class="property">class </em><code class="descclassname">gcloud.bigtable.row.</code><code class="descname">ConditionalRow</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em>, <em>filter_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/row.html#ConditionalRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.row.ConditionalRow" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">gcloud.bigtable.row._SetDeleteRow</span></code></p>
 <p>Google Cloud Bigtable Row for sending mutations conditionally.</p>
-<p>Each mutation has an associated state: <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> or <a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.
-When <a class="reference internal" href="#gcloud.bigtable.row.ConditionalRow.commit" title="gcloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>-ed, the mutations for the <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
+<p>Each mutation has an associated state: <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> or <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a>.
+When <a class="reference internal" href="#gcloud.bigtable.row.ConditionalRow.commit" title="gcloud.bigtable.row.ConditionalRow.commit"><code class="xref py py-meth docutils literal"><span class="pre">commit()</span></code></a>-ed, the mutations for the <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>
 state will be applied if the filter matches any cells in
-the row, otherwise the <a class="reference external" href="https://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a> state will be applied.</p>
+the row, otherwise the <a class="reference external" href="https://docs.python.org/2/library/constants.html#False" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">False</span></code></a> state will be applied.</p>
 <p>A <a class="reference internal" href="#gcloud.bigtable.row.ConditionalRow" title="gcloud.bigtable.row.ConditionalRow"><code class="xref py py-class docutils literal"><span class="pre">ConditionalRow</span></code></a> accumulates mutations in the same way a
 <a class="reference internal" href="#gcloud.bigtable.row.DirectRow" title="gcloud.bigtable.row.DirectRow"><code class="xref py py-class docutils literal"><span class="pre">DirectRow</span></code></a> does:</p>
 <ul class="simple">
@@ -312,12 +312,12 @@ mutations.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Flag indicating if the filter was matched (which also
 indicates which set of mutations were applied by the server).</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
 mutations exceeds the <a class="reference internal" href="#gcloud.bigtable.row.MAX_MUTATIONS" title="gcloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
@@ -339,8 +339,8 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Cond
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -362,15 +362,15 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Cond
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
 or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family that will have a
 cell deleted.</li>
 <li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) &#8211; (Optional) The range of time within which cells
 should be deleted.</li>
-<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -394,17 +394,17 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Cond
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
 or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
-<a class="reference external" href="https://docs.python.org/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
+<a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
 cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then the
 entire column family will be deleted from the row.</li>
 <li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) &#8211; (Optional) The range of time within which cells
 should be deleted.</li>
-<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -432,17 +432,17 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Cond
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
 Must be of the form
 <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family where the cell
 is located.</li>
-<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) &#8211; The value to set in the cell. If an integer is used,
+<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) &#8211; The value to set in the cell. If an integer is used,
 will be interpreted as a 64-bit big-endian signed
 integer (8 bytes).</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The timestamp of the operation.</li>
-<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
-applied in. Defaults to <a class="reference external" href="https://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The timestamp of the operation.</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; (Optional) The state that the mutation should be
+applied in. Defaults to <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -509,7 +509,7 @@ mutations to an empty list.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.ValueError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a> if the number of
 mutations exceeds the <a class="reference internal" href="#gcloud.bigtable.row.MAX_MUTATIONS" title="gcloud.bigtable.row.MAX_MUTATIONS"><code class="xref py py-data docutils literal"><span class="pre">MAX_MUTATIONS</span></code></a>.</td>
 </tr>
 </tbody>
@@ -545,7 +545,7 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Dire
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
 or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family that will have a
@@ -575,11 +575,11 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Dire
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column
 or columns with cells being deleted. Must be
 of the form <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
-<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
-<a class="reference external" href="https://docs.python.org/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
+<li><strong>columns</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">list</span></code></a> of <a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">str</span></code></a> /
+<a class="reference external" href="https://docs.python.org/2/library/functions.html#unicode" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">unicode</span></code></a>, or <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a>) &#8211; The columns within the column family that will have
 cells deleted. If <code class="xref py py-attr docutils literal"><span class="pre">ALL_COLUMNS</span></code> is used then
 the entire column family will be deleted from the row.</li>
 <li><strong>time_range</strong> (<code class="xref py py-class docutils literal"><span class="pre">TimestampRange</span></code>) &#8211; (Optional) The range of time within which cells
@@ -610,15 +610,15 @@ Bigtable API, call <a class="reference internal" href="#gcloud.bigtable.row.Dire
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
+<li><strong>column_family_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The column family that contains the column.
 Must be of the form
 <code class="docutils literal"><span class="pre">[_a-zA-Z0-9][-_.a-zA-Z0-9]*</span></code>.</li>
 <li><strong>column</strong> (<em>bytes</em>) &#8211; The column within the column family where the cell
 is located.</li>
-<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) &#8211; The value to set in the cell. If an integer is used,
+<li><strong>value</strong> (bytes or <a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">int</span></code></a>) &#8211; The value to set in the cell. If an integer is used,
 will be interpreted as a 64-bit big-endian signed
 integer (8 bytes).</li>
-<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The timestamp of the operation.</li>
+<li><strong>timestamp</strong> (<a class="reference external" href="https://docs.python.org/2/library/datetime.html#datetime.datetime" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></code></a>) &#8211; (Optional) The timestamp of the operation.</li>
 </ul>
 </td>
 </tr>
@@ -637,7 +637,7 @@ integer (8 bytes).</li>
 <dl class="class">
 <dt id="gcloud.bigtable.row.Row">
 <em class="property">class </em><code class="descclassname">gcloud.bigtable.row.</code><code class="descname">Row</code><span class="sig-paren">(</span><em>row_key</em>, <em>table</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/row.html#Row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.row.Row" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Base representation of a Google Cloud Bigtable Row.</p>
 <p>This class has three subclasses corresponding to the three
 RPC methods for sending row mutations:</p>
