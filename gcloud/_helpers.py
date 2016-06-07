@@ -394,6 +394,27 @@ def _to_bytes(value, encoding='ascii'):
         raise TypeError('%r could not be converted to bytes' % (value,))
 
 
+def _from_bytes(value):
+    """Converts bytes to a string value, if necessary.
+
+    :type value: bytes
+    :param value: bytes value to attempt string conversion on.
+
+    :rtype: bytes
+    :returns: The original value converted to unicode (if bytes) or as passed
+              in if it started out as unicode.
+
+    :raises: :class:`ValueError` if the value could not be converted to
+             unicode.
+    """
+    result = (value.decode('utf-8')
+              if isinstance(value, six.binary_type) else value)
+    if isinstance(result, six.text_type):
+        return result
+    else:
+        raise ValueError('%r could not be converted to unicode' % (value,))
+
+
 def _pb_timestamp_to_datetime(timestamp):
     """Convert a Timestamp protobuf to a datetime object.
 

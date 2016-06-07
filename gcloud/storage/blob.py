@@ -14,7 +14,9 @@
 
 """Create / interact with Google Cloud Storage blobs."""
 
+import base64
 import copy
+import hashlib
 from io import BytesIO
 import json
 import mimetypes
@@ -26,6 +28,8 @@ import six
 from six.moves.urllib.parse import quote
 
 from gcloud._helpers import _rfc3339_to_datetime
+from gcloud._helpers import _to_bytes
+from gcloud._helpers import _from_bytes
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.exceptions import make_exception
@@ -276,7 +280,7 @@ class Blob(_PropertyMixin):
         """
         return self.bucket.delete_blob(self.name, client=client)
 
-    def download_to_file(self, file_obj, client=None):
+    def download_to_file(self, file_obj, key=None, client=None):
         """Download the contents of this blob into a file-like object.
 
         .. note::
@@ -284,8 +288,27 @@ class Blob(_PropertyMixin):
            If the server-set property, :attr:`media_link`, is not yet
            initialized, makes an additional API request to load it.
 
+         Downloading a file that has been encrypted with a
+         `customer-supplied`_ key::
+
+            >>> from gcloud import storage
+            >>> from gcloud.storage import Blob
+
+            >>> client = storage.Client(project='my-project')
+            >>> bucket = client.get_bucket('my-bucket')
+            >>> key = 'aa426195405adee2c8081bb9e7e74b19'
+            >>> blob = Blob('secure-data', bucket)
+            >>> with open('/tmp/my-secure-file', 'wb') as file_obj:
+            >>>     blob.download_to_file(file_obj, key=key)
+
+        .. _customer-supplied: https://cloud.google.com/storage/docs/\
+                               encryption#customer-supplied
+
         :type file_obj: file
         :param file_obj: A file handle to which to write the blob's data.
+
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -305,7 +328,11 @@ class Blob(_PropertyMixin):
         if self.chunk_size is not None:
             download.chunksize = self.chunk_size
 
-        request = Request(download_url, 'GET')
+        headers = {}
+        if key:
+            _set_encryption_headers(key, headers)
+
+        request = Request(download_url, 'GET', headers)
 
         # Use the private ``_connection`` rather than the public
         # ``.connection``, since the public connection may be a batch. A
@@ -315,11 +342,14 @@ class Blob(_PropertyMixin):
         # it has all three (http, API_BASE_URL and build_api_url).
         download.initialize_download(request, client._connection.http)
 
-    def download_to_filename(self, filename, client=None):
+    def download_to_filename(self, filename, key=None, client=None):
         """Download the contents of this blob into a named file.
 
         :type filename: string
         :param filename: A filename to be passed to ``open``.
+
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -328,13 +358,16 @@ class Blob(_PropertyMixin):
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         with open(filename, 'wb') as file_obj:
-            self.download_to_file(file_obj, client=client)
+            self.download_to_file(file_obj, key=key, client=client)
 
         mtime = time.mktime(self.updated.timetuple())
         os.utime(file_obj.name, (mtime, mtime))
 
-    def download_as_string(self, client=None):
+    def download_as_string(self, key=None, client=None):
         """Download the contents of this blob as a string.
+
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
 
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -345,7 +378,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`gcloud.exceptions.NotFound`
         """
         string_buffer = BytesIO()
-        self.download_to_file(string_buffer, client=client)
+        self.download_to_file(string_buffer, key=key, client=client)
         return string_buffer.getvalue()
 
     @staticmethod
@@ -358,7 +391,8 @@ class Blob(_PropertyMixin):
             raise make_exception(faux_response, http_response.content,
                                  error_info=request.url)
 
-    def upload_from_file(self, file_obj, rewind=False, size=None,
+    # pylint: disable=too-many-locals
+    def upload_from_file(self, file_obj, rewind=False, size=None, key=None,
                          content_type=None, num_retries=6, client=None):
         """Upload the contents of this blob from a file-like object.
 
@@ -378,6 +412,21 @@ class Blob(_PropertyMixin):
            `lifecycle <https://cloud.google.com/storage/docs/lifecycle>`_
            API documents for details.
 
+        Uploading a file with `customer-supplied`_ encryption::
+
+            >>> from gcloud import storage
+            >>> from gcloud.storage import Blob
+
+            >>> client = storage.Client(project='my-project')
+            >>> bucket = client.get_bucket('my-bucket')
+            >>> key = 'aa426195405adee2c8081bb9e7e74b19'
+            >>> blob = Blob('secure-data', bucket)
+            >>> with open('my-file', 'rb') as my_file:
+            >>>     blob.upload_from_file(my_file, key=key)
+
+        .. _customer-supplied: https://cloud.google.com/storage/docs/\
+                               encryption#customer-supplied
+
         :type file_obj: file
         :param file_obj: A file handle open for reading.
 
@@ -390,6 +439,9 @@ class Blob(_PropertyMixin):
                      If not provided, we'll try to guess the size using
                      :func:`os.fstat`. (If the file handle is not from the
                      filesystem this won't be possible.)
+
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
 
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
@@ -434,6 +486,9 @@ class Blob(_PropertyMixin):
             'User-Agent': connection.USER_AGENT,
         }
 
+        if key:
+            _set_encryption_headers(key, headers)
+
         upload = Upload(file_obj, content_type, total_bytes,
                         auto_transfer=False)
 
@@ -473,8 +528,9 @@ class Blob(_PropertyMixin):
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
         self._set_properties(json.loads(response_content))
+    # pylint: enable=too-many-locals
 
-    def upload_from_filename(self, filename, content_type=None,
+    def upload_from_filename(self, filename, content_type=None, key=None,
                              client=None):
         """Upload this blob's contents from the content of a named file.
 
@@ -500,6 +556,9 @@ class Blob(_PropertyMixin):
         :type content_type: string or ``NoneType``
         :param content_type: Optional type of content being uploaded.
 
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
+
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
@@ -509,10 +568,10 @@ class Blob(_PropertyMixin):
             content_type, _ = mimetypes.guess_type(filename)
 
         with open(filename, 'rb') as file_obj:
-            self.upload_from_file(file_obj, content_type=content_type,
+            self.upload_from_file(file_obj, content_type=content_type, key=key,
                                   client=client)
 
-    def upload_from_string(self, data, content_type='text/plain',
+    def upload_from_string(self, data, content_type='text/plain', key=None,
                            client=None):
         """Upload contents of this blob from the provided string.
 
@@ -535,6 +594,9 @@ class Blob(_PropertyMixin):
         :param content_type: Optional type of content being uploaded. Defaults
                              to ``'text/plain'``.
 
+        :type key: str
+        :param key: Optional 32 byte key for customer-supplied encryption.
+
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
@@ -545,7 +607,7 @@ class Blob(_PropertyMixin):
         string_buffer.write(data)
         self.upload_from_file(file_obj=string_buffer, rewind=True,
                               size=len(data), content_type=content_type,
-                              client=client)
+                              key=key, client=client)
 
     def make_public(self, client=None):
         """Make this blob public giving all users read access.
@@ -838,3 +900,21 @@ class _UrlBuilder(object):
         self.query_params = {'name': object_name}
         self._bucket_name = bucket_name
         self._relative_path = ''
+
+
+def _set_encryption_headers(key, headers):
+    """Builds customer encyrption key headers
+
+    :type key: str
+    :param key: 32 byte key to build request key and hash.
+
+    :type headers: dict
+    :param headers: dict of HTTP headers being sent in request.
+    """
+    key = _to_bytes(key)
+    sha256_key = hashlib.sha256(key).digest()
+    key_hash = base64.b64encode(sha256_key).rstrip()
+    encoded_key = base64.b64encode(key).rstrip()
+    headers['X-Goog-Encryption-Algorithm'] = 'AES256'
+    headers['X-Goog-Encryption-Key'] = _from_bytes(encoded_key)
+    headers['X-Goog-Encryption-Key-Sha256'] = _from_bytes(key_hash)
