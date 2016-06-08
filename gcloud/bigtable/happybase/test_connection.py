@@ -422,11 +422,11 @@ class TestConnection(unittest2.TestCase):
     def test_create_table_already_exists(self):
         from grpc.beta import interfaces
         from grpc.framework.interfaces.face import face
-        from happybase.hbase import ttypes
+        from gcloud.bigtable.happybase.connection import AlreadyExists
 
         err_val = face.NetworkError(None, None,
                                     interfaces.StatusCode.ALREADY_EXISTS, None)
-        self._create_table_error_helper(err_val, ttypes.AlreadyExists)
+        self._create_table_error_helper(err_val, AlreadyExists)
 
     def test_create_table_connection_error(self):
         from grpc.beta import interfaces

@@ -22,6 +22,11 @@ from grpc.beta import interfaces
 from grpc.framework.interfaces.face import face
 import six
 
+try:
+    from happybase.hbase.ttypes import AlreadyExists
+except ImportError:
+    from gcloud.exceptions import Conflict as AlreadyExists
+
 from gcloud.bigtable.client import Client
 from gcloud.bigtable.column_family import GCRuleIntersection
 from gcloud.bigtable.column_family import MaxAgeGCRule
@@ -344,8 +349,7 @@ class Connection(object):
             low_level_table.create()
         except face.NetworkError as network_err:
             if network_err.code == interfaces.StatusCode.ALREADY_EXISTS:
-                from happybase.hbase import ttypes
-                raise ttypes.AlreadyExists(name)
+                raise AlreadyExists(name)
             else:
                 raise
 
