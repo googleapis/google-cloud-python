@@ -13,6 +13,8 @@
 # limitations under the License.
 
 
+import sys
+
 import unittest2
 
 
@@ -419,6 +421,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(len(tables_created), 1)
         self.assertEqual(tables_created[0].create_calls, 1)
 
+    @unittest2.skipUnless(sys.version_info[:2] == (2, 7),
+                          'gRPC only in Python 2.7')
     def test_create_table_already_exists(self):
         from grpc.beta import interfaces
         from grpc.framework.interfaces.face import face
@@ -428,6 +432,8 @@ class TestConnection(unittest2.TestCase):
                                     interfaces.StatusCode.ALREADY_EXISTS, None)
         self._create_table_error_helper(err_val, AlreadyExists)
 
+    @unittest2.skipUnless(sys.version_info[:2] == (2, 7),
+                          'gRPC only in Python 2.7')
     def test_create_table_connection_error(self):
         from grpc.beta import interfaces
         from grpc.framework.interfaces.face import face
@@ -435,6 +441,8 @@ class TestConnection(unittest2.TestCase):
                                     interfaces.StatusCode.INTERNAL, None)
         self._create_table_error_helper(err_val, face.NetworkError)
 
+    @unittest2.skipUnless(sys.version_info[:2] == (2, 7),
+                          'gRPC only in Python 2.7')
     def test_create_table_other_error(self):
         self._create_table_error_helper(RuntimeError, RuntimeError)
 
