@@ -173,12 +173,17 @@ def _file_project_id():
     credentials_file_path = os.getenv(CREDENTIALS)
     if credentials_file_path:
         with open(credentials_file_path, 'rb') as credentials_file:
-            credentials = json.load(credentials_file)
+            credentials_json = credentials_file.read()
+            credentials = json.loads(credentials_json.decode('utf-8'))
             return credentials.get('project_id')
 
 
 def _default_service_project_id():
     """Retrieves the project ID from the gcloud command line tool.
+
+    Files that cannot be opened with configparser are silently ignored; this is
+    designed so that you can specify a list of potential configuration file
+    locations.
 
     :rtype: str or ``NoneType``
     :returns: Project-ID from default configuration file else ``None``
@@ -237,7 +242,7 @@ def _determine_default_project(project=None):
 
     * GCLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get default service project from gcloud CLI tool
+    * Get default service project from ``$ gcloud auth login``
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 

@@ -4,43 +4,55 @@ Configuration
 Overview
 ========
 
-- Use service client objects to configure
-  your applications.
+Use service client objects to configure your applications.
 
-  For example:
-
-  .. code-block:: python
-
-      >>> from gcloud import bigquery
-      >>> client = bigquery.Client()
-
-  You can override the detection of your default project by setting the
-  ``project`` parameter when creating client objects.
+For example:
 
 .. code-block:: python
 
-      >>> from gcloud import bigquery
-      >>> client = bigquery.Client(project='my-project')
+    >>> from gcloud import bigquery
+    >>> client = bigquery.Client()
 
-- Client objects hold both a ``project``
-  and an authenticated connection to a service.
+When creating a client in this way, the project ID will be determined by
+searching these locations in the following order.
 
-  .. code-block:: python
+* GCLOUD_PROJECT environment variable
+* GOOGLE_APPLICATION_CREDENTIALS JSON file
+* Default service configuration path from ``$ gcloud auth login``.
+* Google App Engine application ID
+* Google Compute Engine project ID (from metadata server)
 
-     >>> client.project
-     u'my-project'
+You can override the detection of your default project by setting the
+ ``project`` parameter when creating client objects.
 
-- The authentication credentials can be implicitly determined from the
-  environment or directly. See :doc:`./gcloud-auth`.
+.. code-block:: python
 
-- Logging in via ``gcloud auth login`` will automatically configure a JSON
-  key file with your default project ID and credentials.
-  Setting the ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables will override the automatically configured credentials.
+    >>> from gcloud import bigquery
+    >>> client = bigquery.Client(project='my-project')
 
-- You can change your default project ID to ``my-new-default-project`` with
-  ``gcloud`` command line tool.
+You can see what project ID a client is referencing by accessing the ``project``
+property on the client object.
 
-  .. code-block:: bash
+.. code-block:: python
 
-     $ gcloud config set project my-new-default-project
+    >>> client.project
+    u'my-project'
+
+Authentication
+==============
+
+The authentication credentials can be implicitly determined from the
+environment or directly. See :doc:`gcloud-auth`.
+
+Logging in via ``gcloud auth login`` will automatically configure a JSON
+key file with your default project ID and credentials.
+
+Setting the ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
+environment variables will override the automatically configured credentials.
+
+You can change your default project ID to ``my-new-default-project`` by
+using the ``gcloud`` CLI tool to change the configuration.
+
+.. code-block:: bash
+
+    $ gcloud config set project my-new-default-project
