@@ -65,8 +65,8 @@ Fetch entries for the default project.
    >>> entries, token = client.list_entries()  # API call
    >>> for entry in entries:
    ...    timestamp = entry.timestamp.isoformat()
-   ...    print('%sZ: %s | %s' %
-   ...          (timestamp, entry.text_payload, entry.struct_payload))
+   ...    print('%sZ: %s' %
+   ...          (timestamp, entry.payload))
    2016-02-17T20:35:49.031864072Z: A simple entry | None
    2016-02-17T20:38:15.944418531Z: None | {'message': 'My second entry', 'weather': 'partly cloudy'}
 
@@ -129,7 +129,7 @@ Delete all entries for a logger
    >>> from gcloud import logging
    >>> client = logging.Client()
    >>> logger = client.logger('log_name')
-   >>> logger.delete_entries()  # API call
+   >>> logger.delete()  # API call
 
 
 Manage log metrics
@@ -220,8 +220,8 @@ Create a Cloud Storage sink:
    >>> client = logging.Client()
    >>> sink = client.sink(
    ...     "robots-storage",
-   ...     filter='log:apache-access AND textPayload:robot')
-   >>> sink.storage_bucket = "my-bucket-name"
+   ...     'log:apache-access AND textPayload:robot',
+   ...     'storage.googleapis.com/my-bucket-name')
    >>> sink.exists()  # API call
    False
    >>> sink.create()  # API call
@@ -236,8 +236,8 @@ Create a BigQuery sink:
    >>> client = logging.Client()
    >>> sink = client.sink(
    ...     "robots-bq",
-   ...     filter='log:apache-access AND textPayload:robot')
-   >>> sink.bigquery_dataset = "projects/my-project/datasets/my-dataset"
+   ...     'log:apache-access AND textPayload:robot',
+   ...     'bigquery.googleapis.com/projects/projects/my-project/datasets/my-dataset')
    >>> sink.exists()  # API call
    False
    >>> sink.create()  # API call
@@ -250,10 +250,11 @@ Create a Cloud Pub/Sub sink:
 
    >>> from gcloud import logging
    >>> client = logging.Client()
+
    >>> sink = client.sink(
    ...     "robots-pubsub",
-   ...     filter='log:apache-access AND textPayload:robot')
-   >>> sink.pubsub_topic = 'projects/my-project/topics/my-topic'
+   ...      'log:apache-access AND textPayload:robot',
+   ...      'pubsub.googleapis.com/projects/my-project/topics/my-topic')
    >>> sink.exists()  # API call
    False
    >>> sink.create()  # API call
