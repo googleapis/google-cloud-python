@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 92e9362 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 17bd49d documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '92e9362',
+        VERSION:     '17bd49d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 92e9362 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud 17bd49d documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%2092e9362" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%2017bd49d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (92e9362)
+              Version History (17bd49d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,6 +112,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">six</span>
+
+<span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="kn">import</span> <span class="n">interfaces</span>
+<span class="kn">from</span> <span class="nn">grpc.framework.interfaces.face</span> <span class="kn">import</span> <span class="n">face</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">happybase.hbase.ttypes</span> <span class="kn">import</span> <span class="n">AlreadyExists</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">Conflict</span> <span class="k">as</span> <span class="n">AlreadyExists</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.client</span> <span class="kn">import</span> <span class="n">Client</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">GCRuleIntersection</span>
@@ -431,7 +439,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Create table instance and then make API calls.</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">low_level_table</span> <span class="o">=</span> <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="p">)</span>
-        <span class="n">low_level_table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">low_level_table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">face</span><span class="o">.</span><span class="n">NetworkError</span> <span class="k">as</span> <span class="n">network_err</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">network_err</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">interfaces</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AlreadyExists</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span>
 
         <span class="k">for</span> <span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span> <span class="ow">in</span> <span class="n">gc_rule_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">column_family</span> <span class="o">=</span> <span class="n">low_level_table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span>
