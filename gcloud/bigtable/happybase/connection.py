@@ -18,9 +18,10 @@
 import datetime
 import warnings
 
+import six
+
 from grpc.beta import interfaces
 from grpc.framework.interfaces.face import face
-import six
 
 try:
     from happybase.hbase.ttypes import AlreadyExists
