@@ -298,7 +298,7 @@ class Logger(object):
                   more entries can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        log_filter = 'logName:%s' % (self.name,)
+        log_filter = 'logName=%s' % (self.full_name,)
         if filter_ is not None:
             filter_ = '%s AND %s' % (filter_, log_filter)
         else:
