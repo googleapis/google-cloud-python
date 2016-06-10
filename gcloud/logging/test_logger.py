@@ -348,7 +348,8 @@ class TestLogger(unittest2.TestCase):
     def test_list_entries_defaults(self):
         LISTED = {
             'projects': None,
-            'filter_': 'logName:%s' % (self.LOGGER_NAME),
+            'filter_': 'logName=projects/%s/logs/%s' %
+                       (self.PROJECT, self.LOGGER_NAME),
             'order_by': None,
             'page_size': None,
             'page_token': None,
@@ -371,7 +372,8 @@ class TestLogger(unittest2.TestCase):
         PAGE_SIZE = 42
         LISTED = {
             'projects': ['PROJECT1', 'PROJECT2'],
-            'filter_': '%s AND logName:%s' % (FILTER, self.LOGGER_NAME),
+            'filter_': '%s AND logName=projects/%s/logs/%s' %
+                       (FILTER, self.PROJECT, self.LOGGER_NAME),
             'order_by': DESCENDING,
             'page_size': PAGE_SIZE,
             'page_token': TOKEN,
