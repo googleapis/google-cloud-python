@@ -394,13 +394,13 @@ def _to_bytes(value, encoding='ascii'):
         raise TypeError('%r could not be converted to bytes' % (value,))
 
 
-def _from_bytes(value):
-    """Converts bytes to a string value, if necessary.
+def _to_unicode(value):
+    """Converts bytes to a unicode value, if necessary.
 
     :type value: bytes
     :param value: bytes value to attempt string conversion on.
 
-    :rtype: bytes
+    :rtype: str
     :returns: The original value converted to unicode (if bytes) or as passed
               in if it started out as unicode.
 

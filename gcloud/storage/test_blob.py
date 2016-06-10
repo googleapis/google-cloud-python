@@ -412,7 +412,7 @@ class Test_Blob(unittest2.TestCase):
         blob.chunk_size = 3
 
         with _NamedTemporaryFile() as temp:
-            blob.download_to_filename(temp.name, key=KEY)
+            blob.download_to_filename(temp.name, encryption_key=KEY)
             with open(temp.name, 'rb') as file_obj:
                 wrote = file_obj.read()
                 mtime = os.path.getmtime(temp.name)
@@ -766,7 +766,7 @@ class Test_Blob(unittest2.TestCase):
                 file_obj.write(DATA)
             blob.upload_from_filename(temp.name,
                                       content_type=EXPECTED_CONTENT_TYPE,
-                                      key=KEY)
+                                      encryption_key=KEY)
 
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
@@ -965,7 +965,7 @@ class Test_Blob(unittest2.TestCase):
         blob = self._makeOne(BLOB_NAME, bucket=bucket)
         blob._CHUNK_SIZE_MULTIPLE = 1
         blob.chunk_size = 5
-        blob.upload_from_string(DATA, key=KEY)
+        blob.upload_from_string(DATA, encryption_key=KEY)
         rq = connection.http._requested
         self.assertEqual(len(rq), 1)
         self.assertEqual(rq[0]['method'], 'POST')

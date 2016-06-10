@@ -586,11 +586,11 @@ class Test__to_bytes(unittest2.TestCase):
         self.assertRaises(TypeError, self._callFUT, value)
 
 
-class Test__from_bytes(unittest2.TestCase):
+class Test__to_unicode(unittest2.TestCase):
 
     def _callFUT(self, *args, **kwargs):
-        from gcloud._helpers import _from_bytes
-        return _from_bytes(*args, **kwargs)
+        from gcloud._helpers import _to_unicode
+        return _to_unicode(*args, **kwargs)
 
     def test_with_bytes(self):
         value = b'bytes-val'
