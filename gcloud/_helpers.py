@@ -242,7 +242,8 @@ def _determine_default_project(project=None):
 
     * GCLOUD_PROJECT environment variable
     * GOOGLE_APPLICATION_CREDENTIALS JSON file
-    * Get default service project from ``$ gcloud auth login``
+    * Get default service project from
+      ``$ gcloud beta auth application-default login``
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
