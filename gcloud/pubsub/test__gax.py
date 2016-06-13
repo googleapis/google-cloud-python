@@ -52,7 +52,9 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertTrue(api._gax_api is gax_api)
 
     def test_list_topics_no_paging(self):
-        response = _ListTopicsResponsePB([_TopicPB(self.TOPIC_PATH)])
+        from google.gax import INITIAL_PAGE
+        TOKEN = 'TOKEN'
+        response = _ListTopicsResponsePB([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
@@ -62,11 +64,31 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         topic = topics[0]
         self.assertIsInstance(topic, dict)
         self.assertEqual(topic['name'], self.TOPIC_PATH)
-        self.assertEqual(next_token, None)
+        self.assertEqual(next_token, TOKEN)
 
         name, options = gax_api._list_topics_called_with
         self.assertEqual(name, self.PROJECT_PATH)
-        self.assertFalse(options.is_page_streaming)
+        self.assertTrue(options.page_token is INITIAL_PAGE)
+
+    def test_list_topics_with_paging(self):
+        TOKEN = 'TOKEN'
+        NEW_TOKEN = 'NEW_TOKEN'
+        response = _ListTopicsResponsePB(
+            [_TopicPB(self.TOPIC_PATH)], NEW_TOKEN)
+        gax_api = _GAXPublisherAPI(_list_topics_response=response)
+        api = self._makeOne(gax_api)
+
+        topics, next_token = api.list_topics(self.PROJECT, page_token=TOKEN)
+
+        self.assertEqual(len(topics), 1)
+        topic = topics[0]
+        self.assertIsInstance(topic, dict)
+        self.assertEqual(topic['name'], self.TOPIC_PATH)
+        self.assertEqual(next_token, NEW_TOKEN)
+
+        name, options = gax_api._list_topics_called_with
+        self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(options.page_token, TOKEN)
 
     def test_topic_create(self):
         topic_pb = _TopicPB(self.TOPIC_PATH)
@@ -233,6 +255,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
     def test_topic_list_subscriptions_no_paging(self):
+        from google.gax import INITIAL_PAGE
         response = _ListTopicSubscriptionsResponsePB([self.SUB_PATH])
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         api = self._makeOne(gax_api)
@@ -249,9 +272,32 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
         topic_path, options = gax_api._list_topic_subscriptions_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertFalse(options.is_page_streaming)
+        self.assertTrue(options.page_token is INITIAL_PAGE)
+
+    def test_topic_list_subscriptions_with_paging(self):
+        TOKEN = 'TOKEN'
+        NEW_TOKEN = 'NEW_TOKEN'
+        response = _ListTopicSubscriptionsResponsePB(
+            [self.SUB_PATH], NEW_TOKEN)
+        gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
+        api = self._makeOne(gax_api)
+
+        subscriptions, next_token = api.topic_list_subscriptions(
+            self.TOPIC_PATH, page_token=TOKEN)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertIsInstance(subscription, dict)
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(next_token, NEW_TOKEN)
+
+        name, options = gax_api._list_topic_subscriptions_called_with
+        self.assertEqual(name, self.TOPIC_PATH)
+        self.assertEqual(options.page_token, TOKEN)
 
     def test_topic_list_subscriptions_miss(self):
+        from google.gax import INITIAL_PAGE
         from gcloud.exceptions import NotFound
         gax_api = _GAXPublisherAPI()
         api = self._makeOne(gax_api)
@@ -261,9 +307,10 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
         topic_path, options = gax_api._list_topic_subscriptions_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertFalse(options.is_page_streaming)
+        self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_topic_list_subscriptions_error(self):
+        from google.gax import INITIAL_PAGE
         from google.gax.errors import GaxError
         gax_api = _GAXPublisherAPI(_random_gax_error=True)
         api = self._makeOne(gax_api)
@@ -273,7 +320,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
         topic_path, options = gax_api._list_topic_subscriptions_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
-        self.assertFalse(options.is_page_streaming)
+        self.assertTrue(options.page_token is INITIAL_PAGE)
 
 
 @unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
@@ -291,6 +338,7 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertTrue(api._gax_api is gax_api)
 
     def test_list_subscriptions_no_paging(self):
+        from google.gax import INITIAL_PAGE
         response = _ListSubscriptionsResponsePB([_SubscriptionPB(
             self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)])
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
@@ -310,7 +358,32 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
 
         name, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
-        self.assertFalse(options.is_page_streaming)
+        self.assertTrue(options.page_token is INITIAL_PAGE)
+
+    def test_list_subscriptions_with_paging(self):
+        TOKEN = 'TOKEN'
+        NEW_TOKEN = 'NEW_TOKEN'
+        response = _ListSubscriptionsResponsePB([_SubscriptionPB(
+            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], NEW_TOKEN)
+        gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
+        api = self._makeOne(gax_api)
+
+        subscriptions, next_token = api.list_subscriptions(
+            self.PROJECT, page_token=TOKEN)
+
+        self.assertEqual(len(subscriptions), 1)
+        subscription = subscriptions[0]
+        self.assertIsInstance(subscription, dict)
+        self.assertEqual(subscription['name'], self.SUB_PATH)
+        self.assertEqual(subscription['topic'], self.TOPIC_PATH)
+        self.assertEqual(subscription['pushConfig'],
+                         {'pushEndpoint': self.PUSH_ENDPOINT})
+        self.assertEqual(subscription['ackDeadlineSeconds'], 0)
+        self.assertEqual(next_token, NEW_TOKEN)
+
+        name, options = gax_api._list_subscriptions_called_with
+        self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
         sub_pb = _SubscriptionPB(self.SUB_PATH, self.TOPIC_PATH, '', 0)
