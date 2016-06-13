@@ -29,6 +29,14 @@ from gcloud.exceptions import NotFound
 from gcloud._helpers import _to_bytes
 
 
+def _build_paging_options(page_token=None):
+    """Helper for :meth:'_PublisherAPI.list_topics' et aliae."""
+    if page_token is None:
+        page_token = INITIAL_PAGE
+    options = {'page_token': page_token}
+    return CallOptions(**options)
+
+
 class _PublisherAPI(object):
     """Helper mapping publisher-related APIs.
 
@@ -58,10 +66,7 @@ class _PublisherAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = {'page_token': page_token}
-        options = CallOptions(**options)
+        options = _build_paging_options(page_token)
         path = 'projects/%s' % (project,)
         response = self._gax_api.list_topics(path, options)
         topics = [{'name': topic_pb.name} for topic_pb in response.topics]
@@ -182,10 +187,7 @@ class _PublisherAPI(object):
         :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = {'page_token': page_token}
-        options = CallOptions(**options)
+        options = _build_paging_options(page_token)
         try:
             response = self._gax_api.list_topic_subscriptions(
                 topic_path, options)
@@ -227,10 +229,7 @@ class _SubscriberAPI(object):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        if page_token is None:
-            page_token = INITIAL_PAGE
-        options = {'page_token': page_token}
-        options = CallOptions(**options)
+        options = _build_paging_options(page_token)
         path = 'projects/%s' % (project,)
         response = self._gax_api.list_subscriptions(path, options)
         subscriptions = [_subscription_pb_to_mapping(sub_pb)
