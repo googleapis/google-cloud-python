@@ -1,6 +1,7 @@
 [report]
 omit =
     */_generated/*.py
+show_missing = True
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER
