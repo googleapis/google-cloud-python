@@ -394,7 +394,7 @@ def _to_bytes(value, encoding='ascii'):
         raise TypeError('%r could not be converted to bytes' % (value,))
 
 
-def _to_unicode(value):
+def _bytes_to_unicode(value):
     """Converts bytes to a unicode value, if necessary.
 
     :type value: bytes

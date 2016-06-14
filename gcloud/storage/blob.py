@@ -29,7 +29,7 @@ from six.moves.urllib.parse import quote
 
 from gcloud._helpers import _rfc3339_to_datetime
 from gcloud._helpers import _to_bytes
-from gcloud._helpers import _to_unicode
+from gcloud._helpers import _bytes_to_unicode
 from gcloud.credentials import generate_signed_url
 from gcloud.exceptions import NotFound
 from gcloud.exceptions import make_exception
@@ -933,5 +933,5 @@ def _set_encryption_headers(key, headers):
     key_hash = base64.b64encode(sha256_key).rstrip()
     encoded_key = base64.b64encode(key).rstrip()
     headers['X-Goog-Encryption-Algorithm'] = 'AES256'
-    headers['X-Goog-Encryption-Key'] = _to_unicode(encoded_key)
-    headers['X-Goog-Encryption-Key-Sha256'] = _to_unicode(key_hash)
+    headers['X-Goog-Encryption-Key'] = _bytes_to_unicode(encoded_key)
+    headers['X-Goog-Encryption-Key-Sha256'] = _bytes_to_unicode(key_hash)
