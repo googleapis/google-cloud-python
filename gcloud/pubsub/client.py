@@ -14,14 +14,32 @@
 
 """Client for interacting with the Google Cloud Pub/Sub API."""
 
+import os
 
 from gcloud.client import JSONClient
 from gcloud.pubsub.connection import Connection
-from gcloud.pubsub.connection import _PublisherAPI
-from gcloud.pubsub.connection import _SubscriberAPI
+from gcloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
+from gcloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
 from gcloud.pubsub.connection import _IAMPolicyAPI
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
+
+try:
+    from google.pubsub.v1.publisher_api import (
+        PublisherApi as GeneratedPublisherAPI)
+    from google.pubsub.v1.subscriber_api import (
+        SubscriberApi as GeneratedSubscriberAPI)
+    from gcloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
+    from gcloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
+except ImportError:  # pragma: NO COVER
+    _HAVE_GAX = False
+    GeneratedPublisherAPI = GAXPublisherAPI = None
+    GeneratedSubscriberAPI = GAXSubscriberAPI = None
+else:
+    _HAVE_GAX = True
+
+
+_USE_GAX = _HAVE_GAX and os.environ.get('GCLOUD_DISABLE_GAX') is None
 
 
 class Client(JSONClient):
@@ -52,14 +70,22 @@ class Client(JSONClient):
     def publisher_api(self):
         """Helper for publisher-related API calls."""
         if self._publisher_api is None:
-            self._publisher_api = _PublisherAPI(self.connection)
+            if _USE_GAX:
+                generated = GeneratedPublisherAPI()
+                self._publisher_api = GAXPublisherAPI(generated)
+            else:
+                self._publisher_api = JSONPublisherAPI(self.connection)
         return self._publisher_api
 
     @property
     def subscriber_api(self):
         """Helper for subscriber-related API calls."""
         if self._subscriber_api is None:
-            self._subscriber_api = _SubscriberAPI(self.connection)
+            if _USE_GAX:
+                generated = GeneratedSubscriberAPI()
+                self._subscriber_api = GAXSubscriberAPI(generated)
+            else:
+                self._subscriber_api = JSONSubscriberAPI(self.connection)
         return self._subscriber_api
 
     @property

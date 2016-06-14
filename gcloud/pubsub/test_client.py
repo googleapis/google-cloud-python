@@ -29,26 +29,98 @@ class TestClient(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_publisher_api(self):
+    def test_publisher_api_wo_gax(self):
         from gcloud.pubsub.connection import _PublisherAPI
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
-        api = client.publisher_api
+
+        with _Monkey(MUT, _USE_GAX=False):
+            api = client.publisher_api
+
         self.assertIsInstance(api, _PublisherAPI)
         self.assertTrue(api._connection is conn)
         # API instance is cached
         again = client.publisher_api
         self.assertTrue(again is api)
 
-    def test_subscriber_api(self):
+    def test_publisher_api_w_gax(self):
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+
+        wrapped = object()
+        _called_with = []
+
+        def _generated_api(*args, **kw):
+            _called_with.append((args, kw))
+            return wrapped
+
+        class _GaxPublisherAPI(object):
+
+            def __init__(self, _wrapped):
+                self._wrapped = _wrapped
+
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        with _Monkey(MUT,
+                     _USE_GAX=True,
+                     GeneratedPublisherAPI=_generated_api,
+                     GAXPublisherAPI=_GaxPublisherAPI):
+            api = client.publisher_api
+
+        self.assertIsInstance(api, _GaxPublisherAPI)
+        self.assertTrue(api._wrapped is wrapped)
+        # API instance is cached
+        again = client.publisher_api
+        self.assertTrue(again is api)
+
+    def test_subscriber_api_wo_gax(self):
         from gcloud.pubsub.connection import _SubscriberAPI
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
         conn = client.connection = object()
-        api = client.subscriber_api
+
+        with _Monkey(MUT, _USE_GAX=False):
+            api = client.subscriber_api
+
         self.assertIsInstance(api, _SubscriberAPI)
         self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.subscriber_api
+        self.assertTrue(again is api)
+
+    def test_subscriber_api_w_gax(self):
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+
+        wrapped = object()
+        _called_with = []
+
+        def _generated_api(*args, **kw):
+            _called_with.append((args, kw))
+            return wrapped
+
+        class _GaxSubscriberAPI(object):
+
+            def __init__(self, _wrapped):
+                self._wrapped = _wrapped
+
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        with _Monkey(MUT,
+                     _USE_GAX=True,
+                     GeneratedSubscriberAPI=_generated_api,
+                     GAXSubscriberAPI=_GaxSubscriberAPI):
+            api = client.subscriber_api
+
+        self.assertIsInstance(api, _GaxSubscriberAPI)
+        self.assertTrue(api._wrapped is wrapped)
         # API instance is cached
         again = client.subscriber_api
         self.assertTrue(again is api)
