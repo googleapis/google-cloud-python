@@ -417,7 +417,7 @@ class TestDatastoreQuery(TestDatastore):
 
 class TestDatastoreTransaction(TestDatastore):
 
-    def test_transaction(self):
+    def test_transaction_via_with_statement(self):
         entity = datastore.Entity(key=Config.CLIENT.key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
@@ -431,6 +431,43 @@ class TestDatastoreTransaction(TestDatastore):
         retrieved_entity = Config.CLIENT.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
+
+    def test_transaction_via_explicit_begin_get_commit(self):
+        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/1859
+        # Note that this example lacks the threading which provokes the race
+        # condition in that issue:  we are basically just exercising the
+        # "explict" path for using transactions.
+        BEFORE_1 = 100
+        BEFORE_2 = 0
+        TRANSFER_AMOUNT = 40
+        key1 = Config.CLIENT.key('account', '123')
+        account1 = datastore.Entity(key=key1)
+        account1['balance'] = BEFORE_1
+        key2 = Config.CLIENT.key('account', '234')
+        account2 = datastore.Entity(key=key2)
+        account2['balance'] = BEFORE_2
+        Config.CLIENT.put_multi([account1, account2])
+        self.case_entities_to_delete.append(account1)
+        self.case_entities_to_delete.append(account2)
+
+        def transfer_funds(client, from_key, to_key, amount):
+            xact = client.transaction()
+            xact.begin()
+            from_account = client.get(from_key, transaction=xact)
+            to_account = client.get(to_key, transaction=xact)
+            from_account['balance'] -= amount
+            to_account['balance'] += amount
+
+            xact.put(from_account)
+            xact.put(to_account)
+            xact.commit()
+
+        transfer_funds(Config.CLIENT, key1, key2, TRANSFER_AMOUNT)
+
+        after1 = Config.CLIENT.get(key1)
+        after2 = Config.CLIENT.get(key2)
+        self.assertEqual(after1['balance'], BEFORE_1 - TRANSFER_AMOUNT)
+        self.assertEqual(after2['balance'], BEFORE_2 + TRANSFER_AMOUNT)
 
     def test_failure_with_contention(self):
         contention_prop_name = 'baz'
