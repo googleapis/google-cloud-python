@@ -29,7 +29,19 @@ class TestSink(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def test_ctor(self):
+    def test_ctor_defaults(self):
+        FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
+        client = _Client(self.PROJECT)
+        sink = self._makeOne(self.SINK_NAME, client=client)
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, None)
+        self.assertEqual(sink.destination, None)
+        self.assertTrue(sink.client is client)
+        self.assertEqual(sink.project, self.PROJECT)
+        self.assertEqual(sink.full_name, FULL)
+        self.assertEqual(sink.path, '/%s' % (FULL,))
+
+    def test_ctor_explicit(self):
         FULL = 'projects/%s/sinks/%s' % (self.PROJECT, self.SINK_NAME)
         client = _Client(self.PROJECT)
         sink = self._makeOne(self.SINK_NAME, self.FILTER, self.DESTINATION_URI,

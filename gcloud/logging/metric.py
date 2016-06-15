@@ -28,16 +28,17 @@ class Metric(object):
 
     :type filter_: string
     :param filter_: the advanced logs filter expression defining the entries
-                   tracked by the metric.
+                   tracked by the metric.  If not passed, the instance should
+                   already exist, to be refreshed via :meth:`reload`.
 
     :type client: :class:`gcloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the metric (which requires a project).
 
     :type description: string
-    :param description: an optional description of the metric
+    :param description: an optional description of the metric.
     """
-    def __init__(self, name, filter_, client, description=''):
+    def __init__(self, name, filter_=None, client=None, description=''):
         self.name = name
         self._client = client
         self.filter_ = filter_

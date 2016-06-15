@@ -32,9 +32,9 @@ class TestMetric(unittest2.TestCase):
     def test_ctor_defaults(self):
         FULL = 'projects/%s/metrics/%s' % (self.PROJECT, self.METRIC_NAME)
         client = _Client(self.PROJECT)
-        metric = self._makeOne(self.METRIC_NAME, self.FILTER, client=client)
+        metric = self._makeOne(self.METRIC_NAME, client=client)
         self.assertEqual(metric.name, self.METRIC_NAME)
-        self.assertEqual(metric.filter_, self.FILTER)
+        self.assertEqual(metric.filter_, None)
         self.assertEqual(metric.description, '')
         self.assertTrue(metric.client is client)
         self.assertEqual(metric.project, self.PROJECT)

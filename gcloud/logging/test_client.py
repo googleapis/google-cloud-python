@@ -192,7 +192,19 @@ class TestClient(unittest2.TestCase):
             api._list_entries_called_with,
             ([PROJECT1, PROJECT2], FILTER, DESCENDING, PAGE_SIZE, TOKEN))
 
-    def test_sink(self):
+    def test_sink_defaults(self):
+        from gcloud.logging.sink import Sink
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        sink = client.sink(self.SINK_NAME)
+        self.assertTrue(isinstance(sink, Sink))
+        self.assertEqual(sink.name, self.SINK_NAME)
+        self.assertEqual(sink.filter_, None)
+        self.assertEqual(sink.destination, None)
+        self.assertTrue(sink.client is client)
+        self.assertEqual(sink.project, self.PROJECT)
+
+    def test_sink_explicit(self):
         from gcloud.logging.sink import Sink
         creds = _Credentials()
         client = self._makeOne(project=self.PROJECT, credentials=creds)
@@ -260,7 +272,20 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(api._list_sinks_called_with,
                          (PROJECT, PAGE_SIZE, TOKEN))
 
-    def test_metric(self):
+    def test_metric_defaults(self):
+        from gcloud.logging.metric import Metric
+        creds = _Credentials()
+
+        client_obj = self._makeOne(project=self.PROJECT, credentials=creds)
+        metric = client_obj.metric(self.METRIC_NAME)
+        self.assertTrue(isinstance(metric, Metric))
+        self.assertEqual(metric.name, self.METRIC_NAME)
+        self.assertEqual(metric.filter_, None)
+        self.assertEqual(metric.description, '')
+        self.assertTrue(metric.client is client_obj)
+        self.assertEqual(metric.project, self.PROJECT)
+
+    def test_metric_explicit(self):
         from gcloud.logging.metric import Metric
         creds = _Credentials()
 
