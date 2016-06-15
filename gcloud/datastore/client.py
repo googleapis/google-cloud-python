@@ -223,7 +223,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         if isinstance(transaction, Transaction):
             return transaction
 
-    def get(self, key, missing=None, deferred=None):
+    def get(self, key, missing=None, deferred=None, transaction=None):
         """Retrieve an entity from a single key (if it exists).
 
         .. note::
@@ -244,15 +244,19 @@ class Client(_BaseClient, _ClientProjectMixin):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
+        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
         :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
         """
         entities = self.get_multi(keys=[key], missing=missing,
-                                  deferred=deferred)
+                                  deferred=deferred, transaction=transaction)
         if entities:
             return entities[0]
 
-    def get_multi(self, keys, missing=None, deferred=None):
+    def get_multi(self, keys, missing=None, deferred=None, transaction=None):
         """Retrieve entities, along with their attributes.
 
         :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -268,6 +272,10 @@ class Client(_BaseClient, _ClientProjectMixin):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
+        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
@@ -281,7 +289,8 @@ class Client(_BaseClient, _ClientProjectMixin):
             if current_id != self.project:
                 raise ValueError('Keys do not match project')
 
-        transaction = self.current_transaction
+        if transaction is None:
+            transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
             connection=self.connection,

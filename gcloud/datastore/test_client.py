@@ -231,8 +231,10 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(_called_with[0][1]['keys'], [key])
         self.assertTrue(_called_with[0][1]['missing'] is None)
         self.assertTrue(_called_with[0][1]['deferred'] is None)
+        self.assertTrue(_called_with[0][1]['transaction'] is None)
 
     def test_get_hit(self):
+        TXN_ID = '123'
         _called_with = []
         _entity = object()
 
@@ -246,12 +248,13 @@ class TestClient(unittest2.TestCase):
 
         key, missing, deferred = object(), [], []
 
-        self.assertTrue(client.get(key, missing, deferred) is _entity)
+        self.assertTrue(client.get(key, missing, deferred, TXN_ID) is _entity)
 
         self.assertEqual(_called_with[0][0], ())
         self.assertEqual(_called_with[0][1]['keys'], [key])
         self.assertTrue(_called_with[0][1]['missing'] is missing)
         self.assertTrue(_called_with[0][1]['deferred'] is deferred)
+        self.assertEqual(_called_with[0][1]['transaction'], TXN_ID)
 
     def test_get_multi_no_keys(self):
         creds = object()
@@ -411,6 +414,40 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(new_key.path, PATH)
         self.assertEqual(list(result), ['foo'])
         self.assertEqual(result['foo'], 'Foo')
+
+    def test_get_multi_hit_w_transaction(self):
+        from gcloud.datastore.key import Key
+
+        TXN_ID = '123'
+        KIND = 'Kind'
+        ID = 1234
+        PATH = [{'kind': KIND, 'id': ID}]
+
+        # Make a found entity pb to be returned from mock backend.
+        entity_pb = _make_entity_pb(self.PROJECT, KIND, ID, 'foo', 'Foo')
+
+        # Make a connection to return the entity pb.
+        creds = object()
+        client = self._makeOne(credentials=creds)
+        client.connection._add_lookup_result([entity_pb])
+
+        key = Key(KIND, ID, project=self.PROJECT)
+        txn = client.transaction()
+        txn._id = TXN_ID
+        result, = client.get_multi([key], transaction=txn)
+        new_key = result.key
+
+        # Check the returned value is as expected.
+        self.assertFalse(new_key is key)
+        self.assertEqual(new_key.project, self.PROJECT)
+        self.assertEqual(new_key.path, PATH)
+        self.assertEqual(list(result), ['foo'])
+        self.assertEqual(result['foo'], 'Foo')
+
+        cw = client.connection._lookup_cw
+        self.assertEqual(len(cw), 1)
+        _, _, _, transaction_id = cw[0]
+        self.assertEqual(transaction_id, TXN_ID)
 
     def test_get_multi_hit_multiple_keys_same_project(self):
         from gcloud.datastore.key import Key
