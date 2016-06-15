@@ -1,12 +1,6 @@
 Column Families
 ===============
 
-.. warning::
-
-    gRPC is required for using the Cloud Bigtable API. As of May 2016,
-    ``grpcio`` is only supported in Python 2.7, so importing
-    :mod:`gcloud.bigtable` in other versions of Python will fail.
-
 When creating a
 :class:`ColumnFamily <gcloud.bigtable.column_family.ColumnFamily>`, it is
 possible to set garbage collection rules for expired data.

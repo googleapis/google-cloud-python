@@ -1,12 +1,6 @@
 Bigtable Row Filters
 ====================
 
-.. warning::
-
-    gRPC is required for using the Cloud Bigtable API. As of May 2016,
-    ``grpcio`` is only supported in Python 2.7, so importing
-    :mod:`gcloud.bigtable` in other versions of Python will fail.
-
 It is possible to use a
 :class:`RowFilter <gcloud.bigtable.row_filters.RowFilter>`
 when adding mutations to a
