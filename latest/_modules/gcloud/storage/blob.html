@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud 1ab2169 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud 437cc29 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1ab2169',
+        VERSION:     '437cc29',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 1ab2169 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 437cc29 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%201ab2169" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20437cc29" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (1ab2169)
+              Version History (437cc29)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -107,7 +107,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Google Cloud Storage blobs.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
@@ -119,6 +121,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_rfc3339_to_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_bytes_to_unicode</span>
 <span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">generate_signed_url</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
 <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
@@ -369,7 +373,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
 <span class="sd">        .. note::</span>
@@ -377,8 +381,32 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">           If the server-set property, :attr:`media_link`, is not yet</span>
 <span class="sd">           initialized, makes an additional API request to load it.</span>
 
+<span class="sd">         Downloading a file that has been encrypted with a `customer-supplied`_</span>
+<span class="sd">         encryption key::</span>
+
+<span class="sd">            &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">            &gt;&gt;&gt; from gcloud.storage import Blob</span>
+
+<span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
+<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket)</span>
+<span class="sd">            &gt;&gt;&gt; with open(&#39;/tmp/my-secure-file&#39;, &#39;wb&#39;) as file_obj:</span>
+<span class="sd">            &gt;&gt;&gt;     blob.download_to_file(file_obj,</span>
+<span class="sd">            ...                           encryption_key=encryption_key)</span>
+
+<span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
+<span class="sd">        least 32.</span>
+
+<span class="sd">        .. _customer-supplied: https://cloud.google.com/storage/docs/\</span>
+<span class="sd">                               encryption#customer-supplied</span>
+
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle to which to write the blob&#39;s data.</span>
+
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -398,7 +426,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
-        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">)</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">encryption_key</span><span class="p">:</span>
+            <span class="n">_set_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">download_url</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="c1"># Use the private ``_connection`` rather than the public</span>
         <span class="c1"># ``.connection``, since the public connection may be a batch. A</span>
@@ -408,11 +440,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># it has all three (http, API_BASE_URL and build_api_url).</span>
         <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        :type filename: string</span>
 <span class="sd">        :param filename: A filename to be passed to ``open``.</span>
+
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -421,13 +457,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
+                                  <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
         <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
+
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
@@ -438,7 +479,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">download_to_file</span><span class="p">(</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span>
+                              <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">string_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span></div>
 
     <span class="nd">@staticmethod</span>
@@ -451,8 +493,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">faux_response</span><span class="p">,</span> <span class="n">http_response</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
                                  <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
+    <span class="c1"># pylint: disable=too-many-locals</span>
 <div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                         <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                         <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                         <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -471,6 +515,25 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">           `lifecycle &lt;https://cloud.google.com/storage/docs/lifecycle&gt;`_</span>
 <span class="sd">           API documents for details.</span>
 
+<span class="sd">        Uploading a file with a `customer-supplied`_ encryption key::</span>
+
+<span class="sd">            &gt;&gt;&gt; from gcloud import storage</span>
+<span class="sd">            &gt;&gt;&gt; from gcloud.storage import Blob</span>
+
+<span class="sd">            &gt;&gt;&gt; client = storage.Client(project=&#39;my-project&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; bucket = client.get_bucket(&#39;my-bucket&#39;)</span>
+<span class="sd">            &gt;&gt;&gt; encryption_key = &#39;aa426195405adee2c8081bb9e7e74b19&#39;</span>
+<span class="sd">            &gt;&gt;&gt; blob = Blob(&#39;secure-data&#39;, bucket)</span>
+<span class="sd">            &gt;&gt;&gt; with open(&#39;my-file&#39;, &#39;rb&#39;) as my_file:</span>
+<span class="sd">            &gt;&gt;&gt;     blob.upload_from_file(my_file,</span>
+<span class="sd">            ...                           encryption_key=encryption_key)</span>
+
+<span class="sd">        The ``encryption_key`` should be a str or bytes with a length of at</span>
+<span class="sd">        least 32.</span>
+
+<span class="sd">        .. _customer-supplied: https://cloud.google.com/storage/docs/\</span>
+<span class="sd">                               encryption#customer-supplied</span>
+
 <span class="sd">        :type file_obj: file</span>
 <span class="sd">        :param file_obj: A file handle open for reading.</span>
 
@@ -483,6 +546,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                     If not provided, we&#39;ll try to guess the size using</span>
 <span class="sd">                     :func:`os.fstat`. (If the file handle is not from the</span>
 <span class="sd">                     filesystem this won&#39;t be possible.)</span>
+
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
 
 <span class="sd">        :type content_type: string or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
@@ -527,6 +594,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="s1">&#39;User-Agent&#39;</span><span class="p">:</span> <span class="n">connection</span><span class="o">.</span><span class="n">USER_AGENT</span><span class="p">,</span>
         <span class="p">}</span>
 
+        <span class="k">if</span> <span class="n">encryption_key</span><span class="p">:</span>
+            <span class="n">_set_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+
         <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
                         <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
@@ -566,9 +636,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                           <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>  <span class="c1"># pragma: NO COVER  Python3</span>
             <span class="n">response_content</span> <span class="o">=</span> <span class="n">response_content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div>
+    <span class="c1"># pylint: enable=too-many-locals</span>
 
 <div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                             <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -593,6 +664,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type content_type: string or ``NoneType``</span>
 <span class="sd">        :param content_type: Optional type of content being uploaded.</span>
 
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
+
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
@@ -603,10 +678,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
-                                  <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+                                  <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-                           <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                           <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -628,6 +703,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param content_type: Optional type of content being uploaded. Defaults</span>
 <span class="sd">                             to ``&#39;text/plain&#39;``.</span>
 
+<span class="sd">        :type encryption_key: str or bytes</span>
+<span class="sd">        :param encryption_key: Optional 32 byte encryption key for</span>
+<span class="sd">                               customer-supplied encryption.</span>
+
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: Optional. The client to use.  If not passed, falls back</span>
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
@@ -638,7 +717,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                               <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
-                              <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
+                              <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
@@ -931,6 +1010,24 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">object_name</span><span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bucket_name</span> <span class="o">=</span> <span class="n">bucket_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_relative_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_set_encryption_headers</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Builds customer encyrption key headers</span>
+
+<span class="sd">    :type key: str or bytes</span>
+<span class="sd">    :param key: 32 byte key to build request key and hash.</span>
+
+<span class="sd">    :type headers: dict</span>
+<span class="sd">    :param headers: dict of HTTP headers being sent in request.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">sha256_key</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="n">key_hash</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">sha256_key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="n">encoded_key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Algorithm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;AES256&#39;</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">encoded_key</span><span class="p">)</span>
+    <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;X-Goog-Encryption-Key-Sha256&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_bytes_to_unicode</span><span class="p">(</span><span class="n">key_hash</span><span class="p">)</span>
 </pre></div>
 
       </section><!-- end of .content -->
