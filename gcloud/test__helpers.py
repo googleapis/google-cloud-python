@@ -586,6 +586,27 @@ class Test__to_bytes(unittest2.TestCase):
         self.assertRaises(TypeError, self._callFUT, value)
 
 
+class Test__bytes_to_unicode(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import _bytes_to_unicode
+        return _bytes_to_unicode(*args, **kwargs)
+
+    def test_with_bytes(self):
+        value = b'bytes-val'
+        encoded_value = 'bytes-val'
+        self.assertEqual(self._callFUT(value), encoded_value)
+
+    def test_with_unicode(self):
+        value = u'string-val'
+        encoded_value = 'string-val'
+        self.assertEqual(self._callFUT(value), encoded_value)
+
+    def test_with_nonstring_type(self):
+        value = object()
+        self.assertRaises(ValueError, self._callFUT, value)
+
+
 class Test__pb_timestamp_to_datetime(unittest2.TestCase):
 
     def _callFUT(self, timestamp):
