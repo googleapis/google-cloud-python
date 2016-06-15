@@ -450,19 +450,16 @@ class TestDatastoreTransaction(TestDatastore):
         self.case_entities_to_delete.append(account1)
         self.case_entities_to_delete.append(account2)
 
-        def transfer_funds(client, from_key, to_key, amount):
-            xact = client.transaction()
-            xact.begin()
-            from_account = client.get(from_key, transaction=xact)
-            to_account = client.get(to_key, transaction=xact)
-            from_account['balance'] -= amount
-            to_account['balance'] += amount
+        xact = Config.CLIENT.transaction()
+        xact.begin()
+        from_account = Config.CLIENT.get(key1, transaction=xact)
+        to_account = Config.CLIENT.get(key2, transaction=xact)
+        from_account['balance'] -= TRANSFER_AMOUNT
+        to_account['balance'] += TRANSFER_AMOUNT
 
-            xact.put(from_account)
-            xact.put(to_account)
-            xact.commit()
-
-        transfer_funds(Config.CLIENT, key1, key2, TRANSFER_AMOUNT)
+        xact.put(from_account)
+        xact.put(to_account)
+        xact.commit()
 
         after1 = Config.CLIENT.get(key1)
         after2 = Config.CLIENT.get(key2)
