@@ -28,16 +28,19 @@ class Sink(object):
 
     :type filter_: string
     :param filter_: the advanced logs filter expression defining the entries
-                    exported by the sink.
+                    exported by the sink.  If not passed, the instance should
+                    already exist, to be refreshed via :meth:`reload`.
 
     :type destination: string
     :param destination: destination URI for the entries exported by the sink.
+                        If not passed, the instance should already exist, to
+                        be refreshed via :meth:`reload`.
 
     :type client: :class:`gcloud.logging.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the sink (which requires a project).
     """
-    def __init__(self, name, filter_, destination, client):
+    def __init__(self, name, filter_=None, destination=None, client=None):
         self.name = name
         self.filter_ = filter_
         self.destination = destination

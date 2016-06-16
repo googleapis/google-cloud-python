@@ -165,19 +165,23 @@ class Client(JSONClient):
                    for resource in resources]
         return entries, token
 
-    def sink(self, name, filter_, destination):
+    def sink(self, name, filter_=None, destination=None):
         """Creates a sink bound to the current client.
 
         :type name: str
         :param name: the name of the sink to be constructed.
 
         :type filter_: str
-        :param filter_: the advanced logs filter expression defining the
-                        entries exported by the sink.
+        :param filter_: (optional) the advanced logs filter expression
+                        defining the entries exported by the sink.  If not
+                        passed, the instance should already exist, to be
+                        refreshed via :meth:`Sink.reload`.
 
         :type destination: str
         :param destination: destination URI for the entries exported by
-                            the sink.
+                            the sink.  If not passed, the instance should
+                            already exist, to be refreshed via
+                            :meth:`Sink.reload`.
 
         :rtype: :class:`gcloud.logging.sink.Sink`
         :returns: Sink created with the current client.
@@ -211,7 +215,7 @@ class Client(JSONClient):
                  for resource in resources]
         return sinks, token
 
-    def metric(self, name, filter_, description=''):
+    def metric(self, name, filter_=None, description=''):
         """Creates a metric bound to the current client.
 
         :type name: str
@@ -219,10 +223,14 @@ class Client(JSONClient):
 
         :type filter_: str
         :param filter_: the advanced logs filter expression defining the
-                        entries tracked by the metric.
+                        entries tracked by the metric.  If not
+                        passed, the instance should already exist, to be
+                        refreshed via :meth:`Metric.reload`.
 
         :type description: str
         :param description: the description of the metric to be constructed.
+                            If not passed, the instance should already exist,
+                            to be refreshed via :meth:`Metric.reload`.
 
         :rtype: :class:`gcloud.logging.metric.Metric`
         :returns: Metric created with the current client.
