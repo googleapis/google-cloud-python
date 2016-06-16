@@ -18,6 +18,7 @@ This module is not part of the public API surface of `gcloud`.
 
 import calendar
 import datetime
+import json
 import os
 import re
 import socket
@@ -27,8 +28,10 @@ from threading import local as Local
 from google.protobuf import timestamp_pb2
 import six
 from six.moves.http_client import HTTPConnection
+from six.moves import configparser
 
 from gcloud.environment_vars import PROJECT
+from gcloud.environment_vars import CREDENTIALS
 
 try:
     from google.appengine.api import app_identity
@@ -48,6 +51,7 @@ _RFC3339_NANOS = re.compile(r"""
     (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
     Z                                        # Zulu
 """, re.VERBOSE)
+DEFAULT_CONFIGURATION_PATH = '~/.config/gcloud/configurations/config_default'
 
 
 class _LocalStack(Local):
@@ -129,13 +133,13 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     This effectively reduces the iterable types allowed to a very short
     whitelist: list and tuple.
 
-    :type arg_name: string
+    :type arg_name: str
     :param arg_name: Name of argument to use in error message.
 
-    :type tuple_or_list: sequence of string
+    :type tuple_or_list: sequence of str
     :param tuple_or_list: Sequence to be verified.
 
-    :rtype: list of string
+    :rtype: list of str
     :returns: The ``tuple_or_list`` passed in cast to a ``list``.
     :raises: class:`TypeError` if the ``tuple_or_list`` is not a tuple or
              list.
@@ -149,7 +153,7 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
 def _app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: App Engine application ID if running in App Engine,
               else ``None``.
     """
@@ -157,6 +161,42 @@ def _app_engine_id():
         return None
 
     return app_identity.get_application_id()
+
+
+def _file_project_id():
+    """Gets the project id from the credentials file if one is available.
+
+    :rtype: str or ``NoneType``
+    :returns: Project-ID from JSON credentials file if value exists,
+              else ``None``.
+    """
+    credentials_file_path = os.getenv(CREDENTIALS)
+    if credentials_file_path:
+        with open(credentials_file_path, 'rb') as credentials_file:
+            credentials_json = credentials_file.read()
+            credentials = json.loads(credentials_json.decode('utf-8'))
+            return credentials.get('project_id')
+
+
+def _default_service_project_id():
+    """Retrieves the project ID from the gcloud command line tool.
+
+    Files that cannot be opened with configparser are silently ignored; this is
+    designed so that you can specify a list of potential configuration file
+    locations.
+
+    :rtype: str or ``NoneType``
+    :returns: Project-ID from default configuration file else ``None``
+    """
+    full_config_path = os.path.expanduser(DEFAULT_CONFIGURATION_PATH)
+    win32_config_path = os.path.join(os.getenv('APPDATA', ''),
+                                     'gcloud', 'configurations',
+                                     'config_default')
+    config = configparser.RawConfigParser()
+    config.read([full_config_path, win32_config_path])
+
+    if config.has_section('core'):
+        return config.get('core', 'project')
 
 
 def _compute_engine_id():
@@ -172,7 +212,7 @@ def _compute_engine_id():
     See https://github.com/google/oauth2client/issues/93 for context about
     DNS latency.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Compute Engine project ID if the metadata service is available,
               else ``None``.
     """
@@ -204,17 +244,26 @@ def _determine_default_project(project=None):
     implicit environments are:
 
     * GCLOUD_PROJECT environment variable
+    * GOOGLE_APPLICATION_CREDENTIALS JSON file
+    * Get default service project from
+      ``$ gcloud beta auth application-default login``
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
-    :type project: string
+    :type project: str
     :param project: Optional. The project name to use as default.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Default project if it can be determined.
     """
     if project is None:
         project = _get_production_project()
+
+    if project is None:
+        project = _file_project_id()
+
+    if project is None:
+        project = _default_service_project_id()
 
     if project is None:
         project = _app_engine_id()
@@ -231,7 +280,7 @@ def _millis(when):
     :type when: :class:`datetime.datetime`
     :param when: the datetime to convert
 
-    :rtype: integer
+    :rtype: int
     :returns: milliseconds since epoch for ``when``
     """
     micros = _microseconds_from_datetime(when)
@@ -256,7 +305,7 @@ def _microseconds_from_datetime(value):
     :type value: :class:`datetime.datetime`
     :param value: The timestamp to convert.
 
-    :rtype: integer
+    :rtype: int
     :returns: The timestamp, in microseconds.
     """
     if not value.tzinfo:
@@ -273,7 +322,7 @@ def _millis_from_datetime(value):
     :type value: :class:`datetime.datetime`, or None
     :param value: the timestamp
 
-    :rtype: integer, or ``NoneType``
+    :rtype: int, or ``NoneType``
     :returns: the timestamp, in milliseconds, or None
     """
     if value is not None:
@@ -451,20 +500,20 @@ def _datetime_to_pb_timestamp(when):
 def _name_from_project_path(path, project, template):
     """Validate a URI path and get the leaf object's name.
 
-    :type path: string
+    :type path: str
     :param path: URI path containing the name.
 
-    :type project: string or NoneType
+    :type project: str or NoneType
     :param project: The project associated with the request. It is
                     included for validation purposes.  If passed as None,
                     disables validation.
 
-    :type template: string
+    :type template: str
     :param template: Template regex describing the expected form of the path.
                      The regex must have two named groups, 'project' and
                      'name'.
 
-    :rtype: string
+    :rtype: str
     :returns: Name parsed from ``path``.
     :raises: :class:`ValueError` if the ``path`` is ill-formed or if
              the project from the ``path`` does not agree with the

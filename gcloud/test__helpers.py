@@ -148,6 +148,85 @@ class Test__app_engine_id(unittest2.TestCase):
             self.assertEqual(dataset_id, APP_ENGINE_ID)
 
 
+class Test__get_credentials_file_project_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud._helpers import _file_project_id
+        return _file_project_id()
+
+    def setUp(self):
+        import os
+        self.old_env = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+
+    def tearDown(self):
+        import os
+        if (not self.old_env and
+                'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
+            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+
+    def test_success(self):
+        import os
+        import tempfile
+        with tempfile.NamedTemporaryFile(mode='w') as credential_file:
+            credential_file.write('{"project_id": "test-project-id"}')
+            credential_file.seek(0)
+            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_file.name
+
+            self.assertEqual('test-project-id', self._callFUT())
+
+    def test_no_environment(self):
+        self.assertEqual(None, self._callFUT())
+
+
+class Test__get_default_service_project_id(unittest2.TestCase):
+    temp_config_path = None
+    config_path = '.config/gcloud/configurations/'
+    config_file = 'config_default'
+
+    def setUp(self):
+        import tempfile
+        import os
+        self.temp_config_path = tempfile.gettempdir()
+
+        conf_path = os.path.join(self.temp_config_path, self.config_path)
+        os.makedirs(conf_path)
+        full_config_path = os.path.join(conf_path, self.config_file)
+
+        self.temp_config_file = full_config_path
+
+        with open(full_config_path, 'w') as conf_file:
+            conf_file.write('[core]\nproject = test-project-id')
+
+    def tearDown(self):
+        import os
+        import shutil
+
+        if self.temp_config_path:
+            shutil.rmtree(os.path.join(self.temp_config_path,
+                                       '.config'))
+
+    def callFUT(self, project_id=None):
+        from gcloud._helpers import _default_service_project_id
+        import os
+
+        def mock_expanduser(path=''):
+            if project_id and path.startswith('~'):
+                return self.temp_config_file
+            return ''
+
+        from gcloud._testing import _Monkey
+        with _Monkey(os.path, expanduser=mock_expanduser):
+            return _default_service_project_id()
+
+    def test_read_from_cli_info(self):
+        project_id = self.callFUT('test-project-id')
+        self.assertEqual('test-project-id', project_id)
+
+    def test_info_value_not_present(self):
+        project_id = self.callFUT()
+        self.assertEqual(None, project_id)
+
+
 class Test__compute_engine_id(unittest2.TestCase):
 
     def _callFUT(self):
@@ -219,7 +298,7 @@ class Test__determine_default_project(unittest2.TestCase):
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
-                                  project=None):
+                                  file_id=None, srv_id=None, project=None):
         from gcloud._testing import _Monkey
         from gcloud import _helpers
 
@@ -228,6 +307,14 @@ class Test__determine_default_project(unittest2.TestCase):
         def prod_mock():
             _callers.append('prod_mock')
             return prod
+
+        def file_id_mock():
+            _callers.append('file_id_mock')
+            return file_id
+
+        def srv_id_mock():
+            _callers.append('srv_id_mock')
+            return srv_id
 
         def gae_mock():
             _callers.append('gae_mock')
@@ -239,6 +326,8 @@ class Test__determine_default_project(unittest2.TestCase):
 
         patched_methods = {
             '_get_production_project': prod_mock,
+            '_file_project_id': file_id_mock,
+            '_default_service_project_id': srv_id_mock,
             '_app_engine_id': gae_mock,
             '_compute_engine_id': gce_mock,
         }
@@ -251,7 +340,8 @@ class Test__determine_default_project(unittest2.TestCase):
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
     def test_explicit(self):
         PROJECT = object()
@@ -269,13 +359,15 @@ class Test__determine_default_project(unittest2.TestCase):
         PROJECT = object()
         project, callers = self._determine_default_helper(gae=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock',
+                                   'srv_id_mock', 'gae_mock'])
 
     def test_gce(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(gce=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
 
 class Test__millis(unittest2.TestCase):
