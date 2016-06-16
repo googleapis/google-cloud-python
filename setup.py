@@ -25,7 +25,7 @@ GRPC_EXTRAS = [
     'gax-google-pubsub-v1',
 ]
 
-if sys.version_info[:2] == (2, 7):
+if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
     REQUIREMENTS.extend(GRPC_EXTRAS)
 
 setup(
