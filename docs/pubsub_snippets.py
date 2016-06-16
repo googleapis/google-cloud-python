@@ -412,19 +412,27 @@ def subscription_check_iam_permissions(client, to_delete):
     # [END subscription_check_iam_permissions]
 
 
+def _line_no(func):
+    code = getattr(func, '__code__', None) or getattr(func, 'func_code')
+    return code.co_firstlineno
+
+
 def _find_examples():
     funcs = [obj for obj in globals().values()
              if getattr(obj, '_snippet', False)]
-    for func in sorted(funcs, key=lambda f: f.func_code.co_firstlineno):
+    for func in sorted(funcs, key=_line_no):
         yield func
+
+
+def _name_and_doc(func):
+    return func.__name__, func.__doc__
 
 
 def main():
     client = Client()
     for example in _find_examples():
         to_delete = []
-        print('%-25s: %s' % (
-            example.func_name, example.func_doc))
+        print('%-25s: %s' % _name_and_doc(example))
         try:
             example(client, to_delete)
         except AssertionError as e:
