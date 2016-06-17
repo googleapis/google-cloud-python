@@ -4,6 +4,7 @@
   :caption: gcloud
 
   gcloud-api
+  gcloud-config
   gcloud-auth
 
 .. toctree::

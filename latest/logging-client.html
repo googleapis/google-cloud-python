@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Logging Client &mdash; gcloud 437cc29 documentation</title>
+    <title>Logging Client &mdash; gcloud e1f6a66 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '437cc29',
+        VERSION:     'e1f6a66',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 437cc29 documentation" href="index.html" />
+    <link rel="top" title="gcloud e1f6a66 documentation" href="index.html" />
     <link rel="next" title="Logger" href="logging-logger.html" />
     <link rel="prev" title="Using the API" href="logging-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20437cc29" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20e1f6a66" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (437cc29)
+              Version History (e1f6a66)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -251,7 +251,7 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 
 <dl class="method">
 <dt id="gcloud.logging.client.Client.metric">
-<code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
+<code class="descname">metric</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>description=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.metric"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.metric" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a metric bound to the current client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -260,8 +260,12 @@ value as <code class="docutils literal"><span class="pre">page_token</span></cod
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the metric to be constructed.</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
-entries tracked by the metric.</li>
-<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the description of the metric to be constructed.</li>
+entries tracked by the metric.  If not
+passed, the instance should already exist, to be
+refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
+<li><strong>description</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the description of the metric to be constructed.
+If not passed, the instance should already exist,
+to be refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Metric.reload()</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -285,7 +289,7 @@ entries tracked by the metric.</li>
 
 <dl class="method">
 <dt id="gcloud.logging.client.Client.sink">
-<code class="descname">sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.sink" title="Permalink to this definition">#</a></dt>
+<code class="descname">sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>destination=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client.sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client.sink" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates a sink bound to the current client.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -293,10 +297,14 @@ entries tracked by the metric.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the name of the sink to be constructed.</li>
-<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; the advanced logs filter expression defining the
-entries exported by the sink.</li>
+<li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (optional) the advanced logs filter expression
+defining the entries exported by the sink.  If not
+passed, the instance should already exist, to be
+refreshed via <code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
 <li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; destination URI for the entries exported by
-the sink.</li>
+the sink.  If not passed, the instance should
+already exist, to be refreshed via
+<code class="xref py py-meth docutils literal"><span class="pre">Sink.reload()</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -378,6 +386,7 @@ connection.</li>
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>

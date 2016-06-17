@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Sinks &mdash; gcloud 437cc29 documentation</title>
+    <title>Sinks &mdash; gcloud e1f6a66 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '437cc29',
+        VERSION:     'e1f6a66',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 437cc29 documentation" href="index.html" />
+    <link rel="top" title="gcloud e1f6a66 documentation" href="index.html" />
     <link rel="next" title="Using the API" href="monitoring-usage.html" />
     <link rel="prev" title="Metrics" href="logging-metric.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-sink%0ARelease%3A%20437cc29" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-sink%0ARelease%3A%20e1f6a66" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (437cc29)
+              Version History (e1f6a66)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -96,7 +96,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Define Logging API Sinks.</p>
 <dl class="class">
 <dt id="gcloud.logging.sink.Sink">
-<em class="property">class </em><code class="descclassname">gcloud.logging.sink.</code><code class="descname">Sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_</em>, <em>destination</em>, <em>client</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.logging.sink.</code><code class="descname">Sink</code><span class="sig-paren">(</span><em>name</em>, <em>filter_=None</em>, <em>destination=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/sink.html#Sink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.sink.Sink" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Sinks represent filtered exports for log entries.</p>
 <p>See:
@@ -108,8 +108,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the name of the sink</li>
 <li><strong>filter</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the advanced logs filter expression defining the entries
-exported by the sink.</li>
-<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; destination URI for the entries exported by the sink.</li>
+exported by the sink.  If not passed, the instance should
+already exist, to be refreshed via <a class="reference internal" href="#gcloud.logging.sink.Sink.reload" title="gcloud.logging.sink.Sink.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a>.</li>
+<li><strong>destination</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; destination URI for the entries exported by the sink.
+If not passed, the instance should already exist, to
+be refreshed via <a class="reference internal" href="#gcloud.logging.sink.Sink.reload" title="gcloud.logging.sink.Sink.reload"><code class="xref py py-meth docutils literal"><span class="pre">reload()</span></code></a>.</li>
 <li><strong>client</strong> (<a class="reference internal" href="logging-client.html#gcloud.logging.client.Client" title="gcloud.logging.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.logging.client.Client</span></code></a>) &#8211; A client which holds credentials and project configuration
 for the sink (which requires a project).</li>
 </ul>
@@ -266,6 +269,7 @@ from the client.</p>
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>

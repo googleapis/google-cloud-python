@@ -1,6 +1,12 @@
 Using the API
 =============
 
+.. warning::
+
+    `gRPC`_ is required for using the Cloud Bigtable API. As of May 2016,
+    `grpcio`_ is only supported in Python 2.7, so importing
+    :mod:`gcloud.bigtable` in other versions of Python will fail.
+
 API requests are sent to the `Google Cloud Bigtable`_ API via RPC over HTTP/2.
 In order to support this, we'll rely on `gRPC`_. We are working with the gRPC
 team to rapidly make the install story more user-friendly.
@@ -23,3 +29,4 @@ In the hierarchy of API concepts
 
 .. _Google Cloud Bigtable: https://cloud.google.com/bigtable/docs/
 .. _gRPC: http://www.grpc.io/
+.. _grpcio: https://pypi.python.org/pypi/grpcio

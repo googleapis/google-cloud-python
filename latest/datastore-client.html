@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datastore Client &mdash; gcloud 437cc29 documentation</title>
+    <title>Datastore Client &mdash; gcloud e1f6a66 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '437cc29',
+        VERSION:     'e1f6a66',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 437cc29 documentation" href="index.html" />
+    <link rel="top" title="gcloud e1f6a66 documentation" href="index.html" />
     <link rel="next" title="Entities" href="datastore-entities.html" />
     <link rel="prev" title="Authentication" href="gcloud-auth.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20437cc29" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+datastore-client%0ARelease%3A%20e1f6a66" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (437cc29)
+              Version History (e1f6a66)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -225,7 +225,7 @@ multiple keys in a commit request.</p>
 
 <dl class="method">
 <dt id="gcloud.datastore.client.Client.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve an entity from a single key (if it exists).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -244,6 +244,8 @@ returned by the backend as &#8220;missing&#8221; will be copied
 into it.</li>
 <li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the keys returned
 by the backend as &#8220;deferred&#8221; will be copied into it.</li>
+<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>) &#8211; (Optional) Transaction to use for read consistency.
+If not passed, uses current transaction, if set.</li>
 </ul>
 </td>
 </tr>
@@ -259,7 +261,7 @@ by the backend as &#8220;deferred&#8221; will be copied into it.</li>
 
 <dl class="method">
 <dt id="gcloud.datastore.client.Client.get_multi">
-<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
+<code class="descname">get_multi</code><span class="sig-paren">(</span><em>keys</em>, <em>missing=None</em>, <em>deferred=None</em>, <em>transaction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/datastore/client.html#Client.get_multi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.datastore.client.Client.get_multi" title="Permalink to this definition">#</a></dt>
 <dd><p>Retrieve entities, along with their attributes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -273,6 +275,8 @@ into it. If the list is not empty, an error will occur.</li>
 <li><strong>deferred</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) If a list is passed, the keys returned
 by the backend as &#8220;deferred&#8221; will be copied into it.
 If the list is not empty, an error will occur.</li>
+<li><strong>transaction</strong> (<a class="reference internal" href="datastore-transactions.html#gcloud.datastore.transaction.Transaction" title="gcloud.datastore.transaction.Transaction"><code class="xref py py-class docutils literal"><span class="pre">gcloud.datastore.transaction.Transaction</span></code></a>) &#8211; (Optional) Transaction to use for read consistency.
+If not passed, uses current transaction, if set.</li>
 </ul>
 </td>
 </tr>
@@ -652,6 +656,7 @@ enum and a count of the number of skipped results.</p>
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gcloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gcloud-auth.html">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>

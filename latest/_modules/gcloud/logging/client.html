@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.client &mdash; gcloud 437cc29 documentation</title>
+    <title>gcloud.logging.client &mdash; gcloud e1f6a66 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '437cc29',
+        VERSION:     'e1f6a66',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 437cc29 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud e1f6a66 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%20437cc29" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/client%0ARelease%3A%20e1f6a66" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (437cc29)
+              Version History (e1f6a66)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -258,19 +258,23 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                    <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">entries</span><span class="p">,</span> <span class="n">token</span></div>
 
-<div class="viewcode-block" id="Client.sink"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.sink">[docs]</a>    <span class="k">def</span> <span class="nf">sink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.sink"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.sink">[docs]</a>    <span class="k">def</span> <span class="nf">sink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a sink bound to the current client.</span>
 
 <span class="sd">        :type name: str</span>
 <span class="sd">        :param name: the name of the sink to be constructed.</span>
 
 <span class="sd">        :type filter_: str</span>
-<span class="sd">        :param filter_: the advanced logs filter expression defining the</span>
-<span class="sd">                        entries exported by the sink.</span>
+<span class="sd">        :param filter_: (optional) the advanced logs filter expression</span>
+<span class="sd">                        defining the entries exported by the sink.  If not</span>
+<span class="sd">                        passed, the instance should already exist, to be</span>
+<span class="sd">                        refreshed via :meth:`Sink.reload`.</span>
 
 <span class="sd">        :type destination: str</span>
 <span class="sd">        :param destination: destination URI for the entries exported by</span>
-<span class="sd">                            the sink.</span>
+<span class="sd">                            the sink.  If not passed, the instance should</span>
+<span class="sd">                            already exist, to be refreshed via</span>
+<span class="sd">                            :meth:`Sink.reload`.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.logging.sink.Sink`</span>
 <span class="sd">        :returns: Sink created with the current client.</span>
@@ -304,7 +308,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                  <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">sinks</span><span class="p">,</span> <span class="n">token</span></div>
 
-<div class="viewcode-block" id="Client.metric"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.metric"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.client.Client.metric">[docs]</a>    <span class="k">def</span> <span class="nf">metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a metric bound to the current client.</span>
 
 <span class="sd">        :type name: str</span>
@@ -312,10 +316,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type filter_: str</span>
 <span class="sd">        :param filter_: the advanced logs filter expression defining the</span>
-<span class="sd">                        entries tracked by the metric.</span>
+<span class="sd">                        entries tracked by the metric.  If not</span>
+<span class="sd">                        passed, the instance should already exist, to be</span>
+<span class="sd">                        refreshed via :meth:`Metric.reload`.</span>
 
 <span class="sd">        :type description: str</span>
 <span class="sd">        :param description: the description of the metric to be constructed.</span>
+<span class="sd">                            If not passed, the instance should already exist,</span>
+<span class="sd">                            to be refreshed via :meth:`Metric.reload`.</span>
 
 <span class="sd">        :rtype: :class:`gcloud.logging.metric.Metric`</span>
 <span class="sd">        :returns: Metric created with the current client.</span>
@@ -355,6 +363,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <p class="caption"><span class="caption-text">gcloud</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../gcloud-api.html">Shared Core Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gcloud-config.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gcloud-auth.html">Authentication</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Datastore</span></p>
