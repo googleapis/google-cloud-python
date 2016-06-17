@@ -186,11 +186,9 @@ class Test__get_default_service_project_id(unittest2.TestCase):
     config_file = 'config_default'
 
     def setUp(self):
+        import tempfile
         import os
-        from gcloud._testing import _NamedTemporaryFile
-
-        with _NamedTemporaryFile() as temp:
-            self.temp_config_path = os.path.dirname(temp.name)
+        self.temp_config_path = tempfile.gettempdir()
 
         conf_path = os.path.join(self.temp_config_path, self.config_path)
         os.makedirs(conf_path)
