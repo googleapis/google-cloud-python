@@ -207,7 +207,30 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         response = _PublishResponsePB([MSGID])
-        gax_api = _GAXPublisherAPI(_publish_response=response)
+        event = _Event(response)
+        event.wait()  # already received result
+        gax_api = _GAXPublisherAPI(_publish_response=event)
+        api = self._makeOne(gax_api)
+
+        resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
+
+        self.assertEqual(resource, [MSGID])
+        topic_path, message_pbs, options = gax_api._publish_called_with
+        self.assertEqual(topic_path, self.TOPIC_PATH)
+        message_pb, = message_pbs
+        self.assertEqual(message_pb.data, B64)
+        self.assertEqual(message_pb.attributes, {})
+        self.assertEqual(options, None)
+
+    def test_topic_publish_hit_with_wait(self):
+        import base64
+        PAYLOAD = b'This is the message text'
+        B64 = base64.b64encode(PAYLOAD).decode('ascii')
+        MSGID = 'DEADBEEF'
+        MESSAGE = {'data': B64, 'attributes': {}}
+        response = _PublishResponsePB([MSGID])
+        event = _Event(response)
+        gax_api = _GAXPublisherAPI(_publish_response=event)
         api = self._makeOne(gax_api)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -897,10 +920,22 @@ class _PageIterator(object):
         self.page_token = page_token
 
     def next(self):
-        if self._items is None:
-            raise StopIteration()
         items, self._items = self._items, None
         return items
+
+
+class _Event(object):
+
+    result = None
+
+    def __init__(self, result):
+        self._result = result
+
+    def is_set(self):
+        return self.result is not None
+
+    def wait(self, *_):
+        self.result = self._result
 
 
 class _TopicPB(object):

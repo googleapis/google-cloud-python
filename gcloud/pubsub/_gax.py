@@ -165,12 +165,14 @@ class _PublisherAPI(object):
         message_pbs = [_message_pb_from_dict(message)
                        for message in messages]
         try:
-            response = self._gax_api.publish(topic_path, message_pbs)
+            event = self._gax_api.publish(topic_path, message_pbs)
+            if not event.is_set():
+                event.wait()
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
-        return response.message_ids
+        return event.result.message_ids
 
     def topic_list_subscriptions(self, topic_path, page_size=0,
                                  page_token=None):
