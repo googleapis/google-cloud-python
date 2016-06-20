@@ -181,14 +181,14 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 
 
 class Test__get_default_service_project_id(unittest2.TestCase):
-    temp_config_path = None
     config_path = '.config/gcloud/configurations/'
     config_file = 'config_default'
 
     def setUp(self):
         import tempfile
         import os
-        self.temp_config_path = tempfile.gettempdir()
+
+        self.temp_config_path = tempfile.mkdtemp()
 
         conf_path = os.path.join(self.temp_config_path, self.config_path)
         os.makedirs(conf_path)
@@ -200,23 +200,20 @@ class Test__get_default_service_project_id(unittest2.TestCase):
             conf_file.write('[core]\nproject = test-project-id')
 
     def tearDown(self):
-        import os
         import shutil
 
-        if self.temp_config_path:
-            shutil.rmtree(os.path.join(self.temp_config_path,
-                                       '.config'))
+        shutil.rmtree(self.temp_config_path)
 
     def callFUT(self, project_id=None):
-        from gcloud._helpers import _default_service_project_id
         import os
+        from gcloud._helpers import _default_service_project_id
+        from gcloud._testing import _Monkey
 
         def mock_expanduser(path=''):
             if project_id and path.startswith('~'):
                 return self.temp_config_file
             return ''
 
-        from gcloud._testing import _Monkey
         with _Monkey(os.path, expanduser=mock_expanduser):
             return _default_service_project_id()
 
