@@ -54,7 +54,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
         TOKEN = 'TOKEN'
-        response = _ListTopicsResponsePB([_TopicPB(self.TOPIC_PATH)], TOKEN)
+        response = _PageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
@@ -66,19 +66,22 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertEqual(topic['name'], self.TOPIC_PATH)
         self.assertEqual(next_token, TOKEN)
 
-        name, options = gax_api._list_topics_called_with
+        name, page_size, options = gax_api._list_topics_called_with
         self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(page_size, 0)
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_list_topics_with_paging(self):
+        SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _ListTopicsResponsePB(
+        response = _PageIterator(
             [_TopicPB(self.TOPIC_PATH)], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
-        topics, next_token = api.list_topics(self.PROJECT, page_token=TOKEN)
+        topics, next_token = api.list_topics(
+            self.PROJECT, page_size=SIZE, page_token=TOKEN)
 
         self.assertEqual(len(topics), 1)
         topic = topics[0]
@@ -86,8 +89,9 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertEqual(topic['name'], self.TOPIC_PATH)
         self.assertEqual(next_token, NEW_TOKEN)
 
-        name, options = gax_api._list_topics_called_with
+        name, page_size, options = gax_api._list_topics_called_with
         self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(page_size, SIZE)
         self.assertEqual(options.page_token, TOKEN)
 
     def test_topic_create(self):
@@ -256,7 +260,8 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        response = _ListTopicSubscriptionsResponsePB([self.SUB_PATH])
+        response = _PageIterator([
+            {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], None)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         api = self._makeOne(gax_api)
 
@@ -270,20 +275,23 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, None)
 
-        topic_path, options = gax_api._list_topic_subscriptions_called_with
+        topic_path, page_size, options = (
+            gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(page_size, 0)
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_topic_list_subscriptions_with_paging(self):
+        SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _ListTopicSubscriptionsResponsePB(
-            [self.SUB_PATH], NEW_TOKEN)
+        response = _PageIterator([
+            {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         api = self._makeOne(gax_api)
 
         subscriptions, next_token = api.topic_list_subscriptions(
-            self.TOPIC_PATH, page_token=TOKEN)
+            self.TOPIC_PATH, page_size=SIZE, page_token=TOKEN)
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
@@ -292,8 +300,10 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertEqual(subscription['topic'], self.TOPIC_PATH)
         self.assertEqual(next_token, NEW_TOKEN)
 
-        name, options = gax_api._list_topic_subscriptions_called_with
+        name, page_size, options = (
+            gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(name, self.TOPIC_PATH)
+        self.assertEqual(page_size, SIZE)
         self.assertEqual(options.page_token, TOKEN)
 
     def test_topic_list_subscriptions_miss(self):
@@ -305,8 +315,10 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         with self.assertRaises(NotFound):
             api.topic_list_subscriptions(self.TOPIC_PATH)
 
-        topic_path, options = gax_api._list_topic_subscriptions_called_with
+        topic_path, page_size, options = (
+            gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(page_size, 0)
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_topic_list_subscriptions_error(self):
@@ -318,8 +330,10 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         with self.assertRaises(GaxError):
             api.topic_list_subscriptions(self.TOPIC_PATH)
 
-        topic_path, options = gax_api._list_topic_subscriptions_called_with
+        topic_path, page_size, options = (
+            gax_api._list_topic_subscriptions_called_with)
         self.assertEqual(topic_path, self.TOPIC_PATH)
+        self.assertEqual(page_size, 0)
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
 
@@ -339,8 +353,8 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        response = _ListSubscriptionsResponsePB([_SubscriptionPB(
-            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)])
+        response = _PageIterator([_SubscriptionPB(
+            self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], None)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
 
@@ -356,20 +370,22 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertEqual(subscription['ackDeadlineSeconds'], 0)
         self.assertEqual(next_token, None)
 
-        name, options = gax_api._list_subscriptions_called_with
+        name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(page_size, 0)
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
+        SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _ListSubscriptionsResponsePB([_SubscriptionPB(
+        response = _PageIterator([_SubscriptionPB(
             self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
 
         subscriptions, next_token = api.list_subscriptions(
-            self.PROJECT, page_token=TOKEN)
+            self.PROJECT, page_size=SIZE, page_token=TOKEN)
 
         self.assertEqual(len(subscriptions), 1)
         subscription = subscriptions[0]
@@ -381,8 +397,9 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertEqual(subscription['ackDeadlineSeconds'], 0)
         self.assertEqual(next_token, NEW_TOKEN)
 
-        name, options = gax_api._list_subscriptions_called_with
+        name, page_size, options = gax_api._list_subscriptions_called_with
         self.assertEqual(name, self.PROJECT_PATH)
+        self.assertEqual(page_size, 23)
         self.assertEqual(options.page_token, TOKEN)
 
     def test_subscription_create(self):
@@ -743,8 +760,8 @@ class _GAXPublisherAPI(_GaxAPIBase):
 
     _create_topic_conflict = False
 
-    def list_topics(self, name, options):
-        self._list_topics_called_with = name, options
+    def list_topics(self, name, page_size, options):
+        self._list_topics_called_with = name, page_size, options
         return self._list_topics_response
 
     def create_topic(self, name, options=None):
@@ -784,9 +801,9 @@ class _GAXPublisherAPI(_GaxAPIBase):
         except AttributeError:
             raise GaxError('miss', self._make_grpc_not_found())
 
-    def list_topic_subscriptions(self, topic, options=None):
+    def list_topic_subscriptions(self, topic, page_size, options=None):
         from google.gax.errors import GaxError
-        self._list_topic_subscriptions_called_with = topic, options
+        self._list_topic_subscriptions_called_with = topic, page_size, options
         if self._random_gax_error:
             raise GaxError('error')
         try:
@@ -802,8 +819,8 @@ class _GAXSubscriberAPI(_GaxAPIBase):
     _acknowledge_ok = False
     _modify_ack_deadline_ok = False
 
-    def list_subscriptions(self, project, options=None):
-        self._list_subscriptions_called_with = (project, options)
+    def list_subscriptions(self, project, page_size, options=None):
+        self._list_subscriptions_called_with = (project, page_size, options)
         return self._list_subscriptions_response
 
     def create_subscription(self, name, topic,
@@ -873,6 +890,19 @@ class _GAXSubscriberAPI(_GaxAPIBase):
             raise GaxError('miss', self._make_grpc_not_found())
 
 
+class _PageIterator(object):
+
+    def __init__(self, items, page_token):
+        self._items = items
+        self.page_token = page_token
+
+    def next(self):
+        if self._items is None:
+            raise StopIteration()
+        items, self._items = self._items, None
+        return items
+
+
 class _TopicPB(object):
 
     def __init__(self, name):
@@ -883,20 +913,6 @@ class _PublishResponsePB(object):
 
     def __init__(self, message_ids):
         self.message_ids = message_ids
-
-
-class _ListTopicsResponsePB(object):
-
-    def __init__(self, topic_pbs, next_page_token=None):
-        self.topics = topic_pbs
-        self.next_page_token = next_page_token
-
-
-class _ListTopicSubscriptionsResponsePB(object):
-
-    def __init__(self, subscriptions, next_page_token=None):
-        self.subscriptions = subscriptions
-        self.next_page_token = next_page_token
 
 
 class _PushConfigPB(object):
@@ -933,10 +949,3 @@ class _SubscriptionPB(object):
         self.topic = topic
         self.push_config = _PushConfigPB(push_endpoint)
         self.ack_deadline_seconds = ack_deadline_seconds
-
-
-class _ListSubscriptionsResponsePB(object):
-
-    def __init__(self, subscription_pbs, next_page_token=None):
-        self.subscriptions = subscription_pbs
-        self.next_page_token = next_page_token

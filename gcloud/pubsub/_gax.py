@@ -46,7 +46,7 @@ class _PublisherAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_topics(self, project, page_token=None):
+    def list_topics(self, project, page_size=0, page_token=None):
         """List topics for the project associated with this API.
 
         See:
@@ -54,6 +54,10 @@ class _PublisherAPI(object):
 
         :type project: string
         :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
 
         :type page_token: string
         :param page_token: opaque marker for the next "page" of topics. If not
@@ -68,9 +72,11 @@ class _PublisherAPI(object):
         """
         options = _build_paging_options(page_token)
         path = 'projects/%s' % (project,)
-        response = self._gax_api.list_topics(path, options)
-        topics = [{'name': topic_pb.name} for topic_pb in response.topics]
-        return topics, response.next_page_token
+        page_iter = self._gax_api.list_topics(
+            path, page_size=page_size, options=options)
+        topics = [{'name': topic_pb.name} for topic_pb in page_iter.next()]
+        token = page_iter.page_token or None
+        return topics, token
 
     def topic_create(self, topic_path):
         """API call:  create a topic
@@ -166,7 +172,8 @@ class _PublisherAPI(object):
             raise
         return response.message_ids
 
-    def topic_list_subscriptions(self, topic_path, page_token=None):
+    def topic_list_subscriptions(self, topic_path, page_size=0,
+                                 page_token=None):
         """API call:  list subscriptions bound to a topic
 
         See:
@@ -175,6 +182,10 @@ class _PublisherAPI(object):
         :type topic_path: string
         :param topic_path: fully-qualified path of the topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
+
+        :type page_size: int
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
 
         :type page_token: string
         :param page_token: opaque marker for the next "page" of subscriptions.
@@ -189,15 +200,15 @@ class _PublisherAPI(object):
         """
         options = _build_paging_options(page_token)
         try:
-            response = self._gax_api.list_topic_subscriptions(
-                topic_path, options)
+            page_iter = self._gax_api.list_topic_subscriptions(
+                topic_path, page_size=page_size, options=options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
-        subs = [{'topic': topic_path, 'name': subscription}
-                for subscription in response.subscriptions]
-        return subs, response.next_page_token
+        subs = page_iter.next()
+        token = page_iter.page_token or None
+        return subs, token
 
 
 class _SubscriberAPI(object):
@@ -209,7 +220,7 @@ class _SubscriberAPI(object):
     def __init__(self, gax_api):
         self._gax_api = gax_api
 
-    def list_subscriptions(self, project, page_token=None):
+    def list_subscriptions(self, project, page_size=0, page_token=None):
         """List subscriptions for the project associated with this API.
 
         See:
@@ -217,6 +228,10 @@ class _SubscriberAPI(object):
 
         :type project: string
         :param project: project ID
+
+        :type page_size: int
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
 
         :type page_token: string
         :param page_token: opaque marker for the next "page" of subscriptions.
@@ -231,10 +246,12 @@ class _SubscriberAPI(object):
         """
         options = _build_paging_options(page_token)
         path = 'projects/%s' % (project,)
-        response = self._gax_api.list_subscriptions(path, options)
+        page_iter = self._gax_api.list_subscriptions(
+            path, page_size=page_size, options=options)
         subscriptions = [_subscription_pb_to_mapping(sub_pb)
-                         for sub_pb in response.subscriptions]
-        return subscriptions, response.next_page_token
+                         for sub_pb in page_iter.next()]
+        token = page_iter.page_token or None
+        return subscriptions, token
 
     def subscription_create(self, subscription_path, topic_path,
                             ack_deadline=None, push_endpoint=None):
