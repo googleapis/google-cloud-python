@@ -15,11 +15,35 @@
 """Log entries within the Google Cloud Logging API."""
 
 import json
+import re
 
 from google.protobuf.json_format import Parse
 
+from gcloud._helpers import _name_from_project_path
 from gcloud._helpers import _rfc3339_nanos_to_datetime
-from gcloud.logging._helpers import logger_name_from_path
+
+
+_LOGGER_TEMPLATE = re.compile(r"""
+    projects/            # static prefix
+    (?P<project>[^/]+)   # initial letter, wordchars + hyphen
+    /logs/               # static midfix
+    (?P<name>[^/]+)      # initial letter, wordchars + allowed punc
+""", re.VERBOSE)
+
+
+def logger_name_from_path(path):
+    """Validate a logger URI path and get the logger name.
+
+    :type path: str
+    :param path: URI path for a logger API request.
+
+    :rtype: str
+    :returns: Logger name parsed from ``path``.
+    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
+             the project from the ``path`` does not agree with the
+             ``project`` passed in.
+    """
+    return _name_from_project_path(path, None, _LOGGER_TEMPLATE)
 
 
 class _BaseEntry(object):
