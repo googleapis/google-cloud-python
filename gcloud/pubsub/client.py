@@ -39,7 +39,7 @@ else:
     _HAVE_GAX = True
 
 
-_USE_GAX = _HAVE_GAX and os.environ.get('GCLOUD_DISABLE_GAX') is None
+_USE_GAX = _HAVE_GAX and (os.environ.get('GCLOUD_ENABLE_GAX') is not None)
 
 
 class Client(JSONClient):
