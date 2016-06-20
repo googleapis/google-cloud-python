@@ -217,8 +217,8 @@ class _PublisherAPI(object):
                            ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
 
         :type page_size: int
-        :param page_size: maximum number of topics to return, If not passed,
-                          defaults to a value set by the API.
+        :param page_size: maximum number of subscriptions to return, If not
+                          passed, defaults to a value set by the API.
 
         :type page_token: string
         :param page_token: opaque marker for the next "page" of topics. If not
