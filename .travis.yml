@@ -9,6 +9,7 @@ script:
   - tox -e py26
   - tox -e py27
   - tox -e py34
+  - tox -e cover
   - tox -e lint
   - tox -e system-tests
   - tox -e system-tests3
