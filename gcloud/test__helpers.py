@@ -166,13 +166,15 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 
     def test_success(self):
         import os
-        import tempfile
-        with tempfile.NamedTemporaryFile(mode='w') as credential_file:
-            credential_file.write('{"project_id": "test-project-id"}')
-            credential_file.seek(0)
-            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_file.name
+        from gcloud._testing import _NamedTemporaryFile
 
-            self.assertEqual('test-project-id', self._callFUT())
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, mode='w') as creds_file:
+                creds_file.write('{"project_id": "test-project-id"}')
+                creds_file.seek(0)
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds_file.name
+
+                self.assertEqual('test-project-id', self._callFUT())
 
     def test_no_environment(self):
         self.assertEqual(None, self._callFUT())
