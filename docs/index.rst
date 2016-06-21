@@ -110,6 +110,7 @@
   logging-entries
   logging-metric
   logging-sink
+  logging-handlers
 
 .. toctree::
   :maxdepth: 0
