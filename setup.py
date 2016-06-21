@@ -23,6 +23,7 @@ GRPC_EXTRAS = [
     'grpcio >= 0.14.0',
     'google-gax >= 0.12.0',
     'gax-google-pubsub-v1',
+    'gax-google-logging-v2',
 ]
 
 if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
