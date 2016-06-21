@@ -15,6 +15,27 @@
 import unittest2
 
 
+class Test_logger_name_from_path(unittest2.TestCase):
+
+    def _callFUT(self, path):
+        from gcloud.logging.entries import logger_name_from_path
+        return logger_name_from_path(path)
+
+    def test_w_simple_name(self):
+        LOGGER_NAME = 'LOGGER_NAME'
+        PROJECT = 'my-project-1234'
+        PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
+        logger_name = self._callFUT(PATH)
+        self.assertEqual(logger_name, LOGGER_NAME)
+
+    def test_w_name_w_all_extras(self):
+        LOGGER_NAME = 'LOGGER_NAME-part.one~part.two%part-three'
+        PROJECT = 'my-project-1234'
+        PATH = 'projects/%s/logs/%s' % (PROJECT, LOGGER_NAME)
+        logger_name = self._callFUT(PATH)
+        self.assertEqual(logger_name, LOGGER_NAME)
+
+
 class Test_BaseEntry(unittest2.TestCase):
 
     PROJECT = 'PROJECT'
