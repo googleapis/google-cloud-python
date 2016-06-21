@@ -383,3 +383,45 @@ Delete a sink:
    >>> sink.delete()  # API call
    >>> sink.exists()  # API call
    False
+
+Integration with Python logging module
+---------------------------------------------
+
+
+It's possible to tie the Python :mod:`logging` module directly into Google Cloud Logging. To use it,
+create a :class:`CloudLoggingHandler <gcloud.logging.CloudLoggingHandler>` instance from your
+Logging client.
+
+.. doctest::
+
+    >>> import logging
+    >>> import gcloud.logging # Don't conflict with standard logging
+    >>> from gcloud.logging.handlers import CloudLoggingHandler
+    >>> client = gcloud.logging.Client()
+    >>> handler = CloudLoggingHandler(client)
+    >>> cloud_logger = logging.getLogger('cloudLogger')
+    >>> cloud_logger.setLevel(logging.INFO) # defaults to WARN
+    >>> cloud_logger.addHandler(handler)
+    >>> cloud_logger.error('bad news') # API call
+
+.. note::
+
+    This handler currently only supports a synchronous API call, which means each logging statement
+    that uses this handler will require an API call.
+
+It is also possible to attach the handler to the root Python logger, so that for example a plain
+`logging.warn` call would be sent to Cloud Logging, as well as any other loggers created. However,
+you must avoid infinite recursion from the logging calls the client itself makes. A helper
+method :meth:`setup_logging <gcloud.logging.handlers.setup_logging>` is provided to configure
+this automatically:
+
+.. doctest::
+
+    >>> import logging
+    >>> import gcloud.logging # Don't conflict with standard logging
+    >>> from gcloud.logging.handlers import CloudLoggingHandler, setup_logging
+    >>> client = gcloud.logging.Client()
+    >>> handler = CloudLoggingHandler(client)
+    >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN
+    >>> setup_logging(handler)
+    >>> logging.error('bad news') # API call

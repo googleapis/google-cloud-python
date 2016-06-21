@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import unittest
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import logging
+import gcloud.logging
+import gcloud.logging.handlers
 
 from retry import RetryErrors
 from retry import RetryResult
@@ -54,19 +56,21 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = logging.Client()
+    Config.CLIENT = gcloud.logging.Client()
 
 
 class TestLogging(unittest.TestCase):
 
     def setUp(self):
         self.to_delete = []
+        self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
         from gcloud.exceptions import NotFound
         retry = RetryErrors(NotFound)
         for doomed in self.to_delete:
             retry(doomed.delete)()
+        logging.getLogger().handlers = self._handlers_cache[:]
 
     @staticmethod
     def _logger_name():
@@ -131,6 +135,35 @@ class TestLogging(unittest.TestCase):
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+
+    def test_log_handler(self):
+        LOG_MESSAGE = 'It was the best of times.'
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(self._logger_name())
+        self.to_delete.append(logger)
+
+        handler = gcloud.logging.handlers.CloudLoggingHandler(Config.CLIENT)
+        cloud_logger = logging.getLogger(self._logger_name())
+        cloud_logger.addHandler(handler)
+        cloud_logger.warn(LOG_MESSAGE)
+
+        entries, _ = self._list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, {'message': LOG_MESSAGE})
+
+    def test_log_root_handler(self):
+        LOG_MESSAGE = 'It was the best of times.'
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger('root')
+        self.to_delete.append(logger)
+
+        handler = gcloud.logging.handlers.CloudLoggingHandler(Config.CLIENT)
+        gcloud.logging.handlers.setup_logging(handler)
+        logging.warn(LOG_MESSAGE)
+
+        entries, _ = self._list_entries(logger)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, {'message': LOG_MESSAGE})
 
     def test_log_struct_w_metadata(self):
         JSON_PAYLOAD = {
