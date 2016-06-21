@@ -160,7 +160,8 @@ Running System Tests
     can be downloaded directly from the developer's console by clicking
     "Generate new JSON key". See private key
     `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for more details.
+    for more details. In order for Logging system tests to work, the Service Account
+    will also have to be made a project Owner. This can be changed under "IAM & Admin".
 
 - Examples of these can be found in ``system_tests/local_test_setup.sample``. We
   recommend copying this to ``system_tests/local_test_setup``, editing the
