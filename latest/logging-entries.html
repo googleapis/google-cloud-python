@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Entries &mdash; gcloud 22bf022 documentation</title>
+    <title>Entries &mdash; gcloud 7407556 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '22bf022',
+        VERSION:     '7407556',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 22bf022 documentation" href="index.html" />
+    <link rel="top" title="gcloud 7407556 documentation" href="index.html" />
     <link rel="next" title="Metrics" href="logging-metric.html" />
     <link rel="prev" title="Logger" href="logging-logger.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-entries%0ARelease%3A%2022bf022" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-entries%0ARelease%3A%207407556" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (22bf022)
+              Version History (7407556)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -134,6 +134,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Entry created with <code class="docutils literal"><span class="pre">textPayload</span></code>.</p>
 <p>See:
 <a class="reference external" href="https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry">https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/LogEntry</a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gcloud.logging.entries.logger_name_from_path">
+<code class="descclassname">gcloud.logging.entries.</code><code class="descname">logger_name_from_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/entries.html#logger_name_from_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.entries.logger_name_from_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate a logger URI path and get the logger name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; URI path for a logger API request.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)">str</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Logger name parsed from <code class="docutils literal"><span class="pre">path</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code> if the <code class="docutils literal"><span class="pre">path</span></code> is ill-formed or if
+the project from the <code class="docutils literal"><span class="pre">path</span></code> does not agree with the
+<code class="docutils literal"><span class="pre">project</span></code> passed in.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
