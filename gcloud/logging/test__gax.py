@@ -425,7 +425,7 @@ class _HTTPRequestPB(object):
     cache_hit = False
     request_size = 256
     response_size = 1024
-    remote_ip = '192.168.1.254'
+    remote_ip = '1.2.3.4'
 
 
 class _LogEntryOperationPB(object):
