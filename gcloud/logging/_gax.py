@@ -23,6 +23,7 @@ from google.gax.errors import GaxError
 from google.gax.grpc import exc_to_code
 from google.logging.type.log_severity_pb2 import LogSeverity
 from google.logging.v2.logging_config_pb2 import LogSink
+from google.logging.v2.logging_metrics_pb2 import LogMetric
 from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
 from grpc.beta.interfaces import StatusCode
@@ -254,6 +255,140 @@ class _SinksAPI(object):
             raise
 
 
+class _MetricsAPI(object):
+    """Helper mapping sink-related APIs.
+
+    :type gax_api:
+        :class:`google.logging.v2.metrics_service_v2_api.MetricsServiceV2Api`
+    :param gax_api: API object used to make GAX requests.
+    """
+    def __init__(self, gax_api):
+        self._gax_api = gax_api
+
+    def list_metrics(self, project, page_size=0, page_token=None):
+        """List metrics for the project associated with this client.
+
+        :type project: string
+        :param project: ID of the project whose metrics are to be listed.
+
+        :type page_size: int
+        :param page_size: maximum number of metrics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of metrics. If not
+                           passed, the API will return the first page of
+                           metrics.
+
+        :rtype: tuple, (list, str)
+        :returns: list of mappings, plus a "next page token" string:
+                  if not None, indicates that more metrics can be retrieved
+                  with another call (pass that value as ``page_token``).
+        """
+        options = _build_paging_options(page_token)
+        page_iter = self._gax_api.list_log_metrics(project, page_size, options)
+        metrics = [_log_metric_pb_to_mapping(log_metric_pb)
+                   for log_metric_pb in page_iter.next()]
+        token = page_iter.page_token or None
+        return metrics, token
+
+    def metric_create(self, project, metric_name, filter_, description):
+        """API call:  create a metric resource.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics/create
+
+        :type project: string
+        :param project: ID of the project in which to create the metric.
+
+        :type metric_name: string
+        :param metric_name: the name of the metric
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries exported by the metric.
+
+        :type description: string
+        :param description: description of the metric.
+        """
+        options = None
+        parent = 'projects/%s' % (project,)
+        path = 'projects/%s/metrics/%s' % (project, metric_name)
+        metric_pb = LogMetric(name=path, filter=filter_,
+                              description=description)
+        try:
+            self._gax_api.create_log_metric(parent, metric_pb, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                raise Conflict(path)
+            raise
+
+    def metric_get(self, project, metric_name):
+        """API call:  retrieve a metric resource.
+
+        :type project: string
+        :param project: ID of the project containing the metric.
+
+        :type metric_name: string
+        :param metric_name: the name of the metric
+        """
+        options = None
+        path = 'projects/%s/metrics/%s' % (project, metric_name)
+        try:
+            metric_pb = self._gax_api.get_log_metric(path, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
+        return _log_metric_pb_to_mapping(metric_pb)
+
+    def metric_update(self, project, metric_name, filter_, description):
+        """API call:  update a metric resource.
+
+        :type project: string
+        :param project: ID of the project containing the metric.
+
+        :type metric_name: string
+        :param metric_name: the name of the metric
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries exported by the metric.
+
+        :type description: string
+        :param description: description of the metric.
+        """
+        options = None
+        path = 'projects/%s/metrics/%s' % (project, metric_name)
+        metric_pb = LogMetric(name=path, filter=filter_,
+                              description=description)
+        try:
+            self._gax_api.update_log_metric(path, metric_pb, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
+        return _log_metric_pb_to_mapping(metric_pb)
+
+    def metric_delete(self, project, metric_name):
+        """API call:  delete a metric resource.
+
+        :type project: string
+        :param project: ID of the project containing the metric.
+
+        :type metric_name: string
+        :param metric_name: the name of the metric
+        """
+        options = None
+        path = 'projects/%s/metrics/%s' % (project, metric_name)
+        try:
+            self._gax_api.delete_log_metric(path, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
+
+
 def _build_paging_options(page_token=None):
     """Helper for :meth:'_PublisherAPI.list_topics' et aliae."""
     if page_token is None:
@@ -404,4 +539,18 @@ def _log_sink_pb_to_mapping(sink_pb):
         'name': sink_pb.name,
         'destination': sink_pb.destination,
         'filter': sink_pb.filter,
+    }
+
+
+def _log_metric_pb_to_mapping(metric_pb):
+    """Helper for :meth:`list_metrics`, et aliae
+
+    Ideally, would use a function from :mod:`protobuf.json_format`, but
+    the right one isn't public.  See:
+    https://github.com/google/protobuf/issues/1351
+    """
+    return {
+        'name': metric_pb.name,
+        'description': metric_pb.description,
+        'filter': metric_pb.filter,
     }
