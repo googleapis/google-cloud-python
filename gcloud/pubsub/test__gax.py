@@ -53,8 +53,9 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_list_topics_no_paging(self):
         from google.gax import INITIAL_PAGE
+        from gcloud._testing import _GAXPageIterator
         TOKEN = 'TOKEN'
-        response = _PageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
+        response = _GAXPageIterator([_TopicPB(self.TOPIC_PATH)], TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
 
@@ -72,10 +73,11 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_list_topics_with_paging(self):
+        from gcloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _PageIterator(
+        response = _GAXPageIterator(
             [_TopicPB(self.TOPIC_PATH)], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topics_response=response)
         api = self._makeOne(gax_api)
@@ -202,12 +204,13 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_topic_publish_hit(self):
         import base64
+        from gcloud._testing import _GAXBundlingEvent
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         response = _PublishResponsePB([MSGID])
-        event = _Event(response)
+        event = _GAXBundlingEvent(response)
         event.wait()  # already received result
         gax_api = _GAXPublisherAPI(_publish_response=event)
         api = self._makeOne(gax_api)
@@ -224,12 +227,13 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_topic_publish_hit_with_wait(self):
         import base64
+        from gcloud._testing import _GAXBundlingEvent
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         response = _PublishResponsePB([MSGID])
-        event = _Event(response)
+        event = _GAXBundlingEvent(response)
         gax_api = _GAXPublisherAPI(_publish_response=event)
         api = self._makeOne(gax_api)
 
@@ -283,7 +287,8 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        response = _PageIterator([
+        from gcloud._testing import _GAXPageIterator
+        response = _GAXPageIterator([
             {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], None)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         api = self._makeOne(gax_api)
@@ -305,10 +310,11 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_topic_list_subscriptions_with_paging(self):
+        from gcloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _PageIterator([
+        response = _GAXPageIterator([
             {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}], NEW_TOKEN)
         gax_api = _GAXPublisherAPI(_list_topic_subscriptions_response=response)
         api = self._makeOne(gax_api)
@@ -376,7 +382,8 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
 
     def test_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
-        response = _PageIterator([_SubscriptionPB(
+        from gcloud._testing import _GAXPageIterator
+        response = _GAXPageIterator([_SubscriptionPB(
             self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], None)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
@@ -399,10 +406,11 @@ class Test_SubscriberAPI(_Base, unittest2.TestCase):
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_list_subscriptions_with_paging(self):
+        from gcloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
-        response = _PageIterator([_SubscriptionPB(
+        response = _GAXPageIterator([_SubscriptionPB(
             self.SUB_PATH, self.TOPIC_PATH, self.PUSH_ENDPOINT, 0)], NEW_TOKEN)
         gax_api = _GAXSubscriberAPI(_list_subscriptions_response=response)
         api = self._makeOne(gax_api)
@@ -911,31 +919,6 @@ class _GAXSubscriberAPI(_GaxAPIBase):
             raise GaxError('error')
         if not self._modify_ack_deadline_ok:
             raise GaxError('miss', self._make_grpc_not_found())
-
-
-class _PageIterator(object):
-
-    def __init__(self, items, page_token):
-        self._items = items
-        self.page_token = page_token
-
-    def next(self):
-        items, self._items = self._items, None
-        return items
-
-
-class _Event(object):
-
-    result = None
-
-    def __init__(self, result):
-        self._result = result
-
-    def is_set(self):
-        return self.result is not None
-
-    def wait(self, *_):
-        self.result = self._result
 
 
 class _TopicPB(object):
