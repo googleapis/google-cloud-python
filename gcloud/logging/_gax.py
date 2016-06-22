@@ -32,6 +32,8 @@ from grpc.beta.interfaces import StatusCode
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_to_pb_timestamp
+from gcloud._helpers import _datetime_to_rfc3339
+from gcloud._helpers import _pb_timestamp_to_datetime
 
 
 class _LoggingAPI(object):
@@ -397,6 +399,22 @@ def _build_paging_options(page_token=None):
     return CallOptions(**options)
 
 
+def _mon_resource_pb_to_mapping(resource_pb):
+    """Helper for  :func:_log_entry_pb_to_mapping"""
+    mapping = {
+        'type': resource_pb.type,
+    }
+    if resource_pb.labels:
+        mapping['labels'] = resource_pb.labels
+    return mapping
+
+
+def _pb_timestamp_to_rfc3339(timestamp_pb):
+    """Helper for  :func:_log_entry_pb_to_mapping"""
+    timestamp = _pb_timestamp_to_datetime(timestamp_pb)
+    return _datetime_to_rfc3339(timestamp)
+
+
 def _log_entry_pb_to_mapping(entry_pb):
     """Helper for :meth:`list_entries`, et aliae
 
@@ -405,20 +423,20 @@ def _log_entry_pb_to_mapping(entry_pb):
     https://github.com/google/protobuf/issues/1351
     """
     mapping = {
-        'log_name': entry_pb.log_name,
-        'resource': entry_pb.resource,
+        'logName': entry_pb.log_name,
+        'resource': _mon_resource_pb_to_mapping(entry_pb.resource),
         'severity': entry_pb.severity,
-        'insert_id': entry_pb.insert_id,
-        'timestamp': entry_pb.timestamp,
+        'insertId': entry_pb.insert_id,
+        'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
         'labels': entry_pb.labels,
-        'text_payload': entry_pb.text_payload,
-        'json_payload': entry_pb.json_payload,
-        'proto_payload': entry_pb.proto_payload,
+        'textPayload': entry_pb.text_payload,
+        'jsonPayload': entry_pb.json_payload,
+        'protoPayload': entry_pb.proto_payload,
     }
 
     if entry_pb.http_request:
         request = entry_pb.http_request
-        mapping['http_request'] = {
+        mapping['httpRequest'] = {
             'request_method': request.request_method,
             'request_url': request.request_url,
             'status': request.status,
