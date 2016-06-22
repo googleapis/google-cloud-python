@@ -32,6 +32,8 @@ from grpc.beta.interfaces import StatusCode
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_to_pb_timestamp
+from gcloud._helpers import _datetime_to_rfc3339
+from gcloud._helpers import _pb_timestamp_to_datetime
 
 
 class _LoggingAPI(object):
@@ -397,6 +399,22 @@ def _build_paging_options(page_token=None):
     return CallOptions(**options)
 
 
+def _mon_resource_pb_to_mapping(resource_pb):
+    """Helper for  :func:_log_entry_pb_to_mapping"""
+    mapping = {
+        'type': resource_pb.type,
+    }
+    if resource_pb.labels:
+        mapping['labels'] = resource_pb.labels
+    return mapping
+
+
+def _pb_timestamp_to_rfc3339(timestamp_pb):
+    """Helper for  :func:_log_entry_pb_to_mapping"""
+    timestamp = _pb_timestamp_to_datetime(timestamp_pb)
+    return _datetime_to_rfc3339(timestamp)
+
+
 def _log_entry_pb_to_mapping(entry_pb):
     """Helper for :meth:`list_entries`, et aliae
 
@@ -405,20 +423,20 @@ def _log_entry_pb_to_mapping(entry_pb):
     https://github.com/google/protobuf/issues/1351
     """
     mapping = {
-        'log_name': entry_pb.log_name,
-        'resource': entry_pb.resource,
+        'logName': entry_pb.log_name,
+        'resource': _mon_resource_pb_to_mapping(entry_pb.resource),
         'severity': entry_pb.severity,
-        'insert_id': entry_pb.insert_id,
-        'timestamp': entry_pb.timestamp,
+        'insertId': entry_pb.insert_id,
+        'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
         'labels': entry_pb.labels,
-        'text_payload': entry_pb.text_payload,
-        'json_payload': entry_pb.json_payload,
-        'proto_payload': entry_pb.proto_payload,
+        'textPayload': entry_pb.text_payload,
+        'jsonPayload': entry_pb.json_payload,
+        'protoPayload': entry_pb.proto_payload,
     }
 
     if entry_pb.http_request:
         request = entry_pb.http_request
-        mapping['http_request'] = {
+        mapping['httpRequest'] = {
             'request_method': request.request_method,
             'request_url': request.request_url,
             'status': request.status,
@@ -444,20 +462,20 @@ def _log_entry_pb_to_mapping(entry_pb):
 
 def _http_request_mapping_to_pb(info, request):
     """Helper for _log_entry_mapping_to_pb"""
-    optional_request_keys = (
-        'request_method',
-        'request_url',
-        'status',
-        'referer',
-        'user_agent',
-        'cache_hit',
-        'request_size',
-        'response_size',
-        'remote_ip',
-    )
-    for key in optional_request_keys:
+    optional_request_keys = {
+        'requestMethod': 'request_method',
+        'requestUrl': 'request_url',
+        'status': 'status',
+        'referer': 'referer',
+        'userAgent': 'user_agent',
+        'cacheHit': 'cache_hit',
+        'requestSize': 'request_size',
+        'responseSize': 'response_size',
+        'remoteIp': 'remote_ip',
+    }
+    for key, pb_name in optional_request_keys.items():
         if key in info:
-            setattr(request, key, info[key])
+            setattr(request, pb_name, info[key])
 
 
 def _log_operation_mapping_to_pb(info, operation):
@@ -482,15 +500,15 @@ def _log_entry_mapping_to_pb(mapping):
     # pylint: disable=too-many-branches
     entry_pb = LogEntry()
 
-    optional_scalar_keys = (
-        'log_name',
-        'insert_id',
-        'text_payload',
-    )
+    optional_scalar_keys = {
+        'logName': 'log_name',
+        'insertId': 'insert_id',
+        'textPayload': 'text_payload',
+    }
 
-    for key in optional_scalar_keys:
+    for key, pb_name in optional_scalar_keys.items():
         if key in mapping:
-            setattr(entry_pb, key, mapping[key])
+            setattr(entry_pb, pb_name, mapping[key])
 
     if 'resource' in mapping:
         entry_pb.resource.type = mapping['resource']['type']
@@ -509,16 +527,16 @@ def _log_entry_mapping_to_pb(mapping):
         for key, value in mapping['labels'].items():
             entry_pb.labels[key] = value
 
-    if 'json_payload' in mapping:
-        for key, value in mapping['json_payload'].items():
+    if 'jsonPayload' in mapping:
+        for key, value in mapping['jsonPayload'].items():
             entry_pb.json_payload[key] = value
 
-    if 'proto_payload' in mapping:
-        Parse(json.dumps(mapping['proto_payload']), entry_pb.proto_payload)
+    if 'protoPayload' in mapping:
+        Parse(json.dumps(mapping['protoPayload']), entry_pb.proto_payload)
 
-    if 'http_request' in mapping:
+    if 'httpRequest' in mapping:
         _http_request_mapping_to_pb(
-            mapping['http_request'], entry_pb.http_request)
+            mapping['httpRequest'], entry_pb.http_request)
 
     if 'operation' in mapping:
         _log_operation_mapping_to_pb(
