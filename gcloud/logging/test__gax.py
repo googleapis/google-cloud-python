@@ -28,9 +28,7 @@ else:
 class _Base(object):
     PROJECT = 'PROJECT'
     PROJECT_PATH = 'projects/%s' % (PROJECT,)
-    LIST_SINKS_PATH = '%s/sinks' % (PROJECT_PATH,)
-    SINK_NAME = 'sink_name'
-    SINK_PATH = 'projects/%s/sinks/%s' % (PROJECT, SINK_NAME)
+    FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
@@ -39,7 +37,6 @@ class _Base(object):
 @unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_LoggingAPI(_Base, unittest2.TestCase):
     LOG_NAME = 'log_name'
-    FILTER = 'logName:syslog AND severity>=ERROR'
 
     def _getTargetClass(self):
         from gcloud.logging._gax import _LoggingAPI
@@ -395,10 +392,239 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
 
-class _GAXLoggingAPI(object):
+@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_SinksAPI(_Base, unittest2.TestCase):
+    LIST_SINKS_PATH = '%s/sinks' % (_Base.PROJECT_PATH,)
+    SINK_NAME = 'sink_name'
+    SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
+    DESTINATION_URI = 'faux.googleapis.com/destination'
+
+    def _getTargetClass(self):
+        from gcloud.logging._gax import _SinksAPI
+        return _SinksAPI
+
+    def test_ctor(self):
+        gax_api = _GAXSinksAPI()
+        api = self._makeOne(gax_api)
+        self.assertTrue(api._gax_api is gax_api)
+
+    def test_list_sinks_no_paging(self):
+        from google.gax import INITIAL_PAGE
+        from gcloud._testing import _GAXPageIterator
+        TOKEN = 'TOKEN'
+        SINKS = [{
+            'name': self.SINK_PATH,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }]
+        response = _GAXPageIterator(
+            [_LogSinkPB(self.SINK_PATH, self.DESTINATION_URI, self.FILTER)],
+            TOKEN)
+        gax_api = _GAXSinksAPI(_list_sinks_response=response)
+        api = self._makeOne(gax_api)
+
+        sinks, token = api.list_sinks(self.PROJECT)
+
+        self.assertEqual(sinks, SINKS)
+        self.assertEqual(token, TOKEN)
+
+        project, page_size, options = gax_api._list_sinks_called_with
+        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(page_size, 0)
+        self.assertEqual(options.page_token, INITIAL_PAGE)
+
+    def test_list_sinks_w_paging(self):
+        from gcloud._testing import _GAXPageIterator
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
+        SINKS = [{
+            'name': self.SINK_PATH,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }]
+        response = _GAXPageIterator(
+            [_LogSinkPB(self.SINK_PATH, self.DESTINATION_URI, self.FILTER)],
+            None)
+        gax_api = _GAXSinksAPI(_list_sinks_response=response)
+        api = self._makeOne(gax_api)
+
+        sinks, token = api.list_sinks(
+            self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+
+        self.assertEqual(sinks, SINKS)
+        self.assertEqual(token, None)
+
+        project, page_size, options = gax_api._list_sinks_called_with
+        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(page_size, PAGE_SIZE)
+        self.assertEqual(options.page_token, TOKEN)
+
+    def test_sink_create_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXSinksAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.sink_create(
+                self.PROJECT, self.SINK_NAME, self.FILTER,
+                self.DESTINATION_URI)
+
+    def test_sink_create_conflict(self):
+        from gcloud.exceptions import Conflict
+        gax_api = _GAXSinksAPI(_create_sink_conflict=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(Conflict):
+            api.sink_create(
+                self.PROJECT, self.SINK_NAME, self.FILTER,
+                self.DESTINATION_URI)
+
+    def test_sink_create_ok(self):
+        from google.logging.v2.logging_config_pb2 import LogSink
+        gax_api = _GAXSinksAPI()
+        api = self._makeOne(gax_api)
+
+        api.sink_create(
+            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+
+        parent, sink, options = (
+            gax_api._create_sink_called_with)
+        self.assertEqual(parent, self.PROJECT_PATH)
+        self.assertTrue(isinstance(sink, LogSink))
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(options, None)
+
+    def test_sink_get_error(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXSinksAPI()
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.sink_get(self.PROJECT, self.SINK_NAME)
+
+    def test_sink_get_miss(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXSinksAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.sink_get(self.PROJECT, self.SINK_NAME)
+
+    def test_sink_get_hit(self):
+        RESPONSE = {
+            'name': self.SINK_PATH,
+            'filter': self.FILTER,
+            'destination': self.DESTINATION_URI,
+        }
+        sink_pb = _LogSinkPB(
+            self.SINK_PATH, self.DESTINATION_URI, self.FILTER)
+        gax_api = _GAXSinksAPI(_get_sink_response=sink_pb)
+        api = self._makeOne(gax_api)
+
+        response = api.sink_get(self.PROJECT, self.SINK_NAME)
+
+        self.assertEqual(response, RESPONSE)
+
+        sink_name, options = gax_api._get_sink_called_with
+        self.assertEqual(sink_name, self.SINK_PATH)
+        self.assertEqual(options, None)
+
+    def test_sink_update_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXSinksAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.sink_update(
+                self.PROJECT, self.SINK_NAME, self.FILTER,
+                self.DESTINATION_URI)
+
+    def test_sink_update_miss(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXSinksAPI()
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.sink_update(
+                self.PROJECT, self.SINK_NAME, self.FILTER,
+                self.DESTINATION_URI)
+
+    def test_sink_update_hit(self):
+        from google.logging.v2.logging_config_pb2 import LogSink
+        response = _LogSinkPB(
+            self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+        gax_api = _GAXSinksAPI(_update_sink_response=response)
+        api = self._makeOne(gax_api)
+
+        api.sink_update(
+            self.PROJECT, self.SINK_NAME, self.FILTER, self.DESTINATION_URI)
+
+        sink_name, sink, options = (
+            gax_api._update_sink_called_with)
+        self.assertEqual(sink_name, self.SINK_PATH)
+        self.assertTrue(isinstance(sink, LogSink))
+        self.assertEqual(sink.name, self.SINK_PATH)
+        self.assertEqual(sink.filter, self.FILTER)
+        self.assertEqual(sink.destination, self.DESTINATION_URI)
+        self.assertEqual(options, None)
+
+    def test_sink_delete_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXSinksAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.sink_delete(self.PROJECT, self.SINK_NAME)
+
+    def test_sink_delete_miss(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXSinksAPI(_sink_not_found=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.sink_delete(self.PROJECT, self.SINK_NAME)
+
+    def test_sink_delete_hit(self):
+        gax_api = _GAXSinksAPI()
+        api = self._makeOne(gax_api)
+
+        api.sink_delete(self.PROJECT, self.SINK_NAME)
+
+        sink_name, options = gax_api._delete_sink_called_with
+        self.assertEqual(sink_name, self.SINK_PATH)
+        self.assertEqual(options, None)
+
+
+class _GAXBaseAPI(object):
+
+    _random_gax_error = False
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
+
+    def _make_grpc_error(self, status_code):
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        class _DummyException(AbortionError):
+            code = status_code
+
+            def __init__(self):
+                pass
+
+        return _DummyException()
+
+    def _make_grpc_not_found(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.NOT_FOUND)
+
+    def _make_grpc_failed_precondition(self):
+        from grpc.beta.interfaces import StatusCode
+        return self._make_grpc_error(StatusCode.FAILED_PRECONDITION)
+
+
+class _GAXLoggingAPI(_GAXBaseAPI):
 
     def list_log_entries(
             self, projects, filter_, order_by, page_size, options):
@@ -413,6 +639,52 @@ class _GAXLoggingAPI(object):
 
     def delete_log(self, log_name, options):
         self._delete_log_called_with = log_name, options
+
+
+class _GAXSinksAPI(_GAXBaseAPI):
+
+    _create_sink_conflict = False
+    _sink_not_found = False
+
+    def list_sinks(self, parent, page_size, options):
+        self._list_sinks_called_with = parent, page_size, options
+        return self._list_sinks_response
+
+    def create_sink(self, parent, sink, options):
+        from google.gax.errors import GaxError
+        self._create_sink_called_with = parent, sink, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._create_sink_conflict:
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
+
+    def get_sink(self, sink_name, options):
+        from google.gax.errors import GaxError
+        self._get_sink_called_with = sink_name, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        try:
+            return self._get_sink_response
+        except AttributeError:
+            raise GaxError('notfound', self._make_grpc_not_found())
+
+    def update_sink(self, sink_name, sink, options=None):
+        from google.gax.errors import GaxError
+        self._update_sink_called_with = sink_name, sink, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        try:
+            return self._update_sink_response
+        except AttributeError:
+            raise GaxError('notfound', self._make_grpc_not_found())
+
+    def delete_sink(self, sink_name, options=None):
+        from google.gax.errors import GaxError
+        self._delete_sink_called_with = sink_name, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._sink_not_found:
+            raise GaxError('notfound', self._make_grpc_not_found())
 
 
 class _HTTPRequestPB(object):
@@ -455,3 +727,11 @@ class _LogEntryPB(object):
         from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
         NOW = datetime.utcnow().replace(tzinfo=UTC)
         return _datetime_to_rfc3339_w_nanos(NOW)
+
+
+class _LogSinkPB(object):
+
+    def __init__(self, name, destination, filter_):
+        self.name = name
+        self.destination = destination
+        self.filter = filter_

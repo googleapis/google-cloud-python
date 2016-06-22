@@ -19,18 +19,25 @@ import json
 # pylint: disable=import-error
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
+from google.gax.errors import GaxError
+from google.gax.grpc import exc_to_code
 from google.logging.type.log_severity_pb2 import LogSeverity
+from google.logging.v2.logging_config_pb2 import LogSink
 from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
+from grpc.beta.interfaces import StatusCode
 # pylint: enable=import-error
 
+from gcloud.exceptions import Conflict
+from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_to_pb_timestamp
 
 
 class _LoggingAPI(object):
     """Helper mapping logging-related APIs.
 
-    :type gax_api: :class:`google.logging.v2.logging_api.LoggingApi`
+    :type gax_api:
+        :class:`google.logging.v2.logging_service_v2_api.LoggingServiceV2Api`
     :param gax_api: API object used to make GAX requests.
     """
     def __init__(self, gax_api):
@@ -111,6 +118,140 @@ class _LoggingAPI(object):
         options = None
         path = 'projects/%s/logs/%s' % (project, logger_name)
         self._gax_api.delete_log(path, options)
+
+
+class _SinksAPI(object):
+    """Helper mapping sink-related APIs.
+
+    :type gax_api:
+        :class:`google.logging.v2.config_service_v2_api.ConfigServiceV2Api`
+    :param gax_api: API object used to make GAX requests.
+    """
+    def __init__(self, gax_api):
+        self._gax_api = gax_api
+
+    def list_sinks(self, project, page_size=0, page_token=None):
+        """List sinks for the project associated with this client.
+
+        :type project: string
+        :param project: ID of the project whose sinks are to be listed.
+
+        :type page_size: int
+        :param page_size: maximum number of sinks to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: str
+        :param page_token: opaque marker for the next "page" of sinks. If not
+                           passed, the API will return the first page of
+                           sinks.
+
+        :rtype: tuple, (list, str)
+        :returns: list of mappings, plus a "next page token" string:
+                  if not None, indicates that more sinks can be retrieved
+                  with another call (pass that value as ``page_token``).
+        """
+        options = _build_paging_options(page_token)
+        page_iter = self._gax_api.list_sinks(project, page_size, options)
+        sinks = [_log_sink_pb_to_mapping(log_sink_pb)
+                 for log_sink_pb in page_iter.next()]
+        token = page_iter.page_token or None
+        return sinks, token
+
+    def sink_create(self, project, sink_name, filter_, destination):
+        """API call:  create a sink resource.
+
+        See:
+        https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks/create
+
+        :type project: string
+        :param project: ID of the project in which to create the sink.
+
+        :type sink_name: string
+        :param sink_name: the name of the sink
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries exported by the sink.
+
+        :type destination: string
+        :param destination: destination URI for the entries exported by
+                            the sink.
+        """
+        options = None
+        parent = 'projects/%s' % (project,)
+        path = 'projects/%s/sinks/%s' % (project, sink_name)
+        sink_pb = LogSink(name=path, filter=filter_, destination=destination)
+        try:
+            self._gax_api.create_sink(parent, sink_pb, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                raise Conflict(path)
+            raise
+
+    def sink_get(self, project, sink_name):
+        """API call:  retrieve a sink resource.
+
+        :type project: string
+        :param project: ID of the project containing the sink.
+
+        :type sink_name: string
+        :param sink_name: the name of the sink
+        """
+        options = None
+        path = 'projects/%s/sinks/%s' % (project, sink_name)
+        try:
+            sink_pb = self._gax_api.get_sink(path, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
+        return _log_sink_pb_to_mapping(sink_pb)
+
+    def sink_update(self, project, sink_name, filter_, destination):
+        """API call:  update a sink resource.
+
+        :type project: string
+        :param project: ID of the project containing the sink.
+
+        :type sink_name: string
+        :param sink_name: the name of the sink
+
+        :type filter_: string
+        :param filter_: the advanced logs filter expression defining the
+                        entries exported by the sink.
+
+        :type destination: string
+        :param destination: destination URI for the entries exported by
+                            the sink.
+        """
+        options = None
+        path = 'projects/%s/sinks/%s' % (project, sink_name)
+        sink_pb = LogSink(name=path, filter=filter_, destination=destination)
+        try:
+            self._gax_api.update_sink(path, sink_pb, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
+        return _log_sink_pb_to_mapping(sink_pb)
+
+    def sink_delete(self, project, sink_name):
+        """API call:  delete a sink resource.
+
+        :type project: string
+        :param project: ID of the project containing the sink.
+
+        :type sink_name: string
+        :param sink_name: the name of the sink
+        """
+        options = None
+        path = 'projects/%s/sinks/%s' % (project, sink_name)
+        try:
+            self._gax_api.delete_sink(path, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
 
 
 def _build_paging_options(page_token=None):
@@ -250,3 +391,17 @@ def _log_entry_mapping_to_pb(mapping):
 
     return entry_pb
     # pylint: enable=too-many-branches
+
+
+def _log_sink_pb_to_mapping(sink_pb):
+    """Helper for :meth:`list_sinks`, et aliae
+
+    Ideally, would use a function from :mod:`protobuf.json_format`, but
+    the right one isn't public.  See:
+    https://github.com/google/protobuf/issues/1351
+    """
+    return {
+        'name': sink_pb.name,
+        'destination': sink_pb.destination,
+        'filter': sink_pb.filter,
+    }

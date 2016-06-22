@@ -338,7 +338,7 @@ class Test_SinksAPI(unittest2.TestCase):
 
     def test_sink_get_hit(self):
         RESPONSE = {
-            'name': self.SINK_NAME,
+            'name': self.SINK_PATH,
             'filter': self.FILTER,
             'destination': self.DESTINATION_URI,
         }
