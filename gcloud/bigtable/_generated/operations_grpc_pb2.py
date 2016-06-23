@@ -1,40 +1,32 @@
 import abc
+import six
 from grpc.beta import implementations as beta_implementations
+from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality
 from grpc.framework.interfaces.face import utilities as face_utilities
 
 class BetaOperationsServicer(object):
   """<fill me in later!>"""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
   def GetOperation(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def ListOperations(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def CancelOperation(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def DeleteOperation(self, request, context):
-    raise NotImplementedError()
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 class BetaOperationsStub(object):
   """The interface to which stubs will conform."""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
   def GetOperation(self, request, timeout):
     raise NotImplementedError()
   GetOperation.future = None
-  @abc.abstractmethod
   def ListOperations(self, request, timeout):
     raise NotImplementedError()
   ListOperations.future = None
-  @abc.abstractmethod
   def CancelOperation(self, request, timeout):
     raise NotImplementedError()
   CancelOperation.future = None
-  @abc.abstractmethod
   def DeleteOperation(self, request, timeout):
     raise NotImplementedError()
   DeleteOperation.future = None

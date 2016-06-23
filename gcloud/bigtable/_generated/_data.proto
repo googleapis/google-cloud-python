@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Google Inc.
+// Copyright 2016 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
 
 syntax = "proto3";
 
-package google.bigtable.v1;
+package google.bigtable.v2;
 
 option java_multiple_files = true;
-option java_outer_classname = "BigtableDataProto";
-option java_package = "com.google.bigtable.v1";
+option java_outer_classname = "DataProto";
+option java_package = "com.google.bigtable.v2";
 
 
 // Specifies the complete (requested) contents of a single row of a table.
@@ -82,11 +82,25 @@ message Cell {
 
 // Specifies a contiguous range of rows.
 message RowRange {
-  // Inclusive lower bound. If left empty, interpreted as the empty string.
-  bytes start_key = 2;
+  // The row key at which to start the range.
+  // If neither field is set, interpreted as the empty string, inclusive.
+  oneof start_key {
+    // Used when giving an inclusive lower bound for the range.
+    bytes start_key_closed = 1;
 
-  // Exclusive upper bound. If left empty, interpreted as infinity.
-  bytes end_key = 3;
+    // Used when giving an exclusive lower bound for the range.
+    bytes start_key_open = 2;
+  }
+
+  // The row key at which to end the range.
+  // If neither field is set, interpreted as the infinite row key, exclusive.
+  oneof end_key {
+    // Used when giving an inclusive upper bound for the range.
+    bytes end_key_open = 3;
+
+    // Used when giving an exclusive upper bound for the range.
+    bytes end_key_closed = 4;
+  }
 }
 
 // Specifies a non-contiguous set of rows.
@@ -110,20 +124,20 @@ message ColumnRange {
   // If neither field is set, interpreted as the empty string, inclusive.
   oneof start_qualifier {
     // Used when giving an inclusive lower bound for the range.
-    bytes start_qualifier_inclusive = 2;
+    bytes start_qualifier_closed = 2;
 
     // Used when giving an exclusive lower bound for the range.
-    bytes start_qualifier_exclusive = 3;
+    bytes start_qualifier_open = 3;
   }
 
   // The column qualifier at which to end the range (within 'column_family').
   // If neither field is set, interpreted as the infinite string, exclusive.
   oneof end_qualifier {
     // Used when giving an inclusive upper bound for the range.
-    bytes end_qualifier_inclusive = 4;
+    bytes end_qualifier_closed = 4;
 
     // Used when giving an exclusive upper bound for the range.
-    bytes end_qualifier_exclusive = 5;
+    bytes end_qualifier_open = 5;
   }
 }
 
@@ -142,20 +156,20 @@ message ValueRange {
   // If neither field is set, interpreted as the empty string, inclusive.
   oneof start_value {
     // Used when giving an inclusive lower bound for the range.
-    bytes start_value_inclusive = 1;
+    bytes start_value_closed = 1;
 
     // Used when giving an exclusive lower bound for the range.
-    bytes start_value_exclusive = 2;
+    bytes start_value_open = 2;
   }
 
   // The value at which to end the range.
   // If neither field is set, interpreted as the infinite string, exclusive.
   oneof end_value {
     // Used when giving an inclusive upper bound for the range.
-    bytes end_value_inclusive = 3;
+    bytes end_value_closed = 3;
 
     // Used when giving an exclusive upper bound for the range.
-    bytes end_value_exclusive = 4;
+    bytes end_value_open = 4;
   }
 }
 

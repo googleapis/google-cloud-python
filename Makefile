@@ -25,37 +25,33 @@ generate:
 	$(PROTOC_CMD) \
 	    --proto_path=$(BIGTABLE_PROTOS_DIR) \
 	    --python_out=$(GENERATED_DIR) \
-	    --plugin=protoc-gen-grpc=$(GRPC_PLUGIN) \
+	    --plugin=protoc-gen-grpc=`which $(GRPC_PLUGIN)` \
 	    --grpc_out=$(GENERATED_DIR) \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/v1/bigtable_service.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_service.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_service.proto
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/v2/bigtable.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/bigtable_instance_admin.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/bigtable_table_admin.proto
 	# Generate all *_pb2.py files that do not require gRPC.
 	$(PROTOC_CMD) \
 	    --proto_path=$(BIGTABLE_PROTOS_DIR) \
 	    --proto_path=$(GOOGLEAPIS_PROTOS_DIR) \
 	    --python_out=$(GENERATED_DIR) \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/v1/bigtable_data.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/v1/bigtable_service_messages.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_data.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/cluster/v1/bigtable_cluster_service_messages.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_data.proto \
-	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/table/v1/bigtable_table_service_messages.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/v2/data.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/common.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/instance.proto \
+	    $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/table.proto \
 	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/datastore.proto \
 	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/entity.proto \
 	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/query.proto
 	# Move the newly generated *_pb2.py files into our library.
-	mv $(GENERATED_DIR)/google/bigtable/v1/* $(BIGTABLE_DIR)
-	mv $(GENERATED_DIR)/google/bigtable/admin/cluster/v1/* $(BIGTABLE_DIR)
-	mv $(GENERATED_DIR)/google/bigtable/admin/table/v1/* $(BIGTABLE_DIR)
+	mv $(GENERATED_DIR)/google/bigtable/v2/* $(BIGTABLE_DIR)
+	mv $(GENERATED_DIR)/google/bigtable/admin/v2/* $(BIGTABLE_DIR)
 	mv $(GENERATED_DIR)/google/datastore/v1beta3/* $(DATASTORE_DIR)
 	# Remove all existing *.proto files before we replace
 	rm -f $(BIGTABLE_DIR)/*.proto
 	rm -f $(DATASTORE_DIR)/*.proto
 	# Copy over the *.proto files into our library.
-	cp $(BIGTABLE_PROTOS_DIR)/google/bigtable/v1/*.proto $(BIGTABLE_DIR)
-	cp $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/cluster/v1/*.proto $(BIGTABLE_DIR)
-	cp $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/table/v1/*.proto $(BIGTABLE_DIR)
+	cp $(BIGTABLE_PROTOS_DIR)/google/bigtable/v2/*.proto $(BIGTABLE_DIR)
+	cp $(BIGTABLE_PROTOS_DIR)/google/bigtable/admin/v2/*.proto $(BIGTABLE_DIR)
 	cp $(BIGTABLE_PROTOS_DIR)/google/longrunning/operations.proto $(BIGTABLE_DIR)
 	cp $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/*.proto $(DATASTORE_DIR)
 	# Rename all *.proto files in our library with an
