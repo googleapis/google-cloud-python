@@ -64,9 +64,9 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['log_name'], self.LOG_NAME)
+        self.assertEqual(entry['logName'], self.LOG_NAME)
         self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['text_payload'], TEXT)
+        self.assertEqual(entry['textPayload'], TEXT)
         self.assertEqual(next_token, TOKEN)
 
         projects, filter_, order_by, page_size, options = (
@@ -94,9 +94,9 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['log_name'], self.LOG_NAME)
+        self.assertEqual(entry['logName'], self.LOG_NAME)
         self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['json_payload'], PAYLOAD)
+        self.assertEqual(entry['jsonPayload'], PAYLOAD)
         self.assertEqual(next_token, NEW_TOKEN)
 
         projects, filter_, order_by, page_size, options = (
@@ -108,7 +108,12 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(options.page_token, TOKEN)
 
     def test_list_entries_with_extra_properties(self):
+        from datetime import datetime
         from gcloud._testing import _GAXPageIterator
+        from gcloud._helpers import UTC
+        from gcloud._helpers import _datetime_to_rfc3339
+        from gcloud._helpers import _datetime_to_pb_timestamp
+        NOW = datetime.utcnow().replace(tzinfo=UTC)
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
@@ -128,6 +133,8 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
             'operation': operation,
         }
         ENTRY = _LogEntryPB(self.LOG_NAME, proto_payload=PAYLOAD, **EXTRAS)
+        ENTRY.resource.labels['foo'] = 'bar'
+        ENTRY.timestamp = _datetime_to_pb_timestamp(NOW)
         response = _GAXPageIterator([ENTRY], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
@@ -138,12 +145,14 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertIsInstance(entry, dict)
-        self.assertEqual(entry['log_name'], self.LOG_NAME)
-        self.assertEqual(entry['resource'], {'type': 'global'})
-        self.assertEqual(entry['proto_payload'], PAYLOAD)
+        self.assertEqual(entry['logName'], self.LOG_NAME)
+        self.assertEqual(entry['resource'],
+                         {'type': 'global', 'labels': {'foo': 'bar'}})
+        self.assertEqual(entry['protoPayload'], PAYLOAD)
         self.assertEqual(entry['severity'], SEVERITY)
         self.assertEqual(entry['labels'], LABELS)
-        self.assertEqual(entry['insert_id'], IID)
+        self.assertEqual(entry['insertId'], IID)
+        self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
         EXPECTED_REQUEST = {
             'request_method': request.request_method,
             'request_url': request.request_url,
@@ -155,7 +164,7 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
             'remote_ip': request.remote_ip,
             'cache_hit': request.cache_hit,
         }
-        self.assertEqual(entry['http_request'], EXPECTED_REQUEST)
+        self.assertEqual(entry['httpRequest'], EXPECTED_REQUEST)
         EXPECTED_OPERATION = {
             'producer': operation.producer,
             'id': operation.id,
@@ -178,9 +187,9 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         TEXT = 'TEXT'
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         ENTRY = {
-            'log_name': LOG_PATH,
+            'logName': LOG_PATH,
             'resource': {'type': 'global'},
-            'text_payload': TEXT,
+            'textPayload': TEXT,
         }
         gax_api = _GAXLoggingAPI()
         api = self._makeOne(gax_api)
@@ -227,15 +236,15 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         USER_AGENT = 'Agent/1.0'
         REMOTE_IP = '1.2.3.4'
         REQUEST = {
-            'request_method': REQUEST_METHOD,
-            'request_url': REQUEST_URL,
+            'requestMethod': REQUEST_METHOD,
+            'requestUrl': REQUEST_URL,
             'status': STATUS,
-            'request_size': REQUEST_SIZE,
-            'response_size': RESPONSE_SIZE,
+            'requestSize': REQUEST_SIZE,
+            'responseSize': RESPONSE_SIZE,
             'referer': REFERRER_URL,
-            'user_agent': USER_AGENT,
-            'remote_ip': REMOTE_IP,
-            'cache_hit': False,
+            'userAgent': USER_AGENT,
+            'remoteIp': REMOTE_IP,
+            'cacheHit': False,
         }
         PRODUCER = 'PRODUCER'
         OPID = 'OPID'
@@ -246,14 +255,14 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
             'last': True,
         }
         ENTRY = {
-            'log_name': LOG_PATH,
+            'logName': LOG_PATH,
             'resource': {'type': 'global'},
-            'text_payload': TEXT,
+            'textPayload': TEXT,
             'severity': SEVERITY,
             'labels': LABELS,
-            'insert_id': IID,
+            'insertId': IID,
             'timestamp': NOW,
-            'http_request': REQUEST,
+            'httpRequest': REQUEST,
             'operation': OPERATION,
         }
         gax_api = _GAXLoggingAPI()
@@ -302,28 +311,30 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
 
     def test_write_entries_multiple(self):
         # pylint: disable=too-many-statements
+        import datetime
         from google.logging.type.log_severity_pb2 import WARNING
         from google.logging.v2.log_entry_pb2 import LogEntry
         from google.protobuf.any_pb2 import Any
         from google.protobuf.struct_pb2 import Struct
+        from gcloud._helpers import _datetime_to_rfc3339, UTC
         TEXT = 'TEXT'
-        TIMESTAMP = _LogEntryPB._make_timestamp()
+        NOW = datetime.datetime.utcnow().replace(tzinfo=UTC)
         TIMESTAMP_TYPE_URL = 'type.googleapis.com/google.protobuf.Timestamp'
         JSON = {'payload': 'PAYLOAD', 'type': 'json'}
         PROTO = {
             '@type': TIMESTAMP_TYPE_URL,
-            'value': TIMESTAMP,
+            'value': _datetime_to_rfc3339(NOW),
         }
         PRODUCER = 'PRODUCER'
         OPID = 'OPID'
         URL = 'http://example.com/'
         ENTRIES = [
-            {'text_payload': TEXT,
+            {'textPayload': TEXT,
              'severity': WARNING},
-            {'json_payload': JSON,
+            {'jsonPayload': JSON,
              'operation': {'producer': PRODUCER, 'id': OPID}},
-            {'proto_payload': PROTO,
-             'http_request': {'request_url': URL}},
+            {'protoPayload': PROTO,
+             'httpRequest': {'requestUrl': URL}},
         ]
         LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
         RESOURCE = {
@@ -956,6 +967,13 @@ class _LogEntryOperationPB(object):
     id = 'OPID'
 
 
+class _ResourcePB(object):
+
+    def __init__(self, type_='global', **labels):
+        self.type = type_
+        self.labels = labels
+
+
 class _LogEntryPB(object):
 
     severity = 'DEFAULT'
@@ -964,7 +982,7 @@ class _LogEntryPB(object):
 
     def __init__(self, log_name, **kw):
         self.log_name = log_name
-        self.resource = {'type': 'global'}
+        self.resource = _ResourcePB()
         self.timestamp = self._make_timestamp()
         self.labels = kw.pop('labels', {})
         self.__dict__.update(kw)
@@ -973,9 +991,9 @@ class _LogEntryPB(object):
     def _make_timestamp():
         from datetime import datetime
         from gcloud._helpers import UTC
-        from gcloud.logging.test_entries import _datetime_to_rfc3339_w_nanos
+        from gcloud._helpers import _datetime_to_pb_timestamp
         NOW = datetime.utcnow().replace(tzinfo=UTC)
-        return _datetime_to_rfc3339_w_nanos(NOW)
+        return _datetime_to_pb_timestamp(NOW)
 
 
 class _LogSinkPB(object):
