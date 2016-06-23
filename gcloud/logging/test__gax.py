@@ -394,7 +394,6 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
 
 @unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_SinksAPI(_Base, unittest2.TestCase):
-    LIST_SINKS_PATH = '%s/sinks' % (_Base.PROJECT_PATH,)
     SINK_NAME = 'sink_name'
     SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
@@ -597,6 +596,210 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
 
+@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_MetricsAPI(_Base, unittest2.TestCase):
+    METRIC_NAME = 'metric_name'
+    METRIC_PATH = 'projects/%s/metrics/%s' % (_Base.PROJECT, METRIC_NAME)
+    DESCRIPTION = 'Description'
+
+    def _getTargetClass(self):
+        from gcloud.logging._gax import _MetricsAPI
+        return _MetricsAPI
+
+    def test_ctor(self):
+        gax_api = _GAXMetricsAPI()
+        api = self._makeOne(gax_api)
+        self.assertTrue(api._gax_api is gax_api)
+
+    def test_list_metrics_no_paging(self):
+        from google.gax import INITIAL_PAGE
+        from gcloud._testing import _GAXPageIterator
+        TOKEN = 'TOKEN'
+        METRICS = [{
+            'name': self.METRIC_PATH,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }]
+        response = _GAXPageIterator(
+            [_LogMetricPB(self.METRIC_PATH, self.DESCRIPTION, self.FILTER)],
+            TOKEN)
+        gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
+        api = self._makeOne(gax_api)
+
+        metrics, token = api.list_metrics(self.PROJECT)
+
+        self.assertEqual(metrics, METRICS)
+        self.assertEqual(token, TOKEN)
+
+        project, page_size, options = gax_api._list_log_metrics_called_with
+        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(page_size, 0)
+        self.assertEqual(options.page_token, INITIAL_PAGE)
+
+    def test_list_metrics_w_paging(self):
+        from gcloud._testing import _GAXPageIterator
+        TOKEN = 'TOKEN'
+        PAGE_SIZE = 42
+        METRICS = [{
+            'name': self.METRIC_PATH,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }]
+        response = _GAXPageIterator(
+            [_LogMetricPB(self.METRIC_PATH, self.DESCRIPTION, self.FILTER)],
+            None)
+        gax_api = _GAXMetricsAPI(_list_log_metrics_response=response)
+        api = self._makeOne(gax_api)
+
+        metrics, token = api.list_metrics(
+            self.PROJECT, page_size=PAGE_SIZE, page_token=TOKEN)
+
+        self.assertEqual(metrics, METRICS)
+        self.assertEqual(token, None)
+
+        project, page_size, options = gax_api._list_log_metrics_called_with
+        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(page_size, PAGE_SIZE)
+        self.assertEqual(options.page_token, TOKEN)
+
+    def test_metric_create_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXMetricsAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.metric_create(
+                self.PROJECT, self.METRIC_NAME, self.FILTER,
+                self.DESCRIPTION)
+
+    def test_metric_create_conflict(self):
+        from gcloud.exceptions import Conflict
+        gax_api = _GAXMetricsAPI(_create_log_metric_conflict=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(Conflict):
+            api.metric_create(
+                self.PROJECT, self.METRIC_NAME, self.FILTER,
+                self.DESCRIPTION)
+
+    def test_metric_create_ok(self):
+        from google.logging.v2.logging_metrics_pb2 import LogMetric
+        gax_api = _GAXMetricsAPI()
+        api = self._makeOne(gax_api)
+
+        api.metric_create(
+            self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
+
+        parent, metric, options = (
+            gax_api._create_log_metric_called_with)
+        self.assertEqual(parent, self.PROJECT_PATH)
+        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertEqual(options, None)
+
+    def test_metric_get_error(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXMetricsAPI()
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.metric_get(self.PROJECT, self.METRIC_NAME)
+
+    def test_metric_get_miss(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXMetricsAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.metric_get(self.PROJECT, self.METRIC_NAME)
+
+    def test_metric_get_hit(self):
+        RESPONSE = {
+            'name': self.METRIC_PATH,
+            'filter': self.FILTER,
+            'description': self.DESCRIPTION,
+        }
+        metric_pb = _LogMetricPB(
+            self.METRIC_PATH, self.DESCRIPTION, self.FILTER)
+        gax_api = _GAXMetricsAPI(_get_log_metric_response=metric_pb)
+        api = self._makeOne(gax_api)
+
+        response = api.metric_get(self.PROJECT, self.METRIC_NAME)
+
+        self.assertEqual(response, RESPONSE)
+
+        metric_name, options = gax_api._get_log_metric_called_with
+        self.assertEqual(metric_name, self.METRIC_PATH)
+        self.assertEqual(options, None)
+
+    def test_metric_update_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXMetricsAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.metric_update(
+                self.PROJECT, self.METRIC_NAME, self.FILTER,
+                self.DESCRIPTION)
+
+    def test_metric_update_miss(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXMetricsAPI()
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.metric_update(
+                self.PROJECT, self.METRIC_NAME, self.FILTER,
+                self.DESCRIPTION)
+
+    def test_metric_update_hit(self):
+        from google.logging.v2.logging_metrics_pb2 import LogMetric
+        response = _LogMetricPB(
+            self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
+        gax_api = _GAXMetricsAPI(_update_log_metric_response=response)
+        api = self._makeOne(gax_api)
+
+        api.metric_update(
+            self.PROJECT, self.METRIC_NAME, self.FILTER, self.DESCRIPTION)
+
+        metric_name, metric, options = (
+            gax_api._update_log_metric_called_with)
+        self.assertEqual(metric_name, self.METRIC_PATH)
+        self.assertTrue(isinstance(metric, LogMetric))
+        self.assertEqual(metric.name, self.METRIC_PATH)
+        self.assertEqual(metric.filter, self.FILTER)
+        self.assertEqual(metric.description, self.DESCRIPTION)
+        self.assertEqual(options, None)
+
+    def test_metric_delete_error(self):
+        from google.gax.errors import GaxError
+        gax_api = _GAXMetricsAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.metric_delete(self.PROJECT, self.METRIC_NAME)
+
+    def test_metric_delete_miss(self):
+        from gcloud.exceptions import NotFound
+        gax_api = _GAXMetricsAPI(_log_metric_not_found=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.metric_delete(self.PROJECT, self.METRIC_NAME)
+
+    def test_metric_delete_hit(self):
+        gax_api = _GAXMetricsAPI()
+        api = self._makeOne(gax_api)
+
+        api.metric_delete(self.PROJECT, self.METRIC_NAME)
+
+        metric_name, options = gax_api._delete_log_metric_called_with
+        self.assertEqual(metric_name, self.METRIC_PATH)
+        self.assertEqual(options, None)
+
+
 class _GAXBaseAPI(object):
 
     _random_gax_error = False
@@ -687,6 +890,52 @@ class _GAXSinksAPI(_GAXBaseAPI):
             raise GaxError('notfound', self._make_grpc_not_found())
 
 
+class _GAXMetricsAPI(_GAXBaseAPI):
+
+    _create_log_metric_conflict = False
+    _log_metric_not_found = False
+
+    def list_log_metrics(self, parent, page_size, options):
+        self._list_log_metrics_called_with = parent, page_size, options
+        return self._list_log_metrics_response
+
+    def create_log_metric(self, parent, metric, options):
+        from google.gax.errors import GaxError
+        self._create_log_metric_called_with = parent, metric, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._create_log_metric_conflict:
+            raise GaxError('conflict', self._make_grpc_failed_precondition())
+
+    def get_log_metric(self, metric_name, options):
+        from google.gax.errors import GaxError
+        self._get_log_metric_called_with = metric_name, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        try:
+            return self._get_log_metric_response
+        except AttributeError:
+            raise GaxError('notfound', self._make_grpc_not_found())
+
+    def update_log_metric(self, metric_name, metric, options=None):
+        from google.gax.errors import GaxError
+        self._update_log_metric_called_with = metric_name, metric, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        try:
+            return self._update_log_metric_response
+        except AttributeError:
+            raise GaxError('notfound', self._make_grpc_not_found())
+
+    def delete_log_metric(self, metric_name, options=None):
+        from google.gax.errors import GaxError
+        self._delete_log_metric_called_with = metric_name, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._log_metric_not_found:
+            raise GaxError('notfound', self._make_grpc_not_found())
+
+
 class _HTTPRequestPB(object):
 
     request_url = 'http://example.com/requested'
@@ -734,4 +983,12 @@ class _LogSinkPB(object):
     def __init__(self, name, destination, filter_):
         self.name = name
         self.destination = destination
+        self.filter = filter_
+
+
+class _LogMetricPB(object):
+
+    def __init__(self, name, description, filter_):
+        self.name = name
+        self.description = description
         self.filter = filter_
