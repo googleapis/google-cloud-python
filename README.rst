@@ -20,12 +20,14 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
+-  `Google Cloud Logging`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
+.. _Google Cloud Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-logging
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -193,6 +195,28 @@ See the ``gcloud-python`` API `Resource Manager documentation`_ to learn how to
 manage projects using this Client Library.
 
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
+
+Google Cloud Logging
+--------------------
+
+`Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
+analyze, monitor, and alert on log data and events from Google Cloud Platform.
+
+.. _Stackdriver Logging: https://cloud.google.com/logging/
+.. _Logging API docs: https://cloud.google.com/logging/docs/
+
+.. code:: python
+
+    from gcloud import logging
+    client = logging.Client()
+    logger = client.logger('log_name')
+    logger.log_text("A simple entry")  # API call
+
+
+See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
+to Cloud logging using this Client Library.
+
+.. _logging documentation: https://googlecloudplatform.github.io/gcloud-python/stable/logging-usage.html
 
 Contributing
 ------------
