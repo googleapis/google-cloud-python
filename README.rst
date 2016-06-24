@@ -174,6 +174,12 @@ append-only tables, using the processing power of Google's infrastructure.
 
 This package is still being implemented, but it is almost complete!
 
+.. code:: python
+    from gcloud import bigquery
+    client = bigquery.Client()
+    dataset = client.dataset('dataset_name')
+    dataset.create()  # API request
+
 See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
 to BigQuery using this Client Library.
 
