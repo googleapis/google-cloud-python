@@ -315,13 +315,13 @@ class _MetricsAPI(object):
         """
         options = None
         parent = 'projects/%s' % (project,)
-        path = 'projects/%s/metrics/%s' % (project, metric_name)
-        metric_pb = LogMetric(name=path, filter=filter_,
+        metric_pb = LogMetric(name=metric_name, filter=filter_,
                               description=description)
         try:
             self._gax_api.create_log_metric(parent, metric_pb, options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                path = 'projects/%s/metrics/%s' % (project, metric_name)
                 raise Conflict(path)
             raise
 
