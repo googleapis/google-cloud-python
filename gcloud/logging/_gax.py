@@ -182,7 +182,8 @@ class _SinksAPI(object):
         """
         options = None
         parent = 'projects/%s' % (project,)
-        sink_pb = LogSink(name=sink_name, filter=filter_, destination=destination)
+        sink_pb = LogSink(name=sink_name, filter=filter_,
+                          destination=destination)
         try:
             self._gax_api.create_sink(parent, sink_pb, options)
         except GaxError as exc:
