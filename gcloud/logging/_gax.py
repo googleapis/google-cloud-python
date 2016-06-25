@@ -182,12 +182,13 @@ class _SinksAPI(object):
         """
         options = None
         parent = 'projects/%s' % (project,)
-        path = 'projects/%s/sinks/%s' % (project, sink_name)
-        sink_pb = LogSink(name=path, filter=filter_, destination=destination)
+        sink_pb = LogSink(name=sink_name, filter=filter_,
+                          destination=destination)
         try:
             self._gax_api.create_sink(parent, sink_pb, options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                path = 'projects/%s/sinks/%s' % (project, sink_name)
                 raise Conflict(path)
             raise
 
@@ -315,13 +316,13 @@ class _MetricsAPI(object):
         """
         options = None
         parent = 'projects/%s' % (project,)
-        path = 'projects/%s/metrics/%s' % (project, metric_name)
-        metric_pb = LogMetric(name=path, filter=filter_,
+        metric_pb = LogMetric(name=metric_name, filter=filter_,
                               description=description)
         try:
             self._gax_api.create_log_metric(parent, metric_pb, options)
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.FAILED_PRECONDITION:
+                path = 'projects/%s/metrics/%s' % (project, metric_name)
                 raise Conflict(path)
             raise
 
