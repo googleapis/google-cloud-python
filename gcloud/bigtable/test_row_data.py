@@ -522,3 +522,34 @@ class _MockCancellableIterator(object):
 
     def next(self):
         return next(self.iter_values)
+
+
+def _generate_cell_chunks(chunk_text_pbs):
+    from google.protobuf.text_format import Merge
+    from gcloud.bigtable._generated_v2.bigtable_pb2 import ReadRowsResponse
+
+    chunks = []
+
+    for chunk_text_pb in chunk_text_pbs:
+        chunk = ReadRowsResponse.CellChunk()
+        chunks.append(Merge(chunk_text_pb, chunk))
+
+    return chunks
+
+
+def _parse_readrows_acceptance_tests(filename):
+    """Parse acceptance tests from JSON
+
+    See:
+    https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/master/bigtable-client-core/src/test/resources/com/google/cloud/bigtable/grpc/scanner/v2/read-rows-acceptance-test.json
+    """
+    import json
+
+    with open(filename) as json_file:
+        test_json = json.load(json_file)
+
+    for test in test_json['tests']:
+        name = test['name']
+        chunks = _generate_cell_chunks(test['chunks'])
+        results = test['results']
+        yield name, chunks, results
