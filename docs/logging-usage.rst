@@ -212,6 +212,22 @@ Export log entries using sinks
 Sinks allow exporting entries which match a given filter to Cloud Storage
 buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
+Make sure that the storage bucket you want to export logs too has
+`cloud-logs@google.com` as the owner. See `Set permission for writing exported logs`_.
+
+Add `cloud-logs@google.com` as the owner of `my-bucket-name`:
+
+.. doctest::
+
+    >>> from gcloud import storage
+    >>> client = storage.Client()
+    >>> bucket = client.get_bucket('my-bucket-name')
+    >>> acl = bucket.acl
+    >>> acl.user('cloud-logs@google.com').grant_owner()
+    >>> acl.save()
+
+.. _Set permission for writing exported logs: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
+
 Create a Cloud Storage sink:
 
 .. doctest::
