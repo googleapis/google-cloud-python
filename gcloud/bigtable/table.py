@@ -16,11 +16,12 @@
 
 
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
-    bigtable_table_service_messages_pb2 as messages_pb2)
+    bigtable_data_pb2 as data_v1_pb2)
 from gcloud.bigtable._generated import (
-    bigtable_service_messages_pb2 as data_messages_pb2)
+    bigtable_table_service_messages_pb2 as messages_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_service_messages_pb2 as data_messages_v1_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import AppendRow
@@ -167,7 +168,7 @@ class Table(object):
                                    created, spanning the key ranges:
                                    ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
         """
-        request_pb = messages_pb2.CreateTableRequest(
+        request_pb = messages_v1_pb2.CreateTableRequest(
             initial_split_keys=initial_split_keys or [],
             name=self._cluster.name,
             table_id=self.table_id,
@@ -178,7 +179,7 @@ class Table(object):
 
     def delete(self):
         """Delete this table."""
-        request_pb = messages_pb2.DeleteTableRequest(name=self.name)
+        request_pb = messages_v1_pb2.DeleteTableRequest(name=self.name)
         client = self._cluster._client
         # We expect a `google.protobuf.empty_pb2.Empty`
         client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
@@ -194,7 +195,7 @@ class Table(object):
                  family name from the response does not agree with the computed
                  name from the column family ID.
         """
-        request_pb = messages_pb2.GetTableRequest(name=self.name)
+        request_pb = messages_v1_pb2.GetTableRequest(name=self.name)
         client = self._cluster._client
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
@@ -233,7 +234,7 @@ class Table(object):
         client = self._cluster._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
-        # We expect an iterator of `data_messages_pb2.ReadRowsResponse`
+        # We expect an iterator of `data_messages_v1_pb2.ReadRowsResponse`
         result = PartialRowData(row_key)
         for read_rows_response in response_iterator:
             result.update_from_read_rows(read_rows_response)
@@ -296,7 +297,7 @@ class Table(object):
         client = self._cluster._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
-        # We expect an iterator of `data_messages_pb2.ReadRowsResponse`
+        # We expect an iterator of `data_messages_v1_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
     def sample_row_keys(self):
@@ -330,7 +331,7 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        request_pb = data_messages_pb2.SampleRowKeysRequest(
+        request_pb = data_messages_v1_pb2.SampleRowKeysRequest(
             table_name=self.name)
         client = self._cluster._client
         response_iterator = client._data_stub.SampleRowKeys(
@@ -383,7 +384,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
                   more than N rows. However, only N ``commit_row`` chunks
                   will be sent.
 
-    :rtype: :class:`data_messages_pb2.ReadRowsRequest`
+    :rtype: :class:`data_messages_v1_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
              ``row_key`` and one of ``start_key`` and ``end_key`` are set
@@ -401,7 +402,7 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
             range_kwargs['start_key'] = _to_bytes(start_key)
         if end_key is not None:
             range_kwargs['end_key'] = _to_bytes(end_key)
-        row_range = data_pb2.RowRange(**range_kwargs)
+        row_range = data_v1_pb2.RowRange(**range_kwargs)
         request_kwargs['row_range'] = row_range
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
@@ -410,4 +411,4 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     if limit is not None:
         request_kwargs['num_rows_limit'] = limit
 
-    return data_messages_pb2.ReadRowsRequest(**request_kwargs)
+    return data_messages_v1_pb2.ReadRowsRequest(**request_kwargs)

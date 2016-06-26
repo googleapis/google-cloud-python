@@ -31,40 +31,52 @@ from pkg_resources import get_distribution
 
 from grpc.beta import implementations
 
-from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
-from gcloud.bigtable._generated import bigtable_cluster_service_pb2
+# Cluster admin service is V1-only (V2 provides instance admin instead)
 from gcloud.bigtable._generated import (
-    bigtable_cluster_service_messages_pb2 as messages_pb2)
-from gcloud.bigtable._generated import bigtable_service_pb2
-from gcloud.bigtable._generated import bigtable_table_service_pb2
-from gcloud.bigtable._generated import operations_grpc_pb2
+    bigtable_cluster_data_pb2 as cluster_data_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_cluster_service_pb2 as cluster_service_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_cluster_service_messages_pb2 as cluster_messages_v1_pb2)
+# V1 table admin service
+from gcloud.bigtable._generated import (
+    bigtable_table_service_pb2 as table_service_v1_pb2)
+# V1 data service
+from gcloud.bigtable._generated import (
+    bigtable_service_pb2 as data_service_v1_pb2)
+
+from gcloud.bigtable._generated import (
+    operations_grpc_pb2 as operations_grpc_v1_pb2)
+
 from gcloud.bigtable.cluster import Cluster
 from gcloud.client import _ClientFactoryMixin
 from gcloud.client import _ClientProjectMixin
 from gcloud.credentials import get_credentials
 
 
-TABLE_STUB_FACTORY = (
-    bigtable_table_service_pb2.beta_create_BigtableTableService_stub)
-TABLE_ADMIN_HOST = 'bigtabletableadmin.googleapis.com'
+TABLE_STUB_FACTORY_V1 = (
+    table_service_v1_pb2.beta_create_BigtableTableService_stub)
+TABLE_ADMIN_HOST_V1 = 'bigtabletableadmin.googleapis.com'
 """Table Admin API request host."""
-TABLE_ADMIN_PORT = 443
+TABLE_ADMIN_PORT_V1 = 443
 """Table Admin API request port."""
 
-CLUSTER_STUB_FACTORY = (
-    bigtable_cluster_service_pb2.beta_create_BigtableClusterService_stub)
-CLUSTER_ADMIN_HOST = 'bigtableclusteradmin.googleapis.com'
+CLUSTER_STUB_FACTORY_V1 = (
+    cluster_service_v1_pb2.beta_create_BigtableClusterService_stub)
+CLUSTER_ADMIN_HOST_V1 = 'bigtableclusteradmin.googleapis.com'
 """Cluster Admin API request host."""
-CLUSTER_ADMIN_PORT = 443
+CLUSTER_ADMIN_PORT_V1 = 443
 """Cluster Admin API request port."""
 
-DATA_STUB_FACTORY = bigtable_service_pb2.beta_create_BigtableService_stub
-DATA_API_HOST = 'bigtable.googleapis.com'
+DATA_STUB_FACTORY_V1 = data_service_v1_pb2.beta_create_BigtableService_stub
+DATA_API_HOST_V1 = 'bigtable.googleapis.com'
 """Data API request host."""
-DATA_API_PORT = 443
+DATA_API_PORT_V1 = 443
 """Data API request port."""
 
-OPERATIONS_STUB_FACTORY = operations_grpc_pb2.beta_create_Operations_stub
+OPERATIONS_STUB_FACTORY_V1 = operations_grpc_v1_pb2.beta_create_Operations_stub
+OPERATIONS_API_HOST_V1 = CLUSTER_ADMIN_HOST_V1
+OPERATIONS_API_PORT_V1 = CLUSTER_ADMIN_PORT_V1
 
 ADMIN_SCOPE = 'https://www.googleapis.com/auth/bigtable.admin'
 """Scope for interacting with the Cluster Admin and Table Admin APIs."""
@@ -275,8 +287,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, DATA_STUB_FACTORY,
-                          DATA_API_HOST, DATA_API_PORT)
+        return _make_stub(self, DATA_STUB_FACTORY_V1,
+                          DATA_API_HOST_V1, DATA_API_PORT_V1)
 
     def _make_cluster_stub(self):
         """Creates gRPC stub to make requests to the Cluster Admin API.
@@ -284,8 +296,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, CLUSTER_STUB_FACTORY,
-                          CLUSTER_ADMIN_HOST, CLUSTER_ADMIN_PORT)
+        return _make_stub(self, CLUSTER_STUB_FACTORY_V1,
+                          CLUSTER_ADMIN_HOST_V1, CLUSTER_ADMIN_PORT_V1)
 
     def _make_operations_stub(self):
         """Creates gRPC stub to make requests to the Operations API.
@@ -296,8 +308,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, OPERATIONS_STUB_FACTORY,
-                          CLUSTER_ADMIN_HOST, CLUSTER_ADMIN_PORT)
+        return _make_stub(self, OPERATIONS_STUB_FACTORY_V1,
+                          OPERATIONS_API_HOST_V1, OPERATIONS_API_PORT_V1)
 
     def _make_table_stub(self):
         """Creates gRPC stub to make requests to the Table Admin API.
@@ -305,8 +317,8 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, TABLE_STUB_FACTORY,
-                          TABLE_ADMIN_HOST, TABLE_ADMIN_PORT)
+        return _make_stub(self, TABLE_STUB_FACTORY_V1,
+                          TABLE_ADMIN_HOST_V1, TABLE_ADMIN_PORT_V1)
 
     def is_started(self):
         """Check if the client has been started.
@@ -401,14 +413,15 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  zones is not in ``OK`` state.
         """
-        request_pb = messages_pb2.ListZonesRequest(name=self.project_name)
-        # We expect a `.messages_pb2.ListZonesResponse`
+        request_pb = cluster_messages_v1_pb2.ListZonesRequest(
+            name=self.project_name)
+        # We expect a `.cluster_messages_v1_pb2.ListZonesResponse`
         list_zones_response = self._cluster_stub.ListZones(
             request_pb, self.timeout_seconds)
 
         result = []
         for zone in list_zones_response.zones:
-            if zone.status != data_pb2.Zone.OK:
+            if zone.status != cluster_data_v1_pb2.Zone.OK:
                 raise ValueError('Zone %s not in OK state' % (
                     zone.display_name,))
             result.append(zone.display_name)
@@ -422,8 +435,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                   returned and the second is a list of strings (the failed
                   zones in the request).
         """
-        request_pb = messages_pb2.ListClustersRequest(name=self.project_name)
-        # We expect a `.messages_pb2.ListClustersResponse`
+        request_pb = cluster_messages_v1_pb2.ListClustersRequest(
+            name=self.project_name)
+        # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`
         list_clusters_response = self._cluster_stub.ListClusters(
             request_pb, self.timeout_seconds)
 

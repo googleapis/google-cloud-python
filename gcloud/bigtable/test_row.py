@@ -75,7 +75,8 @@ class TestDirectRow(unittest2.TestCase):
                          timestamp_micros=-1):
         import six
         import struct
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         row_key = b'row_key'
         column_family_id = u'column_family_id'
@@ -89,8 +90,8 @@ class TestDirectRow(unittest2.TestCase):
 
         if isinstance(value, six.integer_types):
             value = struct.pack('>q', value)
-        expected_pb = data_pb2.Mutation(
-            set_cell=data_pb2.Mutation.SetCell(
+        expected_pb = data_v1_pb2.Mutation(
+            set_cell=data_v1_pb2.Mutation.SetCell(
                 family_name=column_family_id,
                 column_qualifier=column_bytes or column,
                 timestamp_micros=timestamp_micros,
@@ -134,15 +135,16 @@ class TestDirectRow(unittest2.TestCase):
                               timestamp_micros=millis_granularity)
 
     def test_delete(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         row_key = b'row_key'
         row = self._makeOne(row_key, object())
         self.assertEqual(row._pb_mutations, [])
         row.delete()
 
-        expected_pb = data_pb2.Mutation(
-            delete_from_row=data_pb2.Mutation.DeleteFromRow(),
+        expected_pb = data_v1_pb2.Mutation(
+            delete_from_row=data_v1_pb2.Mutation.DeleteFromRow(),
         )
         self.assertEqual(row._pb_mutations, [expected_pb])
 
@@ -193,7 +195,8 @@ class TestDirectRow(unittest2.TestCase):
             row.delete_cells(column_family_id, columns)
 
     def test_delete_cells_all_columns(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         row_key = b'row_key'
         column_family_id = u'column_family_id'
@@ -204,8 +207,8 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, klass.ALL_COLUMNS)
 
-        expected_pb = data_pb2.Mutation(
-            delete_from_family=data_pb2.Mutation.DeleteFromFamily(
+        expected_pb = data_v1_pb2.Mutation(
+            delete_from_family=data_v1_pb2.Mutation.DeleteFromFamily(
                 family_name=column_family_id,
             ),
         )
@@ -223,7 +226,8 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(row._pb_mutations, [])
 
     def _delete_cells_helper(self, time_range=None):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         row_key = b'row_key'
         column = b'column'
@@ -235,8 +239,8 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, columns, time_range=time_range)
 
-        expected_pb = data_pb2.Mutation(
-            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+        expected_pb = data_v1_pb2.Mutation(
+            delete_from_column=data_v1_pb2.Mutation.DeleteFromColumn(
                 family_name=column_family_id,
                 column_qualifier=column,
             ),
@@ -275,7 +279,8 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(row._pb_mutations, [])
 
     def test_delete_cells_with_string_columns(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         row_key = b'row_key'
         column_family_id = u'column_family_id'
@@ -290,14 +295,14 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(row._pb_mutations, [])
         row.delete_cells(column_family_id, columns)
 
-        expected_pb1 = data_pb2.Mutation(
-            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+        expected_pb1 = data_v1_pb2.Mutation(
+            delete_from_column=data_v1_pb2.Mutation.DeleteFromColumn(
                 family_name=column_family_id,
                 column_qualifier=column1_bytes,
             ),
         )
-        expected_pb2 = data_pb2.Mutation(
-            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+        expected_pb2 = data_v1_pb2.Mutation(
+            delete_from_column=data_v1_pb2.Mutation.DeleteFromColumn(
                 family_name=column_family_id,
                 column_qualifier=column2_bytes,
             ),
@@ -306,9 +311,10 @@ class TestDirectRow(unittest2.TestCase):
 
     def test_commit(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         row_key = b'row_key'
@@ -322,15 +328,15 @@ class TestDirectRow(unittest2.TestCase):
 
         # Create request_pb
         value = b'bytes-value'
-        mutation = data_pb2.Mutation(
-            set_cell=data_pb2.Mutation.SetCell(
+        mutation = data_v1_pb2.Mutation(
+            set_cell=data_v1_pb2.Mutation.SetCell(
                 family_name=column_family_id,
                 column_qualifier=column,
                 timestamp_micros=-1,  # Default value.
                 value=value,
             ),
         )
-        request_pb = messages_pb2.MutateRowRequest(
+        request_pb = messages_v1_pb2.MutateRowRequest(
             table_name=table_name,
             row_key=row_key,
             mutations=[mutation],
@@ -421,9 +427,10 @@ class TestConditionalRow(unittest2.TestCase):
         self.assertTrue(false_mutations is row._get_mutations(None))
 
     def test_commit(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable.row_filters import RowSampleFilter
 
@@ -442,29 +449,29 @@ class TestConditionalRow(unittest2.TestCase):
 
         # Create request_pb
         value1 = b'bytes-value'
-        mutation1 = data_pb2.Mutation(
-            set_cell=data_pb2.Mutation.SetCell(
+        mutation1 = data_v1_pb2.Mutation(
+            set_cell=data_v1_pb2.Mutation.SetCell(
                 family_name=column_family_id1,
                 column_qualifier=column1,
                 timestamp_micros=-1,  # Default value.
                 value=value1,
             ),
         )
-        mutation2 = data_pb2.Mutation(
-            delete_from_row=data_pb2.Mutation.DeleteFromRow(),
+        mutation2 = data_v1_pb2.Mutation(
+            delete_from_row=data_v1_pb2.Mutation.DeleteFromRow(),
         )
-        mutation3 = data_pb2.Mutation(
-            delete_from_column=data_pb2.Mutation.DeleteFromColumn(
+        mutation3 = data_v1_pb2.Mutation(
+            delete_from_column=data_v1_pb2.Mutation.DeleteFromColumn(
                 family_name=column_family_id2,
                 column_qualifier=column2,
             ),
         )
-        mutation4 = data_pb2.Mutation(
-            delete_from_family=data_pb2.Mutation.DeleteFromFamily(
+        mutation4 = data_v1_pb2.Mutation(
+            delete_from_family=data_v1_pb2.Mutation.DeleteFromFamily(
                 family_name=column_family_id3,
             ),
         )
-        request_pb = messages_pb2.CheckAndMutateRowRequest(
+        request_pb = messages_v1_pb2.CheckAndMutateRowRequest(
             table_name=table_name,
             row_key=row_key,
             predicate_filter=row_filter.to_pb(),
@@ -474,7 +481,7 @@ class TestConditionalRow(unittest2.TestCase):
 
         # Create response_pb
         predicate_matched = True
-        response_pb = messages_pb2.CheckAndMutateRowResponse(
+        response_pb = messages_v1_pb2.CheckAndMutateRowResponse(
             predicate_matched=predicate_matched)
 
         # Patch the stub used by the API method.
@@ -560,7 +567,8 @@ class TestAppendRow(unittest2.TestCase):
         self.assertEqual(row._rule_pb_list, [])
 
     def test_append_cell_value(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         table = object()
         row_key = b'row_key'
@@ -571,13 +579,14 @@ class TestAppendRow(unittest2.TestCase):
         column_family_id = u'column_family_id'
         value = b'bytes-val'
         row.append_cell_value(column_family_id, column, value)
-        expected_pb = data_pb2.ReadModifyWriteRule(
+        expected_pb = data_v1_pb2.ReadModifyWriteRule(
             family_name=column_family_id, column_qualifier=column,
             append_value=value)
         self.assertEqual(row._rule_pb_list, [expected_pb])
 
     def test_increment_cell_value(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         table = object()
         row_key = b'row_key'
@@ -588,16 +597,17 @@ class TestAppendRow(unittest2.TestCase):
         column_family_id = u'column_family_id'
         int_value = 281330
         row.increment_cell_value(column_family_id, column, int_value)
-        expected_pb = data_pb2.ReadModifyWriteRule(
+        expected_pb = data_v1_pb2.ReadModifyWriteRule(
             family_name=column_family_id, column_qualifier=column,
             increment_amount=int_value)
         self.assertEqual(row._rule_pb_list, [expected_pb])
 
     def test_commit(self):
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import row as MUT
 
@@ -613,11 +623,11 @@ class TestAppendRow(unittest2.TestCase):
         # Create request_pb
         value = b'bytes-value'
         # We will call row.append_cell_value(COLUMN_FAMILY_ID, COLUMN, value).
-        request_pb = messages_pb2.ReadModifyWriteRowRequest(
+        request_pb = messages_v1_pb2.ReadModifyWriteRowRequest(
             table_name=table_name,
             row_key=row_key,
             rules=[
-                data_pb2.ReadModifyWriteRule(
+                data_v1_pb2.ReadModifyWriteRule(
                     family_name=column_family_id,
                     column_qualifier=column,
                     append_value=value,
@@ -693,7 +703,8 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
 
     def test_it(self):
         from gcloud._helpers import _datetime_from_microseconds
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         col_fam1 = u'col-fam-id'
         col_fam2 = u'col-fam-id2'
@@ -723,28 +734,28 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
                 ],
             },
         }
-        sample_input = data_pb2.Row(
+        sample_input = data_v1_pb2.Row(
             families=[
-                data_pb2.Family(
+                data_v1_pb2.Family(
                     name=col_fam1,
                     columns=[
-                        data_pb2.Column(
+                        data_v1_pb2.Column(
                             qualifier=col_name1,
                             cells=[
-                                data_pb2.Cell(
+                                data_v1_pb2.Cell(
                                     value=cell_val1,
                                     timestamp_micros=microseconds,
                                 ),
-                                data_pb2.Cell(
+                                data_v1_pb2.Cell(
                                     value=cell_val2,
                                     timestamp_micros=microseconds,
                                 ),
                             ],
                         ),
-                        data_pb2.Column(
+                        data_v1_pb2.Column(
                             qualifier=col_name2,
                             cells=[
-                                data_pb2.Cell(
+                                data_v1_pb2.Cell(
                                     value=cell_val3,
                                     timestamp_micros=microseconds,
                                 ),
@@ -752,13 +763,13 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
                         ),
                     ],
                 ),
-                data_pb2.Family(
+                data_v1_pb2.Family(
                     name=col_fam2,
                     columns=[
-                        data_pb2.Column(
+                        data_v1_pb2.Column(
                             qualifier=col_name3,
                             cells=[
-                                data_pb2.Cell(
+                                data_v1_pb2.Cell(
                                     value=cell_val4,
                                     timestamp_micros=microseconds,
                                 ),
@@ -779,7 +790,8 @@ class Test__parse_family_pb(unittest2.TestCase):
 
     def test_it(self):
         from gcloud._helpers import _datetime_from_microseconds
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
 
         col_fam1 = u'col-fam-id'
         col_name1 = b'col-name1'
@@ -800,26 +812,26 @@ class Test__parse_family_pb(unittest2.TestCase):
             ],
         }
         expected_output = (col_fam1, expected_dict)
-        sample_input = data_pb2.Family(
+        sample_input = data_v1_pb2.Family(
             name=col_fam1,
             columns=[
-                data_pb2.Column(
+                data_v1_pb2.Column(
                     qualifier=col_name1,
                     cells=[
-                        data_pb2.Cell(
+                        data_v1_pb2.Cell(
                             value=cell_val1,
                             timestamp_micros=microseconds,
                         ),
-                        data_pb2.Cell(
+                        data_v1_pb2.Cell(
                             value=cell_val2,
                             timestamp_micros=microseconds,
                         ),
                     ],
                 ),
-                data_pb2.Column(
+                data_v1_pb2.Column(
                     qualifier=col_name2,
                     cells=[
-                        data_pb2.Cell(
+                        data_v1_pb2.Cell(
                             value=cell_val3,
                             timestamp_micros=microseconds,
                         ),

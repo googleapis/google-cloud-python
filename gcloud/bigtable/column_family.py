@@ -20,9 +20,10 @@ import datetime
 from google.protobuf import duration_pb2
 
 from gcloud._helpers import _total_seconds
-from gcloud.bigtable._generated import bigtable_table_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
-    bigtable_table_service_messages_pb2 as messages_pb2)
+    bigtable_table_data_pb2 as data_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_table_service_messages_pb2 as messages_v1_pb2)
 
 
 def _timedelta_to_duration_pb(timedelta_val):
@@ -110,10 +111,10 @@ class MaxVersionsGCRule(GarbageCollectionRule):
     def to_pb(self):
         """Converts the garbage collection rule to a protobuf.
 
-        :rtype: :class:`.data_pb2.GcRule`
+        :rtype: :class:`.data_v1_pb2.GcRule`
         :returns: The converted current object.
         """
-        return data_pb2.GcRule(max_num_versions=self.max_num_versions)
+        return data_v1_pb2.GcRule(max_num_versions=self.max_num_versions)
 
 
 class MaxAgeGCRule(GarbageCollectionRule):
@@ -134,11 +135,11 @@ class MaxAgeGCRule(GarbageCollectionRule):
     def to_pb(self):
         """Converts the garbage collection rule to a protobuf.
 
-        :rtype: :class:`.data_pb2.GcRule`
+        :rtype: :class:`.data_v1_pb2.GcRule`
         :returns: The converted current object.
         """
         max_age = _timedelta_to_duration_pb(self.max_age)
-        return data_pb2.GcRule(max_age=max_age)
+        return data_v1_pb2.GcRule(max_age=max_age)
 
 
 class GCRuleUnion(GarbageCollectionRule):
@@ -159,12 +160,12 @@ class GCRuleUnion(GarbageCollectionRule):
     def to_pb(self):
         """Converts the union into a single GC rule as a protobuf.
 
-        :rtype: :class:`.data_pb2.GcRule`
+        :rtype: :class:`.data_v1_pb2.GcRule`
         :returns: The converted current object.
         """
-        union = data_pb2.GcRule.Union(
+        union = data_v1_pb2.GcRule.Union(
             rules=[rule.to_pb() for rule in self.rules])
-        return data_pb2.GcRule(union=union)
+        return data_v1_pb2.GcRule(union=union)
 
 
 class GCRuleIntersection(GarbageCollectionRule):
@@ -185,12 +186,12 @@ class GCRuleIntersection(GarbageCollectionRule):
     def to_pb(self):
         """Converts the intersection into a single GC rule as a protobuf.
 
-        :rtype: :class:`.data_pb2.GcRule`
+        :rtype: :class:`.data_v1_pb2.GcRule`
         :returns: The converted current object.
         """
-        intersection = data_pb2.GcRule.Intersection(
+        intersection = data_v1_pb2.GcRule.Intersection(
             rules=[rule.to_pb() for rule in self.rules])
-        return data_pb2.GcRule(intersection=intersection)
+        return data_v1_pb2.GcRule(intersection=intersection)
 
 
 class ColumnFamily(object):
@@ -250,16 +251,17 @@ class ColumnFamily(object):
     def create(self):
         """Create this column family."""
         if self.gc_rule is None:
-            column_family = data_pb2.ColumnFamily()
+            column_family = data_v1_pb2.ColumnFamily()
         else:
-            column_family = data_pb2.ColumnFamily(gc_rule=self.gc_rule.to_pb())
-        request_pb = messages_pb2.CreateColumnFamilyRequest(
+            column_family = data_v1_pb2.ColumnFamily(
+                gc_rule=self.gc_rule.to_pb())
+        request_pb = messages_v1_pb2.CreateColumnFamilyRequest(
             name=self._table.name,
             column_family_id=self.column_family_id,
             column_family=column_family,
         )
         client = self._table._cluster._client
-        # We expect a `.data_pb2.ColumnFamily`. We ignore it since the only
+        # We expect a `.data_v1_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client._table_stub.CreateColumnFamily(request_pb,
@@ -276,9 +278,9 @@ class ColumnFamily(object):
         request_kwargs = {'name': self.name}
         if self.gc_rule is not None:
             request_kwargs['gc_rule'] = self.gc_rule.to_pb()
-        request_pb = data_pb2.ColumnFamily(**request_kwargs)
+        request_pb = data_v1_pb2.ColumnFamily(**request_kwargs)
         client = self._table._cluster._client
-        # We expect a `.data_pb2.ColumnFamily`. We ignore it since the only
+        # We expect a `.data_v1_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
         client._table_stub.UpdateColumnFamily(request_pb,
@@ -286,7 +288,7 @@ class ColumnFamily(object):
 
     def delete(self):
         """Delete this column family."""
-        request_pb = messages_pb2.DeleteColumnFamilyRequest(name=self.name)
+        request_pb = messages_v1_pb2.DeleteColumnFamilyRequest(name=self.name)
         client = self._table._cluster._client
         # We expect a `google.protobuf.empty_pb2.Empty`
         client._table_stub.DeleteColumnFamily(request_pb,
@@ -296,7 +298,7 @@ class ColumnFamily(object):
 def _gc_rule_from_pb(gc_rule_pb):
     """Convert a protobuf GC rule to a native object.
 
-    :type gc_rule_pb: :class:`.data_pb2.GcRule`
+    :type gc_rule_pb: :class:`.data_v1_pb2.GcRule`
     :param gc_rule_pb: The GC rule to convert.
 
     :rtype: :class:`GarbageCollectionRule` or :data:`NoneType <types.NoneType>`

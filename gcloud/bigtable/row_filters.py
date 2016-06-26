@@ -17,7 +17,8 @@
 
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+from gcloud.bigtable._generated import (
+    bigtable_data_pb2 as data_v1_pb2)
 
 
 class RowFilter(object):
@@ -65,10 +66,10 @@ class SinkFilter(_BoolFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(sink=self.flag)
+        return data_v1_pb2.RowFilter(sink=self.flag)
 
 
 class PassAllFilter(_BoolFilter):
@@ -83,10 +84,10 @@ class PassAllFilter(_BoolFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(pass_all_filter=self.flag)
+        return data_v1_pb2.RowFilter(pass_all_filter=self.flag)
 
 
 class BlockAllFilter(_BoolFilter):
@@ -100,10 +101,10 @@ class BlockAllFilter(_BoolFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(block_all_filter=self.flag)
+        return data_v1_pb2.RowFilter(block_all_filter=self.flag)
 
 
 class _RegexFilter(RowFilter):
@@ -153,10 +154,10 @@ class RowKeyRegexFilter(_RegexFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(row_key_regex_filter=self.regex)
+        return data_v1_pb2.RowFilter(row_key_regex_filter=self.regex)
 
 
 class RowSampleFilter(RowFilter):
@@ -178,10 +179,10 @@ class RowSampleFilter(RowFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(row_sample_filter=self.sample)
+        return data_v1_pb2.RowFilter(row_sample_filter=self.sample)
 
 
 class FamilyNameRegexFilter(_RegexFilter):
@@ -202,10 +203,10 @@ class FamilyNameRegexFilter(_RegexFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(family_name_regex_filter=self.regex)
+        return data_v1_pb2.RowFilter(family_name_regex_filter=self.regex)
 
 
 class ColumnQualifierRegexFilter(_RegexFilter):
@@ -232,10 +233,10 @@ class ColumnQualifierRegexFilter(_RegexFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
+        return data_v1_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
 
 
 class TimestampRange(object):
@@ -266,7 +267,7 @@ class TimestampRange(object):
     def to_pb(self):
         """Converts the :class:`TimestampRange` to a protobuf.
 
-        :rtype: :class:`.data_pb2.TimestampRange`
+        :rtype: :class:`.data_v1_pb2.TimestampRange`
         :returns: The converted current object.
         """
         timestamp_range_kwargs = {}
@@ -276,7 +277,7 @@ class TimestampRange(object):
         if self.end is not None:
             timestamp_range_kwargs['end_timestamp_micros'] = (
                 _microseconds_from_datetime(self.end))
-        return data_pb2.TimestampRange(**timestamp_range_kwargs)
+        return data_v1_pb2.TimestampRange(**timestamp_range_kwargs)
 
 
 class TimestampRangeFilter(RowFilter):
@@ -300,10 +301,11 @@ class TimestampRangeFilter(RowFilter):
         First converts the ``range_`` on the current object to a protobuf and
         then uses it in the ``timestamp_range_filter`` field.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(timestamp_range_filter=self.range_.to_pb())
+        return data_v1_pb2.RowFilter(
+            timestamp_range_filter=self.range_.to_pb())
 
 
 class ColumnRangeFilter(RowFilter):
@@ -375,10 +377,10 @@ class ColumnRangeFilter(RowFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        First converts to a :class:`.data_pb2.ColumnRange` and then uses it
+        First converts to a :class:`.data_v1_pb2.ColumnRange` and then uses it
         in the ``column_range_filter`` field.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
         column_range_kwargs = {'family_name': self.column_family_id}
@@ -395,8 +397,8 @@ class ColumnRangeFilter(RowFilter):
                 key = 'end_qualifier_exclusive'
             column_range_kwargs[key] = _to_bytes(self.end_column)
 
-        column_range = data_pb2.ColumnRange(**column_range_kwargs)
-        return data_pb2.RowFilter(column_range_filter=column_range)
+        column_range = data_v1_pb2.ColumnRange(**column_range_kwargs)
+        return data_v1_pb2.RowFilter(column_range_filter=column_range)
 
 
 class ValueRegexFilter(_RegexFilter):
@@ -423,10 +425,10 @@ class ValueRegexFilter(_RegexFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(value_regex_filter=self.regex)
+        return data_v1_pb2.RowFilter(value_regex_filter=self.regex)
 
 
 class ValueRangeFilter(RowFilter):
@@ -492,10 +494,10 @@ class ValueRangeFilter(RowFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        First converts to a :class:`.data_pb2.ValueRange` and then uses
+        First converts to a :class:`.data_v1_pb2.ValueRange` and then uses
         it to create a row filter protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
         value_range_kwargs = {}
@@ -512,8 +514,8 @@ class ValueRangeFilter(RowFilter):
                 key = 'end_value_exclusive'
             value_range_kwargs[key] = _to_bytes(self.end_value)
 
-        value_range = data_pb2.ValueRange(**value_range_kwargs)
-        return data_pb2.RowFilter(value_range_filter=value_range)
+        value_range = data_v1_pb2.ValueRange(**value_range_kwargs)
+        return data_v1_pb2.RowFilter(value_range_filter=value_range)
 
 
 class _CellCountFilter(RowFilter):
@@ -545,10 +547,11 @@ class CellsRowOffsetFilter(_CellCountFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(cells_per_row_offset_filter=self.num_cells)
+        return data_v1_pb2.RowFilter(
+            cells_per_row_offset_filter=self.num_cells)
 
 
 class CellsRowLimitFilter(_CellCountFilter):
@@ -561,10 +564,10 @@ class CellsRowLimitFilter(_CellCountFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(cells_per_row_limit_filter=self.num_cells)
+        return data_v1_pb2.RowFilter(cells_per_row_limit_filter=self.num_cells)
 
 
 class CellsColumnLimitFilter(_CellCountFilter):
@@ -579,10 +582,11 @@ class CellsColumnLimitFilter(_CellCountFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(cells_per_column_limit_filter=self.num_cells)
+        return data_v1_pb2.RowFilter(
+            cells_per_column_limit_filter=self.num_cells)
 
 
 class StripValueTransformerFilter(_BoolFilter):
@@ -597,10 +601,10 @@ class StripValueTransformerFilter(_BoolFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(strip_value_transformer=self.flag)
+        return data_v1_pb2.RowFilter(strip_value_transformer=self.flag)
 
 
 class ApplyLabelFilter(RowFilter):
@@ -633,10 +637,10 @@ class ApplyLabelFilter(RowFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        return data_pb2.RowFilter(apply_label_transformer=self.label)
+        return data_v1_pb2.RowFilter(apply_label_transformer=self.label)
 
 
 class _FilterCombination(RowFilter):
@@ -675,12 +679,12 @@ class RowFilterChain(_FilterCombination):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        chain = data_pb2.RowFilter.Chain(
+        chain = data_v1_pb2.RowFilter.Chain(
             filters=[row_filter.to_pb() for row_filter in self.filters])
-        return data_pb2.RowFilter(chain=chain)
+        return data_v1_pb2.RowFilter(chain=chain)
 
 
 class RowFilterUnion(_FilterCombination):
@@ -699,12 +703,12 @@ class RowFilterUnion(_FilterCombination):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
-        interleave = data_pb2.RowFilter.Interleave(
+        interleave = data_v1_pb2.RowFilter.Interleave(
             filters=[row_filter.to_pb() for row_filter in self.filters])
-        return data_pb2.RowFilter(interleave=interleave)
+        return data_v1_pb2.RowFilter(interleave=interleave)
 
 
 class ConditionalRowFilter(RowFilter):
@@ -752,7 +756,7 @@ class ConditionalRowFilter(RowFilter):
     def to_pb(self):
         """Converts the row filter to a protobuf.
 
-        :rtype: :class:`.data_pb2.RowFilter`
+        :rtype: :class:`.data_v1_pb2.RowFilter`
         :returns: The converted current object.
         """
         condition_kwargs = {'predicate_filter': self.base_filter.to_pb()}
@@ -760,5 +764,5 @@ class ConditionalRowFilter(RowFilter):
             condition_kwargs['true_filter'] = self.true_filter.to_pb()
         if self.false_filter is not None:
             condition_kwargs['false_filter'] = self.false_filter.to_pb()
-        condition = data_pb2.RowFilter.Condition(**condition_kwargs)
-        return data_pb2.RowFilter(condition=condition)
+        condition = data_v1_pb2.RowFilter.Condition(**condition_kwargs)
+        return data_v1_pb2.RowFilter(condition=condition)
