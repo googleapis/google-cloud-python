@@ -232,25 +232,6 @@ class TestTableAdminAPI(unittest2.TestCase):
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
-    def test_rename_table(self):
-        from grpc.beta import interfaces
-        from grpc.framework.interfaces.face import face
-
-        temp_table_id = 'foo-bar-baz-table'
-        temp_table = Config.CLUSTER.table(temp_table_id)
-        temp_table.create()
-        self.tables_to_delete.append(temp_table)
-
-        with self.assertRaises(face.LocalError) as exc_manager:
-            temp_table.rename(temp_table_id + '-alt')
-        exc_caught = exc_manager.exception
-        self.assertNotEqual(exc_caught, None)
-        self.assertEqual(exc_caught.code,
-                         interfaces.StatusCode.UNIMPLEMENTED)
-        self.assertEqual(
-            exc_caught.details,
-            'BigtableTableService.RenameTable is not yet implemented')
-
     def test_create_column_family(self):
         temp_table_id = 'foo-bar-baz-table'
         temp_table = Config.CLUSTER.table(temp_table_id)

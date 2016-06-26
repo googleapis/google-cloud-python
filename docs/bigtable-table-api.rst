@@ -65,17 +65,6 @@ Make a `DeleteTable`_ API request with
 
     table.delete()
 
-Rename an existing Table
-------------------------
-
-Though the `RenameTable`_ API request is listed in the service
-definition, requests to that method return::
-
-    BigtableTableService.RenameTable is not yet implemented
-
-We have implemented :meth:`rename() <gcloud.bigtable.table.Table.rename>`
-but it will not work unless the backend supports the method.
-
 List Column Families in a Table
 -------------------------------
 
