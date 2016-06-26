@@ -389,8 +389,8 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertNotEqual(column_family1, column_family2)
 
     def _create_test_helper(self, gc_rule=None):
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_v1_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -411,12 +411,12 @@ class TestColumnFamily(unittest2.TestCase):
         if gc_rule is None:
             column_family_pb = _ColumnFamilyPB()
         else:
-            column_family_pb = _ColumnFamilyPB(
-                gc_rule=gc_rule.to_pb())
-        request_pb = messages_v1_pb2.CreateColumnFamilyRequest(
-            name=table_name,
-            column_family_id=column_family_id,
-            column_family=column_family_pb,
+            column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            create=column_family_pb,
         )
 
         # Create response_pb
@@ -434,7 +434,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'CreateColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -449,6 +449,8 @@ class TestColumnFamily(unittest2.TestCase):
 
     def _update_test_helper(self, gc_rule=None):
         from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -458,8 +460,6 @@ class TestColumnFamily(unittest2.TestCase):
         timeout_seconds = 28
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
-        column_family_name = (
-            table_name + '/columnFamilies/' + column_family_id)
 
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
@@ -468,12 +468,15 @@ class TestColumnFamily(unittest2.TestCase):
 
         # Create request_pb
         if gc_rule is None:
-            request_pb = _ColumnFamilyPB(name=column_family_name)
+            column_family_pb = _ColumnFamilyPB()
         else:
-            request_pb = _ColumnFamilyPB(
-                name=column_family_name,
-                gc_rule=gc_rule.to_pb(),
-            )
+            column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            update=column_family_pb,
+        )
 
         # Create response_pb
         response_pb = _ColumnFamilyPB()
@@ -490,7 +493,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'UpdateColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -505,8 +508,8 @@ class TestColumnFamily(unittest2.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_v1_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -517,16 +520,17 @@ class TestColumnFamily(unittest2.TestCase):
         timeout_seconds = 7
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
-        column_family_name = (
-            table_name + '/columnFamilies/' + column_family_id)
 
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
         column_family = self._makeOne(column_family_id, table)
 
         # Create request_pb
-        request_pb = messages_v1_pb2.DeleteColumnFamilyRequest(
-            name=column_family_name)
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            drop=True)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -543,7 +547,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'DeleteColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -623,27 +627,27 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
 
 
 def _GcRulePB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_table_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.GcRule(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_table_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.GcRule.Intersection(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_table_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.GcRule.Union(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_table_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.ColumnFamily(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.ColumnFamily(*args, **kw)
 
 
 class _Cluster(object):
