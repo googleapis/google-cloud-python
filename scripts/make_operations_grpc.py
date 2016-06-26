@@ -27,10 +27,11 @@ PROTOS_DIR = os.path.join(ROOT_DIR, 'cloud-bigtable-client',
                           'bigtable-protos', 'src', 'main', 'proto')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
                           'operations.proto')
+GENERATED_SUBDIR = os.environ.get('GENERATED_SUBDIR', '_generated')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
-                              '_generated', 'operations_grpc_pb2.py')
-PROTOC_CMD = 'protoc'
-GRPC_PLUGIN = 'grpc_python_plugin'
+                              GENERATED_SUBDIR, 'operations_grpc_pb2.py')
+PROTOC_CMD = os.environ.get('PROTOC_CMD', 'protoc')
+GRPC_PLUGIN = os.environ.get('GRPC_PLUGIN', 'grpc_python_plugin')
 
 
 def get_pb2_contents_with_grpc():

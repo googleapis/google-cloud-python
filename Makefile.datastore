@@ -1,0 +1,53 @@
+GENERATED_DIR=$(shell pwd)/generated_python
+DATASTORE_DIR=$(shell pwd)/gcloud/datastore/_generated
+GRPC_PLUGIN=grpc_python_plugin
+PROTOC_CMD=protoc
+GOOGLEAPIS_PROTOS_DIR=$(shell pwd)/googleapis-pb
+
+help:
+	@echo 'Makefile for gcloud-python Bigtable protos                      '
+	@echo '                                                                '
+	@echo '   make generate                 Generates the protobuf modules '
+	@echo '   make check_generate           Checks that generate succeeded '
+	@echo '   make clean                    Clean generated files          '
+
+generate:
+	# Retrieve git repos that have our *.proto files.
+	[ -d googleapis-pb ] || git clone https://github.com/google/googleapis googleapis-pb --depth=1
+	cd googleapis-pb && git pull origin master
+	# Make the directory where our *_pb2.py files will go.
+	mkdir -p $(GENERATED_DIR)
+	# Generate all *_pb2.py files that do not require gRPC.
+	$(PROTOC_CMD) \
+	    --proto_path=$(GOOGLEAPIS_PROTOS_DIR) \
+	    --python_out=$(GENERATED_DIR) \
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/datastore.proto \
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/entity.proto \
+	    $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/query.proto
+	# Move the newly generated *_pb2.py files into our library.
+	cp $(GENERATED_DIR)/google/datastore/v1beta3/* $(DATASTORE_DIR)
+	# Remove all existing *.proto files before we replace
+	rm -f $(DATASTORE_DIR)/*.proto
+	# Copy over the *.proto files into our library.
+	cp $(GOOGLEAPIS_PROTOS_DIR)/google/datastore/v1beta3/*.proto $(DATASTORE_DIR)
+	# Rename all *.proto files in our library with an
+	# underscore and remove executable bit.
+	cd $(DATASTORE_DIR) && \
+	    for filename in *.proto; do \
+	        chmod -x $$filename ; \
+	        mv $$filename _$$filename ; \
+	    done
+	# Separate the gRPC parts of the datastore service from the
+	# non-gRPC parts so that the protos can be used without gRPC.
+	PROTOC_CMD=$(PROTOC_CMD) GRPC_PLUGIN=$(GRPC_PLUGIN) \
+		python scripts/make_datastore_grpc.py
+	# Rewrite the imports in the generated *_pb2.py files.
+	python scripts/rewrite_imports.py $(DATASTORE_DIR)/*pb2.py
+
+check_generate:
+	python scripts/check_generate.py
+
+clean:
+	rm -fr $(GENERATED_DIR)
+
+.PHONY: generate check_generate clean

@@ -18,15 +18,20 @@ Intended to be used for Google Cloud Bigtable protos (google/bigtable/v1)
 and the dependent modules (google/api and google/protobuf).
 """
 
-import glob
+import sys
 
 
 IMPORT_TEMPLATE = 'import %s'
 IMPORT_FROM_TEMPLATE = 'from %s import '
 REPLACEMENTS = {
+    # Bigtable v1
     'google.bigtable.admin.cluster.v1': 'gcloud.bigtable._generated',
     'google.bigtable.admin.table.v1': 'gcloud.bigtable._generated',
     'google.bigtable.v1': 'gcloud.bigtable._generated',
+    # Bigtble v2
+    'google.bigtable.v2': 'gcloud.bigtable._generated_v2',
+    'google.bigtable.admin.v2': 'gcloud.bigtable._generated_v2',
+    # Datastore v1beta3
     'google.datastore.v1beta3': 'gcloud.datastore._generated',
 }
 
@@ -135,9 +140,7 @@ def rewrite_file(filename):
 
 def main():
     """Rewrites all PB2 files."""
-    pb2_files = (glob.glob('gcloud/bigtable/_generated/*pb2.py') +
-                 glob.glob('gcloud/datastore/_generated/*pb2.py'))
-    for filename in pb2_files:
+    for filename in sys.argv[1:]:
         rewrite_file(filename)
 
 
