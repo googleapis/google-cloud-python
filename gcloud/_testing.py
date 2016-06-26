@@ -59,17 +59,3 @@ class _GAXPageIterator(object):
     def next(self):
         items, self._items = self._items, None
         return items
-
-
-class _GAXBundlingEvent(object):
-
-    result = None
-
-    def __init__(self, result):
-        self._result = result
-
-    def is_set(self):
-        return self.result is not None
-
-    def wait(self, *_):
-        self.result = self._result
