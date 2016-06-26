@@ -204,15 +204,12 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
 
     def test_topic_publish_hit(self):
         import base64
-        from gcloud._testing import _GAXBundlingEvent
         PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD).decode('ascii')
         MSGID = 'DEADBEEF'
         MESSAGE = {'data': B64, 'attributes': {}}
         response = _PublishResponsePB([MSGID])
-        event = _GAXBundlingEvent(response)
-        event.wait()  # already received result
-        gax_api = _GAXPublisherAPI(_publish_response=event)
+        gax_api = _GAXPublisherAPI(_publish_response=response)
         api = self._makeOne(gax_api)
 
         resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
@@ -223,29 +220,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options, None)
-
-    def test_topic_publish_hit_with_wait(self):
-        import base64
-        from gcloud._testing import _GAXBundlingEvent
-        PAYLOAD = b'This is the message text'
-        B64 = base64.b64encode(PAYLOAD).decode('ascii')
-        MSGID = 'DEADBEEF'
-        MESSAGE = {'data': B64, 'attributes': {}}
-        response = _PublishResponsePB([MSGID])
-        event = _GAXBundlingEvent(response)
-        gax_api = _GAXPublisherAPI(_publish_response=event)
-        api = self._makeOne(gax_api)
-
-        resource = api.topic_publish(self.TOPIC_PATH, [MESSAGE])
-
-        self.assertEqual(resource, [MSGID])
-        topic_path, message_pbs, options = gax_api._publish_called_with
-        self.assertEqual(topic_path, self.TOPIC_PATH)
-        message_pb, = message_pbs
-        self.assertEqual(message_pb.data, B64)
-        self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options, None)
+        self.assertEqual(options.is_bundling, False)
 
     def test_topic_publish_miss_w_attrs_w_bytes_payload(self):
         import base64
@@ -264,7 +239,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {'foo': 'bar'})
-        self.assertEqual(options, None)
+        self.assertEqual(options.is_bundling, False)
 
     def test_topic_publish_error(self):
         import base64
@@ -283,7 +258,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options, None)
+        self.assertEqual(options.is_bundling, False)
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
