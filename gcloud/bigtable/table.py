@@ -176,36 +176,6 @@ class Table(object):
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
 
-    def rename(self, new_table_id):
-        """Rename this table.
-
-        .. note::
-
-            This cannot be used to move tables between clusters,
-            zones, or projects.
-
-        .. note::
-
-            The Bigtable Table Admin API currently (``v1``) returns
-
-                ``BigtableTableService.RenameTable is not yet implemented``
-
-            when this method is used. It's unclear when this method will
-            actually be supported by the API.
-
-        :type new_table_id: str
-        :param new_table_id: The new name table ID.
-        """
-        request_pb = messages_pb2.RenameTableRequest(
-            name=self.name,
-            new_id=new_table_id,
-        )
-        client = self._cluster._client
-        # We expect a `google.protobuf.empty_pb2.Empty`
-        client._table_stub.RenameTable(request_pb, client.timeout_seconds)
-
-        self.table_id = new_table_id
-
     def delete(self):
         """Delete this table."""
         request_pb = messages_pb2.DeleteTableRequest(name=self.name)

@@ -176,51 +176,6 @@ class TestTable(unittest2.TestCase):
         initial_split_keys = ['s1', 's2']
         self._create_test_helper(initial_split_keys)
 
-    def test_rename(self):
-        from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._testing import _FakeStub
-
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        new_table_id = 'new_table_id'
-        timeout_seconds = 97
-        self.assertNotEqual(new_table_id, table_id)
-
-        client = _Client(timeout_seconds=timeout_seconds)
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
-
-        # Create request_pb
-        table_name = cluster_name + '/tables/' + table_id
-        request_pb = messages_pb2.RenameTableRequest(
-            name=table_name,
-            new_id=new_table_id,
-        )
-
-        # Create response_pb
-        response_pb = empty_pb2.Empty()
-
-        # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
-
-        # Create expected_result.
-        expected_result = None  # rename() has no return value.
-
-        # Perform the method and check the result.
-        result = table.rename(new_table_id)
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'RenameTable',
-            (request_pb, timeout_seconds),
-            {},
-        )])
-
     def _list_column_families_helper(self, column_family_name=None):
         from gcloud.bigtable._generated import (
             bigtable_table_data_pb2 as data_pb2)
