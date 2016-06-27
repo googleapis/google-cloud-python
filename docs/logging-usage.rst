@@ -205,9 +205,14 @@ Delete a metric:
    >>> metric.exists()  # API call
    False
 
+Export log entries using sinks
+------------------------------
+
+Sinks allow exporting entries which match a given filter to Cloud Storage
+buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
 Export to Cloud storage
-=======================
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure that the storage bucket you want to export logs too has
 `cloud-logs@google.com` as the owner. See `Set permission for writing exported logs`_.
@@ -227,34 +232,46 @@ Add `cloud-logs@google.com` as the owner of `my-bucket-name`:
 
 .. _Set permission for writing exported logs: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
 
-
 Export to BigQuery
-==================
+~~~~~~~~~~~~~~~~~~
 
 To export logs to BigQuery you must log into the Cloud Platform Console
-and add `cloud-logs@google.com` to your project.
+and add `cloud-logs@google.com` to a dataset.
 
 See: `Setting permissions for BigQuery`_
 
+.. doctest::
+    >>> from gcloud import bigquery
+    >>> from gcloud.bigquery.dataset import AccessGrant
+    >>> bigquery_client = bigquery.Client()
+    >>> dataset = bigquery_client.dataset('my-dataset-name')
+    >>> dataset.create()
+    >>> dataset.reload()
+    >>> grants = dataset.access_grants
+    >>> grants.append(AccessGrant(
+    ...     'WRITER', 'groupByEmail', 'cloud-logs@google.com')))
+    >>> dataset.access_grants = grants
+    >>> dataset.update()
+
 .. _Setting permissions for BigQuery: https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq
 
-
 Export to Pub/Sub
-=================
+~~~~~~~~~~~~~~~~~
 
 To export logs to BigQuery you must log into the Cloud Platform Console
-and add `cloud-logs@google.com` to your project.
+and add `cloud-logs@google.com` to a topic.
 
 See: `Setting permissions for Pub/Sub`_
 
+.. doctest::
+    >>> from gcloud import pubsub
+    >>> client = pubsub.Client()
+    >>> topic = client.topic('your-topic-name')
+    >>> policy = top.get_iam_policy()
+    >>> policy.owners.add(policy.group('cloud-logs@google.com'))
+    >>> topic.set_iam_policy(policy)
+
 .. _Setting permissions for Pub/Sub: https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub
-
-
-Export log entries using sinks
-------------------------------
-
-Sinks allow exporting entries which match a given filter to Cloud Storage
-buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
 Create a Cloud Storage sink:
 
