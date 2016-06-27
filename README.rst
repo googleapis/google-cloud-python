@@ -174,11 +174,48 @@ append-only tables, using the processing power of Google's infrastructure.
 
 This package is still being implemented, but it is almost complete!
 
+Load data from CSV
+~~~~~~~~~~~~~~~~~~
+
 .. code:: python
+
+    import csv
+
     from gcloud import bigquery
+    from gcloud.bigquery import SchemaField
+
     client = bigquery.Client()
+
     dataset = client.dataset('dataset_name')
     dataset.create()  # API request
+
+    SCHEMA = [
+        SchemaField('full_name', 'STRING', mode='required'),
+        SchemaField('age', 'INTEGER', mode='required'),
+    ]
+    table = dataset.table('table_name', SCHEMA)
+    table.create()
+
+    with open('csv_file', 'rb') as readable:
+        table.upload_from_file(
+            readable, source_format='CSV', skip_leading_rows=1)
+
+Perform a synchronous query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    # Perform a synchronous query.
+    QUERY = (
+        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
+        'WHERE state = "TX"')
+    query = client.run_sync_query('%s LIMIT 100' % QUERY)
+    query.timeout_ms = TIMEOUT_MS
+    query.run()
+
+    for row in query.rows:
+        print row
+
 
 See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
 to BigQuery using this Client Library.
