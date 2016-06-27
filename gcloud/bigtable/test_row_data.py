@@ -510,6 +510,373 @@ class TestPartialRowsData(unittest2.TestCase):
         self.assertEqual(list(response_iterator.iter_values), [value2, value3])
 
 
+class TestPartialRowsDataV2(unittest2.TestCase):
+
+    _json_tests = None
+
+    def _getTargetClass(self):
+        from gcloud.bigtable.row_data import PartialRowsDataV2
+        return PartialRowsDataV2
+
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
+
+    def _load_json_test(self, test_name):
+        import os
+        if self.__class__._json_tests is None:
+            dirname = os.path.dirname(__file__)
+            filename = os.path.join(dirname, 'read-rows-acceptance-test.json')
+            raw = _parse_readrows_acceptance_tests(filename)
+            tests = self.__class__._json_tests = {}
+            for (name, chunks, results) in raw:
+                tests[name] = chunks, results
+        return self.__class__._json_tests[test_name]
+
+    # Not part of the JSON acceptance tests.
+
+    def test_state_start(self):
+        prd = self._makeOne([])
+        self.assertEqual(prd.state, prd.START)
+
+    def test_state_new_row_w_row(self):
+        prd = self._makeOne([])
+        prd._last_scanned_row_key = ''
+        prd._row = object()
+        self.assertEqual(prd.state, prd.NEW_ROW)
+
+    def test__copy_from_current_unset(self):
+        prd = self._makeOne([])
+        chunks = _generate_cell_chunks([''])
+        chunk = chunks[0]
+        prd._copy_from_current(chunk)
+        self.assertEqual(chunk.row_key, b'')
+        self.assertEqual(chunk.family_name.value, u'')
+        self.assertEqual(chunk.qualifier.value, b'')
+        self.assertEqual(chunk.timestamp_micros, 0)
+        self.assertEqual(chunk.labels, [])
+
+    def test__copy_from_current_blank(self):
+        ROW_KEY = b'RK'
+        FAMILY_NAME = u'A'
+        QUALIFIER = b'C'
+        TIMESTAMP_MICROS = 100
+        LABELS = ['L1', 'L2']
+        prd = self._makeOne([])
+        prd._cell = _PartialCellV2()
+        chunks = _generate_cell_chunks([''])
+        chunk = chunks[0]
+        chunk.row_key = ROW_KEY
+        chunk.family_name.value = FAMILY_NAME
+        chunk.qualifier.value = QUALIFIER
+        chunk.timestamp_micros = TIMESTAMP_MICROS
+        chunk.labels.extend(LABELS)
+        prd._copy_from_current(chunk)
+        self.assertEqual(chunk.row_key, ROW_KEY)
+        self.assertEqual(chunk.family_name.value, FAMILY_NAME)
+        self.assertEqual(chunk.qualifier.value, QUALIFIER)
+        self.assertEqual(chunk.timestamp_micros, TIMESTAMP_MICROS)
+        self.assertEqual(chunk.labels, LABELS)
+
+    def test__copy_from_previous_unset(self):
+        prd = self._makeOne([])
+        cell = _PartialCellV2()
+        prd._copy_from_previous(cell)
+        self.assertEqual(cell.row_key, '')
+        self.assertEqual(cell.family_name, u'')
+        self.assertEqual(cell.qualifier, b'')
+        self.assertEqual(cell.timestamp_micros, 0)
+        self.assertEqual(cell.labels, [])
+
+    def test__copy_from_previous_blank(self):
+        ROW_KEY = 'RK'
+        FAMILY_NAME = u'A'
+        QUALIFIER = b'C'
+        TIMESTAMP_MICROS = 100
+        LABELS = ['L1', 'L2']
+        prd = self._makeOne([])
+        cell = _PartialCellV2(
+            row_key=ROW_KEY,
+            family_name=FAMILY_NAME,
+            qualifier=QUALIFIER,
+            timestamp_micros=TIMESTAMP_MICROS,
+            labels=LABELS,
+        )
+        prd._previous_cell = _PartialCellV2()
+        prd._copy_from_previous(cell)
+        self.assertEqual(cell.row_key, ROW_KEY)
+        self.assertEqual(cell.family_name, FAMILY_NAME)
+        self.assertEqual(cell.qualifier, QUALIFIER)
+        self.assertEqual(cell.timestamp_micros, TIMESTAMP_MICROS)
+        self.assertEqual(cell.labels, LABELS)
+
+    def test__copy_from_previous_filled(self):
+        ROW_KEY = 'RK'
+        FAMILY_NAME = u'A'
+        QUALIFIER = b'C'
+        TIMESTAMP_MICROS = 100
+        LABELS = ['L1', 'L2']
+        prd = self._makeOne([])
+        prd._previous_cell = _PartialCellV2(
+            row_key=ROW_KEY,
+            family_name=FAMILY_NAME,
+            qualifier=QUALIFIER,
+            timestamp_micros=TIMESTAMP_MICROS,
+            labels=LABELS,
+        )
+        cell = _PartialCellV2()
+        prd._copy_from_previous(cell)
+        self.assertEqual(cell.row_key, ROW_KEY)
+        self.assertEqual(cell.family_name, FAMILY_NAME)
+        self.assertEqual(cell.qualifier, QUALIFIER)
+        self.assertEqual(cell.timestamp_micros, 0)
+        self.assertEqual(cell.labels, [])
+
+    def test__save_row_no_cell(self):
+        ROW_KEY = 'RK'
+        prd = self._makeOne([])
+        row = prd._row = _Dummy(row_key=ROW_KEY)
+        prd._cell = None
+        prd._save_current_row()
+        self.assertTrue(prd._rows[ROW_KEY] is row)
+
+    def test_invalid_last_scanned_row_key_on_start(self):
+        from gcloud.bigtable.row_data import ReadRowsResponseError
+        response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key='ABC')
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        with self.assertRaises(ReadRowsResponseError):
+            prd.consume_next()
+
+    def test_valid_last_scanned_row_key_on_start(self):
+        response = _ReadRowsResponseV2(
+            chunks=(), last_scanned_row_key='AFTER')
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        prd._last_scanned_row_key = 'BEFORE'
+        prd.consume_next()
+        self.assertEqual(prd._last_scanned_row_key, 'AFTER')
+
+    def test_invalid_empty_chunk(self):
+        from gcloud.bigtable.row_data import ReadRowsResponseError
+        chunks = _generate_cell_chunks([''])
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        with self.assertRaises(ReadRowsResponseError):
+            prd.consume_next()
+
+    def test_invalid_empty_second_chunk(self):
+        from gcloud.bigtable.row_data import ReadRowsResponseError
+        chunks = _generate_cell_chunks(['', ''])
+        first = chunks[0]
+        first.row_key = b'RK'
+        first.family_name.value = 'A'
+        first.qualifier.value = b'C'
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        with self.assertRaises(ReadRowsResponseError):
+            prd.consume_next()
+
+    # JSON Error cases
+
+    def _fail_during_consume(self, testcase_name):
+        from gcloud.bigtable.row_data import ReadRowsResponseError
+        chunks, _ = self._load_json_test(testcase_name)
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        with self.assertRaises(ReadRowsResponseError):
+            prd.consume_next()
+
+    def _fail_during_rows(self, testcase_name):
+        from gcloud.bigtable.row_data import ReadRowsResponseError
+        chunks, _ = self._load_json_test(testcase_name)
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        prd.consume_next()
+        with self.assertRaises(ReadRowsResponseError):
+            _ = prd.rows
+
+    def test_invalid_no_commit(self):
+        self._fail_during_rows('invalid - no commit')
+
+    def test_invalid_no_cell_key_before_commit(self):
+        self._fail_during_consume('invalid - no cell key before commit')
+
+    def test_invalid_no_cell_key_before_value(self):
+        self._fail_during_consume('invalid - no cell key before value')
+
+    def test_invalid_new_col_family_wo_qualifier(self):
+        self._fail_during_consume(
+            'invalid - new col family must specify qualifier')
+
+    def test_invalid_no_commit_between_rows(self):
+        self._fail_during_consume('invalid - no commit between rows')
+
+    def test_invalid_no_commit_after_first_row(self):
+        self._fail_during_consume('invalid - no commit after first row')
+
+    def test_invalid_last_row_missing_commit(self):
+        self._fail_during_rows('invalid - last row missing commit')
+
+    def test_invalid_duplicate_row_key(self):
+        self._fail_during_consume('invalid - duplicate row key')
+
+    def test_invalid_new_row_missing_row_key(self):
+        self._fail_during_consume('invalid - new row missing row key')
+
+    def test_invalid_bare_reset(self):
+        self._fail_during_consume('invalid - bare reset')
+
+    def test_invalid_bad_reset_no_commit(self):
+        self._fail_during_consume('invalid - bad reset, no commit')
+
+    def test_invalid_missing_key_after_reset(self):
+        self._fail_during_consume('invalid - missing key after reset')
+
+    def test_invalid_reset_with_chunk(self):
+        self._fail_during_consume('invalid - reset with chunk')
+
+    def test_invalid_commit_with_chunk(self):
+        self._fail_during_consume('invalid - commit with chunk')
+
+    # Non-error cases
+
+    _marker = object()
+
+    def _match_results(self, testcase_name, expected_result=_marker):
+        import operator
+        key_func = operator.itemgetter('rk', 'fm', 'qual')
+        chunks, results = self._load_json_test(testcase_name)
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        prd.consume_next()
+        flattened = sorted(_flatten_cells(prd), key=key_func)
+        if expected_result is self._marker:
+            expected_result = sorted(results, key=key_func)
+        self.assertEqual(flattened, expected_result)
+
+    def test_bare_commit_implies_ts_zero(self):
+        self._match_results('bare commit implies ts=0')
+
+    def test_simple_row_with_timestamp(self):
+        self._match_results('simple row with timestamp')
+
+    def test_missing_timestamp_implies_ts_zero(self):
+        self._match_results('missing timestamp, implied ts=0')
+
+    def test_empty_cell_value(self):
+        self._match_results('empty cell value')
+
+    def test_two_unsplit_cells(self):
+        self._match_results('two unsplit cells')
+
+    def test_two_qualifiers(self):
+        self._match_results('two qualifiers')
+
+    def test_two_families(self):
+        self._match_results('two families')
+
+    def test_with_labels(self):
+        self._match_results('with labels')
+
+    def test_split_cell_bare_commit(self):
+        self._match_results('split cell, bare commit')
+
+    def test_split_cell(self):
+        self._match_results('split cell')
+
+    def test_split_four_ways(self):
+        self._match_results('split four ways')
+
+    def test_two_split_cells(self):
+        self._match_results('two split cells')
+
+    def test_multi_qualifier_splits(self):
+        self._match_results('multi-qualifier splits')
+
+    def test_multi_qualifier_multi_split(self):
+        self._match_results('multi-qualifier multi-split')
+
+    def test_multi_family_split(self):
+        self._match_results('multi-family split')
+
+    def test_two_rows(self):
+        self._match_results('two rows')
+
+    def test_two_rows_implicit_timestamp(self):
+        self._match_results('two rows implicit timestamp')
+
+    def test_two_rows_empty_value(self):
+        self._match_results('two rows empty value')
+
+    def test_two_rows_one_with_multiple_cells(self):
+        self._match_results('two rows, one with multiple cells')
+
+    def test_two_rows_multiple_cells_multiple_families(self):
+        self._match_results('two rows, multiple cells, multiple families')
+
+    def test_two_rows_multiple_cells(self):
+        self._match_results('two rows, multiple cells')
+
+    def test_two_rows_four_cells_two_labels(self):
+        self._match_results('two rows, four cells, 2 labels')
+
+    def test_two_rows_with_splits_same_timestamp(self):
+        self._match_results('two rows with splits, same timestamp')
+
+    def test_no_data_after_reset(self):
+        # JSON testcase has `"results": null`
+        self._match_results('no data after reset', expected_result=[])
+
+    def test_simple_reset(self):
+        self._match_results('simple reset')
+
+    def test_reset_to_new_val(self):
+        self._match_results('reset to new val')
+
+    def test_reset_to_new_qual(self):
+        self._match_results('reset to new qual')
+
+    def test_reset_with_splits(self):
+        self._match_results('reset with splits')
+
+    def test_two_resets(self):
+        self._match_results('two resets')
+
+    def test_reset_to_new_row(self):
+        self._match_results('reset to new row')
+
+    def test_reset_in_between_chunks(self):
+        self._match_results('reset in between chunks')
+
+    def test_empty_cell_chunk(self):
+        self._match_results('empty cell chunk')
+
+
+def _flatten_cells(prd):
+    # Match results format from JSON testcases.
+    # Doesn't handle error cases.
+    from gcloud._helpers import _bytes_to_unicode
+    from gcloud._helpers import _microseconds_from_datetime
+    for row_key, row in prd.rows.items():
+        for family_name, family in row.cells.items():
+            for qualifier, column in family.items():
+                for cell in column:
+                    yield {
+                        u'rk': _bytes_to_unicode(row_key),
+                        u'fm': family_name,
+                        u'qual': _bytes_to_unicode(qualifier),
+                        u'ts': _microseconds_from_datetime(cell.timestamp),
+                        u'value': _bytes_to_unicode(cell.value),
+                        u'label': u' '.join(cell.labels),
+                        u'error': False,
+                    }
+
+
 class _MockCancellableIterator(object):
 
     cancel_calls = 0
@@ -522,3 +889,59 @@ class _MockCancellableIterator(object):
 
     def next(self):
         return next(self.iter_values)
+
+
+class _Dummy(object):
+
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+
+
+class _PartialCellV2(object):
+
+    row_key = ''
+    family_name = u''
+    qualifier = b''
+    timestamp_micros = 0
+
+    def __init__(self, **kw):
+        self.labels = kw.pop('labels', [])
+        self.__dict__.update(kw)
+
+
+class _ReadRowsResponseV2(object):
+
+    def __init__(self, chunks, last_scanned_row_key=''):
+        self.chunks = chunks
+        self.last_scanned_row_key = last_scanned_row_key
+
+
+def _generate_cell_chunks(chunk_text_pbs):
+    from google.protobuf.text_format import Merge
+    from gcloud.bigtable._generated_v2.bigtable_pb2 import ReadRowsResponse
+
+    chunks = []
+
+    for chunk_text_pb in chunk_text_pbs:
+        chunk = ReadRowsResponse.CellChunk()
+        chunks.append(Merge(chunk_text_pb, chunk))
+
+    return chunks
+
+
+def _parse_readrows_acceptance_tests(filename):
+    """Parse acceptance tests from JSON
+
+    See:
+    https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/master/bigtable-client-core/src/test/resources/com/google/cloud/bigtable/grpc/scanner/v2/read-rows-acceptance-test.json
+    """
+    import json
+
+    with open(filename) as json_file:
+        test_json = json.load(json_file)
+
+    for test in test_json['tests']:
+        name = test['name']
+        chunks = _generate_cell_chunks(test['chunks'])
+        results = test['results']
+        yield name, chunks, results
