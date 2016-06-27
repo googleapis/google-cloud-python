@@ -67,6 +67,49 @@ class Cell(object):
         return not self.__eq__(other)
 
 
+class PartialCellData(object):
+    """Representation of partial cell in a Google Cloud Bigtable Table.
+
+    These are expected to be updated directly from a
+    :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
+
+    :type row_key: bytes
+    :param row_key: The key for the row holding the (partial) cell.
+
+    :type family_name: str
+    :param family_name: The family name of the (partial) cell.
+
+    :type qualifier: bytes
+    :param qualifier: The column qualifier of the (partial) cell.
+
+    :type timestamp_micros: int
+    :param timestamp_micros: The timestamp (in microsecods) of the
+                             (partial) cell.
+
+    :type labels: list of str
+    :param labels: labels assigned to the (partial) cell
+
+    :type value: bytes
+    :param value: The (accumulated) value of the (partial) cell.
+    """
+    def __init__(self, row_key, family_name, qualifier, timestamp_micros,
+                 labels=(), value=b''):
+        self.row_key = row_key
+        self.family_name = family_name
+        self.qualifier = qualifier
+        self.timestamp_micros = timestamp_micros
+        self.labels = labels
+        self.value = value
+
+    def append_value(self, value):
+        """Append bytes from a new chunk to value.
+
+        :type value: bytes
+        :param value: bytes to append
+        """
+        self.value += value
+
+
 class PartialRowData(object):
     """Representation of partial row in a Google Cloud Bigtable Table.
 
@@ -80,15 +123,11 @@ class PartialRowData(object):
     def __init__(self, row_key):
         self._row_key = row_key
         self._cells = {}
-        self._committed = False
-        self._chunks_encountered = False
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
         return (other._row_key == self._row_key and
-                other._committed == self._committed and
-                other._chunks_encountered == self._chunks_encountered and
                 other._cells == self._cells)
 
     def __ne__(self, other):
@@ -132,119 +171,13 @@ class PartialRowData(object):
         """
         return self._row_key
 
-    @property
-    def committed(self):
-        """Getter for the committed status of the (partial) row.
 
-        :rtype: bool
-        :returns: The committed status of the (partial) row.
-        """
-        return self._committed
+class InvalidReadRowsResponse(RuntimeError):
+    """Exception raised to to invalid response data from back-end."""
 
-    def clear(self):
-        """Clears all cells that have been added."""
-        self._committed = False
-        self._chunks_encountered = False
-        self._cells.clear()
 
-    def _handle_commit_row(self, chunk, index, last_chunk_index):
-        """Handles a ``commit_row`` chunk.
-
-        :type chunk: ``ReadRowsResponse.Chunk``
-        :param chunk: The chunk being handled.
-
-        :type index: int
-        :param index: The current index of the chunk.
-
-        :type last_chunk_index: int
-        :param last_chunk_index: The index of the last chunk.
-
-        :raises: :class:`ValueError <exceptions.ValueError>` if the value of
-                 ``commit_row`` is :data:`False` or if the chunk passed is not
-                 the last chunk in a response.
-        """
-        # NOTE: We assume the caller has checked that the ``ONEOF`` property
-        #       for ``chunk`` is ``commit_row``.
-        if not chunk.commit_row:
-            raise ValueError('Received commit_row that was False.')
-
-        if index != last_chunk_index:
-            raise ValueError('Commit row chunk was not the last chunk')
-        else:
-            self._committed = True
-
-    def _handle_reset_row(self, chunk):
-        """Handles a ``reset_row`` chunk.
-
-        :type chunk: ``ReadRowsResponse.Chunk``
-        :param chunk: The chunk being handled.
-
-        :raises: :class:`ValueError <exceptions.ValueError>` if the value of
-                 ``reset_row`` is :data:`False`
-        """
-        # NOTE: We assume the caller has checked that the ``ONEOF`` property
-        #       for ``chunk`` is ``reset_row``.
-        if not chunk.reset_row:
-            raise ValueError('Received reset_row that was False.')
-
-        self.clear()
-
-    def _handle_row_contents(self, chunk):
-        """Handles a ``row_contents`` chunk.
-
-        :type chunk: ``ReadRowsResponse.Chunk``
-        :param chunk: The chunk being handled.
-        """
-        # NOTE: We assume the caller has checked that the ``ONEOF`` property
-        #       for ``chunk`` is ``row_contents``.
-
-        # chunk.row_contents is ._generated.bigtable_data_pb2.Family
-        column_family_id = chunk.row_contents.name
-        column_family_dict = self._cells.setdefault(column_family_id, {})
-        for column in chunk.row_contents.columns:
-            cells = [Cell.from_pb(cell) for cell in column.cells]
-
-            column_name = column.qualifier
-            column_cells = column_family_dict.setdefault(column_name, [])
-            column_cells.extend(cells)
-
-    def update_from_read_rows(self, read_rows_response_pb):
-        """Updates the current row from a ``ReadRows`` response.
-
-        :type read_rows_response_pb:
-            :class:`._generated.bigtable_service_messages_pb2.ReadRowsResponse`
-        :param read_rows_response_pb: A response streamed back as part of a
-                                      ``ReadRows`` request.
-
-        :raises: :class:`ValueError <exceptions.ValueError>` if the current
-                 partial row has already been committed, if the row key on the
-                 response doesn't match the current one or if there is a chunk
-                 encountered with an unexpected ``ONEOF`` protobuf property.
-        """
-        if self._committed:
-            raise ValueError('The row has been committed')
-
-        if read_rows_response_pb.row_key != self.row_key:
-            raise ValueError('Response row key (%r) does not match current '
-                             'one (%r).' % (read_rows_response_pb.row_key,
-                                            self.row_key))
-
-        last_chunk_index = len(read_rows_response_pb.chunks) - 1
-        for index, chunk in enumerate(read_rows_response_pb.chunks):
-            chunk_property = chunk.WhichOneof('chunk')
-            if chunk_property == 'row_contents':
-                self._handle_row_contents(chunk)
-            elif chunk_property == 'reset_row':
-                self._handle_reset_row(chunk)
-            elif chunk_property == 'commit_row':
-                self._handle_commit_row(chunk, index, last_chunk_index)
-            else:
-                # NOTE: This includes chunk_property == None since we always
-                #       want a value to be set
-                raise ValueError('Unexpected chunk property: %s' % (
-                    chunk_property,))
-
-            self._chunks_encountered = True
+class InvalidChunk(RuntimeError):
+    """Exception raised to to invalid chunk data from back-end."""
 
 
 class PartialRowsData(object):
@@ -255,11 +188,27 @@ class PartialRowsData(object):
     :param response_iterator: A streaming iterator returned from a
                               ``ReadRows`` request.
     """
+    START = "Start"                         # No responses yet processed.
+    NEW_ROW = "New row"                     # No cells yet complete for row
+    ROW_IN_PROGRESS = "Row in progress"     # Some cells complete for row
+    CELL_IN_PROGRESS = "Cell in progress"   # Incomplete cell for row
 
     def __init__(self, response_iterator):
-        # We expect an iterator of `data_messages_pb2.ReadRowsResponse`
         self._response_iterator = response_iterator
+        # Fully-processed rows, keyed by `row_key`
         self._rows = {}
+        # Counter for responses pulled from iterator
+        self._counter = 0
+        # Maybe cached from previous response
+        self._last_scanned_row_key = None
+        # In-progress row, unset until first response, after commit/reset
+        self._row = None
+        # Last complete row, unset until first commit
+        self._previous_row = None
+        # In-progress cell, unset until first response, after completion
+        self._cell = None
+        # Last complete cell, unset until first completion, after new row
+        self._previous_cell = None
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -270,11 +219,31 @@ class PartialRowsData(object):
         return not self.__eq__(other)
 
     @property
+    def state(self):
+        """State machine state.
+
+        :rtype: str
+        :returns:  name of state corresponding to currrent row / chunk
+                   processing.
+        """
+        if self._last_scanned_row_key is None:
+            return self.START
+        if self._row is None:
+            assert self._cell is None
+            assert self._previous_cell is None
+            return self.NEW_ROW
+        if self._cell is not None:
+            return self.CELL_IN_PROGRESS
+        if self._previous_cell is not None:
+            return self.ROW_IN_PROGRESS
+        return self.NEW_ROW  # row added, no chunk yet processed
+
+    @property
     def rows(self):
         """Property returning all rows accumulated from the stream.
 
         :rtype: dict
-        :returns: Dictionary of :class:`PartialRowData`.
+        :returns: row_key -> :class:`PartialRowData`.
         """
         # NOTE: To avoid duplicating large objects, this is just the
         #       mutable private data.
@@ -285,21 +254,55 @@ class PartialRowsData(object):
         self._response_iterator.cancel()
 
     def consume_next(self):
-        """Consumes the next ``ReadRowsResponse`` from the stream.
+        """Consume the next ``ReadRowsResponse`` from the stream.
 
-        Parses the response and stores it as a :class:`PartialRowData`
-        in a dictionary owned by this object.
-
-        :raises: :class:`StopIteration <exceptions.StopIteration>` if the
-                 response iterator has no more responses to stream.
+        Parse the response and its chunks into a new/existing row in
+        :attr:`_rows`
         """
-        read_rows_response = self._response_iterator.next()
-        row_key = read_rows_response.row_key
-        partial_row = self._rows.get(row_key)
-        if partial_row is None:
-            partial_row = self._rows[row_key] = PartialRowData(row_key)
-        # NOTE: This is not atomic in the case of failures.
-        partial_row.update_from_read_rows(read_rows_response)
+        response = six.next(self._response_iterator)
+        self._counter += 1
+
+        if self._last_scanned_row_key is None:  # first response
+            if response.last_scanned_row_key:
+                raise InvalidReadRowsResponse()
+
+        self._last_scanned_row_key = response.last_scanned_row_key
+
+        row = self._row
+        cell = self._cell
+
+        for chunk in response.chunks:
+
+            self._validate_chunk(chunk)
+
+            if chunk.reset_row:
+                row = self._row = None
+                cell = self._cell = self._previous_cell = None
+                continue
+
+            if row is None:
+                row = self._row = PartialRowData(chunk.row_key)
+
+            if cell is None:
+                cell = self._cell = PartialCellData(
+                    chunk.row_key,
+                    chunk.family_name.value,
+                    chunk.qualifier.value,
+                    chunk.timestamp_micros,
+                    chunk.labels,
+                    chunk.value)
+                self._copy_from_previous(cell)
+            else:
+                cell.append_value(chunk.value)
+
+            if chunk.commit_row:
+                self._save_current_row()
+                row = cell = None
+                continue
+
+            if chunk.value_size == 0:
+                self._save_current_cell()
+                cell = None
 
     def consume_all(self, max_loops=None):
         """Consume the streamed responses until there are no more.
@@ -321,100 +324,6 @@ class PartialRowsData(object):
                 self.consume_next()
             except StopIteration:
                 break
-
-
-class InvalidReadRowsResponse(RuntimeError):
-    """Exception raised to to invalid response data from back-end."""
-
-
-class InvalidChunk(RuntimeError):
-    """Exception raised to to invalid chunk data from back-end."""
-
-
-def _raise_if(predicate, *args):
-    """Helper for validation methods."""
-    if predicate:
-        raise InvalidChunk(*args)
-
-
-class PartialCellV2(object):
-    """Data for a not-yet-complete cell."""
-
-    def __init__(self, row_key, family_name, qualifier, timestamp_micros,
-                 labels=(), value=b''):
-        self.row_key = row_key
-        self.family_name = family_name
-        self.qualifier = qualifier
-        self.timestamp_micros = timestamp_micros
-        self.labels = labels
-        self.value = value
-
-    def append_value(self, value):
-        """Append bytes from a new chunk to value.
-
-        :type value: bytes
-        :param value: bytes to append
-        """
-        self.value += value
-
-
-class PartialRowsDataV2(object):
-    """Handle state involved in consuming a ``ReadRows`` streaming response.
-
-    :type response_iterator:
-        :class:`grpc.framework.alpha._reexport._CancellableIterator` returning
-        :class:`gcloud.bigtable._generated_v2.bigtable_pb2.ReadRowsResponse`
-    :param response_iterator:
-        A streaming iterator returned from a ``ReadRows`` request.
-    """
-    # State names
-    START = "Start"
-    NEW_ROW = "New row"
-    ROW_IN_PROGRESS = "Row in progress"
-    CELL_IN_PROGRESS = "Cell in progress"
-
-    def __init__(self, response_iterator):
-        self._response_iterator = response_iterator
-        # Fully-processed rows, keyed by `row_key`
-        self._rows = {}
-        # Counter for responses pulled from iterator
-        self._counter = 0
-        # Maybe cached from previous response
-        self._last_scanned_row_key = None
-        # In-progress row, unset until first response, after commit/reset
-        self._row = None
-        # Last complete row, unset until first commit
-        self._previous_row = None
-        # In-progress cell, unset until first response, after completion
-        self._cell = None
-        # Last complete cell, unset until first completion, after new row
-        self._previous_cell = None
-
-    @property
-    def state(self):
-        """Name of state machine state."""
-        if self._last_scanned_row_key is None:
-            return self.START
-        if self._row is None:
-            assert self._cell is None
-            assert self._previous_cell is None
-            return self.NEW_ROW
-        if self._cell is not None:
-            return self.CELL_IN_PROGRESS
-        if self._previous_cell is not None:
-            return self.ROW_IN_PROGRESS
-        return self.NEW_ROW  # row added, no chunk yet processed
-
-    @property
-    def rows(self):
-        """Property returning all rows accumulated from the stream.
-
-        :rtype: dict
-        :returns: Dictionary of :class:`PartialRowData`.
-        """
-        # NOTE: To avoid duplicating large objects, this is just the
-        #       mutable private data.
-        return self._rows
 
     @staticmethod
     def _validate_chunk_status(chunk):
@@ -526,53 +435,8 @@ class PartialRowsDataV2(object):
         self._row, self._previous_row = None, self._row
         self._previous_cell = None
 
-    def consume_next(self):
-        """Consume the next ``ReadRowsResponse`` from the stream.
 
-        Parse the response and its chunks into a new/existing row in
-        :attr:`_rows`
-        """
-        response = self._response_iterator.next()
-        self._counter += 1
-
-        if self._last_scanned_row_key is None:  # first response
-            if response.last_scanned_row_key:
-                raise InvalidReadRowsResponse()
-
-        self._last_scanned_row_key = response.last_scanned_row_key
-
-        row = self._row
-        cell = self._cell
-
-        for chunk in response.chunks:
-
-            self._validate_chunk(chunk)
-
-            if chunk.reset_row:
-                row = self._row = None
-                cell = self._cell = self._previous_cell = None
-                continue
-
-            if row is None:
-                row = self._row = PartialRowData(chunk.row_key)
-
-            if cell is None:
-                cell = self._cell = PartialCellV2(
-                    chunk.row_key,
-                    chunk.family_name.value,
-                    chunk.qualifier.value,
-                    chunk.timestamp_micros,
-                    chunk.labels,
-                    chunk.value)
-                self._copy_from_previous(cell)
-            else:
-                cell.append_value(chunk.value)
-
-            if chunk.commit_row:
-                self._save_current_row()
-                row = cell = None
-                continue
-
-            if chunk.value_size == 0:
-                self._save_current_cell()
-                cell = None
+def _raise_if(predicate, *args):
+    """Helper for validation methods."""
+    if predicate:
+        raise InvalidChunk(*args)

@@ -14,20 +14,16 @@
 
 """User friendly container for Google Cloud Bigtable Table."""
 
-
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import (
-    bigtable_data_pb2 as data_v1_pb2)
-from gcloud.bigtable._generated import (
-    bigtable_table_service_messages_pb2 as messages_v1_pb2)
-from gcloud.bigtable._generated import (
-    bigtable_service_messages_pb2 as data_messages_v1_pb2)
+from gcloud.bigtable._generated_v2 import (
+    bigtable_pb2 as data_messages_v2_pb2)
+from gcloud.bigtable._generated_v2 import (
+    bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import AppendRow
 from gcloud.bigtable.row import ConditionalRow
 from gcloud.bigtable.row import DirectRow
-from gcloud.bigtable.row_data import PartialRowData
 from gcloud.bigtable.row_data import PartialRowsData
 
 
@@ -168,8 +164,12 @@ class Table(object):
                                    created, spanning the key ranges:
                                    ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
         """
-        request_pb = messages_v1_pb2.CreateTableRequest(
-            initial_split_keys=initial_split_keys or [],
+        split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
+        if initial_split_keys is not None:
+            initial_split_keys = [
+                split_pb(key=key) for key in initial_split_keys]
+        request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
+            initial_splits=initial_split_keys or [],
             name=self._cluster.name,
             table_id=self.table_id,
         )
@@ -179,7 +179,8 @@ class Table(object):
 
     def delete(self):
         """Delete this table."""
-        request_pb = messages_v1_pb2.DeleteTableRequest(name=self.name)
+        request_pb = table_admin_messages_v2_pb2.DeleteTableRequest(
+            name=self.name)
         client = self._cluster._client
         # We expect a `google.protobuf.empty_pb2.Empty`
         client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
@@ -195,7 +196,8 @@ class Table(object):
                  family name from the response does not agree with the computed
                  name from the column family ID.
         """
-        request_pb = messages_v1_pb2.GetTableRequest(name=self.name)
+        request_pb = table_admin_messages_v2_pb2.GetTableRequest(
+            name=self.name)
         client = self._cluster._client
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
@@ -206,10 +208,6 @@ class Table(object):
             gc_rule = _gc_rule_from_pb(value_pb.gc_rule)
             column_family = self.column_family(column_family_id,
                                                gc_rule=gc_rule)
-            if column_family.name != value_pb.name:
-                raise ValueError('Column family name %s does not agree with '
-                                 'name from request: %s.' % (
-                                     column_family.name, value_pb.name))
             result[column_family_id] = column_family
         return result
 
@@ -234,21 +232,18 @@ class Table(object):
         client = self._cluster._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
-        # We expect an iterator of `data_messages_v1_pb2.ReadRowsResponse`
-        result = PartialRowData(row_key)
-        for read_rows_response in response_iterator:
-            result.update_from_read_rows(read_rows_response)
-
-        # Make sure the result actually contains data.
-        if not result._chunks_encountered:
-            return None
-        # Make sure the result was committed by the back-end.
-        if not result.committed:
+        rows_data = PartialRowsData(response_iterator)
+        rows_data.consume_all()
+        if rows_data.state != rows_data.NEW_ROW:
             raise ValueError('The row remains partial / is not committed.')
-        return result
 
-    def read_rows(self, start_key=None, end_key=None,
-                  allow_row_interleaving=None, limit=None, filter_=None):
+        if len(rows_data.rows) == 0:
+            return None
+
+        return rows_data.rows[row_key]
+
+    def read_rows(self, start_key=None, end_key=None, limit=None,
+                  filter_=None):
         """Read rows from this table.
 
         :type start_key: bytes
@@ -261,26 +256,10 @@ class Table(object):
                         The range will not include ``end_key``. If left empty,
                         will be interpreted as an infinite string.
 
-        :type allow_row_interleaving: bool
-        :param allow_row_interleaving: (Optional) By default, rows are read
-                                       sequentially, producing results which
-                                       are guaranteed to arrive in increasing
-                                       row order. Setting
-                                       ``allow_row_interleaving`` to
-                                       :data:`True` allows multiple rows to be
-                                       interleaved in the response stream,
-                                       which increases throughput but breaks
-                                       this guarantee, and may force the
-                                       client to use more memory to buffer
-                                       partially-received rows.
-
         :type limit: int
         :param limit: (Optional) The read will terminate after committing to N
                       rows' worth of results. The default (zero) is to return
-                      all results. Note that if ``allow_row_interleaving`` is
-                      set to :data:`True`, partial results may be returned for
-                      more than N rows. However, only N ``commit_row`` chunks
-                      will be sent.
+                      all results.
 
         :type filter_: :class:`.RowFilter`
         :param filter_: (Optional) The filter to apply to the contents of the
@@ -293,11 +272,11 @@ class Table(object):
         """
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
-            allow_row_interleaving=allow_row_interleaving, limit=limit)
+            limit=limit)
         client = self._cluster._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
-        # We expect an iterator of `data_messages_v1_pb2.ReadRowsResponse`
+        # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
         return PartialRowsData(response_iterator)
 
     def sample_row_keys(self):
@@ -331,7 +310,7 @@ class Table(object):
                   or by casting to a :class:`list` and can be cancelled by
                   calling ``cancel()``.
         """
-        request_pb = data_messages_v1_pb2.SampleRowKeysRequest(
+        request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
         client = self._cluster._client
         response_iterator = client._data_stub.SampleRowKeys(
@@ -340,7 +319,7 @@ class Table(object):
 
 
 def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
-                        filter_=None, allow_row_interleaving=None, limit=None):
+                        filter_=None, limit=None):
     """Creates a request to read rows in a table.
 
     :type table_name: str
@@ -363,28 +342,12 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
     :param filter_: (Optional) The filter to apply to the contents of the
                     specified row(s). If unset, reads the entire table.
 
-    :type allow_row_interleaving: bool
-    :param allow_row_interleaving: (Optional) By default, rows are read
-                                   sequentially, producing results which are
-                                   guaranteed to arrive in increasing row
-                                   order. Setting
-                                   ``allow_row_interleaving`` to
-                                   :data:`True` allows multiple rows to be
-                                   interleaved in the response stream,
-                                   which increases throughput but breaks
-                                   this guarantee, and may force the
-                                   client to use more memory to buffer
-                                   partially-received rows.
-
     :type limit: int
     :param limit: (Optional) The read will terminate after committing to N
                   rows' worth of results. The default (zero) is to return
-                  all results. Note that if ``allow_row_interleaving`` is
-                  set to :data:`True`, partial results may be returned for
-                  more than N rows. However, only N ``commit_row`` chunks
-                  will be sent.
+                  all results.
 
-    :rtype: :class:`data_messages_v1_pb2.ReadRowsRequest`
+    :rtype: :class:`data_messages_v2_pb2.ReadRowsRequest`
     :returns: The ``ReadRowsRequest`` protobuf corresponding to the inputs.
     :raises: :class:`ValueError <exceptions.ValueError>` if both
              ``row_key`` and one of ``start_key`` and ``end_key`` are set
@@ -394,21 +357,23 @@ def _create_row_request(table_name, row_key=None, start_key=None, end_key=None,
             (start_key is not None or end_key is not None)):
         raise ValueError('Row key and row range cannot be '
                          'set simultaneously')
-    if row_key is not None:
-        request_kwargs['row_key'] = _to_bytes(row_key)
+    range_kwargs = {}
     if start_key is not None or end_key is not None:
-        range_kwargs = {}
         if start_key is not None:
-            range_kwargs['start_key'] = _to_bytes(start_key)
+            range_kwargs['start_key_closed'] = _to_bytes(start_key)
         if end_key is not None:
-            range_kwargs['end_key'] = _to_bytes(end_key)
-        row_range = data_v1_pb2.RowRange(**range_kwargs)
-        request_kwargs['row_range'] = row_range
+            range_kwargs['end_key_open'] = _to_bytes(end_key)
     if filter_ is not None:
         request_kwargs['filter'] = filter_.to_pb()
-    if allow_row_interleaving is not None:
-        request_kwargs['allow_row_interleaving'] = allow_row_interleaving
     if limit is not None:
-        request_kwargs['num_rows_limit'] = limit
+        request_kwargs['rows_limit'] = limit
 
-    return data_messages_v1_pb2.ReadRowsRequest(**request_kwargs)
+    message = data_messages_v2_pb2.ReadRowsRequest(**request_kwargs)
+
+    if row_key is not None:
+        message.rows.row_keys.append(_to_bytes(row_key))
+
+    if range_kwargs:
+        message.rows.row_ranges.add(**range_kwargs)
+
+    return message

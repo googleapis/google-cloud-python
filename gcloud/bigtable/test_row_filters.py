@@ -420,7 +420,7 @@ class TestColumnRangeFilter(unittest2.TestCase):
         row_filter = self._makeOne(column_family_id, start_column=column)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
-            start_qualifier_inclusive=column,
+            start_qualifier_closed=column,
         )
         expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
@@ -432,7 +432,7 @@ class TestColumnRangeFilter(unittest2.TestCase):
                                    inclusive_start=False)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
-            start_qualifier_exclusive=column,
+            start_qualifier_open=column,
         )
         expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
@@ -443,7 +443,7 @@ class TestColumnRangeFilter(unittest2.TestCase):
         row_filter = self._makeOne(column_family_id, end_column=column)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
-            end_qualifier_inclusive=column,
+            end_qualifier_closed=column,
         )
         expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
@@ -455,7 +455,7 @@ class TestColumnRangeFilter(unittest2.TestCase):
                                    inclusive_end=False)
         col_range_pb = _ColumnRangePB(
             family_name=column_family_id,
-            end_qualifier_exclusive=column,
+            end_qualifier_open=column,
         )
         expected_pb = _RowFilterPB(column_range_filter=col_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
@@ -543,28 +543,28 @@ class TestValueRangeFilter(unittest2.TestCase):
     def test_to_pb_inclusive_start(self):
         value = b'some-value'
         row_filter = self._makeOne(start_value=value)
-        val_range_pb = _ValueRangePB(start_value_inclusive=value)
+        val_range_pb = _ValueRangePB(start_value_closed=value)
         expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
     def test_to_pb_exclusive_start(self):
         value = b'some-value'
         row_filter = self._makeOne(start_value=value, inclusive_start=False)
-        val_range_pb = _ValueRangePB(start_value_exclusive=value)
+        val_range_pb = _ValueRangePB(start_value_open=value)
         expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
     def test_to_pb_inclusive_end(self):
         value = b'some-value'
         row_filter = self._makeOne(end_value=value)
-        val_range_pb = _ValueRangePB(end_value_inclusive=value)
+        val_range_pb = _ValueRangePB(end_value_closed=value)
         expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
     def test_to_pb_exclusive_end(self):
         value = b'some-value'
         row_filter = self._makeOne(end_value=value, inclusive_end=False)
-        val_range_pb = _ValueRangePB(end_value_exclusive=value)
+        val_range_pb = _ValueRangePB(end_value_open=value)
         expected_pb = _RowFilterPB(value_range_filter=val_range_pb)
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
@@ -960,42 +960,42 @@ class TestConditionalRowFilter(unittest2.TestCase):
 
 
 def _ColumnRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.ColumnRange(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.ColumnRange(*args, **kw)
 
 
 def _RowFilterPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.RowFilter(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.RowFilter(*args, **kw)
 
 
 def _RowFilterChainPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.RowFilter.Chain(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.RowFilter.Chain(*args, **kw)
 
 
 def _RowFilterConditionPB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.RowFilter.Condition(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.RowFilter.Condition(*args, **kw)
 
 
 def _RowFilterInterleavePB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.RowFilter.Interleave(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.RowFilter.Interleave(*args, **kw)
 
 
 def _TimestampRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.TimestampRange(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.TimestampRange(*args, **kw)
 
 
 def _ValueRangePB(*args, **kw):
-    from gcloud.bigtable._generated import (
-        bigtable_data_pb2 as data_v1_pb2)
-    return data_v1_pb2.ValueRange(*args, **kw)
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.ValueRange(*args, **kw)
