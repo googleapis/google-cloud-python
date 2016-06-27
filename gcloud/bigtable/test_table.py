@@ -18,6 +18,12 @@ import unittest2
 
 class TestTable(unittest2.TestCase):
 
+    PROJECT_ID = 'project-id'
+    INSTANCE_ID = 'instance-id'
+    INSTANCE_NAME = ('projects/' + PROJECT_ID + '/instances/' + INSTANCE_ID)
+    TABLE_ID = 'table-id'
+    TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
+    TIMEOUT_SECONDS = 1333
     ROW_KEY = b'row-key'
     FAMILY_NAME = u'family'
     QUALIFIER = b'qualifier'
@@ -33,19 +39,19 @@ class TestTable(unittest2.TestCase):
 
     def test_constructor(self):
         table_id = 'table-id'
-        cluster = object()
+        instance = object()
 
-        table = self._makeOne(table_id, cluster)
+        table = self._makeOne(table_id, instance)
         self.assertEqual(table.table_id, table_id)
-        self.assertTrue(table._cluster is cluster)
+        self.assertTrue(table._instance is instance)
 
     def test_name_property(self):
         table_id = 'table-id'
-        cluster_name = 'cluster_name'
+        instance_name = 'instance_name'
 
-        cluster = _Cluster(cluster_name)
-        table = self._makeOne(table_id, cluster)
-        expected_name = cluster_name + '/tables/' + table_id
+        instance = _Instance(instance_name)
+        table = self._makeOne(table_id, instance)
+        expected_name = instance_name + '/tables/' + table_id
         self.assertEqual(table.name, expected_name)
 
     def test_column_family_factory(self):
@@ -100,51 +106,40 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(row._table, table)
 
     def test_row_factory_failure(self):
-        table_id = 'table-id'
-        table = self._makeOne(table_id, None)
+        table = self._makeOne(self.TABLE_ID, None)
         with self.assertRaises(ValueError):
             table.row(b'row_key', filter_=object(), append=True)
 
     def test___eq__(self):
-        table_id = 'table_id'
-        cluster = object()
-        table1 = self._makeOne(table_id, cluster)
-        table2 = self._makeOne(table_id, cluster)
+        instance = object()
+        table1 = self._makeOne(self.TABLE_ID, instance)
+        table2 = self._makeOne(self.TABLE_ID, instance)
         self.assertEqual(table1, table2)
 
     def test___eq__type_differ(self):
-        table1 = self._makeOne('table_id', None)
+        table1 = self._makeOne(self.TABLE_ID, None)
         table2 = object()
         self.assertNotEqual(table1, table2)
 
     def test___ne__same_value(self):
-        table_id = 'table_id'
-        cluster = object()
-        table1 = self._makeOne(table_id, cluster)
-        table2 = self._makeOne(table_id, cluster)
+        instance = object()
+        table1 = self._makeOne(self.TABLE_ID, instance)
+        table2 = self._makeOne(self.TABLE_ID, instance)
         comparison_val = (table1 != table2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        table1 = self._makeOne('table_id1', 'cluster1')
-        table2 = self._makeOne('table_id2', 'cluster2')
+        table1 = self._makeOne('table_id1', 'instance1')
+        table2 = self._makeOne('table_id2', 'instance2')
         self.assertNotEqual(table1, table2)
 
     def _create_test_helper(self, initial_split_keys):
         from gcloud._helpers import _to_bytes
         from gcloud.bigtable._testing import _FakeStub
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        timeout_seconds = 150
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-
-        client = _Client(timeout_seconds=timeout_seconds)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
         splits_pb = [
@@ -152,8 +147,8 @@ class TestTable(unittest2.TestCase):
             for key in initial_split_keys or ()]
         request_pb = _CreateTableRequestPB(
             initial_splits=splits_pb,
-            name=cluster_name,
-            table_id=table_id,
+            name=self.INSTANCE_NAME,
+            table_id=self.TABLE_ID,
         )
 
         # Create response_pb
@@ -170,7 +165,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateTable',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
 
@@ -185,27 +180,18 @@ class TestTable(unittest2.TestCase):
     def _list_column_families_helper(self):
         from gcloud.bigtable._testing import _FakeStub
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        timeout_seconds = 502
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-
-        client = _Client(timeout_seconds=timeout_seconds)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
-        table_name = cluster_name + '/tables/' + table_id
-        request_pb = _GetTableRequestPB(name=table_name)
+        request_pb = _GetTableRequestPB(name=self.TABLE_NAME)
 
         # Create response_pb
-        column_family_id = 'foo'
+        COLUMN_FAMILY_ID = 'foo'
         column_family = _ColumnFamilyPB()
         response_pb = _TablePB(
-            column_families={column_family_id: column_family},
+            column_families={COLUMN_FAMILY_ID: column_family},
         )
 
         # Patch the stub used by the API method.
@@ -213,7 +199,7 @@ class TestTable(unittest2.TestCase):
 
         # Create expected_result.
         expected_result = {
-            column_family_id: table.column_family(column_family_id),
+            COLUMN_FAMILY_ID: table.column_family(COLUMN_FAMILY_ID),
         }
 
         # Perform the method and check the result.
@@ -221,7 +207,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetTable',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
 
@@ -232,21 +218,12 @@ class TestTable(unittest2.TestCase):
         from google.protobuf import empty_pb2
         from gcloud.bigtable._testing import _FakeStub
 
-        project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        table_id = 'table-id'
-        timeout_seconds = 871
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-
-        client = _Client(timeout_seconds=timeout_seconds)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
-        table_name = cluster_name + '/tables/' + table_id
-        request_pb = _DeleteTableRequestPB(name=table_name)
+        request_pb = _DeleteTableRequestPB(name=self.TABLE_NAME)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -262,7 +239,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'DeleteTable',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
 
@@ -272,15 +249,14 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable import table as MUT
 
         project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
+        instance_id = 'instance-id'
         table_id = 'table-id'
         timeout_seconds = 596
         client = _Client(timeout_seconds=timeout_seconds)
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        instance_name = ('projects/' + project_id +
+                        '/instances/' + instance_id)
+        instance = _Instance(instance_name, client=client)
+        table = self._makeOne(table_id, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -354,15 +330,14 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable import table as MUT
 
         project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
+        instance_id = 'instance-id'
         table_id = 'table-id'
         timeout_seconds = 1111
         client = _Client(timeout_seconds=timeout_seconds)
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        instance_name = ('projects/' + project_id +
+                        '/instances/' + instance_id)
+        instance = _Instance(instance_name, client=client)
+        table = self._makeOne(table_id, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -409,19 +384,18 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
+        instance_id = 'instance-id'
         table_id = 'table-id'
         timeout_seconds = 1333
 
         client = _Client(timeout_seconds=timeout_seconds)
-        cluster_name = ('projects/' + project_id + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster = _Cluster(cluster_name, client=client)
-        table = self._makeOne(table_id, cluster)
+        instance_name = ('projects/' + project_id +
+                        '/instances/' + instance_id)
+        instance = _Instance(instance_name, client=client)
+        table = self._makeOne(table_id, instance)
 
         # Create request_pb
-        table_name = cluster_name + '/tables/' + table_id
+        table_name = instance_name + '/tables/' + table_id
         request_pb = _SampleRowKeysRequestPB(
             table_name=table_name)
 
@@ -591,7 +565,7 @@ def _ColumnFamilyPB(*args, **kw):
 class _Client(object):
 
     data_stub = None
-    cluster_stub = None
+    instance_stub = None
     operations_stub = None
     table_stub = None
 
@@ -599,7 +573,7 @@ class _Client(object):
         self.timeout_seconds = timeout_seconds
 
 
-class _Cluster(object):
+class _Instance(object):
 
     def __init__(self, name, client=None):
         self.name = name
