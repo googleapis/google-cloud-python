@@ -206,11 +206,8 @@ Delete a metric:
    False
 
 
-Export log entries using sinks
-------------------------------
-
-Sinks allow exporting entries which match a given filter to Cloud Storage
-buckets, BigQuery datasets, or Cloud Pub/Sub topics.
+Export to Cloud storage
+=======================
 
 Make sure that the storage bucket you want to export logs too has
 `cloud-logs@google.com` as the owner. See `Set permission for writing exported logs`_.
@@ -222,11 +219,42 @@ Add `cloud-logs@google.com` as the owner of `my-bucket-name`:
     >>> from gcloud import storage
     >>> client = storage.Client()
     >>> bucket = client.get_bucket('my-bucket-name')
-    >>> acl = bucket.acl
-    >>> acl.user('cloud-logs@google.com').grant_owner()
-    >>> acl.save()
+    >>> bucket.acl.reload()
+    >>> logs_group = bucket.acl.group('cloud-logs@google.com')
+    >>> logs_group.grant_owner()
+    >>> bucket.acl.add_entity(logs_group)
+    >>> bucket.acl.save()
 
 .. _Set permission for writing exported logs: https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs
+
+
+Export to BigQuery
+==================
+
+To export logs to BigQuery you must log into the Cloud Platform Console
+and add `cloud-logs@google.com` to your project.
+
+See: `Setting permissions for BigQuery`_
+
+.. _Setting permissions for BigQuery: https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq
+
+
+Export to Pub/Sub
+=================
+
+To export logs to BigQuery you must log into the Cloud Platform Console
+and add `cloud-logs@google.com` to your project.
+
+See: `Setting permissions for Pub/Sub`_
+
+.. _Setting permissions for Pub/Sub: https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub
+
+
+Export log entries using sinks
+------------------------------
+
+Sinks allow exporting entries which match a given filter to Cloud Storage
+buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
 Create a Cloud Storage sink:
 
