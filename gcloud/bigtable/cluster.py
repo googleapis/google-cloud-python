@@ -24,9 +24,6 @@ from gcloud.bigtable._generated import (
     bigtable_cluster_data_pb2 as data_v1_pb2)
 from gcloud.bigtable._generated import (
     bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
-from gcloud.bigtable._generated import (
-    bigtable_table_service_messages_pb2 as table_messages_v1_pb2)
-from gcloud.bigtable.table import Table
 
 
 _CLUSTER_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
@@ -229,17 +226,6 @@ class Cluster(object):
         self.display_name = display_name or cluster_id
         self.serve_nodes = serve_nodes
         self._client = client
-
-    def table(self, table_id):
-        """Factory to create a table associated with this cluster.
-
-        :type table_id: str
-        :param table_id: The ID of the table.
-
-        :rtype: :class:`Table <gcloud.bigtable.table.Table>`
-        :returns: The table owned by this cluster.
-        """
-        return Table(table_id, self)
 
     def _update_from_pb(self, cluster_pb):
         """Refresh self from the server-provided protobuf.
@@ -464,27 +450,3 @@ class Cluster(object):
 
         op_id, op_begin = _process_operation(operation_pb2)
         return Operation('undelete', op_id, op_begin, cluster=self)
-
-    def list_tables(self):
-        """List the tables in this cluster.
-
-        :rtype: list of :class:`Table <gcloud.bigtable.table.Table>`
-        :returns: The list of tables owned by the cluster.
-        :raises: :class:`ValueError <exceptions.ValueError>` if one of the
-                 returned tables has a name that is not of the expected format.
-        """
-        request_pb = table_messages_v1_pb2.ListTablesRequest(name=self.name)
-        # We expect a `table_messages_v1_pb2.ListTablesResponse`
-        table_list_pb = self._client._table_stub.ListTables(
-            request_pb, self._client.timeout_seconds)
-
-        result = []
-        for table_pb in table_list_pb.tables:
-            table_prefix = self.name + '/tables/'
-            if not table_pb.name.startswith(table_prefix):
-                raise ValueError('Table name %s not of expected format' % (
-                    table_pb.name,))
-            table_id = table_pb.name[len(table_prefix):]
-            result.append(self.table(table_id))
-
-        return result
