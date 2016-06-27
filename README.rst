@@ -212,6 +212,13 @@ analyze, monitor, and alert on log data and events from Google Cloud Platform.
     logger = client.logger('log_name')
     logger.log_text("A simple entry")  # API call
 
+Example of fetching entries:
+
+.. code:: python
+
+    entries, token = logger.list_entries()
+    for entry in entries:
+        print entry.payload
 
 See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
 to Cloud logging using this Client Library.
