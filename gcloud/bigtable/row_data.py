@@ -408,7 +408,6 @@ class PartialRowsDataV2(object):
         :rtype: dict
         :returns: Dictionary of :class:`PartialRowData`.
         """
-        _raise_if(self.state not in (self.NEW_ROW,))
         # NOTE: To avoid duplicating large objects, this is just the
         #       mutable private data.
         return self._rows

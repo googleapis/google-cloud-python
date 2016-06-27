@@ -687,7 +687,7 @@ class TestPartialRowsDataV2(unittest2.TestCase):
         with self.assertRaises(ReadRowsResponseError):
             prd.consume_next()
 
-    # JSON Error cases
+    # JSON Error cases:  invalid chunks
 
     def _fail_during_consume(self, testcase_name):
         from gcloud.bigtable.row_data import ReadRowsResponseError
@@ -697,19 +697,6 @@ class TestPartialRowsDataV2(unittest2.TestCase):
         prd = self._makeOne(iterator)
         with self.assertRaises(ReadRowsResponseError):
             prd.consume_next()
-
-    def _fail_during_rows(self, testcase_name):
-        from gcloud.bigtable.row_data import ReadRowsResponseError
-        chunks, _ = self._load_json_test(testcase_name)
-        response = _ReadRowsResponseV2(chunks)
-        iterator = _MockCancellableIterator(response)
-        prd = self._makeOne(iterator)
-        prd.consume_next()
-        with self.assertRaises(ReadRowsResponseError):
-            _ = prd.rows
-
-    def test_invalid_no_commit(self):
-        self._fail_during_rows('invalid - no commit')
 
     def test_invalid_no_cell_key_before_commit(self):
         self._fail_during_consume('invalid - no cell key before commit')
@@ -726,9 +713,6 @@ class TestPartialRowsDataV2(unittest2.TestCase):
 
     def test_invalid_no_commit_after_first_row(self):
         self._fail_during_consume('invalid - no commit after first row')
-
-    def test_invalid_last_row_missing_commit(self):
-        self._fail_during_rows('invalid - last row missing commit')
 
     def test_invalid_duplicate_row_key(self):
         self._fail_during_consume('invalid - duplicate row key')
@@ -751,21 +735,44 @@ class TestPartialRowsDataV2(unittest2.TestCase):
     def test_invalid_commit_with_chunk(self):
         self._fail_during_consume('invalid - commit with chunk')
 
-    # Non-error cases
+    # JSON Error cases:  incomplete final row
 
-    _marker = object()
-
-    def _match_results(self, testcase_name, expected_result=_marker):
+    def _sort_flattend_cells(self, flattened):
         import operator
         key_func = operator.itemgetter('rk', 'fm', 'qual')
+        return sorted(flattened, key=key_func)
+
+    def _incomplete_final_row(self, testcase_name):
         chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
         prd.consume_next()
-        flattened = sorted(_flatten_cells(prd), key=key_func)
+        self.assertEqual(prd.state, prd.ROW_IN_PROGRESS)
+        expected_result = self._sort_flattend_cells(
+            [result for result in results if not result['error']])
+        flattened = self._sort_flattend_cells(_flatten_cells(prd))
+        self.assertEqual(flattened, expected_result)
+
+    def test_invalid_no_commit(self):
+        self._incomplete_final_row('invalid - no commit')
+
+    def test_invalid_last_row_missing_commit(self):
+        self._incomplete_final_row('invalid - last row missing commit')
+
+    # Non-error cases
+
+    _marker = object()
+
+    def _match_results(self, testcase_name, expected_result=_marker):
+        chunks, results = self._load_json_test(testcase_name)
+        response = _ReadRowsResponseV2(chunks)
+        iterator = _MockCancellableIterator(response)
+        prd = self._makeOne(iterator)
+        prd.consume_next()
+        flattened = self._sort_flattend_cells(_flatten_cells(prd))
         if expected_result is self._marker:
-            expected_result = sorted(results, key=key_func)
+            expected_result = self._sort_flattend_cells(results)
         self.assertEqual(flattened, expected_result)
 
     def test_bare_commit_implies_ts_zero(self):
