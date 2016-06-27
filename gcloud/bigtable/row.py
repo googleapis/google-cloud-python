@@ -22,9 +22,10 @@ import six
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
-    bigtable_service_messages_pb2 as messages_pb2)
+    bigtable_data_pb2 as data_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_service_messages_pb2 as messages_v1_pb2)
 
 
 _PACK_I64 = struct.Struct('>q').pack
@@ -133,13 +134,13 @@ class _SetDeleteRow(Row):
             # Truncate to millisecond granularity.
             timestamp_micros -= (timestamp_micros % 1000)
 
-        mutation_val = data_pb2.Mutation.SetCell(
+        mutation_val = data_v1_pb2.Mutation.SetCell(
             family_name=column_family_id,
             column_qualifier=column,
             timestamp_micros=timestamp_micros,
             value=value,
         )
-        mutation_pb = data_pb2.Mutation(set_cell=mutation_val)
+        mutation_pb = data_v1_pb2.Mutation(set_cell=mutation_val)
         self._get_mutations(state).append(mutation_pb)
 
     def _delete(self, state=None):
@@ -155,8 +156,8 @@ class _SetDeleteRow(Row):
         :param state: (Optional) The state that is passed along to
                       :meth:`_get_mutations`.
         """
-        mutation_val = data_pb2.Mutation.DeleteFromRow()
-        mutation_pb = data_pb2.Mutation(delete_from_row=mutation_val)
+        mutation_val = data_v1_pb2.Mutation.DeleteFromRow()
+        mutation_pb = data_v1_pb2.Mutation(delete_from_row=mutation_val)
         self._get_mutations(state).append(mutation_pb)
 
     def _delete_cells(self, column_family_id, columns, time_range=None,
@@ -187,10 +188,10 @@ class _SetDeleteRow(Row):
         """
         mutations_list = self._get_mutations(state)
         if columns is self.ALL_COLUMNS:
-            mutation_val = data_pb2.Mutation.DeleteFromFamily(
+            mutation_val = data_v1_pb2.Mutation.DeleteFromFamily(
                 family_name=column_family_id,
             )
-            mutation_pb = data_pb2.Mutation(delete_from_family=mutation_val)
+            mutation_pb = data_v1_pb2.Mutation(delete_from_family=mutation_val)
             mutations_list.append(mutation_pb)
         else:
             delete_kwargs = {}
@@ -206,9 +207,9 @@ class _SetDeleteRow(Row):
                     family_name=column_family_id,
                     column_qualifier=column,
                 )
-                mutation_val = data_pb2.Mutation.DeleteFromColumn(
+                mutation_val = data_v1_pb2.Mutation.DeleteFromColumn(
                     **delete_kwargs)
-                mutation_pb = data_pb2.Mutation(
+                mutation_pb = data_v1_pb2.Mutation(
                     delete_from_column=mutation_val)
                 to_append.append(mutation_pb)
 
@@ -388,7 +389,7 @@ class DirectRow(_SetDeleteRow):
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total mutations exceed the maximum allowable '
                              '%d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_pb2.MutateRowRequest(
+        request_pb = messages_v1_pb2.MutateRowRequest(
             table_name=self._table.name,
             row_key=self._row_key,
             mutations=mutations_list,
@@ -503,14 +504,14 @@ class ConditionalRow(_SetDeleteRow):
                 'mutations and %d false mutations.' % (
                     MAX_MUTATIONS, num_true_mutations, num_false_mutations))
 
-        request_pb = messages_pb2.CheckAndMutateRowRequest(
+        request_pb = messages_v1_pb2.CheckAndMutateRowRequest(
             table_name=self._table.name,
             row_key=self._row_key,
             predicate_filter=self._filter.to_pb(),
             true_mutations=true_mutations,
             false_mutations=false_mutations,
         )
-        # We expect a `.messages_pb2.CheckAndMutateRowResponse`
+        # We expect a `.messages_v1_pb2.CheckAndMutateRowResponse`
         client = self._table._cluster._client
         resp = client._data_stub.CheckAndMutateRow(
             request_pb, client.timeout_seconds)
@@ -700,9 +701,10 @@ class AppendRow(Row):
         """
         column = _to_bytes(column)
         value = _to_bytes(value)
-        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
-                                               column_qualifier=column,
-                                               append_value=value)
+        rule_pb = data_v1_pb2.ReadModifyWriteRule(
+            family_name=column_family_id,
+            column_qualifier=column,
+            append_value=value)
         self._rule_pb_list.append(rule_pb)
 
     def increment_cell_value(self, column_family_id, column, int_value):
@@ -736,9 +738,10 @@ class AppendRow(Row):
                           will fail.
         """
         column = _to_bytes(column)
-        rule_pb = data_pb2.ReadModifyWriteRule(family_name=column_family_id,
-                                               column_qualifier=column,
-                                               increment_amount=int_value)
+        rule_pb = data_v1_pb2.ReadModifyWriteRule(
+            family_name=column_family_id,
+            column_qualifier=column,
+            increment_amount=int_value)
         self._rule_pb_list.append(rule_pb)
 
     def commit(self):
@@ -791,12 +794,12 @@ class AppendRow(Row):
         if num_mutations > MAX_MUTATIONS:
             raise ValueError('%d total append mutations exceed the maximum '
                              'allowable %d.' % (num_mutations, MAX_MUTATIONS))
-        request_pb = messages_pb2.ReadModifyWriteRowRequest(
+        request_pb = messages_v1_pb2.ReadModifyWriteRowRequest(
             table_name=self._table.name,
             row_key=self._row_key,
             rules=self._rule_pb_list,
         )
-        # We expect a `.data_pb2.Row`
+        # We expect a `.data_v1_pb2.Row`
         client = self._table._cluster._client
         row_response = client._data_stub.ReadModifyWriteRow(
             request_pb, client.timeout_seconds)
@@ -811,7 +814,7 @@ class AppendRow(Row):
 def _parse_rmw_row_response(row_response):
     """Parses the response to a ``ReadModifyWriteRow`` request.
 
-    :type row_response: :class:`.data_pb2.Row`
+    :type row_response: :class:`.data_v1_pb2.Row`
     :param row_response: The response row (with only modified cells) from a
                          ``ReadModifyWriteRow`` request.
 

@@ -126,9 +126,9 @@ class TestTable(unittest2.TestCase):
 
     def _create_test_helper(self, initial_split_keys):
         from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
+            bigtable_table_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
+            bigtable_table_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -144,14 +144,14 @@ class TestTable(unittest2.TestCase):
         table = self._makeOne(table_id, cluster)
 
         # Create request_pb
-        request_pb = messages_pb2.CreateTableRequest(
+        request_pb = messages_v1_pb2.CreateTableRequest(
             initial_split_keys=initial_split_keys,
             name=cluster_name,
             table_id=table_id,
         )
 
         # Create response_pb
-        response_pb = data_pb2.Table()
+        response_pb = data_v1_pb2.Table()
 
         # Patch the stub used by the API method.
         client._table_stub = stub = _FakeStub(response_pb)
@@ -178,9 +178,9 @@ class TestTable(unittest2.TestCase):
 
     def _list_column_families_helper(self, column_family_name=None):
         from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
+            bigtable_table_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
+            bigtable_table_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -197,15 +197,15 @@ class TestTable(unittest2.TestCase):
 
         # Create request_pb
         table_name = cluster_name + '/tables/' + table_id
-        request_pb = messages_pb2.GetTableRequest(name=table_name)
+        request_pb = messages_v1_pb2.GetTableRequest(name=table_name)
 
         # Create response_pb
         column_family_id = 'foo'
         if column_family_name is None:
             column_family_name = (table_name + '/columnFamilies/' +
                                   column_family_id)
-        column_family = data_pb2.ColumnFamily(name=column_family_name)
-        response_pb = data_pb2.Table(
+        column_family = data_v1_pb2.ColumnFamily(name=column_family_name)
+        response_pb = data_v1_pb2.Table(
             column_families={column_family_id: column_family},
         )
 
@@ -238,7 +238,7 @@ class TestTable(unittest2.TestCase):
     def test_delete(self):
         from google.protobuf import empty_pb2
         from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
+            bigtable_table_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -255,7 +255,7 @@ class TestTable(unittest2.TestCase):
 
         # Create request_pb
         table_name = cluster_name + '/tables/' + table_id
-        request_pb = messages_pb2.DeleteTableRequest(name=table_name)
+        request_pb = messages_v1_pb2.DeleteTableRequest(name=table_name)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -278,7 +278,7 @@ class TestTable(unittest2.TestCase):
     def _read_row_helper(self, chunks):
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable.row_data import PartialRowData
         from gcloud.bigtable import table as MUT
@@ -304,8 +304,8 @@ class TestTable(unittest2.TestCase):
 
         # Create response_iterator
         row_key = b'row-key'
-        response_pb = messages_pb2.ReadRowsResponse(row_key=row_key,
-                                                    chunks=chunks)
+        response_pb = messages_v1_pb2.ReadRowsResponse(
+            row_key=row_key, chunks=chunks)
         response_iterator = [response_pb]
 
         # Patch the stub used by the API method.
@@ -334,9 +334,9 @@ class TestTable(unittest2.TestCase):
 
     def test_read_row(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
-        chunk = messages_pb2.ReadRowsResponse.Chunk(commit_row=True)
+        chunk = messages_v1_pb2.ReadRowsResponse.Chunk(commit_row=True)
         chunks = [chunk]
         self._read_row_helper(chunks)
 
@@ -346,10 +346,10 @@ class TestTable(unittest2.TestCase):
 
     def test_read_row_still_partial(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         # There is never a "commit row".
-        chunk = messages_pb2.ReadRowsResponse.Chunk(reset_row=True)
+        chunk = messages_v1_pb2.ReadRowsResponse.Chunk(reset_row=True)
         chunks = [chunk]
         with self.assertRaises(ValueError):
             self._read_row_helper(chunks)
@@ -416,7 +416,7 @@ class TestTable(unittest2.TestCase):
 
     def test_sample_row_keys(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -433,7 +433,8 @@ class TestTable(unittest2.TestCase):
 
         # Create request_pb
         table_name = cluster_name + '/tables/' + table_id
-        request_pb = messages_pb2.SampleRowKeysRequest(table_name=table_name)
+        request_pb = messages_v1_pb2.SampleRowKeysRequest(
+            table_name=table_name)
 
         # Create response_iterator
         response_iterator = object()  # Just passed to a mock.
@@ -466,11 +467,12 @@ class Test__create_row_request(unittest2.TestCase):
 
     def test_table_name_only(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         result = self._callFUT(table_name)
-        expected_result = messages_pb2.ReadRowsRequest(table_name=table_name)
+        expected_result = messages_v1_pb2.ReadRowsRequest(
+            table_name=table_name)
         self.assertEqual(result, expected_result)
 
     def test_row_key_row_range_conflict(self):
@@ -479,70 +481,74 @@ class Test__create_row_request(unittest2.TestCase):
 
     def test_row_key(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         row_key = b'row_key'
         result = self._callFUT(table_name, row_key=row_key)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
             row_key=row_key,
         )
         self.assertEqual(result, expected_result)
 
     def test_row_range_start_key(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         start_key = b'start_key'
         result = self._callFUT(table_name, start_key=start_key)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
-            row_range=data_pb2.RowRange(start_key=start_key),
+            row_range=data_v1_pb2.RowRange(start_key=start_key),
         )
         self.assertEqual(result, expected_result)
 
     def test_row_range_end_key(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         end_key = b'end_key'
         result = self._callFUT(table_name, end_key=end_key)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
-            row_range=data_pb2.RowRange(end_key=end_key),
+            row_range=data_v1_pb2.RowRange(end_key=end_key),
         )
         self.assertEqual(result, expected_result)
 
     def test_row_range_both_keys(self):
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated import (
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         start_key = b'start_key'
         end_key = b'end_key'
         result = self._callFUT(table_name, start_key=start_key,
                                end_key=end_key)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
-            row_range=data_pb2.RowRange(start_key=start_key, end_key=end_key),
+            row_range=data_v1_pb2.RowRange(
+                start_key=start_key, end_key=end_key),
         )
         self.assertEqual(result, expected_result)
 
     def test_with_filter(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable.row_filters import RowSampleFilter
 
         table_name = 'table_name'
         row_filter = RowSampleFilter(0.33)
         result = self._callFUT(table_name, filter_=row_filter)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
             filter=row_filter.to_pb(),
         )
@@ -550,13 +556,13 @@ class Test__create_row_request(unittest2.TestCase):
 
     def test_with_allow_row_interleaving(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         allow_row_interleaving = True
         result = self._callFUT(table_name,
                                allow_row_interleaving=allow_row_interleaving)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
             allow_row_interleaving=allow_row_interleaving,
         )
@@ -564,12 +570,12 @@ class Test__create_row_request(unittest2.TestCase):
 
     def test_with_limit(self):
         from gcloud.bigtable._generated import (
-            bigtable_service_messages_pb2 as messages_pb2)
+            bigtable_service_messages_pb2 as messages_v1_pb2)
 
         table_name = 'table_name'
         limit = 1337
         result = self._callFUT(table_name, limit=limit)
-        expected_result = messages_pb2.ReadRowsRequest(
+        expected_result = messages_v1_pb2.ReadRowsRequest(
             table_name=table_name,
             num_rows_limit=limit,
         )

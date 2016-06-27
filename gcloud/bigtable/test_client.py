@@ -289,9 +289,9 @@ class TestClient(unittest2.TestCase):
     def test__make_data_stub(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
-        from gcloud.bigtable.client import DATA_API_HOST
-        from gcloud.bigtable.client import DATA_API_PORT
-        from gcloud.bigtable.client import DATA_STUB_FACTORY
+        from gcloud.bigtable.client import DATA_API_HOST_V1
+        from gcloud.bigtable.client import DATA_API_PORT_V1
+        from gcloud.bigtable.client import DATA_STUB_FACTORY_V1
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -311,18 +311,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(make_stub_args, [
             (
                 client,
-                DATA_STUB_FACTORY,
-                DATA_API_HOST,
-                DATA_API_PORT,
+                DATA_STUB_FACTORY_V1,
+                DATA_API_HOST_V1,
+                DATA_API_PORT_V1,
             ),
         ])
 
     def test__make_cluster_stub(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
-        from gcloud.bigtable.client import CLUSTER_ADMIN_HOST
-        from gcloud.bigtable.client import CLUSTER_ADMIN_PORT
-        from gcloud.bigtable.client import CLUSTER_STUB_FACTORY
+        from gcloud.bigtable.client import CLUSTER_ADMIN_HOST_V1
+        from gcloud.bigtable.client import CLUSTER_ADMIN_PORT_V1
+        from gcloud.bigtable.client import CLUSTER_STUB_FACTORY_V1
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -342,18 +342,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(make_stub_args, [
             (
                 client,
-                CLUSTER_STUB_FACTORY,
-                CLUSTER_ADMIN_HOST,
-                CLUSTER_ADMIN_PORT,
+                CLUSTER_STUB_FACTORY_V1,
+                CLUSTER_ADMIN_HOST_V1,
+                CLUSTER_ADMIN_PORT_V1,
             ),
         ])
 
     def test__make_operations_stub(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
-        from gcloud.bigtable.client import CLUSTER_ADMIN_HOST
-        from gcloud.bigtable.client import CLUSTER_ADMIN_PORT
-        from gcloud.bigtable.client import OPERATIONS_STUB_FACTORY
+        from gcloud.bigtable.client import OPERATIONS_API_HOST_V1
+        from gcloud.bigtable.client import OPERATIONS_API_PORT_V1
+        from gcloud.bigtable.client import OPERATIONS_STUB_FACTORY_V1
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -373,18 +373,18 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(make_stub_args, [
             (
                 client,
-                OPERATIONS_STUB_FACTORY,
-                CLUSTER_ADMIN_HOST,
-                CLUSTER_ADMIN_PORT,
+                OPERATIONS_STUB_FACTORY_V1,
+                OPERATIONS_API_HOST_V1,
+                OPERATIONS_API_PORT_V1,
             ),
         ])
 
     def test__make_table_stub(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
-        from gcloud.bigtable.client import TABLE_ADMIN_HOST
-        from gcloud.bigtable.client import TABLE_ADMIN_PORT
-        from gcloud.bigtable.client import TABLE_STUB_FACTORY
+        from gcloud.bigtable.client import TABLE_ADMIN_HOST_V1
+        from gcloud.bigtable.client import TABLE_ADMIN_PORT_V1
+        from gcloud.bigtable.client import TABLE_STUB_FACTORY_V1
 
         credentials = _Credentials()
         project = 'PROJECT'
@@ -404,9 +404,9 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(make_stub_args, [
             (
                 client,
-                TABLE_STUB_FACTORY,
-                TABLE_ADMIN_HOST,
-                TABLE_ADMIN_PORT,
+                TABLE_STUB_FACTORY_V1,
+                TABLE_ADMIN_HOST_V1,
+                TABLE_ADMIN_PORT_V1,
             ),
         ])
 
@@ -543,9 +543,9 @@ class TestClient(unittest2.TestCase):
 
     def _list_zones_helper(self, zone_status):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         credentials = _Credentials()
@@ -555,17 +555,17 @@ class TestClient(unittest2.TestCase):
                                admin=True, timeout_seconds=timeout_seconds)
 
         # Create request_pb
-        request_pb = messages_pb2.ListZonesRequest(
+        request_pb = messages_v1_pb2.ListZonesRequest(
             name='projects/' + project,
         )
 
         # Create response_pb
         zone1 = 'foo'
         zone2 = 'bar'
-        response_pb = messages_pb2.ListZonesResponse(
+        response_pb = messages_v1_pb2.ListZonesResponse(
             zones=[
-                data_pb2.Zone(display_name=zone1, status=zone_status),
-                data_pb2.Zone(display_name=zone2, status=zone_status),
+                data_v1_pb2.Zone(display_name=zone1, status=zone_status),
+                data_v1_pb2.Zone(display_name=zone2, status=zone_status),
             ],
         )
 
@@ -586,20 +586,20 @@ class TestClient(unittest2.TestCase):
 
     def test_list_zones(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        self._list_zones_helper(data_pb2.Zone.OK)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
+        self._list_zones_helper(data_v1_pb2.Zone.OK)
 
     def test_list_zones_failure(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         with self.assertRaises(ValueError):
-            self._list_zones_helper(data_pb2.Zone.EMERGENCY_MAINENANCE)
+            self._list_zones_helper(data_v1_pb2.Zone.EMERGENCY_MAINENANCE)
 
     def test_list_clusters(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         credentials = _Credentials()
@@ -609,7 +609,7 @@ class TestClient(unittest2.TestCase):
                                admin=True, timeout_seconds=timeout_seconds)
 
         # Create request_pb
-        request_pb = messages_pb2.ListClustersRequest(
+        request_pb = messages_v1_pb2.ListClustersRequest(
             name='projects/' + project,
         )
 
@@ -622,17 +622,17 @@ class TestClient(unittest2.TestCase):
                          '/clusters/' + cluster_id1)
         cluster_name2 = ('projects/' + project + '/zones/' + zone +
                          '/clusters/' + cluster_id2)
-        response_pb = messages_pb2.ListClustersResponse(
+        response_pb = messages_v1_pb2.ListClustersResponse(
             failed_zones=[
-                data_pb2.Zone(display_name=failed_zone),
+                data_v1_pb2.Zone(display_name=failed_zone),
             ],
             clusters=[
-                data_pb2.Cluster(
+                data_v1_pb2.Cluster(
                     name=cluster_name1,
                     display_name=cluster_name1,
                     serve_nodes=3,
                 ),
-                data_pb2.Cluster(
+                data_v1_pb2.Cluster(
                     name=cluster_name2,
                     display_name=cluster_name2,
                     serve_nodes=3,

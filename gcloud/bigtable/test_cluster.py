@@ -209,12 +209,12 @@ class TestCluster(unittest2.TestCase):
 
     def test__update_from_pb_success(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
         display_name = 'display_name'
         serve_nodes = 8
-        cluster_pb = data_pb2.Cluster(
+        cluster_pb = data_v1_pb2.Cluster(
             display_name=display_name,
             serve_nodes=serve_nodes,
         )
@@ -228,10 +228,10 @@ class TestCluster(unittest2.TestCase):
 
     def test__update_from_pb_no_display_name(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
-        cluster_pb = data_pb2.Cluster(serve_nodes=331)
+        cluster_pb = data_v1_pb2.Cluster(serve_nodes=331)
         cluster = self._makeOne(None, None, None)
         self.assertEqual(cluster.display_name, None)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -242,10 +242,10 @@ class TestCluster(unittest2.TestCase):
 
     def test__update_from_pb_no_serve_nodes(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
-        cluster_pb = data_pb2.Cluster(display_name='name')
+        cluster_pb = data_v1_pb2.Cluster(display_name='name')
         cluster = self._makeOne(None, None, None)
         self.assertEqual(cluster.display_name, None)
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
@@ -256,7 +256,7 @@ class TestCluster(unittest2.TestCase):
 
     def test_from_pb_success(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
 
         project = 'PROJECT'
         zone = 'zone'
@@ -265,7 +265,7 @@ class TestCluster(unittest2.TestCase):
 
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        cluster_pb = data_pb2.Cluster(
+        cluster_pb = data_v1_pb2.Cluster(
             name=cluster_name,
             display_name=cluster_id,
             serve_nodes=331,
@@ -280,10 +280,10 @@ class TestCluster(unittest2.TestCase):
 
     def test_from_pb_bad_cluster_name(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
 
         cluster_name = 'INCORRECT_FORMAT'
-        cluster_pb = data_pb2.Cluster(name=cluster_name)
+        cluster_pb = data_v1_pb2.Cluster(name=cluster_name)
 
         klass = self._getTargetClass()
         with self.assertRaises(ValueError):
@@ -291,7 +291,7 @@ class TestCluster(unittest2.TestCase):
 
     def test_from_pb_project_mistmatch(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
 
         project = 'PROJECT'
         zone = 'zone'
@@ -303,7 +303,7 @@ class TestCluster(unittest2.TestCase):
 
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        cluster_pb = data_pb2.Cluster(name=cluster_name)
+        cluster_pb = data_v1_pb2.Cluster(name=cluster_name)
 
         klass = self._getTargetClass()
         with self.assertRaises(ValueError):
@@ -349,9 +349,9 @@ class TestCluster(unittest2.TestCase):
 
     def test_reload(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
@@ -366,12 +366,12 @@ class TestCluster(unittest2.TestCase):
         # Create request_pb
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        request_pb = messages_pb2.GetClusterRequest(name=cluster_name)
+        request_pb = messages_v1_pb2.GetClusterRequest(name=cluster_name)
 
         # Create response_pb
         serve_nodes = 31
         display_name = u'hey-hi-hello'
-        response_pb = data_pb2.Cluster(
+        response_pb = data_v1_pb2.Cluster(
             display_name=display_name,
             serve_nodes=serve_nodes,
         )
@@ -403,7 +403,7 @@ class TestCluster(unittest2.TestCase):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -425,7 +425,7 @@ class TestCluster(unittest2.TestCase):
         op_name = ('operations/projects/%s/zones/%s/clusters/%s/'
                    'operations/%d' % (project, zone, cluster_id, op_id))
         current_op = operations_pb2.Operation(name=op_name)
-        response_pb = data_pb2.Cluster(current_operation=current_op)
+        response_pb = data_v1_pb2.Cluster(current_operation=current_op)
 
         # Patch the stub used by the API method.
         client._cluster_stub = stub = _FakeStub(response_pb)
@@ -465,7 +465,7 @@ class TestCluster(unittest2.TestCase):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -484,7 +484,7 @@ class TestCluster(unittest2.TestCase):
         # Create request_pb
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        request_pb = data_pb2.Cluster(
+        request_pb = data_v1_pb2.Cluster(
             name=cluster_name,
             display_name=display_name,
             serve_nodes=serve_nodes,
@@ -492,7 +492,7 @@ class TestCluster(unittest2.TestCase):
 
         # Create response_pb
         current_op = operations_pb2.Operation()
-        response_pb = data_pb2.Cluster(current_operation=current_op)
+        response_pb = data_v1_pb2.Cluster(current_operation=current_op)
 
         # Patch the stub used by the API method.
         client._cluster_stub = stub = _FakeStub(response_pb)
@@ -525,7 +525,7 @@ class TestCluster(unittest2.TestCase):
     def test_delete(self):
         from google.protobuf import empty_pb2
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project = 'PROJECT'
@@ -539,7 +539,7 @@ class TestCluster(unittest2.TestCase):
         # Create request_pb
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        request_pb = messages_pb2.DeleteClusterRequest(name=cluster_name)
+        request_pb = messages_v1_pb2.DeleteClusterRequest(name=cluster_name)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -564,7 +564,7 @@ class TestCluster(unittest2.TestCase):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
@@ -579,7 +579,7 @@ class TestCluster(unittest2.TestCase):
         # Create request_pb
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        request_pb = messages_pb2.UndeleteClusterRequest(name=cluster_name)
+        request_pb = messages_v1_pb2.UndeleteClusterRequest(name=cluster_name)
 
         # Create response_pb
         response_pb = operations_pb2.Operation()
@@ -616,7 +616,7 @@ class TestCluster(unittest2.TestCase):
         from gcloud.bigtable._generated import (
             bigtable_table_data_pb2 as table_data_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as table_messages_pb2)
+            bigtable_table_service_messages_pb2 as table_messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project = 'PROJECT'
@@ -630,11 +630,12 @@ class TestCluster(unittest2.TestCase):
         # Create request_
         cluster_name = ('projects/' + project + '/zones/' + zone +
                         '/clusters/' + cluster_id)
-        request_pb = table_messages_pb2.ListTablesRequest(name=cluster_name)
+        request_pb = table_messages_v1_pb2.ListTablesRequest(
+            name=cluster_name)
 
         # Create response_pb
         table_name = table_name or (cluster_name + '/tables/' + table_id)
-        response_pb = table_messages_pb2.ListTablesResponse(
+        response_pb = table_messages_v1_pb2.ListTablesResponse(
             tables=[
                 table_data_pb2.Table(name=table_name),
             ],
@@ -686,9 +687,9 @@ class Test__prepare_create_request(unittest2.TestCase):
 
     def test_it(self):
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable.cluster import Cluster
 
         project = 'PROJECT'
@@ -702,11 +703,11 @@ class Test__prepare_create_request(unittest2.TestCase):
                           display_name=display_name, serve_nodes=serve_nodes)
         request_pb = self._callFUT(cluster)
         self.assertTrue(isinstance(request_pb,
-                                   messages_pb2.CreateClusterRequest))
+                                   messages_v1_pb2.CreateClusterRequest))
         self.assertEqual(request_pb.cluster_id, cluster_id)
         self.assertEqual(request_pb.name,
                          'projects/' + project + '/zones/' + zone)
-        self.assertTrue(isinstance(request_pb.cluster, data_pb2.Cluster))
+        self.assertTrue(isinstance(request_pb.cluster, data_v1_pb2.Cluster))
         self.assertEqual(request_pb.cluster.display_name, display_name)
         self.assertEqual(request_pb.cluster.serve_nodes, serve_nodes)
 
@@ -720,13 +721,14 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
     def test_with_known_type_url(self):
         from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
+        from gcloud.bigtable._generated import (
+            bigtable_data_pb2 as data_v1_pb2)
         from gcloud.bigtable import cluster as MUT
 
-        type_url = 'type.googleapis.com/' + data_pb2._CELL.full_name
-        fake_type_url_map = {type_url: data_pb2.Cell}
+        type_url = 'type.googleapis.com/' + data_v1_pb2._CELL.full_name
+        fake_type_url_map = {type_url: data_v1_pb2.Cell}
 
-        cell = data_pb2.Cell(
+        cell = data_v1_pb2.Cell(
             timestamp_micros=0,
             value=b'foobar',
         )
@@ -743,19 +745,19 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         from google.protobuf import any_pb2
         from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
 
         type_url = ('type.googleapis.com/' +
-                    messages_pb2._CREATECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.CreateClusterMetadata(
+                    messages_v1_pb2._CREATECLUSTERMETADATA.full_name)
+        metadata = messages_v1_pb2.CreateClusterMetadata(
             request_time=Timestamp(seconds=1, nanos=1234),
             finish_time=Timestamp(seconds=10, nanos=891011),
-            original_request=messages_pb2.CreateClusterRequest(
+            original_request=messages_v1_pb2.CreateClusterRequest(
                 name='foo',
                 cluster_id='bar',
-                cluster=data_pb2.Cluster(
+                cluster=data_v1_pb2.Cluster(
                     display_name='quux',
                     serve_nodes=1337,
                 ),
@@ -773,17 +775,17 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         from google.protobuf import any_pb2
         from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
 
         type_url = ('type.googleapis.com/' +
-                    messages_pb2._UPDATECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.UpdateClusterMetadata(
+                    messages_v1_pb2._UPDATECLUSTERMETADATA.full_name)
+        metadata = messages_v1_pb2.UpdateClusterMetadata(
             request_time=Timestamp(seconds=1, nanos=1234),
             finish_time=Timestamp(seconds=10, nanos=891011),
             cancel_time=Timestamp(seconds=100, nanos=76543),
-            original_request=data_pb2.Cluster(
+            original_request=data_v1_pb2.Cluster(
                 display_name='the-end',
                 serve_nodes=42,
             ),
@@ -800,13 +802,11 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
         from google.protobuf import any_pb2
         from google.protobuf.timestamp_pb2 import Timestamp
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
 
         type_url = ('type.googleapis.com/' +
-                    messages_pb2._UNDELETECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.UndeleteClusterMetadata(
+                    messages_v1_pb2._UNDELETECLUSTERMETADATA.full_name)
+        metadata = messages_v1_pb2.UndeleteClusterMetadata(
             request_time=Timestamp(seconds=1, nanos=1234),
             finish_time=Timestamp(seconds=10, nanos=891011),
         )
@@ -853,7 +853,7 @@ class Test__process_operation(unittest2.TestCase):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
         from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
+            bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
         from gcloud.bigtable import cluster as MUT
 
         project = 'PROJECT'
@@ -867,7 +867,7 @@ class Test__process_operation(unittest2.TestCase):
         current_op = operations_pb2.Operation(name=operation_name)
 
         # Create mocks.
-        request_metadata = messages_pb2.CreateClusterMetadata()
+        request_metadata = messages_v1_pb2.CreateClusterMetadata()
         parse_pb_any_called = []
 
         def mock_parse_pb_any_to_native(any_val, expected_type=None):
@@ -897,10 +897,10 @@ class Test__process_operation(unittest2.TestCase):
     def test_op_name_parsing_failure(self):
         from google.longrunning import operations_pb2
         from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+            bigtable_cluster_data_pb2 as data_v1_pb2)
 
         current_op = operations_pb2.Operation(name='invalid')
-        cluster = data_pb2.Cluster(current_operation=current_op)
+        cluster = data_v1_pb2.Cluster(current_operation=current_op)
         with self.assertRaises(ValueError):
             self._callFUT(cluster)
 

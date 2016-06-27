@@ -20,11 +20,12 @@ import re
 from google.longrunning import operations_pb2
 
 from gcloud._helpers import _pb_timestamp_to_datetime
-from gcloud.bigtable._generated import bigtable_cluster_data_pb2 as data_pb2
 from gcloud.bigtable._generated import (
-    bigtable_cluster_service_messages_pb2 as messages_pb2)
+    bigtable_cluster_data_pb2 as data_v1_pb2)
 from gcloud.bigtable._generated import (
-    bigtable_table_service_messages_pb2 as table_messages_pb2)
+    bigtable_cluster_service_messages_pb2 as messages_v1_pb2)
+from gcloud.bigtable._generated import (
+    bigtable_table_service_messages_pb2 as table_messages_v1_pb2)
 from gcloud.bigtable.table import Table
 
 
@@ -40,9 +41,9 @@ _CLUSTER_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateClusterMetadata'
 _UPDATE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'UpdateClusterMetadata'
 _UNDELETE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'UndeleteClusterMetadata'
 _TYPE_URL_MAP = {
-    _CLUSTER_CREATE_METADATA: messages_pb2.CreateClusterMetadata,
-    _UPDATE_CREATE_METADATA: messages_pb2.UpdateClusterMetadata,
-    _UNDELETE_CREATE_METADATA: messages_pb2.UndeleteClusterMetadata,
+    _CLUSTER_CREATE_METADATA: messages_v1_pb2.CreateClusterMetadata,
+    _UPDATE_CREATE_METADATA: messages_v1_pb2.UpdateClusterMetadata,
+    _UNDELETE_CREATE_METADATA: messages_v1_pb2.UndeleteClusterMetadata,
 }
 
 DEFAULT_SERVE_NODES = 3
@@ -55,15 +56,15 @@ def _prepare_create_request(cluster):
     :type cluster: :class:`Cluster`
     :param cluster: The cluster to be created.
 
-    :rtype: :class:`.messages_pb2.CreateClusterRequest`
+    :rtype: :class:`.messages_v1_pb2.CreateClusterRequest`
     :returns: The CreateCluster request object containing the cluster info.
     """
     zone_full_name = ('projects/' + cluster._client.project +
                       '/zones/' + cluster.zone)
-    return messages_pb2.CreateClusterRequest(
+    return messages_v1_pb2.CreateClusterRequest(
         name=zone_full_name,
         cluster_id=cluster.cluster_id,
-        cluster=data_pb2.Cluster(
+        cluster=data_v1_pb2.Cluster(
             display_name=cluster.display_name,
             serve_nodes=cluster.serve_nodes,
         ),
@@ -198,7 +199,7 @@ class Cluster(object):
     .. note::
 
         For now, we leave out the ``default_storage_type`` (an enum)
-        which if not sent will end up as :data:`.data_pb2.STORAGE_SSD`.
+        which if not sent will end up as :data:`.data_v1_pb2.STORAGE_SSD`.
 
     :type zone: str
     :param zone: The name of the zone where the cluster resides.
@@ -332,7 +333,7 @@ class Cluster(object):
 
     def reload(self):
         """Reload the metadata for this cluster."""
-        request_pb = messages_pb2.GetClusterRequest(name=self.name)
+        request_pb = messages_v1_pb2.GetClusterRequest(name=self.name)
         # We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.
         cluster_pb = self._client._cluster_stub.GetCluster(
             request_pb, self._client.timeout_seconds)
@@ -389,7 +390,7 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   update operation.
         """
-        request_pb = data_pb2.Cluster(
+        request_pb = data_v1_pb2.Cluster(
             name=self.name,
             display_name=self.display_name,
             serve_nodes=self.serve_nodes,
@@ -426,7 +427,7 @@ class Cluster(object):
           irrevocably disappear from the API, and their data will be
           permanently deleted.
         """
-        request_pb = messages_pb2.DeleteClusterRequest(name=self.name)
+        request_pb = messages_v1_pb2.DeleteClusterRequest(name=self.name)
         # We expect a `google.protobuf.empty_pb2.Empty`
         self._client._cluster_stub.DeleteCluster(
             request_pb, self._client.timeout_seconds)
@@ -456,7 +457,7 @@ class Cluster(object):
         :returns: The long-running operation corresponding to the
                   undelete operation.
         """
-        request_pb = messages_pb2.UndeleteClusterRequest(name=self.name)
+        request_pb = messages_v1_pb2.UndeleteClusterRequest(name=self.name)
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb2 = self._client._cluster_stub.UndeleteCluster(
             request_pb, self._client.timeout_seconds)
@@ -472,8 +473,8 @@ class Cluster(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        request_pb = table_messages_pb2.ListTablesRequest(name=self.name)
-        # We expect a `table_messages_pb2.ListTablesResponse`
+        request_pb = table_messages_v1_pb2.ListTablesRequest(name=self.name)
+        # We expect a `table_messages_v1_pb2.ListTablesResponse`
         table_list_pb = self._client._table_stub.ListTables(
             request_pb, self._client.timeout_seconds)
 
