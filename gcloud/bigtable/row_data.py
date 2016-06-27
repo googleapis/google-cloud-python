@@ -323,14 +323,18 @@ class PartialRowsData(object):
                 break
 
 
-class ReadRowsResponseError(RuntimeError):
-    """Exception raised to to invalid chunk / response data from back-end."""
+class InvalidReadRowsResponse(RuntimeError):
+    """Exception raised to to invalid response data from back-end."""
 
 
-def _raise_if(predicate):
+class InvalidChunk(RuntimeError):
+    """Exception raised to to invalid chunk data from back-end."""
+
+
+def _raise_if(predicate, *args):
     """Helper for validation methods."""
     if predicate:
-        raise ReadRowsResponseError()
+        raise InvalidChunk(*args)
 
 
 class PartialCellV2(object):
@@ -533,7 +537,7 @@ class PartialRowsDataV2(object):
 
         if self._last_scanned_row_key is None:  # first response
             if response.last_scanned_row_key:
-                raise ReadRowsResponseError()
+                raise InvalidReadRowsResponse()
 
         self._last_scanned_row_key = response.last_scanned_row_key
 

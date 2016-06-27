@@ -649,11 +649,11 @@ class TestPartialRowsDataV2(unittest2.TestCase):
         self.assertTrue(prd._rows[ROW_KEY] is row)
 
     def test_invalid_last_scanned_row_key_on_start(self):
-        from gcloud.bigtable.row_data import ReadRowsResponseError
+        from gcloud.bigtable.row_data import InvalidReadRowsResponse
         response = _ReadRowsResponseV2(chunks=(), last_scanned_row_key='ABC')
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
-        with self.assertRaises(ReadRowsResponseError):
+        with self.assertRaises(InvalidReadRowsResponse):
             prd.consume_next()
 
     def test_valid_last_scanned_row_key_on_start(self):
@@ -666,16 +666,16 @@ class TestPartialRowsDataV2(unittest2.TestCase):
         self.assertEqual(prd._last_scanned_row_key, 'AFTER')
 
     def test_invalid_empty_chunk(self):
-        from gcloud.bigtable.row_data import ReadRowsResponseError
+        from gcloud.bigtable.row_data import InvalidChunk
         chunks = _generate_cell_chunks([''])
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
-        with self.assertRaises(ReadRowsResponseError):
+        with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
     def test_invalid_empty_second_chunk(self):
-        from gcloud.bigtable.row_data import ReadRowsResponseError
+        from gcloud.bigtable.row_data import InvalidChunk
         chunks = _generate_cell_chunks(['', ''])
         first = chunks[0]
         first.row_key = b'RK'
@@ -684,19 +684,23 @@ class TestPartialRowsDataV2(unittest2.TestCase):
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
-        with self.assertRaises(ReadRowsResponseError):
+        with self.assertRaises(InvalidChunk):
             prd.consume_next()
 
     # JSON Error cases:  invalid chunks
 
     def _fail_during_consume(self, testcase_name):
-        from gcloud.bigtable.row_data import ReadRowsResponseError
-        chunks, _ = self._load_json_test(testcase_name)
+        from gcloud.bigtable.row_data import InvalidChunk
+        chunks, results = self._load_json_test(testcase_name)
         response = _ReadRowsResponseV2(chunks)
         iterator = _MockCancellableIterator(response)
         prd = self._makeOne(iterator)
-        with self.assertRaises(ReadRowsResponseError):
+        with self.assertRaises(InvalidChunk):
             prd.consume_next()
+        expected_result = self._sort_flattend_cells(
+            [result for result in results if not result['error']])
+        flattened = self._sort_flattend_cells(_flatten_cells(prd))
+        self.assertEqual(flattened, expected_result)
 
     def test_invalid_no_cell_key_before_commit(self):
         self._fail_during_consume('invalid - no cell key before commit')
