@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import time
 
 import unittest2
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
-from gcloud import logging
+import gcloud.logging
+import gcloud.logging.handlers
 
 from system_test_utils import unique_resource_id
 
@@ -44,13 +46,14 @@ class Config(object):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    Config.CLIENT = logging.Client()
+    Config.CLIENT = gcloud.logging.Client()
 
 
 class TestLogging(unittest2.TestCase):
 
     def setUp(self):
         self.to_delete = []
+        self._handlers_cache = logging.getLogger().handlers[:]
 
     def tearDown(self):
         from gcloud.exceptions import NotFound
@@ -65,6 +68,7 @@ class TestLogging(unittest2.TestCase):
                         time.sleep(backoff_intervals.pop(0))
                     else:
                         raise
+        logging.getLogger().handlers = self._handlers_cache[:]
 
     @staticmethod
     def _logger_name():
@@ -75,7 +79,7 @@ class TestLogging(unittest2.TestCase):
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
-        time.sleep(2)
+        time.sleep(5)
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
@@ -96,7 +100,7 @@ class TestLogging(unittest2.TestCase):
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                         http_request=REQUEST)
-        time.sleep(2)
+        time.sleep(5)
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
@@ -115,10 +119,39 @@ class TestLogging(unittest2.TestCase):
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_struct(JSON_PAYLOAD)
-        time.sleep(2)
+        time.sleep(5)
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
+
+    def test_log_handler(self):
+        LOG_MESSAGE = 'It was the best of times.'
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger(self._logger_name())
+        self.to_delete.append(logger)
+
+        handler = gcloud.logging.handlers.CloudLoggingHandler(Config.CLIENT)
+        cloud_logger = logging.getLogger(self._logger_name())
+        cloud_logger.addHandler(handler)
+        cloud_logger.warn(LOG_MESSAGE)
+        time.sleep(5)
+        entries, _ = logger.list_entries()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, {'message': LOG_MESSAGE})
+
+    def test_log_root_handler(self):
+        LOG_MESSAGE = 'It was the best of times.'
+        # only create the logger to delete, hidden otherwise
+        logger = Config.CLIENT.logger("root")
+        self.to_delete.append(logger)
+
+        handler = gcloud.logging.handlers.CloudLoggingHandler(Config.CLIENT)
+        gcloud.logging.handlers.setup_logging(handler)
+        logging.warn(LOG_MESSAGE)
+        time.sleep(5)
+        entries, _ = logger.list_entries()
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].payload, {'message': LOG_MESSAGE})
 
     def test_log_struct_w_metadata(self):
         JSON_PAYLOAD = {
@@ -139,7 +172,7 @@ class TestLogging(unittest2.TestCase):
         self.to_delete.append(logger)
         logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                           http_request=REQUEST)
-        time.sleep(2)
+        time.sleep(5)
         entries, _ = logger.list_entries()
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
