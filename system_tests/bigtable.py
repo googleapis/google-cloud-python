@@ -357,7 +357,6 @@ class TestDataAPI(unittest2.TestCase):
 
         # Read back the contents of the row.
         partial_row_data = self._table.read_row(ROW_KEY)
-        self.assertTrue(partial_row_data.committed)
         self.assertEqual(partial_row_data.row_key, ROW_KEY)
 
         # Check the cells match.
@@ -440,7 +439,6 @@ class TestDataAPI(unittest2.TestCase):
         # Bring our two labeled columns together.
         row_filter = RowFilterUnion(filters=[chain1, chain2])
         partial_row_data = self._table.read_row(ROW_KEY, filter_=row_filter)
-        self.assertTrue(partial_row_data.committed)
         self.assertEqual(partial_row_data.row_key, ROW_KEY)
 
         cells_returned = partial_row_data.cells
