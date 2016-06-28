@@ -40,7 +40,6 @@ generate:
 	# Move the newly generated *_pb2.py files into our library.
 	cp $(GENERATED_DIR)/google/bigtable/v2/* $(BIGTABLE_DIR)
 	cp $(GENERATED_DIR)/google/bigtable/admin/v2/* $(BIGTABLE_DIR)
-	cp $(GENERATED_DIR)/google/bigtable/admin/v2/* $(BIGTABLE_DIR)
 	# Remove all existing *.proto files before we replace
 	rm -f $(BIGTABLE_DIR)/*.proto
 	# Copy over the *.proto files into our library.
