@@ -538,7 +538,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.path, RESOURCE, None))
+                         (ENTRIES, logger.full_name, RESOURCE, None))
 
     def test_commit_w_alternate_client(self):
         import json
@@ -582,7 +582,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.path, RESOURCE, DEFAULT_LABELS))
+                         (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
 
     def test_context_mgr_success(self):
         import json
@@ -624,7 +624,7 @@ class TestBatch(unittest2.TestCase):
 
         self.assertEqual(list(batch.entries), [])
         self.assertEqual(api._write_entries_called_with,
-                         (ENTRIES, logger.path, RESOURCE, DEFAULT_LABELS))
+                         (ENTRIES, logger.full_name, RESOURCE, DEFAULT_LABELS))
 
     def test_context_mgr_failure(self):
         from google.protobuf.struct_pb2 import Struct, Value
@@ -670,7 +670,7 @@ class _Logger(object):
     labels = None
 
     def __init__(self, name="NAME", project="PROJECT"):
-        self.path = '/projects/%s/logs/%s' % (project, name)
+        self.full_name = 'projects/%s/logs/%s' % (project, name)
 
 
 class _DummyLoggingAPI(object):
