@@ -541,6 +541,71 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertTrue(instance._client is client)
 
+    def test_list_instances(self):
+        from gcloud.bigtable._generated_v2 import (
+            instance_pb2 as data_v2_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        FAILED_LOCATION = 'FAILED'
+        INSTANCE_ID1 = 'instance-id1'
+        INSTANCE_ID2 = 'instance-id2'
+        INSTANCE_NAME1 = ('projects/' + self.PROJECT +
+                         '/instances/' + INSTANCE_ID1)
+        INSTANCE_NAME2 = ('projects/' + self.PROJECT +
+                         '/instances/' + INSTANCE_ID2)
+
+        credentials = _Credentials()
+        client = self._makeOne(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            timeout_seconds=self.TIMEOUT_SECONDS,
+        )
+
+        # Create request_pb
+        request_pb = messages_v2_pb2.ListInstancesRequest(
+            parent='projects/' + self.PROJECT,
+        )
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListInstancesResponse(
+            failed_locations=[
+                FAILED_LOCATION,
+            ],
+            instances=[
+                data_v2_pb2.Instance(
+                    name=INSTANCE_NAME1,
+                    display_name=INSTANCE_NAME1,
+                ),
+                data_v2_pb2.Instance(
+                    name=INSTANCE_NAME2,
+                    display_name=INSTANCE_NAME2,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_stub_internal = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        failed_locations = [FAILED_LOCATION]
+        instances = [
+            client.instance(INSTANCE_ID1),
+            client.instance(INSTANCE_ID2),
+        ]
+        expected_result = (instances, failed_locations)
+
+        # Perform the method and check the result.
+        result = client.list_instances()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListInstances',
+            (request_pb, self.TIMEOUT_SECONDS),
+            {},
+        )])
+
 
 class Test_MetadataPlugin(unittest2.TestCase):
 

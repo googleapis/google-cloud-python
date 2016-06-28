@@ -392,6 +392,24 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         return Instance(instance_id, self, display_name=display_name)
 
+    def list_instances(self):
+        """List instances owned by the project.
+
+        :rtype: tuple
+        :returns: A pair of results, the first is a list of
+                  :class:`.Instance` objects returned and the second is a
+                  list of strings (the failed locations in the request).
+        """
+        request_pb = instance_admin_v2_pb2.ListInstancesRequest(
+            parent=self.project_name)
+
+        response = self._instance_stub.ListInstances(
+            request_pb, self.timeout_seconds)
+
+        instances = [Instance.from_pb(instance_pb, self)
+                     for instance_pb in response.instances]
+        return instances, response.failed_locations
+
 
 class _MetadataPlugin(object):
     """Callable class to transform metadata for gRPC requests.
