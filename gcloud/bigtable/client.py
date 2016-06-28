@@ -45,6 +45,7 @@ from gcloud.bigtable._generated_v2 import (
 
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.instance import Instance
+from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from gcloud.client import _ClientFactoryMixin
 from gcloud.client import _ClientProjectMixin
 from gcloud.credentials import get_credentials
@@ -376,7 +377,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """Stops the client as a context manager."""
         self.stop()
 
-    def instance(self, instance_id, location,
+    def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
                  display_name=None, serve_nodes=DEFAULT_SERVE_NODES):
         """Factory to create a instance associated with this client.
 

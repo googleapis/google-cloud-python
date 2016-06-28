@@ -61,7 +61,6 @@ class Config(object):
     """
     CLIENT = None
     INSTANCE = None
-    LOCATION_NAME = None
 
 
 def _operation_wait(operation, max_attempts=5):
@@ -103,9 +102,8 @@ def _retry_backoff(meth, *args, **kw):
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
     PROJECT = os.getenv(TESTS_PROJECT)
-    Config.LOCATION_NAME = 'projects/%s/locations/%s' % (PROJECT, LOCATION_ID)
     Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, Config.LOCATION_NAME)
+    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
     Config.CLIENT.start()
     instances, failed_locations = _retry_backoff(
         Config.CLIENT.list_instances)
@@ -148,7 +146,7 @@ class TestInstanceAdminAPI(unittest2.TestCase):
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(INSTANCE_ID, Config.LOCATION_NAME)
+        instance = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -157,8 +155,7 @@ class TestInstanceAdminAPI(unittest2.TestCase):
 
     def test_create_instance(self):
         ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
-        instance = Config.CLIENT.instance(
-            ALT_INSTANCE_ID, Config.LOCATION_NAME)
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
         operation = instance.create()
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
@@ -167,8 +164,7 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         self.assertTrue(_operation_wait(operation))
 
         # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID,
-                                              Config.LOCATION_NAME)
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
         instance_alt.reload()
 
         self.assertEqual(instance, instance_alt)

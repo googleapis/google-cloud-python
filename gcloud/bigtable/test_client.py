@@ -529,21 +529,22 @@ class TestClient(unittest2.TestCase):
     def test_instance_factory_defaults(self):
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from gcloud.bigtable.instance import Instance
+        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        LOCATION = 'projects/' + PROJECT + '/locations/locname'
+        LOCATION_ID = 'locname'
         credentials = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=credentials)
 
-        instance = client.instance(INSTANCE_ID, LOCATION,
-                                   display_name=DISPLAY_NAME)
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
 
         self.assertTrue(isinstance(instance, Instance))
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance._cluster_location, LOCATION)
+        self.assertEqual(instance._cluster_location_id,
+                         _EXISTING_INSTANCE_LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
         self.assertTrue(instance._client is client)
 
@@ -553,19 +554,19 @@ class TestClient(unittest2.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        LOCATION = 'projects/' + PROJECT + '/locations/locname'
+        LOCATION_ID = 'locname'
         SERVE_NODES = 5
         credentials = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=credentials)
 
         instance = client.instance(
             INSTANCE_ID, display_name=DISPLAY_NAME,
-            location=LOCATION, serve_nodes=SERVE_NODES)
+            location=LOCATION_ID, serve_nodes=SERVE_NODES)
 
         self.assertTrue(isinstance(instance, Instance))
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
-        self.assertEqual(instance._cluster_location, LOCATION)
+        self.assertEqual(instance._cluster_location_id, LOCATION_ID)
         self.assertEqual(instance._cluster_serve_nodes, SERVE_NODES)
         self.assertTrue(instance._client is client)
 

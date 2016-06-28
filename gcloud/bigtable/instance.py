@@ -31,7 +31,7 @@ from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.table import Table
 
 
-_EXISTING_INSTANCE_LOCATION = 'existing instance, location in cluster'
+_EXISTING_INSTANCE_LOCATION_ID = 'see-existing-cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 _OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/'
@@ -65,7 +65,8 @@ def _prepare_create_request(instance):
     )
     cluster = message.clusters[instance.instance_id]
     cluster.name = instance.name + '/clusters/' + instance.instance_id
-    cluster.location = instance._cluster_location
+    cluster.location = (
+        parent_name + '/locations/' + instance._cluster_location_id)
     cluster.serve_nodes = instance._cluster_serve_nodes
     return message
 
@@ -212,10 +213,10 @@ class Instance(object):
     :param client: The client that owns the instance. Provides
                    authorization and a project ID.
 
-    :type location: string
-    :param location: location name, in form
-                     ``projects/<project>/locations/<location>``; used to
-                     set up the instance's cluster.
+    :type location_id: str
+    :param location_id: ID of the location in which the instance will be
+                        created.  Required for instances which do not yet
+                        exist.
 
     :type display_name: str
     :param display_name: (Optional) The display name for the instance in the
@@ -228,11 +229,13 @@ class Instance(object):
                         cluster; used to set up the instance's cluster.
     """
 
-    def __init__(self, instance_id, client, location, display_name=None,
+    def __init__(self, instance_id, client,
+                 location_id=_EXISTING_INSTANCE_LOCATION_ID,
+                 display_name=None,
                  serve_nodes=DEFAULT_SERVE_NODES):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
-        self._cluster_location = location
+        self._cluster_location_id = location_id
         self._cluster_serve_nodes = serve_nodes
         self._client = client
 
@@ -272,7 +275,7 @@ class Instance(object):
                              'project ID on the client')
         instance_id = match.group('instance_id')
 
-        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION)
+        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION_ID)
         result._update_from_pb(instance_pb)
         return result
 
@@ -287,7 +290,7 @@ class Instance(object):
         """
         new_client = self._client.copy()
         return self.__class__(self.instance_id, new_client,
-                              self._cluster_location,
+                              self._cluster_location_id,
                               display_name=self.display_name)
 
     @property
