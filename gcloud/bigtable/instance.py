@@ -54,7 +54,7 @@ def _prepare_create_request(instance):
     """
     parent_name = ('projects/' + instance._client.project)
     return messages_v2_pb2.CreateInstanceRequest(
-        name=parent_name,
+        parent=parent_name,
         instance_id=instance.instance_id,
         instance=data_v2_pb2.Instance(
             display_name=instance.display_name,
@@ -412,7 +412,7 @@ class Instance(object):
                   returned and the second is a list of strings (the failed
                   locations in the request).
         """
-        request_pb = messages_v2_pb2.ListClustersRequest(name=self.name)
+        request_pb = messages_v2_pb2.ListClustersRequest(parent=self.name)
         # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`
         list_clusters_response = self._client._instance_stub.ListClusters(
             request_pb, self._client.timeout_seconds)
@@ -442,7 +442,7 @@ class Instance(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        request_pb = table_messages_v2_pb2.ListTablesRequest(name=self.name)
+        request_pb = table_messages_v2_pb2.ListTablesRequest(parent=self.name)
         # We expect a `table_messages_v2_pb2.ListTablesResponse`
         table_list_pb = self._client._table_stub.ListTables(
             request_pb, self._client.timeout_seconds)

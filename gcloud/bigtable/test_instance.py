@@ -471,7 +471,7 @@ class TestInstance(unittest2.TestCase):
         CLUSTER_NAME2 = (instance.name + '/clusters/' + CLUSTER_ID2)
         # Create request_pb
         request_pb = messages_v2_pb2.ListClustersRequest(
-            name=instance.name,
+            parent=instance.name,
         )
 
         # Create response_pb
@@ -520,7 +520,7 @@ class TestInstance(unittest2.TestCase):
 
         # Create request_
         request_pb = table_messages_v1_pb2.ListTablesRequest(
-            name=self.INSTANCE_NAME)
+            parent=self.INSTANCE_NAME)
 
         # Create response_pb
         if table_name is None:
@@ -588,7 +588,7 @@ class Test__prepare_create_request(unittest2.TestCase):
         self.assertTrue(isinstance(request_pb,
                                    messages_v2_pb.CreateInstanceRequest))
         self.assertEqual(request_pb.instance_id, INSTANCE_ID)
-        self.assertEqual(request_pb.name,
+        self.assertEqual(request_pb.parent,
                          'projects/' + PROJECT)
         self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
         self.assertEqual(request_pb.instance.display_name, DISPLAY_NAME)
@@ -637,7 +637,7 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
             request_time=Timestamp(seconds=1, nanos=1234),
             finish_time=Timestamp(seconds=10, nanos=891011),
             original_request=messages_v2_pb.CreateInstanceRequest(
-                name='foo',
+                parent='foo',
                 instance_id='bar',
                 instance=data_v2_pb2.Instance(
                     display_name='quux',

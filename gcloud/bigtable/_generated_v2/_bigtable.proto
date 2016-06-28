@@ -27,18 +27,12 @@ option java_package = "com.google.bigtable.v2";
 
 
 // Service for reading from and writing to existing Bigtable tables.
-//
-// Caution: This service is experimental. The details can change and the rpcs
-// may or may not be active.
 service Bigtable {
   // Streams back the contents of all requested rows, optionally
   // applying the same Reader filter to each. Depending on their size,
   // rows and cells may be broken up across multiple responses, but
   // atomicity of each row will still be preserved. See the
   // ReadRowsResponse documentation for details.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
   rpc ReadRows(ReadRowsRequest) returns (stream ReadRowsResponse) {
     option (google.api.http) = { post: "/v2/{table_name=projects/*/instances/*/tables/*}:readRows" body: "*" };
   }
@@ -47,18 +41,12 @@ service Bigtable {
   // delimit contiguous sections of the table of approximately equal size,
   // which can be used to break up the data for distributed tasks like
   // mapreduces.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
   rpc SampleRowKeys(SampleRowKeysRequest) returns (stream SampleRowKeysResponse) {
     option (google.api.http) = { get: "/v2/{table_name=projects/*/instances/*/tables/*}:sampleRowKeys" };
   }
 
   // Mutates a row atomically. Cells already present in the row are left
-  // unchanged unless explicitly changed by 'mutation'.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
+  // unchanged unless explicitly changed by `mutation`.
   rpc MutateRow(MutateRowRequest) returns (MutateRowResponse) {
     option (google.api.http) = { post: "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRow" body: "*" };
   }
@@ -66,28 +54,20 @@ service Bigtable {
   // Mutates multiple rows in a batch. Each individual row is mutated
   // atomically as in MutateRow, but the entire batch is not executed
   // atomically.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
   rpc MutateRows(MutateRowsRequest) returns (stream MutateRowsResponse) {
     option (google.api.http) = { post: "/v2/{table_name=projects/*/instances/*/tables/*}:mutateRows" body: "*" };
   }
 
   // Mutates a row atomically based on the output of a predicate Reader filter.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
   rpc CheckAndMutateRow(CheckAndMutateRowRequest) returns (CheckAndMutateRowResponse) {
     option (google.api.http) = { post: "/v2/{table_name=projects/*/instances/*/tables/*}:checkAndMutateRow" body: "*" };
   }
 
-  // Modifies a row atomically, reading the latest existing timestamp/value from
-  // the specified columns and writing a new value at
-  // max(existing timestamp, current server time) based on pre-defined
-  // read/modify/write rules. Returns the new contents of all modified cells.
-  //
-  // Caution: This rpc is experimental. The details can change and the rpc
-  // may or may not be active.
+  // Modifies a row atomically. The method reads the latest existing timestamp
+  // and value from the specified columns and writes a new entry based on
+  // pre-defined read/modify/write rules. The new value for the timestamp is the
+  // greater of the existing timestamp or the current server time. The method
+  // returns the new contents of all modified cells.
   rpc ReadModifyWriteRow(ReadModifyWriteRowRequest) returns (ReadModifyWriteRowResponse) {
     option (google.api.http) = { post: "/v2/{table_name=projects/*/instances/*/tables/*}:readModifyWriteRow" body: "*" };
   }
@@ -97,7 +77,7 @@ service Bigtable {
 message ReadRowsRequest {
   // The unique name of the table from which to read.
   // Values are of the form
-  // projects/<project>/instances/<instance>/tables/<table>
+  // projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;
   string table_name = 1;
 
   // The row keys and/or ranges to read. If not specified, reads from all rows.
@@ -128,22 +108,22 @@ message ReadRowsResponse {
     // family as the previous CellChunk.  The empty string can occur as a
     // column family name in a response so clients must check
     // explicitly for the presence of this message, not just for
-    // family_name.value being non-empty.
+    // `family_name.value` being non-empty.
     google.protobuf.StringValue family_name = 2;
 
     // The column qualifier for this chunk of data.  If this message
     // is not present, this CellChunk is a continuation of the same column
     // as the previous CellChunk.  Column qualifiers may be empty so
     // clients must check for the presence of this message, not just
-    // for qualifier.value being non-empty.
+    // for `qualifier.value` being non-empty.
     google.protobuf.BytesValue qualifier = 3;
 
     // The cell's stored timestamp, which also uniquely identifies it
     // within its column.  Values are always expressed in
     // microseconds, but individual tables may set a coarser
-    // "granularity" to further restrict the allowed values. For
+    // granularity to further restrict the allowed values. For
     // example, a table which specifies millisecond granularity will
-    // only allow values of "timestamp_micros" which are multiples of
+    // only allow values of `timestamp_micros` which are multiples of
     // 1000.  Timestamps are only set in the first CellChunk per cell
     // (for cells split into multiple chunks).
     int64 timestamp_micros = 4;
@@ -168,11 +148,11 @@ message ReadRowsResponse {
 
     oneof row_status {
       // Indicates that the client should drop all previous chunks for
-      // "row_key", as it will be re-read from the beginning.
+      // `row_key`, as it will be re-read from the beginning.
       bool reset_row = 8;
 
       // Indicates that the client can safely process all previous chunks for
-      // "row_key", as its data has been fully read.
+      // `row_key`, as its data has been fully read.
       bool commit_row = 9;
     }
   }
@@ -193,7 +173,7 @@ message ReadRowsResponse {
 message SampleRowKeysRequest {
   // The unique name of the table from which to sample row keys.
   // Values are of the form
-  // projects/<project>/instances/<instance>/tables/<table>
+  // projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;
   string table_name = 1;
 }
 
@@ -209,9 +189,9 @@ message SampleRowKeysResponse {
   bytes row_key = 1;
 
   // Approximate total storage space used by all rows in the table which precede
-  // "row_key". Buffering the contents of all rows between two subsequent
+  // `row_key`. Buffering the contents of all rows between two subsequent
   // samples would require space roughly equal to the difference in their
-  // "offset_bytes" fields.
+  // `offset_bytes` fields.
   int64 offset_bytes = 2;
 }
 
@@ -219,7 +199,7 @@ message SampleRowKeysResponse {
 message MutateRowRequest {
   // The unique name of the table to which the mutation should be applied.
   // Values are of the form
-  // projects/<project>/instances/<instance>/tables/<table>
+  // projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;
   string table_name = 1;
 
   // The key of the row to which the mutation should be applied.
@@ -245,17 +225,17 @@ message MutateRowsRequest {
     // Changes to be atomically applied to the specified row. Mutations are
     // applied in order, meaning that earlier mutations can be masked by
     // later ones.
-    // At least one mutation must be specified.
+    // You must specify at least one mutation.
     repeated Mutation mutations = 2;
   }
 
   // The unique name of the table to which the mutations should be applied.
   string table_name = 1;
 
-  // The row keys/mutations to be applied in bulk.
+  // The row keys and corresponding mutations to be applied in bulk.
   // Each entry is applied as an atomic mutation, but the entries may be
   // applied in arbitrary order (even between entries for the same row).
-  // At least one entry must be specified, and in total the entries may
+  // At least one entry must be specified, and in total the entries can
   // contain at most 100000 mutations.
   repeated Entry entries = 2;
 }
@@ -283,36 +263,36 @@ message CheckAndMutateRowRequest {
   // The unique name of the table to which the conditional mutation should be
   // applied.
   // Values are of the form
-  // projects/<project>/instances/<instance>/tables/<table>
+  // projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;
   string table_name = 1;
 
   // The key of the row to which the conditional mutation should be applied.
   bytes row_key = 2;
 
   // The filter to be applied to the contents of the specified row. Depending
-  // on whether or not any results are yielded, either "true_mutations" or
-  // "false_mutations" will be executed. If unset, checks that the row contains
+  // on whether or not any results are yielded, either `true_mutations` or
+  // `false_mutations` will be executed. If unset, checks that the row contains
   // any values at all.
   RowFilter predicate_filter = 6;
 
-  // Changes to be atomically applied to the specified row if "predicate_filter"
-  // yields at least one cell when applied to "row_key". Entries are applied in
+  // Changes to be atomically applied to the specified row if `predicate_filter`
+  // yields at least one cell when applied to `row_key`. Entries are applied in
   // order, meaning that earlier mutations can be masked by later ones.
-  // Must contain at least one entry if "false_mutations" is empty, and at most
+  // Must contain at least one entry if `false_mutations` is empty, and at most
   // 100000.
   repeated Mutation true_mutations = 4;
 
-  // Changes to be atomically applied to the specified row if "predicate_filter"
-  // does not yield any cells when applied to "row_key". Entries are applied in
+  // Changes to be atomically applied to the specified row if `predicate_filter`
+  // does not yield any cells when applied to `row_key`. Entries are applied in
   // order, meaning that earlier mutations can be masked by later ones.
-  // Must contain at least one entry if "true_mutations" is empty, and at most
+  // Must contain at least one entry if `true_mutations` is empty, and at most
   // 100000.
   repeated Mutation false_mutations = 5;
 }
 
 // Response message for Bigtable.CheckAndMutateRow.
 message CheckAndMutateRowResponse {
-  // Whether or not the request's "predicate_filter" yielded any results for
+  // Whether or not the request's `predicate_filter` yielded any results for
   // the specified row.
   bool predicate_matched = 1;
 }
@@ -322,7 +302,7 @@ message ReadModifyWriteRowRequest {
   // The unique name of the table to which the read/modify/write rules should be
   // applied.
   // Values are of the form
-  // projects/<project>/instances/<instance>/tables/<table>
+  // projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;
   string table_name = 1;
 
   // The key of the row to which the read/modify/write rules should be applied.

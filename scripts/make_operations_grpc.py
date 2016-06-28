@@ -23,15 +23,13 @@ import tempfile
 
 ROOT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
-PROTOS_DIR = os.path.join(ROOT_DIR, 'cloud-bigtable-client',
-                          'bigtable-protos', 'src', 'main', 'proto')
+PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
                           'operations.proto')
 GENERATED_SUBDIR = os.environ.get('GENERATED_SUBDIR', '_generated')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
                               GENERATED_SUBDIR, 'operations_grpc_pb2.py')
-PROTOC_CMD = os.environ.get('PROTOC_CMD', 'protoc')
-GRPC_PLUGIN = os.environ.get('GRPC_PLUGIN', 'grpc_python_plugin')
+GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
 
 
 def get_pb2_contents_with_grpc():
@@ -45,14 +43,14 @@ def get_pb2_contents_with_grpc():
                                   'operations_pb2.py')
     try:
         return_code = subprocess.call([
-            PROTOC_CMD,
+            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            '-m',
+            'grpc.tools.protoc',
             '--proto_path',
             PROTOS_DIR,
             '--python_out',
             temp_dir,
-            '--plugin',
-            'protoc-gen-grpc=' + GRPC_PLUGIN,
-            '--grpc_out',
+            '--grpc_python_out',
             temp_dir,
             PROTO_PATH,
         ])
@@ -75,7 +73,9 @@ def get_pb2_contents_without_grpc():
                                   'operations_pb2.py')
     try:
         return_code = subprocess.call([
-            PROTOC_CMD,
+            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            '-m',
+            'grpc.tools.protoc',
             '--proto_path',
             PROTOS_DIR,
             '--python_out',

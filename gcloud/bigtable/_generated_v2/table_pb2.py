@@ -13,6 +13,7 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
+from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
@@ -20,46 +21,12 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='google/bigtable/admin/v2/table.proto',
   package='google.bigtable.admin.v2',
   syntax='proto3',
-  serialized_pb=_b('\n$google/bigtable/admin/v2/table.proto\x12\x18google.bigtable.admin.v2\x1a\x1egoogle/protobuf/duration.proto\"\xcb\x06\n\x05Table\x12\x0c\n\x04name\x18\x01 \x01(\t\x12J\n\x0e\x63luster_states\x18\x02 \x03(\x0b\x32\x32.google.bigtable.admin.v2.Table.ClusterStatesEntry\x12L\n\x0f\x63olumn_families\x18\x03 \x03(\x0b\x32\x33.google.bigtable.admin.v2.Table.ColumnFamiliesEntry\x12I\n\x0bgranularity\x18\x04 \x01(\x0e\x32\x34.google.bigtable.admin.v2.Table.TimestampGranularity\x1a\xe2\x01\n\x0c\x43lusterState\x12X\n\x11replication_state\x18\x01 \x01(\x0e\x32=.google.bigtable.admin.v2.Table.ClusterState.ReplicationState\"x\n\x10ReplicationState\x12\x13\n\x0fSTATE_NOT_KNOWN\x10\x00\x12\x10\n\x0cINITIALIZING\x10\x01\x12\x17\n\x13PLANNED_MAINTENANCE\x10\x02\x12\x19\n\x15UNPLANNED_MAINTENANCE\x10\x03\x12\t\n\x05READY\x10\x04\x1a\x62\n\x12\x43lusterStatesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12;\n\x05value\x18\x02 \x01(\x0b\x32,.google.bigtable.admin.v2.Table.ClusterState:\x02\x38\x01\x1a]\n\x13\x43olumnFamiliesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamily:\x02\x38\x01\"I\n\x14TimestampGranularity\x12%\n!TIMESTAMP_GRANULARITY_UNSPECIFIED\x10\x00\x12\n\n\x06MILLIS\x10\x01\"\\\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\r\n\tNAME_ONLY\x10\x01\x12\x0f\n\x0bSCHEMA_VIEW\x10\x02\x12\x14\n\x10REPLICATION_VIEW\x10\x03\x12\x08\n\x04\x46ULL\x10\x04\"A\n\x0c\x43olumnFamily\x12\x31\n\x07gc_rule\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.GcRule\"\xd5\x02\n\x06GcRule\x12\x1a\n\x10max_num_versions\x18\x01 \x01(\x05H\x00\x12,\n\x07max_age\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x45\n\x0cintersection\x18\x03 \x01(\x0b\x32-.google.bigtable.admin.v2.GcRule.IntersectionH\x00\x12\x37\n\x05union\x18\x04 \x01(\x0b\x32&.google.bigtable.admin.v2.GcRule.UnionH\x00\x1a?\n\x0cIntersection\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRule\x1a\x38\n\x05Union\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRuleB\x06\n\x04ruleB,\n\x1c\x63om.google.bigtable.admin.v2B\nTableProtoP\x01\x62\x06proto3')
+  serialized_pb=_b('\n$google/bigtable/admin/v2/table.proto\x12\x18google.bigtable.admin.v2\x1a\x1cgoogle/api/annotations.proto\x1a\x1egoogle/protobuf/duration.proto\"\xa0\x03\n\x05Table\x12\x0c\n\x04name\x18\x01 \x01(\t\x12L\n\x0f\x63olumn_families\x18\x03 \x03(\x0b\x32\x33.google.bigtable.admin.v2.Table.ColumnFamiliesEntry\x12I\n\x0bgranularity\x18\x04 \x01(\x0e\x32\x34.google.bigtable.admin.v2.Table.TimestampGranularity\x1a]\n\x13\x43olumnFamiliesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x35\n\x05value\x18\x02 \x01(\x0b\x32&.google.bigtable.admin.v2.ColumnFamily:\x02\x38\x01\"I\n\x14TimestampGranularity\x12%\n!TIMESTAMP_GRANULARITY_UNSPECIFIED\x10\x00\x12\n\n\x06MILLIS\x10\x01\"F\n\x04View\x12\x14\n\x10VIEW_UNSPECIFIED\x10\x00\x12\r\n\tNAME_ONLY\x10\x01\x12\x0f\n\x0bSCHEMA_VIEW\x10\x02\x12\x08\n\x04\x46ULL\x10\x04\"A\n\x0c\x43olumnFamily\x12\x31\n\x07gc_rule\x18\x01 \x01(\x0b\x32 .google.bigtable.admin.v2.GcRule\"\xd5\x02\n\x06GcRule\x12\x1a\n\x10max_num_versions\x18\x01 \x01(\x05H\x00\x12,\n\x07max_age\x18\x02 \x01(\x0b\x32\x19.google.protobuf.DurationH\x00\x12\x45\n\x0cintersection\x18\x03 \x01(\x0b\x32-.google.bigtable.admin.v2.GcRule.IntersectionH\x00\x12\x37\n\x05union\x18\x04 \x01(\x0b\x32&.google.bigtable.admin.v2.GcRule.UnionH\x00\x1a?\n\x0cIntersection\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRule\x1a\x38\n\x05Union\x12/\n\x05rules\x18\x01 \x03(\x0b\x32 .google.bigtable.admin.v2.GcRuleB\x06\n\x04ruleB,\n\x1c\x63om.google.bigtable.admin.v2B\nTableProtoP\x01\x62\x06proto3')
   ,
-  dependencies=[google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,google_dot_protobuf_dot_duration__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
-
-_TABLE_CLUSTERSTATE_REPLICATIONSTATE = _descriptor.EnumDescriptor(
-  name='ReplicationState',
-  full_name='google.bigtable.admin.v2.Table.ClusterState.ReplicationState',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='STATE_NOT_KNOWN', index=0, number=0,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='INITIALIZING', index=1, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='PLANNED_MAINTENANCE', index=2, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='UNPLANNED_MAINTENANCE', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='READY', index=4, number=4,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=458,
-  serialized_end=578,
-)
-_sym_db.RegisterEnumDescriptor(_TABLE_CLUSTERSTATE_REPLICATIONSTATE)
 
 _TABLE_TIMESTAMPGRANULARITY = _descriptor.EnumDescriptor(
   name='TimestampGranularity',
@@ -78,8 +45,8 @@ _TABLE_TIMESTAMPGRANULARITY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=775,
-  serialized_end=848,
+  serialized_start=400,
+  serialized_end=473,
 )
 _sym_db.RegisterEnumDescriptor(_TABLE_TIMESTAMPGRANULARITY)
 
@@ -102,89 +69,17 @@ _TABLE_VIEW = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='REPLICATION_VIEW', index=3, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='FULL', index=4, number=4,
+      name='FULL', index=3, number=4,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=850,
-  serialized_end=942,
+  serialized_start=475,
+  serialized_end=545,
 )
 _sym_db.RegisterEnumDescriptor(_TABLE_VIEW)
 
-
-_TABLE_CLUSTERSTATE = _descriptor.Descriptor(
-  name='ClusterState',
-  full_name='google.bigtable.admin.v2.Table.ClusterState',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='replication_state', full_name='google.bigtable.admin.v2.Table.ClusterState.replication_state', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-    _TABLE_CLUSTERSTATE_REPLICATIONSTATE,
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=352,
-  serialized_end=578,
-)
-
-_TABLE_CLUSTERSTATESENTRY = _descriptor.Descriptor(
-  name='ClusterStatesEntry',
-  full_name='google.bigtable.admin.v2.Table.ClusterStatesEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='google.bigtable.admin.v2.Table.ClusterStatesEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='google.bigtable.admin.v2.Table.ClusterStatesEntry.value', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=_descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001')),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=580,
-  serialized_end=678,
-)
 
 _TABLE_COLUMNFAMILIESENTRY = _descriptor.Descriptor(
   name='ColumnFamiliesEntry',
@@ -219,8 +114,8 @@ _TABLE_COLUMNFAMILIESENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=680,
-  serialized_end=773,
+  serialized_start=305,
+  serialized_end=398,
 )
 
 _TABLE = _descriptor.Descriptor(
@@ -238,21 +133,14 @@ _TABLE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cluster_states', full_name='google.bigtable.admin.v2.Table.cluster_states', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='column_families', full_name='google.bigtable.admin.v2.Table.column_families', index=2,
+      name='column_families', full_name='google.bigtable.admin.v2.Table.column_families', index=1,
       number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='granularity', full_name='google.bigtable.admin.v2.Table.granularity', index=3,
+      name='granularity', full_name='google.bigtable.admin.v2.Table.granularity', index=2,
       number=4, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -261,7 +149,7 @@ _TABLE = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_TABLE_CLUSTERSTATE, _TABLE_CLUSTERSTATESENTRY, _TABLE_COLUMNFAMILIESENTRY, ],
+  nested_types=[_TABLE_COLUMNFAMILIESENTRY, ],
   enum_types=[
     _TABLE_TIMESTAMPGRANULARITY,
     _TABLE_VIEW,
@@ -272,8 +160,8 @@ _TABLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=99,
-  serialized_end=942,
+  serialized_start=129,
+  serialized_end=545,
 )
 
 
@@ -303,8 +191,8 @@ _COLUMNFAMILY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=944,
-  serialized_end=1009,
+  serialized_start=547,
+  serialized_end=612,
 )
 
 
@@ -334,8 +222,8 @@ _GCRULE_INTERSECTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1224,
-  serialized_end=1287,
+  serialized_start=827,
+  serialized_end=890,
 )
 
 _GCRULE_UNION = _descriptor.Descriptor(
@@ -364,8 +252,8 @@ _GCRULE_UNION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1289,
-  serialized_end=1345,
+  serialized_start=892,
+  serialized_end=948,
 )
 
 _GCRULE = _descriptor.Descriptor(
@@ -418,18 +306,12 @@ _GCRULE = _descriptor.Descriptor(
       name='rule', full_name='google.bigtable.admin.v2.GcRule.rule',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1012,
-  serialized_end=1353,
+  serialized_start=615,
+  serialized_end=956,
 )
 
-_TABLE_CLUSTERSTATE.fields_by_name['replication_state'].enum_type = _TABLE_CLUSTERSTATE_REPLICATIONSTATE
-_TABLE_CLUSTERSTATE.containing_type = _TABLE
-_TABLE_CLUSTERSTATE_REPLICATIONSTATE.containing_type = _TABLE_CLUSTERSTATE
-_TABLE_CLUSTERSTATESENTRY.fields_by_name['value'].message_type = _TABLE_CLUSTERSTATE
-_TABLE_CLUSTERSTATESENTRY.containing_type = _TABLE
 _TABLE_COLUMNFAMILIESENTRY.fields_by_name['value'].message_type = _COLUMNFAMILY
 _TABLE_COLUMNFAMILIESENTRY.containing_type = _TABLE
-_TABLE.fields_by_name['cluster_states'].message_type = _TABLE_CLUSTERSTATESENTRY
 _TABLE.fields_by_name['column_families'].message_type = _TABLE_COLUMNFAMILIESENTRY
 _TABLE.fields_by_name['granularity'].enum_type = _TABLE_TIMESTAMPGRANULARITY
 _TABLE_TIMESTAMPGRANULARITY.containing_type = _TABLE
@@ -460,20 +342,6 @@ DESCRIPTOR.message_types_by_name['GcRule'] = _GCRULE
 
 Table = _reflection.GeneratedProtocolMessageType('Table', (_message.Message,), dict(
 
-  ClusterState = _reflection.GeneratedProtocolMessageType('ClusterState', (_message.Message,), dict(
-    DESCRIPTOR = _TABLE_CLUSTERSTATE,
-    __module__ = 'google.bigtable.admin.v2.table_pb2'
-    # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table.ClusterState)
-    ))
-  ,
-
-  ClusterStatesEntry = _reflection.GeneratedProtocolMessageType('ClusterStatesEntry', (_message.Message,), dict(
-    DESCRIPTOR = _TABLE_CLUSTERSTATESENTRY,
-    __module__ = 'google.bigtable.admin.v2.table_pb2'
-    # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table.ClusterStatesEntry)
-    ))
-  ,
-
   ColumnFamiliesEntry = _reflection.GeneratedProtocolMessageType('ColumnFamiliesEntry', (_message.Message,), dict(
     DESCRIPTOR = _TABLE_COLUMNFAMILIESENTRY,
     __module__ = 'google.bigtable.admin.v2.table_pb2'
@@ -485,8 +353,6 @@ Table = _reflection.GeneratedProtocolMessageType('Table', (_message.Message,), d
   # @@protoc_insertion_point(class_scope:google.bigtable.admin.v2.Table)
   ))
 _sym_db.RegisterMessage(Table)
-_sym_db.RegisterMessage(Table.ClusterState)
-_sym_db.RegisterMessage(Table.ClusterStatesEntry)
 _sym_db.RegisterMessage(Table.ColumnFamiliesEntry)
 
 ColumnFamily = _reflection.GeneratedProtocolMessageType('ColumnFamily', (_message.Message,), dict(
@@ -522,8 +388,6 @@ _sym_db.RegisterMessage(GcRule.Union)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.bigtable.admin.v2B\nTableProtoP\001'))
-_TABLE_CLUSTERSTATESENTRY.has_options = True
-_TABLE_CLUSTERSTATESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _TABLE_COLUMNFAMILIESENTRY.has_options = True
 _TABLE_COLUMNFAMILIESENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 # @@protoc_insertion_point(module_scope)

@@ -804,74 +804,259 @@ _sym_db.RegisterMessage(ReadModifyWriteRowResponse)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\026com.google.bigtable.v2B\rBigtableProtoP\001'))
-import abc
-import six
+
 from grpc.beta import implementations as beta_implementations
 from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality
 from grpc.framework.interfaces.face import utilities as face_utilities
 
-class BetaBigtableServicer(object):
-  """<fill me in later!>"""
+
+class BigtableStub(object):
+  """Service for reading from and writing to existing Bigtable tables.
+  """
+
+  def __init__(self, channel):
+    """Constructor.
+
+    Args:
+      channel: A grpc.Channel.
+    """
+    self.ReadRows = channel.unary_stream(
+        '/google.bigtable.v2.Bigtable/ReadRows',
+        request_serializer=ReadRowsRequest.SerializeToString,
+        response_deserializer=ReadRowsResponse.FromString,
+        )
+    self.SampleRowKeys = channel.unary_stream(
+        '/google.bigtable.v2.Bigtable/SampleRowKeys',
+        request_serializer=SampleRowKeysRequest.SerializeToString,
+        response_deserializer=SampleRowKeysResponse.FromString,
+        )
+    self.MutateRow = channel.unary_unary(
+        '/google.bigtable.v2.Bigtable/MutateRow',
+        request_serializer=MutateRowRequest.SerializeToString,
+        response_deserializer=MutateRowResponse.FromString,
+        )
+    self.MutateRows = channel.unary_stream(
+        '/google.bigtable.v2.Bigtable/MutateRows',
+        request_serializer=MutateRowsRequest.SerializeToString,
+        response_deserializer=MutateRowsResponse.FromString,
+        )
+    self.CheckAndMutateRow = channel.unary_unary(
+        '/google.bigtable.v2.Bigtable/CheckAndMutateRow',
+        request_serializer=CheckAndMutateRowRequest.SerializeToString,
+        response_deserializer=CheckAndMutateRowResponse.FromString,
+        )
+    self.ReadModifyWriteRow = channel.unary_unary(
+        '/google.bigtable.v2.Bigtable/ReadModifyWriteRow',
+        request_serializer=ReadModifyWriteRowRequest.SerializeToString,
+        response_deserializer=ReadModifyWriteRowResponse.FromString,
+        )
+
+
+class BigtableServicer(object):
+  """Service for reading from and writing to existing Bigtable tables.
+  """
+
   def ReadRows(self, request, context):
+    """Streams back the contents of all requested rows, optionally
+    applying the same Reader filter to each. Depending on their size,
+    rows and cells may be broken up across multiple responses, but
+    atomicity of each row will still be preserved. See the
+    ReadRowsResponse documentation for details.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def SampleRowKeys(self, request, context):
+    """Returns a sample of row keys in the table. The returned row keys will
+    delimit contiguous sections of the table of approximately equal size,
+    which can be used to break up the data for distributed tasks like
+    mapreduces.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def MutateRow(self, request, context):
+    """Mutates a row atomically. Cells already present in the row are left
+    unchanged unless explicitly changed by `mutation`.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def MutateRows(self, request, context):
+    """Mutates multiple rows in a batch. Each individual row is mutated
+    atomically as in MutateRow, but the entire batch is not executed
+    atomically.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def CheckAndMutateRow(self, request, context):
+    """Mutates a row atomically based on the output of a predicate Reader filter.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def ReadModifyWriteRow(self, request, context):
+    """Modifies a row atomically. The method reads the latest existing timestamp
+    and value from the specified columns and writes a new entry based on
+    pre-defined read/modify/write rules. The new value for the timestamp is the
+    greater of the existing timestamp or the current server time. The method
+    returns the new contents of all modified cells.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+
+def add_BigtableServicer_to_server(servicer, server):
+  rpc_method_handlers = {
+      'ReadRows': grpc.unary_stream_rpc_method_handler(
+          servicer.ReadRows,
+          request_deserializer=ReadRowsRequest.FromString,
+          response_serializer=ReadRowsResponse.SerializeToString,
+      ),
+      'SampleRowKeys': grpc.unary_stream_rpc_method_handler(
+          servicer.SampleRowKeys,
+          request_deserializer=SampleRowKeysRequest.FromString,
+          response_serializer=SampleRowKeysResponse.SerializeToString,
+      ),
+      'MutateRow': grpc.unary_unary_rpc_method_handler(
+          servicer.MutateRow,
+          request_deserializer=MutateRowRequest.FromString,
+          response_serializer=MutateRowResponse.SerializeToString,
+      ),
+      'MutateRows': grpc.unary_stream_rpc_method_handler(
+          servicer.MutateRows,
+          request_deserializer=MutateRowsRequest.FromString,
+          response_serializer=MutateRowsResponse.SerializeToString,
+      ),
+      'CheckAndMutateRow': grpc.unary_unary_rpc_method_handler(
+          servicer.CheckAndMutateRow,
+          request_deserializer=CheckAndMutateRowRequest.FromString,
+          response_serializer=CheckAndMutateRowResponse.SerializeToString,
+      ),
+      'ReadModifyWriteRow': grpc.unary_unary_rpc_method_handler(
+          servicer.ReadModifyWriteRow,
+          request_deserializer=ReadModifyWriteRowRequest.FromString,
+          response_serializer=ReadModifyWriteRowResponse.SerializeToString,
+      ),
+  }
+  generic_handler = grpc.method_handlers_generic_handler(
+      'google.bigtable.v2.Bigtable', rpc_method_handlers)
+  server.add_generic_rpc_handlers((generic_handler,))
+
+
+class BetaBigtableServicer(object):
+  """Service for reading from and writing to existing Bigtable tables.
+  """
+  def ReadRows(self, request, context):
+    """Streams back the contents of all requested rows, optionally
+    applying the same Reader filter to each. Depending on their size,
+    rows and cells may be broken up across multiple responses, but
+    atomicity of each row will still be preserved. See the
+    ReadRowsResponse documentation for details.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def SampleRowKeys(self, request, context):
+    """Returns a sample of row keys in the table. The returned row keys will
+    delimit contiguous sections of the table of approximately equal size,
+    which can be used to break up the data for distributed tasks like
+    mapreduces.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def MutateRow(self, request, context):
+    """Mutates a row atomically. Cells already present in the row are left
+    unchanged unless explicitly changed by `mutation`.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def MutateRows(self, request, context):
+    """Mutates multiple rows in a batch. Each individual row is mutated
+    atomically as in MutateRow, but the entire batch is not executed
+    atomically.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def CheckAndMutateRow(self, request, context):
+    """Mutates a row atomically based on the output of a predicate Reader filter.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def ReadModifyWriteRow(self, request, context):
+    """Modifies a row atomically. The method reads the latest existing timestamp
+    and value from the specified columns and writes a new entry based on
+    pre-defined read/modify/write rules. The new value for the timestamp is the
+    greater of the existing timestamp or the current server time. The method
+    returns the new contents of all modified cells.
+    """
     context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
+
 class BetaBigtableStub(object):
-  """The interface to which stubs will conform."""
-  def ReadRows(self, request, timeout):
+  """Service for reading from and writing to existing Bigtable tables.
+  """
+  def ReadRows(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Streams back the contents of all requested rows, optionally
+    applying the same Reader filter to each. Depending on their size,
+    rows and cells may be broken up across multiple responses, but
+    atomicity of each row will still be preserved. See the
+    ReadRowsResponse documentation for details.
+    """
     raise NotImplementedError()
-  def SampleRowKeys(self, request, timeout):
+  def SampleRowKeys(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Returns a sample of row keys in the table. The returned row keys will
+    delimit contiguous sections of the table of approximately equal size,
+    which can be used to break up the data for distributed tasks like
+    mapreduces.
+    """
     raise NotImplementedError()
-  def MutateRow(self, request, timeout):
+  def MutateRow(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Mutates a row atomically. Cells already present in the row are left
+    unchanged unless explicitly changed by `mutation`.
+    """
     raise NotImplementedError()
   MutateRow.future = None
-  def MutateRows(self, request, timeout):
+  def MutateRows(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Mutates multiple rows in a batch. Each individual row is mutated
+    atomically as in MutateRow, but the entire batch is not executed
+    atomically.
+    """
     raise NotImplementedError()
-  def CheckAndMutateRow(self, request, timeout):
+  def CheckAndMutateRow(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Mutates a row atomically based on the output of a predicate Reader filter.
+    """
     raise NotImplementedError()
   CheckAndMutateRow.future = None
-  def ReadModifyWriteRow(self, request, timeout):
+  def ReadModifyWriteRow(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Modifies a row atomically. The method reads the latest existing timestamp
+    and value from the specified columns and writes a new entry based on
+    pre-defined read/modify/write rules. The new value for the timestamp is the
+    greater of the existing timestamp or the current server time. The method
+    returns the new contents of all modified cells.
+    """
     raise NotImplementedError()
   ReadModifyWriteRow.future = None
 
+
 def beta_create_Bigtable_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
   request_deserializers = {
-    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): google.bigtable.v2.bigtable_pb2.CheckAndMutateRowRequest.FromString,
-    ('google.bigtable.v2.Bigtable', 'MutateRow'): google.bigtable.v2.bigtable_pb2.MutateRowRequest.FromString,
-    ('google.bigtable.v2.Bigtable', 'MutateRows'): google.bigtable.v2.bigtable_pb2.MutateRowsRequest.FromString,
-    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): google.bigtable.v2.bigtable_pb2.ReadModifyWriteRowRequest.FromString,
-    ('google.bigtable.v2.Bigtable', 'ReadRows'): google.bigtable.v2.bigtable_pb2.ReadRowsRequest.FromString,
-    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): google.bigtable.v2.bigtable_pb2.SampleRowKeysRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): CheckAndMutateRowRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'MutateRow'): MutateRowRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'MutateRows'): MutateRowsRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): ReadModifyWriteRowRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'ReadRows'): ReadRowsRequest.FromString,
+    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): SampleRowKeysRequest.FromString,
   }
   response_serializers = {
-    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): google.bigtable.v2.bigtable_pb2.CheckAndMutateRowResponse.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'MutateRow'): google.bigtable.v2.bigtable_pb2.MutateRowResponse.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'MutateRows'): google.bigtable.v2.bigtable_pb2.MutateRowsResponse.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): google.bigtable.v2.bigtable_pb2.ReadModifyWriteRowResponse.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'ReadRows'): google.bigtable.v2.bigtable_pb2.ReadRowsResponse.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): google.bigtable.v2.bigtable_pb2.SampleRowKeysResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): CheckAndMutateRowResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'MutateRow'): MutateRowResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'MutateRows'): MutateRowsResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): ReadModifyWriteRowResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'ReadRows'): ReadRowsResponse.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): SampleRowKeysResponse.SerializeToString,
   }
   method_implementations = {
     ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): face_utilities.unary_unary_inline(servicer.CheckAndMutateRow),
@@ -884,34 +1069,23 @@ def beta_create_Bigtable_server(servicer, pool=None, pool_size=None, default_tim
   server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
   return beta_implementations.server(method_implementations, options=server_options)
 
+
 def beta_create_Bigtable_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
-  import google.bigtable.v2.bigtable_pb2
   request_serializers = {
-    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): google.bigtable.v2.bigtable_pb2.CheckAndMutateRowRequest.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'MutateRow'): google.bigtable.v2.bigtable_pb2.MutateRowRequest.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'MutateRows'): google.bigtable.v2.bigtable_pb2.MutateRowsRequest.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): google.bigtable.v2.bigtable_pb2.ReadModifyWriteRowRequest.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'ReadRows'): google.bigtable.v2.bigtable_pb2.ReadRowsRequest.SerializeToString,
-    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): google.bigtable.v2.bigtable_pb2.SampleRowKeysRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): CheckAndMutateRowRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'MutateRow'): MutateRowRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'MutateRows'): MutateRowsRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): ReadModifyWriteRowRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'ReadRows'): ReadRowsRequest.SerializeToString,
+    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): SampleRowKeysRequest.SerializeToString,
   }
   response_deserializers = {
-    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): google.bigtable.v2.bigtable_pb2.CheckAndMutateRowResponse.FromString,
-    ('google.bigtable.v2.Bigtable', 'MutateRow'): google.bigtable.v2.bigtable_pb2.MutateRowResponse.FromString,
-    ('google.bigtable.v2.Bigtable', 'MutateRows'): google.bigtable.v2.bigtable_pb2.MutateRowsResponse.FromString,
-    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): google.bigtable.v2.bigtable_pb2.ReadModifyWriteRowResponse.FromString,
-    ('google.bigtable.v2.Bigtable', 'ReadRows'): google.bigtable.v2.bigtable_pb2.ReadRowsResponse.FromString,
-    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): google.bigtable.v2.bigtable_pb2.SampleRowKeysResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'CheckAndMutateRow'): CheckAndMutateRowResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'MutateRow'): MutateRowResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'MutateRows'): MutateRowsResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'ReadModifyWriteRow'): ReadModifyWriteRowResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'ReadRows'): ReadRowsResponse.FromString,
+    ('google.bigtable.v2.Bigtable', 'SampleRowKeys'): SampleRowKeysResponse.FromString,
   }
   cardinalities = {
     'CheckAndMutateRow': cardinality.Cardinality.UNARY_UNARY,
