@@ -84,7 +84,7 @@ def _operation_wait(operation, max_attempts=5):
     return True
 
 
-def _retry_backoof(meth, *args, **kw):
+def _retry_backoff(meth, *args, **kw):
     from grpc.beta.interfaces import StatusCode
     from grpc.framework.interfaces.face.face import AbortionError
     backoff_intervals = [1, 2, 4, 8]
@@ -107,7 +107,7 @@ def setUpModule():
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, Config.LOCATION_NAME)
     Config.CLIENT.start()
-    instances, failed_locations = _retry_backoof(
+    instances, failed_locations = _retry_backoff(
         Config.CLIENT.list_instances)
 
     if len(failed_locations) != 0:
