@@ -98,14 +98,14 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
     :type project: :class:`str` or :func:`unicode <unicode>`
     :param project: (Optional) The ID of the project which owns the
-                    clusters, tables and data. If not provided, will
+                    instances, tables and data. If not provided, will
                     attempt to determine from the environment.
 
     :type credentials:
         :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
         :data:`NoneType <types.NoneType>`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        cluster. If not provided, defaults to the Google
+                        client. If not provided, defaults to the Google
                         Application Default Credentials.
 
     :type read_only: bool
@@ -162,7 +162,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         # These will be set in start().
         self._data_stub_internal = None
-        self._cluster_stub_internal = None
+        self._instance_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
 
@@ -229,7 +229,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         return self._data_stub_internal
 
     @property
-    def _cluster_stub(self):
+    def _instance_stub(self):
         """Getter for the gRPC stub used for the Instance Admin API.
 
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
@@ -240,9 +240,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        if self._cluster_stub_internal is None:
+        if self._instance_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._cluster_stub_internal
+        return self._instance_stub_internal
 
     @property
     def _operations_stub(self):
@@ -285,7 +285,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         return _make_stub(self, DATA_STUB_FACTORY_V2,
                           DATA_API_HOST_V2, DATA_API_PORT_V2)
 
-    def _make_cluster_stub(self):
+    def _make_instance_stub(self):
         """Creates gRPC stub to make requests to the Instance Admin API.
 
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
@@ -340,11 +340,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self._data_stub_internal = self._make_data_stub()
         self._data_stub_internal.__enter__()
         if self._admin:
-            self._cluster_stub_internal = self._make_cluster_stub()
+            self._instance_stub_internal = self._make_instance_stub()
             self._operations_stub_internal = self._make_operations_stub()
             self._table_stub_internal = self._make_table_stub()
 
-            self._cluster_stub_internal.__enter__()
+            self._instance_stub_internal.__enter__()
             self._operations_stub_internal.__enter__()
             self._table_stub_internal.__enter__()
 
@@ -362,12 +362,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         # traceback to __exit__.
         self._data_stub_internal.__exit__(None, None, None)
         if self._admin:
-            self._cluster_stub_internal.__exit__(None, None, None)
+            self._instance_stub_internal.__exit__(None, None, None)
             self._operations_stub_internal.__exit__(None, None, None)
             self._table_stub_internal.__exit__(None, None, None)
 
         self._data_stub_internal = None
-        self._cluster_stub_internal = None
+        self._instance_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
 
@@ -397,8 +397,8 @@ class _MetadataPlugin(object):
     """Callable class to transform metadata for gRPC requests.
 
     :type client: :class:`.client.Client`
-    :param client: The client that owns the cluster. Provides authorization and
-                   user agent.
+    :param client: The client that owns the instance.
+                   Provides authorization and user agent.
     """
 
     def __init__(self, client):
@@ -421,8 +421,8 @@ def _make_stub(client, stub_factory, host, port):
     Uses / depends on the beta implementation of gRPC.
 
     :type client: :class:`.client.Client`
-    :param client: The client that owns the cluster. Provides authorization and
-                   user agent.
+    :param client: The client that owns the instance.
+                   Provides authorization and user agent.
 
     :type stub_factory: callable
     :param stub_factory: A factory which will create a gRPC stub for
