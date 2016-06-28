@@ -40,8 +40,8 @@ from gcloud.bigtable._generated_v2 import (
 from gcloud.bigtable._generated_v2 import (
     bigtable_pb2 as data_v2_pb2)
 
-from gcloud.bigtable._generated import (
-    operations_grpc_pb2 as operations_grpc_v1_pb2)
+from gcloud.bigtable._generated_v2 import (
+    operations_grpc_pb2 as operations_grpc_v2_pb2)
 
 from gcloud.bigtable.instance import Instance
 from gcloud.client import _ClientFactoryMixin
@@ -51,14 +51,14 @@ from gcloud.credentials import get_credentials
 
 TABLE_STUB_FACTORY_V2 = (
     table_admin_v2_pb2.beta_create_BigtableTableAdmin_stub)
-TABLE_ADMIN_HOST_V2 = 'bigtabletableadmin.googleapis.com'
+TABLE_ADMIN_HOST_V2 = 'bigtableadmin.googleapis.com'
 """Table Admin API request host."""
 TABLE_ADMIN_PORT_V2 = 443
 """Table Admin API request port."""
 
 INSTANCE_STUB_FACTORY_V2 = (
     instance_admin_v2_pb2.beta_create_BigtableInstanceAdmin_stub)
-INSTANCE_ADMIN_HOST_V2 = 'bigtableclusteradmin.googleapis.com'
+INSTANCE_ADMIN_HOST_V2 = 'bigtableadmin.googleapis.com'
 """Cluster Admin API request host."""
 INSTANCE_ADMIN_PORT_V2 = 443
 """Cluster Admin API request port."""
@@ -69,7 +69,7 @@ DATA_API_HOST_V2 = 'bigtable.googleapis.com'
 DATA_API_PORT_V2 = 443
 """Data API request port."""
 
-OPERATIONS_STUB_FACTORY_V2 = operations_grpc_v1_pb2.beta_create_Operations_stub
+OPERATIONS_STUB_FACTORY_V2 = operations_grpc_v2_pb2.beta_create_Operations_stub
 OPERATIONS_API_HOST_V2 = INSTANCE_ADMIN_HOST_V2
 OPERATIONS_API_PORT_V2 = INSTANCE_ADMIN_PORT_V2
 
@@ -98,14 +98,14 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
     :type project: :class:`str` or :func:`unicode <unicode>`
     :param project: (Optional) The ID of the project which owns the
-                    clusters, tables and data. If not provided, will
+                    instances, tables and data. If not provided, will
                     attempt to determine from the environment.
 
     :type credentials:
         :class:`OAuth2Credentials <oauth2client.client.OAuth2Credentials>` or
         :data:`NoneType <types.NoneType>`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
-                        cluster. If not provided, defaults to the Google
+                        client. If not provided, defaults to the Google
                         Application Default Credentials.
 
     :type read_only: bool
@@ -162,7 +162,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
 
         # These will be set in start().
         self._data_stub_internal = None
-        self._cluster_stub_internal = None
+        self._instance_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
 
@@ -229,7 +229,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         return self._data_stub_internal
 
     @property
-    def _cluster_stub(self):
+    def _instance_stub(self):
         """Getter for the gRPC stub used for the Instance Admin API.
 
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
@@ -240,9 +240,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         if not self._admin:
             raise ValueError('Client is not an admin client.')
-        if self._cluster_stub_internal is None:
+        if self._instance_stub_internal is None:
             raise ValueError('Client has not been started.')
-        return self._cluster_stub_internal
+        return self._instance_stub_internal
 
     @property
     def _operations_stub(self):
@@ -285,7 +285,7 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         return _make_stub(self, DATA_STUB_FACTORY_V2,
                           DATA_API_HOST_V2, DATA_API_PORT_V2)
 
-    def _make_cluster_stub(self):
+    def _make_instance_stub(self):
         """Creates gRPC stub to make requests to the Instance Admin API.
 
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
@@ -340,11 +340,11 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         self._data_stub_internal = self._make_data_stub()
         self._data_stub_internal.__enter__()
         if self._admin:
-            self._cluster_stub_internal = self._make_cluster_stub()
+            self._instance_stub_internal = self._make_instance_stub()
             self._operations_stub_internal = self._make_operations_stub()
             self._table_stub_internal = self._make_table_stub()
 
-            self._cluster_stub_internal.__enter__()
+            self._instance_stub_internal.__enter__()
             self._operations_stub_internal.__enter__()
             self._table_stub_internal.__enter__()
 
@@ -362,12 +362,12 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         # traceback to __exit__.
         self._data_stub_internal.__exit__(None, None, None)
         if self._admin:
-            self._cluster_stub_internal.__exit__(None, None, None)
+            self._instance_stub_internal.__exit__(None, None, None)
             self._operations_stub_internal.__exit__(None, None, None)
             self._table_stub_internal.__exit__(None, None, None)
 
         self._data_stub_internal = None
-        self._cluster_stub_internal = None
+        self._instance_stub_internal = None
         self._operations_stub_internal = None
         self._table_stub_internal = None
 
@@ -392,13 +392,31 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """
         return Instance(instance_id, self, display_name=display_name)
 
+    def list_instances(self):
+        """List instances owned by the project.
+
+        :rtype: tuple
+        :returns: A pair of results, the first is a list of
+                  :class:`.Instance` objects returned and the second is a
+                  list of strings (the failed locations in the request).
+        """
+        request_pb = instance_admin_v2_pb2.ListInstancesRequest(
+            parent=self.project_name)
+
+        response = self._instance_stub.ListInstances(
+            request_pb, self.timeout_seconds)
+
+        instances = [Instance.from_pb(instance_pb, self)
+                     for instance_pb in response.instances]
+        return instances, response.failed_locations
+
 
 class _MetadataPlugin(object):
     """Callable class to transform metadata for gRPC requests.
 
     :type client: :class:`.client.Client`
-    :param client: The client that owns the cluster. Provides authorization and
-                   user agent.
+    :param client: The client that owns the instance.
+                   Provides authorization and user agent.
     """
 
     def __init__(self, client):
@@ -421,8 +439,8 @@ def _make_stub(client, stub_factory, host, port):
     Uses / depends on the beta implementation of gRPC.
 
     :type client: :class:`.client.Client`
-    :param client: The client that owns the cluster. Provides authorization and
-                   user agent.
+    :param client: The client that owns the instance.
+                   Provides authorization and user agent.
 
     :type stub_factory: callable
     :param stub_factory: A factory which will create a gRPC stub for

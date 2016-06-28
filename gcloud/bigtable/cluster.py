@@ -210,7 +210,7 @@ class Cluster(object):
     def from_pb(cls, cluster_pb, instance):
         """Creates a cluster instance from a protobuf.
 
-        :type cluster_pb: :class:`bigtable_cluster_data_pb2.Cluster`
+        :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: A cluster protobuf object.
 
         :type instance: :class:`.instance.Instance>`
@@ -288,8 +288,8 @@ class Cluster(object):
     def reload(self):
         """Reload the metadata for this cluster."""
         request_pb = messages_v2_pb2.GetClusterRequest(name=self.name)
-        # We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.
-        cluster_pb = self._instance._client._cluster_stub.GetCluster(
+        # We expect a `._generated_v2.instance_pb2.Cluster`.
+        cluster_pb = self._instance._client._instance_stub.GetCluster(
             request_pb, self._instance._client.timeout_seconds)
 
         # NOTE: _update_from_pb does not check that the project, instance and
@@ -318,7 +318,7 @@ class Cluster(object):
         """
         request_pb = _prepare_create_request(self)
         # We expect a `google.longrunning.operations_pb2.Operation`.
-        operation_pb = self._instance._client._cluster_stub.CreateCluster(
+        operation_pb = self._instance._client._instance_stub.CreateCluster(
             request_pb, self._instance._client.timeout_seconds)
 
         op_id = _process_operation(operation_pb)
@@ -346,8 +346,8 @@ class Cluster(object):
             name=self.name,
             serve_nodes=self.serve_nodes,
         )
-        # Ignore expected `._generated.bigtable_cluster_data_pb2.Cluster`.
-        operation_pb = self._instance._client._cluster_stub.UpdateCluster(
+        # Ignore expected `._generated_v2.instance_pb2.Cluster`.
+        operation_pb = self._instance._client._instance_stub.UpdateCluster(
             request_pb, self._instance._client.timeout_seconds)
 
         op_id = _process_operation(operation_pb)
@@ -380,5 +380,5 @@ class Cluster(object):
         """
         request_pb = messages_v2_pb2.DeleteClusterRequest(name=self.name)
         # We expect a `google.protobuf.empty_pb2.Empty`
-        self._instance._client._cluster_stub.DeleteCluster(
+        self._instance._client._instance_stub.DeleteCluster(
             request_pb, self._instance._client.timeout_seconds)

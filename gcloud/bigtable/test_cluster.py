@@ -321,7 +321,7 @@ class TestCluster(unittest2.TestCase):
         )
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
@@ -364,7 +364,7 @@ class TestCluster(unittest2.TestCase):
         response_pb = operations_pb2.Operation(name=OP_NAME)
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = MUT.Operation('create', OP_ID, cluster=cluster)
@@ -419,7 +419,7 @@ class TestCluster(unittest2.TestCase):
         response_pb = operations_pb2.Operation()
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         OP_ID = 5678
@@ -459,7 +459,7 @@ class TestCluster(unittest2.TestCase):
         response_pb = empty_pb2.Empty()
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.

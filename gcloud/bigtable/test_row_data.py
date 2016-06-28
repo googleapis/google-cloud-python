@@ -28,19 +28,19 @@ class TestCell(unittest2.TestCase):
     def _from_pb_test_helper(self, labels=None):
         import datetime
         from gcloud._helpers import _EPOCH
-        from gcloud.bigtable._generated import (
-            bigtable_data_pb2 as data_v1_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            data_pb2 as data_v2_pb2)
 
         timestamp_micros = 18738724000  # Make sure millis granularity
         timestamp = _EPOCH + datetime.timedelta(microseconds=timestamp_micros)
         value = b'value-bytes'
 
         if labels is None:
-            cell_pb = data_v1_pb2.Cell(
+            cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros)
             cell_expected = self._makeOne(value, timestamp)
         else:
-            cell_pb = data_v1_pb2.Cell(
+            cell_pb = data_v2_pb2.Cell(
                 value=value, timestamp_micros=timestamp_micros, labels=labels)
             cell_expected = self._makeOne(value, timestamp, labels=labels)
 

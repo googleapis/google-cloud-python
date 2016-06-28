@@ -141,7 +141,7 @@ class Table(object):
 
         .. note::
 
-            Though a :class:`._generated.bigtable_table_data_pb2.Table` is also
+            Though a :class:`._generated_v2.table_pb2.Table` is also
             allowed (as the ``table`` property) in a create table request, we
             do not support it in this method. As mentioned in the
             :class:`Table` docstring, the name is the only useful property in
@@ -150,7 +150,7 @@ class Table(object):
         .. note::
 
             A create request returns a
-            :class:`._generated.bigtable_table_data_pb2.Table` but we don't use
+            :class:`._generated_v2.table_pb2.Table` but we don't use
             this response. The proto definition allows for the inclusion of a
             ``current_operation`` in the response, but it does not appear that
             the Cloud Bigtable API returns any operation.
@@ -174,7 +174,7 @@ class Table(object):
             table_id=self.table_id,
         )
         client = self._instance._client
-        # We expect a `._generated.bigtable_table_data_pb2.Table`
+        # We expect a `._generated_v2.table_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
 
     def delete(self):
@@ -199,7 +199,7 @@ class Table(object):
         request_pb = table_admin_messages_v2_pb2.GetTableRequest(
             name=self.name)
         client = self._instance._client
-        # We expect a `._generated.bigtable_table_data_pb2.Table`
+        # We expect a `._generated_v2.table_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
                                                client.timeout_seconds)
 

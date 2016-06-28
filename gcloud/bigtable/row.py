@@ -854,7 +854,7 @@ def _parse_rmw_row_response(row_response):
 def _parse_family_pb(family_pb):
     """Parses a Family protobuf into a dictionary.
 
-    :type family_pb: :class:`._generated.bigtable_data_pb2.Family`
+    :type family_pb: :class:`._generated_v2.data_pb2.Family`
     :param family_pb: A protobuf
 
     :rtype: tuple

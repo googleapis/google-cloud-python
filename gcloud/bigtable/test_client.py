@@ -18,6 +18,12 @@ import unittest2
 
 class TestClient(unittest2.TestCase):
 
+    PROJECT = 'PROJECT'
+    INSTANCE_ID = 'instance-id'
+    DISPLAY_NAME = 'display-name'
+    TIMEOUT_SECONDS = 80
+    USER_AGENT = 'you-sir-age-int'
+
     def _getTargetClass(self):
         from gcloud.bigtable.client import Client
         return Client
@@ -33,8 +39,7 @@ class TestClient(unittest2.TestCase):
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
         timeout_seconds = timeout_seconds or MUT.DEFAULT_TIMEOUT_SECONDS
-        PROJECT = 'PROJECT'
-        client = self._makeOne(project=PROJECT, credentials=creds,
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
                                read_only=read_only, admin=admin,
                                user_agent=user_agent,
                                timeout_seconds=timeout_seconds)
@@ -44,12 +49,12 @@ class TestClient(unittest2.TestCase):
         if expected_scopes is not None:
             self.assertEqual(client._credentials.scopes, expected_scopes)
 
-        self.assertEqual(client.project, PROJECT)
+        self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client.timeout_seconds, timeout_seconds)
         self.assertEqual(client.user_agent, user_agent)
         # Check stubs are set (but null)
         self.assertEqual(client._data_stub_internal, None)
-        self.assertEqual(client._cluster_stub_internal, None)
+        self.assertEqual(client._instance_stub_internal, None)
         self.assertEqual(client._operations_stub_internal, None)
         self.assertEqual(client._table_stub_internal, None)
 
@@ -63,13 +68,13 @@ class TestClient(unittest2.TestCase):
     def test_constructor_custom_user_agent_and_timeout(self):
         from gcloud.bigtable import client as MUT
 
-        timeout_seconds = 1337
-        user_agent = 'custom-application'
+        CUSTOM_TIMEOUT_SECONDS = 1337
+        CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds,
-                                      user_agent=user_agent,
-                                      timeout_seconds=timeout_seconds)
+                                      user_agent=CUSTOM_USER_AGENT,
+                                      timeout_seconds=CUSTOM_TIMEOUT_SECONDS)
 
     def test_constructor_with_admin(self):
         from gcloud.bigtable import client as MUT
@@ -112,8 +117,7 @@ class TestClient(unittest2.TestCase):
 
     def _context_manager_helper(self):
         credentials = _Credentials()
-        project = 'PROJECT'
-        client = self._makeOne(project=project, credentials=credentials)
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
 
         def mock_start():
             client._data_stub_internal = object()
@@ -151,17 +155,17 @@ class TestClient(unittest2.TestCase):
 
     def _copy_test_helper(self, read_only=False, admin=False):
         credentials = _Credentials('value')
-        project = 'PROJECT'
-        timeout_seconds = 123
-        user_agent = 'you-sir-age-int'
-        client = self._makeOne(project=project, credentials=credentials,
-                               read_only=read_only, admin=admin,
-                               timeout_seconds=timeout_seconds,
-                               user_agent=user_agent)
+        client = self._makeOne(
+            project=self.PROJECT,
+            credentials=credentials,
+            read_only=read_only,
+            admin=admin,
+            timeout_seconds=self.TIMEOUT_SECONDS,
+            user_agent=self.USER_AGENT)
         # Put some fake stubs in place so that we can verify they
         # don't get copied.
         client._data_stub_internal = object()
-        client._cluster_stub_internal = object()
+        client._instance_stub_internal = object()
         client._operations_stub_internal = object()
         client._table_stub_internal = object()
 
@@ -173,7 +177,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(new_client.timeout_seconds, client.timeout_seconds)
         # Make sure stubs are not preserved.
         self.assertEqual(new_client._data_stub_internal, None)
-        self.assertEqual(new_client._cluster_stub_internal, None)
+        self.assertEqual(new_client._instance_stub_internal, None)
         self.assertEqual(new_client._operations_stub_internal, None)
         self.assertEqual(new_client._table_stub_internal, None)
 
@@ -213,29 +217,30 @@ class TestClient(unittest2.TestCase):
         with self.assertRaises(ValueError):
             getattr(client, '_data_stub')
 
-    def test_cluster_stub_getter(self):
+    def test_instance_stub_getter(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
-        client._cluster_stub_internal = object()
-        self.assertTrue(client._cluster_stub is client._cluster_stub_internal)
+        client._instance_stub_internal = object()
+        self.assertTrue(
+            client._instance_stub is client._instance_stub_internal)
 
-    def test_cluster_stub_non_admin_failure(self):
+    def test_instance_stub_non_admin_failure(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=False)
         with self.assertRaises(ValueError):
-            getattr(client, '_cluster_stub')
+            getattr(client, '_instance_stub')
 
-    def test_cluster_stub_unset_failure(self):
+    def test_instance_stub_unset_failure(self):
         credentials = _Credentials()
         project = 'PROJECT'
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
         with self.assertRaises(ValueError):
-            getattr(client, '_cluster_stub')
+            getattr(client, '_instance_stub')
 
     def test_operations_stub_getter(self):
         credentials = _Credentials()
@@ -317,7 +322,7 @@ class TestClient(unittest2.TestCase):
             ),
         ])
 
-    def test__make_cluster_stub(self):
+    def test__make_instance_stub(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable import client as MUT
         from gcloud.bigtable.client import INSTANCE_ADMIN_HOST_V2
@@ -336,7 +341,7 @@ class TestClient(unittest2.TestCase):
             return fake_stub
 
         with _Monkey(MUT, _make_stub=mock_make_stub):
-            result = client._make_cluster_stub()
+            result = client._make_instance_stub()
 
         self.assertTrue(result is fake_stub)
         self.assertEqual(make_stub_args, [
@@ -443,13 +448,13 @@ class TestClient(unittest2.TestCase):
 
         self.assertTrue(client._data_stub_internal is stub)
         if admin:
-            self.assertTrue(client._cluster_stub_internal is stub)
+            self.assertTrue(client._instance_stub_internal is stub)
             self.assertTrue(client._operations_stub_internal is stub)
             self.assertTrue(client._table_stub_internal is stub)
             self.assertEqual(stub._entered, 4)
             self.assertEqual(len(make_stub_args), 4)
         else:
-            self.assertTrue(client._cluster_stub_internal is None)
+            self.assertTrue(client._instance_stub_internal is None)
             self.assertTrue(client._operations_stub_internal is None)
             self.assertTrue(client._table_stub_internal is None)
             self.assertEqual(stub._entered, 1)
@@ -484,12 +489,12 @@ class TestClient(unittest2.TestCase):
         stub1 = _FakeStub()
         stub2 = _FakeStub()
         client._data_stub_internal = stub1
-        client._cluster_stub_internal = stub2
+        client._instance_stub_internal = stub2
         client._operations_stub_internal = stub2
         client._table_stub_internal = stub2
         client.stop()
         self.assertTrue(client._data_stub_internal is None)
-        self.assertTrue(client._cluster_stub_internal is None)
+        self.assertTrue(client._instance_stub_internal is None)
         self.assertTrue(client._operations_stub_internal is None)
         self.assertTrue(client._table_stub_internal is None)
         self.assertEqual(stub1._entered, 0)
@@ -516,10 +521,10 @@ class TestClient(unittest2.TestCase):
         # This is a bit hacky. We set the cluster stub protected value
         # since it isn't used in is_started() and make sure that stop
         # doesn't reset this value to None.
-        client._cluster_stub_internal = cluster_stub = object()
+        client._instance_stub_internal = instance_stub = object()
         client.stop()
         # Make sure the cluster stub did not change.
-        self.assertEqual(client._cluster_stub_internal, cluster_stub)
+        self.assertEqual(client._instance_stub_internal, instance_stub)
 
     def test_instance_factory(self):
         from gcloud.bigtable.instance import Instance
@@ -537,6 +542,71 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(instance.display_name, DISPLAY_NAME)
         self.assertTrue(instance._client is client)
 
+    def test_list_instances(self):
+        from gcloud.bigtable._generated_v2 import (
+            instance_pb2 as data_v2_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        FAILED_LOCATION = 'FAILED'
+        INSTANCE_ID1 = 'instance-id1'
+        INSTANCE_ID2 = 'instance-id2'
+        INSTANCE_NAME1 = (
+            'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID1)
+        INSTANCE_NAME2 = (
+            'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
+
+        credentials = _Credentials()
+        client = self._makeOne(
+            project=self.PROJECT,
+            credentials=credentials,
+            admin=True,
+            timeout_seconds=self.TIMEOUT_SECONDS,
+        )
+
+        # Create request_pb
+        request_pb = messages_v2_pb2.ListInstancesRequest(
+            parent='projects/' + self.PROJECT,
+        )
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListInstancesResponse(
+            failed_locations=[
+                FAILED_LOCATION,
+            ],
+            instances=[
+                data_v2_pb2.Instance(
+                    name=INSTANCE_NAME1,
+                    display_name=INSTANCE_NAME1,
+                ),
+                data_v2_pb2.Instance(
+                    name=INSTANCE_NAME2,
+                    display_name=INSTANCE_NAME2,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_stub_internal = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        failed_locations = [FAILED_LOCATION]
+        instances = [
+            client.instance(INSTANCE_ID1),
+            client.instance(INSTANCE_ID2),
+        ]
+        expected_result = (instances, failed_locations)
+
+        # Perform the method and check the result.
+        result = client.list_instances()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListInstances',
+            (request_pb, self.TIMEOUT_SECONDS),
+            {},
+        )])
+
 
 class Test_MetadataPlugin(unittest2.TestCase):
 
@@ -550,15 +620,15 @@ class Test_MetadataPlugin(unittest2.TestCase):
     def test_constructor(self):
         from gcloud.bigtable.client import Client
         from gcloud.bigtable.client import DATA_SCOPE
+        PROJECT = 'PROJECT'
+        USER_AGENT = 'USER_AGENT'
 
         credentials = _Credentials()
-        project = 'PROJECT'
-        user_agent = 'USER_AGENT'
-        client = Client(project=project, credentials=credentials,
-                        user_agent=user_agent)
+        client = Client(project=PROJECT, credentials=credentials,
+                        user_agent=USER_AGENT)
         transformer = self._makeOne(client)
         self.assertTrue(transformer._credentials is credentials)
-        self.assertEqual(transformer._user_agent, user_agent)
+        self.assertEqual(transformer._user_agent, USER_AGENT)
         self.assertEqual(credentials.scopes, [DATA_SCOPE])
 
     def test___call__(self):
