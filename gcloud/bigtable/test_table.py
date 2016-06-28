@@ -281,11 +281,11 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(mock_created,
                          [(table.name, self.ROW_KEY, filter_obj)])
 
-    def test_read_empty_row(self):
+    def test_read_row_miss(self):
         chunks = []
         self._read_row_helper(chunks, None)
 
-    def test_read_row(self):
+    def test_read_row_complete(self):
         from gcloud.bigtable.row_data import Cell
         from gcloud.bigtable.row_data import PartialRowData
 
