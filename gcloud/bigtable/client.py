@@ -40,8 +40,8 @@ from gcloud.bigtable._generated_v2 import (
 from gcloud.bigtable._generated_v2 import (
     bigtable_pb2 as data_v2_pb2)
 
-from gcloud.bigtable._generated import (
-    operations_grpc_pb2 as operations_grpc_v1_pb2)
+from gcloud.bigtable._generated_v2 import (
+    operations_grpc_pb2 as operations_grpc_v2_pb2)
 
 from gcloud.bigtable.instance import Instance
 from gcloud.client import _ClientFactoryMixin
@@ -69,7 +69,7 @@ DATA_API_HOST_V2 = 'bigtable.googleapis.com'
 DATA_API_PORT_V2 = 443
 """Data API request port."""
 
-OPERATIONS_STUB_FACTORY_V2 = operations_grpc_v1_pb2.beta_create_Operations_stub
+OPERATIONS_STUB_FACTORY_V2 = operations_grpc_v2_pb2.beta_create_Operations_stub
 OPERATIONS_API_HOST_V2 = INSTANCE_ADMIN_HOST_V2
 OPERATIONS_API_PORT_V2 = INSTANCE_ADMIN_PORT_V2
 

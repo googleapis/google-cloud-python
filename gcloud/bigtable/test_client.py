@@ -223,7 +223,8 @@ class TestClient(unittest2.TestCase):
         client = self._makeOne(project=project, credentials=credentials,
                                admin=True)
         client._instance_stub_internal = object()
-        self.assertTrue(client._instance_stub is client._instance_stub_internal)
+        self.assertTrue(
+            client._instance_stub is client._instance_stub_internal)
 
     def test_instance_stub_non_admin_failure(self):
         credentials = _Credentials()
@@ -551,10 +552,10 @@ class TestClient(unittest2.TestCase):
         FAILED_LOCATION = 'FAILED'
         INSTANCE_ID1 = 'instance-id1'
         INSTANCE_ID2 = 'instance-id2'
-        INSTANCE_NAME1 = ('projects/' + self.PROJECT +
-                         '/instances/' + INSTANCE_ID1)
-        INSTANCE_NAME2 = ('projects/' + self.PROJECT +
-                         '/instances/' + INSTANCE_ID2)
+        INSTANCE_NAME1 = (
+            'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID1)
+        INSTANCE_NAME2 = (
+            'projects/' + self.PROJECT + '/instances/' + INSTANCE_ID2)
 
         credentials = _Credentials()
         client = self._makeOne(

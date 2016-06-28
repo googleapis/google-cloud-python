@@ -210,7 +210,7 @@ class Cluster(object):
     def from_pb(cls, cluster_pb, instance):
         """Creates a cluster instance from a protobuf.
 
-        :type cluster_pb: :class:`bigtable_cluster_data_pb2.Cluster`
+        :type cluster_pb: :class:`instance_pb2.Cluster`
         :param cluster_pb: A cluster protobuf object.
 
         :type instance: :class:`.instance.Instance>`
@@ -288,7 +288,7 @@ class Cluster(object):
     def reload(self):
         """Reload the metadata for this cluster."""
         request_pb = messages_v2_pb2.GetClusterRequest(name=self.name)
-        # We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.
+        # We expect a `._generated_v2.instance_pb2.Cluster`.
         cluster_pb = self._instance._client._instance_stub.GetCluster(
             request_pb, self._instance._client.timeout_seconds)
 
@@ -346,7 +346,7 @@ class Cluster(object):
             name=self.name,
             serve_nodes=self.serve_nodes,
         )
-        # Ignore expected `._generated.bigtable_cluster_data_pb2.Cluster`.
+        # Ignore expected `._generated_v2.instance_pb2.Cluster`.
         operation_pb = self._instance._client._instance_stub.UpdateCluster(
             request_pb, self._instance._client.timeout_seconds)
 
