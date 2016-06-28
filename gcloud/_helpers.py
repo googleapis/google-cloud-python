@@ -191,10 +191,9 @@ def _default_service_project_id():
     search_paths = []
     # Workaround for GAE not supporting pwd which is used by expanduser.
     try:
-        full_config_path = os.path.expanduser(DEFAULT_CONFIGURATION_PATH)
-        search_paths.append(full_config_path)
+        search_paths.append(os.path.expanduser(DEFAULT_CONFIGURATION_PATH))
     except ImportError:
-        full_config_path = ''
+        pass
     win32_config_path = os.path.join(os.getenv('APPDATA', ''),
                                      'gcloud', 'configurations',
                                      'config_default')

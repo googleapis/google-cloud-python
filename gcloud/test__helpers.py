@@ -224,12 +224,12 @@ class Test__get_default_service_project_id(unittest2.TestCase):
 
     def test_gae_without_expanduser(self):
         import sys
-        import pwd
-        del pwd
-        sys.modules['pwd'] = None  # Blocks pwd from being imported.
-        project_id = self.callFUT('test-project-id')
-        self.assertEqual(None, project_id)
-        del sys.modules['pwd']  # Unblocks importing of pwd.
+        try:
+            sys.modules['pwd'] = None  # Blocks pwd from being imported.
+            project_id = self.callFUT('test-project-id')
+            self.assertEqual(None, project_id)
+        finally:
+            del sys.modules['pwd']  # Unblocks importing of pwd.
 
     def test_info_value_not_present(self):
         project_id = self.callFUT()
