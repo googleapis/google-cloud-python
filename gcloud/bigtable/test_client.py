@@ -18,6 +18,12 @@ import unittest2
 
 class TestClient(unittest2.TestCase):
 
+    PROJECT = 'PROJECT'
+    INSTANCE_ID = 'instance-id'
+    DISPLAY_NAME = 'display-name'
+    TIMEOUT_SECONDS = 80
+    USER_AGENT = 'you-sir-age-int'
+
     def _getTargetClass(self):
         from gcloud.bigtable.client import Client
         return Client
@@ -33,8 +39,7 @@ class TestClient(unittest2.TestCase):
 
         user_agent = user_agent or MUT.DEFAULT_USER_AGENT
         timeout_seconds = timeout_seconds or MUT.DEFAULT_TIMEOUT_SECONDS
-        PROJECT = 'PROJECT'
-        client = self._makeOne(project=PROJECT, credentials=creds,
+        client = self._makeOne(project=self.PROJECT, credentials=creds,
                                read_only=read_only, admin=admin,
                                user_agent=user_agent,
                                timeout_seconds=timeout_seconds)
@@ -44,7 +49,7 @@ class TestClient(unittest2.TestCase):
         if expected_scopes is not None:
             self.assertEqual(client._credentials.scopes, expected_scopes)
 
-        self.assertEqual(client.project, PROJECT)
+        self.assertEqual(client.project, self.PROJECT)
         self.assertEqual(client.timeout_seconds, timeout_seconds)
         self.assertEqual(client.user_agent, user_agent)
         # Check stubs are set (but null)
@@ -63,13 +68,13 @@ class TestClient(unittest2.TestCase):
     def test_constructor_custom_user_agent_and_timeout(self):
         from gcloud.bigtable import client as MUT
 
-        timeout_seconds = 1337
-        user_agent = 'custom-application'
+        CUSTOM_TIMEOUT_SECONDS = 1337
+        CUSTOM_USER_AGENT = 'custom-application'
         expected_scopes = [MUT.DATA_SCOPE]
         creds = _Credentials()
         self._constructor_test_helper(expected_scopes, creds,
-                                      user_agent=user_agent,
-                                      timeout_seconds=timeout_seconds)
+                                      user_agent=CUSTOM_USER_AGENT,
+                                      timeout_seconds=CUSTOM_TIMEOUT_SECONDS)
 
     def test_constructor_with_admin(self):
         from gcloud.bigtable import client as MUT
@@ -112,8 +117,7 @@ class TestClient(unittest2.TestCase):
 
     def _context_manager_helper(self):
         credentials = _Credentials()
-        project = 'PROJECT'
-        client = self._makeOne(project=project, credentials=credentials)
+        client = self._makeOne(project=self.PROJECT, credentials=credentials)
 
         def mock_start():
             client._data_stub_internal = object()
@@ -151,13 +155,13 @@ class TestClient(unittest2.TestCase):
 
     def _copy_test_helper(self, read_only=False, admin=False):
         credentials = _Credentials('value')
-        project = 'PROJECT'
-        timeout_seconds = 123
-        user_agent = 'you-sir-age-int'
-        client = self._makeOne(project=project, credentials=credentials,
-                               read_only=read_only, admin=admin,
-                               timeout_seconds=timeout_seconds,
-                               user_agent=user_agent)
+        client = self._makeOne(
+            project=self.PROJECT,
+            credentials=credentials,
+            read_only=read_only,
+            admin=admin,
+            timeout_seconds=self.TIMEOUT_SECONDS,
+            user_agent=self.USER_AGENT)
         # Put some fake stubs in place so that we can verify they
         # don't get copied.
         client._data_stub_internal = object()
@@ -550,15 +554,15 @@ class Test_MetadataPlugin(unittest2.TestCase):
     def test_constructor(self):
         from gcloud.bigtable.client import Client
         from gcloud.bigtable.client import DATA_SCOPE
+        PROJECT = 'PROJECT'
+        USER_AGENT = 'USER_AGENT'
 
         credentials = _Credentials()
-        project = 'PROJECT'
-        user_agent = 'USER_AGENT'
-        client = Client(project=project, credentials=credentials,
-                        user_agent=user_agent)
+        client = Client(project=PROJECT, credentials=credentials,
+                        user_agent=USER_AGENT)
         transformer = self._makeOne(client)
         self.assertTrue(transformer._credentials is credentials)
-        self.assertEqual(transformer._user_agent, user_agent)
+        self.assertEqual(transformer._user_agent, USER_AGENT)
         self.assertEqual(credentials.scopes, [DATA_SCOPE])
 
     def test___call__(self):
