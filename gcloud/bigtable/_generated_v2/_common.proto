@@ -24,10 +24,14 @@ option java_outer_classname = "CommonProto";
 option java_package = "com.google.bigtable.admin.v2";
 
 
+// Storage media types for persisting Bigtable data.
 enum StorageType {
+  // The user did not specify a storage type.
   STORAGE_TYPE_UNSPECIFIED = 0;
 
+  // Flash (SSD) storage should be used.
   SSD = 1;
 
+  // Magnetic drive (HDD) storage should be used.
   HDD = 2;
 }

@@ -112,6 +112,10 @@ def transform_line(line):
     :rtype: str
     :returns: The transformed line.
     """
+    # Work around https://github.com/grpc/grpc/issues/7101
+    if line == 'import ':
+        return ''
+
     for old_module, new_module in REPLACEMENTS.iteritems():
         result = transform_old_to_new(line, old_module, new_module)
         if result is not None:
