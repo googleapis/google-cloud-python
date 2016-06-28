@@ -22,6 +22,7 @@ class TestOperation(unittest2.TestCase):
     OP_TYPE = 'fake-op'
     OP_ID = 8915
     BEGIN = datetime.datetime(2015, 10, 22, 1, 1)
+    LOCATION_ID = 'loc-id'
 
     def _getTargetClass(self):
         from gcloud.bigtable.instance import Operation
@@ -32,11 +33,13 @@ class TestOperation(unittest2.TestCase):
 
     def _constructor_test_helper(self, instance=None):
         operation = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
 
         self.assertEqual(operation.op_type, self.OP_TYPE)
         self.assertEqual(operation.op_id, self.OP_ID)
         self.assertEqual(operation.begin, self.BEGIN)
+        self.assertEqual(operation.location_id, self.LOCATION_ID)
         self.assertEqual(operation._instance, instance)
         self.assertFalse(operation._complete)
 
@@ -50,32 +53,36 @@ class TestOperation(unittest2.TestCase):
     def test___eq__(self):
         instance = object()
         operation1 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         operation2 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         self.assertEqual(operation1, operation2)
 
     def test___eq__type_differ(self):
-        operation1 = self._makeOne('foo', 123, None)
+        operation1 = self._makeOne('foo', 123, None, self.LOCATION_ID)
         operation2 = object()
         self.assertNotEqual(operation1, operation2)
 
     def test___ne__same_value(self):
         instance = object()
         operation1 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         operation2 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         comparison_val = (operation1 != operation2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        operation1 = self._makeOne('foo', 123, None)
-        operation2 = self._makeOne('bar', 456, None)
+        operation1 = self._makeOne('foo', 123, None, self.LOCATION_ID)
+        operation2 = self._makeOne('bar', 456, None, self.LOCATION_ID)
         self.assertNotEqual(operation1, operation2)
 
     def test_finished_without_operation(self):
-        operation = self._makeOne(None, None, None)
+        operation = self._makeOne(None, None, None, None)
         operation._complete = True
         with self.assertRaises(ValueError):
             operation.finished()
@@ -93,11 +100,13 @@ class TestOperation(unittest2.TestCase):
         client = _Client(PROJECT, timeout_seconds=TIMEOUT_SECONDS)
         instance = Instance(INSTANCE_ID, client, LOCATION)
         operation = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
 
         # Create request_pb
         op_name = ('operations/projects/' + PROJECT +
                    '/instances/' + INSTANCE_ID +
+                   '/locations/' + self.LOCATION_ID +
                    '/operations/%d' % (self.OP_ID,))
         request_pb = operations_pb2.GetOperationRequest(name=op_name)
 
@@ -355,15 +364,15 @@ class TestInstance(unittest2.TestCase):
         request_pb = object()
 
         # Create response_pb
-        op_begin = object()
+        OP_BEGIN = object()
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_result = MUT.Operation('create', self.OP_ID, op_begin,
-                                        instance=instance)
+        expected_result = MUT.Operation('create', self.OP_ID, OP_BEGIN,
+                                        self.LOCATION, instance=instance)
 
         # Create the mocks.
         prep_create_called = []
@@ -376,7 +385,7 @@ class TestInstance(unittest2.TestCase):
 
         def mock_process_operation(operation_pb):
             process_operation_called.append(operation_pb)
-            return self.OP_ID, op_begin
+            return self.OP_ID, self.LOCATION, OP_BEGIN
 
         # Perform the method and check the result.
         with _Monkey(MUT,
@@ -410,15 +419,15 @@ class TestInstance(unittest2.TestCase):
         request_pb = object()
 
         # Create response_pb
-        op_begin = object()
+        OP_BEGIN = object()
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_result = MUT.Operation('create', self.OP_ID, op_begin,
-                                        instance=instance)
+        expected_result = MUT.Operation('create', self.OP_ID, OP_BEGIN,
+                                        self.LOCATION, instance=instance)
 
         # Create the mocks.
         prep_create_called = []
@@ -431,7 +440,7 @@ class TestInstance(unittest2.TestCase):
 
         def mock_process_operation(operation_pb):
             process_operation_called.append(operation_pb)
-            return self.OP_ID, op_begin
+            return self.OP_ID, self.LOCATION, OP_BEGIN
 
         # Perform the method and check the result.
         with _Monkey(MUT,
@@ -794,10 +803,11 @@ class Test__process_operation(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
-        EXPECTED_OPERATION_ID = 234
+        LOCATION_ID = 'location'
+        OP_ID = 234
         OPERATION_NAME = (
-            'operations/projects/%s/instances/%s/operations/%d' %
-            (PROJECT, INSTANCE_ID, EXPECTED_OPERATION_ID))
+            'operations/projects/%s/instances/%s/locations/%s/operations/%d' %
+            (PROJECT, INSTANCE_ID, LOCATION_ID, OP_ID))
 
         current_op = operations_pb2.Operation(name=OPERATION_NAME)
 
@@ -819,11 +829,12 @@ class Test__process_operation(unittest2.TestCase):
         # Exectute method with mocks in place.
         with _Monkey(MUT, _parse_pb_any_to_native=mock_parse_pb_any_to_native,
                      _pb_timestamp_to_datetime=mock_pb_timestamp_to_datetime):
-            operation_id, operation_begin = self._callFUT(current_op)
+            op_id, loc_id, op_begin = self._callFUT(current_op)
 
         # Check outputs.
-        self.assertEqual(operation_id, EXPECTED_OPERATION_ID)
-        self.assertTrue(operation_begin is expected_operation_begin)
+        self.assertEqual(op_id, OP_ID)
+        self.assertTrue(op_begin is expected_operation_begin)
+        self.assertEqual(loc_id, LOCATION_ID)
 
         # Check mocks were used correctly.
         self.assertEqual(parse_pb_any_called, [(current_op.metadata, None)])

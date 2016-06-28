@@ -35,8 +35,9 @@ _EXISTING_INSTANCE_LOCATION = 'existing instance, location in cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 _OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/'
-                                r'instances/([a-z][-a-z0-9]*)/operations/'
-                                r'(?P<operation_id>\d+)$')
+                                r'instances/([a-z][-a-z0-9]*)/'
+                                r'locations/(?P<location_id>[a-z][-a-z0-9]*)/'
+                                r'operations/(?P<operation_id>\d+)$')
 _TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
 _ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.v2.'
 _INSTANCE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateInstanceMetadata'
@@ -98,25 +99,24 @@ def _process_operation(operation_pb):
     :param operation_pb: The long-running operation response from a
                          Create/Update/Undelete instance request.
 
-    :rtype: tuple
-    :returns: A pair of an integer and datetime stamp. The integer is the ID
-              of the operation (``operation_id``) and the timestamp when
-              the create operation began (``operation_begin``).
+    :rtype: (int, str, datetime)
+    :returns: (operation_id, location_id, operation_begin).
     :raises: :class:`ValueError <exceptions.ValueError>` if the operation name
              doesn't match the :data:`_OPERATION_NAME_RE` regex.
     """
     match = _OPERATION_NAME_RE.match(operation_pb.name)
     if match is None:
         raise ValueError('Operation name was not in the expected '
-                         'format after a instance modification.',
+                         'format after instance creation.',
                          operation_pb.name)
+    location_id = match.group('location_id')
     operation_id = int(match.group('operation_id'))
 
     request_metadata = _parse_pb_any_to_native(operation_pb.metadata)
     operation_begin = _pb_timestamp_to_datetime(
         request_metadata.request_time)
 
-    return operation_id, operation_begin
+    return operation_id, location_id, operation_begin
 
 
 class Operation(object):
@@ -135,14 +135,18 @@ class Operation(object):
     :type begin: :class:`datetime.datetime`
     :param begin: The time when the operation was started.
 
+    :type location_id: str
+    :param location_id: ID of the location in which the operation is running
+
     :type instance: :class:`Instance`
     :param instance: The instance that created the operation.
     """
 
-    def __init__(self, op_type, op_id, begin, instance=None):
+    def __init__(self, op_type, op_id, begin, location_id, instance=None):
         self.op_type = op_type
         self.op_id = op_id
         self.begin = begin
+        self.location_id = location_id
         self._instance = instance
         self._complete = False
 
@@ -152,6 +156,7 @@ class Operation(object):
         return (other.op_type == self.op_type and
                 other.op_id == self.op_id and
                 other.begin == self.begin and
+                other.location_id == self.location_id and
                 other._instance == self._instance and
                 other._complete == self._complete)
 
@@ -169,8 +174,9 @@ class Operation(object):
         if self._complete:
             raise ValueError('The operation has completed.')
 
-        operation_name = ('operations/' + self._instance.name +
-                          '/operations/%d' % (self.op_id,))
+        operation_name = (
+            'operations/%s/locations/%s/operations/%d' %
+            (self._instance.name, self.location_id, self.op_id))
         request_pb = operations_pb2.GetOperationRequest(name=operation_name)
         # We expect a `google.longrunning.operations_pb2.Operation`.
         operation_pb = self._instance._client._operations_stub.GetOperation(
@@ -352,8 +358,8 @@ class Instance(object):
         operation_pb = self._client._instance_stub.CreateInstance(
             request_pb, self._client.timeout_seconds)
 
-        op_id, op_begin = _process_operation(operation_pb)
-        return Operation('create', op_id, op_begin, instance=self)
+        op_id, loc_id, op_begin = _process_operation(operation_pb)
+        return Operation('create', op_id, op_begin, loc_id, instance=self)
 
     def update(self):
         """Update this instance.
