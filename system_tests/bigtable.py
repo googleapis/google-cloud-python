@@ -14,7 +14,6 @@
 
 import datetime
 import operator
-import os
 import time
 
 import unittest2
@@ -101,7 +100,6 @@ def _retry_backoff(meth, *args, **kw):
 
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
-    PROJECT = os.getenv(TESTS_PROJECT)
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
     Config.CLIENT.start()

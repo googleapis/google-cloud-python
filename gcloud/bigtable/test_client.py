@@ -534,7 +534,6 @@ class TestClient(unittest2.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-        LOCATION_ID = 'locname'
         credentials = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=credentials)
 
