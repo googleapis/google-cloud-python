@@ -175,29 +175,21 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         self.assertEqual(instance.display_name, instance_alt.display_name)
 
     def test_update(self):
-        CURR_DISPLAY_NAME = Config.INSTANCE.display_name
+        OLD_DISPLAY_NAME = Config.INSTANCE.display_name
         NEW_DISPLAY_NAME = 'Foo Bar Baz'
         Config.INSTANCE.display_name = NEW_DISPLAY_NAME
-        operation = Config.INSTANCE.update()
+        Config.INSTANCE.update()
 
-        # We want to make sure the operation completes.
-        self.assertTrue(_operation_wait(operation))
-
-        # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID,
-                                              Config.LOCATION_NAME)
-        self.assertNotEqual(instance_alt.display_name,
-                            Config.INSTANCE.display_name)
+        # Create a new instance instance and reload it.
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID, None)
+        self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
         instance_alt.reload()
         self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
 
         # Make sure to put the instance back the way it was for the
         # other test cases.
-        Config.INSTANCE.display_name = CURR_DISPLAY_NAME
-        operation = Config.INSTANCE.update()
-
-        # We want to make sure the operation completes.
-        self.assertTrue(_operation_wait(operation))
+        Config.INSTANCE.display_name = OLD_DISPLAY_NAME
+        Config.INSTANCE.update()
 
 
 class TestTableAdminAPI(unittest2.TestCase):
