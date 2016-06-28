@@ -51,14 +51,14 @@ from gcloud.credentials import get_credentials
 
 TABLE_STUB_FACTORY_V2 = (
     table_admin_v2_pb2.beta_create_BigtableTableAdmin_stub)
-TABLE_ADMIN_HOST_V2 = 'bigtabletableadmin.googleapis.com'
+TABLE_ADMIN_HOST_V2 = 'bigtableadmin.googleapis.com'
 """Table Admin API request host."""
 TABLE_ADMIN_PORT_V2 = 443
 """Table Admin API request port."""
 
 INSTANCE_STUB_FACTORY_V2 = (
     instance_admin_v2_pb2.beta_create_BigtableInstanceAdmin_stub)
-INSTANCE_ADMIN_HOST_V2 = 'bigtableclusteradmin.googleapis.com'
+INSTANCE_ADMIN_HOST_V2 = 'bigtableadmin.googleapis.com'
 """Cluster Admin API request host."""
 INSTANCE_ADMIN_PORT_V2 = 443
 """Cluster Admin API request port."""
