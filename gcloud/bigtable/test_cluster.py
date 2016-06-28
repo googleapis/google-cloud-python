@@ -497,7 +497,7 @@ class Test__prepare_create_request(unittest2.TestCase):
         request_pb = self._callFUT(cluster)
 
         self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
-        self.assertEqual(request_pb.name, instance.name)
+        self.assertEqual(request_pb.parent, instance.name)
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
 
 

@@ -170,7 +170,7 @@ class Table(object):
                 split_pb(key=key) for key in initial_split_keys]
         request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
             initial_splits=initial_split_keys or [],
-            name=self._instance.name,
+            parent=self._instance.name,
             table_id=self.table_id,
         )
         client = self._instance._client

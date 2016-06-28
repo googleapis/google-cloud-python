@@ -147,7 +147,7 @@ class TestTable(unittest2.TestCase):
             for key in initial_split_keys or ()]
         request_pb = _CreateTableRequestPB(
             initial_splits=splits_pb,
-            name=self.INSTANCE_NAME,
+            parent=self.INSTANCE_NAME,
             table_id=self.TABLE_ID,
         )
 

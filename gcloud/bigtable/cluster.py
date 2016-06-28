@@ -50,7 +50,7 @@ def _prepare_create_request(cluster):
     :returns: The CreateCluster request object containing the cluster info.
     """
     return messages_v2_pb2.CreateClusterRequest(
-        name=cluster._instance.name,
+        parent=cluster._instance.name,
         cluster_id=cluster.cluster_id,
         cluster=data_v2_pb2.Cluster(
             serve_nodes=cluster.serve_nodes,
