@@ -402,12 +402,21 @@ Logging client.
     >>> cloud_logger = logging.getLogger('cloudLogger')
     >>> cloud_logger.setLevel(logging.INFO) # defaults to WARN
     >>> cloud_logger.addHandler(handler)
-    >>> cloud_logger.error('bad news') # API call
+    >>> cloud_logger.error('bad news')
 
 .. note::
 
-    This handler currently only supports a synchronous API call, which means each logging statement
-    that uses this handler will require an API call.
+    This handler by default uses an asynchronous transport that sends log entries on a background
+     thread. However, the API call will still be made in the same process. For other transport
+     options, see the transports section.
+
+All logs will go to a single custom log, which defaults to "python". The name of the Python
+logger will be included in the structured log entry under the "python_logger" field. You can
+change it by providing a name to the handler:
+
+.. doctest::
+
+    >>> handler = CloudLoggingHandler(client, name="mycustomlog")
 
 It is also possible to attach the handler to the root Python logger, so that for example a plain
 `logging.warn` call would be sent to Cloud Logging, as well as any other loggers created. However,
@@ -424,4 +433,24 @@ this automatically:
     >>> handler = CloudLoggingHandler(client)
     >>> logging.getLogger().setLevel(logging.INFO) # defaults to WARN
     >>> setup_logging(handler)
-    >>> logging.error('bad news') # API call
+    >>> logging.error('bad news')
+
+You can also exclude certain loggers:
+
+.. doctest::
+
+   >>> setup_logging(handler, excluded_loggers=('werkzeug',)))
+
+
+
+Python logging handler transports
+==================================
+
+The Python logging handler can use different transports. The default is
+:class:`gcloud.logging.handlers.BackgroundThreadTransport`.
+
+ 1. :class:`gcloud.logging.handlers.BackgroundThreadTransport` this is the default. It writes
+ entries on a background :class:`python.threading.Thread`.
+
+ 1. :class:`gcloud.logging.handlers.SyncTransport` this handler does a direct API call on each
+ logging statement to write the entry.
