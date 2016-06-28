@@ -52,13 +52,13 @@ class Table(object):
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type cluster: :class:`Cluster <.cluster.Cluster>`
-    :param cluster: The cluster that owns the table.
+    :type instance: :class:`Cluster <.instance.Instance>`
+    :param instance: The instance that owns the table.
     """
 
-    def __init__(self, table_id, cluster):
+    def __init__(self, table_id, instance):
         self.table_id = table_id
-        self._cluster = cluster
+        self._instance = instance
 
     @property
     def name(self):
@@ -76,7 +76,7 @@ class Table(object):
         :rtype: str
         :returns: The table name.
         """
-        return self._cluster.name + '/tables/' + self.table_id
+        return self._instance.name + '/tables/' + self.table_id
 
     def column_family(self, column_family_id, gc_rule=None):
         """Factory to create a column family associated with this table.
@@ -131,7 +131,7 @@ class Table(object):
         if not isinstance(other, self.__class__):
             return False
         return (other.table_id == self.table_id and
-                other._cluster == self._cluster)
+                other._instance == self._instance)
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -170,10 +170,10 @@ class Table(object):
                 split_pb(key=key) for key in initial_split_keys]
         request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
             initial_splits=initial_split_keys or [],
-            name=self._cluster.name,
+            name=self._instance.name,
             table_id=self.table_id,
         )
-        client = self._cluster._client
+        client = self._instance._client
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
 
@@ -181,7 +181,7 @@ class Table(object):
         """Delete this table."""
         request_pb = table_admin_messages_v2_pb2.DeleteTableRequest(
             name=self.name)
-        client = self._cluster._client
+        client = self._instance._client
         # We expect a `google.protobuf.empty_pb2.Empty`
         client._table_stub.DeleteTable(request_pb, client.timeout_seconds)
 
@@ -198,7 +198,7 @@ class Table(object):
         """
         request_pb = table_admin_messages_v2_pb2.GetTableRequest(
             name=self.name)
-        client = self._cluster._client
+        client = self._instance._client
         # We expect a `._generated.bigtable_table_data_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
                                                client.timeout_seconds)
@@ -229,7 +229,7 @@ class Table(object):
         """
         request_pb = _create_row_request(self.name, row_key=row_key,
                                          filter_=filter_)
-        client = self._cluster._client
+        client = self._instance._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
         rows_data = PartialRowsData(response_iterator)
@@ -273,7 +273,7 @@ class Table(object):
         request_pb = _create_row_request(
             self.name, start_key=start_key, end_key=end_key, filter_=filter_,
             limit=limit)
-        client = self._cluster._client
+        client = self._instance._client
         response_iterator = client._data_stub.ReadRows(request_pb,
                                                        client.timeout_seconds)
         # We expect an iterator of `data_messages_v2_pb2.ReadRowsResponse`
@@ -312,7 +312,7 @@ class Table(object):
         """
         request_pb = data_messages_v2_pb2.SampleRowKeysRequest(
             table_name=self.name)
-        client = self._cluster._client
+        client = self._instance._client
         response_iterator = client._data_stub.SampleRowKeys(
             request_pb, client.timeout_seconds)
         return response_iterator

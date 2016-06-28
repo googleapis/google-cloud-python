@@ -613,4 +613,186 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.bigtable.admin.v2B\032BigtableInstanceAdminProtoP\001'))
 _CREATEINSTANCEREQUEST_CLUSTERSENTRY.has_options = True
 _CREATEINSTANCEREQUEST_CLUSTERSENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
+import abc
+import six
+from grpc.beta import implementations as beta_implementations
+from grpc.beta import interfaces as beta_interfaces
+from grpc.framework.common import cardinality
+from grpc.framework.interfaces.face import utilities as face_utilities
+
+class BetaBigtableInstanceAdminServicer(object):
+  """<fill me in later!>"""
+  def CreateInstance(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def GetInstance(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def ListInstances(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def UpdateInstance(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def DeleteInstance(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def CreateCluster(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def GetCluster(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def ListClusters(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def UpdateCluster(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def DeleteCluster(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+
+class BetaBigtableInstanceAdminStub(object):
+  """The interface to which stubs will conform."""
+  def CreateInstance(self, request, timeout):
+    raise NotImplementedError()
+  CreateInstance.future = None
+  def GetInstance(self, request, timeout):
+    raise NotImplementedError()
+  GetInstance.future = None
+  def ListInstances(self, request, timeout):
+    raise NotImplementedError()
+  ListInstances.future = None
+  def UpdateInstance(self, request, timeout):
+    raise NotImplementedError()
+  UpdateInstance.future = None
+  def DeleteInstance(self, request, timeout):
+    raise NotImplementedError()
+  DeleteInstance.future = None
+  def CreateCluster(self, request, timeout):
+    raise NotImplementedError()
+  CreateCluster.future = None
+  def GetCluster(self, request, timeout):
+    raise NotImplementedError()
+  GetCluster.future = None
+  def ListClusters(self, request, timeout):
+    raise NotImplementedError()
+  ListClusters.future = None
+  def UpdateCluster(self, request, timeout):
+    raise NotImplementedError()
+  UpdateCluster.future = None
+  def DeleteCluster(self, request, timeout):
+    raise NotImplementedError()
+  DeleteCluster.future = None
+
+def beta_create_BigtableInstanceAdmin_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.protobuf.empty_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.protobuf.empty_pb2
+  request_deserializers = {
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.CreateClusterRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.CreateInstanceRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.DeleteClusterRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.DeleteInstanceRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.GetClusterRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.GetInstanceRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListClusters'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListClustersRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListInstances'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListInstancesRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateCluster'): google.bigtable.admin.v2.instance_pb2.Cluster.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateInstance'): google.bigtable.admin.v2.instance_pb2.Instance.FromString,
+  }
+  response_serializers = {
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateCluster'): google.longrunning.operations_pb2.Operation.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateInstance'): google.longrunning.operations_pb2.Operation.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteCluster'): google.protobuf.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteInstance'): google.protobuf.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetCluster'): google.bigtable.admin.v2.instance_pb2.Cluster.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetInstance'): google.bigtable.admin.v2.instance_pb2.Instance.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListClusters'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListClustersResponse.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListInstances'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListInstancesResponse.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateCluster'): google.longrunning.operations_pb2.Operation.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateInstance'): google.bigtable.admin.v2.instance_pb2.Instance.SerializeToString,
+  }
+  method_implementations = {
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateCluster'): face_utilities.unary_unary_inline(servicer.CreateCluster),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateInstance'): face_utilities.unary_unary_inline(servicer.CreateInstance),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteCluster'): face_utilities.unary_unary_inline(servicer.DeleteCluster),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteInstance'): face_utilities.unary_unary_inline(servicer.DeleteInstance),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetCluster'): face_utilities.unary_unary_inline(servicer.GetCluster),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetInstance'): face_utilities.unary_unary_inline(servicer.GetInstance),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListClusters'): face_utilities.unary_unary_inline(servicer.ListClusters),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListInstances'): face_utilities.unary_unary_inline(servicer.ListInstances),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateCluster'): face_utilities.unary_unary_inline(servicer.UpdateCluster),
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateInstance'): face_utilities.unary_unary_inline(servicer.UpdateInstance),
+  }
+  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+  return beta_implementations.server(method_implementations, options=server_options)
+
+def beta_create_BigtableInstanceAdmin_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.protobuf.empty_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.bigtable.admin.v2.instance_pb2
+  import google.longrunning.operations_pb2
+  import google.bigtable.admin.v2.bigtable_instance_admin_pb2
+  import google.protobuf.empty_pb2
+  request_serializers = {
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.CreateClusterRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.CreateInstanceRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.DeleteClusterRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.DeleteInstanceRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetCluster'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.GetClusterRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetInstance'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.GetInstanceRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListClusters'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListClustersRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListInstances'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListInstancesRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateCluster'): google.bigtable.admin.v2.instance_pb2.Cluster.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateInstance'): google.bigtable.admin.v2.instance_pb2.Instance.SerializeToString,
+  }
+  response_deserializers = {
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateCluster'): google.longrunning.operations_pb2.Operation.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'CreateInstance'): google.longrunning.operations_pb2.Operation.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteCluster'): google.protobuf.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'DeleteInstance'): google.protobuf.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetCluster'): google.bigtable.admin.v2.instance_pb2.Cluster.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'GetInstance'): google.bigtable.admin.v2.instance_pb2.Instance.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListClusters'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListClustersResponse.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'ListInstances'): google.bigtable.admin.v2.bigtable_instance_admin_pb2.ListInstancesResponse.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateCluster'): google.longrunning.operations_pb2.Operation.FromString,
+    ('google.bigtable.admin.v2.BigtableInstanceAdmin', 'UpdateInstance'): google.bigtable.admin.v2.instance_pb2.Instance.FromString,
+  }
+  cardinalities = {
+    'CreateCluster': cardinality.Cardinality.UNARY_UNARY,
+    'CreateInstance': cardinality.Cardinality.UNARY_UNARY,
+    'DeleteCluster': cardinality.Cardinality.UNARY_UNARY,
+    'DeleteInstance': cardinality.Cardinality.UNARY_UNARY,
+    'GetCluster': cardinality.Cardinality.UNARY_UNARY,
+    'GetInstance': cardinality.Cardinality.UNARY_UNARY,
+    'ListClusters': cardinality.Cardinality.UNARY_UNARY,
+    'ListInstances': cardinality.Cardinality.UNARY_UNARY,
+    'UpdateCluster': cardinality.Cardinality.UNARY_UNARY,
+    'UpdateInstance': cardinality.Cardinality.UNARY_UNARY,
+  }
+  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+  return beta_implementations.dynamic_stub(channel, 'google.bigtable.admin.v2.BigtableInstanceAdmin', cardinalities, options=stub_options)
 # @@protoc_insertion_point(module_scope)

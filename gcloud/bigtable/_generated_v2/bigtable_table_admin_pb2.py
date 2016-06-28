@@ -504,4 +504,126 @@ _sym_db.RegisterMessage(ModifyColumnFamiliesRequest.Modification)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('\n\034com.google.bigtable.admin.v2B\027BigtableTableAdminProtoP\001'))
+import abc
+import six
+from grpc.beta import implementations as beta_implementations
+from grpc.beta import interfaces as beta_interfaces
+from grpc.framework.common import cardinality
+from grpc.framework.interfaces.face import utilities as face_utilities
+
+class BetaBigtableTableAdminServicer(object):
+  """<fill me in later!>"""
+  def CreateTable(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def ListTables(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def GetTable(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def DeleteTable(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def ModifyColumnFamilies(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def DropRowRange(self, request, context):
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+
+class BetaBigtableTableAdminStub(object):
+  """The interface to which stubs will conform."""
+  def CreateTable(self, request, timeout):
+    raise NotImplementedError()
+  CreateTable.future = None
+  def ListTables(self, request, timeout):
+    raise NotImplementedError()
+  ListTables.future = None
+  def GetTable(self, request, timeout):
+    raise NotImplementedError()
+  GetTable.future = None
+  def DeleteTable(self, request, timeout):
+    raise NotImplementedError()
+  DeleteTable.future = None
+  def ModifyColumnFamilies(self, request, timeout):
+    raise NotImplementedError()
+  ModifyColumnFamilies.future = None
+  def DropRowRange(self, request, timeout):
+    raise NotImplementedError()
+  DropRowRange.future = None
+
+def beta_create_BigtableTableAdmin_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.protobuf.empty_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.protobuf.empty_pb2
+  request_deserializers = {
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'CreateTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.CreateTableRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DeleteTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.DeleteTableRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DropRowRange'): google.bigtable.admin.v2.bigtable_table_admin_pb2.DropRowRangeRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'GetTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.GetTableRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ListTables'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ListTablesRequest.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ModifyColumnFamilies'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ModifyColumnFamiliesRequest.FromString,
+  }
+  response_serializers = {
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'CreateTable'): google.bigtable.admin.v2.table_pb2.Table.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DeleteTable'): google.protobuf.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DropRowRange'): google.protobuf.empty_pb2.Empty.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'GetTable'): google.bigtable.admin.v2.table_pb2.Table.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ListTables'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ListTablesResponse.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ModifyColumnFamilies'): google.bigtable.admin.v2.table_pb2.Table.SerializeToString,
+  }
+  method_implementations = {
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'CreateTable'): face_utilities.unary_unary_inline(servicer.CreateTable),
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DeleteTable'): face_utilities.unary_unary_inline(servicer.DeleteTable),
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DropRowRange'): face_utilities.unary_unary_inline(servicer.DropRowRange),
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'GetTable'): face_utilities.unary_unary_inline(servicer.GetTable),
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ListTables'): face_utilities.unary_unary_inline(servicer.ListTables),
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ModifyColumnFamilies'): face_utilities.unary_unary_inline(servicer.ModifyColumnFamilies),
+  }
+  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+  return beta_implementations.server(method_implementations, options=server_options)
+
+def beta_create_BigtableTableAdmin_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.protobuf.empty_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.bigtable.admin.v2.table_pb2
+  import google.bigtable.admin.v2.bigtable_table_admin_pb2
+  import google.protobuf.empty_pb2
+  request_serializers = {
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'CreateTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.CreateTableRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DeleteTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.DeleteTableRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DropRowRange'): google.bigtable.admin.v2.bigtable_table_admin_pb2.DropRowRangeRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'GetTable'): google.bigtable.admin.v2.bigtable_table_admin_pb2.GetTableRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ListTables'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ListTablesRequest.SerializeToString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ModifyColumnFamilies'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ModifyColumnFamiliesRequest.SerializeToString,
+  }
+  response_deserializers = {
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'CreateTable'): google.bigtable.admin.v2.table_pb2.Table.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DeleteTable'): google.protobuf.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'DropRowRange'): google.protobuf.empty_pb2.Empty.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'GetTable'): google.bigtable.admin.v2.table_pb2.Table.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ListTables'): google.bigtable.admin.v2.bigtable_table_admin_pb2.ListTablesResponse.FromString,
+    ('google.bigtable.admin.v2.BigtableTableAdmin', 'ModifyColumnFamilies'): google.bigtable.admin.v2.table_pb2.Table.FromString,
+  }
+  cardinalities = {
+    'CreateTable': cardinality.Cardinality.UNARY_UNARY,
+    'DeleteTable': cardinality.Cardinality.UNARY_UNARY,
+    'DropRowRange': cardinality.Cardinality.UNARY_UNARY,
+    'GetTable': cardinality.Cardinality.UNARY_UNARY,
+    'ListTables': cardinality.Cardinality.UNARY_UNARY,
+    'ModifyColumnFamilies': cardinality.Cardinality.UNARY_UNARY,
+  }
+  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+  return beta_implementations.dynamic_stub(channel, 'google.bigtable.admin.v2.BigtableTableAdmin', cardinalities, options=stub_options)
 # @@protoc_insertion_point(module_scope)
