@@ -27,9 +27,11 @@ from gcloud.bigtable._generated_v2 import (
 from gcloud.bigtable._generated_v2 import (
     bigtable_table_admin_pb2 as table_messages_v2_pb2)
 from gcloud.bigtable.cluster import Cluster
+from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.table import Table
 
 
+_EXISTING_INSTANCE_LOCATION = 'existing instance, location in cluster'
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
                                r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 _OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/'
@@ -53,13 +55,18 @@ def _prepare_create_request(instance):
     :returns: The CreateInstance request object containing the instance info.
     """
     parent_name = ('projects/' + instance._client.project)
-    return messages_v2_pb2.CreateInstanceRequest(
+    message = messages_v2_pb2.CreateInstanceRequest(
         parent=parent_name,
         instance_id=instance.instance_id,
         instance=data_v2_pb2.Instance(
             display_name=instance.display_name,
         ),
     )
+    cluster = message.clusters[instance.instance_id]
+    cluster.name = instance.name + '/clusters/' + instance.instance_id
+    cluster.location = instance._cluster_location
+    cluster.serve_nodes = instance._cluster_serve_nodes
+    return message
 
 
 def _parse_pb_any_to_native(any_val, expected_type=None):
@@ -199,17 +206,28 @@ class Instance(object):
     :param client: The client that owns the instance. Provides
                    authorization and a project ID.
 
+    :type location: string
+    :param location: location name, in form
+                     ``projects/<project>/locations/<location>``; used to
+                     set up the instance's cluster.
+
     :type display_name: str
     :param display_name: (Optional) The display name for the instance in the
                          Cloud Console UI. (Must be between 4 and 30
                          characters.) If this value is not set in the
                          constructor, will fall back to the instance ID.
+
+    :type serve_nodes: int
+    :param serve_nodes: (Optional) The number of nodes in the instance's
+                        cluster; used to set up the instance's cluster.
     """
 
-    def __init__(self, instance_id, client,
-                 display_name=None):
+    def __init__(self, instance_id, client, location, display_name=None,
+                 serve_nodes=DEFAULT_SERVE_NODES):
         self.instance_id = instance_id
         self.display_name = display_name or instance_id
+        self._cluster_location = location
+        self._cluster_serve_nodes = serve_nodes
         self._client = client
 
     def _update_from_pb(self, instance_pb):
@@ -246,8 +264,9 @@ class Instance(object):
         if match.group('project') != client.project:
             raise ValueError('Project ID on instance does not match the '
                              'project ID on the client')
+        instance_id = match.group('instance_id')
 
-        result = cls(match.group('instance_id'), client)
+        result = cls(instance_id, client, _EXISTING_INSTANCE_LOCATION)
         result._update_from_pb(instance_pb)
         return result
 
@@ -262,6 +281,7 @@ class Instance(object):
         """
         new_client = self._client.copy()
         return self.__class__(self.instance_id, new_client,
+                              self._cluster_location,
                               display_name=self.display_name)
 
     @property

@@ -14,6 +14,7 @@
 
 import datetime
 import operator
+import os
 import time
 
 import unittest2
@@ -35,8 +36,8 @@ from gcloud.environment_vars import TESTS_PROJECT
 from system_test_utils import unique_resource_id
 
 
+LOCATION_ID = 'us-central1-c'
 INSTANCE_ID = 'gcloud' + unique_resource_id('-')
-#INSTANCE_ID = INSTANCE_ID[:30]  # Instance IDs can't exceed 30 chars.
 TABLE_ID = 'gcloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -60,6 +61,7 @@ class Config(object):
     """
     CLIENT = None
     INSTANCE = None
+    LOCATION_NAME = None
 
 
 def _operation_wait(operation, max_attempts=5):
@@ -82,12 +84,31 @@ def _operation_wait(operation, max_attempts=5):
     return True
 
 
+def _retry_backoof(meth, *args, **kw):
+    from grpc.beta.interfaces import StatusCode
+    from grpc.framework.interfaces.face.face import AbortionError
+    backoff_intervals = [1, 2, 4, 8]
+    while True:
+        try:
+            return meth(*args, **kw)
+        except AbortionError as error:
+            if error.code != StatusCode.UNAVAILABLE:
+                raise
+            if backoff_intervals:
+                time.sleep(backoff_intervals.pop(0))
+            else:
+                raise
+
+
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
+    PROJECT = os.getenv(TESTS_PROJECT)
+    Config.LOCATION_NAME = 'projects/%s/locations/%s' % (PROJECT, LOCATION_ID)
     Config.CLIENT = Client(admin=True)
-    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID)
+    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, Config.LOCATION_NAME)
     Config.CLIENT.start()
-    instances, failed_locations = Config.CLIENT.list_instances()
+    instances, failed_locations = _retry_backoof(
+        Config.CLIENT.list_instances)
 
     if len(failed_locations) != 0:
         raise ValueError('List instances failed in module set up.')
@@ -121,13 +142,13 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
         for instance in instances:
             instance_existence = (instance in EXISTING_INSTANCES or
-                                 instance == Config.INSTANCE)
+                                  instance == Config.INSTANCE)
             self.assertTrue(instance_existence)
 
     def test_reload(self):
         # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        instance = Config.CLIENT.instance(INSTANCE_ID)
+        instance = Config.CLIENT.instance(INSTANCE_ID, Config.LOCATION_NAME)
         # Make sure metadata unset before reloading.
         instance.display_name = None
 
@@ -135,9 +156,9 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
     def test_create_instance(self):
-        instance_id = 'new' + unique_resource_id('-')
-        #instance_id = instance_id[:30]  # Instance IDs can't exceed 30 chars.
-        instance = Config.CLIENT.instance(instance_id)
+        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        instance = Config.CLIENT.instance(
+            ALT_INSTANCE_ID, Config.LOCATION_NAME)
         operation = instance.create()
         # Make sure this instance gets deleted after the test case.
         self.instances_to_delete.append(instance)
@@ -146,31 +167,33 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         self.assertTrue(_operation_wait(operation))
 
         # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(instance_id)
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID,
+                                              Config.LOCATION_NAME)
         instance_alt.reload()
 
         self.assertEqual(instance, instance_alt)
         self.assertEqual(instance.display_name, instance_alt.display_name)
 
     def test_update(self):
-        curr_display_name = Config.INSTANCE.display_name
-        Config.INSTANCE.display_name = 'Foo Bar Baz'
+        CURR_DISPLAY_NAME = Config.INSTANCE.display_name
+        NEW_DISPLAY_NAME = 'Foo Bar Baz'
+        Config.INSTANCE.display_name = NEW_DISPLAY_NAME
         operation = Config.INSTANCE.update()
 
         # We want to make sure the operation completes.
         self.assertTrue(_operation_wait(operation))
 
         # Create a new instance instance and make sure it is the same.
-        instance_alt = Config.CLIENT.instance(INSTANCE_ID)
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID,
+                                              Config.LOCATION_NAME)
         self.assertNotEqual(instance_alt.display_name,
                             Config.INSTANCE.display_name)
         instance_alt.reload()
-        self.assertEqual(instance_alt.display_name,
-                         Config.INSTANCE.display_name)
+        self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
 
         # Make sure to put the instance back the way it was for the
         # other test cases.
-        Config.INSTANCE.display_name = curr_display_name
+        Config.INSTANCE.display_name = CURR_DISPLAY_NAME
         operation = Config.INSTANCE.update()
 
         # We want to make sure the operation completes.
