@@ -23,14 +23,15 @@ from gcloud._helpers import _pb_timestamp_to_datetime
 from gcloud.bigtable._generated_v2 import (
     instance_pb2 as data_v2_pb2)
 from gcloud.bigtable._generated_v2 import (
-    bigtable_instance_admin_pb2 as messages_v1_pb2)
+    bigtable_instance_admin_pb2 as messages_v2_pb2)
 from gcloud.bigtable._generated_v2 import (
-    bigtable_table_admin_pb2 as table_messages_v1_pb2)
+    bigtable_table_admin_pb2 as table_messages_v2_pb2)
+from gcloud.bigtable.cluster import Cluster
 from gcloud.bigtable.table import Table
 
 
 _INSTANCE_NAME_RE = re.compile(r'^projects/(?P<project>[^/]+)/'
-                              r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
+                               r'instances/(?P<instance_id>[a-z][-a-z0-9]*)$')
 _OPERATION_NAME_RE = re.compile(r'^operations/projects/([^/]+)/'
                                 r'instances/([a-z][-a-z0-9]*)/operations/'
                                 r'(?P<operation_id>\d+)$')
@@ -38,7 +39,7 @@ _TYPE_URL_BASE = 'type.googleapis.com/google.bigtable.'
 _ADMIN_TYPE_URL_BASE = _TYPE_URL_BASE + 'admin.v2.'
 _INSTANCE_CREATE_METADATA = _ADMIN_TYPE_URL_BASE + 'CreateInstanceMetadata'
 _TYPE_URL_MAP = {
-    _INSTANCE_CREATE_METADATA: messages_v1_pb2.CreateInstanceMetadata,
+    _INSTANCE_CREATE_METADATA: messages_v2_pb2.CreateInstanceMetadata,
 }
 
 
@@ -48,11 +49,11 @@ def _prepare_create_request(instance):
     :type instance: :class:`Instance`
     :param instance: The instance to be created.
 
-    :rtype: :class:`.messages_v1_pb2.CreateInstanceRequest`
+    :rtype: :class:`.messages_v2_pb2.CreateInstanceRequest`
     :returns: The CreateInstance request object containing the instance info.
     """
     parent_name = ('projects/' + instance._client.project)
-    return messages_v1_pb2.CreateInstanceRequest(
+    return messages_v2_pb2.CreateInstanceRequest(
         name=parent_name,
         instance_id=instance.instance_id,
         instance=data_v2_pb2.Instance(
@@ -211,17 +212,6 @@ class Instance(object):
         self.display_name = display_name or instance_id
         self._client = client
 
-    def table(self, table_id):
-        """Factory to create a table associated with this instance.
-
-        :type table_id: str
-        :param table_id: The ID of the table.
-
-        :rtype: :class:`Table <gcloud.bigtable.table.Table>`
-        :returns: The table owned by this instance.
-        """
-        return Table(table_id, self)
-
     def _update_from_pb(self, instance_pb):
         """Refresh self from the server-provided protobuf.
 
@@ -289,7 +279,7 @@ class Instance(object):
         :rtype: str
         :returns: The instance name.
         """
-        return (self._client.project_name + '/instances/' + self.instance_id)
+        return self._client.project_name + '/instances/' + self.instance_id
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -308,7 +298,7 @@ class Instance(object):
 
     def reload(self):
         """Reload the metadata for this instance."""
-        request_pb = messages_v1_pb2.GetInstanceRequest(name=self.name)
+        request_pb = messages_v2_pb2.GetInstanceRequest(name=self.name)
         # We expect `data_v2_pb2.Instance`.
         instance_pb = self._client._instance_stub.GetInstance(
             request_pb, self._client.timeout_seconds)
@@ -370,12 +360,14 @@ class Instance(object):
     def delete(self):
         """Delete this instance.
 
-        Marks a instance and all of its tables for permanent deletion in 7 days.
+        Marks a instance and all of its tables for permanent deletion
+        in 7 days.
 
         Immediately upon completion of the request:
 
         * Billing will cease for all of the instance's reserved resources.
-        * The instance's ``delete_time`` field will be set 7 days in the future.
+        * The instance's ``delete_time`` field will be set 7 days in
+          the future.
 
         Soon afterward:
 
@@ -392,10 +384,55 @@ class Instance(object):
           irrevocably disappear from the API, and their data will be
           permanently deleted.
         """
-        request_pb = messages_v1_pb2.DeleteInstanceRequest(name=self.name)
+        request_pb = messages_v2_pb2.DeleteInstanceRequest(name=self.name)
         # We expect a `google.protobuf.empty_pb2.Empty`
         self._client._instance_stub.DeleteInstance(
             request_pb, self._client.timeout_seconds)
+
+    def cluster(self, cluster_id, serve_nodes=3):
+        """Factory to create a cluster associated with this client.
+
+        :type cluster_id: str
+        :param cluster_id: The ID of the cluster.
+
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the cluster.
+                            Defaults to 3.
+
+        :rtype: :class:`.Cluster`
+        :returns: The cluster owned by this client.
+        """
+        return Cluster(cluster_id, self, serve_nodes=serve_nodes)
+
+    def list_clusters(self):
+        """Lists clusters in this instance.
+
+        :rtype: tuple
+        :returns: A pair of results, the first is a list of :class:`.Cluster` s
+                  returned and the second is a list of strings (the failed
+                  locations in the request).
+        """
+        request_pb = messages_v2_pb2.ListClustersRequest(name=self.name)
+        # We expect a `.cluster_messages_v1_pb2.ListClustersResponse`
+        list_clusters_response = self._client._instance_stub.ListClusters(
+            request_pb, self._client.timeout_seconds)
+
+        failed_locations = [
+            location for location in list_clusters_response.failed_locations]
+        clusters = [Cluster.from_pb(cluster_pb, self)
+                    for cluster_pb in list_clusters_response.clusters]
+        return clusters, failed_locations
+
+    def table(self, table_id):
+        """Factory to create a table associated with this instance.
+
+        :type table_id: str
+        :param table_id: The ID of the table.
+
+        :rtype: :class:`Table <gcloud.bigtable.table.Table>`
+        :returns: The table owned by this instance.
+        """
+        return Table(table_id, self)
 
     def list_tables(self):
         """List the tables in this instance.
@@ -405,8 +442,8 @@ class Instance(object):
         :raises: :class:`ValueError <exceptions.ValueError>` if one of the
                  returned tables has a name that is not of the expected format.
         """
-        request_pb = table_messages_v1_pb2.ListTablesRequest(name=self.name)
-        # We expect a `table_messages_v1_pb2.ListTablesResponse`
+        request_pb = table_messages_v2_pb2.ListTablesRequest(name=self.name)
+        # We expect a `table_messages_v2_pb2.ListTablesResponse`
         table_list_pb = self._client._table_stub.ListTables(
             request_pb, self._client.timeout_seconds)
 

@@ -139,8 +139,9 @@ class TestInstance(unittest2.TestCase):
     DISPLAY_NAME = 'display_name'
     OP_ID = 8915
     OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
-        (PROJECT, INSTANCE_ID, OP_ID))
+               (PROJECT, INSTANCE_ID, OP_ID))
     TABLE_ID = 'table_id'
+    TABLE_NAME = INSTANCE_NAME + '/tables/' + TABLE_ID
     TIMEOUT_SECONDS = 1
 
     def _getTargetClass(self):
@@ -163,7 +164,7 @@ class TestInstance(unittest2.TestCase):
         client = object()
 
         instance = self._makeOne(self.INSTANCE_ID, client,
-                                display_name=display_name)
+                                 display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
         self.assertTrue(instance._client is client)
@@ -173,7 +174,7 @@ class TestInstance(unittest2.TestCase):
 
         client = _Client(self.PROJECT)
         instance = self._makeOne(self.INSTANCE_ID, client,
-                                display_name=display_name)
+                                 display_name=display_name)
         new_instance = instance.copy()
 
         # Make sure the client copy succeeded.
@@ -335,8 +336,6 @@ class TestInstance(unittest2.TestCase):
     def test_create(self):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated_v2 import (
-            instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import instance as MUT
 
@@ -452,7 +451,64 @@ class TestInstance(unittest2.TestCase):
             {},
         )])
 
-    def _list_tables_helper(self, table_id, table_name=None):
+    def test_list_clusters(self):
+        from gcloud.bigtable._generated_v2 import (
+            instance_pb2 as instance_v2_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_instance_admin_pb2 as messages_v2_pb2)
+        from gcloud.bigtable._testing import _FakeStub
+
+        FAILED_LOCATION = 'FAILED'
+        FAILED_LOCATIONS = [FAILED_LOCATION]
+        CLUSTER_ID1 = 'cluster-id1'
+        CLUSTER_ID2 = 'cluster-id2'
+        SERVE_NODES = 4
+
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = self._makeOne(self.INSTANCE_ID, client)
+
+        CLUSTER_NAME1 = (instance.name + '/clusters/' + CLUSTER_ID1)
+        CLUSTER_NAME2 = (instance.name + '/clusters/' + CLUSTER_ID2)
+        # Create request_pb
+        request_pb = messages_v2_pb2.ListClustersRequest(
+            name=instance.name,
+        )
+
+        # Create response_pb
+        response_pb = messages_v2_pb2.ListClustersResponse(
+            failed_locations=[FAILED_LOCATION],
+            clusters=[
+                instance_v2_pb2.Cluster(
+                    name=CLUSTER_NAME1,
+                    serve_nodes=SERVE_NODES,
+                ),
+                instance_v2_pb2.Cluster(
+                    name=CLUSTER_NAME2,
+                    serve_nodes=SERVE_NODES,
+                ),
+            ],
+        )
+
+        # Patch the stub used by the API method.
+        client._instance_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        clusters = [
+            instance.cluster(CLUSTER_ID1),
+            instance.cluster(CLUSTER_ID2),
+        ]
+        expected_result = (clusters, FAILED_LOCATIONS)
+
+        # Perform the method and check the result.
+        result = instance.list_clusters()
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'ListClusters',
+            (request_pb, self.TIMEOUT_SECONDS),
+            {},
+        )])
+
+    def _list_tables_helper(self, table_name=None):
         from gcloud.bigtable._generated_v2 import (
             table_pb2 as table_data_v2_pb2)
         from gcloud.bigtable._generated_v2 import (
@@ -468,7 +524,7 @@ class TestInstance(unittest2.TestCase):
 
         # Create response_pb
         if table_name is None:
-            table_name = self.INSTANCE_NAME + '/tables/' + self.TABLE_ID
+            table_name = self.TABLE_NAME
 
         response_pb = table_messages_v1_pb2.ListTablesResponse(
             tables=[
@@ -494,11 +550,11 @@ class TestInstance(unittest2.TestCase):
         )])
 
     def test_list_tables(self):
-        self._list_tables_helper(self.TABLE_ID)
+        self._list_tables_helper()
 
     def test_list_tables_failure_bad_split(self):
         with self.assertRaises(ValueError):
-            self._list_tables_helper(None, table_name='wrong-format')
+            self._list_tables_helper(table_name='wrong-format')
 
     def test_list_tables_failure_name_bad_before(self):
         BAD_TABLE_NAME = ('nonempty-section-before' +
@@ -506,7 +562,7 @@ class TestInstance(unittest2.TestCase):
                           '/instances/' + self.INSTANCE_ID +
                           '/tables/' + self.TABLE_ID)
         with self.assertRaises(ValueError):
-            self._list_tables_helper(self.TABLE_ID, table_name=BAD_TABLE_NAME)
+            self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
 
 class Test__prepare_create_request(unittest2.TestCase):
@@ -525,7 +581,6 @@ class Test__prepare_create_request(unittest2.TestCase):
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = u'DISPLAY_NAME'
-        SERVE_NODES = 8
         client = _Client(PROJECT)
 
         instance = Instance(INSTANCE_ID, client, display_name=DISPLAY_NAME)
@@ -640,7 +695,7 @@ class Test__process_operation(unittest2.TestCase):
         EXPECTED_OPERATION_ID = 234
         OPERATION_NAME = (
             'operations/projects/%s/instances/%s/operations/%d' %
-                (PROJECT, INSTANCE_ID, EXPECTED_OPERATION_ID))
+            (PROJECT, INSTANCE_ID, EXPECTED_OPERATION_ID))
 
         current_op = operations_pb2.Operation(name=OPERATION_NAME)
 

@@ -248,15 +248,9 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import table as MUT
 
-        project_id = 'project-id'
-        instance_id = 'instance-id'
-        table_id = 'table-id'
-        timeout_seconds = 596
-        client = _Client(timeout_seconds=timeout_seconds)
-        instance_name = ('projects/' + project_id +
-                        '/instances/' + instance_id)
-        instance = _Instance(instance_name, client=client)
-        table = self._makeOne(table_id, instance)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -281,7 +275,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
         self.assertEqual(mock_created,
@@ -329,15 +323,9 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable.row_data import PartialRowsData
         from gcloud.bigtable import table as MUT
 
-        project_id = 'project-id'
-        instance_id = 'instance-id'
-        table_id = 'table-id'
-        timeout_seconds = 1111
-        client = _Client(timeout_seconds=timeout_seconds)
-        instance_name = ('projects/' + project_id +
-                        '/instances/' + instance_id)
-        instance = _Instance(instance_name, client=client)
-        table = self._makeOne(table_id, instance)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
         request_pb = object()  # Returned by our mock.
@@ -369,7 +357,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'ReadRows',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
         created_kwargs = {
@@ -383,21 +371,12 @@ class TestTable(unittest2.TestCase):
     def test_sample_row_keys(self):
         from gcloud.bigtable._testing import _FakeStub
 
-        project_id = 'project-id'
-        instance_id = 'instance-id'
-        table_id = 'table-id'
-        timeout_seconds = 1333
-
-        client = _Client(timeout_seconds=timeout_seconds)
-        instance_name = ('projects/' + project_id +
-                        '/instances/' + instance_id)
-        instance = _Instance(instance_name, client=client)
-        table = self._makeOne(table_id, instance)
+        client = _Client(timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_NAME, client=client)
+        table = self._makeOne(self.TABLE_ID, instance)
 
         # Create request_pb
-        table_name = instance_name + '/tables/' + table_id
-        request_pb = _SampleRowKeysRequestPB(
-            table_name=table_name)
+        request_pb = _SampleRowKeysRequestPB(table_name=self.TABLE_NAME)
 
         # Create response_iterator
         response_iterator = object()  # Just passed to a mock.
@@ -413,7 +392,7 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'SampleRowKeys',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
 
