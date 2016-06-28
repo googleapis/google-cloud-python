@@ -63,10 +63,11 @@
   bigtable-usage
   HappyBase <happybase-package>
   bigtable-client-intro
-  bigtable-cluster-api
+  bigtable-instance-api
   bigtable-table-api
   bigtable-data-api
   Client <bigtable-client>
+  bigtable-instance
   bigtable-cluster
   bigtable-table
   bigtable-column-family
