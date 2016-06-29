@@ -262,7 +262,7 @@ class TestTable(unittest2.TestCase):
 
         # Create response_iterator
         if chunks is None:
-            response_iterator = iter(()) # no responses at all
+            response_iterator = iter(())  # no responses at all
         else:
             response_pb = _ReadRowsResponsePB(chunks=chunks)
             response_iterator = iter([response_pb])

@@ -33,7 +33,7 @@ class TestConnectionPool(unittest2.TestCase):
         size = 11
         instance_copy = _Instance()
         all_copies = [instance_copy] * size
-        instance = _Instance(copies=all_copies)  # Avoid implicit environ check.
+        instance = _Instance(all_copies)  # Avoid implicit environ check.
         pool = self._makeOne(size, instance=instance)
 
         self.assertTrue(isinstance(pool._lock, type(threading.Lock())))
@@ -79,8 +79,7 @@ class TestConnectionPool(unittest2.TestCase):
         instance_copy1 = _Instance()
         instance_copy2 = _Instance()
         instance_copy3 = _Instance()
-        instance = _Instance(
-            copies=[instance_copy1, instance_copy2, instance_copy3])
+        instance = _Instance([instance_copy1, instance_copy2, instance_copy3])
         connection = ConnectionWithOpen(autoconnect=False, instance=instance)
         self.assertFalse(connection._open_called)
         self.assertTrue(connection._instance is instance_copy1)
@@ -106,7 +105,7 @@ class TestConnectionPool(unittest2.TestCase):
         size = 1
         instance_copy = _Instance()
         all_copies = [instance_copy] * size
-        instance = _Instance(copies=all_copies)
+        instance = _Instance(all_copies)
         get_instance_calls = []
 
         def mock_get_instance(timeout=None):

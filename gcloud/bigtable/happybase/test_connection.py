@@ -29,8 +29,8 @@ class Test__get_instance(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        client_with_instances = partial(_Client, instances=instances,
-                                       failed_locations=failed_locations)
+        client_with_instances = partial(
+            _Client, instances=instances, failed_locations=failed_locations)
         with _Monkey(MUT, Client=client_with_instances):
             result = self._callFUT(timeout=timeout)
 
