@@ -1,4 +1,12 @@
-
+from google.longrunning.operations_pb2 import (
+    CancelOperationRequest,
+    DeleteOperationRequest,
+    GetOperationRequest,
+    ListOperationsRequest,
+    ListOperationsResponse,
+    Operation,
+    google_dot_protobuf_dot_empty__pb2,
+)
 from grpc.beta import implementations as beta_implementations
 from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality

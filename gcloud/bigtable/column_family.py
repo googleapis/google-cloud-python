@@ -261,7 +261,7 @@ class ColumnFamily(object):
             id=self.column_family_id,
             create=column_family,
         )
-        client = self._table._cluster._client
+        client = self._table._instance._client
         # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
@@ -286,7 +286,7 @@ class ColumnFamily(object):
         request_pb.modifications.add(
             id=self.column_family_id,
             update=column_family)
-        client = self._table._cluster._client
+        client = self._table._instance._client
         # We expect a `.table_v2_pb2.ColumnFamily`. We ignore it since the only
         # data it contains are the GC rule and the column family ID already
         # stored on this instance.
@@ -300,7 +300,7 @@ class ColumnFamily(object):
         request_pb.modifications.add(
             id=self.column_family_id,
             drop=True)
-        client = self._table._cluster._client
+        client = self._table._instance._client
         # We expect a `google.protobuf.empty_pb2.Empty`
         client._table_stub.ModifyColumnFamilies(request_pb,
                                                 client.timeout_seconds)

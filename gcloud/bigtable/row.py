@@ -395,7 +395,7 @@ class DirectRow(_SetDeleteRow):
             mutations=mutations_list,
         )
         # We expect a `google.protobuf.empty_pb2.Empty`
-        client = self._table._cluster._client
+        client = self._table._instance._client
         client._data_stub.MutateRow(request_pb, client.timeout_seconds)
         self.clear()
 
@@ -512,7 +512,7 @@ class ConditionalRow(_SetDeleteRow):
             false_mutations=false_mutations,
         )
         # We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`
-        client = self._table._cluster._client
+        client = self._table._instance._client
         resp = client._data_stub.CheckAndMutateRow(
             request_pb, client.timeout_seconds)
         self.clear()
@@ -800,7 +800,7 @@ class AppendRow(Row):
             rules=self._rule_pb_list,
         )
         # We expect a `.data_v2_pb2.Row`
-        client = self._table._cluster._client
+        client = self._table._instance._client
         row_response = client._data_stub.ReadModifyWriteRow(
             request_pb, client.timeout_seconds)
 

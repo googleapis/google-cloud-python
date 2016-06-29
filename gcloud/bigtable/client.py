@@ -43,7 +43,9 @@ from gcloud.bigtable._generated_v2 import (
 from gcloud.bigtable._generated_v2 import (
     operations_grpc_pb2 as operations_grpc_v2_pb2)
 
+from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 from gcloud.bigtable.instance import Instance
+from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
 from gcloud.client import _ClientFactoryMixin
 from gcloud.client import _ClientProjectMixin
 from gcloud.credentials import get_credentials
@@ -375,11 +377,17 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         """Stops the client as a context manager."""
         self.stop()
 
-    def instance(self, instance_id, display_name=None):
+    def instance(self, instance_id, location=_EXISTING_INSTANCE_LOCATION_ID,
+                 display_name=None, serve_nodes=DEFAULT_SERVE_NODES):
         """Factory to create a instance associated with this client.
 
         :type instance_id: str
         :param instance_id: The ID of the instance.
+
+        :type location: string
+        :param location: location name, in form
+                         ``projects/<project>/locations/<location>``; used to
+                         set up the instance's cluster.
 
         :type display_name: str
         :param display_name: (Optional) The display name for the instance in
@@ -387,10 +395,15 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
                              characters.) If this value is not set in the
                              constructor, will fall back to the instance ID.
 
+        :type serve_nodes: int
+        :param serve_nodes: (Optional) The number of nodes in the instance's
+                            cluster; used to set up the instance's cluster.
+
         :rtype: :class:`.Instance`
         :returns: an instance owned by this client.
         """
-        return Instance(instance_id, self, display_name=display_name)
+        return Instance(instance_id, self, location,
+                        display_name=display_name, serve_nodes=serve_nodes)
 
     def list_instances(self):
         """List instances owned by the project.

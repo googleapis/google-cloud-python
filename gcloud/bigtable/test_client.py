@@ -526,20 +526,47 @@ class TestClient(unittest2.TestCase):
         # Make sure the cluster stub did not change.
         self.assertEqual(client._instance_stub_internal, instance_stub)
 
-    def test_instance_factory(self):
+    def test_instance_factory_defaults(self):
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        from gcloud.bigtable.instance import Instance
+        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
+
+        PROJECT = 'PROJECT'
+        INSTANCE_ID = 'instance-id'
+        DISPLAY_NAME = 'display-name'
+        credentials = _Credentials()
+        client = self._makeOne(project=PROJECT, credentials=credentials)
+
+        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
+
+        self.assertTrue(isinstance(instance, Instance))
+        self.assertEqual(instance.instance_id, INSTANCE_ID)
+        self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance._cluster_location_id,
+                         _EXISTING_INSTANCE_LOCATION_ID)
+        self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
+        self.assertTrue(instance._client is client)
+
+    def test_instance_factory_w_explicit_serve_nodes(self):
         from gcloud.bigtable.instance import Instance
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
         DISPLAY_NAME = 'display-name'
-
+        LOCATION_ID = 'locname'
+        SERVE_NODES = 5
         credentials = _Credentials()
         client = self._makeOne(project=PROJECT, credentials=credentials)
 
-        instance = client.instance(INSTANCE_ID, display_name=DISPLAY_NAME)
+        instance = client.instance(
+            INSTANCE_ID, display_name=DISPLAY_NAME,
+            location=LOCATION_ID, serve_nodes=SERVE_NODES)
+
         self.assertTrue(isinstance(instance, Instance))
         self.assertEqual(instance.instance_id, INSTANCE_ID)
         self.assertEqual(instance.display_name, DISPLAY_NAME)
+        self.assertEqual(instance._cluster_location_id, LOCATION_ID)
+        self.assertEqual(instance._cluster_serve_nodes, SERVE_NODES)
         self.assertTrue(instance._client is client)
 
     def test_list_instances(self):
@@ -549,6 +576,7 @@ class TestClient(unittest2.TestCase):
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
+        LOCATION = 'projects/' + self.PROJECT + '/locations/locname'
         FAILED_LOCATION = 'FAILED'
         INSTANCE_ID1 = 'instance-id1'
         INSTANCE_ID2 = 'instance-id2'
@@ -593,8 +621,8 @@ class TestClient(unittest2.TestCase):
         # Create expected_result.
         failed_locations = [FAILED_LOCATION]
         instances = [
-            client.instance(INSTANCE_ID1),
-            client.instance(INSTANCE_ID2),
+            client.instance(INSTANCE_ID1, LOCATION),
+            client.instance(INSTANCE_ID2, LOCATION),
         ]
         expected_result = (instances, failed_locations)
 

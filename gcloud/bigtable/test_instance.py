@@ -22,6 +22,7 @@ class TestOperation(unittest2.TestCase):
     OP_TYPE = 'fake-op'
     OP_ID = 8915
     BEGIN = datetime.datetime(2015, 10, 22, 1, 1)
+    LOCATION_ID = 'loc-id'
 
     def _getTargetClass(self):
         from gcloud.bigtable.instance import Operation
@@ -32,11 +33,13 @@ class TestOperation(unittest2.TestCase):
 
     def _constructor_test_helper(self, instance=None):
         operation = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
 
         self.assertEqual(operation.op_type, self.OP_TYPE)
         self.assertEqual(operation.op_id, self.OP_ID)
         self.assertEqual(operation.begin, self.BEGIN)
+        self.assertEqual(operation.location_id, self.LOCATION_ID)
         self.assertEqual(operation._instance, instance)
         self.assertFalse(operation._complete)
 
@@ -50,32 +53,36 @@ class TestOperation(unittest2.TestCase):
     def test___eq__(self):
         instance = object()
         operation1 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         operation2 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         self.assertEqual(operation1, operation2)
 
     def test___eq__type_differ(self):
-        operation1 = self._makeOne('foo', 123, None)
+        operation1 = self._makeOne('foo', 123, None, self.LOCATION_ID)
         operation2 = object()
         self.assertNotEqual(operation1, operation2)
 
     def test___ne__same_value(self):
         instance = object()
         operation1 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         operation2 = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
         comparison_val = (operation1 != operation2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        operation1 = self._makeOne('foo', 123, None)
-        operation2 = self._makeOne('bar', 456, None)
+        operation1 = self._makeOne('foo', 123, None, self.LOCATION_ID)
+        operation2 = self._makeOne('bar', 456, None, self.LOCATION_ID)
         self.assertNotEqual(operation1, operation2)
 
     def test_finished_without_operation(self):
-        operation = self._makeOne(None, None, None)
+        operation = self._makeOne(None, None, None, None)
         operation._complete = True
         with self.assertRaises(ValueError):
             operation.finished()
@@ -90,13 +97,15 @@ class TestOperation(unittest2.TestCase):
         TIMEOUT_SECONDS = 1
 
         client = _Client(PROJECT, timeout_seconds=TIMEOUT_SECONDS)
-        instance = Instance(INSTANCE_ID, client)
+        instance = Instance(INSTANCE_ID, client, self.LOCATION_ID)
         operation = self._makeOne(
-            self.OP_TYPE, self.OP_ID, self.BEGIN, instance=instance)
+            self.OP_TYPE, self.OP_ID, self.BEGIN, self.LOCATION_ID,
+            instance=instance)
 
         # Create request_pb
         op_name = ('operations/projects/' + PROJECT +
                    '/instances/' + INSTANCE_ID +
+                   '/locations/' + self.LOCATION_ID +
                    '/operations/%d' % (self.OP_ID,))
         request_pb = operations_pb2.GetOperationRequest(name=op_name)
 
@@ -135,7 +144,9 @@ class TestInstance(unittest2.TestCase):
 
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
-    INSTANCE_NAME = ('projects/' + PROJECT + '/instances/' + INSTANCE_ID)
+    INSTANCE_NAME = 'projects/' + PROJECT + '/instances/' + INSTANCE_ID
+    LOCATION_ID = 'locname'
+    LOCATION = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
     DISPLAY_NAME = 'display_name'
     OP_ID = 8915
     OP_NAME = ('operations/projects/%s/instances/%soperations/%d' %
@@ -152,18 +163,21 @@ class TestInstance(unittest2.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        client = object()
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        client = object()
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
         self.assertTrue(instance._client is client)
+        self.assertEqual(instance._cluster_location_id, self.LOCATION_ID)
+        self.assertEqual(instance._cluster_serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_constructor_non_default(self):
         display_name = 'display_name'
         client = object()
 
-        instance = self._makeOne(self.INSTANCE_ID, client,
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=display_name)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
         self.assertEqual(instance.display_name, display_name)
@@ -173,7 +187,7 @@ class TestInstance(unittest2.TestCase):
         display_name = 'display_name'
 
         client = _Client(self.PROJECT)
-        instance = self._makeOne(self.INSTANCE_ID, client,
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=display_name)
         new_instance = instance.copy()
 
@@ -187,7 +201,7 @@ class TestInstance(unittest2.TestCase):
     def test_table_factory(self):
         from gcloud.bigtable.table import Table
 
-        instance = self._makeOne(self.INSTANCE_ID, None)
+        instance = self._makeOne(self.INSTANCE_ID, None, self.LOCATION_ID)
 
         table = instance.table(self.TABLE_ID)
         self.assertTrue(isinstance(table, Table))
@@ -203,7 +217,7 @@ class TestInstance(unittest2.TestCase):
             display_name=display_name,
         )
 
-        instance = self._makeOne(None, None, None)
+        instance = self._makeOne(None, None, None, None)
         self.assertEqual(instance.display_name, None)
         instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, display_name)
@@ -213,13 +227,14 @@ class TestInstance(unittest2.TestCase):
             instance_pb2 as data_v2_pb2)
 
         instance_pb = data_v2_pb2.Instance()
-        instance = self._makeOne(None, None, None)
+        instance = self._makeOne(None, None, None, None)
         self.assertEqual(instance.display_name, None)
         with self.assertRaises(ValueError):
             instance._update_from_pb(instance_pb)
         self.assertEqual(instance.display_name, None)
 
     def test_from_pb_success(self):
+        from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
         from gcloud.bigtable._generated_v2 import (
             instance_pb2 as data_v2_pb2)
 
@@ -235,6 +250,8 @@ class TestInstance(unittest2.TestCase):
         self.assertTrue(isinstance(instance, klass))
         self.assertEqual(instance._client, client)
         self.assertEqual(instance.instance_id, self.INSTANCE_ID)
+        self.assertEqual(instance._cluster_location_id,
+                         _EXISTING_INSTANCE_LOCATION_ID)
 
     def test_from_pb_bad_instance_name(self):
         from gcloud.bigtable._generated_v2 import (
@@ -265,31 +282,31 @@ class TestInstance(unittest2.TestCase):
     def test_name_property(self):
         client = _Client(project=self.PROJECT)
 
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
 
     def test___eq__(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client)
-        instance2 = self._makeOne(self.INSTANCE_ID, client)
+        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance2 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         self.assertEqual(instance1, instance2)
 
     def test___eq__type_differ(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client)
+        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         instance2 = object()
         self.assertNotEqual(instance1, instance2)
 
     def test___ne__same_value(self):
         client = object()
-        instance1 = self._makeOne(self.INSTANCE_ID, client)
-        instance2 = self._makeOne(self.INSTANCE_ID, client)
+        instance1 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
+        instance2 = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
         comparison_val = (instance1 != instance2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        instance1 = self._makeOne('instance_id1', 'client1')
-        instance2 = self._makeOne('instance_id2', 'client2')
+        instance1 = self._makeOne('instance_id1', 'client1', self.LOCATION_ID)
+        instance2 = self._makeOne('instance_id2', 'client2', self.LOCATION_ID)
         self.assertNotEqual(instance1, instance2)
 
     def test_reload(self):
@@ -300,7 +317,7 @@ class TestInstance(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
         request_pb = messages_v2_pb.GetInstanceRequest(
@@ -340,22 +357,22 @@ class TestInstance(unittest2.TestCase):
         from gcloud.bigtable import instance as MUT
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb. Just a mock since we monkey patch
         # _prepare_create_request
         request_pb = object()
 
         # Create response_pb
-        op_begin = object()
+        OP_BEGIN = object()
         response_pb = operations_pb2.Operation(name=self.OP_NAME)
 
         # Patch the stub used by the API method.
         client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_result = MUT.Operation('create', self.OP_ID, op_begin,
-                                        instance=instance)
+        expected_result = MUT.Operation('create', self.OP_ID, OP_BEGIN,
+                                        self.LOCATION_ID, instance=instance)
 
         # Create the mocks.
         prep_create_called = []
@@ -368,7 +385,62 @@ class TestInstance(unittest2.TestCase):
 
         def mock_process_operation(operation_pb):
             process_operation_called.append(operation_pb)
-            return self.OP_ID, op_begin
+            return self.OP_ID, self.LOCATION_ID, OP_BEGIN
+
+        # Perform the method and check the result.
+        with _Monkey(MUT,
+                     _prepare_create_request=mock_prep_create_req,
+                     _process_operation=mock_process_operation):
+            result = instance.create()
+
+        self.assertEqual(result, expected_result)
+        self.assertEqual(stub.method_calls, [(
+            'CreateInstance',
+            (request_pb, self.TIMEOUT_SECONDS),
+            {},
+        )])
+        self.assertEqual(prep_create_called, [instance])
+        self.assertEqual(process_operation_called, [response_pb])
+
+    def test_create_w_explicit_serve_nodes(self):
+        from google.longrunning import operations_pb2
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable import instance as MUT
+
+        SERVE_NODES = 5
+
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
+                                 serve_nodes=SERVE_NODES)
+
+        # Create request_pb. Just a mock since we monkey patch
+        # _prepare_create_request
+        request_pb = object()
+
+        # Create response_pb
+        OP_BEGIN = object()
+        response_pb = operations_pb2.Operation(name=self.OP_NAME)
+
+        # Patch the stub used by the API method.
+        client._instance_stub = stub = _FakeStub(response_pb)
+
+        # Create expected_result.
+        expected_result = MUT.Operation('create', self.OP_ID, OP_BEGIN,
+                                        self.LOCATION_ID, instance=instance)
+
+        # Create the mocks.
+        prep_create_called = []
+
+        def mock_prep_create_req(instance):
+            prep_create_called.append(instance)
+            return request_pb
+
+        process_operation_called = []
+
+        def mock_process_operation(operation_pb):
+            process_operation_called.append(operation_pb)
+            return self.OP_ID, self.LOCATION_ID, OP_BEGIN
 
         # Perform the method and check the result.
         with _Monkey(MUT,
@@ -391,7 +463,7 @@ class TestInstance(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client,
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID,
                                  display_name=self.DISPLAY_NAME)
 
         # Create request_pb
@@ -426,7 +498,7 @@ class TestInstance(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_pb
         request_pb = messages_v2_pb.DeleteInstanceRequest(
@@ -465,7 +537,7 @@ class TestInstance(unittest2.TestCase):
         SERVE_NODES = 4
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         CLUSTER_NAME1 = (instance.name + '/clusters/' + CLUSTER_ID1)
         CLUSTER_NAME2 = (instance.name + '/clusters/' + CLUSTER_ID2)
@@ -516,7 +588,7 @@ class TestInstance(unittest2.TestCase):
         from gcloud.bigtable._testing import _FakeStub
 
         client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
-        instance = self._makeOne(self.INSTANCE_ID, client)
+        instance = self._makeOne(self.INSTANCE_ID, client, self.LOCATION_ID)
 
         # Create request_
         request_pb = table_messages_v1_pb2.ListTablesRequest(
@@ -566,32 +638,72 @@ class TestInstance(unittest2.TestCase):
 
 
 class Test__prepare_create_request(unittest2.TestCase):
+    PROJECT = 'PROJECT'
+    PARENT = 'projects/' + PROJECT
+    LOCATION_ID = 'locname'
+    LOCATION_NAME = 'projects/' + PROJECT + '/locations/' + LOCATION_ID
+    INSTANCE_ID = 'instance-id'
+    INSTANCE_NAME = PARENT + '/instances/' + INSTANCE_ID
+    CLUSTER_NAME = INSTANCE_NAME + '/clusters/' + INSTANCE_ID
 
-    def _callFUT(self, instance):
+    def _callFUT(self, instance, **kw):
         from gcloud.bigtable.instance import _prepare_create_request
-        return _prepare_create_request(instance)
+        return _prepare_create_request(instance, **kw)
 
-    def test_it(self):
+    def test_w_defaults(self):
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
         from gcloud.bigtable._generated_v2 import (
             instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._generated_v2 import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable.instance import Instance
 
-        PROJECT = 'PROJECT'
-        INSTANCE_ID = 'instance-id'
-        DISPLAY_NAME = u'DISPLAY_NAME'
-        client = _Client(PROJECT)
+        client = _Client(self.PROJECT)
 
-        instance = Instance(INSTANCE_ID, client, display_name=DISPLAY_NAME)
+        instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID)
         request_pb = self._callFUT(instance)
         self.assertTrue(isinstance(request_pb,
                                    messages_v2_pb.CreateInstanceRequest))
-        self.assertEqual(request_pb.instance_id, INSTANCE_ID)
+        self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
+        self.assertEqual(request_pb.parent, self.PARENT)
+        self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
+        self.assertEqual(request_pb.instance.name, u'')
+        self.assertEqual(request_pb.instance.display_name, self.INSTANCE_ID)
+
+        # An instance must also define a same-named cluster
+        cluster = request_pb.clusters[self.INSTANCE_ID]
+        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertEqual(cluster.name, self.CLUSTER_NAME)
+        self.assertEqual(cluster.location, self.LOCATION_NAME)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+
+    def test_w_explicit_serve_nodes(self):
+        from gcloud.bigtable._generated_v2 import (
+            instance_pb2 as data_v2_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_instance_admin_pb2 as messages_v2_pb)
+        from gcloud.bigtable.instance import Instance
+        DISPLAY_NAME = u'DISPLAY_NAME'
+        SERVE_NODES = 5
+        client = _Client(self.PROJECT)
+        instance = Instance(self.INSTANCE_ID, client, self.LOCATION_ID,
+                            display_name=DISPLAY_NAME,
+                            serve_nodes=SERVE_NODES)
+
+        request_pb = self._callFUT(instance)
+
+        self.assertTrue(isinstance(request_pb,
+                                   messages_v2_pb.CreateInstanceRequest))
+        self.assertEqual(request_pb.instance_id, self.INSTANCE_ID)
         self.assertEqual(request_pb.parent,
-                         'projects/' + PROJECT)
+                         'projects/' + self.PROJECT)
         self.assertTrue(isinstance(request_pb.instance, data_v2_pb2.Instance))
         self.assertEqual(request_pb.instance.display_name, DISPLAY_NAME)
+        # An instance must also define a same-named cluster
+        cluster = request_pb.clusters[self.INSTANCE_ID]
+        self.assertTrue(isinstance(cluster, data_v2_pb2.Cluster))
+        self.assertEqual(cluster.location, self.LOCATION_NAME)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
 
 class Test__parse_pb_any_to_native(unittest2.TestCase):
@@ -692,10 +804,11 @@ class Test__process_operation(unittest2.TestCase):
 
         PROJECT = 'PROJECT'
         INSTANCE_ID = 'instance-id'
-        EXPECTED_OPERATION_ID = 234
+        LOCATION_ID = 'location'
+        OP_ID = 234
         OPERATION_NAME = (
-            'operations/projects/%s/instances/%s/operations/%d' %
-            (PROJECT, INSTANCE_ID, EXPECTED_OPERATION_ID))
+            'operations/projects/%s/instances/%s/locations/%s/operations/%d' %
+            (PROJECT, INSTANCE_ID, LOCATION_ID, OP_ID))
 
         current_op = operations_pb2.Operation(name=OPERATION_NAME)
 
@@ -717,11 +830,12 @@ class Test__process_operation(unittest2.TestCase):
         # Exectute method with mocks in place.
         with _Monkey(MUT, _parse_pb_any_to_native=mock_parse_pb_any_to_native,
                      _pb_timestamp_to_datetime=mock_pb_timestamp_to_datetime):
-            operation_id, operation_begin = self._callFUT(current_op)
+            op_id, loc_id, op_begin = self._callFUT(current_op)
 
         # Check outputs.
-        self.assertEqual(operation_id, EXPECTED_OPERATION_ID)
-        self.assertTrue(operation_begin is expected_operation_begin)
+        self.assertEqual(op_id, OP_ID)
+        self.assertTrue(op_begin is expected_operation_begin)
+        self.assertEqual(loc_id, LOCATION_ID)
 
         # Check mocks were used correctly.
         self.assertEqual(parse_pb_any_called, [(current_op.metadata, None)])

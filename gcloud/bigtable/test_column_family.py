@@ -650,7 +650,7 @@ def _ColumnFamilyPB(*args, **kw):
     return table_v2_pb2.ColumnFamily(*args, **kw)
 
 
-class _Cluster(object):
+class _Instance(object):
 
     def __init__(self, client=None):
         self._client = client
@@ -666,4 +666,4 @@ class _Table(object):
 
     def __init__(self, name, client=None):
         self.name = name
-        self._cluster = _Cluster(client)
+        self._instance = _Instance(client)

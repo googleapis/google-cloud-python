@@ -35,9 +35,8 @@ from gcloud.environment_vars import TESTS_PROJECT
 from system_test_utils import unique_resource_id
 
 
-CENTRAL_1C_ZONE = 'us-central1-c'
-CLUSTER_ID = 'gcloud' + unique_resource_id('-')
-CLUSTER_ID = CLUSTER_ID[:30]  # Cluster IDs can't exceed 30 chars.
+LOCATION_ID = 'us-central1-c'
+INSTANCE_ID = 'gcloud' + unique_resource_id('-')
 TABLE_ID = 'gcloud-python-test-table'
 COLUMN_FAMILY_ID1 = u'col-fam-id1'
 COLUMN_FAMILY_ID2 = u'col-fam-id2'
@@ -50,13 +49,7 @@ CELL_VAL3 = b'altcol-cell-val'
 CELL_VAL4 = b'foo'
 ROW_KEY = b'row-key'
 ROW_KEY_ALT = b'row-key-alt'
-EXISTING_CLUSTERS = []
-EXPECTED_ZONES = (
-    'asia-east1-b',
-    'europe-west1-c',
-    'us-central1-b',
-    CENTRAL_1C_ZONE,
-)
+EXISTING_INSTANCES = []
 
 
 class Config(object):
@@ -66,13 +59,13 @@ class Config(object):
     global state.
     """
     CLIENT = None
-    CLUSTER = None
+    INSTANCE = None
 
 
 def _operation_wait(operation, max_attempts=5):
     """Wait until an operation has completed.
 
-    :type operation: :class:`gcloud.bigtable.cluster.Operation`
+    :type operation: :class:`gcloud.bigtable.instance.Operation`
     :param operation: Operation that has not finished.
 
     :type max_attempts: int
@@ -89,114 +82,115 @@ def _operation_wait(operation, max_attempts=5):
     return True
 
 
+def _retry_backoff(meth, *args, **kw):
+    from grpc.beta.interfaces import StatusCode
+    from grpc.framework.interfaces.face.face import AbortionError
+    backoff_intervals = [1, 2, 4, 8]
+    while True:
+        try:
+            return meth(*args, **kw)
+        except AbortionError as error:
+            if error.code != StatusCode.UNAVAILABLE:
+                raise
+            if backoff_intervals:
+                time.sleep(backoff_intervals.pop(0))
+            else:
+                raise
+
+
 def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = Client(admin=True)
-    Config.CLUSTER = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID,
-                                           display_name=CLUSTER_ID)
+    Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
     Config.CLIENT.start()
-    clusters, failed_zones = Config.CLIENT.list_clusters()
+    instances, failed_locations = _retry_backoff(
+        Config.CLIENT.list_instances)
 
-    if len(failed_zones) != 0:
-        raise ValueError('List clusters failed in module set up.')
+    if len(failed_locations) != 0:
+        raise ValueError('List instances failed in module set up.')
 
-    EXISTING_CLUSTERS[:] = clusters
+    EXISTING_INSTANCES[:] = instances
 
-    # After listing, create the test cluster.
-    created_op = Config.CLUSTER.create()
+    # After listing, create the test instance.
+    created_op = Config.INSTANCE.create()
     if not _operation_wait(created_op):
-        raise RuntimeError('Cluster creation exceed 5 seconds.')
+        raise RuntimeError('Instance creation exceed 5 seconds.')
 
 
 def tearDownModule():
-    Config.CLUSTER.delete()
+    Config.INSTANCE.delete()
     Config.CLIENT.stop()
 
 
-class TestClusterAdminAPI(unittest2.TestCase):
+class TestInstanceAdminAPI(unittest2.TestCase):
 
     def setUp(self):
-        self.clusters_to_delete = []
+        self.instances_to_delete = []
 
     def tearDown(self):
-        for cluster in self.clusters_to_delete:
-            cluster.delete()
+        for instance in self.instances_to_delete:
+            instance.delete()
 
-    def test_list_zones(self):
-        zones = Config.CLIENT.list_zones()
-        self.assertEqual(sorted(zones), sorted(EXPECTED_ZONES))
-
-    def test_list_clusters(self):
-        clusters, failed_zones = Config.CLIENT.list_clusters()
-        self.assertEqual(failed_zones, [])
-        # We have added one new cluster in `setUpModule`.
-        self.assertEqual(len(clusters), len(EXISTING_CLUSTERS) + 1)
-        for cluster in clusters:
-            cluster_existence = (cluster in EXISTING_CLUSTERS or
-                                 cluster == Config.CLUSTER)
-            self.assertTrue(cluster_existence)
+    def test_list_instances(self):
+        instances, failed_locations = Config.CLIENT.list_instances()
+        self.assertEqual(failed_locations, [])
+        # We have added one new instance in `setUpModule`.
+        self.assertEqual(len(instances), len(EXISTING_INSTANCES) + 1)
+        for instance in instances:
+            instance_existence = (instance in EXISTING_INSTANCES or
+                                  instance == Config.INSTANCE)
+            self.assertTrue(instance_existence)
 
     def test_reload(self):
-        # Use same arguments as Config.CLUSTER (created in `setUpModule`)
+        # Use same arguments as Config.INSTANCE (created in `setUpModule`)
         # so we can use reload() on a fresh instance.
-        cluster = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID)
+        instance = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
         # Make sure metadata unset before reloading.
-        cluster.display_name = None
-        cluster.serve_nodes = None
+        instance.display_name = None
 
-        cluster.reload()
-        self.assertEqual(cluster.display_name, Config.CLUSTER.display_name)
-        self.assertEqual(cluster.serve_nodes, Config.CLUSTER.serve_nodes)
+        instance.reload()
+        self.assertEqual(instance.display_name, Config.INSTANCE.display_name)
 
-    def test_create_cluster(self):
-        cluster_id = 'new' + unique_resource_id('-')
-        cluster_id = cluster_id[:30]  # Cluster IDs can't exceed 30 chars.
-        cluster = Config.CLIENT.cluster(CENTRAL_1C_ZONE, cluster_id)
-        operation = cluster.create()
-        # Make sure this cluster gets deleted after the test case.
-        self.clusters_to_delete.append(cluster)
+    def test_create_instance(self):
+        ALT_INSTANCE_ID = 'new' + unique_resource_id('-')
+        instance = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        operation = instance.create()
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
         self.assertTrue(_operation_wait(operation))
 
-        # Create a new cluster instance and make sure it is the same.
-        cluster_alt = Config.CLIENT.cluster(CENTRAL_1C_ZONE, cluster_id)
-        cluster_alt.reload()
+        # Create a new instance instance and make sure it is the same.
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID, LOCATION_ID)
+        instance_alt.reload()
 
-        self.assertEqual(cluster, cluster_alt)
-        self.assertEqual(cluster.display_name, cluster_alt.display_name)
-        self.assertEqual(cluster.serve_nodes, cluster_alt.serve_nodes)
+        self.assertEqual(instance, instance_alt)
+        self.assertEqual(instance.display_name, instance_alt.display_name)
 
     def test_update(self):
-        curr_display_name = Config.CLUSTER.display_name
-        Config.CLUSTER.display_name = 'Foo Bar Baz'
-        operation = Config.CLUSTER.update()
+        OLD_DISPLAY_NAME = Config.INSTANCE.display_name
+        NEW_DISPLAY_NAME = 'Foo Bar Baz'
+        Config.INSTANCE.display_name = NEW_DISPLAY_NAME
+        Config.INSTANCE.update()
 
-        # We want to make sure the operation completes.
-        self.assertTrue(_operation_wait(operation))
+        # Create a new instance instance and reload it.
+        instance_alt = Config.CLIENT.instance(INSTANCE_ID, None)
+        self.assertNotEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
+        instance_alt.reload()
+        self.assertEqual(instance_alt.display_name, NEW_DISPLAY_NAME)
 
-        # Create a new cluster instance and make sure it is the same.
-        cluster_alt = Config.CLIENT.cluster(CENTRAL_1C_ZONE, CLUSTER_ID)
-        self.assertNotEqual(cluster_alt.display_name,
-                            Config.CLUSTER.display_name)
-        cluster_alt.reload()
-        self.assertEqual(cluster_alt.display_name,
-                         Config.CLUSTER.display_name)
-
-        # Make sure to put the cluster back the way it was for the
+        # Make sure to put the instance back the way it was for the
         # other test cases.
-        Config.CLUSTER.display_name = curr_display_name
-        operation = Config.CLUSTER.update()
-
-        # We want to make sure the operation completes.
-        self.assertTrue(_operation_wait(operation))
+        Config.INSTANCE.display_name = OLD_DISPLAY_NAME
+        Config.INSTANCE.update()
 
 
 class TestTableAdminAPI(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._table = Config.CLUSTER.table(TABLE_ID)
+        cls._table = Config.INSTANCE.table(TABLE_ID)
         cls._table.create()
 
     @classmethod
@@ -211,14 +205,14 @@ class TestTableAdminAPI(unittest2.TestCase):
             table.delete()
 
     def test_list_tables(self):
-        # Since `Config.CLUSTER` is newly created in `setUpModule`, the table
+        # Since `Config.INSTANCE` is newly created in `setUpModule`, the table
         # created in `setUpClass` here will be the only one.
-        tables = Config.CLUSTER.list_tables()
+        tables = Config.INSTANCE.list_tables()
         self.assertEqual(tables, [self._table])
 
     def test_create_table(self):
         temp_table_id = 'foo-bar-baz-table'
-        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -226,15 +220,15 @@ class TestTableAdminAPI(unittest2.TestCase):
         name_attr = operator.attrgetter('name')
         expected_tables = sorted([temp_table, self._table], key=name_attr)
 
-        # Then query for the tables in the cluster and sort them by
+        # Then query for the tables in the instance and sort them by
         # name as well.
-        tables = Config.CLUSTER.list_tables()
+        tables = Config.INSTANCE.list_tables()
         sorted_tables = sorted(tables, key=name_attr)
         self.assertEqual(sorted_tables, expected_tables)
 
     def test_create_column_family(self):
         temp_table_id = 'foo-bar-baz-table'
-        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -255,7 +249,7 @@ class TestTableAdminAPI(unittest2.TestCase):
 
     def test_update_column_family(self):
         temp_table_id = 'foo-bar-baz-table'
-        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -278,7 +272,7 @@ class TestTableAdminAPI(unittest2.TestCase):
 
     def test_delete_column_family(self):
         temp_table_id = 'foo-bar-baz-table'
-        temp_table = Config.CLUSTER.table(temp_table_id)
+        temp_table = Config.INSTANCE.table(temp_table_id)
         temp_table.create()
         self.tables_to_delete.append(temp_table)
 
@@ -299,7 +293,7 @@ class TestDataAPI(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._table = table = Config.CLUSTER.table(TABLE_ID)
+        cls._table = table = Config.INSTANCE.table(TABLE_ID)
         table.create()
         table.column_family(COLUMN_FAMILY_ID1).create()
         table.column_family(COLUMN_FAMILY_ID2).create()
@@ -357,7 +351,6 @@ class TestDataAPI(unittest2.TestCase):
 
         # Read back the contents of the row.
         partial_row_data = self._table.read_row(ROW_KEY)
-        self.assertTrue(partial_row_data.committed)
         self.assertEqual(partial_row_data.row_key, ROW_KEY)
 
         # Check the cells match.
@@ -440,7 +433,6 @@ class TestDataAPI(unittest2.TestCase):
         # Bring our two labeled columns together.
         row_filter = RowFilterUnion(filters=[chain1, chain2])
         partial_row_data = self._table.read_row(ROW_KEY, filter_=row_filter)
-        self.assertTrue(partial_row_data.committed)
         self.assertEqual(partial_row_data.row_key, ROW_KEY)
 
         cells_returned = partial_row_data.cells
