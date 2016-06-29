@@ -28,10 +28,15 @@ To create a :class:`Instance <gcloud.bigtable.instance.Instance>` object:
 
 .. code:: python
 
-    instance = client.instance(instance_id, display_name=display_name)
+    instance = client.instance(instance_id, location_id,
+                               display_name=display_name)
 
-``display_name`` is optional. When not provided,
-``display_name`` defaults to the ``instance_id`` value.
+- ``location_id`` is the ID of the location in which the instance's cluster
+  will be hosted, e.g.  ``'us-central1-c'``.  ``location_id`` is required for
+  instances which do not already exist.
+
+- ``display_name`` is optional. When not provided, ``display_name`` defaults
+  to the ``instance_id`` value.
 
 Even if this :class:`Instance <gcloud.bigtable.instance.Instance>` already
 has been created with the API, you'll want this object to use as a
