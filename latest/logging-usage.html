@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud 4dc58fc documentation</title>
+    <title>Using the API &mdash; gcloud 7f65402 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '4dc58fc',
+        VERSION:     '7f65402',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 4dc58fc documentation" href="index.html" />
+    <link rel="top" title="gcloud 7f65402 documentation" href="index.html" />
     <link rel="next" title="Logging Client" href="logging-client.html" />
     <link rel="prev" title="Change Sets" href="dns-changes.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-usage%0ARelease%3A%204dc58fc" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-usage%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (4dc58fc)
+              Version History (7f65402)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -267,10 +267,10 @@ used within Cloud Monitoring to create charts and alerts.</p>
 <p>Sinks allow exporting entries which match a given filter to Cloud Storage
 buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <div class="section" id="export-to-cloud-storage">
-<h3>Export to Cloud storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h3>
+<h3>Export to Cloud Storage<a class="headerlink" href="#export-to-cloud-storage" title="Permalink to this headline">#</a></h3>
 <p>Make sure that the storage bucket you want to export logs too has
-<cite>cloud-logs&#64;google.com</cite> as the owner. See <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs">Set permission for writing exported logs</a>.</p>
-<p>Add <cite>cloud-logs&#64;google.com</cite> as the owner of <cite>my-bucket-name</cite>:</p>
+<code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner. See <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#setting_product_name_short_permissions_for_writing_exported_logs">Set permission for writing exported logs</a>.</p>
+<p>Add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> as the owner of <code class="docutils literal"><span class="pre">my-bucket-name</span></code>:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">storage</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bucket</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bucket</span><span class="p">(</span><span class="s1">&#39;my-bucket-name&#39;</span><span class="p">)</span>
@@ -285,18 +285,33 @@ buckets, BigQuery datasets, or Cloud Pub/Sub topics.</p>
 <div class="section" id="export-to-bigquery">
 <h3>Export to BigQuery<a class="headerlink" href="#export-to-bigquery" title="Permalink to this headline">#</a></h3>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
-and add <cite>cloud-logs&#64;google.com</cite> to a dataset.</p>
+and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a dataset.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#manual-access-bq">Setting permissions for BigQuery</a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud.bigquery.dataset</span> <span class="k">import</span> <span class="n">AccessGrant</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bigquery_client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">bigquery_client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;my-dataset-name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grants</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grants</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AccessGrant</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s1">&#39;WRITER&#39;</span><span class="p">,</span> <span class="s1">&#39;groupByEmail&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">access_grants</span> <span class="o">=</span> <span class="n">grants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="export-to-pub-sub">
 <h3>Export to Pub/Sub<a class="headerlink" href="#export-to-pub-sub" title="Permalink to this headline">#</a></h3>
 <p>To export logs to BigQuery you must log into the Cloud Platform Console
-and add <cite>cloud-logs&#64;google.com</cite> to a topic.</p>
+and add <code class="docutils literal"><span class="pre">cloud-logs&#64;google.com</span></code> to a topic.</p>
 <p>See: <a class="reference external" href="https://cloud.google.com/logging/docs/export/configure_export#manual-access-pubsub">Setting permissions for Pub/Sub</a></p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">pubsub</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">topic</span><span class="p">(</span><span class="s1">&#39;your-topic-name&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span> <span class="o">=</span> <span class="n">top</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">policy</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">topic</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create a Cloud Storage sink:</p>
