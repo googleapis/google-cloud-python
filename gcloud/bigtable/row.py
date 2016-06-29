@@ -845,7 +845,7 @@ def _parse_rmw_row_response(row_response):
                   }
     """
     result = {}
-    for column_family in row_response.families:
+    for column_family in row_response.row.families:
         column_family_id, curr_family = _parse_family_pb(column_family)
         result[column_family_id] = curr_family
     return result

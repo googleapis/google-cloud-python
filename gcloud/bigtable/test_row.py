@@ -698,7 +698,7 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
                 ],
             },
         }
-        sample_input = _RowPB(
+        response_row = _RowPB(
             families=[
                 _FamilyPB(
                     name=col_fam1,
@@ -743,6 +743,7 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
                 ),
             ],
         )
+        sample_input = _ReadModifyWriteRowResponsePB(row=response_row)
         self.assertEqual(expected_output, self._callFUT(sample_input))
 
 
@@ -825,6 +826,12 @@ def _ReadModifyWriteRowRequestPB(*args, **kw):
     from gcloud.bigtable._generated_v2 import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadModifyWriteRowRequest(*args, **kw)
+
+
+def _ReadModifyWriteRowResponsePB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        bigtable_pb2 as messages_v2_pb2)
+    return messages_v2_pb2.ReadModifyWriteRowResponse(*args, **kw)
 
 
 def _CellPB(*args, **kw):

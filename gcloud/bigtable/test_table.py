@@ -261,8 +261,11 @@ class TestTable(unittest2.TestCase):
             return request_pb
 
         # Create response_iterator
-        response_pb = _ReadRowsResponsePB(chunks=chunks)
-        response_iterator = iter([response_pb])
+        if chunks is None:
+            response_iterator = iter(())  # no responses at all
+        else:
+            response_pb = _ReadRowsResponsePB(chunks=chunks)
+            response_iterator = iter([response_pb])
 
         # Patch the stub used by the API method.
         client._data_stub = stub = _FakeStub(response_iterator)
@@ -281,11 +284,14 @@ class TestTable(unittest2.TestCase):
         self.assertEqual(mock_created,
                          [(table.name, self.ROW_KEY, filter_obj)])
 
-    def test_read_empty_row(self):
+    def test_read_row_miss_no__responses(self):
+        self._read_row_helper(None, None)
+
+    def test_read_row_miss_no_chunks_in_response(self):
         chunks = []
         self._read_row_helper(chunks, None)
 
-    def test_read_row(self):
+    def test_read_row_complete(self):
         from gcloud.bigtable.row_data import Cell
         from gcloud.bigtable.row_data import PartialRowData
 
