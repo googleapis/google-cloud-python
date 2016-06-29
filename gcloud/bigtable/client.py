@@ -18,7 +18,7 @@ This is the base from which all interactions with the API occur.
 
 In the hierarchy of API concepts
 
-* a :class:`Client` owns a :class:`.Instance`
+* a :class:`Client` owns an :class:`.Instance`
 * a :class:`.Instance` owns a :class:`Table <gcloud.bigtable.table.Table>`
 * a :class:`Table <gcloud.bigtable.table.Table>` owns a
   :class:`ColumnFamily <.column_family.ColumnFamily>`
