@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.cluster &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.cluster &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/cluster%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/cluster%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,30 +112,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">from</span> <span class="nn">google.longrunning</span> <span class="kn">import</span> <span class="n">operations_pb2</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_cluster_data_pb2</span> <span class="k">as</span> <span class="n">data_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">bigtable_cluster_service_messages_pb2</span> <span class="k">as</span> <span class="n">messages_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">bigtable_table_service_messages_pb2</span> <span class="k">as</span> <span class="n">table_messages_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.table</span> <span class="kn">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">instance_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bigtable_instance_admin_pb2</span> <span class="k">as</span> <span class="n">messages_v2_pb2</span><span class="p">)</span>
 
 
 <span class="n">_CLUSTER_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^projects/(?P&lt;project&gt;[^/]+)/&#39;</span>
-                              <span class="s1">r&#39;zones/(?P&lt;zone&gt;[^/]+)/clusters/&#39;</span>
+                              <span class="s1">r&#39;instances/(?P&lt;instance&gt;[^/]+)/clusters/&#39;</span>
                               <span class="s1">r&#39;(?P&lt;cluster_id&gt;[a-z][-a-z0-9]*)$&#39;</span><span class="p">)</span>
-<span class="n">_OPERATION_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^operations/projects/([^/]+)/zones/([^/]+)/&#39;</span>
-                                <span class="s1">r&#39;clusters/([a-z][-a-z0-9]*)/operations/&#39;</span>
-                                <span class="s1">r&#39;(?P&lt;operation_id&gt;\d+)$&#39;</span><span class="p">)</span>
-<span class="n">_TYPE_URL_BASE</span> <span class="o">=</span> <span class="s1">&#39;type.googleapis.com/google.bigtable.&#39;</span>
-<span class="n">_ADMIN_TYPE_URL_BASE</span> <span class="o">=</span> <span class="n">_TYPE_URL_BASE</span> <span class="o">+</span> <span class="s1">&#39;admin.cluster.v1.&#39;</span>
-<span class="n">_CLUSTER_CREATE_METADATA</span> <span class="o">=</span> <span class="n">_ADMIN_TYPE_URL_BASE</span> <span class="o">+</span> <span class="s1">&#39;CreateClusterMetadata&#39;</span>
-<span class="n">_UPDATE_CREATE_METADATA</span> <span class="o">=</span> <span class="n">_ADMIN_TYPE_URL_BASE</span> <span class="o">+</span> <span class="s1">&#39;UpdateClusterMetadata&#39;</span>
-<span class="n">_UNDELETE_CREATE_METADATA</span> <span class="o">=</span> <span class="n">_ADMIN_TYPE_URL_BASE</span> <span class="o">+</span> <span class="s1">&#39;UndeleteClusterMetadata&#39;</span>
+<span class="n">_OPERATION_NAME_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^operations/&#39;</span>
+                                <span class="s1">r&#39;projects/([^/]+)/&#39;</span>
+                                <span class="s1">r&#39;instances/([^/]+)/&#39;</span>
+                                <span class="s1">r&#39;clusters/([a-z][-a-z0-9]*)/&#39;</span>
+                                <span class="s1">r&#39;operations/(?P&lt;operation_id&gt;\d+)$&#39;</span><span class="p">)</span>
 <span class="n">_TYPE_URL_MAP</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">_CLUSTER_CREATE_METADATA</span><span class="p">:</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">CreateClusterMetadata</span><span class="p">,</span>
-    <span class="n">_UPDATE_CREATE_METADATA</span><span class="p">:</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">UpdateClusterMetadata</span><span class="p">,</span>
-    <span class="n">_UNDELETE_CREATE_METADATA</span><span class="p">:</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">UndeleteClusterMetadata</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">DEFAULT_SERVE_NODES</span> <span class="o">=</span> <span class="mi">3</span>
@@ -148,16 +139,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type cluster: :class:`Cluster`</span>
 <span class="sd">    :param cluster: The cluster to be created.</span>
 
-<span class="sd">    :rtype: :class:`.messages_pb2.CreateClusterRequest`</span>
+<span class="sd">    :rtype: :class:`.messages_v2_pb2.CreateClusterRequest`</span>
 <span class="sd">    :returns: The CreateCluster request object containing the cluster info.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">zone_full_name</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;projects/&#39;</span> <span class="o">+</span> <span class="n">cluster</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span> <span class="o">+</span>
-                      <span class="s1">&#39;/zones/&#39;</span> <span class="o">+</span> <span class="n">cluster</span><span class="o">.</span><span class="n">zone</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">CreateClusterRequest</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="n">zone_full_name</span><span class="p">,</span>
+    <span class="k">return</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CreateClusterRequest</span><span class="p">(</span>
+        <span class="n">parent</span><span class="o">=</span><span class="n">cluster</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="n">cluster_id</span><span class="o">=</span><span class="n">cluster</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span>
-        <span class="n">cluster</span><span class="o">=</span><span class="n">data_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
-            <span class="n">display_name</span><span class="o">=</span><span class="n">cluster</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
+        <span class="n">cluster</span><span class="o">=</span><span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
             <span class="n">serve_nodes</span><span class="o">=</span><span class="n">cluster</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
@@ -193,9 +181,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                         Create/Update/Undelete cluster request.</span>
 
 <span class="sd">    :rtype: tuple</span>
-<span class="sd">    :returns: A pair of an integer and datetime stamp. The integer is the ID</span>
-<span class="sd">              of the operation (``operation_id``) and the timestamp when</span>
-<span class="sd">              the create operation began (``operation_begin``).</span>
+<span class="sd">    :returns: integer ID of the operation (``operation_id``).</span>
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the operation name</span>
 <span class="sd">             doesn&#39;t match the :data:`_OPERATION_NAME_RE` regex.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -206,11 +192,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                          <span class="n">operation_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="n">operation_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;operation_id&#39;</span><span class="p">))</span>
 
-    <span class="n">request_metadata</span> <span class="o">=</span> <span class="n">_parse_pb_any_to_native</span><span class="p">(</span><span class="n">operation_pb</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
-    <span class="n">operation_begin</span> <span class="o">=</span> <span class="n">_pb_timestamp_to_datetime</span><span class="p">(</span>
-        <span class="n">request_metadata</span><span class="o">.</span><span class="n">request_time</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">operation_id</span><span class="p">,</span> <span class="n">operation_begin</span>
+    <span class="k">return</span> <span class="n">operation_id</span>
 
 
 <div class="viewcode-block" id="Operation"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Operation">[docs]</a><span class="k">class</span> <span class="nc">Operation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -226,17 +208,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type op_id: int</span>
 <span class="sd">    :param op_id: The ID of the operation.</span>
 
-<span class="sd">    :type begin: :class:`datetime.datetime`</span>
-<span class="sd">    :param begin: The time when the operation was started.</span>
-
 <span class="sd">    :type cluster: :class:`Cluster`</span>
 <span class="sd">    :param cluster: The cluster that created the operation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_type</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op_type</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="o">=</span> <span class="n">op_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">op_id</span> <span class="o">=</span> <span class="n">op_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">begin</span> <span class="o">=</span> <span class="n">begin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="o">=</span> <span class="n">cluster</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -245,7 +223,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">return</span> <span class="bp">False</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">op_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_type</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">op_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">op_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">begin</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">begin</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_cluster</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_complete</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span><span class="p">)</span>
 
@@ -267,8 +244,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                           <span class="s1">&#39;/operations/</span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">op_id</span><span class="p">,))</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">operations_pb2</span><span class="o">.</span><span class="n">GetOperationRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">operation_name</span><span class="p">)</span>
         <span class="c1"># We expect a `google.longrunning.operations_pb2.Operation`.</span>
-        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_operations_stub</span><span class="o">.</span><span class="n">GetOperation</span><span class="p">(</span>
+            <span class="n">request_pb</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">operation_pb</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_complete</span> <span class="o">=</span> <span class="bp">True</span>
@@ -291,87 +269,67 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    .. note::</span>
 
 <span class="sd">        For now, we leave out the ``default_storage_type`` (an enum)</span>
-<span class="sd">        which if not sent will end up as :data:`.data_pb2.STORAGE_SSD`.</span>
-
-<span class="sd">    :type zone: str</span>
-<span class="sd">    :param zone: The name of the zone where the cluster resides.</span>
+<span class="sd">        which if not sent will end up as :data:`.data_v2_pb2.STORAGE_SSD`.</span>
 
 <span class="sd">    :type cluster_id: str</span>
 <span class="sd">    :param cluster_id: The ID of the cluster.</span>
 
-<span class="sd">    :type client: :class:`Client &lt;gcloud.bigtable.client.Client&gt;`</span>
-<span class="sd">    :param client: The client that owns the cluster. Provides</span>
-<span class="sd">                   authorization and a project ID.</span>
-
-<span class="sd">    :type display_name: str</span>
-<span class="sd">    :param display_name: (Optional) The display name for the cluster in the</span>
-<span class="sd">                         Cloud Console UI. (Must be between 4 and 30</span>
-<span class="sd">                         characters.) If this value is not set in the</span>
-<span class="sd">                         constructor, will fall back to the cluster ID.</span>
+<span class="sd">    :type instance: :class:`.instance.Instance`</span>
+<span class="sd">    :param instance: The instance where the cluster resides.</span>
 
 <span class="sd">    :type serve_nodes: int</span>
 <span class="sd">    :param serve_nodes: (Optional) The number of nodes in the cluster.</span>
 <span class="sd">                        Defaults to :data:`DEFAULT_SERVE_NODES`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
-                 <span class="n">display_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="o">=</span> <span class="n">zone</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span>
+                 <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">=</span> <span class="n">cluster_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">display_name</span> <span class="ow">or</span> <span class="n">cluster_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="n">serve_nodes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
-
-<div class="viewcode-block" id="Cluster.table"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table_id</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to create a table associated with this cluster.</span>
-
-<span class="sd">        :type table_id: str</span>
-<span class="sd">        :param table_id: The ID of the table.</span>
-
-<span class="sd">        :rtype: :class:`Table &lt;gcloud.bigtable.table.Table&gt;`</span>
-<span class="sd">        :returns: The table owned by this cluster.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Table</span><span class="p">(</span><span class="n">table_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">_update_from_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Refresh self from the server-provided protobuf.</span>
 
 <span class="sd">        Helper for :meth:`from_pb` and :meth:`reload`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">display_name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cluster protobuf does not contain display_name&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">:</span>  <span class="c1"># Simple field (int32)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cluster protobuf does not contain serve_nodes&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">display_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">serve_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">location</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Cluster.from_pb"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<div class="viewcode-block" id="Cluster.from_pb"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.from_pb">[docs]</a>    <span class="k">def</span> <span class="nf">from_pb</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a cluster instance from a protobuf.</span>
 
-<span class="sd">        :type cluster_pb: :class:`bigtable_cluster_data_pb2.Cluster`</span>
+<span class="sd">        :type cluster_pb: :class:`instance_pb2.Cluster`</span>
 <span class="sd">        :param cluster_pb: A cluster protobuf object.</span>
 
-<span class="sd">        :type client: :class:`Client &lt;gcloud.bigtable.client.Client&gt;`</span>
-<span class="sd">        :param client: The client that owns the cluster.</span>
+<span class="sd">        :type instance: :class:`.instance.Instance&gt;`</span>
+<span class="sd">        :param instance: The instance that owns the cluster.</span>
 
 <span class="sd">        :rtype: :class:`Cluster`</span>
 <span class="sd">        :returns: The cluster parsed from the protobuf response.</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the cluster</span>
-<span class="sd">                 name does not match</span>
-<span class="sd">                 ``projects/{project}/zones/{zone}/clusters/{cluster_id}``</span>
-<span class="sd">                 or if the parsed project ID does not match the project ID</span>
-<span class="sd">                 on the client.</span>
+<span class="sd">        :raises:</span>
+<span class="sd">            :class:`ValueError &lt;exceptions.ValueError&gt;` if the cluster</span>
+<span class="sd">            name does not match</span>
+<span class="sd">            ``projects/{project}/instances/{instance}/clusters/{cluster_id}``</span>
+<span class="sd">            or if the parsed project ID does not match the project ID</span>
+<span class="sd">            on the client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">_CLUSTER_NAME_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cluster_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cluster protobuf name was not in the &#39;</span>
                              <span class="s1">&#39;expected format.&#39;</span><span class="p">,</span> <span class="n">cluster_pb</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;project&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Project ID on cluster does not match the &#39;</span>
                              <span class="s1">&#39;project ID on the client&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;instance&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">instance</span><span class="o">.</span><span class="n">instance_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Instance ID on cluster does not match the &#39;</span>
+                             <span class="s1">&#39;instance ID on the client&#39;</span><span class="p">)</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;zone&#39;</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">),</span> <span class="n">client</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cluster_id&#39;</span><span class="p">),</span> <span class="n">instance</span><span class="p">)</span>
         <span class="n">result</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
@@ -384,9 +342,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`.Cluster`</span>
 <span class="sd">        :returns: A copy of the current cluster.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">new_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">new_client</span><span class="p">,</span>
-                              <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
+        <span class="n">new_instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">,</span> <span class="n">new_instance</span><span class="p">,</span>
                               <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
@@ -394,43 +351,41 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Cluster name used in requests.</span>
 
 <span class="sd">        .. note::</span>
-<span class="sd">          This property will not change if ``zone`` and ``cluster_id`` do not,</span>
-<span class="sd">          but the return value is not cached.</span>
+<span class="sd">          This property will not change if ``_instance`` and ``cluster_id``</span>
+<span class="sd">          do not, but the return value is not cached.</span>
 
 <span class="sd">        The cluster name is of the form</span>
 
-<span class="sd">            ``&quot;projects/{project}/zones/{zone}/clusters/{cluster_id}&quot;``</span>
+<span class="sd">            ``&quot;projects/{project}/instances/{instance}/clusters/{cluster_id}&quot;``</span>
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The cluster name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project_name</span> <span class="o">+</span> <span class="s1">&#39;/zones/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="o">+</span>
-                <span class="s1">&#39;/clusters/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/clusters/&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">False</span>
         <span class="c1"># NOTE: This does not compare the configuration values, such as</span>
-        <span class="c1">#       the serve_nodes or display_name. Instead, it only compares</span>
-        <span class="c1">#       identifying values zone, cluster ID and client. This is</span>
+        <span class="c1">#       the serve_nodes. Instead, it only compares</span>
+        <span class="c1">#       identifying values instance, cluster ID and client. This is</span>
         <span class="c1">#       intentional, since the same cluster can be in different states</span>
-        <span class="c1">#       if not synchronized. Clusters with similar zone/cluster</span>
+        <span class="c1">#       if not synchronized. Clusters with similar instance/cluster</span>
         <span class="c1">#       settings but different clients can&#39;t be used in the same way.</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">zone</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">zone</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="ow">and</span>
-                <span class="n">other</span><span class="o">.</span><span class="n">_client</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">cluster_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_id</span> <span class="ow">and</span>
+                <span class="n">other</span><span class="o">.</span><span class="n">_instance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Cluster.reload"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Reload the metadata for this cluster.&quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">GetClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.</span>
-        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">GetCluster</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">GetClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="c1"># We expect a `._generated_v2.instance_pb2.Cluster`.</span>
+        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">GetCluster</span><span class="p">(</span>
+            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
-        <span class="c1"># NOTE: _update_from_pb does not check that the project, zone and</span>
+        <span class="c1"># NOTE: _update_from_pb does not check that the project, instance and</span>
         <span class="c1">#       cluster ID on the response match the request.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">)</span></div>
 
@@ -439,14 +394,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        .. note::</span>
 
-<span class="sd">            Uses the ``project``, ``zone`` and ``cluster_id`` on the current</span>
-<span class="sd">            :class:`Cluster` in addition to the ``display_name`` and</span>
-<span class="sd">            ``serve_nodes``. If you&#39;d like to change them before creating,</span>
-<span class="sd">            reset the values via</span>
+<span class="sd">            Uses the ``project``, ``instance`` and ``cluster_id`` on the</span>
+<span class="sd">            current :class:`Cluster` in addition to the ``serve_nodes``.</span>
+<span class="sd">            To change them before creating, reset the values via</span>
 
 <span class="sd">            .. code:: python</span>
 
-<span class="sd">                cluster.display_name = &#39;New display name&#39;</span>
+<span class="sd">                cluster.serve_nodes = 8</span>
 <span class="sd">                cluster.cluster_id = &#39;i-changed-my-mind&#39;</span>
 
 <span class="sd">            before calling :meth:`create`.</span>
@@ -457,24 +411,23 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">_prepare_create_request</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># We expect a `google.longrunning.operations_pb2.Operation`.</span>
-        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">CreateCluster</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">CreateCluster</span><span class="p">(</span>
+            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
-        <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span> <span class="o">=</span> <span class="n">_process_operation</span><span class="p">(</span><span class="n">cluster_pb</span><span class="o">.</span><span class="n">current_operation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">op_id</span> <span class="o">=</span> <span class="n">_process_operation</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Cluster.update"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update this cluster.</span>
 
 <span class="sd">        .. note::</span>
 
-<span class="sd">            Updates the ``display_name`` and ``serve_nodes``. If you&#39;d like to</span>
+<span class="sd">            Updates the ``serve_nodes``. If you&#39;d like to</span>
 <span class="sd">            change them before updating, reset the values via</span>
 
 <span class="sd">            .. code:: python</span>
 
-<span class="sd">                cluster.display_name = &#39;New display name&#39;</span>
-<span class="sd">                cluster.serve_nodes = 3</span>
+<span class="sd">                cluster.serve_nodes = 8</span>
 
 <span class="sd">            before calling :meth:`update`.</span>
 
@@ -482,17 +435,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The long-running operation corresponding to the</span>
 <span class="sd">                  update operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">display_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">display_name</span><span class="p">,</span>
             <span class="n">serve_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serve_nodes</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># We expect a `._generated.bigtable_cluster_data_pb2.Cluster`.</span>
-        <span class="n">cluster_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">UpdateCluster</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
+        <span class="c1"># Ignore expected `._generated_v2.instance_pb2.Cluster`.</span>
+        <span class="n">operation_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">UpdateCluster</span><span class="p">(</span>
+            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
-        <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span> <span class="o">=</span> <span class="n">_process_operation</span><span class="p">(</span><span class="n">cluster_pb</span><span class="o">.</span><span class="n">current_operation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="n">op_id</span> <span class="o">=</span> <span class="n">_process_operation</span><span class="p">(</span><span class="n">operation_pb</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="s1">&#39;update&#39;</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Cluster.delete"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this cluster.</span>
@@ -519,67 +471,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">          irrevocably disappear from the API, and their data will be</span>
 <span class="sd">          permanently deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">DeleteClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">DeleteClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="c1"># We expect a `google.protobuf.empty_pb2.Empty`</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">DeleteCluster</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Cluster.undelete"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.undelete">[docs]</a>    <span class="k">def</span> <span class="nf">undelete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Undelete this cluster.</span>
-
-<span class="sd">        Cancels the scheduled deletion of an cluster and begins preparing it to</span>
-<span class="sd">        resume serving. The returned operation will also be embedded as the</span>
-<span class="sd">        cluster&#39;s ``current_operation``.</span>
-
-<span class="sd">        Immediately upon completion of this request:</span>
-
-<span class="sd">        * The cluster&#39;s ``delete_time`` field will be unset, protecting it from</span>
-<span class="sd">          automatic deletion.</span>
-
-<span class="sd">        Until completion of the returned operation:</span>
-
-<span class="sd">        * The operation cannot be cancelled.</span>
-
-<span class="sd">        Upon completion of the returned operation:</span>
-
-<span class="sd">        * Billing for the cluster&#39;s resources will resume.</span>
-<span class="sd">        * All tables within the cluster will be available.</span>
-
-<span class="sd">        :rtype: :class:`Operation`</span>
-<span class="sd">        :returns: The long-running operation corresponding to the</span>
-<span class="sd">                  undelete operation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">UndeleteClusterRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># We expect a `google.longrunning.operations_pb2.Operation`.</span>
-        <span class="n">operation_pb2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">UndeleteCluster</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
-
-        <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span> <span class="o">=</span> <span class="n">_process_operation</span><span class="p">(</span><span class="n">operation_pb2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Operation</span><span class="p">(</span><span class="s1">&#39;undelete&#39;</span><span class="p">,</span> <span class="n">op_id</span><span class="p">,</span> <span class="n">op_begin</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Cluster.list_tables"><a class="viewcode-back" href="../../../bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.list_tables">[docs]</a>    <span class="k">def</span> <span class="nf">list_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;List the tables in this cluster.</span>
-
-<span class="sd">        :rtype: list of :class:`Table &lt;gcloud.bigtable.table.Table&gt;`</span>
-<span class="sd">        :returns: The list of tables owned by the cluster.</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if one of the</span>
-<span class="sd">                 returned tables has a name that is not of the expected format.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">table_messages_pb2</span><span class="o">.</span><span class="n">ListTablesRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="c1"># We expect a `table_messages_pb2.ListTablesResponse`</span>
-        <span class="n">table_list_pb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_table_stub</span><span class="o">.</span><span class="n">ListTables</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">table_pb</span> <span class="ow">in</span> <span class="n">table_list_pb</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
-            <span class="n">table_prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;/tables/&#39;</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Table name </span><span class="si">%s</span><span class="s1"> not of expected format&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="p">,))</span>
-            <span class="n">table_id</span> <span class="o">=</span> <span class="n">table_pb</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">):]</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">table_id</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">result</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">DeleteCluster</span><span class="p">(</span>
+            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
@@ -631,10 +526,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-column-family.html">Column Families</a></li>

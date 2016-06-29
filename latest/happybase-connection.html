@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Connection &mdash; gcloud 7f65402 documentation</title>
+    <title>HappyBase Connection &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="index.html" />
     <link rel="next" title="HappyBase Connection Pool" href="happybase-pool.html" />
     <link rel="prev" title="Row Data" href="bigtable-row-data.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-connection%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-connection%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -102,15 +102,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="target" id="module-gcloud.bigtable.happybase.connection"></span><p>Google Cloud Bigtable HappyBase connection module.</p>
 <dl class="class">
 <dt id="gcloud.bigtable.happybase.connection.Connection">
-<em class="property">class </em><code class="descclassname">gcloud.bigtable.happybase.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>timeout=None</em>, <em>autoconnect=True</em>, <em>table_prefix=None</em>, <em>table_prefix_separator='_'</em>, <em>cluster=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/happybase/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.happybase.connection.Connection" title="Permalink to this definition">#</a></dt>
+<em class="property">class </em><code class="descclassname">gcloud.bigtable.happybase.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>timeout=None</em>, <em>autoconnect=True</em>, <em>table_prefix=None</em>, <em>table_prefix_separator='_'</em>, <em>instance=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/happybase/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.happybase.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Connection to Cloud Bigtable backend.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If you pass a <code class="docutils literal"><span class="pre">cluster</span></code>, it will be <a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster.copy" title="gcloud.bigtable.cluster.Cluster.copy"><code class="xref py py-meth docutils literal"><span class="pre">Cluster.copy()</span></code></a>-ed before
+<p class="last">If you pass a <code class="docutils literal"><span class="pre">instance</span></code>, it will be <a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance.copy" title="gcloud.bigtable.instance.Instance.copy"><code class="xref py py-meth docutils literal"><span class="pre">Instance.copy()</span></code></a>-ed before
 being stored on the new connection. This also copies the
 <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> that created the
-<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> instance and the
+<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> instance and the
 <a class="reference external" href="http://oauth2client.readthedocs.io/en/latest/source/oauth2client.client.html#oauth2client.client.Credentials" title="(in oauth2client v2.2.0)"><code class="xref py py-class docutils literal"><span class="pre">Credentials</span></code></a> stored on the
 client.</p>
 </div>
@@ -129,7 +129,7 @@ warning if passed.</p>
 <li><strong>table_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Prefix used to construct table names.</li>
 <li><strong>table_prefix_separator</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; (Optional) Separator used with
 <code class="docutils literal"><span class="pre">table_prefix</span></code>. Defaults to <code class="docutils literal"><span class="pre">_</span></code>.</li>
-<li><strong>cluster</strong> (<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a>) &#8211; (Optional) A Cloud Bigtable cluster. The instance also
+<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; (Optional) A Cloud Bigtable instance. The instance also
 owns a client for making gRPC requests to the Cloud
 Bigtable API. If not passed in, defaults to creating client
 with <code class="docutils literal"><span class="pre">admin=True</span></code> and using the <code class="docutils literal"><span class="pre">timeout</span></code> here for the
@@ -137,7 +137,7 @@ with <code class="docutils literal"><span class="pre">admin=True</span></code> a
 <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>
 constructor. The credentials for the client
 will be the implicit ones loaded from the environment.
-Then that client is used to retrieve all the clusters
+Then that client is used to retrieve all the instances
 owned by the client&#8217;s project.</li>
 <li><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Remaining keyword arguments. Provided for HappyBase
 compatibility.</li>
@@ -152,7 +152,7 @@ compatibility.</li>
 <dd><p>Close the underlying transport to Cloud Bigtable.</p>
 <p>This method closes the underlying HTTP/2 gRPC connection using a
 <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> bound to the
-<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> owned by
+<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owned by
 this connection.</p>
 </dd></dl>
 
@@ -321,7 +321,7 @@ always</td>
 <dd><p>Open the underlying transport to Cloud Bigtable.</p>
 <p>This method opens the underlying HTTP/2 gRPC connection using a
 <a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> bound to the
-<a class="reference internal" href="bigtable-cluster.html#gcloud.bigtable.cluster.Cluster" title="gcloud.bigtable.cluster.Cluster"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a> owned by
+<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> owned by
 this connection.</p>
 </dd></dl>
 
@@ -355,7 +355,7 @@ this connection.</p>
 <dd><p>Return a list of table names available to this connection.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This lists every table in the cluster owned by this connection,
+<p class="last">This lists every table in the instance owned by this connection,
 <strong>not</strong> every table that a given user may have access to.</p>
 </div>
 <div class="admonition note">
@@ -429,10 +429,11 @@ table names which match that prefix.</p>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bigtable-column-family.html">Column Families</a></li>

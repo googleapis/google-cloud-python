@@ -1,0 +1,133 @@
+Instance Admin API
+==================
+
+.. warning::
+
+    gRPC is required for using the Cloud Bigtable API. As of May 2016,
+    ``grpcio`` is only supported in Python 2.7, so importing
+    :mod:`gcloud.bigtable` in other versions of Python will fail.
+
+After creating a :class:`Client <gcloud.bigtable.client.Client>`, you can
+interact with individual instances for a project.
+
+List Intances
+-------------
+
+If you want a comprehensive list of all existing intances, make a
+`ListInstances`_ API request with
+:meth:`Client.list_intances() <gcloud.bigtable.client.Client.list_intances>`:
+
+.. code:: python
+
+    intances = client.list_intances()
+
+Instance Factory
+----------------
+
+To create a :class:`Instance <gcloud.bigtable.instance.Instance>` object:
+
+.. code:: python
+
+    instance = client.instance(instance_id, display_name=display_name)
+
+``display_name`` is optional. When not provided,
+``display_name`` defaults to the ``instance_id`` value.
+
+Even if this :class:`Instance <gcloud.bigtable.instance.Instance>` already
+has been created with the API, you'll want this object to use as a
+parent of a :class:`Table <gcloud.bigtable.table.Table>` just as the
+:class:`Client <gcloud.bigtable.client.Client>` is used as the parent of
+a :class:`Instance <gcloud.bigtable.instance.Instance>`.
+
+Create a new Instance
+---------------------
+
+After creating the instance object, make a `CreateInstance`_ API request
+with :meth:`create() <gcloud.bigtable.instance.Instance.create>`:
+
+.. code:: python
+
+    instance.display_name = 'My very own instance'
+    instance.create()
+
+Check on Current Operation
+--------------------------
+
+.. note::
+
+    When modifying a instance (via a `CreateInstance`_ request), the Bigtable
+    API will return a `long-running operation`_ and a corresponding
+    :class:`Operation <gcloud.bigtable.instance.Operation>` object
+    will be returned by
+    :meth:`create() <gcloud.bigtable.instance.Instance.create>``.
+
+You can check if a long-running operation (for a
+:meth:`create() <gcloud.bigtable.instance.Instance.create>` has finished
+by making a `GetOperation`_ request with
+:meth:`Operation.finished() <gcloud.bigtable.instance.Operation.finished>`:
+
+.. code:: python
+
+    >>> operation = instance.create()
+    >>> operation.finished()
+    True
+
+.. note::
+
+    Once an :class:`Operation <gcloud.bigtable.instance.Operation>` object
+    has returned :data:`True` from
+    :meth:`finished() <gcloud.bigtable.instance.Operation.finished>`, the
+    object should not be re-used. Subsequent calls to
+    :meth:`finished() <gcloud.bigtable.instance.Operation.finished>`
+    will result in a :class:`ValueError <exceptions.ValueError>`.
+
+Get metadata for an existing Instance
+-------------------------------------
+
+After creating the instance object, make a `GetInstance`_ API request
+with :meth:`reload() <gcloud.bigtable.instance.Instance.reload>`:
+
+.. code:: python
+
+    instance.reload()
+
+This will load ``display_name`` for the existing ``instance`` object.
+
+Update an existing Instance
+---------------------------
+
+After creating the instance object, make an `UpdateInstance`_ API request
+with :meth:`update() <gcloud.bigtable.instance.Instance.update>`:
+
+.. code:: python
+
+    client.display_name = 'New display_name'
+    instance.update()
+
+Delete an existing Instance
+---------------------------
+
+Make a `DeleteInstance`_ API request with
+:meth:`delete() <gcloud.bigtable.instance.Instance.delete>`:
+
+.. code:: python
+
+    instance.delete()
+
+Next Step
+---------
+
+Now we go down the hierarchy from
+:class:`Instance <gcloud.bigtable.instance.Instance>` to a
+:class:`Table <gcloud.bigtable.table.Table>`.
+
+Head next to learn about the :doc:`bigtable-table-api`.
+
+.. _Instance Admin API: https://cloud.google.com/bigtable/docs/creating-instance
+.. _CreateInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L66-L68
+.. _GetInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L38-L40
+.. _UpdateInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L93-L95
+.. _DeleteInstance: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L109-L111
+.. _ListInstances: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1/bigtable_instance_service.proto#L44-L46
+.. _GetOperation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L43-L45
+.. _long-running operation: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/blob/2aae624081f652427052fb652d3ae43d8ac5bf5a/bigtable-protos/src/main/proto/google/longrunning/operations.proto#L73-L102

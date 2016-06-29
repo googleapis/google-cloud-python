@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.row &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.row &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -115,9 +115,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_from_microseconds</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_data_pb2</span> <span class="k">as</span> <span class="n">data_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">bigtable_service_messages_pb2</span> <span class="k">as</span> <span class="n">messages_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">data_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">messages_v2_pb2</span><span class="p">)</span>
 
 
 <span class="n">_PACK_I64</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">Struct</span><span class="p">(</span><span class="s1">&#39;&gt;q&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span>
@@ -226,13 +227,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1"># Truncate to millisecond granularity.</span>
             <span class="n">timestamp_micros</span> <span class="o">-=</span> <span class="p">(</span><span class="n">timestamp_micros</span> <span class="o">%</span> <span class="mi">1000</span><span class="p">)</span>
 
-        <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">SetCell</span><span class="p">(</span>
+        <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">SetCell</span><span class="p">(</span>
             <span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
             <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
             <span class="n">timestamp_micros</span><span class="o">=</span><span class="n">timestamp_micros</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">set_cell</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
+        <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">set_cell</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -248,8 +249,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param state: (Optional) The state that is passed along to</span>
 <span class="sd">                      :meth:`_get_mutations`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromRow</span><span class="p">()</span>
-        <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_row</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
+        <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromRow</span><span class="p">()</span>
+        <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_row</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
@@ -280,10 +281,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mutations_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_COLUMNS</span><span class="p">:</span>
-            <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromFamily</span><span class="p">(</span>
+            <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromFamily</span><span class="p">(</span>
                 <span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_family</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
+            <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_family</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
             <span class="n">mutations_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">delete_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -299,9 +300,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                     <span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
                     <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromColumn</span><span class="p">(</span>
+                <span class="n">mutation_val</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="o">.</span><span class="n">DeleteFromColumn</span><span class="p">(</span>
                     <span class="o">**</span><span class="n">delete_kwargs</span><span class="p">)</span>
-                <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span>
+                <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span>
                     <span class="n">delete_from_column</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
                 <span class="n">to_append</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
@@ -481,13 +482,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">num_mutations</span> <span class="o">&gt;</span> <span class="n">MAX_MUTATIONS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> total mutations exceed the maximum allowable &#39;</span>
                              <span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_mutations</span><span class="p">,</span> <span class="n">MAX_MUTATIONS</span><span class="p">))</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">MutateRowRequest</span><span class="p">(</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">MutateRowRequest</span><span class="p">(</span>
             <span class="n">table_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">row_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span><span class="p">,</span>
             <span class="n">mutations</span><span class="o">=</span><span class="n">mutations_list</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># We expect a `google.protobuf.empty_pb2.Empty`</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">MutateRow</span><span class="p">(</span><span class="n">request_pb</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
@@ -596,15 +597,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="s1">&#39;mutations and </span><span class="si">%d</span><span class="s1"> false mutations.&#39;</span> <span class="o">%</span> <span class="p">(</span>
                     <span class="n">MAX_MUTATIONS</span><span class="p">,</span> <span class="n">num_true_mutations</span><span class="p">,</span> <span class="n">num_false_mutations</span><span class="p">))</span>
 
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">CheckAndMutateRowRequest</span><span class="p">(</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">CheckAndMutateRowRequest</span><span class="p">(</span>
             <span class="n">table_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">row_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span><span class="p">,</span>
             <span class="n">predicate_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">(),</span>
             <span class="n">true_mutations</span><span class="o">=</span><span class="n">true_mutations</span><span class="p">,</span>
             <span class="n">false_mutations</span><span class="o">=</span><span class="n">false_mutations</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># We expect a `.messages_pb2.CheckAndMutateRowResponse`</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span>
+        <span class="c1"># We expect a `.messages_v2_pb2.CheckAndMutateRowResponse`</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">CheckAndMutateRow</span><span class="p">(</span>
             <span class="n">request_pb</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
@@ -793,9 +794,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">column</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">rule_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRule</span><span class="p">(</span><span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
-                                               <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
-                                               <span class="n">append_value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">rule_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRule</span><span class="p">(</span>
+            <span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
+            <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+            <span class="n">append_value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rule_pb_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule_pb</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AppendRow.increment_cell_value"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.AppendRow.increment_cell_value">[docs]</a>    <span class="k">def</span> <span class="nf">increment_cell_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">int_value</span><span class="p">):</span>
@@ -829,9 +831,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                          will fail.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">column</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
-        <span class="n">rule_pb</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRule</span><span class="p">(</span><span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
-                                               <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
-                                               <span class="n">increment_amount</span><span class="o">=</span><span class="n">int_value</span><span class="p">)</span>
+        <span class="n">rule_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRule</span><span class="p">(</span>
+            <span class="n">family_name</span><span class="o">=</span><span class="n">column_family_id</span><span class="p">,</span>
+            <span class="n">column_qualifier</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+            <span class="n">increment_amount</span><span class="o">=</span><span class="n">int_value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rule_pb_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule_pb</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AppendRow.commit"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.AppendRow.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -884,13 +887,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">num_mutations</span> <span class="o">&gt;</span> <span class="n">MAX_MUTATIONS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> total append mutations exceed the maximum &#39;</span>
                              <span class="s1">&#39;allowable </span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">num_mutations</span><span class="p">,</span> <span class="n">MAX_MUTATIONS</span><span class="p">))</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRowRequest</span><span class="p">(</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_v2_pb2</span><span class="o">.</span><span class="n">ReadModifyWriteRowRequest</span><span class="p">(</span>
             <span class="n">table_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">row_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span><span class="p">,</span>
             <span class="n">rules</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rule_pb_list</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># We expect a `.data_pb2.Row`</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span>
+        <span class="c1"># We expect a `.data_v2_pb2.Row`</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="n">row_response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_data_stub</span><span class="o">.</span><span class="n">ReadModifyWriteRow</span><span class="p">(</span>
             <span class="n">request_pb</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
@@ -904,7 +907,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="k">def</span> <span class="nf">_parse_rmw_row_response</span><span class="p">(</span><span class="n">row_response</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parses the response to a ``ReadModifyWriteRow`` request.</span>
 
-<span class="sd">    :type row_response: :class:`.data_pb2.Row`</span>
+<span class="sd">    :type row_response: :class:`.data_v2_pb2.Row`</span>
 <span class="sd">    :param row_response: The response row (with only modified cells) from a</span>
 <span class="sd">                         ``ReadModifyWriteRow`` request.</span>
 
@@ -935,7 +938,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  }</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">column_family</span> <span class="ow">in</span> <span class="n">row_response</span><span class="o">.</span><span class="n">families</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">column_family</span> <span class="ow">in</span> <span class="n">row_response</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">families</span><span class="p">:</span>
         <span class="n">column_family_id</span><span class="p">,</span> <span class="n">curr_family</span> <span class="o">=</span> <span class="n">_parse_family_pb</span><span class="p">(</span><span class="n">column_family</span><span class="p">)</span>
         <span class="n">result</span><span class="p">[</span><span class="n">column_family_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">curr_family</span>
     <span class="k">return</span> <span class="n">result</span>
@@ -944,7 +947,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="k">def</span> <span class="nf">_parse_family_pb</span><span class="p">(</span><span class="n">family_pb</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parses a Family protobuf into a dictionary.</span>
 
-<span class="sd">    :type family_pb: :class:`._generated.bigtable_data_pb2.Family`</span>
+<span class="sd">    :type family_pb: :class:`._generated_v2.data_pb2.Family`</span>
 <span class="sd">    :param family_pb: A protobuf</span>
 
 <span class="sd">    :rtype: tuple</span>
@@ -1028,10 +1031,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-column-family.html">Column Families</a></li>

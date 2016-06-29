@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.row_filters &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.row_filters &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row_filters%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row_filters%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,7 +110,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_microseconds_from_datetime</span>
 <span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_data_pb2</span> <span class="k">as</span> <span class="n">data_pb2</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">data_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="RowFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilter">[docs]</a><span class="k">class</span> <span class="nc">RowFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -158,10 +159,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="SinkFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.SinkFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">sink</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">sink</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="PassAllFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.PassAllFilter">[docs]</a><span class="k">class</span> <span class="nc">PassAllFilter</span><span class="p">(</span><span class="n">_BoolFilter</span><span class="p">):</span>
@@ -176,10 +177,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="PassAllFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.PassAllFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">pass_all_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">pass_all_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="BlockAllFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.BlockAllFilter">[docs]</a><span class="k">class</span> <span class="nc">BlockAllFilter</span><span class="p">(</span><span class="n">_BoolFilter</span><span class="p">):</span>
@@ -193,10 +194,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="BlockAllFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.BlockAllFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">block_all_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">block_all_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_RegexFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -246,10 +247,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="RowKeyRegexFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowKeyRegexFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">row_key_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">row_key_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="RowSampleFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowSampleFilter">[docs]</a><span class="k">class</span> <span class="nc">RowSampleFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -271,10 +272,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="RowSampleFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowSampleFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">row_sample_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">row_sample_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="FamilyNameRegexFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.FamilyNameRegexFilter">[docs]</a><span class="k">class</span> <span class="nc">FamilyNameRegexFilter</span><span class="p">(</span><span class="n">_RegexFilter</span><span class="p">):</span>
@@ -295,10 +296,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="FamilyNameRegexFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.FamilyNameRegexFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">family_name_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">family_name_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ColumnQualifierRegexFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ColumnQualifierRegexFilter">[docs]</a><span class="k">class</span> <span class="nc">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="n">_RegexFilter</span><span class="p">):</span>
@@ -325,10 +326,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ColumnQualifierRegexFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ColumnQualifierRegexFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">column_qualifier_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">column_qualifier_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="TimestampRange"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.TimestampRange">[docs]</a><span class="k">class</span> <span class="nc">TimestampRange</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -359,7 +360,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="TimestampRange.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.TimestampRange.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the :class:`TimestampRange` to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.TimestampRange`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.TimestampRange`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">timestamp_range_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -369,7 +370,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">timestamp_range_kwargs</span><span class="p">[</span><span class="s1">&#39;end_timestamp_micros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">_microseconds_from_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">TimestampRange</span><span class="p">(</span><span class="o">**</span><span class="n">timestamp_range_kwargs</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">TimestampRange</span><span class="p">(</span><span class="o">**</span><span class="n">timestamp_range_kwargs</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="TimestampRangeFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.TimestampRangeFilter">[docs]</a><span class="k">class</span> <span class="nc">TimestampRangeFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -393,10 +394,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        First converts the ``range_`` on the current object to a protobuf and</span>
 <span class="sd">        then uses it in the ``timestamp_range_filter`` field.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">timestamp_range_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">range_</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span>
+            <span class="n">timestamp_range_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">range_</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span></div></div>
 
 
 <div class="viewcode-block" id="ColumnRangeFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ColumnRangeFilter">[docs]</a><span class="k">class</span> <span class="nc">ColumnRangeFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -468,28 +470,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ColumnRangeFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ColumnRangeFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        First converts to a :class:`.data_pb2.ColumnRange` and then uses it</span>
+<span class="sd">        First converts to a :class:`.data_v2_pb2.ColumnRange` and then uses it</span>
 <span class="sd">        in the ``column_range_filter`` field.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">column_range_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;family_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">column_family_id</span><span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_start</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_qualifier_inclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_qualifier_closed&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_qualifier_exclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_qualifier_open&#39;</span>
             <span class="n">column_range_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_column</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_end</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_qualifier_inclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_qualifier_closed&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_qualifier_exclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_qualifier_open&#39;</span>
             <span class="n">column_range_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_column</span><span class="p">)</span>
 
-        <span class="n">column_range</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">ColumnRange</span><span class="p">(</span><span class="o">**</span><span class="n">column_range_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">column_range_filter</span><span class="o">=</span><span class="n">column_range</span><span class="p">)</span></div></div>
+        <span class="n">column_range</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">ColumnRange</span><span class="p">(</span><span class="o">**</span><span class="n">column_range_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">column_range_filter</span><span class="o">=</span><span class="n">column_range</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ValueRegexFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ValueRegexFilter">[docs]</a><span class="k">class</span> <span class="nc">ValueRegexFilter</span><span class="p">(</span><span class="n">_RegexFilter</span><span class="p">):</span>
@@ -516,10 +518,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ValueRegexFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ValueRegexFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">value_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">value_regex_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regex</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ValueRangeFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ValueRangeFilter">[docs]</a><span class="k">class</span> <span class="nc">ValueRangeFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -585,28 +587,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ValueRangeFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ValueRangeFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        First converts to a :class:`.data_pb2.ValueRange` and then uses</span>
+<span class="sd">        First converts to a :class:`.data_v2_pb2.ValueRange` and then uses</span>
 <span class="sd">        it to create a row filter protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value_range_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_start</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_value_inclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_value_closed&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_value_exclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;start_value_open&#39;</span>
             <span class="n">value_range_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_value</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">inclusive_end</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_value_inclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_value_closed&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_value_exclusive&#39;</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;end_value_open&#39;</span>
             <span class="n">value_range_kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_value</span><span class="p">)</span>
 
-        <span class="n">value_range</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">ValueRange</span><span class="p">(</span><span class="o">**</span><span class="n">value_range_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">value_range_filter</span><span class="o">=</span><span class="n">value_range</span><span class="p">)</span></div></div>
+        <span class="n">value_range</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">ValueRange</span><span class="p">(</span><span class="o">**</span><span class="n">value_range_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">value_range_filter</span><span class="o">=</span><span class="n">value_range</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_CellCountFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -638,10 +640,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="CellsRowOffsetFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.CellsRowOffsetFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">cells_per_row_offset_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span>
+            <span class="n">cells_per_row_offset_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="CellsRowLimitFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.CellsRowLimitFilter">[docs]</a><span class="k">class</span> <span class="nc">CellsRowLimitFilter</span><span class="p">(</span><span class="n">_CellCountFilter</span><span class="p">):</span>
@@ -654,10 +657,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="CellsRowLimitFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.CellsRowLimitFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">cells_per_row_limit_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">cells_per_row_limit_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="CellsColumnLimitFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.CellsColumnLimitFilter">[docs]</a><span class="k">class</span> <span class="nc">CellsColumnLimitFilter</span><span class="p">(</span><span class="n">_CellCountFilter</span><span class="p">):</span>
@@ -672,10 +675,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="CellsColumnLimitFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.CellsColumnLimitFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">cells_per_column_limit_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span>
+            <span class="n">cells_per_column_limit_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_cells</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="StripValueTransformerFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.StripValueTransformerFilter">[docs]</a><span class="k">class</span> <span class="nc">StripValueTransformerFilter</span><span class="p">(</span><span class="n">_BoolFilter</span><span class="p">):</span>
@@ -690,10 +694,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="StripValueTransformerFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.StripValueTransformerFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">strip_value_transformer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">strip_value_transformer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ApplyLabelFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ApplyLabelFilter">[docs]</a><span class="k">class</span> <span class="nc">ApplyLabelFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -726,10 +730,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ApplyLabelFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ApplyLabelFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">apply_label_transformer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">apply_label_transformer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_FilterCombination</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -768,12 +772,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="RowFilterChain.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilterChain.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">chain</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Chain</span><span class="p">(</span>
+        <span class="n">chain</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Chain</span><span class="p">(</span>
             <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">row_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">row_filter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">chain</span><span class="o">=</span><span class="n">chain</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">chain</span><span class="o">=</span><span class="n">chain</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="RowFilterUnion"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilterUnion">[docs]</a><span class="k">class</span> <span class="nc">RowFilterUnion</span><span class="p">(</span><span class="n">_FilterCombination</span><span class="p">):</span>
@@ -792,12 +796,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="RowFilterUnion.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.RowFilterUnion.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">interleave</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Interleave</span><span class="p">(</span>
+        <span class="n">interleave</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Interleave</span><span class="p">(</span>
             <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">row_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span> <span class="k">for</span> <span class="n">row_filter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">interleave</span><span class="o">=</span><span class="n">interleave</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">interleave</span><span class="o">=</span><span class="n">interleave</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ConditionalRowFilter"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ConditionalRowFilter">[docs]</a><span class="k">class</span> <span class="nc">ConditionalRowFilter</span><span class="p">(</span><span class="n">RowFilter</span><span class="p">):</span>
@@ -845,7 +849,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="ConditionalRowFilter.to_pb"><a class="viewcode-back" href="../../../bigtable-row-filters.html#gcloud.bigtable.row_filters.ConditionalRowFilter.to_pb">[docs]</a>    <span class="k">def</span> <span class="nf">to_pb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Converts the row filter to a protobuf.</span>
 
-<span class="sd">        :rtype: :class:`.data_pb2.RowFilter`</span>
+<span class="sd">        :rtype: :class:`.data_v2_pb2.RowFilter`</span>
 <span class="sd">        :returns: The converted current object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">condition_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;predicate_filter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()}</span>
@@ -853,8 +857,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">condition_kwargs</span><span class="p">[</span><span class="s1">&#39;true_filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">true_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">false_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">condition_kwargs</span><span class="p">[</span><span class="s1">&#39;false_filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">false_filter</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
-        <span class="n">condition</span> <span class="o">=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Condition</span><span class="p">(</span><span class="o">**</span><span class="n">condition_kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span></div></div>
+        <span class="n">condition</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="o">.</span><span class="n">Condition</span><span class="p">(</span><span class="o">**</span><span class="n">condition_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">RowFilter</span><span class="p">(</span><span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span></div></div>
 </pre></div>
 
       </section><!-- end of .content -->
@@ -906,10 +910,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-column-family.html">Column Families</a></li>

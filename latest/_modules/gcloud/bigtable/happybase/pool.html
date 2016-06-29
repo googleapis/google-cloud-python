@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.pool &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.happybase.pool &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/pool%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/pool%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -114,7 +114,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">six</span>
 
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="kn">import</span> <span class="n">_get_cluster</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="kn">import</span> <span class="n">_get_instance</span>
 
 
 <span class="n">_MIN_POOL_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
@@ -138,7 +138,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :class:`Connection &lt;.happybase.connection.Connection&gt;` constructor</span>
 <span class="sd">        **except** for ``autoconnect``. This is because the ``open`` /</span>
 <span class="sd">        ``closed`` status of a connection is managed by the pool. In addition,</span>
-<span class="sd">        if ``cluster`` is not passed, the default / inferred cluster is</span>
+<span class="sd">        if ``instance`` is not passed, the default / inferred instance is</span>
 <span class="sd">        determined by the pool and then passed to each</span>
 <span class="sd">        :class:`Connection &lt;.happybase.connection.Connection&gt;` that is created.</span>
 
@@ -168,8 +168,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="n">connection_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;autoconnect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="s1">&#39;cluster&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">connection_kwargs</span><span class="p">:</span>
-            <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_cluster</span><span class="p">(</span>
+        <span class="k">if</span> <span class="s1">&#39;instance&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">connection_kwargs</span><span class="p">:</span>
+            <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_instance</span><span class="p">(</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">size</span><span class="p">):</span>
@@ -295,10 +295,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-column-family.html">Column Families</a></li>

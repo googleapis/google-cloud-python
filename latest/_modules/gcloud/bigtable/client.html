@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.client &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.client &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/client%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/client%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,8 +111,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">In the hierarchy of API concepts</span>
 
-<span class="sd">* a :class:`Client` owns a :class:`.Cluster`</span>
-<span class="sd">* a :class:`.Cluster` owns a :class:`Table &lt;gcloud.bigtable.table.Table&gt;`</span>
+<span class="sd">* a :class:`Client` owns a :class:`.Instance`</span>
+<span class="sd">* a :class:`.Instance` owns a :class:`Table &lt;gcloud.bigtable.table.Table&gt;`</span>
 <span class="sd">* a :class:`Table &lt;gcloud.bigtable.table.Table&gt;` owns a</span>
 <span class="sd">  :class:`ColumnFamily &lt;.column_family.ColumnFamily&gt;`</span>
 <span class="sd">* a :class:`Table &lt;gcloud.bigtable.table.Table&gt;` owns a :class:`Row &lt;.row.Row&gt;`</span>
@@ -124,40 +124,49 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="kn">import</span> <span class="n">implementations</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_cluster_data_pb2</span> <span class="k">as</span> <span class="n">data_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_cluster_service_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">bigtable_cluster_service_messages_pb2</span> <span class="k">as</span> <span class="n">messages_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_service_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">bigtable_table_service_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated</span> <span class="kn">import</span> <span class="n">operations_grpc_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.cluster</span> <span class="kn">import</span> <span class="n">Cluster</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bigtable_instance_admin_pb2</span> <span class="k">as</span> <span class="n">instance_admin_v2_pb2</span><span class="p">)</span>
+<span class="c1"># V1 table admin service</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_v2_pb2</span><span class="p">)</span>
+<span class="c1"># V1 data service</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">operations_grpc_pb2</span> <span class="k">as</span> <span class="n">operations_grpc_v2_pb2</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.cluster</span> <span class="kn">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="kn">import</span> <span class="n">Instance</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="kn">import</span> <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span>
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">_ClientFactoryMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">_ClientProjectMixin</span>
 <span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
 
 
-<span class="n">TABLE_STUB_FACTORY</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">bigtable_table_service_pb2</span><span class="o">.</span><span class="n">beta_create_BigtableTableService_stub</span><span class="p">)</span>
-<span class="n">TABLE_ADMIN_HOST</span> <span class="o">=</span> <span class="s1">&#39;bigtabletableadmin.googleapis.com&#39;</span>
+<span class="n">TABLE_STUB_FACTORY_V2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table_admin_v2_pb2</span><span class="o">.</span><span class="n">beta_create_BigtableTableAdmin_stub</span><span class="p">)</span>
+<span class="n">TABLE_ADMIN_HOST_V2</span> <span class="o">=</span> <span class="s1">&#39;bigtableadmin.googleapis.com&#39;</span>
 <span class="sd">&quot;&quot;&quot;Table Admin API request host.&quot;&quot;&quot;</span>
-<span class="n">TABLE_ADMIN_PORT</span> <span class="o">=</span> <span class="mi">443</span>
+<span class="n">TABLE_ADMIN_PORT_V2</span> <span class="o">=</span> <span class="mi">443</span>
 <span class="sd">&quot;&quot;&quot;Table Admin API request port.&quot;&quot;&quot;</span>
 
-<span class="n">CLUSTER_STUB_FACTORY</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">bigtable_cluster_service_pb2</span><span class="o">.</span><span class="n">beta_create_BigtableClusterService_stub</span><span class="p">)</span>
-<span class="n">CLUSTER_ADMIN_HOST</span> <span class="o">=</span> <span class="s1">&#39;bigtableclusteradmin.googleapis.com&#39;</span>
+<span class="n">INSTANCE_STUB_FACTORY_V2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">instance_admin_v2_pb2</span><span class="o">.</span><span class="n">beta_create_BigtableInstanceAdmin_stub</span><span class="p">)</span>
+<span class="n">INSTANCE_ADMIN_HOST_V2</span> <span class="o">=</span> <span class="s1">&#39;bigtableadmin.googleapis.com&#39;</span>
 <span class="sd">&quot;&quot;&quot;Cluster Admin API request host.&quot;&quot;&quot;</span>
-<span class="n">CLUSTER_ADMIN_PORT</span> <span class="o">=</span> <span class="mi">443</span>
+<span class="n">INSTANCE_ADMIN_PORT_V2</span> <span class="o">=</span> <span class="mi">443</span>
 <span class="sd">&quot;&quot;&quot;Cluster Admin API request port.&quot;&quot;&quot;</span>
 
-<span class="n">DATA_STUB_FACTORY</span> <span class="o">=</span> <span class="n">bigtable_service_pb2</span><span class="o">.</span><span class="n">beta_create_BigtableService_stub</span>
-<span class="n">DATA_API_HOST</span> <span class="o">=</span> <span class="s1">&#39;bigtable.googleapis.com&#39;</span>
+<span class="n">DATA_STUB_FACTORY_V2</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">beta_create_Bigtable_stub</span>
+<span class="n">DATA_API_HOST_V2</span> <span class="o">=</span> <span class="s1">&#39;bigtable.googleapis.com&#39;</span>
 <span class="sd">&quot;&quot;&quot;Data API request host.&quot;&quot;&quot;</span>
-<span class="n">DATA_API_PORT</span> <span class="o">=</span> <span class="mi">443</span>
+<span class="n">DATA_API_PORT_V2</span> <span class="o">=</span> <span class="mi">443</span>
 <span class="sd">&quot;&quot;&quot;Data API request port.&quot;&quot;&quot;</span>
 
-<span class="n">OPERATIONS_STUB_FACTORY</span> <span class="o">=</span> <span class="n">operations_grpc_pb2</span><span class="o">.</span><span class="n">beta_create_Operations_stub</span>
+<span class="n">OPERATIONS_STUB_FACTORY_V2</span> <span class="o">=</span> <span class="n">operations_grpc_v2_pb2</span><span class="o">.</span><span class="n">beta_create_Operations_stub</span>
+<span class="n">OPERATIONS_API_HOST_V2</span> <span class="o">=</span> <span class="n">INSTANCE_ADMIN_HOST_V2</span>
+<span class="n">OPERATIONS_API_PORT_V2</span> <span class="o">=</span> <span class="n">INSTANCE_ADMIN_PORT_V2</span>
 
 <span class="n">ADMIN_SCOPE</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/auth/bigtable.admin&#39;</span>
 <span class="sd">&quot;&quot;&quot;Scope for interacting with the Cluster Admin and Table Admin APIs.&quot;&quot;&quot;</span>
@@ -184,14 +193,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    :type project: :class:`str` or :func:`unicode &lt;unicode&gt;`</span>
 <span class="sd">    :param project: (Optional) The ID of the project which owns the</span>
-<span class="sd">                    clusters, tables and data. If not provided, will</span>
+<span class="sd">                    instances, tables and data. If not provided, will</span>
 <span class="sd">                    attempt to determine from the environment.</span>
 
 <span class="sd">    :type credentials:</span>
 <span class="sd">        :class:`OAuth2Credentials &lt;oauth2client.client.OAuth2Credentials&gt;` or</span>
 <span class="sd">        :data:`NoneType &lt;types.NoneType&gt;`</span>
 <span class="sd">    :param credentials: (Optional) The OAuth2 Credentials to use for this</span>
-<span class="sd">                        cluster. If not provided, defaults to the Google</span>
+<span class="sd">                        client. If not provided, defaults to the Google</span>
 <span class="sd">                        Application Default Credentials.</span>
 
 <span class="sd">    :type read_only: bool</span>
@@ -201,7 +210,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    :type admin: bool</span>
 <span class="sd">    :param admin: (Optional) Boolean indicating if the client will be used to</span>
-<span class="sd">                  interact with the Cluster Admin or Table Admin APIs. This</span>
+<span class="sd">                  interact with the Instance Admin or Table Admin APIs. This</span>
 <span class="sd">                  requires the :const:`ADMIN_SCOPE`. Defaults to :data:`False`.</span>
 
 <span class="sd">    :type user_agent: str</span>
@@ -248,7 +257,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># These will be set in start().</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
 
@@ -284,7 +293,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">project_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Project name to be used with Cluster Admin API.</span>
+        <span class="sd">&quot;&quot;&quot;Project name to be used with Instance Admin API.</span>
 
 <span class="sd">        .. note::</span>
 
@@ -315,8 +324,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_cluster_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Getter for the gRPC stub used for the Cluster Admin API.</span>
+    <span class="k">def</span> <span class="nf">_instance_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getter for the gRPC stub used for the Instance Admin API.</span>
 
 <span class="sd">        :rtype: :class:`grpc.beta._stub._AutoIntermediary`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
@@ -326,9 +335,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client has not been started.&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_operations_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -368,29 +377,29 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`grpc.beta._stub._AutoIntermediary`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">DATA_STUB_FACTORY</span><span class="p">,</span>
-                          <span class="n">DATA_API_HOST</span><span class="p">,</span> <span class="n">DATA_API_PORT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">DATA_STUB_FACTORY_V2</span><span class="p">,</span>
+                          <span class="n">DATA_API_HOST_V2</span><span class="p">,</span> <span class="n">DATA_API_PORT_V2</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_make_cluster_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates gRPC stub to make requests to the Cluster Admin API.</span>
+    <span class="k">def</span> <span class="nf">_make_instance_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates gRPC stub to make requests to the Instance Admin API.</span>
 
 <span class="sd">        :rtype: :class:`grpc.beta._stub._AutoIntermediary`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">CLUSTER_STUB_FACTORY</span><span class="p">,</span>
-                          <span class="n">CLUSTER_ADMIN_HOST</span><span class="p">,</span> <span class="n">CLUSTER_ADMIN_PORT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">INSTANCE_STUB_FACTORY_V2</span><span class="p">,</span>
+                          <span class="n">INSTANCE_ADMIN_HOST_V2</span><span class="p">,</span> <span class="n">INSTANCE_ADMIN_PORT_V2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_make_operations_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates gRPC stub to make requests to the Operations API.</span>
 
-<span class="sd">        These are for long-running operations of the Cluster Admin API,</span>
+<span class="sd">        These are for long-running operations of the Instance Admin API,</span>
 <span class="sd">        hence the host and port matching.</span>
 
 <span class="sd">        :rtype: :class:`grpc.beta._stub._AutoIntermediary`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OPERATIONS_STUB_FACTORY</span><span class="p">,</span>
-                          <span class="n">CLUSTER_ADMIN_HOST</span><span class="p">,</span> <span class="n">CLUSTER_ADMIN_PORT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">OPERATIONS_STUB_FACTORY_V2</span><span class="p">,</span>
+                          <span class="n">OPERATIONS_API_HOST_V2</span><span class="p">,</span> <span class="n">OPERATIONS_API_PORT_V2</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_make_table_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates gRPC stub to make requests to the Table Admin API.</span>
@@ -398,8 +407,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`grpc.beta._stub._AutoIntermediary`</span>
 <span class="sd">        :returns: A gRPC stub object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">TABLE_STUB_FACTORY</span><span class="p">,</span>
-                          <span class="n">TABLE_ADMIN_HOST</span><span class="p">,</span> <span class="n">TABLE_ADMIN_PORT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_make_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">TABLE_STUB_FACTORY_V2</span><span class="p">,</span>
+                          <span class="n">TABLE_ADMIN_HOST_V2</span><span class="p">,</span> <span class="n">TABLE_ADMIN_PORT_V2</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Client.is_started"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.is_started">[docs]</a>    <span class="k">def</span> <span class="nf">is_started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check if the client has been started.</span>
@@ -426,11 +435,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_data_stub</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span><span class="o">.</span><span class="n">__enter__</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_cluster_stub</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_instance_stub</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_operations_stub</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_table_stub</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span><span class="o">.</span><span class="n">__enter__</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span><span class="o">.</span><span class="n">__enter__</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span><span class="o">.</span><span class="n">__enter__</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span><span class="o">.</span><span class="n">__enter__</span><span class="p">()</span></div>
 
@@ -448,12 +457,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># traceback to __exit__.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="bp">None</span></div>
 
@@ -461,78 +470,59 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Stops the client as a context manager.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Client.cluster"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.cluster">[docs]</a>    <span class="k">def</span> <span class="nf">cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Factory to create a cluster associated with this client.</span>
+<div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">_EXISTING_INSTANCE_LOCATION_ID</span><span class="p">,</span>
+                 <span class="n">display_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Factory to create a instance associated with this client.</span>
 
-<span class="sd">        :type zone: str</span>
-<span class="sd">        :param zone: The name of the zone where the cluster resides.</span>
+<span class="sd">        :type instance_id: str</span>
+<span class="sd">        :param instance_id: The ID of the instance.</span>
 
-<span class="sd">        :type cluster_id: str</span>
-<span class="sd">        :param cluster_id: The ID of the cluster.</span>
+<span class="sd">        :type location: string</span>
+<span class="sd">        :param location: location name, in form</span>
+<span class="sd">                         ``projects/&lt;project&gt;/locations/&lt;location&gt;``; used to</span>
+<span class="sd">                         set up the instance&#39;s cluster.</span>
 
 <span class="sd">        :type display_name: str</span>
-<span class="sd">        :param display_name: (Optional) The display name for the cluster in the</span>
-<span class="sd">                             Cloud Console UI. (Must be between 4 and 30</span>
+<span class="sd">        :param display_name: (Optional) The display name for the instance in</span>
+<span class="sd">                             the Cloud Console UI. (Must be between 4 and 30</span>
 <span class="sd">                             characters.) If this value is not set in the</span>
-<span class="sd">                             constructor, will fall back to the cluster ID.</span>
+<span class="sd">                             constructor, will fall back to the instance ID.</span>
 
 <span class="sd">        :type serve_nodes: int</span>
-<span class="sd">        :param serve_nodes: (Optional) The number of nodes in the cluster.</span>
-<span class="sd">                            Defaults to 3.</span>
+<span class="sd">        :param serve_nodes: (Optional) The number of nodes in the instance&#39;s</span>
+<span class="sd">                            cluster; used to set up the instance&#39;s cluster.</span>
 
-<span class="sd">        :rtype: :class:`.Cluster`</span>
-<span class="sd">        :returns: The cluster owned by this client.</span>
+<span class="sd">        :rtype: :class:`.Instance`</span>
+<span class="sd">        :returns: an instance owned by this client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Cluster</span><span class="p">(</span><span class="n">zone</span><span class="p">,</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span>
-                       <span class="n">display_name</span><span class="o">=</span><span class="n">display_name</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">serve_nodes</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span>
+                        <span class="n">display_name</span><span class="o">=</span><span class="n">display_name</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">serve_nodes</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_zones"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.list_zones">[docs]</a>    <span class="k">def</span> <span class="nf">list_zones</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Lists zones associated with project.</span>
-
-<span class="sd">        :rtype: list</span>
-<span class="sd">        :returns: The names (as :class:`str`) of the zones</span>
-<span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if one of the</span>
-<span class="sd">                 zones is not in ``OK`` state.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">ListZonesRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="c1"># We expect a `.messages_pb2.ListZonesResponse`</span>
-        <span class="n">list_zones_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">ListZones</span><span class="p">(</span>
-            <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
-
-        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">list_zones_response</span><span class="o">.</span><span class="n">zones</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">zone</span><span class="o">.</span><span class="n">status</span> <span class="o">!=</span> <span class="n">data_pb2</span><span class="o">.</span><span class="n">Zone</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Zone </span><span class="si">%s</span><span class="s1"> not in OK state&#39;</span> <span class="o">%</span> <span class="p">(</span>
-                    <span class="n">zone</span><span class="o">.</span><span class="n">display_name</span><span class="p">,))</span>
-            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">zone</span><span class="o">.</span><span class="n">display_name</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">result</span></div>
-
-<div class="viewcode-block" id="Client.list_clusters"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.list_clusters">[docs]</a>    <span class="k">def</span> <span class="nf">list_clusters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Lists clusters owned by the project.</span>
+<div class="viewcode-block" id="Client.list_instances"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.list_instances">[docs]</a>    <span class="k">def</span> <span class="nf">list_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;List instances owned by the project.</span>
 
 <span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns: A pair of results, the first is a list of :class:`.Cluster` s</span>
-<span class="sd">                  returned and the second is a list of strings (the failed</span>
-<span class="sd">                  zones in the request).</span>
+<span class="sd">        :returns: A pair of results, the first is a list of</span>
+<span class="sd">                  :class:`.Instance` objects returned and the second is a</span>
+<span class="sd">                  list of strings (the failed locations in the request).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">messages_pb2</span><span class="o">.</span><span class="n">ListClustersRequest</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
-        <span class="c1"># We expect a `.messages_pb2.ListClustersResponse`</span>
-        <span class="n">list_clusters_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster_stub</span><span class="o">.</span><span class="n">ListClusters</span><span class="p">(</span>
+        <span class="n">request_pb</span> <span class="o">=</span> <span class="n">instance_admin_v2_pb2</span><span class="o">.</span><span class="n">ListInstancesRequest</span><span class="p">(</span>
+            <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub</span><span class="o">.</span><span class="n">ListInstances</span><span class="p">(</span>
             <span class="n">request_pb</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout_seconds</span><span class="p">)</span>
 
-        <span class="n">failed_zones</span> <span class="o">=</span> <span class="p">[</span><span class="n">zone</span><span class="o">.</span><span class="n">display_name</span>
-                        <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">list_clusters_response</span><span class="o">.</span><span class="n">failed_zones</span><span class="p">]</span>
-        <span class="n">clusters</span> <span class="o">=</span> <span class="p">[</span><span class="n">Cluster</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">cluster_pb</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">cluster_pb</span> <span class="ow">in</span> <span class="n">list_clusters_response</span><span class="o">.</span><span class="n">clusters</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">clusters</span><span class="p">,</span> <span class="n">failed_zones</span></div></div>
+        <span class="n">instances</span> <span class="o">=</span> <span class="p">[</span><span class="n">Instance</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="n">instance_pb</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                     <span class="k">for</span> <span class="n">instance_pb</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">instances</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">instances</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">failed_locations</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">_MetadataPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Callable class to transform metadata for gRPC requests.</span>
 
 <span class="sd">    :type client: :class:`.client.Client`</span>
-<span class="sd">    :param client: The client that owns the cluster. Provides authorization and</span>
-<span class="sd">                   user agent.</span>
+<span class="sd">    :param client: The client that owns the instance.</span>
+<span class="sd">                   Provides authorization and user agent.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
@@ -555,8 +545,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    Uses / depends on the beta implementation of gRPC.</span>
 
 <span class="sd">    :type client: :class:`.client.Client`</span>
-<span class="sd">    :param client: The client that owns the cluster. Provides authorization and</span>
-<span class="sd">                   user agent.</span>
+<span class="sd">    :param client: The client that owns the instance.</span>
+<span class="sd">                   Provides authorization and user agent.</span>
 
 <span class="sd">    :type stub_factory: callable</span>
 <span class="sd">    :param stub_factory: A factory which will create a gRPC stub for</span>
@@ -632,10 +622,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bigtable-column-family.html">Column Families</a></li>

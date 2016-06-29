@@ -63,7 +63,7 @@ Configuration
 Admin API Access
 ----------------
 
-If you'll be using your client to make `Cluster Admin`_ and `Table Admin`_
+If you'll be using your client to make `Instance Admin`_ and `Table Admin`_
 API requests, you'll need to pass the ``admin`` argument:
 
 .. code:: python
@@ -89,10 +89,10 @@ Next Step
 ---------
 
 After a :class:`Client <gcloud.bigtable.client.Client>`, the next highest-level
-object is a :class:`Cluster <gcloud.bigtable.cluster.Cluster>`. You'll need
+object is a :class:`Instance <gcloud.bigtable.instance.Instance>`. You'll need
 one before you can interact with tables or data.
 
-Head next to learn about the :doc:`bigtable-cluster-api`.
+Head next to learn about the :doc:`bigtable-instance-api`.
 
-.. _Cluster Admin: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/tree/master/bigtable-protos/src/main/proto/google/bigtable/admin/cluster/v1
+.. _Instance Admin: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/tree/master/bigtable-protos/src/main/proto/google/bigtable/admin/instance/v1
 .. _Table Admin: https://github.com/GoogleCloudPlatform/cloud-bigtable-client/tree/master/bigtable-protos/src/main/proto/google/bigtable/admin/table/v1

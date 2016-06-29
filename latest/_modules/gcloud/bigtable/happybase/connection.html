@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 7f65402 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud d958f74 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '7f65402',
+        VERSION:     'd958f74',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 7f65402 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud d958f74 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%207f65402" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%20d958f74" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (7f65402)
+              Version History (d958f74)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -147,25 +147,25 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                        <span class="s1">&#39;of enabled / disabled tables.&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_cluster</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Gets cluster for the default project.</span>
+<span class="k">def</span> <span class="nf">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets instance for the default project.</span>
 
 <span class="sd">    Creates a client with the inferred credentials and project ID from</span>
 <span class="sd">    the local environment. Then uses</span>
-<span class="sd">    :meth:`.bigtable.client.Client.list_clusters` to</span>
-<span class="sd">    get the unique cluster owned by the project.</span>
+<span class="sd">    :meth:`.bigtable.client.Client.list_instances` to</span>
+<span class="sd">    get the unique instance owned by the project.</span>
 
-<span class="sd">    If the request fails for any reason, or if there isn&#39;t exactly one cluster</span>
+<span class="sd">    If the request fails for any reason, or if there isn&#39;t exactly one instance</span>
 <span class="sd">    owned by the project, then this function will fail.</span>
 
 <span class="sd">    :type timeout: int</span>
 <span class="sd">    :param timeout: (Optional) The socket timeout in milliseconds.</span>
 
-<span class="sd">    :rtype: :class:`gcloud.bigtable.cluster.Cluster`</span>
-<span class="sd">    :returns: The unique cluster owned by the project inferred from</span>
+<span class="sd">    :rtype: :class:`gcloud.bigtable.instance.Instance`</span>
+<span class="sd">    :returns: The unique instance owned by the project inferred from</span>
 <span class="sd">              the environment.</span>
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if there is a failed</span>
-<span class="sd">             zone or any number of clusters other than one.</span>
+<span class="sd">             location or any number of instances other than one.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">client_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
@@ -173,20 +173,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">client_kwargs</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-        <span class="n">clusters</span><span class="p">,</span> <span class="n">failed_zones</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_clusters</span><span class="p">()</span>
+        <span class="n">instances</span><span class="p">,</span> <span class="n">failed_locations</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_instances</span><span class="p">()</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">client</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">failed_zones</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Determining cluster via ListClusters encountered &#39;</span>
-                         <span class="s1">&#39;failed zones.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This client doesn</span><span class="se">\&#39;</span><span class="s1">t have access to any clusters.&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This client has access to more than one cluster. &#39;</span>
-                         <span class="s1">&#39;Please directly pass the cluster you</span><span class="se">\&#39;</span><span class="s1">d &#39;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">failed_locations</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Determining instance via ListInstances encountered &#39;</span>
+                         <span class="s1">&#39;failed locations.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This client doesn</span><span class="se">\&#39;</span><span class="s1">t have access to any instances.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This client has access to more than one instance. &#39;</span>
+                         <span class="s1">&#39;Please directly pass the instance you</span><span class="se">\&#39;</span><span class="s1">d &#39;</span>
                          <span class="s1">&#39;like to use.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">clusters</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -194,10 +194,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    .. note::</span>
 
-<span class="sd">        If you pass a ``cluster``, it will be :meth:`.Cluster.copy`-ed before</span>
+<span class="sd">        If you pass a ``instance``, it will be :meth:`.Instance.copy`-ed before</span>
 <span class="sd">        being stored on the new connection. This also copies the</span>
 <span class="sd">        :class:`Client &lt;gcloud.bigtable.client.Client&gt;` that created the</span>
-<span class="sd">        :class:`Cluster &lt;gcloud.bigtable.cluster.Cluster&gt;` instance and the</span>
+<span class="sd">        :class:`Instance &lt;gcloud.bigtable.instance.Instance&gt;` instance and the</span>
 <span class="sd">        :class:`Credentials &lt;oauth2client.client.Credentials&gt;` stored on the</span>
 <span class="sd">        client.</span>
 
@@ -220,8 +220,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param table_prefix_separator: (Optional) Separator used with</span>
 <span class="sd">                                   ``table_prefix``. Defaults to ``_``.</span>
 
-<span class="sd">    :type cluster: :class:`Cluster &lt;gcloud.bigtable.cluster.Cluster&gt;`</span>
-<span class="sd">    :param cluster: (Optional) A Cloud Bigtable cluster. The instance also</span>
+<span class="sd">    :type instance: :class:`Instance &lt;gcloud.bigtable.instance.Instance&gt;`</span>
+<span class="sd">    :param instance: (Optional) A Cloud Bigtable instance. The instance also</span>
 <span class="sd">                    owns a client for making gRPC requests to the Cloud</span>
 <span class="sd">                    Bigtable API. If not passed in, defaults to creating client</span>
 <span class="sd">                    with ``admin=True`` and using the ``timeout`` here for the</span>
@@ -229,7 +229,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                    :class:`Client &lt;gcloud.bigtable.client.Client&gt;`</span>
 <span class="sd">                    constructor. The credentials for the client</span>
 <span class="sd">                    will be the implicit ones loaded from the environment.</span>
-<span class="sd">                    Then that client is used to retrieve all the clusters</span>
+<span class="sd">                    Then that client is used to retrieve all the instances</span>
 <span class="sd">                    owned by the client&#39;s project.</span>
 
 <span class="sd">    :type kwargs: dict</span>
@@ -237,10 +237,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                   compatibility.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_cluster</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="bp">None</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">autoconnect</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">table_prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">table_prefix_separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">cluster</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                 <span class="n">table_prefix_separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handle_legacy_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">table_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
@@ -255,13 +255,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="o">=</span> <span class="n">table_prefix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix_separator</span> <span class="o">=</span> <span class="n">table_prefix_separator</span>
 
-        <span class="k">if</span> <span class="n">cluster</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="o">=</span> <span class="n">_get_cluster</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Timeout cannot be used when an existing &#39;</span>
-                                 <span class="s1">&#39;cluster is passed&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                                 <span class="s1">&#39;instance is passed&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">autoconnect</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
@@ -296,23 +296,23 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        This method opens the underlying HTTP/2 gRPC connection using a</span>
 <span class="sd">        :class:`Client &lt;gcloud.bigtable.client.Client&gt;` bound to the</span>
-<span class="sd">        :class:`Cluster &lt;gcloud.bigtable.cluster.Cluster&gt;` owned by</span>
+<span class="sd">        :class:`Instance &lt;gcloud.bigtable.instance.Instance&gt;` owned by</span>
 <span class="sd">        this connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Connection.close"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Close the underlying transport to Cloud Bigtable.</span>
 
 <span class="sd">        This method closes the underlying HTTP/2 gRPC connection using a</span>
 <span class="sd">        :class:`Client &lt;gcloud.bigtable.client.Client&gt;` bound to the</span>
-<span class="sd">        :class:`Cluster &lt;gcloud.bigtable.cluster.Cluster&gt;` owned by</span>
+<span class="sd">        :class:`Instance &lt;gcloud.bigtable.instance.Instance&gt;` owned by</span>
 <span class="sd">        this connection.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_table_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -351,7 +351,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        .. note::</span>
 
-<span class="sd">            This lists every table in the cluster owned by this connection,</span>
+<span class="sd">            This lists every table in the instance owned by this connection,</span>
 <span class="sd">            **not** every table that a given user may have access to.</span>
 
 <span class="sd">        .. note::</span>
@@ -362,7 +362,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: list</span>
 <span class="sd">        :returns: List of string table names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">low_level_table_instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>
+        <span class="n">low_level_table_instances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">list_tables</span><span class="p">()</span>
         <span class="n">table_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">table_instance</span><span class="o">.</span><span class="n">table_id</span>
                        <span class="k">for</span> <span class="n">table_instance</span> <span class="ow">in</span> <span class="n">low_level_table_instances</span><span class="p">]</span>
 
@@ -438,7 +438,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># Create table instance and then make API calls.</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">low_level_table</span> <span class="o">=</span> <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="p">)</span>
+        <span class="n">low_level_table</span> <span class="o">=</span> <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">low_level_table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">face</span><span class="o">.</span><span class="n">NetworkError</span> <span class="k">as</span> <span class="n">network_err</span><span class="p">:</span>
@@ -469,7 +469,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">_WARN</span><span class="p">(</span><span class="n">_DISABLE_DELETE_MSG</span><span class="p">)</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cluster</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
+        <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Connection.enable_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.enable_table">[docs]</a>    <span class="k">def</span> <span class="nf">enable_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable the specified table.</span>
@@ -626,10 +626,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../happybase-package.html">HappyBase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client-intro.html">Base for Everything</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster-api.html">Cluster Admin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance-api.html">Instance Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table-api.html">Table Admin API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-data-api.html">Data API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-instance.html">Instance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-cluster.html">Cluster</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-table.html">Table</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../bigtable-column-family.html">Column Families</a></li>
