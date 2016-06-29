@@ -211,13 +211,13 @@ Export log entries using sinks
 Sinks allow exporting entries which match a given filter to Cloud Storage
 buckets, BigQuery datasets, or Cloud Pub/Sub topics.
 
-Export to Cloud storage
+Export to Cloud Storage
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Make sure that the storage bucket you want to export logs too has
-`cloud-logs@google.com` as the owner. See `Set permission for writing exported logs`_.
+``cloud-logs@google.com`` as the owner. See `Set permission for writing exported logs`_.
 
-Add `cloud-logs@google.com` as the owner of `my-bucket-name`:
+Add ``cloud-logs@google.com`` as the owner of ``my-bucket-name``:
 
 .. doctest::
 
@@ -236,11 +236,12 @@ Export to BigQuery
 ~~~~~~~~~~~~~~~~~~
 
 To export logs to BigQuery you must log into the Cloud Platform Console
-and add `cloud-logs@google.com` to a dataset.
+and add ``cloud-logs@google.com`` to a dataset.
 
 See: `Setting permissions for BigQuery`_
 
 .. doctest::
+
     >>> from gcloud import bigquery
     >>> from gcloud.bigquery.dataset import AccessGrant
     >>> bigquery_client = bigquery.Client()
@@ -259,11 +260,12 @@ Export to Pub/Sub
 ~~~~~~~~~~~~~~~~~
 
 To export logs to BigQuery you must log into the Cloud Platform Console
-and add `cloud-logs@google.com` to a topic.
+and add ``cloud-logs@google.com`` to a topic.
 
 See: `Setting permissions for Pub/Sub`_
 
 .. doctest::
+
     >>> from gcloud import pubsub
     >>> client = pubsub.Client()
     >>> topic = client.topic('your-topic-name')
