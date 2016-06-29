@@ -18,27 +18,27 @@ import sys
 import unittest2
 
 
-class Test__get_cluster(unittest2.TestCase):
+class Test__get_instance(unittest2.TestCase):
 
     def _callFUT(self, timeout=None):
-        from gcloud.bigtable.happybase.connection import _get_cluster
-        return _get_cluster(timeout=timeout)
+        from gcloud.bigtable.happybase.connection import _get_instance
+        return _get_instance(timeout=timeout)
 
-    def _helper(self, timeout=None, clusters=(), failed_zones=()):
+    def _helper(self, timeout=None, instances=(), failed_locations=()):
         from functools import partial
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        client_with_clusters = partial(_Client, clusters=clusters,
-                                       failed_zones=failed_zones)
-        with _Monkey(MUT, Client=client_with_clusters):
+        client_with_instances = partial(
+            _Client, instances=instances, failed_locations=failed_locations)
+        with _Monkey(MUT, Client=client_with_instances):
             result = self._callFUT(timeout=timeout)
 
         # If we've reached this point, then _callFUT didn't fail, so we know
-        # there is exactly one cluster.
-        cluster, = clusters
-        self.assertEqual(result, cluster)
-        client = cluster.client
+        # there is exactly one instance.
+        instance, = instances
+        self.assertEqual(result, instance)
+        client = instance.client
         self.assertEqual(client.args, ())
         expected_kwargs = {'admin': True}
         if timeout is not None:
@@ -48,28 +48,28 @@ class Test__get_cluster(unittest2.TestCase):
         self.assertEqual(client.stop_calls, 1)
 
     def test_default(self):
-        cluster = _Cluster()
-        self._helper(clusters=[cluster])
+        instance = _Instance()
+        self._helper(instances=[instance])
 
     def test_with_timeout(self):
-        cluster = _Cluster()
-        self._helper(timeout=2103, clusters=[cluster])
+        instance = _Instance()
+        self._helper(timeout=2103, instances=[instance])
 
-    def test_with_no_clusters(self):
+    def test_with_no_instances(self):
         with self.assertRaises(ValueError):
             self._helper()
 
-    def test_with_too_many_clusters(self):
-        clusters = [_Cluster(), _Cluster()]
+    def test_with_too_many_instances(self):
+        instances = [_Instance(), _Instance()]
         with self.assertRaises(ValueError):
-            self._helper(clusters=clusters)
+            self._helper(instances=instances)
 
-    def test_with_failed_zones(self):
-        cluster = _Cluster()
-        failed_zone = 'us-central1-c'
+    def test_with_failed_locations(self):
+        instance = _Instance()
+        failed_location = 'us-central1-c'
         with self.assertRaises(ValueError):
-            self._helper(clusters=[cluster],
-                         failed_zones=[failed_zone])
+            self._helper(instances=[instance],
+                         failed_locations=[failed_location])
 
 
 class TestConnection(unittest2.TestCase):
@@ -82,65 +82,65 @@ class TestConnection(unittest2.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        self.assertEqual(cluster._client.start_calls, 0)
-        connection = self._makeOne(cluster=cluster)
-        self.assertEqual(cluster._client.start_calls, 1)
-        self.assertEqual(cluster._client.stop_calls, 0)
+        instance = _Instance()  # Avoid implicit environ check.
+        self.assertEqual(instance._client.start_calls, 0)
+        connection = self._makeOne(instance=instance)
+        self.assertEqual(instance._client.start_calls, 1)
+        self.assertEqual(instance._client.stop_calls, 0)
 
-        self.assertEqual(connection._cluster, cluster)
+        self.assertEqual(connection._instance, instance)
         self.assertEqual(connection.table_prefix, None)
         self.assertEqual(connection.table_prefix_separator, '_')
 
     def test_constructor_no_autoconnect(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
-        self.assertEqual(cluster._client.start_calls, 0)
-        self.assertEqual(cluster._client.stop_calls, 0)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
+        self.assertEqual(instance._client.start_calls, 0)
+        self.assertEqual(instance._client.stop_calls, 0)
         self.assertEqual(connection.table_prefix, None)
         self.assertEqual(connection.table_prefix_separator, '_')
 
-    def test_constructor_missing_cluster(self):
+    def test_constructor_missing_instance(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        cluster = _Cluster()
+        instance = _Instance()
         timeout = object()
-        get_cluster_called = []
+        get_instance_called = []
 
-        def mock_get_cluster(timeout):
-            get_cluster_called.append(timeout)
-            return cluster
+        def mock_get_instance(timeout):
+            get_instance_called.append(timeout)
+            return instance
 
-        with _Monkey(MUT, _get_cluster=mock_get_cluster):
-            connection = self._makeOne(autoconnect=False, cluster=None,
+        with _Monkey(MUT, _get_instance=mock_get_instance):
+            connection = self._makeOne(autoconnect=False, instance=None,
                                        timeout=timeout)
             self.assertEqual(connection.table_prefix, None)
             self.assertEqual(connection.table_prefix_separator, '_')
-            self.assertEqual(connection._cluster, cluster)
+            self.assertEqual(connection._instance, instance)
 
-        self.assertEqual(get_cluster_called, [timeout])
+        self.assertEqual(get_instance_called, [timeout])
 
     def test_constructor_explicit(self):
         autoconnect = False
         table_prefix = 'table-prefix'
         table_prefix_separator = 'sep'
-        cluster_copy = _Cluster()
-        cluster = _Cluster(copies=[cluster_copy])
+        instance_copy = _Instance()
+        instance = _Instance(copies=[instance_copy])
 
         connection = self._makeOne(
             autoconnect=autoconnect,
             table_prefix=table_prefix,
             table_prefix_separator=table_prefix_separator,
-            cluster=cluster)
+            instance=instance)
         self.assertEqual(connection.table_prefix, table_prefix)
         self.assertEqual(connection.table_prefix_separator,
                          table_prefix_separator)
 
     def test_constructor_with_unknown_argument(self):
-        cluster = _Cluster()
+        instance = _Instance()
         with self.assertRaises(TypeError):
-            self._makeOne(cluster=cluster, unknown='foo')
+            self._makeOne(instance=instance, unknown='foo')
 
     def test_constructor_with_legacy_args(self):
         from gcloud._testing import _Monkey
@@ -151,9 +151,9 @@ class TestConnection(unittest2.TestCase):
         def mock_warn(msg):
             warned.append(msg)
 
-        cluster = _Cluster()
+        instance = _Instance()
         with _Monkey(MUT, _WARN=mock_warn):
-            self._makeOne(cluster=cluster, host=object(),
+            self._makeOne(instance=instance, host=object(),
                           port=object(), compat=object(),
                           transport=object(), protocol=object())
 
@@ -164,10 +164,10 @@ class TestConnection(unittest2.TestCase):
         self.assertIn('transport', warned[0])
         self.assertIn('protocol', warned[0])
 
-    def test_constructor_with_timeout_and_cluster(self):
-        cluster = _Cluster()
+    def test_constructor_with_timeout_and_instance(self):
+        instance = _Instance()
         with self.assertRaises(ValueError):
-            self._makeOne(cluster=cluster, timeout=object())
+            self._makeOne(instance=instance, timeout=object())
 
     def test_constructor_non_string_prefix(self):
         table_prefix = object()
@@ -184,46 +184,46 @@ class TestConnection(unittest2.TestCase):
                           table_prefix_separator=table_prefix_separator)
 
     def test_open(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
-        self.assertEqual(cluster._client.start_calls, 0)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
+        self.assertEqual(instance._client.start_calls, 0)
         connection.open()
-        self.assertEqual(cluster._client.start_calls, 1)
-        self.assertEqual(cluster._client.stop_calls, 0)
+        self.assertEqual(instance._client.start_calls, 1)
+        self.assertEqual(instance._client.stop_calls, 0)
 
     def test_close(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
-        self.assertEqual(cluster._client.stop_calls, 0)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
+        self.assertEqual(instance._client.stop_calls, 0)
         connection.close()
-        self.assertEqual(cluster._client.stop_calls, 1)
-        self.assertEqual(cluster._client.start_calls, 0)
+        self.assertEqual(instance._client.stop_calls, 1)
+        self.assertEqual(instance._client.start_calls, 0)
 
-    def test___del__with_cluster(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
-        self.assertEqual(cluster._client.stop_calls, 0)
+    def test___del__with_instance(self):
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
+        self.assertEqual(instance._client.stop_calls, 0)
         connection.__del__()
-        self.assertEqual(cluster._client.stop_calls, 1)
+        self.assertEqual(instance._client.stop_calls, 1)
 
-    def test___del__no_cluster(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
-        self.assertEqual(cluster._client.stop_calls, 0)
-        del connection._cluster
+    def test___del__no_instance(self):
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
+        self.assertEqual(instance._client.stop_calls, 0)
+        del connection._instance
         connection.__del__()
-        self.assertEqual(cluster._client.stop_calls, 0)
+        self.assertEqual(instance._client.stop_calls, 0)
 
     def test__table_name_with_prefix_set(self):
         table_prefix = 'table-prefix'
         table_prefix_separator = '<>'
-        cluster = _Cluster()
+        instance = _Instance()
 
         connection = self._makeOne(
             autoconnect=False,
             table_prefix=table_prefix,
             table_prefix_separator=table_prefix_separator,
-            cluster=cluster)
+            instance=instance)
 
         name = 'some-name'
         prefixed = connection._table_name(name)
@@ -231,9 +231,9 @@ class TestConnection(unittest2.TestCase):
                          table_prefix + table_prefix_separator + name)
 
     def test__table_name_with_no_prefix_set(self):
-        cluster = _Cluster()
+        instance = _Instance()
         connection = self._makeOne(autoconnect=False,
-                                   cluster=cluster)
+                                   instance=instance)
 
         name = 'some-name'
         prefixed = connection._table_name(name)
@@ -242,8 +242,8 @@ class TestConnection(unittest2.TestCase):
     def test_table_factory(self):
         from gcloud.bigtable.happybase.table import Table
 
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         table = connection.table(name)
@@ -255,13 +255,13 @@ class TestConnection(unittest2.TestCase):
     def _table_factory_prefix_helper(self, use_prefix=True):
         from gcloud.bigtable.happybase.table import Table
 
-        cluster = _Cluster()  # Avoid implicit environ check.
+        instance = _Instance()  # Avoid implicit environ check.
         table_prefix = 'table-prefix'
         table_prefix_separator = '<>'
         connection = self._makeOne(
             autoconnect=False, table_prefix=table_prefix,
             table_prefix_separator=table_prefix_separator,
-            cluster=cluster)
+            instance=instance)
 
         name = 'table-name'
         table = connection.table(name, use_prefix=use_prefix)
@@ -285,11 +285,11 @@ class TestConnection(unittest2.TestCase):
 
         table_name1 = 'table-name1'
         table_name2 = 'table-name2'
-        cluster = _Cluster(list_tables_result=[
+        instance = _Instance(list_tables_result=[
             Table(table_name1, None),
             Table(table_name2, None),
         ])
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        connection = self._makeOne(autoconnect=False, instance=instance)
         result = connection.tables()
         self.assertEqual(result, [table_name1, table_name2])
 
@@ -303,12 +303,12 @@ class TestConnection(unittest2.TestCase):
         table_name1 = (table_prefix + table_prefix_separator +
                        unprefixed_table_name1)
         table_name2 = 'table-name2'
-        cluster = _Cluster(list_tables_result=[
+        instance = _Instance(list_tables_result=[
             Table(table_name1, None),
             Table(table_name2, None),
         ])
         connection = self._makeOne(
-            autoconnect=False, cluster=cluster, table_prefix=table_prefix,
+            autoconnect=False, instance=instance, table_prefix=table_prefix,
             table_prefix_separator=table_prefix_separator)
         result = connection.tables()
         self.assertEqual(result, [unprefixed_table_name1])
@@ -318,8 +318,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
         mock_gc_rule = object()
         called_options = []
 
@@ -354,7 +354,7 @@ class TestConnection(unittest2.TestCase):
 
         # Just one table would have been created.
         table_instance, = tables_created
-        self.assertEqual(table_instance.args, (name, cluster))
+        self.assertEqual(table_instance.args, (name, instance))
         self.assertEqual(table_instance.kwargs, {})
         self.assertEqual(table_instance.create_calls, 1)
 
@@ -380,8 +380,8 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(col_fam_created[2].create_calls, 1)
 
     def test_create_table_bad_type(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         families = None
@@ -389,8 +389,8 @@ class TestConnection(unittest2.TestCase):
             connection.create_table(name, families)
 
     def test_create_table_bad_value(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         families = {}
@@ -401,8 +401,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         tables_created = []
 
@@ -450,8 +450,8 @@ class TestConnection(unittest2.TestCase):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase import connection as MUT
 
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         tables_created = []
 
@@ -466,7 +466,7 @@ class TestConnection(unittest2.TestCase):
 
         # Just one table would have been created.
         table_instance, = tables_created
-        self.assertEqual(table_instance.args, (name, cluster))
+        self.assertEqual(table_instance.args, (name, instance))
         self.assertEqual(table_instance.kwargs, {})
         self.assertEqual(table_instance.delete_calls, 1)
 
@@ -488,32 +488,32 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(warned, [MUT._DISABLE_DELETE_MSG])
 
     def test_enable_table(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         with self.assertRaises(NotImplementedError):
             connection.enable_table(name)
 
     def test_disable_table(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         with self.assertRaises(NotImplementedError):
             connection.disable_table(name)
 
     def test_is_table_enabled(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         with self.assertRaises(NotImplementedError):
             connection.is_table_enabled(name)
 
     def test_compact_table(self):
-        cluster = _Cluster()  # Avoid implicit environ check.
-        connection = self._makeOne(autoconnect=False, cluster=cluster)
+        instance = _Instance()  # Avoid implicit environ check.
+        connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
         major = True
@@ -608,10 +608,10 @@ class Test__parse_family_option(unittest2.TestCase):
 class _Client(object):
 
     def __init__(self, *args, **kwargs):
-        self.clusters = kwargs.pop('clusters', [])
-        for cluster in self.clusters:
-            cluster.client = self
-        self.failed_zones = kwargs.pop('failed_zones', [])
+        self.instances = kwargs.pop('instances', [])
+        for instance in self.instances:
+            instance.client = self
+        self.failed_locations = kwargs.pop('failed_locations', [])
         self.args = args
         self.kwargs = kwargs
         self.start_calls = 0
@@ -623,11 +623,11 @@ class _Client(object):
     def stop(self):
         self.stop_calls += 1
 
-    def list_clusters(self):
-        return self.clusters, self.failed_zones
+    def list_instances(self):
+        return self.instances, self.failed_locations
 
 
-class _Cluster(object):
+class _Instance(object):
 
     def __init__(self, copies=(), list_tables_result=()):
         self.copies = list(copies)

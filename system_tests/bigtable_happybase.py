@@ -30,9 +30,8 @@ from system_test_utils import unique_resource_id
 _PACK_I64 = struct.Struct('>q').pack
 _FIRST_ELT = operator.itemgetter(0)
 _helpers.PROJECT = TESTS_PROJECT
-ZONE = 'us-central1-c'
-CLUSTER_ID = 'gcloud' + unique_resource_id('-')
-CLUSTER_ID = CLUSTER_ID[:30]  # Cluster IDs can't exceed 30 chars.
+LOCATION_ID = 'us-central1-c'
+INSTANCE_ID = 'gcloud' + unique_resource_id('-')
 TABLE_NAME = 'table-name'
 ALT_TABLE_NAME = 'other-table'
 TTL_FOR_TEST = 3
@@ -65,12 +64,12 @@ class Config(object):
 
 def set_connection():
     client = client_mod.Client(admin=True)
-    cluster = client.cluster(ZONE, CLUSTER_ID)
+    instance = client.instance(INSTANCE_ID, LOCATION_ID)
     client.start()
-    operation = cluster.create()
+    operation = instance.create()
     if not _operation_wait(operation):
-        raise RuntimeError('Cluster creation exceed 5 seconds.')
-    Config.CONNECTION = Connection(cluster=cluster)
+        raise RuntimeError('Instance creation exceed 5 seconds.')
+    Config.CONNECTION = Connection(instance=instance)
 
 
 def setUpModule():
@@ -81,7 +80,7 @@ def setUpModule():
 
 def tearDownModule():
     Config.CONNECTION.delete_table(TABLE_NAME)
-    Config.CONNECTION._cluster.delete()
+    Config.CONNECTION._instance.delete()
     Config.CONNECTION.close()
 
 
