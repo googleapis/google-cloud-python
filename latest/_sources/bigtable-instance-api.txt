@@ -10,16 +10,16 @@ Instance Admin API
 After creating a :class:`Client <gcloud.bigtable.client.Client>`, you can
 interact with individual instances for a project.
 
-List Intances
--------------
+List Instances
+--------------
 
-If you want a comprehensive list of all existing intances, make a
+If you want a comprehensive list of all existing instances, make a
 `ListInstances`_ API request with
-:meth:`Client.list_intances() <gcloud.bigtable.client.Client.list_intances>`:
+:meth:`Client.list_instances() <gcloud.bigtable.client.Client.list_instances>`:
 
 .. code:: python
 
-    intances = client.list_intances()
+    instances = client.list_instances()
 
 Instance Factory
 ----------------
@@ -59,7 +59,7 @@ Check on Current Operation
     API will return a `long-running operation`_ and a corresponding
     :class:`Operation <gcloud.bigtable.instance.Operation>` object
     will be returned by
-    :meth:`create() <gcloud.bigtable.instance.Instance.create>``.
+    :meth:`create() <gcloud.bigtable.instance.Instance.create>`.
 
 You can check if a long-running operation (for a
 :meth:`create() <gcloud.bigtable.instance.Instance.create>` has finished
