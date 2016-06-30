@@ -39,7 +39,8 @@ To create a :class:`Instance <gcloud.bigtable.instance.Instance>` object:
   to the ``instance_id`` value.
 
 You can also use :meth:`Client.instance` to create a local wrapper for
-instances already has been created with the API, or through the web conole:
+instances that have already been created with the API, or through the web
+conole:
 
 .. code:: python
 
