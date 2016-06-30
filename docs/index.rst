@@ -114,6 +114,14 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Stackdriver Error Reporting
+
+  error-reporting-usage
+  Client <error-reporting-client>
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: Stackdriver Monitoring
 
   monitoring-usage
