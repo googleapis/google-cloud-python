@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Instance Admin API &mdash; gcloud f00b050 documentation</title>
+    <title>Instance Admin API &mdash; gcloud 7d29482 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'f00b050',
+        VERSION:     '7d29482',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud f00b050 documentation" href="index.html" />
+    <link rel="top" title="gcloud 7d29482 documentation" href="index.html" />
     <link rel="next" title="Table Admin API" href="bigtable-table-api.html" />
     <link rel="prev" title="Base for Everything" href="bigtable-client-intro.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-instance-api%0ARelease%3A%20f00b050" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-instance-api%0ARelease%3A%207d29482" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (f00b050)
+              Version History (7d29482)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,16 +113,24 @@ interact with individual instances for a project.</p>
 <div class="section" id="instance-factory">
 <h2>Instance Factory<a class="headerlink" href="#instance-factory" title="Permalink to this headline">#</a></h2>
 <p>To create a <a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> object:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="n">display_name</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">instance_id</span><span class="p">,</span> <span class="n">location_id</span><span class="p">,</span>
+                           <span class="n">display_name</span><span class="o">=</span><span class="n">display_name</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">display_name</span></code> is optional. When not provided,
-<code class="docutils literal"><span class="pre">display_name</span></code> defaults to the <code class="docutils literal"><span class="pre">instance_id</span></code> value.</p>
-<p>Even if this <a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a> already
-has been created with the API, you&#8217;ll want this object to use as a
-parent of a <a class="reference internal" href="bigtable-table.html#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> just as the
-<a class="reference internal" href="bigtable-client.html#gcloud.bigtable.client.Client" title="gcloud.bigtable.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a> is used as the parent of
-a <a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">location_id</span></code> is the ID of the location in which the instance&#8217;s cluster
+will be hosted, e.g.  <code class="docutils literal"><span class="pre">'us-central1-c'</span></code>.  <code class="docutils literal"><span class="pre">location_id</span></code> is required for
+instances which do not already exist.</li>
+<li><code class="docutils literal"><span class="pre">display_name</span></code> is optional. When not provided, <code class="docutils literal"><span class="pre">display_name</span></code> defaults
+to the <code class="docutils literal"><span class="pre">instance_id</span></code> value.</li>
+</ul>
+<p>You can also use <code class="xref py py-meth docutils literal"><span class="pre">Client.instance()</span></code> to create a local wrapper for
+instances that have already been created with the API, or through the web
+conole:</p>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">existing_instance_id</span><span class="p">)</span>
+<span class="n">instance</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="create-a-new-instance">
 <h2>Create a new Instance<a class="headerlink" href="#create-a-new-instance" title="Permalink to this headline">#</a></h2>

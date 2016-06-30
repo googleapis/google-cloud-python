@@ -18,8 +18,8 @@ Get started by learning about the
 In the hierarchy of API concepts
 
 * a :class:`Client <gcloud.bigtable.client.Client>` owns a
-  :class:`Cluster <gcloud.bigtable.cluster.Cluster>`
-* a :class:`Cluster <gcloud.bigtable.cluster.Cluster>` owns a
+  :class:`Cluster <gcloud.bigtable.instance.Instance`
+* a :class:`Cluster <gcloud.bigtable.instance.Instance` owns a
   :class:`Table <gcloud.bigtable.table.Table>`
 * a :class:`Table <gcloud.bigtable.table.Table>` owns a
   :class:`ColumnFamily <gcloud.bigtable.column_family.ColumnFamily>`
