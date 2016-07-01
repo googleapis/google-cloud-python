@@ -154,15 +154,15 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(entry['insertId'], IID)
         self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
         EXPECTED_REQUEST = {
-            'request_method': request.request_method,
-            'request_url': request.request_url,
+            'requestMethod': request.request_method,
+            'requestUrl': request.request_url,
             'status': request.status,
-            'request_size': request.request_size,
-            'response_size': request.response_size,
+            'requestSize': request.request_size,
+            'responseSize': request.response_size,
             'referer': request.referer,
-            'user_agent': request.user_agent,
-            'remote_ip': request.remote_ip,
-            'cache_hit': request.cache_hit,
+            'userAgent': request.user_agent,
+            'remoteIp': request.remote_ip,
+            'cacheHit': request.cache_hit,
         }
         self.assertEqual(entry['httpRequest'], EXPECTED_REQUEST)
         EXPECTED_OPERATION = {

@@ -440,15 +440,15 @@ def _log_entry_pb_to_mapping(entry_pb):
     if entry_pb.http_request:
         request = entry_pb.http_request
         mapping['httpRequest'] = {
-            'request_method': request.request_method,
-            'request_url': request.request_url,
+            'requestMethod': request.request_method,
+            'requestUrl': request.request_url,
             'status': request.status,
             'referer': request.referer,
-            'user_agent': request.user_agent,
-            'cache_hit': request.cache_hit,
-            'request_size': request.request_size,
-            'response_size': request.response_size,
-            'remote_ip': request.remote_ip,
+            'userAgent': request.user_agent,
+            'cacheHit': request.cache_hit,
+            'requestSize': request.request_size,
+            'responseSize': request.response_size,
+            'remoteIp': request.remote_ip,
         }
 
     if entry_pb.operation:
