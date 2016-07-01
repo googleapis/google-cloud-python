@@ -418,6 +418,41 @@ def _pb_timestamp_to_rfc3339(timestamp_pb):
     return _datetime_to_rfc3339(timestamp)
 
 
+def _value_pb_to_value(value_pb):
+    """Helper for :func:`_log_entry_pb_to_mapping`."""
+    kind = value_pb.WhichOneof('kind')
+
+    if kind is None:
+        result = None
+
+    elif kind == 'string_value':
+        result = value_pb.string_value
+
+    elif kind == 'bool_value':
+        result = value_pb.bool_value
+
+    elif kind == 'number_value':
+        result = value_pb.number_value
+
+    elif kind == 'list_value':
+        result = [_value_pb_to_value(element)
+                  for element in value_pb.list_value.values]
+
+    elif kind == 'struct_value':
+        result = _struct_pb_to_mapping(value_pb.struct_value)
+
+    else:
+        raise ValueError('Value protobuf had unknown kind: %s' % (kind,))
+
+    return result
+
+
+def _struct_pb_to_mapping(struct_pb):
+    """Helper for :func:`_log_entry_pb_to_mapping`."""
+    return dict([(key, _value_pb_to_value(struct_pb.fields[key]))
+                 for key in struct_pb.fields])
+
+
 def _log_entry_pb_to_mapping(entry_pb):
     """Helper for :meth:`list_entries`, et aliae
 
@@ -432,10 +467,15 @@ def _log_entry_pb_to_mapping(entry_pb):
         'insertId': entry_pb.insert_id,
         'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
         'labels': entry_pb.labels,
-        'textPayload': entry_pb.text_payload,
-        'jsonPayload': entry_pb.json_payload,
-        'protoPayload': entry_pb.proto_payload,
     }
+    if entry_pb.HasField('text_payload'):
+        mapping['textPayload'] = entry_pb.text_payload
+
+    if entry_pb.HasField('json_payload'):
+        mapping['jsonPayload'] = _struct_pb_to_mapping(entry_pb.json_payload)
+
+    if entry_pb.HasField('proto_payload'):
+        mapping['protoPayload'] = entry_pb.proto_payload
 
     if entry_pb.http_request:
         request = entry_pb.http_request
