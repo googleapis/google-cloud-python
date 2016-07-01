@@ -463,7 +463,7 @@ def _log_entry_pb_to_mapping(entry_pb):
     mapping = {
         'logName': entry_pb.log_name,
         'resource': _mon_resource_pb_to_mapping(entry_pb.resource),
-        'severity': entry_pb.severity,
+        'severity': LogSeverity.Name(entry_pb.severity),
         'insertId': entry_pb.insert_id,
         'timestamp': _pb_timestamp_to_rfc3339(entry_pb.timestamp),
         'labels': entry_pb.labels,

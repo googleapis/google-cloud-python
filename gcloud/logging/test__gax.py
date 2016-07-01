@@ -112,6 +112,7 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
 
     def test_list_entries_with_extra_properties(self):
         from datetime import datetime
+        from google.logging.type.log_severity_pb2 import WARNING
         from gcloud._testing import _GAXPageIterator
         from gcloud._helpers import UTC
         from gcloud._helpers import _datetime_to_rfc3339
@@ -129,7 +130,7 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         request = _HTTPRequestPB()
         operation = _LogEntryOperationPB()
         EXTRAS = {
-            'severity': SEVERITY,
+            'severity': WARNING,
             'labels': LABELS,
             'insert_id': IID,
             'http_request': request,
@@ -1054,7 +1055,7 @@ class _StructPB(object):
 
 class _LogEntryPB(object):
 
-    severity = 'DEFAULT'
+    severity = 0
     http_request = operation = insert_id = None
     text_payload = json_payload = proto_payload = None
 
