@@ -223,7 +223,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options.is_bundling, True)
+        self.assertEqual(options, None)
 
     def test_topic_publish_hit_with_wait(self):
         import base64
@@ -245,7 +245,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options.is_bundling, True)
+        self.assertEqual(options, None)
 
     def test_topic_publish_miss_w_attrs_w_bytes_payload(self):
         import base64
@@ -264,7 +264,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {'foo': 'bar'})
-        self.assertEqual(options.is_bundling, True)
+        self.assertEqual(options, None)
 
     def test_topic_publish_error(self):
         import base64
@@ -283,7 +283,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         message_pb, = message_pbs
         self.assertEqual(message_pb.data, B64)
         self.assertEqual(message_pb.attributes, {})
-        self.assertEqual(options.is_bundling, True)
+        self.assertEqual(options, None)
 
     def test_topic_list_subscriptions_no_paging(self):
         from google.gax import INITIAL_PAGE
