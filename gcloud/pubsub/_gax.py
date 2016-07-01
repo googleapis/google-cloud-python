@@ -162,17 +162,17 @@ class _PublisherAPI(object):
         :raises: :exc:`gcloud.exceptions.NotFound` if the topic does not
                     exist
         """
-        options = CallOptions(is_bundling=False)
         message_pbs = [_message_pb_from_dict(message)
                        for message in messages]
         try:
-            result = self._gax_api.publish(topic_path, message_pbs,
-                                           options=options)
+            event = self._gax_api.publish(topic_path, message_pbs)
+            if not event.is_set():
+                event.wait()
         except GaxError as exc:
             if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
                 raise NotFound(topic_path)
             raise
-        return result.message_ids
+        return event.result.message_ids
 
     def topic_list_subscriptions(self, topic_path, page_size=0,
                                  page_token=None):
