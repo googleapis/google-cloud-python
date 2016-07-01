@@ -439,7 +439,7 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, TOKEN)
 
         project, page_size, options = gax_api._list_sinks_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
@@ -465,7 +465,7 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, None)
 
         project, page_size, options = gax_api._list_sinks_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, PAGE_SIZE)
         self.assertEqual(options.page_token, TOKEN)
 
@@ -643,7 +643,7 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, TOKEN)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
@@ -669,7 +669,7 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, None)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, PAGE_SIZE)
         self.assertEqual(options.page_token, TOKEN)
 

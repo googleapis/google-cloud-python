@@ -154,7 +154,8 @@ class _SinksAPI(object):
                   with another call (pass that value as ``page_token``).
         """
         options = _build_paging_options(page_token)
-        page_iter = self._gax_api.list_sinks(project, page_size, options)
+        path = 'projects/%s' % (project,)
+        page_iter = self._gax_api.list_sinks(path, page_size, options)
         sinks = [_log_sink_pb_to_mapping(log_sink_pb)
                  for log_sink_pb in page_iter.next()]
         token = page_iter.page_token or None
@@ -289,7 +290,8 @@ class _MetricsAPI(object):
                   with another call (pass that value as ``page_token``).
         """
         options = _build_paging_options(page_token)
-        page_iter = self._gax_api.list_log_metrics(project, page_size, options)
+        path = 'projects/%s' % (project,)
+        page_iter = self._gax_api.list_log_metrics(path, page_size, options)
         metrics = [_log_metric_pb_to_mapping(log_metric_pb)
                    for log_metric_pb in page_iter.next()]
         token = page_iter.page_token or None
