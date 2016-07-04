@@ -228,6 +228,18 @@ class TestTopic(unittest2.TestCase):
         self.assertEqual(api._topic_published,
                          (self.TOPIC_PATH, [MESSAGE1, MESSAGE2]))
 
+    def test_publish_w_no_messages(self):
+        client = _Client(project=self.PROJECT)
+        api = client.publisher_api = _FauxPublisherAPI()
+        api._topic_publish_response = []
+        topic = self._makeOne(self.TOPIC_NAME, client=client)
+
+        with topic.batch() as batch:
+            pass
+
+        self.assertEqual(list(batch.messages), [])
+        self.assertEqual(api._api_called, 0)
+
     def test_publish_multiple_w_alternate_client(self):
         import base64
         PAYLOAD1 = b'This is the first message text'
@@ -716,6 +728,7 @@ class TestBatch(unittest2.TestCase):
 
 
 class _FauxPublisherAPI(object):
+    _api_called = 0
 
     def topic_create(self, topic_path):
         self._topic_created = topic_path
@@ -735,6 +748,7 @@ class _FauxPublisherAPI(object):
 
     def topic_publish(self, topic_path, messages):
         self._topic_published = topic_path, messages
+        self._api_called += 1
         return self._topic_publish_response
 
     def topic_list_subscriptions(self, topic_path, page_size=None,
