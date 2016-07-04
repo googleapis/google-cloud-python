@@ -416,7 +416,7 @@ class Batch(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None and len(self.messages):
+        if exc_type is None:
             self.commit()
 
     def __iter__(self):
@@ -443,6 +443,9 @@ class Batch(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """
+        if not self.messages:
+            return
+
         if client is None:
             client = self.client
         api = client.publisher_api
