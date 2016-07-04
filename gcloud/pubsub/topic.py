@@ -416,7 +416,7 @@ class Batch(object):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type is None:
+        if exc_type is None and len(self.messages):
             self.commit()
 
     def __iter__(self):
