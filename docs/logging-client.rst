@@ -1,5 +1,5 @@
 Stackdriver Logging Client
-==============
+==========================
 
 .. automodule:: gcloud.logging.client
   :members:

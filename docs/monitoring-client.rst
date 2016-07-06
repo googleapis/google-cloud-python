@@ -1,5 +1,5 @@
 Stackdriver Monitoring Client
-=================
+=============================
 
 .. automodule:: gcloud.monitoring.client
   :members:

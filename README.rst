@@ -240,7 +240,7 @@ manage projects using this Client Library.
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
 
 Google Stackdriver Logging
---------------------
+--------------------------
 
 `Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
 analyze, monitor, and alert on log data and events from Google Cloud Platform.

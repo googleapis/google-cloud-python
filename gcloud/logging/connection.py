@@ -45,7 +45,7 @@ class Connection(base_connection.JSONConnection):
              'https://www.googleapis.com/auth/logging.write',
              'https://www.googleapis.com/auth/logging.admin',
              'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Stackdriver Logging consumer."""
+    """The scopes required for authenticating as a Logging consumer."""
 
 
 class _LoggingAPI(object):
