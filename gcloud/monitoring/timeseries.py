@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Time series for the `Google Monitoring API (V3)`_.
+"""Time series for the `Google Stackdriver Monitoring API (V3)`_.
 
 Features intentionally omitted from this first version of the client library:
   * Writing time series.
   * Natural representation of distribution values.
 
-.. _Google Monitoring API (V3):
+.. _Google Stackdriver Monitoring API (V3):
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
 """
 

@@ -114,7 +114,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Monitoring
+  :caption: Stackdriver Monitoring
 
   monitoring-usage
   Client <monitoring-client>
