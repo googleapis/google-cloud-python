@@ -20,14 +20,14 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
--  `Google Cloud Logging`_
+-  `Google Stackdriver Logging`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
-.. _Google Cloud Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-logging
+.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-logging
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -239,7 +239,7 @@ manage projects using this Client Library.
 
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
 
-Google Cloud Logging
+Google Stackdriver Logging
 --------------------
 
 `Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
@@ -264,7 +264,7 @@ Example of fetching entries:
         print entry.payload
 
 See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
-to Cloud logging using this Client Library.
+to Stackdriver Logging using this Client Library.
 
 .. _logging documentation: https://googlecloudplatform.github.io/gcloud-python/stable/logging-usage.html
 

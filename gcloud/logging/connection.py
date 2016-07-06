@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud logging connections."""
+"""Create / interact with Stackdriver Logging connections."""
 
 from gcloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Cloud Logging via the JSON REST API.
+    """A connection to Google Stackdriver Logging via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
@@ -45,7 +45,7 @@ class Connection(base_connection.JSONConnection):
              'https://www.googleapis.com/auth/logging.write',
              'https://www.googleapis.com/auth/logging.admin',
              'https://www.googleapis.com/auth/cloud-platform')
-    """The scopes required for authenticating as a Cloud Logging consumer."""
+    """The scopes required for authenticating as a Stackdriver Logging consumer."""
 
 
 class _LoggingAPI(object):

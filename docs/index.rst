@@ -102,7 +102,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Logging
+  :caption: Stackdriver Logging
 
   logging-usage
   Client <logging-client>
