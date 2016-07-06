@@ -45,6 +45,7 @@ def _retry_backoff(result_predicate, meth, *args, **kw):
                 raise
             if backoff_intervals:
                 time.sleep(backoff_intervals.pop(0))
+                continue
             else:
                 raise
         if result_predicate(result):
