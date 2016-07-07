@@ -14,11 +14,32 @@
 
 """Client for interacting with the Google Cloud Pub/Sub API."""
 
+import os
 
 from gcloud.client import JSONClient
 from gcloud.pubsub.connection import Connection
+from gcloud.pubsub.connection import _PublisherAPI as JSONPublisherAPI
+from gcloud.pubsub.connection import _SubscriberAPI as JSONSubscriberAPI
+from gcloud.pubsub.connection import _IAMPolicyAPI
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
+
+try:
+    from google.pubsub.v1.publisher_api import (
+        PublisherApi as GeneratedPublisherAPI)
+    from google.pubsub.v1.subscriber_api import (
+        SubscriberApi as GeneratedSubscriberAPI)
+    from gcloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
+    from gcloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
+except ImportError:  # pragma: NO COVER
+    _HAVE_GAX = False
+    GeneratedPublisherAPI = GAXPublisherAPI = None
+    GeneratedSubscriberAPI = GAXSubscriberAPI = None
+else:
+    _HAVE_GAX = True
+
+
+_USE_GAX = _HAVE_GAX and (os.environ.get('GCLOUD_ENABLE_GAX') is not None)
 
 
 class Client(JSONClient):
@@ -43,12 +64,48 @@ class Client(JSONClient):
     """
 
     _connection_class = Connection
+    _publisher_api = _subscriber_api = _iam_policy_api = None
+
+    @property
+    def publisher_api(self):
+        """Helper for publisher-related API calls."""
+        if self._publisher_api is None:
+            if _USE_GAX:
+                generated = GeneratedPublisherAPI()
+                self._publisher_api = GAXPublisherAPI(generated)
+            else:
+                self._publisher_api = JSONPublisherAPI(self.connection)
+        return self._publisher_api
+
+    @property
+    def subscriber_api(self):
+        """Helper for subscriber-related API calls."""
+        if self._subscriber_api is None:
+            if _USE_GAX:
+                generated = GeneratedSubscriberAPI()
+                self._subscriber_api = GAXSubscriberAPI(generated)
+            else:
+                self._subscriber_api = JSONSubscriberAPI(self.connection)
+        return self._subscriber_api
+
+    @property
+    def iam_policy_api(self):
+        """Helper for IAM policy-related API calls."""
+        if self._iam_policy_api is None:
+            self._iam_policy_api = _IAMPolicyAPI(self.connection)
+        return self._iam_policy_api
 
     def list_topics(self, page_size=None, page_token=None):
         """List topics for the project associated with this client.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_list_topics]
+           :end-before: [END client_list_topics]
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -65,30 +122,24 @@ class Client(JSONClient):
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        path = '/projects/%s/topics' % (self.project,)
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
+        api = self.publisher_api
+        resources, next_token = api.list_topics(
+            self.project, page_size, page_token)
         topics = [Topic.from_api_repr(resource, self)
-                  for resource in resp['topics']]
-        return topics, resp.get('nextPageToken')
+                  for resource in resources]
+        return topics, next_token
 
-    def list_subscriptions(self, page_size=None, page_token=None,
-                           topic_name=None):
+    def list_subscriptions(self, page_size=None, page_token=None):
         """List subscriptions for the project associated with this client.
 
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/list
 
-        and (where ``topic_name`` is passed):
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_list_subscriptions]
+           :end-before: [END client_list_subscriptions]
 
         :type page_size: int
         :param page_size: maximum number of topics to return, If not passed,
@@ -99,40 +150,29 @@ class Client(JSONClient):
                            passed, the API will return the first page of
                            topics.
 
-        :type topic_name: string
-        :param topic_name: limit results to subscriptions bound to the given
-                           topic.
-
         :rtype: tuple, (list, str)
         :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
                   plus a "next page token" string:  if not None, indicates that
                   more topics can be retrieved with another call (pass that
                   value as ``page_token``).
         """
-        params = {}
-
-        if page_size is not None:
-            params['pageSize'] = page_size
-
-        if page_token is not None:
-            params['pageToken'] = page_token
-
-        if topic_name is None:
-            path = '/projects/%s/subscriptions' % (self.project,)
-        else:
-            path = '/projects/%s/topics/%s/subscriptions' % (self.project,
-                                                             topic_name)
-
-        resp = self.connection.api_request(method='GET', path=path,
-                                           query_params=params)
+        api = self.subscriber_api
+        resources, next_token = api.list_subscriptions(
+            self.project, page_size, page_token)
         topics = {}
         subscriptions = [Subscription.from_api_repr(resource, self,
                                                     topics=topics)
-                         for resource in resp['subscriptions']]
-        return subscriptions, resp.get('nextPageToken')
+                         for resource in resources]
+        return subscriptions, next_token
 
     def topic(self, name, timestamp_messages=False):
         """Creates a topic bound to the current client.
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START client_topic]
+           :end-before: [END client_topic]
 
         :type name: string
         :param name: the name of the topic to be constructed.

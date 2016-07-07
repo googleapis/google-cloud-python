@@ -37,18 +37,18 @@ _MARKER = object()
 class SchemaField(object):
     """Describe a single field within a table schema.
 
-    :type name: string
+    :type name: str
     :param name: the name of the field
 
-    :type field_type: string
+    :type field_type: str
     :param field_type: the type of the field (one of 'STRING', 'INTEGER',
                        'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD')
 
-    :type mode: string
+    :type mode: str
     :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
                  or 'REPEATED')
 
-    :type description: string
+    :type description: str
     :param description: optional description for the field
 
     :type fields: list of :class:`SchemaField`, or None
@@ -62,6 +62,14 @@ class SchemaField(object):
         self.description = description
         self.fields = fields
 
+    def __eq__(self, other):
+        return (
+            self.name == other.name and
+            self.field_type.lower() == other.field_type.lower() and
+            self.mode == other.mode and
+            self.description == other.description and
+            self.fields == other.fields)
+
 
 class Table(object):
     """Tables represent a set of rows whose values correspond to a schema.
@@ -69,7 +77,7 @@ class Table(object):
     See:
     https://cloud.google.com/bigquery/docs/reference/v2/tables
 
-    :type name: string
+    :type name: str
     :param name: the name of the table
 
     :type dataset: :class:`gcloud.bigquery.dataset.Dataset`
@@ -92,7 +100,7 @@ class Table(object):
     def project(self):
         """Project bound to the table.
 
-        :rtype: string
+        :rtype: str
         :returns: the project (derived from the dataset).
         """
         return self._dataset.project
@@ -101,7 +109,7 @@ class Table(object):
     def dataset_name(self):
         """Name of dataset containing the table.
 
-        :rtype: string
+        :rtype: str
         :returns: the ID (derived from the dataset).
         """
         return self._dataset.name
@@ -110,7 +118,7 @@ class Table(object):
     def path(self):
         """URL path for the table's APIs.
 
-        :rtype: string
+        :rtype: str
         :returns: the path based on project and dataste name.
         """
         return '%s/tables/%s' % (self._dataset.path, self.name)
@@ -154,7 +162,7 @@ class Table(object):
     def etag(self):
         """ETag for the table resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ETag (None until set from the server).
         """
         return self._properties.get('etag')
@@ -197,7 +205,7 @@ class Table(object):
     def self_link(self):
         """URL for the table resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('selfLink')
@@ -206,7 +214,7 @@ class Table(object):
     def table_id(self):
         """ID for the table resource.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the ID (None until set from the server).
         """
         return self._properties.get('id')
@@ -217,7 +225,7 @@ class Table(object):
 
         Possible values are "TABLE" or "VIEW".
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('type')
@@ -226,7 +234,7 @@ class Table(object):
     def description(self):
         """Description of the table.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The description as set by the user, or None (the default).
         """
         return self._properties.get('description')
@@ -235,7 +243,7 @@ class Table(object):
     def description(self, value):
         """Update description of the table.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new description
 
         :raises: ValueError for invalid value types.
@@ -271,7 +279,7 @@ class Table(object):
     def friendly_name(self):
         """Title of the table.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The name as set by the user, or None (the default).
         """
         return self._properties.get('friendlyName')
@@ -280,7 +288,7 @@ class Table(object):
     def friendly_name(self, value):
         """Update title of the table.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new title
 
         :raises: ValueError for invalid value types.
@@ -293,7 +301,7 @@ class Table(object):
     def location(self):
         """Location in which the table is hosted.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The location as set by the user, or None (the default).
         """
         return self._properties.get('location')
@@ -302,7 +310,7 @@ class Table(object):
     def location(self, value):
         """Update location in which the table is hosted.
 
-        :type value: string, or ``NoneType``
+        :type value: str, or ``NoneType``
         :param value: new location
 
         :raises: ValueError for invalid value types.
@@ -315,7 +323,7 @@ class Table(object):
     def view_query(self):
         """SQL query defining the table as a view.
 
-        :rtype: string, or ``NoneType``
+        :rtype: str, or ``NoneType``
         :returns: The query as set by the user, or None (the default).
         """
         view = self._properties.get('view')
@@ -326,7 +334,7 @@ class Table(object):
     def view_query(self, value):
         """Update SQL query defining the table as a view.
 
-        :type value: string
+        :type value: str
         :param value: new query
 
         :raises: ValueError for invalid value types.
@@ -401,7 +409,6 @@ class Table(object):
                 'projectId': self._dataset.project,
                 'datasetId': self._dataset.name,
                 'tableId': self.name},
-            'schema': {'fields': _build_schema_resource(self._schema)},
         }
         if self.description is not None:
             resource['description'] = self.description
@@ -419,6 +426,12 @@ class Table(object):
         if self.view_query is not None:
             view = resource['view'] = {}
             view['query'] = self.view_query
+        elif self._schema:
+            resource['schema'] = {
+                'fields': _build_schema_resource(self._schema)
+            }
+        else:
+            raise ValueError("Set either 'view_query' or 'schema'.")
 
         return resource
 
@@ -492,19 +505,19 @@ class Table(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
 
-        :type friendly_name: string or ``NoneType``
+        :type friendly_name: str or ``NoneType``
         :param friendly_name: point in time at which the table expires.
 
-        :type description: string or ``NoneType``
+        :type description: str or ``NoneType``
         :param description: point in time at which the table expires.
 
-        :type location: string or ``NoneType``
+        :type location: str or ``NoneType``
         :param location: point in time at which the table expires.
 
         :type expires: :class:`datetime.datetime` or ``NoneType``
         :param expires: point in time at which the table expires.
 
-        :type view_query: string
+        :type view_query: str
         :param view_query: SQL query defining the table as a view
 
         :type schema: list of :class:`SchemaField`
@@ -593,7 +606,7 @@ class Table(object):
         :type max_results: integer or ``NoneType``
         :param max_results: maximum number of rows to return.
 
-        :type page_token: string or ``NoneType``
+        :type page_token: str or ``NoneType``
         :param page_token: token representing a cursor into the table's rows.
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
@@ -621,6 +634,8 @@ class Table(object):
                                                  path='%s/data' % self.path,
                                                  query_params=params)
         total_rows = response.get('totalRows')
+        if total_rows is not None:
+            total_rows = int(total_rows)
         page_token = response.get('pageToken')
         rows_data = _rows_from_json(response.get('rows', ()), self._schema)
 
@@ -631,6 +646,7 @@ class Table(object):
                     row_ids=None,
                     skip_invalid_rows=None,
                     ignore_unknown_values=None,
+                    template_suffix=None,
                     client=None):
         """API call:  insert table data via a POST request
 
@@ -651,6 +667,13 @@ class Table(object):
 
         :type ignore_unknown_values: boolean or ``NoneType``
         :param ignore_unknown_values: ignore columns beyond schema?
+
+        :type template_suffix: str or ``NoneType``
+        :param template_suffix: treat ``name`` as a template table and provide
+                                a suffix. BigQuery will create the table
+                                ``<name> + <template_suffix>`` based on the
+                                schema of the template table. See:
+                                https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables
 
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -689,6 +712,9 @@ class Table(object):
         if ignore_unknown_values is not None:
             data['ignoreUnknownValues'] = ignore_unknown_values
 
+        if template_suffix is not None:
+            data['templateSuffix'] = template_suffix
+
         response = client.connection.api_request(
             method='POST',
             path='%s/insertAll' % self.path,
@@ -701,7 +727,8 @@ class Table(object):
 
         return errors
 
-    def upload_from_file(self,  # pylint: disable=R0913,R0914
+    # pylint: disable=too-many-arguments,too-many-locals
+    def upload_from_file(self,
                          file_obj,
                          source_format,
                          rewind=False,
@@ -725,9 +752,9 @@ class Table(object):
         - ``text/csv``.
 
         :type file_obj: file
-        :param file_obj: A file handle open for reading.
+        :param file_obj: A file handle opened in binary mode for reading.
 
-        :type source_format: string
+        :type source_format: str
         :param source_format: one of 'CSV' or 'NEWLINE_DELIMITED_JSON'.
                               job configuration option; see
                               :meth:`gcloud.bigquery.job.LoadJob`
@@ -753,15 +780,15 @@ class Table(object):
         :param allow_quoted_newlines: job configuration option; see
                                       :meth:`gcloud.bigquery.job.LoadJob`
 
-        :type create_disposition: string
+        :type create_disposition: str
         :param create_disposition: job configuration option; see
                                    :meth:`gcloud.bigquery.job.LoadJob`
 
-        :type encoding: string
+        :type encoding: str
         :param encoding: job configuration option; see
                          :meth:`gcloud.bigquery.job.LoadJob`
 
-        :type field_delimiter: string
+        :type field_delimiter: str
         :param field_delimiter: job configuration option; see
                                 :meth:`gcloud.bigquery.job.LoadJob`
 
@@ -773,7 +800,7 @@ class Table(object):
         :param max_bad_records: job configuration option; see
                                 :meth:`gcloud.bigquery.job.LoadJob`
 
-        :type quote_character: string
+        :type quote_character: str
         :param quote_character: job configuration option; see
                                 :meth:`gcloud.bigquery.job.LoadJob`
 
@@ -781,7 +808,7 @@ class Table(object):
         :param skip_leading_rows: job configuration option; see
                                   :meth:`gcloud.bigquery.job.LoadJob`
 
-        :type write_disposition: string
+        :type write_disposition: str
         :param write_disposition: job configuration option; see
                                   :meth:`gcloud.bigquery.job.LoadJob`
 
@@ -792,8 +819,9 @@ class Table(object):
         :rtype: :class:`gcloud.bigquery.jobs.LoadTableFromStorageJob`
         :returns: the job instance used to load the data (e.g., for
                   querying status)
-        :raises: :class:`ValueError` if size is not passed in and can not be
-                 determined
+        :raises: :class:`ValueError` if ``size`` is not passed in and can not
+                 be determined, or if the ``file_obj`` can be detected to be
+                 a file opened in text mode.
         """
         client = self._require_client(client)
         connection = client.connection
@@ -802,6 +830,12 @@ class Table(object):
         # Rewind the file if desired.
         if rewind:
             file_obj.seek(0, os.SEEK_SET)
+
+        mode = getattr(file_obj, 'mode', None)
+        if mode is not None and mode != 'rb':
+            raise ValueError(
+                "Cannot upload files opened in text mode:  use "
+                "open(filename, mode='rb')")
 
         # Get the basic stats about the file.
         total_bytes = size
@@ -874,9 +908,10 @@ class Table(object):
                           six.string_types):  # pragma: NO COVER  Python3
             response_content = response_content.decode('utf-8')
         return client.job_from_resource(json.loads(response_content))
+    # pylint: enable=too-many-arguments,too-many-locals
 
 
-def _configure_job_metadata(metadata,  # pylint: disable=R0913
+def _configure_job_metadata(metadata,  # pylint: disable=too-many-arguments
                             allow_jagged_rows,
                             allow_quoted_newlines,
                             create_disposition,
@@ -953,7 +988,7 @@ def _build_schema_resource(fields):
     :param fields: schema to be dumped
 
     :rtype: mapping
-    :returns; a mapping describing the schema of the supplied fields.
+    :returns: a mapping describing the schema of the supplied fields.
     """
     infos = []
     for field in fields:

@@ -14,7 +14,19 @@ Overview
 
     .. code-block:: bash
 
+        $ gcloud beta auth application-default login
+
+    Note that this command generates credentials for client libraries. To authenticate the CLI itself, use:
+
+    .. code-block:: bash
+
         $ gcloud auth login
+
+    Previously, `gcloud auth login` was used for both use cases. If your gcloud installation does not support the new command, please update it:
+
+    .. code-block:: bash
+
+        $ gcloud components update
 
 .. _Google Cloud SDK: http://cloud.google.com/sdk
 
@@ -91,23 +103,25 @@ you can pass it directly to a :class:`Client <gcloud.client.Client>`:
 Google App Engine Environment
 -----------------------------
 
-To create :class:`credentials <oauth2client.appengine.AppAssertionCredentials>`
+To create
+:class:`credentials <oauth2client.contrib.appengine.AppAssertionCredentials>`
 just for Google App Engine:
 
 .. code:: python
 
-    from oauth2client.appengine import AppAssertionCredentials
+    from oauth2client.contrib.appengine import AppAssertionCredentials
     credentials = AppAssertionCredentials([])
 
 Google Compute Engine Environment
 ---------------------------------
 
-To create :class:`credentials <oauth2client.gce.AppAssertionCredentials>`
+To create
+:class:`credentials <oauth2client.contrib.gce.AppAssertionCredentials>`
 just for Google Compute Engine:
 
 .. code:: python
 
-    from oauth2client.gce import AppAssertionCredentials
+    from oauth2client.contrib.gce import AppAssertionCredentials
     credentials = AppAssertionCredentials([])
 
 Service Accounts
@@ -216,10 +230,6 @@ you need a `Google Developers Service Account`_.
       * **Pub/Sub**
 
         * Google Cloud Pub/Sub
-
-      * **Search**
-
-        * Google Cloud Search API
 
       * **Storage**
 

@@ -35,7 +35,9 @@ class TestTransaction(unittest2.TestCase):
         self.assertEqual(xact.connection, connection)
         self.assertEqual(xact.id, None)
         self.assertEqual(xact._status, self._getTargetClass()._INITIAL)
-        self.assertTrue(isinstance(xact.mutations, datastore_pb2.Mutation))
+        self.assertTrue(isinstance(xact._commit_request,
+                                   datastore_pb2.CommitRequest))
+        self.assertTrue(xact.mutations is xact._commit_request.mutations)
         self.assertEqual(len(xact._partial_key_entities), 0)
 
     def test_current(self):
@@ -166,8 +168,8 @@ def _make_key(kind, id_, project):
     from gcloud.datastore._generated import entity_pb2
 
     key = entity_pb2.Key()
-    key.partition_id.dataset_id = project
-    elem = key.path_element.add()
+    key.partition_id.project_id = project
+    elem = key.path.add()
     elem.kind = kind
     elem.id = id_
     return key

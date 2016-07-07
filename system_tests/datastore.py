@@ -14,22 +14,22 @@
 
 import datetime
 import os
-import time
 
 import httplib2
 import unittest2
 
+from gcloud import _helpers
 from gcloud._helpers import UTC
 from gcloud import datastore
-from gcloud.datastore import client as client_mod
+from gcloud.datastore.helpers import GeoPoint
 from gcloud.environment_vars import GCD_DATASET
-from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 from gcloud.exceptions import Conflict
-# This assumes the command is being run via tox hence the
-# repository root is the current directory.
-from system_tests import clear_datastore
-from system_tests import populate_datastore
-from system_tests.system_test_utils import EmulatorCreds
+
+import clear_datastore
+import populate_datastore
+from system_test_utils import EmulatorCreds
+from system_test_utils import unique_resource_id
 
 
 class Config(object):
@@ -53,9 +53,9 @@ def clone_client(client):
 def setUpModule():
     emulator_dataset = os.getenv(GCD_DATASET)
     # Isolated namespace so concurrent test runs don't collide.
-    test_namespace = 'ns%d' % (1000 * time.time(),)
+    test_namespace = 'ns' + unique_resource_id()
     if emulator_dataset is None:
-        client_mod.DATASET = TESTS_DATASET
+        _helpers.PROJECT = TESTS_PROJECT
         Config.CLIENT = datastore.Client(namespace=test_namespace)
     else:
         credentials = EmulatorCreds()
@@ -177,6 +177,32 @@ class TestDatastoreSave(TestDatastore):
         query.ancestor = self.PARENT
         posts = list(query.fetch(limit=2))
         self.assertEqual(posts, [])
+
+    def test_all_value_types(self):
+        key = Config.CLIENT.key('TestPanObject', 1234)
+        entity = datastore.Entity(key=key)
+        entity['timestamp'] = datetime.datetime(2014, 9, 9, tzinfo=UTC)
+        key_stored = Config.CLIENT.key('SavedKey', 'right-here')
+        entity['key'] = key_stored
+        entity['truthy'] = True
+        entity['float'] = 2.718281828
+        entity['int'] = 3735928559
+        entity['words'] = u'foo'
+        entity['blob'] = b'seekretz'
+        entity_stored = datastore.Entity(key=key_stored)
+        entity_stored['hi'] = 'bye'
+        entity['nested'] = entity_stored
+        entity['items'] = [1, 2, 3]
+        entity['geo'] = GeoPoint(1.0, 2.0)
+        entity['nothing_here'] = None
+
+        # Store the entity.
+        self.case_entities_to_delete.append(entity)
+        Config.CLIENT.put(entity)
+
+        # Check the original and retrieved are the the same.
+        retrieved_entity = Config.CLIENT.get(entity.key)
+        self.assertEqual(retrieved_entity, entity)
 
 
 class TestDatastoreSaveKeys(TestDatastore):
@@ -376,9 +402,9 @@ class TestDatastoreQuery(TestDatastore):
         self.assertEqual(new_entities[0]['name'], 'Sansa')
         self.assertEqual(new_entities[2]['name'], 'Arya')
 
-    def test_query_group_by(self):
+    def test_query_distinct_on(self):
         query = self._base_query()
-        query.group_by = ['alive']
+        query.distinct_on = ['alive']
 
         expected_matches = 2
         # We expect 2, but allow the query to get 1 extra.
@@ -391,7 +417,7 @@ class TestDatastoreQuery(TestDatastore):
 
 class TestDatastoreTransaction(TestDatastore):
 
-    def test_transaction(self):
+    def test_transaction_via_with_statement(self):
         entity = datastore.Entity(key=Config.CLIENT.key('Company', 'Google'))
         entity['url'] = u'www.google.com'
 
@@ -405,6 +431,40 @@ class TestDatastoreTransaction(TestDatastore):
         retrieved_entity = Config.CLIENT.get(entity.key)
         self.case_entities_to_delete.append(retrieved_entity)
         self.assertEqual(retrieved_entity, entity)
+
+    def test_transaction_via_explicit_begin_get_commit(self):
+        # See https://github.com/GoogleCloudPlatform/gcloud-python/issues/1859
+        # Note that this example lacks the threading which provokes the race
+        # condition in that issue:  we are basically just exercising the
+        # "explict" path for using transactions.
+        BEFORE_1 = 100
+        BEFORE_2 = 0
+        TRANSFER_AMOUNT = 40
+        key1 = Config.CLIENT.key('account', '123')
+        account1 = datastore.Entity(key=key1)
+        account1['balance'] = BEFORE_1
+        key2 = Config.CLIENT.key('account', '234')
+        account2 = datastore.Entity(key=key2)
+        account2['balance'] = BEFORE_2
+        Config.CLIENT.put_multi([account1, account2])
+        self.case_entities_to_delete.append(account1)
+        self.case_entities_to_delete.append(account2)
+
+        xact = Config.CLIENT.transaction()
+        xact.begin()
+        from_account = Config.CLIENT.get(key1, transaction=xact)
+        to_account = Config.CLIENT.get(key2, transaction=xact)
+        from_account['balance'] -= TRANSFER_AMOUNT
+        to_account['balance'] += TRANSFER_AMOUNT
+
+        xact.put(from_account)
+        xact.put(to_account)
+        xact.commit()
+
+        after1 = Config.CLIENT.get(key1)
+        after2 = Config.CLIENT.get(key2)
+        self.assertEqual(after1['balance'], BEFORE_1 - TRANSFER_AMOUNT)
+        self.assertEqual(after2['balance'], BEFORE_2 + TRANSFER_AMOUNT)
 
     def test_failure_with_contention(self):
         contention_prop_name = 'baz'

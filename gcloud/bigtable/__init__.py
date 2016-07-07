@@ -15,17 +15,24 @@
 """Google Cloud Bigtable API package."""
 
 
-from __future__ import print_function
-import sys
+from gcloud.bigtable.client import Client
+
+
+_ERR_MSG = """\
+gRPC is required for using the Cloud Bigtable API, but
+importing the gRPC library (grpcio in PyPI) has failed.
+
+As of June 2016, grpcio is only supported in Python 2.7,
+which unfortunately means the Cloud Bigtable API isn't
+available if you're using Python 3 or Python < 2.7.
+
+If you're using Python 2.7 and importing / installing
+grpcio has failed, this likely means you have a non-standard version
+of Python installed. Check http://grpc.io if you're
+having trouble installing the grpcio package.
+"""
 
 try:
-    from grpc._adapter import _c
+    import grpc.beta.implementations
 except ImportError as exc:  # pragma: NO COVER
-    if 'libgrpc.so' in str(exc):
-        print('gRPC libraries could not be located. Please see '
-              'instructions to locate these files. You\'ll want '
-              'to set your LD_LIBRARY_PATH variable to help '
-              'Python locate the libraries.', file=sys.stderr)
-    raise
-
-from gcloud.bigtable.client import Client
+    raise ImportError(_ERR_MSG, exc)

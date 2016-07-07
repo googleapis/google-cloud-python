@@ -48,3 +48,28 @@ class _NamedTemporaryFile(object):
     def __exit__(self, exc_type, exc_val, exc_tb):
         import os
         os.remove(self.name)
+
+
+class _GAXPageIterator(object):
+
+    def __init__(self, items, page_token):
+        self._items = items
+        self.page_token = page_token
+
+    def next(self):
+        items, self._items = self._items, None
+        return items
+
+
+class _GAXBundlingEvent(object):
+
+    result = None
+
+    def __init__(self, result):
+        self._result = result
+
+    def is_set(self):
+        return self.result is not None
+
+    def wait(self, *_):
+        self.result = self._result

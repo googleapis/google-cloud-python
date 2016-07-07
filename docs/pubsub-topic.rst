@@ -3,5 +3,5 @@ Topics
 
 .. automodule:: gcloud.pubsub.topic
   :members:
-  :undoc-members:
+  :member-order: bysource
   :show-inheritance:

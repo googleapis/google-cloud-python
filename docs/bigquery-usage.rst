@@ -220,8 +220,8 @@ Update all writable metadata for a table
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> table.update()  # API request
 
 Upload table data from a file:
@@ -233,8 +233,8 @@ Upload table data from a file:
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> with open('person_ages.csv', 'rb') as csv_file:
    ...     table.upload_from_file(csv_file, CSV,
    ...                            create_disposition='CREATE_IF_NEEDED')
@@ -279,8 +279,8 @@ List jobs for a project:
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
    >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.job_id, job.type, job.created, job.state) for job in jobs]
-   ['e3344fba-09df-4ae0-8337-fddee34b3840', 'insert', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
+   >>> [(job.name, job.job_type, job.created, job.state) for job in jobs]
+   ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -291,26 +291,88 @@ Run a query which can be expected to complete within bounded time:
 
    >>> from gcloud import bigquery
    >>> client = bigquery.Client()
-   >>> query = """\
-   SELECT count(*) AS age_count FROM dataset_name.person_ages
-   """
-   >>> query = client.run_sync_query(query)
+   >>> QUERY = """\
+   ... SELECT count(*) AS age_count FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
    >>> query.timeout_ms = 1000
    >>> query.run()  # API request
-   >>> retry_count = 100
-   >>> while retry_count > 0 and not job.complete:
-   ...     retry_count -= 1
-   ...     time.sleep(10)
-   ...     query.reload()  # API request
-   >>> query.schema
-   [{'name': 'age_count', 'type': 'integer', 'mode': 'nullable'}]
+   >>> query.complete
+   True
+   >>> len(query.schema)
+   1
+   >>> field = query.schema[0]
+   >>> field.name
+   u'count'
+   >>> field.field_type
+   u'INTEGER'
+   >>> field.mode
+   u'NULLABLE'
    >>> query.rows
    [(15,)]
+   >>> query.total_rows
+   1
 
-.. note::
+If the rows returned by the query do not fit into the inital response,
+then we need to fetch the remaining rows via ``fetch_data``:
 
-   If the query takes longer than the timeout allowed, ``job.complete``
-   will be ``False``:  we therefore poll until it is completed.
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> QUERY = """\
+   ... SELECT * FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
+   >>> query.timeout_ms = 1000
+   >>> query.run()  # API request
+   >>> query.complete
+   True
+   >>> query.total_rows
+   1234
+   >>> query.page_token
+   '8d6e452459238eb0fe87d8eb191dd526ee70a35e'
+   >>> do_something_with(query.schema, query.rows)
+   >>> token = query.page_token  # for initial request
+   >>> while True:
+   ...     do_something_with(query.schema, rows)
+   ...     if token is None:
+   ...         break
+   ...     rows, _, token = query.fetch_data(page_token=token)
+
+
+If the query takes longer than the timeout allowed, ``query.complete``
+will be ``False``.  In that case, we need to poll the associated job until
+it is done, and then fetch the reuslts:
+
+.. doctest::
+
+   >>> from gcloud import bigquery
+   >>> client = bigquery.Client()
+   >>> QUERY = """\
+   ... SELECT * FROM dataset_name.person_ages
+   ... """
+   >>> query = client.run_sync_query(QUERY)
+   >>> query.timeout_ms = 1000
+   >>> query.run()  # API request
+   >>> query.complete
+   False
+   >>> job = query.job
+   >>> retry_count = 100
+   >>> while retry_count > 0 and job.state == 'running':
+   ...     retry_count -= 1
+   ...     time.sleep(10)
+   ...     job.reload()  # API call
+   >>> job.state
+   'done'
+   >>> token = None  # for initial request
+   >>> while True:
+   ...     rows, _, token = query.fetch_data(page_token=token)
+   ...     do_something_with(query.schema, rows)
+   ...     if token is None:
+   ...         break
+
+
 
 Querying data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -331,9 +393,9 @@ Background a query, loading the results into a table:
    >>> job = client.run_async_query('fullname-age-query-job', query)
    >>> job.destination_table = table
    >>> job.write_disposition= 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
+   >>> job.name
+   'fullname-age-query-job'
+   >>> job.job_type
    'query'
    >>> job.created
    None
@@ -384,8 +446,8 @@ Load data synchronously from a local CSV file into a new table:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
    ...     reader = csv.reader(file_obj)
    ...     rows = list(reader)
@@ -405,16 +467,16 @@ the job locally:
    >>> client = bigquery.Client()
    >>> table = dataset.table(name='person_ages')
    >>> table.schema = [
-   ...     SchemaField(name='full_name', type='string', mode='required'),
-   ...     SchemaField(name='age', type='int', mode='required)]
+   ...     SchemaField('full_name', 'STRING', mode='required'),
+   ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> job = client.load_table_from_storage(
    ...     'load-from-storage-job', table, 'gs://bucket-name/object-prefix*')
    >>> job.source_format = 'CSV'
    >>> job.skip_leading_rows = 1  # count of skipped header rows
    >>> job.write_disposition = 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
+   >>> job.name
+   'load-from-storage-job'
+   >>> job.job_type
    'load'
    >>> job.created
    None
@@ -469,10 +531,10 @@ located on Google Cloud Storage.  First, create the job locally:
    ... job.destination_format = 'CSV'
    ... job.print_header = True
    ... job.write_disposition = 'truncate'
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
-   'load'
+   >>> job.name
+   'extract-person-ages-job'
+   >>> job.job_type
+   'extract'
    >>> job.created
    None
    >>> job.state
@@ -523,9 +585,9 @@ First, create the job locally:
    >>> destination_table = dataset.table(name='person_ages_copy')
    >>> job = client.copy_table(
    ...     'copy-table-job', destination_table, source_table)
-   >>> job.job_id
-   'e3344fba-09df-4ae0-8337-fddee34b3840'
-   >>> job.type
+   >>> job.name
+   'copy-table-job'
+   >>> job.job_type
    'copy'
    >>> job.created
    None

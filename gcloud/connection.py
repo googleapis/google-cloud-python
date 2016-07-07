@@ -17,7 +17,7 @@
 import json
 from pkg_resources import get_distribution
 import six
-from six.moves.urllib.parse import urlencode  # pylint: disable=F0401
+from six.moves.urllib.parse import urlencode
 
 import httplib2
 
@@ -115,8 +115,12 @@ class Connection(object):
                 :class:`NoneType`
         :returns: A new credentials object that has a scope added (if needed).
         """
-        if credentials and credentials.create_scoped_required():
-            credentials = credentials.create_scoped(scope)
+        if credentials:
+            try:
+                if credentials.create_scoped_required():
+                    credentials = credentials.create_scoped(scope)
+            except AttributeError:
+                pass
         return credentials
 
 
@@ -158,9 +162,10 @@ class JSONConnection(Connection):
         :type path: string
         :param path: The path to the resource (ie, ``'/b/bucket-name'``).
 
-        :type query_params: dict
-        :param query_params: A dictionary of keys and values to insert into
-                             the query string of the URL.
+        :type query_params: dict or list
+        :param query_params: A dictionary of keys and values (or list of
+                             key-value pairs) to insert into the query
+                             string of the URL.
 
         :type api_base_url: string
         :param api_base_url: The base URL for the API endpoint.
@@ -282,10 +287,10 @@ class JSONConnection(Connection):
         :param path: The path to the resource (ie, ``'/b/bucket-name'``).
                      Required.
 
-        :type query_params: dict
-        :param query_params: A dictionary of keys and values to insert into
-                             the query string of the URL.  Default is
-                             empty dict.
+        :type query_params: dict or list
+        :param query_params: A dictionary of keys and values (or list of
+                             key-value pairs) to insert into the query
+                             string of the URL.
 
         :type data: string
         :param data: The data to send as the body of the request. Default is

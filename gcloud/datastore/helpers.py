@@ -18,60 +18,19 @@ The non-private functions are part of the API.
 """
 
 import datetime
+import itertools
 
-from google.protobuf.internal.type_checkers import Int64ValueChecker
+from google.protobuf import struct_pb2
+from google.type import latlng_pb2
 import six
 
-from gcloud._helpers import _datetime_from_microseconds
-from gcloud._helpers import _has_field
-from gcloud._helpers import _microseconds_from_datetime
+from gcloud._helpers import _datetime_to_pb_timestamp
+from gcloud._helpers import _pb_timestamp_to_datetime
 from gcloud.datastore._generated import entity_pb2 as _entity_pb2
 from gcloud.datastore.entity import Entity
 from gcloud.datastore.key import Key
 
 __all__ = ('entity_from_protobuf', 'key_from_protobuf')
-
-INT_VALUE_CHECKER = Int64ValueChecker()
-
-
-def find_true_project(project, connection):
-    """Find the true (unaliased) project.
-
-    If the given ID already has a 's~' or 'e~' prefix, does nothing.
-    Otherwise, looks up a bogus Key('__MissingLookupKind', 1) and reads the
-    true prefixed project from the response (either from found or from
-    missing).
-
-    For some context, see:
-      github.com/GoogleCloudPlatform/gcloud-python/pull/528
-      github.com/GoogleCloudPlatform/google-cloud-datastore/issues/59
-
-    :type project: string
-    :param project: The project to un-alias / prefix.
-
-    :type connection: :class:`gcloud.datastore.connection.Connection`
-    :param connection: A connection provided to connect to the project.
-
-    :rtype: string
-    :returns: The true / prefixed / un-aliased project.
-    """
-    if project.startswith('s~') or project.startswith('e~'):
-        return project
-
-    # Create the bogus Key protobuf to be looked up and remove
-    # the project so the backend won't complain.
-    bogus_key_pb = Key('__MissingLookupKind', 1,
-                       project=project).to_protobuf()
-    bogus_key_pb.partition_id.ClearField('dataset_id')
-
-    found_pbs, missing_pbs, _ = connection.lookup(project, [bogus_key_pb])
-    # By not passing in `deferred`, lookup will continue until
-    # all results are `found` or `missing`.
-    all_pbs = missing_pbs + found_pbs
-    # We only asked for one, so should only receive one.
-    returned_pb, = all_pbs
-
-    return returned_pb.key.partition_id.dataset_id
 
 
 def _get_meaning(value_pb, is_list=False):
@@ -87,30 +46,29 @@ def _get_meaning(value_pb, is_list=False):
 
     :rtype: int
     :returns: The meaning for the ``value_pb`` if one is set, else
-              :data:`None`.
-    :raises: :class:`ValueError <exceptions.ValueError>` if a list value
-             has disagreeing meanings (in sub-elements) or has some
-             elements with meanings and some without.
+              :data:`None`. For a list value, if there are disagreeing
+              means it just returns a list of meanings. If all the
+              list meanings agree, it just condenses them.
     """
     meaning = None
     if is_list:
         # An empty list will have no values, hence no shared meaning
         # set among them.
-        if len(value_pb.list_value) == 0:
+        if len(value_pb.array_value.values) == 0:
             return None
 
         # We check among all the meanings, some of which may be None,
         # the rest which may be enum/int values.
-        all_meanings = set(_get_meaning(sub_value_pb)
-                           for sub_value_pb in value_pb.list_value)
-        meaning = all_meanings.pop()
-        # The value we popped off should have been unique. If not
-        # then we can't handle a list with values that have more
-        # than one meaning.
-        if all_meanings:
-            raise ValueError('Different meanings set on values '
-                             'within a list_value')
-    elif _has_field(value_pb, 'meaning'):
+        all_meanings = [_get_meaning(sub_value_pb)
+                        for sub_value_pb in value_pb.array_value.values]
+        unique_meanings = set(all_meanings)
+        if len(unique_meanings) == 1:
+            # If there is a unique meaning, we preserve it.
+            meaning = unique_meanings.pop()
+        else:  # We know len(value_pb.array_value.values) > 0.
+            # If the meaning is not unique, just return all of them.
+            meaning = all_meanings
+    elif value_pb.meaning:  # Simple field (int32)
         meaning = value_pb.meaning
 
     return meaning
@@ -128,9 +86,7 @@ def _new_value_pb(entity_pb, name):
     :rtype: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :returns: The new ``Value`` protobuf that was added to the entity.
     """
-    property_pb = entity_pb.property.add()
-    property_pb.name = name
-    return property_pb.value
+    return entity_pb.properties.get_or_create(name)
 
 
 def _property_tuples(entity_pb):
@@ -143,8 +99,7 @@ def _property_tuples(entity_pb):
     :returns: An iterator that yields tuples of a name and ``Value``
               corresponding to properties on the entity.
     """
-    for property_pb in entity_pb.property:
-        yield property_pb.name, property_pb.value
+    return six.iteritems(entity_pb.properties)
 
 
 def entity_from_protobuf(pb):
@@ -160,7 +115,7 @@ def entity_from_protobuf(pb):
     :returns: The entity derived from the protobuf.
     """
     key = None
-    if _has_field(pb, 'key'):
+    if pb.HasField('key'):  # Message field (Key)
         key = key_from_protobuf(pb.key)
 
     entity_props = {}
@@ -177,25 +132,69 @@ def entity_from_protobuf(pb):
         if meaning is not None:
             entity_meanings[prop_name] = (meaning, value)
 
-        # Check if ``value_pb`` was indexed. Lists need to be special-cased
-        # and we require all ``indexed`` values in a list agree.
+        # Check if ``value_pb`` was excluded from index. Lists need to be
+        # special-cased and we require all ``exclude_from_indexes`` values
+        # in a list agree.
         if is_list:
-            indexed_values = set(value_pb.indexed
-                                 for value_pb in value_pb.list_value)
-            if len(indexed_values) != 1:
-                raise ValueError('For a list_value, subvalues must either all '
-                                 'be indexed or all excluded from indexes.')
+            exclude_values = set(value_pb.exclude_from_indexes
+                                 for value_pb in value_pb.array_value.values)
+            if len(exclude_values) != 1:
+                raise ValueError('For an array_value, subvalues must either '
+                                 'all be indexed or all excluded from '
+                                 'indexes.')
 
-            if not indexed_values.pop():
+            if exclude_values.pop():
                 exclude_from_indexes.append(prop_name)
         else:
-            if not value_pb.indexed:
+            if value_pb.exclude_from_indexes:
                 exclude_from_indexes.append(prop_name)
 
     entity = Entity(key=key, exclude_from_indexes=exclude_from_indexes)
     entity.update(entity_props)
     entity._meanings.update(entity_meanings)
     return entity
+
+
+def _set_pb_meaning_from_entity(entity, name, value, value_pb,
+                                is_list=False):
+    """Add meaning information (from an entity) to a protobuf.
+
+    :type entity: :class:`gcloud.datastore.entity.Entity`
+    :param entity: The entity to be turned into a protobuf.
+
+    :type name: string
+    :param name: The name of the property.
+
+    :type value: object
+    :param value: The current value stored as property ``name``.
+
+    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
+    :param value_pb: The protobuf value to add meaning / meanings to.
+
+    :type is_list: bool
+    :param is_list: (Optional) Boolean indicating if the ``value`` is
+                    a list value.
+    """
+    if name not in entity._meanings:
+        return
+
+    meaning, orig_value = entity._meanings[name]
+    # Only add the meaning back to the protobuf if the value is
+    # unchanged from when it was originally read from the API.
+    if orig_value is not value:
+        return
+
+    # For lists, we set meaning on each sub-element.
+    if is_list:
+        if not isinstance(meaning, list):
+            meaning = itertools.repeat(meaning)
+        val_iter = six.moves.zip(value_pb.array_value.values,
+                                 meaning)
+        for sub_value_pb, sub_meaning in val_iter:
+            if sub_meaning is not None:
+                sub_value_pb.meaning = sub_meaning
+    else:
+        value_pb.meaning = meaning
 
 
 def entity_to_protobuf(entity):
@@ -224,23 +223,14 @@ def entity_to_protobuf(entity):
         # Add index information to protobuf.
         if name in entity.exclude_from_indexes:
             if not value_is_list:
-                value_pb.indexed = False
+                value_pb.exclude_from_indexes = True
 
-            for sub_value in value_pb.list_value:
-                sub_value.indexed = False
+            for sub_value in value_pb.array_value.values:
+                sub_value.exclude_from_indexes = True
 
         # Add meaning information to protobuf.
-        if name in entity._meanings:
-            meaning, orig_value = entity._meanings[name]
-            # Only add the meaning back to the protobuf if the value is
-            # unchanged from when it was originally read from the API.
-            if orig_value is value:
-                # For lists, we set meaning on each sub-element.
-                if value_is_list:
-                    for sub_value_pb in value_pb.list_value:
-                        sub_value_pb.meaning = meaning
-                else:
-                    value_pb.meaning = meaning
+        _set_pb_meaning_from_entity(entity, name, value, value_pb,
+                                    is_list=value_is_list)
 
     return entity_pb
 
@@ -258,21 +248,21 @@ def key_from_protobuf(pb):
     :returns: a new `Key` instance
     """
     path_args = []
-    for element in pb.path_element:
+    for element in pb.path:
         path_args.append(element.kind)
-        if _has_field(element, 'id'):
+        if element.id:  # Simple field (int64)
             path_args.append(element.id)
         # This is safe: we expect proto objects returned will only have
         # one of `name` or `id` set.
-        if _has_field(element, 'name'):
+        if element.name:  # Simple field (string)
             path_args.append(element.name)
 
     project = None
-    if _has_field(pb.partition_id, 'dataset_id'):
-        project = pb.partition_id.dataset_id
+    if pb.partition_id.project_id:  # Simple field (string)
+        project = pb.partition_id.project_id
     namespace = None
-    if _has_field(pb.partition_id, 'namespace'):
-        namespace = pb.partition_id.namespace
+    if pb.partition_id.namespace_id:  # Simple field (string)
+        namespace = pb.partition_id.namespace_id
 
     return Key(*path_args, namespace=namespace, project=project)
 
@@ -310,8 +300,8 @@ def _pb_attr_value(val):
     """
 
     if isinstance(val, datetime.datetime):
-        name = 'timestamp_microseconds'
-        value = _microseconds_from_datetime(val)
+        name = 'timestamp'
+        value = _datetime_to_pb_timestamp(val)
     elif isinstance(val, Key):
         name, value = 'key', val.to_protobuf()
     elif isinstance(val, bool):
@@ -319,8 +309,7 @@ def _pb_attr_value(val):
     elif isinstance(val, float):
         name, value = 'double', val
     elif isinstance(val, six.integer_types):
-        INT_VALUE_CHECKER.CheckValue(val)   # Raise an exception if invalid.
-        name, value = 'integer', int(val)  # Always cast to an integer.
+        name, value = 'integer', val
     elif isinstance(val, six.text_type):
         name, value = 'string', val
     elif isinstance(val, (bytes, str)):
@@ -328,7 +317,11 @@ def _pb_attr_value(val):
     elif isinstance(val, Entity):
         name, value = 'entity', val
     elif isinstance(val, list):
-        name, value = 'list', val
+        name, value = 'array', val
+    elif isinstance(val, GeoPoint):
+        name, value = 'geo_point', val.to_protobuf()
+    elif val is None:
+        name, value = 'null', struct_pb2.NULL_VALUE
     else:
         raise ValueError("Unknown protobuf attr type %s" % type(val))
 
@@ -349,36 +342,48 @@ def _get_value_from_value_pb(value_pb):
     :param value_pb: The Value Protobuf.
 
     :returns: The value provided by the Protobuf.
+    :raises: :class:`ValueError <exceptions.ValueError>` if no value type
+             has been set.
     """
-    result = None
-    if _has_field(value_pb, 'timestamp_microseconds_value'):
-        microseconds = value_pb.timestamp_microseconds_value
-        result = _datetime_from_microseconds(microseconds)
+    value_type = value_pb.WhichOneof('value_type')
 
-    elif _has_field(value_pb, 'key_value'):
+    if value_type == 'timestamp_value':
+        result = _pb_timestamp_to_datetime(value_pb.timestamp_value)
+
+    elif value_type == 'key_value':
         result = key_from_protobuf(value_pb.key_value)
 
-    elif _has_field(value_pb, 'boolean_value'):
+    elif value_type == 'boolean_value':
         result = value_pb.boolean_value
 
-    elif _has_field(value_pb, 'double_value'):
+    elif value_type == 'double_value':
         result = value_pb.double_value
 
-    elif _has_field(value_pb, 'integer_value'):
+    elif value_type == 'integer_value':
         result = value_pb.integer_value
 
-    elif _has_field(value_pb, 'string_value'):
+    elif value_type == 'string_value':
         result = value_pb.string_value
 
-    elif _has_field(value_pb, 'blob_value'):
+    elif value_type == 'blob_value':
         result = value_pb.blob_value
 
-    elif _has_field(value_pb, 'entity_value'):
+    elif value_type == 'entity_value':
         result = entity_from_protobuf(value_pb.entity_value)
 
-    elif value_pb.list_value:
+    elif value_type == 'array_value':
         result = [_get_value_from_value_pb(value)
-                  for value in value_pb.list_value]
+                  for value in value_pb.array_value.values]
+
+    elif value_type == 'geo_point_value':
+        result = GeoPoint(value_pb.geo_point_value.latitude,
+                          value_pb.geo_point_value.longitude)
+
+    elif value_type == 'null_value':
+        result = None
+
+    else:
+        raise ValueError('Value protobuf did not have any value set')
 
     return result
 
@@ -400,47 +405,64 @@ def _set_protobuf_value(value_pb, val):
                :class:`gcloud.datastore.entity.Entity`
     :param val: The value to be assigned.
     """
-    if val is None:
-        value_pb.Clear()
-        return
-
     attr, val = _pb_attr_value(val)
     if attr == 'key_value':
         value_pb.key_value.CopyFrom(val)
+    elif attr == 'timestamp_value':
+        value_pb.timestamp_value.CopyFrom(val)
     elif attr == 'entity_value':
         entity_pb = entity_to_protobuf(val)
         value_pb.entity_value.CopyFrom(entity_pb)
-    elif attr == 'list_value':
-        l_pb = value_pb.list_value
+    elif attr == 'array_value':
+        l_pb = value_pb.array_value.values
         for item in val:
             i_pb = l_pb.add()
             _set_protobuf_value(i_pb, item)
+    elif attr == 'geo_point_value':
+        value_pb.geo_point_value.CopyFrom(val)
     else:  # scalar, just assign
         setattr(value_pb, attr, val)
 
 
-def _prepare_key_for_request(key_pb):
-    """Add protobuf keys to a request object.
+class GeoPoint(object):
+    """Simple container for a geo point value.
 
-    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :param key_pb: A key to be added to a request.
+    :type latitude: float
+    :param latitude: Latitude of a point.
 
-    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :returns: A key which will be added to a request. It will be the
-              original if nothing needs to be changed.
+    :type longitude: float
+    :param longitude: Longitude of a point.
     """
-    if _has_field(key_pb.partition_id, 'dataset_id'):
-        # We remove the dataset_id from the protobuf. This is because
-        # the backend fails a request if the key contains un-prefixed
-        # project. The backend fails because requests to
-        #     /datastore/.../datasets/foo/...
-        # and
-        #     /datastore/.../datasets/s~foo/...
-        # both go to the datastore given by 's~foo'. So if the key
-        # protobuf in the request body has dataset_id='foo', the
-        # backend will reject since 'foo' != 's~foo'.
-        new_key_pb = _entity_pb2.Key()
-        new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('dataset_id')
-        key_pb = new_key_pb
-    return key_pb
+
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude
+        self.longitude = longitude
+
+    def to_protobuf(self):
+        """Convert the current object to protobuf.
+
+        :rtype: :class:`google.type.latlng_pb2.LatLng`.
+        :returns: The current point as a protobuf.
+        """
+        return latlng_pb2.LatLng(latitude=self.latitude,
+                                 longitude=self.longitude)
+
+    def __eq__(self, other):
+        """Compare two geo points for equality.
+
+        :rtype: boolean
+        :returns: True if the points compare equal, else False.
+        """
+        if not isinstance(other, GeoPoint):
+            return False
+
+        return (self.latitude == other.latitude and
+                self.longitude == other.longitude)
+
+    def __ne__(self, other):
+        """Compare two geo points for inequality.
+
+        :rtype: boolean
+        :returns: False if the points compare equal, else True.
+        """
+        return not self.__eq__(other)

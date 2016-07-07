@@ -156,6 +156,8 @@ class TestQueryResults(unittest2.TestCase):
         self.assertEqual(job.query, self.QUERY)
         self.assertTrue(job._client is client)
         self.assertEqual(job.name, SERVER_GENERATED)
+        fetched_later = query.job
+        self.assertTrue(fetched_later is job)
 
     def test_schema(self):
         client = _Client(self.PROJECT)
@@ -204,6 +206,7 @@ class TestQueryResults(unittest2.TestCase):
         query.preserve_nulls = True
         query.timeout_ms = 20000
         query.use_query_cache = False
+        query.dry_run = True
 
         query.run(client=client2)
 
@@ -218,6 +221,7 @@ class TestQueryResults(unittest2.TestCase):
                 'projectId': self.PROJECT,
                 'datasetId': DATASET,
             },
+            'dryRun': True,
             'maxResults': 100,
             'preserveNulls': True,
             'timeoutMs': 20000,
@@ -322,9 +326,5 @@ class _Connection(object):
         from gcloud.exceptions import NotFound
         self._requested.append(kw)
 
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:  # pragma: NO COVER
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response

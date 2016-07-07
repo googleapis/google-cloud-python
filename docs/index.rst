@@ -4,6 +4,7 @@
   :caption: gcloud
 
   gcloud-api
+  gcloud-config
   gcloud-auth
 
 .. toctree::
@@ -17,6 +18,7 @@
   datastore-queries
   datastore-transactions
   datastore-batches
+  datastore-helpers
 
 .. toctree::
   :maxdepth: 0
@@ -27,6 +29,7 @@
   storage-blobs
   storage-buckets
   storage-acl
+  storage-batch
 
 .. toctree::
   :maxdepth: 0
@@ -38,6 +41,7 @@
   pubsub-topic
   pubsub-subscription
   pubsub-message
+  pubsub-iam
 
 .. toctree::
   :maxdepth: 0
@@ -49,6 +53,31 @@
   bigquery-dataset
   bigquery-job
   bigquery-table
+  bigquery-query
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Cloud Bigtable
+
+  bigtable-usage
+  HappyBase <happybase-package>
+  bigtable-client-intro
+  bigtable-instance-api
+  bigtable-table-api
+  bigtable-data-api
+  Client <bigtable-client>
+  bigtable-instance
+  bigtable-cluster
+  bigtable-table
+  bigtable-column-family
+  bigtable-row
+  bigtable-row-filters
+  bigtable-row-data
+  happybase-connection
+  happybase-pool
+  happybase-table
+  happybase-batch
 
 .. toctree::
   :maxdepth: 0
@@ -73,12 +102,35 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Search
+  :caption: Cloud Logging
 
-  search-usage
-  Client <search-client>
-  search-index
-  search-document
+  logging-usage
+  Client <logging-client>
+  logging-logger
+  logging-entries
+  logging-metric
+  logging-sink
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Cloud Monitoring
+
+  monitoring-usage
+  Client <monitoring-client>
+  monitoring-metric
+  monitoring-resource
+  monitoring-query
+  monitoring-timeseries
+  monitoring-label
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
+  :caption: Translate
+
+  translate-usage
+  Client <translate-client>
 
 .. toctree::
   :maxdepth: 0
@@ -98,22 +150,6 @@ The ``gcloud`` library is ``pip`` install-able:
 .. code-block:: console
 
     $ pip install gcloud
-
-If you have trouble installing
-``pycrypto`` or ``pyopenssl``
-(and you're on Ubuntu),
-you can try install the precompiled packages:
-
-.. code-block:: console
-
-    $ sudo apt-get install python-crypto python-openssl
-
-If you want to install everything with ``pip``,
-try installing the ``dev`` packages beforehand:
-
-.. code-block:: console
-
-    $ sudo apt-get install python-dev libssl-dev
 
 If you want to install ``gcloud-python`` from source,
 you can clone the repository from GitHub:

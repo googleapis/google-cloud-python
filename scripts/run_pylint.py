@@ -17,9 +17,11 @@
 This runs pylint as a script via subprocess in two different
 subprocesses. The first lints the production/library code
 using the default rc file (PRODUCTION_RC). The second lints the
-demo/test code using an rc file (TEST_RC) which allows more style
+test code using an rc file (TEST_RC) which allows more style
 violations (hence it has a reduced number of style checks).
 """
+
+from __future__ import print_function
 
 import ConfigParser
 import copy
@@ -29,18 +31,21 @@ import sys
 
 
 IGNORED_DIRECTORIES = [
-    'gcloud/bigtable/_generated',
-    'gcloud/datastore/_generated',
+    os.path.join('gcloud', 'bigtable', '_generated'),
+    os.path.join('gcloud', 'bigtable', '_generated_v2'),
+    os.path.join('gcloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
-    'gcloud/datastore/_datastore_v1_pb2.py',
-    'docs/conf.py',
+    os.path.join('docs', 'conf.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
 PRODUCTION_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_default')
 TEST_RC = os.path.join(SCRIPTS_DIR, 'pylintrc_reduced')
 TEST_DISABLED_MESSAGES = [
+    'abstract-method',
+    'arguments-differ',
+    'assignment-from-no-return',
     'attribute-defined-outside-init',
     'exec-used',
     'import-error',
@@ -53,12 +58,15 @@ TEST_DISABLED_MESSAGES = [
     'too-many-locals',
     'too-many-public-methods',
     'unbalanced-tuple-unpacking',
-    'arguments-differ',
-    'assignment-from-no-return',
 ]
 TEST_RC_ADDITIONS = {
     'MESSAGES CONTROL': {
         'disable': ', '.join(TEST_DISABLED_MESSAGES),
+    },
+}
+TEST_RC_REPLACEMENTS = {
+    'FORMAT': {
+        'max-module-lines': 1900,
     },
 }
 
@@ -71,7 +79,8 @@ def read_config(filename):
     return config
 
 
-def make_test_rc(base_rc_filename, additions_dict, target_filename):
+def make_test_rc(base_rc_filename, additions_dict,
+                 replacements_dict, target_filename):
     """Combines a base rc and test additions into single file."""
     main_cfg = read_config(base_rc_filename)
 
@@ -88,6 +97,15 @@ def make_test_rc(base_rc_filename, additions_dict, target_filename):
                 raise KeyError('Expected to be adding to existing option.')
             curr_val = curr_val.rstrip(',')
             curr_section[opt] = '%s, %s' % (curr_val, opt_val)
+
+    for section, opts in replacements_dict.items():
+        curr_section = test_cfg._sections.setdefault(
+            section, test_cfg._dict())
+        for opt, opt_val in opts.items():
+            curr_val = curr_section.get(opt)
+            if curr_val is None:
+                raise KeyError('Expected to be replacing existing option.')
+            curr_section[opt] = '%s' % (opt_val,)
 
     with open(target_filename, 'w') as file_obj:
         test_cfg.write(file_obj)
@@ -108,7 +126,7 @@ def is_production_filename(filename):
     :rtype: bool
     :returns: Boolean indicating production status.
     """
-    return not ('demo' in filename or 'test' in filename)
+    return 'test' not in filename and 'docs' not in filename
 
 
 def get_files_for_linting(allow_limited=True):
@@ -152,12 +170,12 @@ def get_files_for_linting(allow_limited=True):
     if diff_base is not None and allow_limited:
         result = subprocess.check_output(['git', 'diff', '--name-only',
                                           diff_base])
-        print 'Using files changed relative to %s:' % (diff_base,)
-        print '-' * 60
-        print result.rstrip('\n')  # Don't print trailing newlines.
-        print '-' * 60
+        print('Using files changed relative to %s:' % (diff_base,))
+        print('-' * 60)
+        print(result.rstrip('\n'))  # Don't print trailing newlines.
+        print('-' * 60)
     else:
-        print 'Diff base not specified, listing all files in repository.'
+        print('Diff base not specified, listing all files in repository.')
         result = subprocess.check_output(['git', 'ls-files'])
 
     return result.rstrip('\n').split('\n'), diff_base
@@ -177,7 +195,7 @@ def get_python_files(all_files=None):
 
     :rtype: tuple
     :returns: A tuple containing two lists and a boolean. The first list
-              contains all production files, the next all test/demo files and
+              contains all production files, the next all test files and
               the boolean indicates if a restricted fileset was used.
     """
     using_restricted = False
@@ -212,30 +230,31 @@ def lint_fileset(filenames, rcfile, description):
         if status_code != 0:
             error_message = ('Pylint failed on %s with '
                              'status %d.' % (description, status_code))
-            print >> sys.stderr, error_message
+            print(error_message, file=sys.stderr)
             sys.exit(status_code)
     else:
-        print 'Skipping %s, no files to lint.' % (description,)
+        print('Skipping %s, no files to lint.' % (description,))
 
 
 def main():
     """Script entry point. Lints both sets of files."""
-    make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS, TEST_RC)
+    make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS,
+                 TEST_RC_REPLACEMENTS, TEST_RC)
     library_files, non_library_files, using_restricted = get_python_files()
     try:
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+        lint_fileset(non_library_files, TEST_RC, 'test code')
     except SystemExit:
         if not using_restricted:
             raise
 
         message = 'Restricted lint failed, expanding to full fileset.'
-        print >> sys.stderr, message
+        print(message, file=sys.stderr)
         all_files, _ = get_files_for_linting(allow_limited=False)
         library_files, non_library_files, _ = get_python_files(
             all_files=all_files)
         lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test and demo code')
+        lint_fileset(non_library_files, TEST_RC, 'test code')
 
 
 if __name__ == '__main__':

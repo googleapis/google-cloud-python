@@ -18,31 +18,37 @@ from gcloud._helpers import _datetime_from_microseconds
 
 
 def _not_null(value, field):
+    """Check whether 'value' should be coerced to 'field' type."""
     return value is not None or field.mode != 'NULLABLE'
 
 
 def _int_from_json(value, field):
+    """Coerce 'value' to an int, if set or not nullable."""
     if _not_null(value, field):
         return int(value)
 
 
 def _float_from_json(value, field):
+    """Coerce 'value' to a float, if set or not nullable."""
     if _not_null(value, field):
         return float(value)
 
 
 def _bool_from_json(value, field):
+    """Coerce 'value' to a bool, if set or not nullable."""
     if _not_null(value, field):
         return value.lower() in ['t', 'true', '1']
 
 
 def _datetime_from_json(value, field):
+    """Coerce 'value' to a datetime, if set or not nullable."""
     if _not_null(value, field):
         # value will be a float in seconds, to microsecond precision, in UTC.
         return _datetime_from_microseconds(1e6 * float(value))
 
 
 def _record_from_json(value, field):
+    """Coerce 'value' to a mapping, if set or not nullable."""
     if _not_null(value, field):
         record = {}
         for subfield, cell in zip(field.fields, value['f']):
@@ -56,6 +62,7 @@ def _record_from_json(value, field):
 
 
 def _string_from_json(value, _):
+    """NOOP string -> string coercion"""
     return value
 
 
@@ -70,6 +77,7 @@ _CELLDATA_FROM_JSON = {
 
 
 def _rows_from_json(rows, schema):
+    """Convert JSON row data to rows w/ appropriate types."""
     rows_data = []
     for row in rows:
         row_data = []
@@ -132,6 +140,10 @@ class _TypedProperty(_ConfigurationProperty):
         self.property_type = property_type
 
     def _validate(self, value):
+        """Ensure that 'value' is of the appropriate type.
+
+        :raises: ValueError on a type mismatch.
+        """
         if not isinstance(value, self.property_type):
             raise ValueError('Required type: %s' % (self.property_type,))
 

@@ -19,16 +19,16 @@ from __future__ import print_function
 
 import os
 
-from six.moves import zip
+import six
 
 from gcloud import datastore
-from gcloud.environment_vars import TESTS_DATASET
+from gcloud.environment_vars import TESTS_PROJECT
 
 
 ANCESTOR = ('Book', 'GoT')
 RICKARD = ANCESTOR + ('Character', 'Rickard')
 EDDARD = RICKARD + ('Character', 'Eddard')
-KEY_PATHS = [
+KEY_PATHS = (
     RICKARD,
     EDDARD,
     ANCESTOR + ('Character', 'Catelyn'),
@@ -37,8 +37,8 @@ KEY_PATHS = [
     EDDARD + ('Character', 'Robb'),
     EDDARD + ('Character', 'Bran'),
     EDDARD + ('Character', 'Jon Snow'),
-]
-CHARACTERS = [
+)
+CHARACTERS = (
     {
         'name': u'Rickard',
         'family': u'Stark',
@@ -80,7 +80,7 @@ CHARACTERS = [
         'appearances': 32,
         'alive': True,
     },
-]
+)
 
 
 def print_func(message):
@@ -91,9 +91,9 @@ def print_func(message):
 def add_characters(client=None):
     if client is None:
         # Get a client that uses the test dataset.
-        client = datastore.Client(project=os.getenv(TESTS_DATASET))
+        client = datastore.Client(project=os.getenv(TESTS_PROJECT))
     with client.transaction() as xact:
-        for key_path, character in zip(KEY_PATHS, CHARACTERS):
+        for key_path, character in six.moves.zip(KEY_PATHS, CHARACTERS):
             if key_path[-1] != character['name']:
                 raise ValueError(('Character and key don\'t agree',
                                   key_path, character))

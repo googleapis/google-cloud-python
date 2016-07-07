@@ -3,5 +3,5 @@ Subscriptions
 
 .. automodule:: gcloud.pubsub.subscription
   :members:
-  :undoc-members:
+  :member-order: bysource
   :show-inheritance:

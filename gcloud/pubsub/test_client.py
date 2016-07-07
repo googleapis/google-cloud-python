@@ -16,6 +16,11 @@ import unittest2
 
 
 class TestClient(unittest2.TestCase):
+    PROJECT = 'PROJECT'
+    TOPIC_NAME = 'topic_name'
+    TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+    SUB_NAME = 'subscription_name'
+    SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
 
     def _getTargetClass(self):
         from gcloud.pubsub.client import Client
@@ -24,183 +29,240 @@ class TestClient(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
+    def test_publisher_api_wo_gax(self):
+        from gcloud.pubsub.connection import _PublisherAPI
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = object()
+
+        with _Monkey(MUT, _USE_GAX=False):
+            api = client.publisher_api
+
+        self.assertIsInstance(api, _PublisherAPI)
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.publisher_api
+        self.assertTrue(again is api)
+
+    def test_publisher_api_w_gax(self):
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+
+        wrapped = object()
+        _called_with = []
+
+        def _generated_api(*args, **kw):
+            _called_with.append((args, kw))
+            return wrapped
+
+        class _GaxPublisherAPI(object):
+
+            def __init__(self, _wrapped):
+                self._wrapped = _wrapped
+
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        with _Monkey(MUT,
+                     _USE_GAX=True,
+                     GeneratedPublisherAPI=_generated_api,
+                     GAXPublisherAPI=_GaxPublisherAPI):
+            api = client.publisher_api
+
+        self.assertIsInstance(api, _GaxPublisherAPI)
+        self.assertTrue(api._wrapped is wrapped)
+        # API instance is cached
+        again = client.publisher_api
+        self.assertTrue(again is api)
+
+    def test_subscriber_api_wo_gax(self):
+        from gcloud.pubsub.connection import _SubscriberAPI
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = object()
+
+        with _Monkey(MUT, _USE_GAX=False):
+            api = client.subscriber_api
+
+        self.assertIsInstance(api, _SubscriberAPI)
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.subscriber_api
+        self.assertTrue(again is api)
+
+    def test_subscriber_api_w_gax(self):
+        from gcloud.pubsub import client as MUT
+        from gcloud._testing import _Monkey
+
+        wrapped = object()
+        _called_with = []
+
+        def _generated_api(*args, **kw):
+            _called_with.append((args, kw))
+            return wrapped
+
+        class _GaxSubscriberAPI(object):
+
+            def __init__(self, _wrapped):
+                self._wrapped = _wrapped
+
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+
+        with _Monkey(MUT,
+                     _USE_GAX=True,
+                     GeneratedSubscriberAPI=_generated_api,
+                     GAXSubscriberAPI=_GaxSubscriberAPI):
+            api = client.subscriber_api
+
+        self.assertIsInstance(api, _GaxSubscriberAPI)
+        self.assertTrue(api._wrapped is wrapped)
+        # API instance is cached
+        again = client.subscriber_api
+        self.assertTrue(again is api)
+
+    def test_iam_policy_api(self):
+        from gcloud.pubsub.connection import _IAMPolicyAPI
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        conn = client.connection = object()
+        api = client.iam_policy_api
+        self.assertIsInstance(api, _IAMPolicyAPI)
+        self.assertTrue(api._connection is conn)
+        # API instance is cached
+        again = client.iam_policy_api
+        self.assertTrue(again is api)
+
     def test_list_topics_no_paging(self):
         from gcloud.pubsub.topic import Topic
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client.connection = object()
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = [{'name': self.TOPIC_PATH}], None
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        topics, next_page_token = client.list_topics()
 
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-
-        RETURNED = {'topics': [{'name': TOPIC_PATH}]}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        topics, next_page_token = CLIENT_OBJ.list_topics()
-        # Test values are correct.
         self.assertEqual(len(topics), 1)
-        self.assertTrue(isinstance(topics[0], Topic))
-        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertIsInstance(topics[0], Topic)
+        self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+
+        self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_topics_with_paging(self):
         from gcloud.pubsub.topic import Topic
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        RETURNED = {'topics': [{'name': TOPIC_PATH}],
-                    'nextPageToken': TOKEN2}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client.connection = object()
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = [{'name': self.TOPIC_PATH}], TOKEN2
 
-        # Execute request.
-        topics, next_page_token = CLIENT_OBJ.list_topics(SIZE, TOKEN1)
-        # Test values are correct.
+        topics, next_page_token = client.list_topics(SIZE, TOKEN1)
+
         self.assertEqual(len(topics), 1)
-        self.assertTrue(isinstance(topics[0], Topic))
-        self.assertEqual(topics[0].name, TOPIC_NAME)
+        self.assertIsInstance(topics[0], Topic)
+        self.assertEqual(topics[0].name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, TOKEN2)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/topics' % PROJECT)
-        self.assertEqual(req['query_params'],
-                         {'pageSize': SIZE, 'pageToken': TOKEN1})
+
+        self.assertEqual(api._listed_topics, (self.PROJECT, 1, TOKEN1))
+
+    def test_list_topics_missing_key(self):
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client.connection = object()
+        api = client._publisher_api = _FauxPublisherAPI()
+        api._list_topics_response = (), None
+
+        topics, next_page_token = client.list_topics()
+
+        self.assertEqual(len(topics), 0)
+        self.assertEqual(next_page_token, None)
+
+        self.assertEqual(api._listed_topics, (self.PROJECT, None, None))
 
     def test_list_subscriptions_no_paging(self):
         from gcloud.pubsub.subscription import Subscription
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
+        client.connection = object()
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = [SUB_INFO], None
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        subscriptions, next_page_token = client.list_subscriptions()
 
-        SUB_NAME = 'subscription_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_INFO = [{'name': SUB_PATH, 'topic': TOPIC_PATH}]
-        RETURNED = {'subscriptions': SUB_INFO}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
-
-        # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions()
-        # Test values are correct.
         self.assertEqual(len(subscriptions), 1)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
-        self.assertEqual(subscriptions[0].name, SUB_NAME)
-        self.assertEqual(subscriptions[0].topic.name, TOPIC_NAME)
+        self.assertIsInstance(subscriptions[0], Subscription)
+        self.assertEqual(subscriptions[0].name, self.SUB_NAME)
+        self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
         self.assertEqual(next_page_token, None)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
-        self.assertEqual(req['query_params'], {})
+
+        self.assertEqual(api._listed_subscriptions,
+                         (self.PROJECT, None, None))
 
     def test_list_subscriptions_with_paging(self):
         from gcloud.pubsub.subscription import Subscription
-        PROJECT = 'PROJECT'
-        CREDS = _Credentials()
-
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
-
-        SUB_NAME = 'subscription_name'
-        SUB_PATH = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
+        SUB_INFO = {'name': self.SUB_PATH, 'topic': self.TOPIC_PATH}
+        creds = _Credentials()
+        client = self._makeOne(project=self.PROJECT, credentials=creds)
         ACK_DEADLINE = 42
         PUSH_ENDPOINT = 'https://push.example.com/endpoint'
+        SUB_INFO = {'name': self.SUB_PATH,
+                    'topic': self.TOPIC_PATH,
+                    'ackDeadlineSeconds': ACK_DEADLINE,
+                    'pushConfig': {'pushEndpoint': PUSH_ENDPOINT}}
         TOKEN1 = 'TOKEN1'
         TOKEN2 = 'TOKEN2'
         SIZE = 1
-        SUB_INFO = [{'name': SUB_PATH,
-                     'topic': TOPIC_PATH,
-                     'ackDeadlineSeconds': ACK_DEADLINE,
-                     'pushConfig': {'pushEndpoint': PUSH_ENDPOINT}}]
-        RETURNED = {'subscriptions': SUB_INFO, 'nextPageToken': TOKEN2}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        client.connection = object()
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = [SUB_INFO], TOKEN2
 
-        # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions(
+        subscriptions, next_page_token = client.list_subscriptions(
             SIZE, TOKEN1)
-        # Test values are correct.
+
         self.assertEqual(len(subscriptions), 1)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
-        self.assertEqual(subscriptions[0].name, SUB_NAME)
-        self.assertEqual(subscriptions[0].topic.name, TOPIC_NAME)
+        self.assertIsInstance(subscriptions[0], Subscription)
+        self.assertEqual(subscriptions[0].name, self.SUB_NAME)
+        self.assertEqual(subscriptions[0].topic.name, self.TOPIC_NAME)
         self.assertEqual(subscriptions[0].ack_deadline, ACK_DEADLINE)
         self.assertEqual(subscriptions[0].push_endpoint, PUSH_ENDPOINT)
         self.assertEqual(next_page_token, TOKEN2)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'], '/projects/%s/subscriptions' % PROJECT)
-        self.assertEqual(req['query_params'],
-                         {'pageSize': SIZE, 'pageToken': TOKEN1})
 
-    def test_list_subscriptions_with_topic_name(self):
-        from gcloud.pubsub.subscription import Subscription
+        self.assertEqual(api._listed_subscriptions,
+                         (self.PROJECT, SIZE, TOKEN1))
+
+    def test_list_subscriptions_w_missing_key(self):
         PROJECT = 'PROJECT'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        CLIENT_OBJ = self._makeOne(project=PROJECT, credentials=CREDS)
+        client = self._makeOne(project=PROJECT, credentials=creds)
+        client.connection = object()
+        api = client._subscriber_api = _FauxSubscriberAPI()
+        api._list_subscriptions_response = (), None
 
-        SUB_NAME_1 = 'subscription_1'
-        SUB_PATH_1 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_1)
-        SUB_NAME_2 = 'subscription_2'
-        SUB_PATH_2 = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME_2)
-        TOPIC_NAME = 'topic_name'
-        TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
-        SUB_INFO = [{'name': SUB_PATH_1, 'topic': TOPIC_PATH},
-                    {'name': SUB_PATH_2, 'topic': TOPIC_PATH}]
-        TOKEN = 'TOKEN'
-        RETURNED = {'subscriptions': SUB_INFO, 'nextPageToken': TOKEN}
-        # Replace the connection on the client with one of our own.
-        CLIENT_OBJ.connection = _Connection(RETURNED)
+        subscriptions, next_page_token = client.list_subscriptions()
 
-        # Execute request.
-        subscriptions, next_page_token = CLIENT_OBJ.list_subscriptions(
-            topic_name=TOPIC_NAME)
-        # Test values are correct.
-        self.assertEqual(len(subscriptions), 2)
-        self.assertTrue(isinstance(subscriptions[0], Subscription))
-        self.assertEqual(subscriptions[0].name, SUB_NAME_1)
-        self.assertEqual(subscriptions[0].topic.name, TOPIC_NAME)
-        self.assertTrue(isinstance(subscriptions[1], Subscription))
-        self.assertEqual(subscriptions[1].name, SUB_NAME_2)
-        self.assertEqual(subscriptions[1].topic.name, TOPIC_NAME)
-        self.assertTrue(subscriptions[1].topic is subscriptions[0].topic)
-        self.assertEqual(next_page_token, TOKEN)
-        self.assertEqual(len(CLIENT_OBJ.connection._requested), 1)
-        req = CLIENT_OBJ.connection._requested[0]
-        self.assertEqual(req['method'], 'GET')
-        self.assertEqual(req['path'],
-                         '/projects/%s/topics/%s/subscriptions'
-                         % (PROJECT, TOPIC_NAME))
-        self.assertEqual(req['query_params'], {})
+        self.assertEqual(len(subscriptions), 0)
+        self.assertEqual(next_page_token, None)
+
+        self.assertEqual(api._listed_subscriptions,
+                         (self.PROJECT, None, None))
 
     def test_topic(self):
         PROJECT = 'PROJECT'
         TOPIC_NAME = 'TOPIC_NAME'
-        CREDS = _Credentials()
+        creds = _Credentials()
 
-        client_obj = self._makeOne(project=PROJECT, credentials=CREDS)
+        client_obj = self._makeOne(project=PROJECT, credentials=creds)
         new_topic = client_obj.topic(TOPIC_NAME)
         self.assertEqual(new_topic.name, TOPIC_NAME)
         self.assertTrue(new_topic._client is client_obj)
@@ -223,13 +285,15 @@ class _Credentials(object):
         return self
 
 
-class _Connection(object):
+class _FauxPublisherAPI(object):
 
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
+    def list_topics(self, project, page_size, page_token):
+        self._listed_topics = (project, page_size, page_token)
+        return self._list_topics_response
 
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+
+class _FauxSubscriberAPI(object):
+
+    def list_subscriptions(self, project, page_size, page_token):
+        self._listed_subscriptions = (project, page_size, page_token)
+        return self._list_subscriptions_response

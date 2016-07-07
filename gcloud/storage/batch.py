@@ -35,17 +35,18 @@ class MIMEApplicationHTTP(MIMEApplication):
 
     Constructs payload from headers and body
 
-    :type method: string
+    :type method: str
     :param method: HTTP method
 
-    :type uri: string
+    :type uri: str
     :param uri: URI for HTTP request
 
     :type headers:  dict
     :param headers: HTTP headers
 
-    :type body: text or None
+    :type body: str or None
     :param body: HTTP payload
+
     """
     def __init__(self, method, uri, headers, body):
         if isinstance(body, dict):
@@ -60,11 +61,11 @@ class MIMEApplicationHTTP(MIMEApplication):
         lines.append('')
         lines.append(body)
         payload = '\r\n'.join(lines)
-        if six.PY2:  # pragma: NO COVER  Python2
-            # Sigh.  email.message.Message is an old-style class, so we
-            #        cannot use 'super()'.
+        if six.PY2:
+            # email.message.Message is an old-style class, so we
+            # cannot use 'super()'.
             MIMEApplication.__init__(self, payload, 'http', encode_noop)
-        else:                        # pragma: NO COVER  Python3
+        else:  # pragma: NO COVER  Python3
             super_init = super(MIMEApplicationHTTP, self).__init__
             super_init(payload, 'http', encode_noop)
 
@@ -141,16 +142,16 @@ class Batch(Connection):
 
         Only allow up to ``_MAX_BATCH_SIZE`` requests to be deferred.
 
-        :type method: string
+        :type method: str
         :param method: The HTTP method to use in the request.
 
-        :type url: string
+        :type url: str
         :param url: The URL to send the request to.
 
         :type headers: dict
         :param headers: A dictionary of HTTP headers to send with the request.
 
-        :type data: string
+        :type data: str
         :param data: The data to send as the body of the request.
 
         :type target_object: object or :class:`NoneType`
@@ -176,7 +177,7 @@ class Batch(Connection):
     def _prepare_batch_request(self):
         """Prepares headers and body for a batch request.
 
-        :rtype: tuple (dict, string)
+        :rtype: tuple (dict, str)
         :returns: The pair of headers and body of the batch request to be sent.
         :raises: :class:`ValueError` if no requests have been deferred.
         """
@@ -190,9 +191,9 @@ class Batch(Connection):
             multi.attach(subrequest)
 
         # The `email` package expects to deal with "native" strings
-        if six.PY3:             # pragma: NO COVER  Python3
+        if six.PY3:  # pragma: NO COVER  Python3
             buf = io.StringIO()
-        else:                   # pragma: NO COVER  Python2
+        else:
             buf = io.BytesIO()
         generator = Generator(buf, False, 0)
         generator.flatten(multi)
@@ -300,7 +301,7 @@ def _unpack_batch_response(response, content):
     :type response: :class:`httplib2.Response`
     :param response: HTTP response / headers from a request.
 
-    :type content: string
+    :type content: str
     :param content: Response payload with a batch response.
 
     :rtype: generator

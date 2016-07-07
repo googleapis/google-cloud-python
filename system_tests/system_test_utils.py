@@ -15,15 +15,14 @@
 from __future__ import print_function
 import os
 import sys
+import time
 
 from gcloud.environment_vars import CREDENTIALS as TEST_CREDENTIALS
-from gcloud.environment_vars import TESTS_DATASET
 from gcloud.environment_vars import TESTS_PROJECT
 
 
 # From shell environ. May be None.
 PROJECT_ID = os.getenv(TESTS_PROJECT)
-DATASET_ID = os.getenv(TESTS_DATASET)
 CREDENTIALS = os.getenv(TEST_CREDENTIALS)
 
 ENVIRON_ERROR_MSG = """\
@@ -46,22 +45,29 @@ class EmulatorCreds(object):
         return False
 
 
-def check_environ(*requirements):
-
+def check_environ():
     missing = []
 
-    if 'dataset_id' in requirements:
-        if DATASET_ID is None:
-            missing.append(TESTS_DATASET)
+    if PROJECT_ID is None:
+        missing.append(TESTS_PROJECT)
 
-    if 'project' in requirements:
-        if PROJECT_ID is None:
-            missing.append(TESTS_PROJECT)
-
-    if 'credentials' in requirements:
-        if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
-            missing.append(TEST_CREDENTIALS)
+    if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
+        missing.append(TEST_CREDENTIALS)
 
     if missing:
         print(ENVIRON_ERROR_MSG % ', '.join(missing), file=sys.stderr)
         sys.exit(1)
+
+
+def unique_resource_id(delimiter='_'):
+    """A unique identifier for a resource.
+
+    Intended to help locate resources created in particular
+    testing environments and at particular times.
+    """
+    build_id = os.getenv('TRAVIS_BUILD_ID', '')
+    if build_id == '':
+        return '%s%d' % (delimiter, 1000 * time.time())
+    else:
+        return '%s%s%s%d' % (delimiter, build_id,
+                             delimiter, time.time())

@@ -23,6 +23,7 @@ The main concepts with this API are:
 
 from gcloud.bigquery.client import Client
 from gcloud.bigquery.connection import Connection
+from gcloud.bigquery.dataset import AccessGrant
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.table import SchemaField
 from gcloud.bigquery.table import Table

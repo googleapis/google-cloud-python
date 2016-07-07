@@ -1,4 +1,3 @@
-# pylint: disable=too-many-lines
 # Copyright 2015 Google Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,6 +60,54 @@ class TestSchemaField(unittest2.TestCase):
         self.assertEqual(field.fields[1].mode, 'NULLABLE')
         self.assertEqual(field.fields[1].description, None)
         self.assertEqual(field.fields[1].fields, None)
+
+    def test___eq___name_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('other', 'STRING')
+        self.assertNotEqual(field, other)
+
+    def test___eq___field_type_mismatch(self):
+        field = self._makeOne('test', 'STRING')
+        other = self._makeOne('test', 'INTEGER')
+        self.assertNotEqual(field, other)
+
+    def test___eq___mode_mismatch(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED')
+        other = self._makeOne('test', 'STRING', mode='NULLABLE')
+        self.assertNotEqual(field, other)
+
+    def test___eq___description_mismatch(self):
+        field = self._makeOne('test', 'STRING', description='Testing')
+        other = self._makeOne('test', 'STRING', description='Other')
+        self.assertNotEqual(field, other)
+
+    def test___eq___fields_mismatch(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1])
+        other = self._makeOne('test', 'RECORD', fields=[sub2])
+        self.assertNotEqual(field, other)
+
+    def test___eq___hit(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_case_diff_on_type(self):
+        field = self._makeOne('test', 'STRING', mode='REQUIRED',
+                              description='Testing')
+        other = self._makeOne('test', 'string', mode='REQUIRED',
+                              description='Testing')
+        self.assertEqual(field, other)
+
+    def test___eq___hit_w_fields(self):
+        sub1 = self._makeOne('sub1', 'STRING')
+        sub2 = self._makeOne('sub2', 'STRING')
+        field = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        other = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
+        self.assertEqual(field, other)
 
 
 class _SchemaBase(object):
@@ -438,6 +485,15 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertTrue(table._dataset._client is client)
         self._verifyResourceProperties(table, RESOURCE)
 
+    def test_create_no_view_query_no_schema(self):
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        table = self._makeOne(self.TABLE_NAME, dataset)
+
+        with self.assertRaises(ValueError):
+            table.create()
+
     def test_create_w_bound_client(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
@@ -512,9 +568,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 'projectId': self.PROJECT,
                 'datasetId': self.DS_NAME,
                 'tableId': self.TABLE_NAME},
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'description': DESCRIPTION,
             'friendlyName': TITLE,
             'view': {'query': QUERY},
@@ -801,10 +854,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         conn2 = _Connection(RESOURCE)
         client2 = _Client(project=self.PROJECT, connection=conn2)
         dataset = _Dataset(client1)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset=dataset,
-                              schema=[full_name, age])
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
         table.default_table_expiration_ms = DEF_TABLE_EXP
         table.location = LOCATION
         table.expires = self.EXP_TIME
@@ -822,9 +872,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                 {'projectId': self.PROJECT,
                  'datasetId': self.DS_NAME,
                  'tableId': self.TABLE_NAME},
-            'schema': {'fields': [
-                {'name': 'full_name', 'type': 'STRING', 'mode': 'REQUIRED'},
-                {'name': 'age', 'type': 'INTEGER', 'mode': 'REQUIRED'}]},
             'expirationTime': _millis(self.EXP_TIME),
             'location': 'EU',
             'view': {'query': QUERY},
@@ -885,7 +932,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
             return '%0.15E' % (ts_float,)
 
         DATA = {
-            'totalRows': ROWS,
+            'totalRows': str(ROWS),
             'pageToken': TOKEN,
             'rows': [
                 {'f': [
@@ -940,10 +987,8 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         PATH = 'projects/%s/datasets/%s/tables/%s/data' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)
         MAX = 10
-        ROWS = 1234
         TOKEN = 'TOKEN'
         DATA = {
-            'totalRows': ROWS,
             'rows': [
                 {'f': [
                     {'v': 'Phred Phlyntstone'},
@@ -992,7 +1037,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(rows[1], ('Bharney Rhubble', 33, False, 1.414))
         self.assertEqual(rows[2], ('Wylma Phlyntstone', 29, True, 2.71828))
         self.assertEqual(rows[3], ('Bhettye Rhubble', 27, None, None))
-        self.assertEqual(total_rows, ROWS)
+        self.assertEqual(total_rows, None)
         self.assertEqual(page_token, None)
 
         self.assertEqual(len(conn1._requested), 0)
@@ -1186,6 +1231,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         SENT = {
             'skipInvalidRows': True,
             'ignoreUnknownValues': True,
+            'templateSuffix': '20160303',
             'rows': [{'insertId': index, 'json': _row_data(row)}
                      for index, row in enumerate(ROWS)],
         }
@@ -1195,7 +1241,9 @@ class TestTable(unittest2.TestCase, _SchemaBase):
             rows=ROWS,
             row_ids=[index for index, _ in enumerate(ROWS)],
             skip_invalid_rows=True,
-            ignore_unknown_values=True)
+            ignore_unknown_values=True,
+            template_suffix='20160303',
+        )
 
         self.assertEqual(len(errors), 1)
         self.assertEqual(errors[0]['index'], 1)
@@ -1287,6 +1335,19 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['data'], SENT)
 
+    def test_upload_from_file_text_mode_file_failure(self):
+
+        class TextModeFile(object):
+            mode = 'r'
+
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        file_obj = TextModeFile()
+        table = self._makeOne(self.TABLE_NAME, dataset=dataset)
+        with self.assertRaises(ValueError):
+            table.upload_from_file(file_obj, 'CSV', size=1234)
+
     def test_upload_from_file_size_failure(self):
         conn = _Connection()
         client = _Client(project=self.PROJECT, connection=conn)
@@ -1349,12 +1410,14 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         return conn.http._requested, PATH, BODY
 
     def test_upload_from_file_w_bound_client_multipart(self):
-        from email.parser import Parser
         import json
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
+        from gcloud._helpers import _to_bytes
+        from gcloud.streaming.test_transfer import _email_chunk_parser
 
         requested, PATH, BODY = self._upload_from_file_helper()
+        parse_chunk = _email_chunk_parser()
 
         self.assertEqual(len(requested), 1)
         req = requested[0]
@@ -1367,18 +1430,17 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(dict(parse_qsl(qs)),
                          {'uploadType': 'multipart'})
 
-        parser = Parser()
         ctype, boundary = [x.strip()
                            for x in req['headers']['content-type'].split(';')]
         self.assertEqual(ctype, 'multipart/related')
         self.assertTrue(boundary.startswith('boundary="=='))
         self.assertTrue(boundary.endswith('=="'))
 
-        divider = '--' + boundary[len('boundary="'):-1]
+        divider = b'--' + _to_bytes(boundary[len('boundary="'):-1])
         chunks = req['body'].split(divider)[1:-1]  # discard prolog / epilog
         self.assertEqual(len(chunks), 2)
 
-        text_msg = parser.parsestr(chunks[0].strip())
+        text_msg = parse_chunk(chunks[0].strip())
         self.assertEqual(dict(text_msg._headers),
                          {'Content-Type': 'application/json',
                           'MIME-Version': '1.0'})
@@ -1392,17 +1454,17 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(load_config['destinationTable'], DESTINATION_TABLE)
         self.assertEqual(load_config['sourceFormat'], 'CSV')
 
-        app_msg = parser.parsestr(chunks[1].strip())
+        app_msg = parse_chunk(chunks[1].strip())
         self.assertEqual(dict(app_msg._headers),
                          {'Content-Type': 'application/octet-stream',
                           'Content-Transfer-Encoding': 'binary',
                           'MIME-Version': '1.0'})
-        body = BODY.decode('ascii')
+        body = BODY.decode('ascii').rstrip()
         body_lines = [line.strip() for line in body.splitlines()]
-        payload_lines = app_msg._payload.splitlines()
+        payload_lines = app_msg._payload.rstrip().splitlines()
         self.assertEqual(payload_lines, body_lines)
 
-    # pylint: disable=R0915
+    # pylint: disable=too-many-statements
     def test_upload_from_file_w_explicit_client_resumable(self):
         import json
         from six.moves.http_client import OK
@@ -1488,6 +1550,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                          'bytes 0-%d/%d' % (length - 1, length))
         self.assertEqual(headers['content-length'], '%d' % (length,))
         self.assertEqual(req['body'], BODY)
+    # pylint: enable=too-many-statements
 
 
 class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
@@ -1604,7 +1667,7 @@ class _Client(object):
         self.project = project
         self.connection = connection
 
-    def job_from_resource(self, resource):  # pylint: disable=W0613
+    def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job
 
 

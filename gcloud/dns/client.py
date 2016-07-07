@@ -55,8 +55,9 @@ class Client(JSONClient):
         """
         path = '/projects/%s' % (self.project,)
         resp = self.connection.api_request(method='GET', path=path)
+
         return dict([(key, int(value))
-                     for key, value in resp['quota'].items()])
+                     for key, value in resp['quota'].items() if key != 'kind'])
 
     def list_zones(self, max_results=None, page_token=None):
         """List zones for the project associated with this client.
@@ -94,16 +95,22 @@ class Client(JSONClient):
                  for resource in resp['managedZones']]
         return zones, resp.get('nextPageToken')
 
-    def zone(self, name, dns_name):
+    def zone(self, name, dns_name=None, description=None):
         """Construct a zone bound to this client.
 
         :type name: string
         :param name: Name of the zone.
 
-        :type dns_name: string
-        :param dns_name: DNS name of the zone.
+        :type dns_name: string or :class:`NoneType`
+        :param dns_name: DNS name of the zone.  If not passed, then calls
+                         to :meth:`zone.create` will fail.
+
+        :type description: string or :class:`NoneType`
+        :param description: the description for the zone.  If not passed,
+                            defaults to the value of 'dns_name'.
 
         :rtype: :class:`gcloud.dns.zone.ManagedZone`
         :returns: a new ``ManagedZone`` instance
         """
-        return ManagedZone(name, dns_name, client=self)
+        return ManagedZone(name, dns_name, client=self,
+                           description=description)

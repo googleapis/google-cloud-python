@@ -42,7 +42,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.filters, [])
         self.assertEqual(query.projection, [])
         self.assertEqual(query.order, [])
-        self.assertEqual(query.group_by, [])
+        self.assertEqual(query.distinct_on, [])
 
     def test_ctor_explicit(self):
         from gcloud.datastore.key import Key
@@ -54,7 +54,7 @@ class TestQuery(unittest2.TestCase):
         FILTERS = [('foo', '=', 'Qux'), ('bar', '<', 17)]
         PROJECTION = ['foo', 'bar', 'baz']
         ORDER = ['foo', 'bar']
-        GROUP_BY = ['foo']
+        DISTINCT_ON = ['foo']
         query = self._makeOne(
             client,
             kind=_KIND,
@@ -64,7 +64,7 @@ class TestQuery(unittest2.TestCase):
             filters=FILTERS,
             projection=PROJECTION,
             order=ORDER,
-            group_by=GROUP_BY,
+            distinct_on=DISTINCT_ON,
             )
         self.assertTrue(query._client is client)
         self.assertEqual(query.project, _PROJECT)
@@ -74,7 +74,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(query.filters, FILTERS)
         self.assertEqual(query.projection, PROJECTION)
         self.assertEqual(query.order, ORDER)
-        self.assertEqual(query.group_by, GROUP_BY)
+        self.assertEqual(query.distinct_on, DISTINCT_ON)
 
     def test_ctor_bad_projection(self):
         BAD_PROJECTION = object()
@@ -86,10 +86,10 @@ class TestQuery(unittest2.TestCase):
         self.assertRaises(TypeError, self._makeOne, self._makeClient(),
                           order=BAD_ORDER)
 
-    def test_ctor_bad_group_by(self):
-        BAD_GROUP_BY = object()
+    def test_ctor_bad_distinct_on(self):
+        BAD_DISTINCT_ON = object()
         self.assertRaises(TypeError, self._makeOne, self._makeClient(),
-                          group_by=BAD_GROUP_BY)
+                          distinct_on=BAD_DISTINCT_ON)
 
     def test_ctor_bad_filters(self):
         FILTERS_CANT_UNPACK = [('one', 'two')]
@@ -284,29 +284,29 @@ class TestQuery(unittest2.TestCase):
         query.order = ['foo', '-bar']
         self.assertEqual(query.order, ['foo', '-bar'])
 
-    def test_group_by_setter_empty(self):
-        query = self._makeOne(self._makeClient(), group_by=['foo', 'bar'])
-        query.group_by = []
-        self.assertEqual(query.group_by, [])
+    def test_distinct_on_setter_empty(self):
+        query = self._makeOne(self._makeClient(), distinct_on=['foo', 'bar'])
+        query.distinct_on = []
+        self.assertEqual(query.distinct_on, [])
 
-    def test_group_by_setter_string(self):
+    def test_distinct_on_setter_string(self):
         query = self._makeOne(self._makeClient())
-        query.group_by = 'field1'
-        self.assertEqual(query.group_by, ['field1'])
+        query.distinct_on = 'field1'
+        self.assertEqual(query.distinct_on, ['field1'])
 
-    def test_group_by_setter_non_empty(self):
+    def test_distinct_on_setter_non_empty(self):
         query = self._makeOne(self._makeClient())
-        query.group_by = ['field1', 'field2']
-        self.assertEqual(query.group_by, ['field1', 'field2'])
+        query.distinct_on = ['field1', 'field2']
+        self.assertEqual(query.distinct_on, ['field1', 'field2'])
 
-    def test_group_by_multiple_calls(self):
-        _GROUP_BY1 = ['field1', 'field2']
-        _GROUP_BY2 = ['field3']
+    def test_distinct_on_multiple_calls(self):
+        _DISTINCT_ON1 = ['field1', 'field2']
+        _DISTINCT_ON2 = ['field3']
         query = self._makeOne(self._makeClient())
-        query.group_by = _GROUP_BY1
-        self.assertEqual(query.group_by, _GROUP_BY1)
-        query.group_by = _GROUP_BY2
-        self.assertEqual(query.group_by, _GROUP_BY2)
+        query.distinct_on = _DISTINCT_ON1
+        self.assertEqual(query.distinct_on, _DISTINCT_ON1)
+        query.distinct_on = _DISTINCT_ON2
+        self.assertEqual(query.distinct_on, _DISTINCT_ON2)
 
     def test_fetch_defaults_w_client_attr(self):
         connection = _Connection()
@@ -345,23 +345,31 @@ class TestIterator(unittest2.TestCase):
     def _makeOne(self, *args, **kw):
         return self._getTargetClass()(*args, **kw)
 
-    def _addQueryResults(self, connection, cursor=_END, more=False):
+    def _addQueryResults(self, connection, cursor=_END, more=False,
+                         skipped_results=None, no_entity=False):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore._generated import query_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        MORE = query_pb2.QueryResultBatch.NOT_FINISHED
-        NO_MORE = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
+        if more:
+            more_enum = query_pb2.QueryResultBatch.NOT_FINISHED
+        else:
+            more_enum = query_pb2.QueryResultBatch.MORE_RESULTS_AFTER_LIMIT
         _ID = 123
-        entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = self._PROJECT
-        path_element = entity_pb.key.path_element.add()
-        path_element.kind = self._KIND
-        path_element.id = _ID
-        value_pb = _new_value_pb(entity_pb, 'foo')
-        value_pb.string_value = u'Foo'
+        if no_entity:
+            entities = []
+        else:
+            entity_pb = entity_pb2.Entity()
+            entity_pb.key.partition_id.project_id = self._PROJECT
+            path_element = entity_pb.key.path.add()
+            path_element.kind = self._KIND
+            path_element.id = _ID
+            value_pb = _new_value_pb(entity_pb, 'foo')
+            value_pb.string_value = u'Foo'
+            entities = [entity_pb]
+
         connection._results.append(
-            ([entity_pb], cursor, MORE if more else NO_MORE))
+            (entities, cursor, more_enum, skipped_results))
 
     def _makeClient(self, connection=None):
         if connection is None:
@@ -374,7 +382,8 @@ class TestIterator(unittest2.TestCase):
         iterator = self._makeOne(query, connection)
         self.assertTrue(iterator._query is query)
         self.assertEqual(iterator._limit, None)
-        self.assertEqual(iterator._offset, 0)
+        self.assertEqual(iterator._offset, None)
+        self.assertEqual(iterator._skipped_results, None)
 
     def test_ctor_explicit(self):
         client = self._makeClient()
@@ -392,6 +401,7 @@ class TestIterator(unittest2.TestCase):
         self._addQueryResults(connection, cursor=b'')
         iterator = self._makeOne(query, client)
         entities, more_results, cursor = iterator.next_page()
+        self.assertEqual(iterator._skipped_results, None)
 
         self.assertEqual(cursor, None)
         self.assertFalse(more_results)
@@ -415,19 +425,22 @@ class TestIterator(unittest2.TestCase):
         connection = _Connection()
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
-        self._addQueryResults(connection, cursor=b'')
+        skipped_results = object()
+        self._addQueryResults(connection, cursor=b'',
+                              skipped_results=skipped_results)
         iterator = self._makeOne(query, client, 13, 29)
         entities, more_results, cursor = iterator.next_page()
 
         self.assertEqual(cursor, None)
         self.assertFalse(more_results)
         self.assertFalse(iterator._more_results)
+        self.assertEqual(iterator._skipped_results, skipped_results)
         self.assertEqual(len(entities), 1)
         self.assertEqual(entities[0].key.path,
                          [{'kind': self._KIND, 'id': self._ID}])
         self.assertEqual(entities[0]['foo'], u'Foo')
         qpb = _pb_from_query(query)
-        qpb.limit = 13
+        qpb.limit.value = 13
         qpb.offset = 29
         EXPECTED = {
             'project': self._PROJECT,
@@ -453,6 +466,7 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(cursor, urlsafe_b64encode(self._END))
         self.assertTrue(more_results)
         self.assertTrue(iterator._more_results)
+        self.assertEqual(iterator._skipped_results, None)
         self.assertEqual(iterator._end_cursor, None)
         self.assertEqual(urlsafe_b64decode(iterator._start_cursor), self._END)
         self.assertEqual(len(entities), 1)
@@ -476,8 +490,8 @@ class TestIterator(unittest2.TestCase):
         client = self._makeClient(connection)
         query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
         self._addQueryResults(connection, cursor=self._END, more=True)
-        epb, cursor, _ = connection._results.pop()
-        connection._results.append((epb, cursor, 4))  # invalid enum
+        epb, cursor, _, _ = connection._results.pop()
+        connection._results.append((epb, cursor, 5, None))  # invalid enum
         iterator = self._makeOne(query, client)
         self.assertRaises(ValueError, iterator.next_page)
 
@@ -523,9 +537,7 @@ class TestIterator(unittest2.TestCase):
                 [{'kind': self._KIND, 'id': self._ID}])
             self.assertEqual(entities[1]['foo'], u'Foo')
         qpb1 = _pb_from_query(query)
-        qpb1.offset = 0
         qpb2 = _pb_from_query(query)
-        qpb2.offset = 0
         qpb2.start_cursor = self._END
         EXPECTED1 = {
             'project': self._PROJECT,
@@ -543,6 +555,61 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(connection._called_with[0], EXPECTED1)
         self.assertEqual(connection._called_with[1], EXPECTED2)
 
+    def test___iter___w_limit(self):
+        from gcloud.datastore.query import _pb_from_query
+
+        connection = _Connection()
+        client = self._makeClient(connection)
+        query = _Query(client, self._KIND, self._PROJECT, self._NAMESPACE)
+        skip1 = 4
+        skip2 = 9
+        self._addQueryResults(connection, more=True, skipped_results=skip1,
+                              no_entity=True)
+        self._addQueryResults(connection, more=True, skipped_results=skip2)
+        self._addQueryResults(connection)
+        offset = skip1 + skip2
+        iterator = self._makeOne(query, client, limit=2, offset=offset)
+        entities = list(iterator)
+
+        self.assertFalse(iterator._more_results)
+        self.assertEqual(len(entities), 2)
+        for entity in entities:
+            self.assertEqual(
+                entity.key.path,
+                [{'kind': self._KIND, 'id': self._ID}])
+        qpb1 = _pb_from_query(query)
+        qpb1.limit.value = 2
+        qpb1.offset = offset
+        qpb2 = _pb_from_query(query)
+        qpb2.start_cursor = self._END
+        qpb2.limit.value = 2
+        qpb2.offset = offset - skip1
+        qpb3 = _pb_from_query(query)
+        qpb3.start_cursor = self._END
+        qpb3.limit.value = 1
+        EXPECTED1 = {
+            'project': self._PROJECT,
+            'query_pb': qpb1,
+            'namespace': self._NAMESPACE,
+            'transaction_id': None,
+        }
+        EXPECTED2 = {
+            'project': self._PROJECT,
+            'query_pb': qpb2,
+            'namespace': self._NAMESPACE,
+            'transaction_id': None,
+        }
+        EXPECTED3 = {
+            'project': self._PROJECT,
+            'query_pb': qpb3,
+            'namespace': self._NAMESPACE,
+            'transaction_id': None,
+        }
+        self.assertEqual(len(connection._called_with), 3)
+        self.assertEqual(connection._called_with[0], EXPECTED1)
+        self.assertEqual(connection._called_with[1], EXPECTED2)
+        self.assertEqual(connection._called_with[2], EXPECTED3)
+
 
 class Test__pb_from_query(unittest2.TestCase):
 
@@ -557,14 +624,15 @@ class Test__pb_from_query(unittest2.TestCase):
         self.assertEqual(list(pb.projection), [])
         self.assertEqual(list(pb.kind), [])
         self.assertEqual(list(pb.order), [])
-        self.assertEqual(list(pb.group_by), [])
+        self.assertEqual(list(pb.distinct_on), [])
         self.assertEqual(pb.filter.property_filter.property.name, '')
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
-        self.assertEqual(list(cfilter.filter), [])
+        self.assertEqual(cfilter.op,
+                         query_pb2.CompositeFilter.OPERATOR_UNSPECIFIED)
+        self.assertEqual(list(cfilter.filters), [])
         self.assertEqual(pb.start_cursor, b'')
         self.assertEqual(pb.end_cursor, b'')
-        self.assertEqual(pb.limit, 0)
+        self.assertEqual(pb.limit.value, 0)
         self.assertEqual(pb.offset, 0)
 
     def test_projection(self):
@@ -578,17 +646,16 @@ class Test__pb_from_query(unittest2.TestCase):
 
     def test_ancestor(self):
         from gcloud.datastore.key import Key
-        from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
         ancestor = Key('Ancestor', 123, project='PROJECT')
         pb = self._callFUT(_Query(ancestor=ancestor))
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
-        self.assertEqual(len(cfilter.filter), 1)
-        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filters), 1)
+        pfilter = cfilter.filters[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
-        ancestor_pb = _prepare_key_for_request(ancestor.to_protobuf())
+        ancestor_pb = ancestor.to_protobuf()
         self.assertEqual(pfilter.value.key_value, ancestor_pb)
 
     def test_filter(self):
@@ -600,15 +667,14 @@ class Test__pb_from_query(unittest2.TestCase):
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
-        self.assertEqual(len(cfilter.filter), 1)
-        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filters), 1)
+        pfilter = cfilter.filters[0].property_filter
         self.assertEqual(pfilter.property.name, 'name')
         self.assertEqual(pfilter.value.string_value, u'John')
 
     def test_filter_key(self):
         from gcloud.datastore.key import Key
-        from gcloud.datastore.helpers import _prepare_key_for_request
         from gcloud.datastore._generated import query_pb2
 
         key = Key('Kind', 123, project='PROJECT')
@@ -618,11 +684,11 @@ class Test__pb_from_query(unittest2.TestCase):
         }
         pb = self._callFUT(query)
         cfilter = pb.filter.composite_filter
-        self.assertEqual(cfilter.operator, query_pb2.CompositeFilter.AND)
-        self.assertEqual(len(cfilter.filter), 1)
-        pfilter = cfilter.filter[0].property_filter
+        self.assertEqual(cfilter.op, query_pb2.CompositeFilter.AND)
+        self.assertEqual(len(cfilter.filters), 1)
+        pfilter = cfilter.filters[0].property_filter
         self.assertEqual(pfilter.property.name, '__key__')
-        key_pb = _prepare_key_for_request(key.to_protobuf())
+        key_pb = key.to_protobuf()
         self.assertEqual(pfilter.value.key_value, key_pb)
 
     def test_order(self):
@@ -636,9 +702,9 @@ class Test__pb_from_query(unittest2.TestCase):
                           query_pb2.PropertyOrder.DESCENDING,
                           query_pb2.PropertyOrder.ASCENDING])
 
-    def test_group_by(self):
-        pb = self._callFUT(_Query(group_by=['a', 'b', 'c']))
-        self.assertEqual([item.name for item in pb.group_by],
+    def test_distinct_on(self):
+        pb = self._callFUT(_Query(distinct_on=['a', 'b', 'c']))
+        self.assertEqual([item.name for item in pb.distinct_on],
                          ['a', 'b', 'c'])
 
 
@@ -653,7 +719,7 @@ class _Query(object):
                  filters=(),
                  projection=(),
                  order=(),
-                 group_by=()):
+                 distinct_on=()):
         self._client = client
         self.kind = kind
         self.project = project
@@ -662,7 +728,7 @@ class _Query(object):
         self.filters = filters
         self.projection = projection
         self.order = order
-        self.group_by = group_by
+        self.distinct_on = distinct_on
 
 
 class _Connection(object):

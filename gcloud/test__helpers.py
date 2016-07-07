@@ -54,9 +54,13 @@ class Test__UTC(unittest2.TestCase):
 
     def test_module_property(self):
         from gcloud import _helpers as MUT
-
         klass = self._getTargetClass()
-        self.assertTrue(isinstance(MUT.UTC, klass))
+        try:
+            import pytz
+        except ImportError:
+            self.assertTrue(isinstance(MUT.UTC, klass))
+        else:
+            self.assertIs(MUT.UTC, pytz.UTC)  # pragma: NO COVER
 
     def test_dst(self):
         import datetime
@@ -144,6 +148,94 @@ class Test__app_engine_id(unittest2.TestCase):
             self.assertEqual(dataset_id, APP_ENGINE_ID)
 
 
+class Test__get_credentials_file_project_id(unittest2.TestCase):
+
+    def _callFUT(self):
+        from gcloud._helpers import _file_project_id
+        return _file_project_id()
+
+    def setUp(self):
+        import os
+        self.old_env = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+
+    def tearDown(self):
+        import os
+        if (not self.old_env and
+                'GOOGLE_APPLICATION_CREDENTIALS' in os.environ):
+            del os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+
+    def test_success(self):
+        import os
+        from gcloud._testing import _NamedTemporaryFile
+
+        with _NamedTemporaryFile() as temp:
+            with open(temp.name, mode='w') as creds_file:
+                creds_file.write('{"project_id": "test-project-id"}')
+                creds_file.seek(0)
+                os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = creds_file.name
+
+                self.assertEqual('test-project-id', self._callFUT())
+
+    def test_no_environment(self):
+        self.assertEqual(None, self._callFUT())
+
+
+class Test__get_default_service_project_id(unittest2.TestCase):
+    config_path = '.config/gcloud/configurations/'
+    config_file = 'config_default'
+
+    def setUp(self):
+        import tempfile
+        import os
+
+        self.temp_config_path = tempfile.mkdtemp()
+
+        conf_path = os.path.join(self.temp_config_path, self.config_path)
+        os.makedirs(conf_path)
+        full_config_path = os.path.join(conf_path, self.config_file)
+
+        self.temp_config_file = full_config_path
+
+        with open(full_config_path, 'w') as conf_file:
+            conf_file.write('[core]\nproject = test-project-id')
+
+    def tearDown(self):
+        import shutil
+
+        shutil.rmtree(self.temp_config_path)
+
+    def callFUT(self, project_id=None):
+        import os
+        from gcloud._helpers import _default_service_project_id
+        from gcloud._testing import _Monkey
+
+        def mock_expanduser(path=''):
+            if project_id and path.startswith('~'):
+                __import__('pwd')  # Simulate actual expanduser imports.
+                return self.temp_config_file
+            return ''
+
+        with _Monkey(os.path, expanduser=mock_expanduser):
+            return _default_service_project_id()
+
+    def test_read_from_cli_info(self):
+        project_id = self.callFUT('test-project-id')
+        self.assertEqual('test-project-id', project_id)
+
+    def test_gae_without_expanduser(self):
+        import sys
+        try:
+            sys.modules['pwd'] = None  # Blocks pwd from being imported.
+            project_id = self.callFUT('test-project-id')
+            self.assertEqual(None, project_id)
+        finally:
+            del sys.modules['pwd']  # Unblocks importing of pwd.
+
+    def test_info_value_not_present(self):
+        project_id = self.callFUT()
+        self.assertEqual(None, project_id)
+
+
 class Test__compute_engine_id(unittest2.TestCase):
 
     def _callFUT(self):
@@ -215,7 +307,7 @@ class Test__determine_default_project(unittest2.TestCase):
         return _determine_default_project(project=project)
 
     def _determine_default_helper(self, prod=None, gae=None, gce=None,
-                                  project=None):
+                                  file_id=None, srv_id=None, project=None):
         from gcloud._testing import _Monkey
         from gcloud import _helpers
 
@@ -224,6 +316,14 @@ class Test__determine_default_project(unittest2.TestCase):
         def prod_mock():
             _callers.append('prod_mock')
             return prod
+
+        def file_id_mock():
+            _callers.append('file_id_mock')
+            return file_id
+
+        def srv_id_mock():
+            _callers.append('srv_id_mock')
+            return srv_id
 
         def gae_mock():
             _callers.append('gae_mock')
@@ -235,6 +335,8 @@ class Test__determine_default_project(unittest2.TestCase):
 
         patched_methods = {
             '_get_production_project': prod_mock,
+            '_file_project_id': file_id_mock,
+            '_default_service_project_id': srv_id_mock,
             '_app_engine_id': gae_mock,
             '_compute_engine_id': gce_mock,
         }
@@ -247,7 +349,8 @@ class Test__determine_default_project(unittest2.TestCase):
     def test_no_value(self):
         project, callers = self._determine_default_helper()
         self.assertEqual(project, None)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
     def test_explicit(self):
         PROJECT = object()
@@ -265,13 +368,15 @@ class Test__determine_default_project(unittest2.TestCase):
         PROJECT = object()
         project, callers = self._determine_default_helper(gae=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock',
+                                   'srv_id_mock', 'gae_mock'])
 
     def test_gce(self):
         PROJECT = object()
         project, callers = self._determine_default_helper(gce=PROJECT)
         self.assertEqual(project, PROJECT)
-        self.assertEqual(callers, ['prod_mock', 'gae_mock', 'gce_mock'])
+        self.assertEqual(callers, ['prod_mock', 'file_id_mock', 'srv_id_mock',
+                                   'gae_mock', 'gce_mock'])
 
 
 class Test__millis(unittest2.TestCase):
@@ -411,7 +516,21 @@ class Test__rfc3339_to_datetime(unittest2.TestCase):
         from gcloud._helpers import _rfc3339_to_datetime
         return _rfc3339_to_datetime(dt_str)
 
-    def test_it(self):
+    def test_w_bogus_zone(self):
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        micros = 123456789
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dBOGUS' % (
+            year, month, day, hour, minute, seconds, micros)
+        with self.assertRaises(ValueError):
+            self._callFUT(dt_str)
+
+    def test_w_microseconds(self):
         import datetime
         from gcloud._helpers import UTC
 
@@ -425,6 +544,90 @@ class Test__rfc3339_to_datetime(unittest2.TestCase):
 
         dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
             year, month, day, hour, minute, seconds, micros)
+        result = self._callFUT(dt_str)
+        expected_result = datetime.datetime(
+            year, month, day, hour, minute, seconds, micros, UTC)
+        self.assertEqual(result, expected_result)
+
+    def test_w_naonseconds(self):
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        nanos = 123456789
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%09dZ' % (
+            year, month, day, hour, minute, seconds, nanos)
+        with self.assertRaises(ValueError):
+            self._callFUT(dt_str)
+
+
+class Test__rfc3339_nanos_to_datetime(unittest2.TestCase):
+
+    def _callFUT(self, dt_str):
+        from gcloud._helpers import _rfc3339_nanos_to_datetime
+        return _rfc3339_nanos_to_datetime(dt_str)
+
+    def test_w_bogus_zone(self):
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        micros = 123456789
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dBOGUS' % (
+            year, month, day, hour, minute, seconds, micros)
+        with self.assertRaises(ValueError):
+            self._callFUT(dt_str)
+
+    def test_w_truncated_nanos(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        truncateds_and_micros = [
+            ('12345678', 123456),
+            ('1234567', 123456),
+            ('123456', 123456),
+            ('12345', 123450),
+            ('1234', 123400),
+            ('123', 123000),
+            ('12', 120000),
+            ('1', 100000),
+        ]
+
+        for truncated, micros in truncateds_and_micros:
+            dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%sZ' % (
+                year, month, day, hour, minute, seconds, truncated)
+            result = self._callFUT(dt_str)
+            expected_result = datetime.datetime(
+                year, month, day, hour, minute, seconds, micros, UTC)
+            self.assertEqual(result, expected_result)
+
+    def test_w_naonseconds(self):
+        import datetime
+        from gcloud._helpers import UTC
+
+        year = 2009
+        month = 12
+        day = 17
+        hour = 12
+        minute = 44
+        seconds = 32
+        nanos = 123456789
+        micros = nanos // 1000
+
+        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%09dZ' % (
+            year, month, day, hour, minute, seconds, nanos)
         result = self._callFUT(dt_str)
         expected_result = datetime.datetime(
             year, month, day, hour, minute, seconds, micros, UTC)
@@ -484,6 +687,27 @@ class Test__to_bytes(unittest2.TestCase):
         self.assertRaises(TypeError, self._callFUT, value)
 
 
+class Test__bytes_to_unicode(unittest2.TestCase):
+
+    def _callFUT(self, *args, **kwargs):
+        from gcloud._helpers import _bytes_to_unicode
+        return _bytes_to_unicode(*args, **kwargs)
+
+    def test_with_bytes(self):
+        value = b'bytes-val'
+        encoded_value = 'bytes-val'
+        self.assertEqual(self._callFUT(value), encoded_value)
+
+    def test_with_unicode(self):
+        value = u'string-val'
+        encoded_value = 'string-val'
+        self.assertEqual(self._callFUT(value), encoded_value)
+
+    def test_with_nonstring_type(self):
+        value = object()
+        self.assertRaises(ValueError, self._callFUT, value)
+
+
 class Test__pb_timestamp_to_datetime(unittest2.TestCase):
 
     def _callFUT(self, timestamp):
@@ -526,70 +750,46 @@ class Test__datetime_to_pb_timestamp(unittest2.TestCase):
         self.assertEqual(self._callFUT(dt_stamp), timestamp)
 
 
-class Test__has_field(unittest2.TestCase):
+class Test__name_from_project_path(unittest2.TestCase):
 
-    def _callFUT(self, message_pb, property_name):
-        from gcloud._helpers import _has_field
-        return _has_field(message_pb, property_name)
+    PROJECT = 'PROJECT'
+    THING_NAME = 'THING_NAME'
+    TEMPLATE = r'projects/(?P<project>\w+)/things/(?P<name>\w+)'
 
-    def test_unset_simple_field(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        cluster_pb = data_pb2.Cluster()
-        self.assertFalse(self._callFUT(cluster_pb, 'serve_nodes'))
+    def _callFUT(self, path, project, template):
+        from gcloud._helpers import _name_from_project_path
+        return _name_from_project_path(path, project, template)
 
-    def test_set_simple_field(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        serve_nodes = 119
-        cluster_pb = data_pb2.Cluster(serve_nodes=serve_nodes)
-        self.assertTrue(self._callFUT(cluster_pb, 'serve_nodes'))
-
-    def test_unset_message_field(self):
-        from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        cluster_pb = data_pb2.Cluster()
-        # Check that no fields are attached to the protobuf message.
-        self.assertEqual(len(cluster_pb._fields), 0)
-        self.assertEqual(cluster_pb.delete_time, Timestamp())
-        # Check that the field is now attached to the protobuf message,
-        # even though the value is unset.
-        self.assertEqual([field.name for field in cluster_pb._fields.keys()],
-                         ['delete_time'])
-        # Make sure has field is still False.
-        self.assertFalse(self._callFUT(cluster_pb, 'delete_time'))
-
-    def test_set_message_field(self):
-        from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-
-        timestamp = Timestamp()
-        cluster_pb = data_pb2.Cluster(delete_time=timestamp)
-        self.assertTrue(self._callFUT(cluster_pb, 'delete_time'))
-
-
-class Test__get_pb_property_value(unittest2.TestCase):
-
-    def _callFUT(self, message_pb, property_name):
-        from gcloud._helpers import _get_pb_property_value
-        return _get_pb_property_value(message_pb, property_name)
-
-    def test_it(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        serve_nodes = 119
-        cluster_pb = data_pb2.Cluster(serve_nodes=serve_nodes)
-        result = self._callFUT(cluster_pb, 'serve_nodes')
-        self.assertEqual(result, serve_nodes)
-
-    def test_with_value_unset_on_pb(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        cluster_pb = data_pb2.Cluster()
+    def test_w_invalid_path_length(self):
+        PATH = 'projects/foo'
         with self.assertRaises(ValueError):
-            self._callFUT(cluster_pb, 'serve_nodes')
+            self._callFUT(PATH, None, self.TEMPLATE)
+
+    def test_w_invalid_path_segments(self):
+        PATH = 'foo/%s/bar/%s' % (self.PROJECT, self.THING_NAME)
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, self.PROJECT, self.TEMPLATE)
+
+    def test_w_mismatched_project(self):
+        PROJECT1 = 'PROJECT1'
+        PROJECT2 = 'PROJECT2'
+        PATH = 'projects/%s/things/%s' % (PROJECT1, self.THING_NAME)
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, PROJECT2, self.TEMPLATE)
+
+    def test_w_valid_data_w_compiled_regex(self):
+        import re
+        template = re.compile(self.TEMPLATE)
+        PATH = 'projects/%s/things/%s' % (self.PROJECT, self.THING_NAME)
+        name = self._callFUT(PATH, self.PROJECT, template)
+        self.assertEqual(name, self.THING_NAME)
+
+    def test_w_project_passed_as_none(self):
+        PROJECT1 = 'PROJECT1'
+        PATH = 'projects/%s/things/%s' % (PROJECT1, self.THING_NAME)
+        self._callFUT(PATH, None, self.TEMPLATE)
+        name = self._callFUT(PATH, None, self.TEMPLATE)
+        self.assertEqual(name, self.THING_NAME)
 
 
 class _AppIdentity(object):

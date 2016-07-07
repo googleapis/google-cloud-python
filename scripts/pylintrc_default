@@ -2,7 +2,7 @@
 #
 # NOTES:
 #
-# - Rules for test / demo code are generated into 'pylintrc_reduced'
+# - Rules for test code are generated into 'pylintrc_reduced'
 #   as deltas from this configuration by the 'run_pylint.py' script.
 #
 # - 'RATIONALE:  API mapping' as a defense for non-default settings is
@@ -27,10 +27,8 @@
 # DEFAULT:  ignore=CVS
 # NOTE: This path must be relative due to the use of
 #       os.walk in astroid.modutils.get_module_files.
-# RATIONALE:
-#   _datastore_v1_pb2.py:   protobuf-generated code.
-ignore =
-    _datastore_v1_pb2.py
+# RATIONALE: No files to ignore.
+ignore=
 
 # Pickle collected data for later comparisons.
 # DEFAULT:  persistent=yes
@@ -70,16 +68,10 @@ load-plugins=pylint.extensions.check_docs
 # - maybe-no-member:  bi-modal functions confuse pylint type inference.
 # - no-member:  indirections in protobuf-generated code
 # - protected-access: helpers use '_foo' of classes from generated code.
-# - redefined-builtin:  use of 'id', 'type', 'filter' args in API-bound funcs;
-#                       use of 'NotImplemented' to map HTTP response code.
 # - similarities:  'Bucket' and 'Blob' define 'metageneration' and 'owner' with
 #                  identical implementation but different docstrings.
 # - star-args:  standard Python idioms for varargs:
 #                  ancestor = Query().filter(*order_props)
-# - method-hidden: Decorating a method in a class (e.g. in _DefaultsContainer)
-#                      @_lazy_property_deco
-#                      def dataset_id():
-#                          ...
 # - redefined-variable-type: This error is overzealous and complains at e.g.
 #                      if some_prop:
 #                          return int(value)
@@ -95,16 +87,18 @@ load-plugins=pylint.extensions.check_docs
 #                                      """Hi everyone"""
 #                          and thus causes subsequent imports to be
 #                          diagnosed as out-of-order.
+# - no-name-in-module: Error gives a lot of false positives for names which
+#                      are defined dynamically. Also, any truly missing names
+#                      will be detected by our 100% code coverage.
 disable =
     maybe-no-member,
     no-member,
     protected-access,
-    redefined-builtin,
     similarities,
     star-args,
-    method-hidden,
     redefined-variable-type,
     wrong-import-position,
+    no-name-in-module,
 
 
 [REPORTS]
@@ -200,7 +194,7 @@ no-space-check =
 # Maximum number of lines in a module
 # DEFAULT:  max-module-lines=1000
 # RATIONALE:  API-mapping
-max-module-lines=1500
+max-module-lines=1200
 
 # String used as indentation unit. This is usually " " (4 spaces) or "\t" (1
 # tab).
@@ -297,13 +291,15 @@ good-names = i, j, k, ex, Run, _,
 
 # Regular expression matching correct method names
 # DEFAULT:  method-rgx=[a-z_][a-z0-9_]{2,30}$
+# RATIONALE:  mapping long API names onto connection methods
+method-rgx=[a-z_][a-z0-9_]{2,35}$
 
 # Naming hint for method names
 # DEFAULT:  method-name-hint=[a-z_][a-z0-9_]{2,30}$
 
 # Regular expression which should only match function or class names that do
 # not require a docstring.
-# DEFAULT:  no-docstring-rgx=__.*__
+no-docstring-rgx=__.*__
 
 # Minimum line length for functions/classes that require docstrings, shorter
 # ones are exempt.
@@ -320,6 +316,9 @@ good-names = i, j, k, ex, Run, _,
 # (useful for modules/projects where namespaces are manipulated during runtime
 # and thus existing member attributes cannot be deduced by static analysis
 # DEFAULT:  ignored-modules=
+# RATIONALE:  six aliases stuff for compatibility.
+#             google.protobuf fixes up namespace package "late".
+ignored-modules = six, google.protobuf
 
 # List of classes names for which member attributes should not be checked
 # (useful for classes with attributes dynamically set).

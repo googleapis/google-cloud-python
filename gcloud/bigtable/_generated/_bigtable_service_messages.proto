@@ -17,6 +17,7 @@ syntax = "proto3";
 package google.bigtable.v1;
 
 import "google/bigtable/v1/bigtable_data.proto";
+import "google/rpc/status.proto";
 
 option java_multiple_files = true;
 option java_outer_classname = "BigtableServiceMessagesProto";
@@ -35,6 +36,11 @@ message ReadRowsRequest {
 
     // A range of rows from which to read.
     RowRange row_range = 3;
+
+    // A set of rows from which to read. Entries need not be in order, and will
+    // be deduplicated before reading.
+    // The total serialized size of the set must not exceed 1MB.
+    RowSet row_set = 8;
   }
 
   // The filter to apply to the contents of the specified row(s). If unset,
@@ -122,6 +128,37 @@ message MutateRowRequest {
   // in order, meaning that earlier mutations can be masked by later ones.
   // Must contain at least one entry and at most 100000.
   repeated Mutation mutations = 3;
+}
+
+// Request message for BigtableService.MutateRows.
+message MutateRowsRequest {
+  message Entry {
+    // The key of the row to which the `mutations` should be applied.
+    bytes row_key = 1;
+
+    // Changes to be atomically applied to the specified row. Mutations are
+    // applied in order, meaning that earlier mutations can be masked by
+    // later ones.
+    // At least one mutation must be specified.
+    repeated Mutation mutations = 2;
+  }
+
+  // The unique name of the table to which the mutations should be applied.
+  string table_name = 1;
+
+  // The row keys/mutations to be applied in bulk.
+  // Each entry is applied as an atomic mutation, but the entries may be
+  // applied in arbitrary order (even between entries for the same row).
+  // At least one entry must be specified, and in total the entries may
+  // contain at most 100000 mutations.
+  repeated Entry entries = 2;
+}
+
+// Response message for BigtableService.MutateRows.
+message MutateRowsResponse {
+  // The results for each Entry from the request, presented in the order
+  // in which the entries were originally given.
+  repeated google.rpc.Status statuses = 1;
 }
 
 // Request message for BigtableService.CheckAndMutateRowRequest

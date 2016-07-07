@@ -5,7 +5,7 @@ Google Cloud Python Client
 
 .. _Google Cloud Platform: https://cloud.google.com/
 
-|pypi| |build| |coverage|
+|pypi| |build| |coverage| |versions|
 
 -  `Homepage`_
 -  `API Documentation`_
@@ -20,12 +20,14 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
+-  `Google Cloud Logging`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
+.. _Google Cloud Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-logging
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -38,22 +40,6 @@ Quick Start
 ::
 
     $ pip install --upgrade gcloud
-
-We support:
-
--  `Python 2.6`_
--  `Python 2.7`_
--  `Python 3.4`_
--  `Python 3.5`_
-
-For more information, see `Supported Python Versions`_ in
-``CONTRIBUTING``.
-
-.. _Python 2.6: https://docs.python.org/2.6/
-.. _Python 2.7: https://docs.python.org/2.7/
-.. _Python 3.4: https://docs.python.org/3.4/
-.. _Python 3.5: https://docs.python.org/3.5/
-.. _Supported Python Versions: https://github.com/GoogleCloudPlatform/gcloud-python/blob/master/CONTRIBUTING.rst#supported-python-versions
 
 Example Applications
 --------------------
@@ -86,7 +72,7 @@ writes, strong consistency for reads and ancestor queries, and eventual
 consistency for all other queries.
 
 .. _Cloud Datastore: https://cloud.google.com/datastore/docs
-.. _Datastore API docs: https://cloud.google.com/datastore/docs/apis/v1beta2/
+.. _Datastore API docs: https://cloud.google.com/datastore/docs/apis/v1beta3/
 
 See the ``gcloud-python`` API `datastore documentation`_ to learn how to
 interact with the Cloud Datastore using this Client Library.
@@ -140,10 +126,10 @@ how to create a bucket.
     client = storage.Client()
     bucket = client.get_bucket('bucket-id-here')
     # Then do other things...
-    blob = bucket.get_blob('/remote/path/to/file.txt')
+    blob = bucket.get_blob('remote/path/to/file.txt')
     print blob.download_as_string()
     blob.upload_from_string('New contents!')
-    blob2 = bucket.blob('/remote/path/storage.txt')
+    blob2 = bucket.blob('remote/path/storage.txt')
     blob2.upload_from_filename(filename='/local/path.txt')
 
 Google Cloud Pub/Sub
@@ -190,6 +176,49 @@ append-only tables, using the processing power of Google's infrastructure.
 
 This package is still being implemented, but it is almost complete!
 
+Load data from CSV
+~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import csv
+
+    from gcloud import bigquery
+    from gcloud.bigquery import SchemaField
+
+    client = bigquery.Client()
+
+    dataset = client.dataset('dataset_name')
+    dataset.create()  # API request
+
+    SCHEMA = [
+        SchemaField('full_name', 'STRING', mode='required'),
+        SchemaField('age', 'INTEGER', mode='required'),
+    ]
+    table = dataset.table('table_name', SCHEMA)
+    table.create()
+
+    with open('csv_file', 'rb') as readable:
+        table.upload_from_file(
+            readable, source_format='CSV', skip_leading_rows=1)
+
+Perform a synchronous query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    # Perform a synchronous query.
+    QUERY = (
+        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
+        'WHERE state = "TX"')
+    query = client.run_sync_query('%s LIMIT 100' % QUERY)
+    query.timeout_ms = TIMEOUT_MS
+    query.run()
+
+    for row in query.rows:
+        print row
+
+
 See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
 to BigQuery using this Client Library.
 
@@ -209,6 +238,35 @@ See the ``gcloud-python`` API `Resource Manager documentation`_ to learn how to
 manage projects using this Client Library.
 
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
+
+Google Cloud Logging
+--------------------
+
+`Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
+analyze, monitor, and alert on log data and events from Google Cloud Platform.
+
+.. _Stackdriver Logging: https://cloud.google.com/logging/
+.. _Logging API docs: https://cloud.google.com/logging/docs/
+
+.. code:: python
+
+    from gcloud import logging
+    client = logging.Client()
+    logger = client.logger('log_name')
+    logger.log_text("A simple entry")  # API call
+
+Example of fetching entries:
+
+.. code:: python
+
+    entries, token = logger.list_entries()
+    for entry in entries:
+        print entry.payload
+
+See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
+to Cloud logging using this Client Library.
+
+.. _logging documentation: https://googlecloudplatform.github.io/gcloud-python/stable/logging-usage.html
 
 Contributing
 ------------
@@ -231,4 +289,6 @@ Apache 2.0 - See `LICENSE`_ for more information.
 .. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/gcloud-python/badge.png?branch=master
    :target: https://coveralls.io/r/GoogleCloudPlatform/gcloud-python?branch=master
 .. |pypi| image:: https://img.shields.io/pypi/v/gcloud.svg
+   :target: https://pypi.python.org/pypi/gcloud
+.. |versions| image:: https://img.shields.io/pypi/pyversions/gcloud.svg
    :target: https://pypi.python.org/pypi/gcloud

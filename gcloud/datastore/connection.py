@@ -16,12 +16,11 @@
 
 import os
 
-from gcloud._helpers import _has_field
 from gcloud import connection
 from gcloud.environment_vars import GCD_HOST
 from gcloud.exceptions import make_exception
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
-from gcloud.datastore._generated import entity_pb2 as _entity_pb2
+from google.rpc import status_pb2
 
 
 class Connection(connection.Connection):
@@ -41,25 +40,28 @@ class Connection(connection.Connection):
                          :attr:`API_BASE_URL`.
     """
 
-    API_BASE_URL = 'https://www.googleapis.com'
+    API_BASE_URL = 'https://datastore.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta2'
+    API_VERSION = 'v1beta3'
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = ('{api_base}/datastore/{api_version}'
-                        '/datasets/{project}/{method}')
+    API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
+                        '/{project}:{method}')
     """A template for the URL of a particular API call."""
 
-    SCOPE = ('https://www.googleapis.com/auth/datastore',
-             'https://www.googleapis.com/auth/userinfo.email')
+    SCOPE = ('https://www.googleapis.com/auth/datastore',)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(self, credentials=None, http=None, api_base_url=None):
         super(Connection, self).__init__(credentials=credentials, http=http)
         if api_base_url is None:
-            api_base_url = os.getenv(GCD_HOST,
-                                     self.__class__.API_BASE_URL)
+            try:
+                # gcd.sh has /datastore/ in the path still since it supports
+                # v1beta2 and v1beta3 simultaneously.
+                api_base_url = '%s/datastore' % (os.environ[GCD_HOST],)
+            except KeyError:
+                api_base_url = self.__class__.API_BASE_URL
         self.api_base_url = api_base_url
 
     def _request(self, project, method, data):
@@ -92,7 +94,8 @@ class Connection(connection.Connection):
 
         status = headers['status']
         if status != '200':
-            raise make_exception(headers, content, use_json=False)
+            error_status = status_pb2.Status.FromString(content)
+            raise make_exception(headers, error_status.message, use_json=False)
 
         return content
 
@@ -194,7 +197,7 @@ class Connection(connection.Connection):
         """
         lookup_request = _datastore_pb2.LookupRequest()
         _set_read_options(lookup_request, eventual, transaction_id)
-        _add_keys_to_request(lookup_request.key, key_pbs)
+        _add_keys_to_request(lookup_request.keys, key_pbs)
 
         lookup_response = self._rpc(project, 'lookup', lookup_request,
                                     _datastore_pb2.LookupResponse)
@@ -221,7 +224,8 @@ class Connection(connection.Connection):
         uses this method to fetch data:
 
         >>> from gcloud import datastore
-        >>> query = datastore.Query(kind='MyKind')
+        >>> client = datastore.Client()
+        >>> query = client.query(kind='MyKind')
         >>> query.add_filter('property', '=', 'val')
 
         Using the query iterator's
@@ -259,18 +263,23 @@ class Connection(connection.Connection):
         :param transaction_id: If passed, make the request in the scope of
                                the given transaction.  Incompatible with
                                ``eventual==True``.
+
+        :rtype: tuple
+        :returns: Four-tuple containing the entities returned,
+                  the end cursor of the query, a ``more_results``
+                  enum and a count of the number of skipped results.
         """
         request = _datastore_pb2.RunQueryRequest()
         _set_read_options(request, eventual, transaction_id)
 
         if namespace:
-            request.partition_id.namespace = namespace
+            request.partition_id.namespace_id = namespace
 
         request.query.CopyFrom(query_pb)
         response = self._rpc(project, 'runQuery', request,
                              _datastore_pb2.RunQueryResponse)
         return (
-            [e.entity for e in response.batch.entity_result],
+            [e.entity for e in response.batch.entity_results],
             response.batch.end_cursor,  # Assume response always has cursor.
             response.batch.more_results,
             response.batch.skipped_results,
@@ -288,8 +297,6 @@ class Connection(connection.Connection):
         :returns: The serialized transaction that was begun.
         """
         request = _datastore_pb2.BeginTransactionRequest()
-        request.isolation_level = (
-            _datastore_pb2.BeginTransactionRequest.SERIALIZABLE)
         response = self._rpc(project, 'beginTransaction', request,
                              _datastore_pb2.BeginTransactionResponse)
         return response.transaction
@@ -363,11 +370,11 @@ class Connection(connection.Connection):
         :returns: An equal number of keys,  with IDs filled in by the backend.
         """
         request = _datastore_pb2.AllocateIdsRequest()
-        _add_keys_to_request(request.key, key_pbs)
+        _add_keys_to_request(request.keys, key_pbs)
         # Nothing to do with this response, so just execute the method.
         response = self._rpc(project, 'allocateIds', request,
                              _datastore_pb2.AllocateIdsResponse)
-        return list(response.key)
+        return list(response.keys)
 
 
 def _set_read_options(request, eventual, transaction_id):
@@ -388,28 +395,6 @@ def _set_read_options(request, eventual, transaction_id):
         opts.transaction = transaction_id
 
 
-def _prepare_key_for_request(key_pb):  # pragma: NO COVER copied from helpers
-    """Add protobuf keys to a request object.
-
-    .. note::
-      This is copied from `helpers` to avoid a cycle:
-      _implicit_environ -> connection -> helpers -> key -> _implicit_environ
-
-    :type key_pb: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :param key_pb: A key to be added to a request.
-
-    :rtype: :class:`gcloud.datastore._generated.entity_pb2.Key`
-    :returns: A key which will be added to a request. It will be the
-              original if nothing needs to be changed.
-    """
-    if _has_field(key_pb.partition_id, 'dataset_id'):
-        new_key_pb = _entity_pb2.Key()
-        new_key_pb.CopyFrom(key_pb)
-        new_key_pb.partition_id.ClearField('dataset_id')
-        key_pb = new_key_pb
-    return key_pb
-
-
 def _add_keys_to_request(request_field_pb, key_pbs):
     """Add protobuf keys to a request object.
 
@@ -420,7 +405,6 @@ def _add_keys_to_request(request_field_pb, key_pbs):
     :param key_pbs: The keys to add to a request.
     """
     for key_pb in key_pbs:
-        key_pb = _prepare_key_for_request(key_pb)
         request_field_pb.add().CopyFrom(key_pb)
 
 
@@ -435,7 +419,8 @@ def _parse_commit_response(commit_response_pb):
                :class:`._generated.entity_pb2.Key` for each incomplete key
                that was completed in the commit.
     """
-    mut_result = commit_response_pb.mutation_result
-    index_updates = mut_result.index_updates
-    completed_keys = list(mut_result.insert_auto_id_key)
+    mut_results = commit_response_pb.mutation_results
+    index_updates = commit_response_pb.index_updates
+    completed_keys = [mut_result.key for mut_result in mut_results
+                      if mut_result.HasField('key')]  # Message field (Key)
     return index_updates, completed_keys

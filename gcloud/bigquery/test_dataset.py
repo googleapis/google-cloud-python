@@ -55,6 +55,26 @@ class TestAccessGrant(unittest2.TestCase):
         with self.assertRaises(ValueError):
             self._makeOne(role, entity_type, None)
 
+    def test___eq___role_mismatch(self):
+        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._makeOne('WRITER', 'userByEmail', 'phred@example.com')
+        self.assertNotEqual(grant, other)
+
+    def test___eq___entity_type_mismatch(self):
+        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._makeOne('OWNER', 'groupByEmail', 'phred@example.com')
+        self.assertNotEqual(grant, other)
+
+    def test___eq___entity_id_mismatch(self):
+        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._makeOne('OWNER', 'userByEmail', 'bharney@example.com')
+        self.assertNotEqual(grant, other)
+
+    def test___eq___hit(self):
+        grant = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        other = self._makeOne('OWNER', 'userByEmail', 'phred@example.com')
+        self.assertEqual(grant, other)
+
 
 class TestDataset(unittest2.TestCase):
     PROJECT = 'project'
@@ -138,8 +158,11 @@ class TestDataset(unittest2.TestCase):
 
         self._verifyReadonlyResourceProperties(dataset, resource)
 
-        self.assertEqual(dataset.default_table_expiration_ms,
-                         resource.get('defaultTableExpirationMs'))
+        if 'defaultTableExpirationMs' in resource:
+            self.assertEqual(dataset.default_table_expiration_ms,
+                             int(resource.get('defaultTableExpirationMs')))
+        else:
+            self.assertEqual(dataset.default_table_expiration_ms, None)
         self.assertEqual(dataset.description, resource.get('description'))
         self.assertEqual(dataset.friendly_name, resource.get('friendlyName'))
         self.assertEqual(dataset.location, resource.get('location'))
@@ -500,7 +523,7 @@ class TestDataset(unittest2.TestCase):
         DEF_TABLE_EXP = 12345
         LOCATION = 'EU'
         RESOURCE = self._makeResource()
-        RESOURCE['defaultTableExpirationMs'] = DEF_TABLE_EXP
+        RESOURCE['defaultTableExpirationMs'] = str(DEF_TABLE_EXP)
         RESOURCE['location'] = LOCATION
         conn1 = _Connection()
         CLIENT1 = _Client(project=self.PROJECT, connection=conn1)

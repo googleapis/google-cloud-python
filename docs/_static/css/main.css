@@ -23,6 +23,14 @@ html {
     line-height: 1.4;
 }
 
+*[id]:before {
+  display: block;
+  content: " ";
+  margin-top: -70px;
+  height: 70px;
+  visibility: hidden;
+}
+
 /*
  * Remove text-shadow in selection highlight: h5bp.com/i
  * These selection rule sets have to be separate.
@@ -1335,7 +1343,6 @@ span.caption-text {
         left: 0;
         width: 240px;
         padding-top: 7.7em;
-        background: none;
         font-size: 0.9em;
     }
 

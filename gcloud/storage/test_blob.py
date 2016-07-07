@@ -146,6 +146,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': PATH,
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
@@ -154,6 +155,40 @@ class Test_Blob(unittest2.TestCase):
 
     def test_generate_signed_url_w_default_method(self):
         self._basic_generate_signed_url_helper()
+
+    def test_generate_signed_url_w_content_type(self):
+        from gcloud._testing import _Monkey
+        from gcloud.storage import blob as MUT
+
+        BLOB_NAME = 'blob-name'
+        EXPIRATION = '2014-10-16T20:34:37.000Z'
+        connection = _Connection()
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        URI = ('http://example.com/abucket/a-blob-name?Signature=DEADBEEF'
+               '&Expiration=2014-10-16T20:34:37.000Z')
+
+        SIGNER = _Signer()
+        CONTENT_TYPE = "text/html"
+        with _Monkey(MUT, generate_signed_url=SIGNER):
+            signed_url = blob.generate_signed_url(EXPIRATION,
+                                                  content_type=CONTENT_TYPE)
+            self.assertEqual(signed_url, URI)
+
+        PATH = '/name/%s' % (BLOB_NAME,)
+        EXPECTED_ARGS = (_Connection.credentials,)
+        EXPECTED_KWARGS = {
+            'api_access_endpoint': 'https://storage.googleapis.com',
+            'expiration': EXPIRATION,
+            'method': 'GET',
+            'resource': PATH,
+            'content_type': CONTENT_TYPE,
+            'response_type': None,
+            'response_disposition': None,
+            'generation': None,
+        }
+        self.assertEqual(SIGNER._signed, [(EXPECTED_ARGS, EXPECTED_KWARGS)])
 
     def test_generate_signed_url_w_credentials(self):
         credentials = object()
@@ -183,6 +218,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'GET',
             'resource': '/name/parent%2Fchild',
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
@@ -214,6 +250,7 @@ class Test_Blob(unittest2.TestCase):
             'expiration': EXPIRATION,
             'method': 'POST',
             'resource': PATH,
+            'content_type': None,
             'response_type': None,
             'response_disposition': None,
             'generation': None,
@@ -223,7 +260,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_miss(self):
         from six.moves.http_client import NOT_FOUND
         NONESUCH = 'nonesuch'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -233,7 +270,7 @@ class Test_Blob(unittest2.TestCase):
     def test_exists_hit(self):
         from six.moves.http_client import OK
         BLOB_NAME = 'blob-name'
-        found_response = {'status': OK}
+        found_response = ({'status': OK}, b'')
         connection = _Connection(found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -276,7 +313,7 @@ class Test_Blob(unittest2.TestCase):
     def test_delete(self):
         from six.moves.http_client import NOT_FOUND
         BLOB_NAME = 'blob-name'
-        not_found_response = {'status': NOT_FOUND}
+        not_found_response = ({'status': NOT_FOUND}, b'')
         connection = _Connection(not_found_response)
         client = _Client(connection)
         bucket = _Bucket(client)
@@ -321,6 +358,32 @@ class Test_Blob(unittest2.TestCase):
         kw, = connection._requested
         self.assertEqual(kw['method'], 'GET')
         self.assertNotIn('generation', kw['query_params'])
+    
+    def test_download_to_file_wo_media_link(self):
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
+        from io import BytesIO
+        BLOB_NAME = 'blob-name'
+        MEDIA_LINK = 'http://example.com/media/'
+        chunk1_response = {'status': PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
+        )
+        # Only the 'reload' request hits on this side:  the others are done
+        # through the 'http' object.
+        reload_response = {'status': OK, 'content-type': 'application/json'}
+        connection._responses = [(reload_response, {"mediaLink": MEDIA_LINK})]
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        fh = BytesIO()
+        blob.download_to_file(fh)
+        self.assertEqual(fh.getvalue(), b'abcdef')
+        self.assertEqual(blob.media_link, MEDIA_LINK)
 
     def _download_to_file_helper(self, chunk_size=None):
         from six.moves.http_client import OK
@@ -388,6 +451,51 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(wrote, b'abcdef')
         self.assertEqual(mtime, updatedTime)
 
+    def test_download_to_filename_w_key(self):
+        import os
+        import time
+        from six.moves.http_client import OK
+        from six.moves.http_client import PARTIAL_CONTENT
+        from gcloud._testing import _NamedTemporaryFile
+
+        BLOB_NAME = 'blob-name'
+        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
+        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
+        chunk1_response = {'status': PARTIAL_CONTENT,
+                           'content-range': 'bytes 0-2/6'}
+        chunk2_response = {'status': OK,
+                           'content-range': 'bytes 3-5/6'}
+        connection = _Connection(
+            (chunk1_response, b'abc'),
+            (chunk2_response, b'def'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        MEDIA_LINK = 'http://example.com/media/'
+        properties = {'mediaLink': MEDIA_LINK,
+                      'updated': '2014-12-06T13:13:50.690Z'}
+        blob = self._makeOne(BLOB_NAME, bucket=bucket, properties=properties)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 3
+
+        with _NamedTemporaryFile() as temp:
+            blob.download_to_filename(temp.name, encryption_key=KEY)
+            with open(temp.name, 'rb') as file_obj:
+                wrote = file_obj.read()
+                mtime = os.path.getmtime(temp.name)
+                updatedTime = time.mktime(blob.updated.timetuple())
+
+        rq = connection.http._requested
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
+        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
+                         HEADER_KEY_HASH_VALUE)
+        self.assertEqual(wrote, b'abcdef')
+        self.assertEqual(mtime, updatedTime)
+
     def test_download_as_string(self):
         from six.moves.http_client import OK
         from six.moves.http_client import PARTIAL_CONTENT
@@ -423,7 +531,8 @@ class Test_Blob(unittest2.TestCase):
     def _upload_from_file_simple_test_helper(self, properties=None,
                                              content_type_arg=None,
                                              expected_content_type=None,
-                                             chunk_size=5):
+                                             chunk_size=5,
+                                             status=None):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
         from six.moves.urllib.parse import urlsplit
@@ -431,7 +540,9 @@ class Test_Blob(unittest2.TestCase):
 
         BLOB_NAME = 'blob-name'
         DATA = b'ABCDEF'
-        response = {'status': OK}
+        if status is None:
+            status = OK
+        response = {'status': status}
         connection = _Connection(
             (response, b'{}'),
         )
@@ -467,6 +578,12 @@ class Test_Blob(unittest2.TestCase):
     def test_upload_from_file_simple(self):
         self._upload_from_file_simple_test_helper(
             expected_content_type='application/octet-stream')
+
+    def test_upload_from_file_simple_not_found(self):
+        from six.moves.http_client import NOT_FOUND
+        from gcloud.exceptions import NotFound
+        with self.assertRaises(NotFound):
+            self._upload_from_file_simple_test_helper(status=NOT_FOUND)
 
     def test_upload_from_file_simple_w_chunk_size_None(self):
         self._upload_from_file_simple_test_helper(
@@ -577,6 +694,60 @@ class Test_Blob(unittest2.TestCase):
             'redirections': 5,
         })
 
+    def test_upload_from_file_resumable_w_error(self):
+        from six.moves.http_client import NOT_FOUND
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud._testing import _Monkey
+        from gcloud._testing import _NamedTemporaryFile
+        from gcloud.streaming import transfer
+        from gcloud.streaming.exceptions import HttpError
+
+        BLOB_NAME = 'blob-name'
+        DATA = b'ABCDEF'
+        loc_response = {'status': NOT_FOUND}
+        connection = _Connection(
+            (loc_response, b'{"error": "no such bucket"}'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
+
+        # Set the threshhold low enough that we force a resumable uploada.
+        with _Monkey(transfer, RESUMABLE_UPLOAD_THRESHOLD=5):
+            with _NamedTemporaryFile() as temp:
+                with open(temp.name, 'wb') as file_obj:
+                    file_obj.write(DATA)
+                with open(temp.name, 'rb') as file_obj:
+                    with self.assertRaises(HttpError):
+                        blob.upload_from_file(file_obj, rewind=True)
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+
+        # Requested[0]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        self.assertEqual(headers['X-Upload-Content-Length'], '6')
+        self.assertEqual(headers['X-Upload-Content-Type'],
+                         'application/octet-stream')
+
+        uri = rq[0].pop('uri')
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': BLOB_NAME})
+        self.assertEqual(rq[0], {
+            'method': 'POST',
+            'body': '',
+            'connection_type': None,
+            'redirections': 5,
+        })
+
     def test_upload_from_file_w_slash_in_name(self):
         from six.moves.http_client import OK
         from six.moves.urllib.parse import parse_qsl
@@ -626,6 +797,63 @@ class Test_Blob(unittest2.TestCase):
             [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], 'application/octet-stream')
+
+    def test_upload_from_filename_w_key(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud._testing import _NamedTemporaryFile
+        from gcloud.streaming import http_wrapper
+
+        BLOB_NAME = 'blob-name'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        DATA = b'ABCDEF'
+        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
+        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
+        EXPECTED_CONTENT_TYPE = 'foo/bar'
+        properties = {'contentType': EXPECTED_CONTENT_TYPE}
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': OK}
+        connection = _Connection(
+            (loc_response, '{}'),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket,
+                             properties=properties)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
+
+        with _NamedTemporaryFile(suffix='.jpeg') as temp:
+            with open(temp.name, 'wb') as file_obj:
+                file_obj.write(DATA)
+            blob.upload_from_filename(temp.name,
+                                      content_type=EXPECTED_CONTENT_TYPE,
+                                      encryption_key=KEY)
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'media', 'name': BLOB_NAME})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
+        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
+                         HEADER_KEY_HASH_VALUE)
+        self.assertEqual(headers['Content-Length'], '6')
+        self.assertEqual(headers['Content-Type'], 'foo/bar')
 
     def _upload_from_filename_test_helper(self, properties=None,
                                           content_type_arg=None,
@@ -779,11 +1007,60 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Type'], 'text/plain')
         self.assertEqual(rq[0]['body'], ENCODED)
 
+    def test_upload_from_string_text_w_key(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud.streaming import http_wrapper
+        BLOB_NAME = 'blob-name'
+        KEY = 'aa426195405adee2c8081bb9e7e74b19'
+        HEADER_KEY_VALUE = 'YWE0MjYxOTU0MDVhZGVlMmM4MDgxYmI5ZTdlNzRiMTk='
+        HEADER_KEY_HASH_VALUE = 'V3Kwe46nKc3xLv96+iJ707YfZfFvlObta8TQcx2gpm0='
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        DATA = u'ABCDEF\u1234'
+        ENCODED = DATA.encode('utf-8')
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': OK}
+        connection = _Connection(
+            (loc_response, '{}'),
+            (chunk1_response, ''),
+            (chunk2_response, ''),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client=client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
+        blob.upload_from_string(DATA, encryption_key=KEY)
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 1)
+        self.assertEqual(rq[0]['method'], 'POST')
+        uri = rq[0]['uri']
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'media', 'name': BLOB_NAME})
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0]['headers'].items()])
+
+        self.assertEqual(headers['X-Goog-Encryption-Algorithm'], 'AES256')
+        self.assertEqual(headers['X-Goog-Encryption-Key'], HEADER_KEY_VALUE)
+        self.assertEqual(headers['X-Goog-Encryption-Key-Sha256'],
+                         HEADER_KEY_HASH_VALUE)
+        self.assertEqual(headers['Content-Length'], str(len(ENCODED)))
+        self.assertEqual(headers['Content-Type'], 'text/plain')
+        self.assertEqual(rq[0]['body'], ENCODED)
+
     def test_make_public(self):
+        from six.moves.http_client import OK
         from gcloud.storage.acl import _ACLEntity
         BLOB_NAME = 'blob-name'
         permissive = [{'entity': 'allUsers', 'role': _ACLEntity.READER_ROLE}]
-        after = {'acl': permissive}
+        after = ({'status': OK}, {'acl': permissive})
         connection = _Connection(after)
         client = _Client(connection)
         bucket = _Bucket(client=client)
@@ -1123,10 +1400,10 @@ class _Connection(_Responder):
     def api_request(self, **kw):
         from six.moves.http_client import NOT_FOUND
         from gcloud.exceptions import NotFound
-        result = self._respond(**kw)
-        if result.get('status') == NOT_FOUND:
-            raise NotFound(result)
-        return result
+        info, content = self._respond(**kw)
+        if info.get('status') == NOT_FOUND:
+            raise NotFound(info)
+        return content
 
     def build_api_url(self, path, query_params=None,
                       api_base_url=API_BASE_URL):

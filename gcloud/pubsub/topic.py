@@ -19,7 +19,9 @@ import base64
 from gcloud._helpers import _datetime_to_rfc3339
 from gcloud._helpers import _NOW
 from gcloud.exceptions import NotFound
+from gcloud.pubsub._helpers import subscription_name_from_path
 from gcloud.pubsub._helpers import topic_name_from_path
+from gcloud.pubsub.iam import Policy
 from gcloud.pubsub.subscription import Subscription
 
 
@@ -50,6 +52,24 @@ class Topic(object):
 
     def subscription(self, name, ack_deadline=None, push_endpoint=None):
         """Creates a subscription bound to the current topic.
+
+        Example:  pull-mode subcription, default paramter values
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_defaults]
+           :end-before: [END topic_subscription_defaults]
+
+        Example:  pull-mode subcription, override ``ack_deadline`` default
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_ack90]
+           :end-before: [END topic_subscription_ack90]
+
+        Example:  push-mode subcription
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_subscription_push]
+           :end-before: [END topic_subscription_push]
 
         :type name: string
         :param name: the name of the subscription
@@ -96,11 +116,6 @@ class Topic(object):
         """Fully-qualified name used in topic / subscription APIs"""
         return 'projects/%s/topics/%s' % (self.project, self.name)
 
-    @property
-    def path(self):
-        """URL path for the topic's APIs"""
-        return '/%s' % (self.full_name)
-
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -121,12 +136,19 @@ class Topic(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/create
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_create]
+           :end-before: [END topic_create]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
-        client.connection.api_request(method='PUT', path=self.path)
+        api = client.publisher_api
+        api.topic_create(topic_path=self.full_name)
 
     def exists(self, client=None):
         """API call:  test for the existence of the topic via a GET request
@@ -134,18 +156,45 @@ class Topic(object):
         See
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/get
 
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_exists]
+           :end-before: [END topic_exists]
+
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
         """
         client = self._require_client(client)
+        api = client.publisher_api
 
         try:
-            client.connection.api_request(method='GET', path=self.path)
+            api.topic_get(topic_path=self.full_name)
         except NotFound:
             return False
         else:
             return True
+
+    def delete(self, client=None):
+        """API call:  delete the topic via a DELETE request
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_delete]
+           :end-before: [END topic_delete]
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current topic.
+        """
+        client = self._require_client(client)
+        api = client.publisher_api
+        api.topic_delete(topic_path=self.full_name)
 
     def _timestamp_message(self, attrs):
         """Add a timestamp to ``attrs``, if the topic is so configured.
@@ -163,6 +212,18 @@ class Topic(object):
         See:
         https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/publish
 
+        Example without message attributes:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_publish_simple_message]
+           :end-before: [END topic_publish_simple_message]
+
+        With message attributes:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_publish_message_with_attrs]
+           :end-before: [END topic_publish_message_with_attrs]
+
         :type message: bytes
         :param message: the message payload
 
@@ -177,17 +238,28 @@ class Topic(object):
         :returns: message ID assigned by the server to the published message
         """
         client = self._require_client(client)
+        api = client.publisher_api
 
         self._timestamp_message(attrs)
         message_b = base64.b64encode(message).decode('ascii')
         message_data = {'data': message_b, 'attributes': attrs}
-        data = {'messages': [message_data]}
-        response = client.connection.api_request(
-            method='POST', path='%s:publish' % (self.path,), data=data)
-        return response['messageIds'][0]
+        message_ids = api.topic_publish(self.full_name, [message_data])
+        return message_ids[0]
 
     def batch(self, client=None):
         """Return a batch to use as a context manager.
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_batch]
+           :end-before: [END topic_batch]
+
+        .. note::
+
+           The only API request happens during the ``__exit__()`` of the topic
+           used as a context manager, and only if the block exits without
+           raising an exception.
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
@@ -199,18 +271,128 @@ class Topic(object):
         client = self._require_client(client)
         return Batch(self, client)
 
-    def delete(self, client=None):
-        """API call:  delete the topic via a DELETE request
+    def list_subscriptions(self, page_size=None, page_token=None, client=None):
+        """List subscriptions for the project associated with this client.
 
         See:
-        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/delete
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics.subscriptions/list
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_list_subscriptions]
+           :end-before: [END topic_list_subscriptions]
+
+        :type page_size: int
+        :param page_size: maximum number of topics to return, If not passed,
+                          defaults to a value set by the API.
+
+        :type page_token: string
+        :param page_token: opaque marker for the next "page" of topics. If not
+                           passed, the API will return the first page of
+                           topics.
 
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
+
+        :rtype: tuple, (list, str)
+        :returns: list of :class:`gcloud.pubsub.subscription.Subscription`,
+                  plus a "next page token" string:  if not None, indicates that
+                  more topics can be retrieved with another call (pass that
+                  value as ``page_token``).
         """
         client = self._require_client(client)
-        client.connection.api_request(method='DELETE', path=self.path)
+        api = client.publisher_api
+        sub_paths, next_token = api.topic_list_subscriptions(
+            self.full_name, page_size, page_token)
+        subscriptions = []
+        for sub_path in sub_paths:
+            sub_name = subscription_name_from_path(sub_path, self.project)
+            subscriptions.append(Subscription(sub_name, self))
+        return subscriptions, next_token
+
+    def get_iam_policy(self, client=None):
+        """Fetch the IAM policy for the topic.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/getIamPolicy
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_get_iam_policy]
+           :end-before: [END topic_get_iam_policy]
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+
+        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :returns: policy created from the resource returned by the
+                  ``getIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        api = client.iam_policy_api
+        resp = api.get_iam_policy(self.full_name)
+        return Policy.from_api_repr(resp)
+
+    def set_iam_policy(self, policy, client=None):
+        """Update the IAM policy for the topic.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/setIamPolicy
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_set_iam_policy]
+           :end-before: [END topic_set_iam_policy]
+
+        :type policy: :class:`gcloud.pubsub.iam.Policy`
+        :param policy: the new policy, typically fetched via
+                       :meth:`get_iam_policy` and updated in place.
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+
+        :rtype: :class:`gcloud.pubsub.iam.Policy`
+        :returns: updated policy created from the resource returned by the
+                  ``setIamPolicy`` API request.
+        """
+        client = self._require_client(client)
+        api = client.iam_policy_api
+        resource = policy.to_api_repr()
+        resp = api.set_iam_policy(self.full_name, resource)
+        return Policy.from_api_repr(resp)
+
+    def check_iam_permissions(self, permissions, client=None):
+        """Verify permissions allowed for the current user.
+
+        See:
+        https://cloud.google.com/pubsub/reference/rest/v1/projects.topics/testIamPermissions
+
+        Example:
+
+        .. literalinclude:: pubsub_snippets.py
+           :start-after: [START topic_check_iam_permissions]
+           :end-before: [END topic_check_iam_permissions]
+
+        :type permissions: list of string
+        :param permissions: list of permissions to be tested
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current batch.
+
+        :rtype: sequence of string
+        :returns: subset of ``permissions`` allowed by current IAM policy.
+        """
+        client = self._require_client(client)
+        api = client.iam_policy_api
+        return api.test_iam_permissions(
+            self.full_name, list(permissions))
 
 
 class Batch(object):
@@ -261,10 +443,12 @@ class Batch(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """
+        if not self.messages:
+            return
+
         if client is None:
             client = self.client
-        response = client.connection.api_request(
-            method='POST', path='%s:publish' % self.topic.path,
-            data={'messages': self.messages[:]})
-        self.message_ids.extend(response['messageIds'])
+        api = client.publisher_api
+        message_ids = api.topic_publish(self.topic.full_name, self.messages[:])
+        self.message_ids.extend(message_ids)
         del self.messages[:]

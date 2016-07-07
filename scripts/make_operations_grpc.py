@@ -17,19 +17,19 @@
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 
 
 ROOT_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..'))
-PROTOS_DIR = os.path.join(ROOT_DIR, 'cloud-bigtable-client',
-                          'bigtable-protos', 'src', 'main', 'proto')
+PROTOS_DIR = os.path.join(ROOT_DIR, 'googleapis-pb')
 PROTO_PATH = os.path.join(PROTOS_DIR, 'google', 'longrunning',
                           'operations.proto')
+GENERATED_SUBDIR = os.environ.get('GENERATED_SUBDIR', '_generated')
 GRPC_ONLY_FILE = os.path.join(ROOT_DIR, 'gcloud', 'bigtable',
-                              '_generated', 'operations_grpc_pb2.py')
-PROTOC_CMD = 'protoc'
-GRPC_PLUGIN = 'grpc_python_plugin'
+                              GENERATED_SUBDIR, 'operations_grpc_pb2.py')
+GRPCIO_VIRTUALENV = os.environ.get('GRPCIO_VIRTUALENV', 'protoc')
 
 
 def get_pb2_contents_with_grpc():
@@ -42,18 +42,20 @@ def get_pb2_contents_with_grpc():
     generated_path = os.path.join(temp_dir, 'google', 'longrunning',
                                   'operations_pb2.py')
     try:
-        subprocess.check_output([
-            PROTOC_CMD,
+        return_code = subprocess.call([
+            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            '-m',
+            'grpc.tools.protoc',
             '--proto_path',
             PROTOS_DIR,
             '--python_out',
             temp_dir,
-            '--plugin',
-            'protoc-gen-grpc=' + GRPC_PLUGIN,
-            '--grpc_out',
+            '--grpc_python_out',
             temp_dir,
             PROTO_PATH,
         ])
+        if return_code != 0:
+            sys.exit(return_code)
         with open(generated_path, 'rb') as file_obj:
             return file_obj.readlines()
     finally:
@@ -70,14 +72,18 @@ def get_pb2_contents_without_grpc():
     generated_path = os.path.join(temp_dir, 'google', 'longrunning',
                                   'operations_pb2.py')
     try:
-        subprocess.check_output([
-            PROTOC_CMD,
+        return_code = subprocess.call([
+            '%s/bin/python' % GRPCIO_VIRTUALENV,
+            '-m',
+            'grpc.tools.protoc',
             '--proto_path',
             PROTOS_DIR,
             '--python_out',
             temp_dir,
             PROTO_PATH,
         ])
+        if return_code != 0:
+            sys.exit(return_code)
         with open(generated_path, 'rb') as file_obj:
             return file_obj.readlines()
     finally:

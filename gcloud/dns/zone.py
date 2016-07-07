@@ -30,19 +30,27 @@ class ManagedZone(object):
     :type name: string
     :param name: the name of the zone
 
-    :type dns_name: string
-    :param dns_name: the DNS name of the zone
+    :type dns_name: string or :class:`NoneType`
+    :param dns_name: the DNS name of the zone.  If not passed, then calls
+                     to :meth:`create` will fail.
 
     :type client: :class:`gcloud.dns.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the zone (which requires a project).
+
+    :type description: string or :class:`NoneType`
+    :param description: the description for the zone.  If not passed, defaults
+                        to the value of 'dns_name'.
     """
 
-    def __init__(self, name, dns_name, client):
+    def __init__(self, name, dns_name=None, client=None, description=None):
         self.name = name
         self.dns_name = dns_name
         self._client = client
         self._properties = {}
+        if description is None:
+            description = dns_name
+        self.description = description
 
     @classmethod
     def from_api_repr(cls, resource, client):
@@ -211,6 +219,7 @@ class ManagedZone(object):
         """
         self._properties.clear()
         cleaned = api_response.copy()
+        self.dns_name = cleaned.pop('dnsName', None)
         if 'creationTime' in cleaned:
             cleaned['creationTime'] = _rfc3339_to_datetime(
                 cleaned['creationTime'])
@@ -220,8 +229,10 @@ class ManagedZone(object):
         """Generate a resource for ``create`` or ``update``."""
         resource = {
             'name': self.name,
-            'dnsName': self.dns_name,
         }
+
+        if self.dns_name is not None:
+            resource['dnsName'] = self.dns_name
 
         if self.description is not None:
             resource['description'] = self.description

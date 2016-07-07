@@ -1,5 +1,5 @@
 import os
-
+import sys
 
 from setuptools import setup
 from setuptools import find_packages
@@ -14,15 +14,24 @@ with open(os.path.join(here, 'README.rst')) as f:
 REQUIREMENTS = [
     'httplib2 >= 0.9.1',
     'googleapis-common-protos',
-    'oauth2client >= 1.4.6',
-    'protobuf >= 3.0.0b2',
-    'pyOpenSSL',
+    'oauth2client >= 2.0.1',
+    'protobuf >= 3.0.0b2, != 3.0.0.b2.post1',
     'six',
 ]
 
+GRPC_EXTRAS = [
+    'grpcio >= 0.14.0',
+    'google-gax >= 0.12.1',
+    'gax-google-pubsub-v1 >= 0.7.10',
+    'gax-google-logging-v2 >= 0.7.10',
+]
+
+if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
+    REQUIREMENTS.extend(GRPC_EXTRAS)
+
 setup(
     name='gcloud',
-    version='0.9.0',
+    version='0.17.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',
@@ -35,8 +44,9 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=REQUIREMENTS,
+    extras_require={'grpc': GRPC_EXTRAS},
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
@@ -45,6 +55,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Topic :: Internet',
     ]
 )

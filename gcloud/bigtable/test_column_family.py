@@ -107,13 +107,11 @@ class TestMaxVersionsGCRule(unittest2.TestCase):
         self.assertFalse(comparison_val)
 
     def test_to_pb(self):
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         max_num_versions = 1337
         gc_rule = self._makeOne(max_num_versions=max_num_versions)
         pb_val = gc_rule.to_pb()
-        self.assertEqual(pb_val,
-                         data_pb2.GcRule(max_num_versions=max_num_versions))
+        expected = _GcRulePB(max_num_versions=max_num_versions)
+        self.assertEqual(pb_val, expected)
 
 
 class TestMaxAgeGCRule(unittest2.TestCase):
@@ -147,14 +145,12 @@ class TestMaxAgeGCRule(unittest2.TestCase):
     def test_to_pb(self):
         import datetime
         from google.protobuf import duration_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
 
         max_age = datetime.timedelta(seconds=1)
         duration = duration_pb2.Duration(seconds=1)
         gc_rule = self._makeOne(max_age=max_age)
         pb_val = gc_rule.to_pb()
-        self.assertEqual(pb_val, data_pb2.GcRule(max_age=duration))
+        self.assertEqual(pb_val, _GcRulePB(max_age=duration))
 
 
 class TestGCRuleUnion(unittest2.TestCase):
@@ -193,22 +189,21 @@ class TestGCRuleUnion(unittest2.TestCase):
     def test_to_pb(self):
         import datetime
         from google.protobuf import duration_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         from gcloud.bigtable.column_family import MaxAgeGCRule
         from gcloud.bigtable.column_family import MaxVersionsGCRule
 
         max_num_versions = 42
         rule1 = MaxVersionsGCRule(max_num_versions)
-        pb_rule1 = data_pb2.GcRule(max_num_versions=max_num_versions)
+        pb_rule1 = _GcRulePB(max_num_versions=max_num_versions)
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = data_pb2.GcRule(max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(
+            max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._makeOne(rules=[rule1, rule2])
-        pb_rule3 = data_pb2.GcRule(
-            union=data_pb2.GcRule.Union(rules=[pb_rule1, pb_rule2]))
+        pb_rule3 = _GcRulePB(
+            union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
         gc_rule_pb = rule3.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule3)
@@ -216,30 +211,29 @@ class TestGCRuleUnion(unittest2.TestCase):
     def test_to_pb_nested(self):
         import datetime
         from google.protobuf import duration_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         from gcloud.bigtable.column_family import MaxAgeGCRule
         from gcloud.bigtable.column_family import MaxVersionsGCRule
 
         max_num_versions1 = 42
         rule1 = MaxVersionsGCRule(max_num_versions1)
-        pb_rule1 = data_pb2.GcRule(max_num_versions=max_num_versions1)
+        pb_rule1 = _GcRulePB(max_num_versions=max_num_versions1)
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = data_pb2.GcRule(max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(
+            max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._makeOne(rules=[rule1, rule2])
-        pb_rule3 = data_pb2.GcRule(
-            union=data_pb2.GcRule.Union(rules=[pb_rule1, pb_rule2]))
+        pb_rule3 = _GcRulePB(
+            union=_GcRuleUnionPB(rules=[pb_rule1, pb_rule2]))
 
         max_num_versions2 = 1337
         rule4 = MaxVersionsGCRule(max_num_versions2)
-        pb_rule4 = data_pb2.GcRule(max_num_versions=max_num_versions2)
+        pb_rule4 = _GcRulePB(max_num_versions=max_num_versions2)
 
         rule5 = self._makeOne(rules=[rule3, rule4])
-        pb_rule5 = data_pb2.GcRule(
-            union=data_pb2.GcRule.Union(rules=[pb_rule3, pb_rule4]))
+        pb_rule5 = _GcRulePB(
+            union=_GcRuleUnionPB(rules=[pb_rule3, pb_rule4]))
 
         gc_rule_pb = rule5.to_pb()
         self.assertEqual(gc_rule_pb, pb_rule5)
@@ -281,22 +275,21 @@ class TestGCRuleIntersection(unittest2.TestCase):
     def test_to_pb(self):
         import datetime
         from google.protobuf import duration_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         from gcloud.bigtable.column_family import MaxAgeGCRule
         from gcloud.bigtable.column_family import MaxVersionsGCRule
 
         max_num_versions = 42
         rule1 = MaxVersionsGCRule(max_num_versions)
-        pb_rule1 = data_pb2.GcRule(max_num_versions=max_num_versions)
+        pb_rule1 = _GcRulePB(max_num_versions=max_num_versions)
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = data_pb2.GcRule(max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(
+            max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._makeOne(rules=[rule1, rule2])
-        pb_rule3 = data_pb2.GcRule(
-            intersection=data_pb2.GcRule.Intersection(
+        pb_rule3 = _GcRulePB(
+            intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule1, pb_rule2]))
 
         gc_rule_pb = rule3.to_pb()
@@ -305,31 +298,30 @@ class TestGCRuleIntersection(unittest2.TestCase):
     def test_to_pb_nested(self):
         import datetime
         from google.protobuf import duration_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         from gcloud.bigtable.column_family import MaxAgeGCRule
         from gcloud.bigtable.column_family import MaxVersionsGCRule
 
         max_num_versions1 = 42
         rule1 = MaxVersionsGCRule(max_num_versions1)
-        pb_rule1 = data_pb2.GcRule(max_num_versions=max_num_versions1)
+        pb_rule1 = _GcRulePB(max_num_versions=max_num_versions1)
 
         max_age = datetime.timedelta(seconds=1)
         rule2 = MaxAgeGCRule(max_age)
-        pb_rule2 = data_pb2.GcRule(max_age=duration_pb2.Duration(seconds=1))
+        pb_rule2 = _GcRulePB(
+            max_age=duration_pb2.Duration(seconds=1))
 
         rule3 = self._makeOne(rules=[rule1, rule2])
-        pb_rule3 = data_pb2.GcRule(
-            intersection=data_pb2.GcRule.Intersection(
+        pb_rule3 = _GcRulePB(
+            intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule1, pb_rule2]))
 
         max_num_versions2 = 1337
         rule4 = MaxVersionsGCRule(max_num_versions2)
-        pb_rule4 = data_pb2.GcRule(max_num_versions=max_num_versions2)
+        pb_rule4 = _GcRulePB(max_num_versions=max_num_versions2)
 
         rule5 = self._makeOne(rules=[rule3, rule4])
-        pb_rule5 = data_pb2.GcRule(
-            intersection=data_pb2.GcRule.Intersection(
+        pb_rule5 = _GcRulePB(
+            intersection=_GcRuleIntersectionPB(
                 rules=[pb_rule3, pb_rule4]))
 
         gc_rule_pb = rule5.to_pb()
@@ -349,7 +341,8 @@ class TestColumnFamily(unittest2.TestCase):
         column_family_id = u'column-family-id'
         table = object()
         gc_rule = object()
-        column_family = self._makeOne(column_family_id, table, gc_rule=gc_rule)
+        column_family = self._makeOne(
+            column_family_id, table, gc_rule=gc_rule)
 
         self.assertEqual(column_family.column_family_id, column_family_id)
         self.assertTrue(column_family._table is table)
@@ -396,10 +389,8 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertNotEqual(column_family1, column_family2)
 
     def _create_test_helper(self, gc_rule=None):
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -413,21 +404,23 @@ class TestColumnFamily(unittest2.TestCase):
 
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
-        column_family = self._makeOne(column_family_id, table, gc_rule=gc_rule)
+        column_family = self._makeOne(
+            column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
         if gc_rule is None:
-            column_family_pb = data_pb2.ColumnFamily()
+            column_family_pb = _ColumnFamilyPB()
         else:
-            column_family_pb = data_pb2.ColumnFamily(gc_rule=gc_rule.to_pb())
-        request_pb = messages_pb2.CreateColumnFamilyRequest(
-            name=table_name,
-            column_family_id=column_family_id,
-            column_family=column_family_pb,
+            column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            create=column_family_pb,
         )
 
         # Create response_pb
-        response_pb = data_pb2.ColumnFamily()
+        response_pb = _ColumnFamilyPB()
 
         # Patch the stub used by the API method.
         client._table_stub = stub = _FakeStub(response_pb)
@@ -441,7 +434,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'CreateColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -455,9 +448,9 @@ class TestColumnFamily(unittest2.TestCase):
         self._create_test_helper(gc_rule=gc_rule)
 
     def _update_test_helper(self, gc_rule=None):
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
         from gcloud.bigtable._testing import _FakeStub
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
         project_id = 'project-id'
         zone = 'zone'
@@ -467,23 +460,26 @@ class TestColumnFamily(unittest2.TestCase):
         timeout_seconds = 28
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
-        column_family_name = table_name + '/columnFamilies/' + column_family_id
 
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
-        column_family = self._makeOne(column_family_id, table, gc_rule=gc_rule)
+        column_family = self._makeOne(
+            column_family_id, table, gc_rule=gc_rule)
 
         # Create request_pb
         if gc_rule is None:
-            request_pb = data_pb2.ColumnFamily(name=column_family_name)
+            column_family_pb = _ColumnFamilyPB()
         else:
-            request_pb = data_pb2.ColumnFamily(
-                name=column_family_name,
-                gc_rule=gc_rule.to_pb(),
-            )
+            column_family_pb = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            update=column_family_pb,
+        )
 
         # Create response_pb
-        response_pb = data_pb2.ColumnFamily()
+        response_pb = _ColumnFamilyPB()
 
         # Patch the stub used by the API method.
         client._table_stub = stub = _FakeStub(response_pb)
@@ -497,7 +493,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'UpdateColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -512,8 +508,8 @@ class TestColumnFamily(unittest2.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as messages_pb2)
+        from gcloud.bigtable._generated_v2 import (
+            bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
         project_id = 'project-id'
@@ -524,15 +520,17 @@ class TestColumnFamily(unittest2.TestCase):
         timeout_seconds = 7
         table_name = ('projects/' + project_id + '/zones/' + zone +
                       '/clusters/' + cluster_id + '/tables/' + table_id)
-        column_family_name = table_name + '/columnFamilies/' + column_family_id
 
         client = _Client(timeout_seconds=timeout_seconds)
         table = _Table(table_name, client=client)
         column_family = self._makeOne(column_family_id, table)
 
         # Create request_pb
-        request_pb = messages_pb2.DeleteColumnFamilyRequest(
-            name=column_family_name)
+        request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
+            name=table_name)
+        request_pb.modifications.add(
+            id=column_family_id,
+            drop=True)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
@@ -549,7 +547,7 @@ class TestColumnFamily(unittest2.TestCase):
         self.assertEqual(stub.results, ())
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
-            'DeleteColumnFamily',
+            'ModifyColumnFamilies',
             (request_pb, timeout_seconds),
             {},
         )])
@@ -562,10 +560,8 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
         return _gc_rule_from_pb(*args, **kwargs)
 
     def test_empty(self):
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as data_pb2)
 
-        gc_rule_pb = data_pb2.GcRule()
+        gc_rule_pb = _GcRulePB()
         self.assertEqual(self._callFUT(gc_rule_pb), None)
 
     def test_max_num_versions(self):
@@ -630,7 +626,31 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
         self.assertEqual(MockProto.names, ['rule'])
 
 
-class _Cluster(object):
+def _GcRulePB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule(*args, **kw)
+
+
+def _GcRuleIntersectionPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule.Intersection(*args, **kw)
+
+
+def _GcRuleUnionPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.GcRule.Union(*args, **kw)
+
+
+def _ColumnFamilyPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        table_pb2 as table_v2_pb2)
+    return table_v2_pb2.ColumnFamily(*args, **kw)
+
+
+class _Instance(object):
 
     def __init__(self, client=None):
         self._client = client
@@ -646,4 +666,4 @@ class _Table(object):
 
     def __init__(self, name, client=None):
         self.name = name
-        self._cluster = _Cluster(client)
+        self._instance = _Instance(client)

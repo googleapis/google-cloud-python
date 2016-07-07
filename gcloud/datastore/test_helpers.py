@@ -29,9 +29,8 @@ class Test__new_value_pb(unittest2.TestCase):
         result = self._callFUT(entity_pb, name)
 
         self.assertTrue(isinstance(result, entity_pb2.Value))
-        self.assertEqual(len(entity_pb.property), 1)
-        self.assertEqual(entity_pb.property[0].name, name)
-        self.assertEqual(entity_pb.property[0].value, result)
+        self.assertEqual(len(entity_pb.properties), 1)
+        self.assertEqual(entity_pb.properties[name], result)
 
 
 class Test__property_tuples(unittest2.TestCase):
@@ -53,7 +52,8 @@ class Test__property_tuples(unittest2.TestCase):
 
         result = self._callFUT(entity_pb)
         self.assertTrue(isinstance(result, types.GeneratorType))
-        self.assertEqual(list(result), [(name1, val_pb1), (name2, val_pb2)])
+        self.assertEqual(sorted(result),
+                         sorted([(name1, val_pb1), (name2, val_pb2)]))
 
 
 class Test_entity_from_protobuf(unittest2.TestCase):
@@ -70,29 +70,28 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _PROJECT
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.partition_id.project_id = _PROJECT
+        entity_pb.key.path.add(kind=_KIND, id=_ID)
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
 
         unindexed_val_pb = _new_value_pb(entity_pb, 'bar')
         unindexed_val_pb.integer_value = 10
-        unindexed_val_pb.indexed = False
+        unindexed_val_pb.exclude_from_indexes = True
 
-        list_val_pb1 = _new_value_pb(entity_pb, 'baz')
-        list_pb1 = list_val_pb1.list_value
+        array_val_pb1 = _new_value_pb(entity_pb, 'baz')
+        array_pb1 = array_val_pb1.array_value.values
 
-        unindexed_list_val_pb = list_pb1.add()
-        unindexed_list_val_pb.integer_value = 11
-        unindexed_list_val_pb.indexed = False
+        unindexed_array_val_pb = array_pb1.add()
+        unindexed_array_val_pb.integer_value = 11
+        unindexed_array_val_pb.exclude_from_indexes = True
 
-        list_val_pb2 = _new_value_pb(entity_pb, 'qux')
-        list_pb2 = list_val_pb2.list_value
+        array_val_pb2 = _new_value_pb(entity_pb, 'qux')
+        array_pb2 = array_val_pb2.array_value.values
 
-        indexed_list_val_pb = list_pb2.add()
-        indexed_list_val_pb.integer_value = 12
-        indexed_list_val_pb.indexed = True
+        indexed_array_val_pb = array_pb2.add()
+        indexed_array_val_pb.integer_value = 12
 
         entity = self._callFUT(entity_pb)
         self.assertEqual(entity.kind, _KIND)
@@ -117,19 +116,18 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         _KIND = 'KIND'
         _ID = 1234
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = _PROJECT
-        entity_pb.key.path_element.add(kind=_KIND, id=_ID)
+        entity_pb.key.partition_id.project_id = _PROJECT
+        entity_pb.key.path.add(kind=_KIND, id=_ID)
 
-        list_val_pb = _new_value_pb(entity_pb, 'baz')
-        list_pb = list_val_pb.list_value
+        array_val_pb = _new_value_pb(entity_pb, 'baz')
+        array_pb = array_val_pb.array_value.values
 
-        unindexed_value_pb1 = list_pb.add()
+        unindexed_value_pb1 = array_pb.add()
         unindexed_value_pb1.integer_value = 10
-        unindexed_value_pb1.indexed = False
+        unindexed_value_pb1.exclude_from_indexes = True
 
-        unindexed_value_pb2 = list_pb.add()
+        unindexed_value_pb2 = array_pb.add()
         unindexed_value_pb2.integer_value = 11
-        unindexed_value_pb2.indexed = True
 
         with self.assertRaises(ValueError):
             self._callFUT(entity_pb)
@@ -162,7 +160,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         from gcloud.datastore.helpers import _new_value_pb
 
-        PROJECT = 's~FOO'
+        PROJECT = 'FOO'
         KIND = 'KIND'
         INSIDE_NAME = 'IFOO'
         OUTSIDE_NAME = 'OBAR'
@@ -173,8 +171,8 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         inside_val_pb.integer_value = INSIDE_VALUE
 
         entity_pb = entity_pb2.Entity()
-        entity_pb.key.partition_id.dataset_id = PROJECT
-        element = entity_pb.key.path_element.add()
+        entity_pb.key.partition_id.project_id = PROJECT
+        element = entity_pb.key.path.add()
         element.kind = KIND
 
         outside_val_pb = _new_value_pb(entity_pb, OUTSIDE_NAME)
@@ -198,7 +196,6 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         return entity_to_protobuf(entity)
 
     def _compareEntityProto(self, entity_pb1, entity_pb2):
-        from gcloud._helpers import _has_field
         from gcloud.datastore.helpers import _property_tuples
 
         self.assertEqual(entity_pb1.key, entity_pb2.key)
@@ -209,7 +206,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
             name1, val1 = pair1
             name2, val2 = pair2
             self.assertEqual(name1, name2)
-            if _has_field(val1, 'entity_value'):
+            if val1.HasField('entity_value'):  # Message field (Entity)
                 self.assertEqual(val1.meaning, val2.meaning)
                 self._compareEntityProto(val1.entity_value,
                                          val2.entity_value)
@@ -236,8 +233,8 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         entity_pb = self._callFUT(entity)
 
         expected_pb = entity_pb2.Entity()
-        expected_pb.key.partition_id.dataset_id = project
-        path_elt = expected_pb.key.path_element.add()
+        expected_pb.key.partition_id.project_id = project
+        path_elt = expected_pb.key.path.add()
         path_elt.kind = kind
         path_elt.name = name
 
@@ -280,18 +277,18 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         original_pb = entity_pb2.Entity()
         # Add a key.
-        original_pb.key.partition_id.dataset_id = project = 'PROJECT'
-        elem1 = original_pb.key.path_element.add()
+        original_pb.key.partition_id.project_id = project = 'PROJECT'
+        elem1 = original_pb.key.path.add()
         elem1.kind = 'Family'
         elem1.id = 1234
-        elem2 = original_pb.key.path_element.add()
+        elem2 = original_pb.key.path.add()
         elem2.kind = 'King'
         elem2.name = 'Spades'
 
         # Add an integer property.
         val_pb1 = _new_value_pb(original_pb, 'foo')
         val_pb1.integer_value = 1337
-        val_pb1.indexed = False
+        val_pb1.exclude_from_indexes = True
         # Add a string property.
         val_pb2 = _new_value_pb(original_pb, 'bar')
         val_pb2.string_value = u'hello'
@@ -308,14 +305,14 @@ class Test_entity_to_protobuf(unittest2.TestCase):
 
         # Add a list property.
         val_pb4 = _new_value_pb(original_pb, 'list-quux')
-        list_val1 = val_pb4.list_value.add()
-        list_val1.indexed = False
-        list_val1.meaning = meaning = 22
-        list_val1.blob_value = b'\xe2\x98\x83'
-        list_val2 = val_pb4.list_value.add()
-        list_val2.indexed = False
-        list_val2.meaning = meaning
-        list_val2.blob_value = b'\xe2\x98\x85'
+        array_val1 = val_pb4.array_value.values.add()
+        array_val1.exclude_from_indexes = False
+        array_val1.meaning = meaning = 22
+        array_val1.blob_value = b'\xe2\x98\x83'
+        array_val2 = val_pb4.array_value.values.add()
+        array_val2.exclude_from_indexes = False
+        array_val2.meaning = meaning
+        array_val2.blob_value = b'\xe2\x98\x85'
 
         # Convert to the user-space Entity.
         entity = entity_from_protobuf(original_pb)
@@ -323,7 +320,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         new_pb = self._callFUT(entity)
 
         # NOTE: entity_to_protobuf() strips the project so we "cheat".
-        new_pb.key.partition_id.dataset_id = project
+        new_pb.key.partition_id.project_id = project
         self._compareEntityProto(original_pb, new_pb)
 
     def test_meaning_with_change(self):
@@ -344,6 +341,32 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         #       value stored.
         self._compareEntityProto(entity_pb, expected_pb)
 
+    def test_variable_meanings(self):
+        from gcloud.datastore._generated import entity_pb2
+        from gcloud.datastore.entity import Entity
+        from gcloud.datastore.helpers import _new_value_pb
+
+        entity = Entity()
+        name = 'quux'
+        entity[name] = values = [1, 20, 300]
+        meaning = 9
+        entity._meanings[name] = ([None, meaning, None], values)
+        entity_pb = self._callFUT(entity)
+
+        # Construct the expected protobuf.
+        expected_pb = entity_pb2.Entity()
+        value_pb = _new_value_pb(expected_pb, name)
+        value0 = value_pb.array_value.values.add()
+        value0.integer_value = values[0]
+        # The only array entry with a meaning is the middle one.
+        value1 = value_pb.array_value.values.add()
+        value1.integer_value = values[1]
+        value1.meaning = meaning
+        value2 = value_pb.array_value.values.add()
+        value2.integer_value = values[2]
+
+        self._compareEntityProto(entity_pb, expected_pb)
+
 
 class Test_key_from_protobuf(unittest2.TestCase):
 
@@ -356,11 +379,11 @@ class Test_key_from_protobuf(unittest2.TestCase):
         from gcloud.datastore._generated import entity_pb2
         pb = entity_pb2.Key()
         if project is not None:
-            pb.partition_id.dataset_id = project
+            pb.partition_id.project_id = project
         if namespace is not None:
-            pb.partition_id.namespace = namespace
+            pb.partition_id.namespace_id = namespace
         for elem in path:
-            added = pb.path_element.add()
+            added = pb.path.add()
             added.kind = elem['kind']
             if 'id' in elem:
                 added.id = elem['id']
@@ -411,23 +434,25 @@ class Test__pb_attr_value(unittest2.TestCase):
         import datetime
         from gcloud._helpers import UTC
 
-        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375)  # No zone.
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        naive = datetime.datetime(2014, 9, 16, 10, 19, 32, micros)  # No zone.
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         name, value = self._callFUT(naive)
-        self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        self.assertEqual(name, 'timestamp_value')
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_datetime_w_zone(self):
         import calendar
         import datetime
         from gcloud._helpers import UTC
 
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         name, value = self._callFUT(utc)
-        self.assertEqual(name, 'timestamp_microseconds_value')
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        self.assertEqual(name, 'timestamp_value')
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_key(self):
         from gcloud.datastore.key import Key
@@ -458,20 +483,12 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(name, 'integer_value')
         self.assertEqual(value, must_be_long)
 
-    def test_long_too_small(self):
-        too_small = -(1 << 63) - 1
-        self.assertRaises(ValueError, self._callFUT, too_small)
-
-    def test_long_too_large(self):
-        too_large = 1 << 63
-        self.assertRaises(ValueError, self._callFUT, too_large)
-
     def test_native_str(self):
         import six
         name, value = self._callFUT('str')
         if six.PY2:
             self.assertEqual(name, 'blob_value')
-        else:  # pragma: NO COVER
+        else:  # pragma: NO COVER Python 3
             self.assertEqual(name, 'string_value')
         self.assertEqual(value, 'str')
 
@@ -492,11 +509,30 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertEqual(name, 'entity_value')
         self.assertTrue(value is entity)
 
-    def test_list(self):
+    def test_array(self):
         values = ['a', 0, 3.14]
         name, value = self._callFUT(values)
-        self.assertEqual(name, 'list_value')
+        self.assertEqual(name, 'array_value')
         self.assertTrue(value is values)
+
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore.helpers import GeoPoint
+
+        lat = 42.42
+        lng = 99.0007
+        geo_pt = GeoPoint(latitude=lat, longitude=lng)
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        name, value = self._callFUT(geo_pt)
+        self.assertEqual(name, 'geo_point_value')
+        self.assertEqual(value, geo_pt_pb)
+
+    def test_null(self):
+        from google.protobuf import struct_pb2
+
+        name, value = self._callFUT(None)
+        self.assertEqual(name, 'null_value')
+        self.assertEqual(value, struct_pb2.NULL_VALUE)
 
     def test_object(self):
         self.assertRaises(ValueError, self._callFUT, object())
@@ -520,10 +556,13 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         import calendar
         import datetime
         from gcloud._helpers import UTC
+        from gcloud.datastore._generated import entity_pb2
 
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
-        micros = (calendar.timegm(utc.timetuple()) * 1000000) + 4375
-        pb = self._makePB('timestamp_microseconds_value', micros)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
+        pb = entity_pb2.Value()
+        pb.timestamp_value.seconds = calendar.timegm(utc.timetuple())
+        pb.timestamp_value.nanos = 1000 * micros
         self.assertEqual(self._callFUT(pb), utc)
 
     def test_key(self):
@@ -563,8 +602,8 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
 
         pb = entity_pb2.Value()
         entity_pb = pb.entity_value
-        entity_pb.key.path_element.add(kind='KIND')
-        entity_pb.key.partition_id.dataset_id = 'PROJECT'
+        entity_pb.key.path.add(kind='KIND')
+        entity_pb.key.partition_id.project_id = 'PROJECT'
 
         value_pb = _new_value_pb(entity_pb, 'foo')
         value_pb.string_value = 'Foo'
@@ -572,23 +611,46 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
         self.assertTrue(isinstance(entity, Entity))
         self.assertEqual(entity['foo'], 'Foo')
 
-    def test_list(self):
+    def test_array(self):
         from gcloud.datastore._generated import entity_pb2
 
         pb = entity_pb2.Value()
-        list_pb = pb.list_value
-        item_pb = list_pb.add()
+        array_pb = pb.array_value.values
+        item_pb = array_pb.add()
         item_pb.string_value = 'Foo'
-        item_pb = list_pb.add()
+        item_pb = array_pb.add()
         item_pb.string_value = 'Bar'
         items = self._callFUT(pb)
         self.assertEqual(items, ['Foo', 'Bar'])
+
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore._generated import entity_pb2
+        from gcloud.datastore.helpers import GeoPoint
+
+        lat = -3.14
+        lng = 13.37
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        pb = entity_pb2.Value(geo_point_value=geo_pt_pb)
+        result = self._callFUT(pb)
+        self.assertIsInstance(result, GeoPoint)
+        self.assertEqual(result.latitude, lat)
+        self.assertEqual(result.longitude, lng)
+
+    def test_null(self):
+        from google.protobuf import struct_pb2
+        from gcloud.datastore._generated import entity_pb2
+
+        pb = entity_pb2.Value(null_value=struct_pb2.NULL_VALUE)
+        result = self._callFUT(pb)
+        self.assertIsNone(result)
 
     def test_unknown(self):
         from gcloud.datastore._generated import entity_pb2
 
         pb = entity_pb2.Value()
-        self.assertEqual(self._callFUT(pb), None)
+        with self.assertRaises(ValueError):
+            self._callFUT(pb)
 
 
 class Test_set_protobuf_value(unittest2.TestCase):
@@ -608,11 +670,12 @@ class Test_set_protobuf_value(unittest2.TestCase):
         from gcloud._helpers import UTC
 
         pb = self._makePB()
-        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, 4375, UTC)
+        micros = 4375
+        utc = datetime.datetime(2014, 9, 16, 10, 19, 32, micros, UTC)
         self._callFUT(pb, utc)
-        value = pb.timestamp_microseconds_value
-        self.assertEqual(value // 1000000, calendar.timegm(utc.timetuple()))
-        self.assertEqual(value % 1000000, 4375)
+        value = pb.timestamp_value
+        self.assertEqual(value.seconds, calendar.timegm(utc.timetuple()))
+        self.assertEqual(value.nanos, 1000 * micros)
 
     def test_key(self):
         from gcloud.datastore.key import Key
@@ -624,23 +687,9 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(value, key.to_protobuf())
 
     def test_none(self):
-        from gcloud.datastore.entity import Entity
-
-        entity = Entity()
         pb = self._makePB()
-
-        self._callFUT(pb, False)
-        self._callFUT(pb, 3.1415926)
-        self._callFUT(pb, 42)
-        self._callFUT(pb, (1 << 63) - 1)
-        self._callFUT(pb, 'str')
-        self._callFUT(pb, b'str')
-        self._callFUT(pb, u'str')
-        self._callFUT(pb, entity)
-        self._callFUT(pb, [u'a', 0, 3.14])
-
         self._callFUT(pb, None)
-        self.assertEqual(len(pb.ListFields()), 0)
+        self.assertEqual(pb.WhichOneof('value_type'), 'null_value')
 
     def test_bool(self):
         pb = self._makePB()
@@ -673,7 +722,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self._callFUT(pb, 'str')
         if six.PY2:
             value = pb.blob_value
-        else:  # pragma: NO COVER
+        else:  # pragma: NO COVER Python 3
             value = pb.string_value
         self.assertEqual(value, 'str')
 
@@ -720,97 +769,27 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(list(prop_dict.keys()), [name])
         self.assertEqual(prop_dict[name].string_value, value)
 
-    def test_list(self):
+    def test_array(self):
         pb = self._makePB()
         values = [u'a', 0, 3.14]
         self._callFUT(pb, values)
-        marshalled = pb.list_value
+        marshalled = pb.array_value.values
         self.assertEqual(len(marshalled), len(values))
         self.assertEqual(marshalled[0].string_value, values[0])
         self.assertEqual(marshalled[1].integer_value, values[1])
         self.assertEqual(marshalled[2].double_value, values[2])
 
+    def test_geo_point(self):
+        from google.type import latlng_pb2
+        from gcloud.datastore.helpers import GeoPoint
 
-class Test__prepare_key_for_request(unittest2.TestCase):
-
-    def _callFUT(self, key_pb):
-        from gcloud.datastore.helpers import _prepare_key_for_request
-
-        return _prepare_key_for_request(key_pb)
-
-    def test_prepare_project_valid(self):
-        from gcloud.datastore._generated import entity_pb2
-        key = entity_pb2.Key()
-        key.partition_id.dataset_id = 'foo'
-        new_key = self._callFUT(key)
-        self.assertFalse(new_key is key)
-
-        key_without = entity_pb2.Key()
-        new_key.ClearField('partition_id')
-        self.assertEqual(new_key, key_without)
-
-    def test_prepare_project_unset(self):
-        from gcloud.datastore._generated import entity_pb2
-        key = entity_pb2.Key()
-        new_key = self._callFUT(key)
-        self.assertTrue(new_key is key)
-
-
-class Test_find_true_project(unittest2.TestCase):
-
-    def _callFUT(self, project, connection):
-        from gcloud.datastore.helpers import find_true_project
-        return find_true_project(project, connection)
-
-    def test_prefixed(self):
-        PREFIXED = 's~PROJECT'
-        result = self._callFUT(PREFIXED, object())
-        self.assertEqual(PREFIXED, result)
-
-    def test_unprefixed_bogus_key_miss(self):
-        from gcloud._helpers import _has_field
-
-        UNPREFIXED = 'PROJECT'
-        PREFIX = 's~'
-        CONNECTION = _Connection(PREFIX, from_missing=False)
-        result = self._callFUT(UNPREFIXED, CONNECTION)
-
-        self.assertEqual(CONNECTION._called_project, UNPREFIXED)
-
-        self.assertEqual(len(CONNECTION._lookup_result), 1)
-
-        # Make sure just one.
-        called_key_pb, = CONNECTION._called_key_pbs
-        path_element = called_key_pb.path_element
-        self.assertEqual(len(path_element), 1)
-        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
-        self.assertEqual(path_element[0].id, 1)
-        self.assertFalse(_has_field(path_element[0], 'name'))
-
-        PREFIXED = PREFIX + UNPREFIXED
-        self.assertEqual(result, PREFIXED)
-
-    def test_unprefixed_bogus_key_hit(self):
-        from gcloud._helpers import _has_field
-
-        UNPREFIXED = 'PROJECT'
-        PREFIX = 'e~'
-        CONNECTION = _Connection(PREFIX, from_missing=True)
-        result = self._callFUT(UNPREFIXED, CONNECTION)
-
-        self.assertEqual(CONNECTION._called_project, UNPREFIXED)
-        self.assertEqual(CONNECTION._lookup_result, [])
-
-        # Make sure just one.
-        called_key_pb, = CONNECTION._called_key_pbs
-        path_element = called_key_pb.path_element
-        self.assertEqual(len(path_element), 1)
-        self.assertEqual(path_element[0].kind, '__MissingLookupKind')
-        self.assertEqual(path_element[0].id, 1)
-        self.assertFalse(_has_field(path_element[0], 'name'))
-
-        PREFIXED = PREFIX + UNPREFIXED
-        self.assertEqual(result, PREFIXED)
+        pb = self._makePB()
+        lat = 9.11
+        lng = 3.337
+        geo_pt = GeoPoint(latitude=lat, longitude=lng)
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        self._callFUT(pb, geo_pt)
+        self.assertEqual(pb.geo_point_value, geo_pt_pb)
 
 
 class Test__get_meaning(unittest2.TestCase):
@@ -835,23 +814,23 @@ class Test__get_meaning(unittest2.TestCase):
         result = self._callFUT(value_pb)
         self.assertEqual(meaning, result)
 
-    def test_empty_list_value(self):
+    def test_empty_array_value(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
-        value_pb.list_value.add()
-        value_pb.list_value.pop()
+        value_pb.array_value.values.add()
+        value_pb.array_value.values.pop()
 
         result = self._callFUT(value_pb, is_list=True)
         self.assertEqual(None, result)
 
-    def test_list_value(self):
+    def test_array_value(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning = 9
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = sub_value_pb2.meaning = meaning
         sub_value_pb1.string_value = u'hi'
@@ -860,66 +839,88 @@ class Test__get_meaning(unittest2.TestCase):
         result = self._callFUT(value_pb, is_list=True)
         self.assertEqual(meaning, result)
 
-    def test_list_value_disagreeing(self):
+    def test_array_value_multiple_meanings(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning1 = 9
         meaning2 = 10
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = meaning1
         sub_value_pb2.meaning = meaning2
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, is_list=True)
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(result, [meaning1, meaning2])
 
-    def test_list_value_partially_unset(self):
+    def test_array_value_meaning_partially_unset(self):
         from gcloud.datastore._generated import entity_pb2
 
         value_pb = entity_pb2.Value()
         meaning1 = 9
-        sub_value_pb1 = value_pb.list_value.add()
-        sub_value_pb2 = value_pb.list_value.add()
+        sub_value_pb1 = value_pb.array_value.values.add()
+        sub_value_pb2 = value_pb.array_value.values.add()
 
         sub_value_pb1.meaning = meaning1
         sub_value_pb1.string_value = u'hi'
         sub_value_pb2.string_value = u'bye'
 
-        with self.assertRaises(ValueError):
-            self._callFUT(value_pb, is_list=True)
+        result = self._callFUT(value_pb, is_list=True)
+        self.assertEqual(result, [meaning1, None])
 
 
-class _Connection(object):
+class TestGeoPoint(unittest2.TestCase):
 
-    _called_project = _called_key_pbs = _lookup_result = None
+    def _getTargetClass(self):
+        from gcloud.datastore.helpers import GeoPoint
+        return GeoPoint
 
-    def __init__(self, prefix, from_missing=False):
-        self.prefix = prefix
-        self.from_missing = from_missing
+    def _makeOne(self, *args, **kwargs):
+        return self._getTargetClass()(*args, **kwargs)
 
-    def lookup(self, project, key_pbs):
-        from gcloud.datastore._generated import entity_pb2
+    def test_constructor(self):
+        lat = 81.2
+        lng = 359.9999
+        geo_pt = self._makeOne(lat, lng)
+        self.assertEqual(geo_pt.latitude, lat)
+        self.assertEqual(geo_pt.longitude, lng)
 
-        # Store the arguments called with.
-        self._called_project = project
-        self._called_key_pbs = key_pbs
+    def test_to_protobuf(self):
+        from google.type import latlng_pb2
 
-        key_pb, = key_pbs
+        lat = 0.0001
+        lng = 20.03
+        geo_pt = self._makeOne(lat, lng)
+        result = geo_pt.to_protobuf()
+        geo_pt_pb = latlng_pb2.LatLng(latitude=lat, longitude=lng)
+        self.assertEqual(result, geo_pt_pb)
 
-        response = entity_pb2.Entity()
-        response.key.CopyFrom(key_pb)
-        response.key.partition_id.dataset_id = self.prefix + project
+    def test___eq__(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = self._makeOne(lat, lng)
+        self.assertEqual(geo_pt1, geo_pt2)
 
-        missing = []
-        deferred = []
-        if self.from_missing:
-            missing[:] = [response]
-            self._lookup_result = []
-        else:
-            self._lookup_result = [response]
+    def test___eq__type_differ(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = object()
+        self.assertNotEqual(geo_pt1, geo_pt2)
 
-        return self._lookup_result, missing, deferred
+    def test___ne__same_value(self):
+        lat = 0.0001
+        lng = 20.03
+        geo_pt1 = self._makeOne(lat, lng)
+        geo_pt2 = self._makeOne(lat, lng)
+        comparison_val = (geo_pt1 != geo_pt2)
+        self.assertFalse(comparison_val)
+
+    def test___ne__(self):
+        geo_pt1 = self._makeOne(0.0, 1.0)
+        geo_pt2 = self._makeOne(2.0, 3.0)
+        self.assertNotEqual(geo_pt1, geo_pt2)

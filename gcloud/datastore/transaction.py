@@ -24,25 +24,25 @@ class Transaction(Batch):
     or none succeed (transactionally).
 
     For example, the following snippet of code will put the two ``save``
-    operations (either ``insert_auto_id`` or ``upsert``) into the same
+    operations (either ``insert`` or ``upsert``) into the same
     mutation, and execute those within a transaction::
 
       >>> from gcloud import datastore
-
-      >>> with datastore.Transaction():
-      ...     datastore.put_multi([entity1, entity2])
+      >>> client = datastore.Client()
+      >>> with client.transaction():
+      ...     client.put_multi([entity1, entity2])
 
     Because it derives from :class:`Batch <.datastore.batch.Batch>`,
     :class:`Transaction` also provides :meth:`put` and :meth:`delete` methods::
 
-      >>> with datastore.Transaction() as xact:
+      >>> with client.transaction() as xact:
       ...     xact.put(entity1)
       ...     xact.delete(entity2.key)
 
     By default, the transaction is rolled back if the transaction block
     exits with an error::
 
-      >>> with datastore.Transaction():
+      >>> with client.transaction():
       ...     do_some_work()
       ...     raise SomeException()  # rolls back
 
@@ -53,34 +53,34 @@ class Transaction(Batch):
        entities will not be available at save time!  That means, if you
        try::
 
-         >>> with datastore.Transaction():
-         ...     entity = datastore.Entity(key=Key('Thing'))
-         ...     datastore.put(entity)
+         >>> with client.transaction():
+         ...     entity = datastore.Entity(key=client.key('Thing'))
+         ...     client.put(entity)
 
-       ``entity`` won't have a complete Key until the transaction is
+       ``entity`` won't have a complete key until the transaction is
        committed.
 
        Once you exit the transaction (or call :meth:`commit`), the
        automatically generated ID will be assigned to the entity::
 
-         >>> with datastore.Transaction():
-         ...     entity = datastore.Entity(key=Key('Thing'))
-         ...     datastore.put(entity)
-         ...     print entity.key.is_partial  # There is no ID on this key.
+         >>> with client.transaction():
+         ...     entity = datastore.Entity(key=client.key('Thing'))
+         ...     client.put(entity)
+         ...     print(entity.key.is_partial)  # There is no ID on this key.
          ...
          True
-         >>> print entity.key.is_partial  # There *is* an ID.
+         >>> print(entity.key.is_partial)  # There *is* an ID.
          False
 
     If you don't want to use the context manager you can initialize a
     transaction manually::
 
-      >>> transaction = datastore.Transaction()
+      >>> transaction = client.transaction()
       >>> transaction.begin()
-
-      >>> entity = datastore.Entity(key=Key('Thing'))
+      >>>
+      >>> entity = datastore.Entity(key=client.key('Thing'))
       >>> transaction.put(entity)
-
+      >>>
       >>> if error:
       ...     transaction.rollback()
       ... else:

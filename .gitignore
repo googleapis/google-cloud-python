@@ -31,6 +31,9 @@ nosetests.xml
 # Translations
 *.mo
 
+# Mac
+.DS_Store
+
 # Mr Developer
 .mr.developer.cfg
 .project
@@ -53,3 +56,5 @@ scripts/pylintrc_reduced
 # Directories used for creating generated PB2 files
 generated_python/
 cloud-bigtable-client/
+googleapis-pb/
+grpc_python_venv/

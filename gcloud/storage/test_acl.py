@@ -648,9 +648,29 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'],
                          {'projection': 'full', 'predefinedAcl': PREDEFINED})
 
+    def test_save_predefined_w_XML_alias(self):
+        PREDEFINED_XML = 'project-private'
+        PREDEFINED_JSON = 'projectPrivate'
+        connection = _Connection({'acl': []})
+        client = _Client(connection)
+        acl = self._makeOne()
+        acl.save_path = '/testing'
+        acl.loaded = True
+        acl.save_predefined(PREDEFINED_XML, client=client)
+        entries = list(acl)
+        self.assertEqual(len(entries), 0)
+        kw = connection._requested
+        self.assertEqual(len(kw), 1)
+        self.assertEqual(kw[0]['method'], 'PATCH')
+        self.assertEqual(kw[0]['path'], '/testing')
+        self.assertEqual(kw[0]['data'], {'acl': []})
+        self.assertEqual(kw[0]['query_params'],
+                         {'projection': 'full',
+                          'predefinedAcl': PREDEFINED_JSON})
+
     def test_save_predefined_valid_w_alternate_query_param(self):
         # Cover case where subclass overrides _PREDEFINED_QUERY_PARAM
-        PREDEFINED = 'private'
+        PREDEFINED = 'publicRead'
         connection = _Connection({'acl': []})
         client = _Client(connection)
         acl = self._makeOne()
@@ -782,13 +802,8 @@ class _Connection(object):
     def api_request(self, **kw):
         from gcloud.exceptions import NotFound
         self._requested.append(kw)
-
-        try:
-            response, self._responses = self._responses[0], self._responses[1:]
-        except:  # pragma: NO COVER
-            raise NotFound('miss')
-        else:
-            return response
+        response, self._responses = self._responses[0], self._responses[1:]
+        return response
 
 
 class _Client(object):

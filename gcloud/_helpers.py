@@ -18,16 +18,20 @@ This module is not part of the public API surface of `gcloud`.
 
 import calendar
 import datetime
+import json
 import os
-from threading import local as Local
+import re
 import socket
 import sys
+from threading import local as Local
 
 from google.protobuf import timestamp_pb2
 import six
-from six.moves.http_client import HTTPConnection  # pylint: disable=F0401
+from six.moves.http_client import HTTPConnection
+from six.moves import configparser
 
 from gcloud.environment_vars import PROJECT
+from gcloud.environment_vars import CREDENTIALS
 
 try:
     from google.appengine.api import app_identity
@@ -37,6 +41,17 @@ except ImportError:
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
 _RFC3339_MICROS = '%Y-%m-%dT%H:%M:%S.%fZ'
+_RFC3339_NO_FRACTION = '%Y-%m-%dT%H:%M:%S'
+# datetime.strptime cannot handle nanosecond precision:  parse w/ regex
+_RFC3339_NANOS = re.compile(r"""
+    (?P<no_fraction>
+        \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}  # YYYY-MM-DDTHH:MM:SS
+    )
+    \.                                       # decimal point
+    (?P<nanos>\d{1,9})                       # nanoseconds, maybe truncated
+    Z                                        # Zulu
+""", re.VERBOSE)
+DEFAULT_CONFIGURATION_PATH = '~/.config/gcloud/configurations/config_default'
 
 
 class _LocalStack(Local):
@@ -118,13 +133,13 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
     This effectively reduces the iterable types allowed to a very short
     whitelist: list and tuple.
 
-    :type arg_name: string
+    :type arg_name: str
     :param arg_name: Name of argument to use in error message.
 
-    :type tuple_or_list: sequence of string
+    :type tuple_or_list: sequence of str
     :param tuple_or_list: Sequence to be verified.
 
-    :rtype: list of string
+    :rtype: list of str
     :returns: The ``tuple_or_list`` passed in cast to a ``list``.
     :raises: class:`TypeError` if the ``tuple_or_list`` is not a tuple or
              list.
@@ -138,7 +153,7 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
 def _app_engine_id():
     """Gets the App Engine application ID if it can be inferred.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: App Engine application ID if running in App Engine,
               else ``None``.
     """
@@ -146,6 +161,48 @@ def _app_engine_id():
         return None
 
     return app_identity.get_application_id()
+
+
+def _file_project_id():
+    """Gets the project id from the credentials file if one is available.
+
+    :rtype: str or ``NoneType``
+    :returns: Project-ID from JSON credentials file if value exists,
+              else ``None``.
+    """
+    credentials_file_path = os.getenv(CREDENTIALS)
+    if credentials_file_path:
+        with open(credentials_file_path, 'rb') as credentials_file:
+            credentials_json = credentials_file.read()
+            credentials = json.loads(credentials_json.decode('utf-8'))
+            return credentials.get('project_id')
+
+
+def _default_service_project_id():
+    """Retrieves the project ID from the gcloud command line tool.
+
+    Files that cannot be opened with configparser are silently ignored; this is
+    designed so that you can specify a list of potential configuration file
+    locations.
+
+    :rtype: str or ``NoneType``
+    :returns: Project-ID from default configuration file else ``None``
+    """
+    search_paths = []
+    # Workaround for GAE not supporting pwd which is used by expanduser.
+    try:
+        search_paths.append(os.path.expanduser(DEFAULT_CONFIGURATION_PATH))
+    except ImportError:
+        pass
+    win32_config_path = os.path.join(os.getenv('APPDATA', ''),
+                                     'gcloud', 'configurations',
+                                     'config_default')
+    search_paths.append(win32_config_path)
+    config = configparser.RawConfigParser()
+    config.read(search_paths)
+
+    if config.has_section('core'):
+        return config.get('core', 'project')
 
 
 def _compute_engine_id():
@@ -161,7 +218,7 @@ def _compute_engine_id():
     See https://github.com/google/oauth2client/issues/93 for context about
     DNS latency.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Compute Engine project ID if the metadata service is available,
               else ``None``.
     """
@@ -193,17 +250,26 @@ def _determine_default_project(project=None):
     implicit environments are:
 
     * GCLOUD_PROJECT environment variable
+    * GOOGLE_APPLICATION_CREDENTIALS JSON file
+    * Get default service project from
+      ``$ gcloud beta auth application-default login``
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
-    :type project: string
+    :type project: str
     :param project: Optional. The project name to use as default.
 
-    :rtype: string or ``NoneType``
+    :rtype: str or ``NoneType``
     :returns: Default project if it can be determined.
     """
     if project is None:
         project = _get_production_project()
+
+    if project is None:
+        project = _file_project_id()
+
+    if project is None:
+        project = _default_service_project_id()
 
     if project is None:
         project = _app_engine_id()
@@ -220,7 +286,7 @@ def _millis(when):
     :type when: :class:`datetime.datetime`
     :param when: the datetime to convert
 
-    :rtype: integer
+    :rtype: int
     :returns: milliseconds since epoch for ``when``
     """
     micros = _microseconds_from_datetime(when)
@@ -245,7 +311,7 @@ def _microseconds_from_datetime(value):
     :type value: :class:`datetime.datetime`
     :param value: The timestamp to convert.
 
-    :rtype: integer
+    :rtype: int
     :returns: The timestamp, in microseconds.
     """
     if not value.tzinfo:
@@ -262,7 +328,7 @@ def _millis_from_datetime(value):
     :type value: :class:`datetime.datetime`, or None
     :param value: the timestamp
 
-    :rtype: integer, or ``NoneType``
+    :rtype: int, or ``NoneType``
     :returns: the timestamp, in milliseconds, or None
     """
     if value is not None:
@@ -293,14 +359,14 @@ def _total_seconds(offset):
     :returns: The total seconds (including microseconds) in the
               duration.
     """
-    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER
+    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER Python 2.6
         return _total_seconds_backport(offset)
     else:
         return offset.total_seconds()
 
 
 def _rfc3339_to_datetime(dt_str):
-    """Convert a string to a native timestamp.
+    """Convert a microsecond-precision timetamp to a native datetime.
 
     :type dt_str: str
     :param dt_str: The string to convert.
@@ -310,6 +376,34 @@ def _rfc3339_to_datetime(dt_str):
     """
     return datetime.datetime.strptime(
         dt_str, _RFC3339_MICROS).replace(tzinfo=UTC)
+
+
+def _rfc3339_nanos_to_datetime(dt_str):
+    """Convert a nanosecond-precision timestamp to a native datetime.
+
+    .. note::
+
+       Python datetimes do not support nanosecond precision;  this function
+       therefore truncates such values to microseconds.
+
+    :type dt_str: str
+    :param dt_str: The string to convert.
+
+    :rtype: :class:`datetime.datetime`
+    :returns: The datetime object created from the string.
+    """
+    with_nanos = _RFC3339_NANOS.match(dt_str)
+    if with_nanos is None:
+        raise ValueError(
+            'Timestamp: %r, does not match pattern: %r' % (
+                dt_str, _RFC3339_NANOS.pattern))
+    bare_seconds = datetime.datetime.strptime(
+        with_nanos.group('no_fraction'), _RFC3339_NO_FRACTION)
+    fraction = with_nanos.group('nanos')
+    scale = 9 - len(fraction)
+    nanos = int(fraction) * (10 ** scale)
+    micros = nanos // 1000
+    return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
 def _datetime_to_rfc3339(value):
@@ -355,6 +449,27 @@ def _to_bytes(value, encoding='ascii'):
         raise TypeError('%r could not be converted to bytes' % (value,))
 
 
+def _bytes_to_unicode(value):
+    """Converts bytes to a unicode value, if necessary.
+
+    :type value: bytes
+    :param value: bytes value to attempt string conversion on.
+
+    :rtype: str
+    :returns: The original value converted to unicode (if bytes) or as passed
+              in if it started out as unicode.
+
+    :raises: :class:`ValueError` if the value could not be converted to
+             unicode.
+    """
+    result = (value.decode('utf-8')
+              if isinstance(value, six.binary_type) else value)
+    if isinstance(result, six.text_type):
+        return result
+    else:
+        raise ValueError('%r could not be converted to unicode' % (value,))
+
+
 def _pb_timestamp_to_datetime(timestamp):
     """Convert a Timestamp protobuf to a datetime object.
 
@@ -388,51 +503,49 @@ def _datetime_to_pb_timestamp(when):
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 
-def _has_field(message_pb, property_name):
-    """Determine if a field is set on a protobuf.
+def _name_from_project_path(path, project, template):
+    """Validate a URI path and get the leaf object's name.
 
-    :type message_pb: :class:`google.protobuf.message.Message`
-    :param message_pb: The message to check for ``property_name``.
+    :type path: str
+    :param path: URI path containing the name.
 
-    :type property_name: str
-    :param property_name: The property value to check against.
+    :type project: str or NoneType
+    :param project: The project associated with the request. It is
+                    included for validation purposes.  If passed as None,
+                    disables validation.
 
-    :rtype: bool
-    :returns: Flag indicating if ``property_name`` is set on ``message_pb``.
+    :type template: str
+    :param template: Template regex describing the expected form of the path.
+                     The regex must have two named groups, 'project' and
+                     'name'.
+
+    :rtype: str
+    :returns: Name parsed from ``path``.
+    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
+             the project from the ``path`` does not agree with the
+             ``project`` passed in.
     """
-    # NOTE: As of proto3, HasField() only works for message fields, not for
-    #       singular (non-message) fields. First try to use HasField and
-    #       if it fails (with a ValueError) we manually consult the fields.
-    try:
-        return message_pb.HasField(property_name)
-    except ValueError:
-        all_fields = set([field.name for field in message_pb._fields])
-        return property_name in all_fields
+    if isinstance(template, str):
+        template = re.compile(template)
 
+    match = template.match(path)
 
-def _get_pb_property_value(message_pb, property_name):
-    """Return a message field value.
+    if not match:
+        raise ValueError('path "%s" did not match expected pattern "%s"' % (
+            path, template.pattern,))
 
-    :type message_pb: :class:`google.protobuf.message.Message`
-    :param message_pb: The message to check for ``property_name``.
+    if project is not None:
+        found_project = match.group('project')
+        if found_project != project:
+            raise ValueError(
+                'Project from client (%s) should agree with '
+                'project from resource(%s).' % (project, found_project))
 
-    :type property_name: str
-    :param property_name: The property value to check against.
-
-    :rtype: object
-    :returns: The value of ``property_name`` set on ``message_pb``.
-    :raises: :class:`ValueError <exceptions.ValueError>` if the result returned
-             from the ``message_pb`` does not contain the ``property_name``
-             value.
-    """
-    if _has_field(message_pb, property_name):
-        return getattr(message_pb, property_name)
-    else:
-        raise ValueError('Message does not contain %s.' % (property_name,))
+    return match.group('name')
 
 
 try:
-    from pytz import UTC  # pylint: disable=unused-import,wrong-import-position
+    from pytz import UTC  # pylint: disable=unused-import,wrong-import-order
 except ImportError:
     UTC = _UTC()  # Singleton instance to be used throughout.
 

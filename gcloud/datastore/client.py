@@ -16,28 +16,21 @@
 import os
 
 from gcloud._helpers import _LocalStack
-from gcloud._helpers import _app_engine_id
-from gcloud._helpers import _compute_engine_id
+from gcloud._helpers import _determine_default_project as _base_default_project
+from gcloud.client import _ClientProjectMixin
 from gcloud.client import Client as _BaseClient
 from gcloud.datastore import helpers
 from gcloud.datastore.connection import Connection
 from gcloud.datastore.batch import Batch
 from gcloud.datastore.entity import Entity
-from gcloud.datastore.key import _projects_equal
 from gcloud.datastore.key import Key
 from gcloud.datastore.query import Query
 from gcloud.datastore.transaction import Transaction
-from gcloud.environment_vars import DATASET
 from gcloud.environment_vars import GCD_DATASET
 
 
 _MAX_LOOPS = 128
 """Maximum number of iterations to wait for deferred keys."""
-
-
-def _get_production_project():
-    """Gets the production application ID if it can be inferred."""
-    return os.getenv(DATASET)
 
 
 def _get_gcd_project():
@@ -51,8 +44,8 @@ def _determine_default_project(project=None):
     In implicit case, supports four environments. In order of precedence, the
     implicit environments are:
 
-    * GCLOUD_DATASET_ID environment variable
-    * DATASTORE_DATASET environment variable (for ``gcd`` testing)
+    * DATASTORE_DATASET environment variable (for ``gcd`` / emulator testing)
+    * GCLOUD_PROJECT environment variable
     * Google App Engine application ID
     * Google Compute Engine project ID (from metadata server)
 
@@ -63,16 +56,10 @@ def _determine_default_project(project=None):
     :returns: Default project if it can be determined.
     """
     if project is None:
-        project = _get_production_project()
-
-    if project is None:
         project = _get_gcd_project()
 
     if project is None:
-        project = _app_engine_id()
-
-    if project is None:
-        project = _compute_engine_id()
+        project = _base_default_project(project=project)
 
     return project
 
@@ -155,7 +142,7 @@ def _extended_lookup(connection, project, key_pbs,
     return results
 
 
-class Client(_BaseClient):
+class Client(_BaseClient, _ClientProjectMixin):
     """Convenience wrapper for invoking APIs/factories w/ a project.
 
     :type project: string
@@ -180,13 +167,15 @@ class Client(_BaseClient):
 
     def __init__(self, project=None, namespace=None,
                  credentials=None, http=None):
-        project = _determine_default_project(project)
-        if project is None:
-            raise EnvironmentError('Project could not be inferred.')
-        self.project = project
+        _ClientProjectMixin.__init__(self, project=project)
         self.namespace = namespace
         self._batch_stack = _LocalStack()
         super(Client, self).__init__(credentials, http)
+
+    @staticmethod
+    def _determine_default(project):
+        """Helper:  override default project detection."""
+        return _determine_default_project(project)
 
     def _push_batch(self, batch):
         """Push a batch/transaction onto our stack.
@@ -234,7 +223,7 @@ class Client(_BaseClient):
         if isinstance(transaction, Transaction):
             return transaction
 
-    def get(self, key, missing=None, deferred=None):
+    def get(self, key, missing=None, deferred=None, transaction=None):
         """Retrieve an entity from a single key (if it exists).
 
         .. note::
@@ -255,15 +244,19 @@ class Client(_BaseClient):
         :param deferred: (Optional) If a list is passed, the keys returned
                          by the backend as "deferred" will be copied into it.
 
+        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
         :rtype: :class:`gcloud.datastore.entity.Entity` or ``NoneType``
         :returns: The requested entity if it exists.
         """
         entities = self.get_multi(keys=[key], missing=missing,
-                                  deferred=deferred)
+                                  deferred=deferred, transaction=transaction)
         if entities:
             return entities[0]
 
-    def get_multi(self, keys, missing=None, deferred=None):
+    def get_multi(self, keys, missing=None, deferred=None, transaction=None):
         """Retrieve entities, along with their attributes.
 
         :type keys: list of :class:`gcloud.datastore.key.Key`
@@ -279,6 +272,10 @@ class Client(_BaseClient):
                          by the backend as "deferred" will be copied into it.
                          If the list is not empty, an error will occur.
 
+        :type transaction: :class:`gcloud.datastore.transaction.Transaction`
+        :param transaction: (Optional) Transaction to use for read consistency.
+                            If not passed, uses current transaction, if set.
+
         :rtype: list of :class:`gcloud.datastore.entity.Entity`
         :returns: The requested entities.
         :raises: :class:`ValueError` if one or more of ``keys`` has a project
@@ -289,10 +286,11 @@ class Client(_BaseClient):
 
         ids = set(key.project for key in keys)
         for current_id in ids:
-            if not _projects_equal(current_id, self.project):
+            if current_id != self.project:
                 raise ValueError('Keys do not match project')
 
-        transaction = self.current_transaction
+        if transaction is None:
+            transaction = self.current_transaction
 
         entity_pbs = _extended_lookup(
             connection=self.connection,
@@ -416,7 +414,7 @@ class Client(_BaseClient):
         conn = self.connection
         allocated_key_pbs = conn.allocate_ids(incomplete_key.project,
                                               incomplete_key_pbs)
-        allocated_ids = [allocated_key_pb.path_element[-1].id
+        allocated_ids = [allocated_key_pb.path[-1].id
                          for allocated_key_pb in allocated_key_pbs]
         return [incomplete_key.completed_key(allocated_id)
                 for allocated_id in allocated_ids]

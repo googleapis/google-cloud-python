@@ -26,15 +26,12 @@ class TestOperation(unittest2.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def _constructor_test_helper(self, cluster=None):
-        import datetime
         op_type = 'fake-op'
         op_id = 8915
-        begin = datetime.datetime(2015, 10, 22, 1, 1)
-        operation = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        operation = self._makeOne(op_type, op_id, cluster=cluster)
 
         self.assertEqual(operation.op_type, op_type)
         self.assertEqual(operation.op_id, op_id)
-        self.assertEqual(operation.begin, begin)
         self.assertEqual(operation._cluster, cluster)
         self.assertFalse(operation._complete)
 
@@ -46,13 +43,11 @@ class TestOperation(unittest2.TestCase):
         self._constructor_test_helper(cluster=cluster)
 
     def test___eq__(self):
-        import datetime
         op_type = 'fake-op'
         op_id = 8915
-        begin = datetime.datetime(2015, 10, 22, 1, 1)
         cluster = object()
-        operation1 = self._makeOne(op_type, op_id, begin, cluster=cluster)
-        operation2 = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        operation1 = self._makeOne(op_type, op_id, cluster=cluster)
+        operation2 = self._makeOne(op_type, op_id, cluster=cluster)
         self.assertEqual(operation1, operation2)
 
     def test___eq__type_differ(self):
@@ -61,13 +56,11 @@ class TestOperation(unittest2.TestCase):
         self.assertNotEqual(operation1, operation2)
 
     def test___ne__same_value(self):
-        import datetime
         op_type = 'fake-op'
         op_id = 8915
-        begin = datetime.datetime(2015, 10, 22, 1, 1)
         cluster = object()
-        operation1 = self._makeOne(op_type, op_id, begin, cluster=cluster)
-        operation2 = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        operation1 = self._makeOne(op_type, op_id, cluster=cluster)
+        operation2 = self._makeOne(op_type, op_id, cluster=cluster)
         comparison_val = (operation1 != operation2)
         self.assertFalse(comparison_val)
 
@@ -83,27 +76,27 @@ class TestOperation(unittest2.TestCase):
             operation.finished()
 
     def _finished_helper(self, done):
-        import datetime
         from google.longrunning import operations_pb2
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable.cluster import Cluster
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        op_type = 'fake-op'
-        op_id = 789
-        begin = datetime.datetime(2015, 10, 22, 1, 1)
+        PROJECT = 'PROJECT'
+        INSTANCE_ID = 'instance-id'
+        CLUSTER_ID = 'cluster-id'
+        OP_TYPE = 'fake-op'
+        OP_ID = 789
         timeout_seconds = 1
 
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = Cluster(zone, cluster_id, client)
-        operation = self._makeOne(op_type, op_id, begin, cluster=cluster)
+        client = _Client(PROJECT, timeout_seconds=timeout_seconds)
+        instance = _Instance(INSTANCE_ID, client)
+        cluster = Cluster(CLUSTER_ID, instance)
+        operation = self._makeOne(OP_TYPE, OP_ID, cluster=cluster)
 
         # Create request_pb
-        op_name = ('operations/projects/' + project + '/zones/' +
-                   zone + '/clusters/' + cluster_id +
-                   '/operations/%d' % (op_id,))
+        op_name = ('operations/projects/' + PROJECT +
+                   '/instances/' + INSTANCE_ID +
+                   '/clusters/' + CLUSTER_ID +
+                   '/operations/%d' % (OP_ID,))
         request_pb = operations_pb2.GetOperationRequest(name=op_name)
 
         # Create response_pb
@@ -139,6 +132,14 @@ class TestOperation(unittest2.TestCase):
 
 class TestCluster(unittest2.TestCase):
 
+    PROJECT = 'project'
+    INSTANCE_ID = 'instance-id'
+    CLUSTER_ID = 'cluster-id'
+    CLUSTER_NAME = ('projects/' + PROJECT +
+                    '/instances/' + INSTANCE_ID +
+                    '/clusters/' + CLUSTER_ID)
+    TIMEOUT_SECONDS = 123
+
     def _getTargetClass(self):
         from gcloud.bigtable.cluster import Cluster
         return Cluster
@@ -147,245 +148,226 @@ class TestCluster(unittest2.TestCase):
         return self._getTargetClass()(*args, **kwargs)
 
     def test_constructor_defaults(self):
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        client = object()
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(zone, cluster_id, client)
-        self.assertEqual(cluster.zone, zone)
-        self.assertEqual(cluster.cluster_id, cluster_id)
-        self.assertEqual(cluster.display_name, cluster_id)
-        self.assertEqual(cluster.serve_nodes, 3)
-        self.assertTrue(cluster._client is client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
+        self.assertTrue(cluster._instance is instance)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_constructor_non_default(self):
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        display_name = 'display_name'
-        serve_nodes = 8
-        client = object()
+        SERVE_NODES = 8
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(zone, cluster_id, client,
-                                display_name=display_name,
-                                serve_nodes=serve_nodes)
-        self.assertEqual(cluster.zone, zone)
-        self.assertEqual(cluster.cluster_id, cluster_id)
-        self.assertEqual(cluster.display_name, display_name)
-        self.assertEqual(cluster.serve_nodes, serve_nodes)
-        self.assertTrue(cluster._client is client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance,
+                                serve_nodes=SERVE_NODES)
+        self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
+        self.assertTrue(cluster._instance is instance)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
     def test_copy(self):
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        display_name = 'display_name'
-        serve_nodes = 8
+        SERVE_NODES = 8
 
-        client = _Client(project)
-        cluster = self._makeOne(zone, cluster_id, client,
-                                display_name=display_name,
-                                serve_nodes=serve_nodes)
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance,
+                                serve_nodes=SERVE_NODES)
         new_cluster = cluster.copy()
 
         # Make sure the client copy succeeded.
-        self.assertFalse(new_cluster._client is client)
-        self.assertEqual(new_cluster._client, client)
+        self.assertFalse(new_cluster._instance is instance)
+        self.assertEqual(new_cluster.serve_nodes, SERVE_NODES)
         # Make sure the client got copied to a new instance.
         self.assertFalse(cluster is new_cluster)
         self.assertEqual(cluster, new_cluster)
 
-    def test_table_factory(self):
-        from gcloud.bigtable.table import Table
+    def test__update_from_pb_success(self):
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        cluster = self._makeOne(zone, cluster_id, None)
+        SERVE_NODES = 8
+        cluster_pb = _ClusterPB(
+            serve_nodes=SERVE_NODES,
+        )
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        table_id = 'table_id'
-        table = cluster.table(table_id)
-        self.assertTrue(isinstance(table, Table))
-        self.assertEqual(table.table_id, table_id)
-        self.assertEqual(table._cluster, cluster)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+        cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+
+    def test__update_from_pb_no_serve_nodes(self):
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
+
+        cluster_pb = _ClusterPB()
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
+        with self.assertRaises(ValueError):
+            cluster._update_from_pb(cluster_pb)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_from_pb_success(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+        SERVE_NODES = 331
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        client = _Client(project=project)
-
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster_pb = data_pb2.Cluster(
-            name=cluster_name,
-            display_name=cluster_id,
-            serve_nodes=331,
+        cluster_pb = _ClusterPB(
+            name=self.CLUSTER_NAME,
+            serve_nodes=SERVE_NODES,
         )
 
         klass = self._getTargetClass()
-        cluster = klass.from_pb(cluster_pb, client)
+        cluster = klass.from_pb(cluster_pb, instance)
         self.assertTrue(isinstance(cluster, klass))
-        self.assertEqual(cluster._client, client)
-        self.assertEqual(cluster.zone, zone)
-        self.assertEqual(cluster.cluster_id, cluster_id)
+        self.assertTrue(cluster._instance is instance)
+        self.assertEqual(cluster.cluster_id, self.CLUSTER_ID)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
     def test_from_pb_bad_cluster_name(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-
-        cluster_name = 'INCORRECT_FORMAT'
-        cluster_pb = data_pb2.Cluster(name=cluster_name)
+        BAD_CLUSTER_NAME = 'INCORRECT_FORMAT'
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster_pb = _ClusterPB(name=BAD_CLUSTER_NAME)
 
         klass = self._getTargetClass()
         with self.assertRaises(ValueError):
-            klass.from_pb(cluster_pb, None)
+            klass.from_pb(cluster_pb, instance)
 
     def test_from_pb_project_mistmatch(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
+        ALT_PROJECT = 'ALT_PROJECT'
+        client = _Client(ALT_PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        alt_project = 'ALT_PROJECT'
-        client = _Client(project=alt_project)
+        self.assertNotEqual(self.PROJECT, ALT_PROJECT)
 
-        self.assertNotEqual(project, alt_project)
-
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        cluster_pb = data_pb2.Cluster(name=cluster_name)
+        cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
 
         klass = self._getTargetClass()
         with self.assertRaises(ValueError):
-            klass.from_pb(cluster_pb, client)
+            klass.from_pb(cluster_pb, instance)
+
+    def test_from_pb_instance_mistmatch(self):
+        ALT_INSTANCE_ID = 'ALT_INSTANCE_ID'
+        client = _Client(self.PROJECT)
+        instance = _Instance(ALT_INSTANCE_ID, client)
+
+        self.assertNotEqual(self.INSTANCE_ID, ALT_INSTANCE_ID)
+
+        cluster_pb = _ClusterPB(name=self.CLUSTER_NAME)
+
+        klass = self._getTargetClass()
+        with self.assertRaises(ValueError):
+            klass.from_pb(cluster_pb, instance)
 
     def test_name_property(self):
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        client = _Client(project=project)
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
 
-        cluster = self._makeOne(zone, cluster_id, client)
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        self.assertEqual(cluster.name, cluster_name)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
+        self.assertEqual(cluster.name, self.CLUSTER_NAME)
 
     def test___eq__(self):
-        zone = 'zone'
-        cluster_id = 'cluster_id'
-        client = object()
-        cluster1 = self._makeOne(zone, cluster_id, client)
-        cluster2 = self._makeOne(zone, cluster_id, client)
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
+        cluster2 = self._makeOne(self.CLUSTER_ID, instance)
         self.assertEqual(cluster1, cluster2)
 
     def test___eq__type_differ(self):
-        cluster1 = self._makeOne('zone', 'cluster_id', 'client')
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
         cluster2 = object()
         self.assertNotEqual(cluster1, cluster2)
 
     def test___ne__same_value(self):
-        zone = 'zone'
-        cluster_id = 'cluster_id'
-        client = object()
-        cluster1 = self._makeOne(zone, cluster_id, client)
-        cluster2 = self._makeOne(zone, cluster_id, client)
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster1 = self._makeOne(self.CLUSTER_ID, instance)
+        cluster2 = self._makeOne(self.CLUSTER_ID, instance)
         comparison_val = (cluster1 != cluster2)
         self.assertFalse(comparison_val)
 
     def test___ne__(self):
-        cluster1 = self._makeOne('zone1', 'cluster_id1', 'client1')
-        cluster2 = self._makeOne('zone2', 'cluster_id2', 'client2')
+        client = _Client(self.PROJECT)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster1 = self._makeOne('cluster_id1', instance)
+        cluster2 = self._makeOne('cluster_id2', instance)
         self.assertNotEqual(cluster1, cluster2)
 
     def test_reload(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
         from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable.cluster import _DEFAULT_SERVE_NODES
+        from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        timeout_seconds = 123
-
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client)
+        SERVE_NODES = 31
+        LOCATION = 'LOCATION'
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
 
         # Create request_pb
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        request_pb = messages_pb2.GetClusterRequest(name=cluster_name)
+        request_pb = _GetClusterRequestPB(name=self.CLUSTER_NAME)
 
         # Create response_pb
-        serve_nodes = 31
-        display_name = u'hey-hi-hello'
-        response_pb = data_pb2.Cluster(
-            display_name=display_name,
-            serve_nodes=serve_nodes,
+        response_pb = _ClusterPB(
+            serve_nodes=SERVE_NODES,
+            location=LOCATION,
         )
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = None  # reload() has no return value.
 
         # Check Cluster optional config values before.
-        self.assertEqual(cluster.serve_nodes, _DEFAULT_SERVE_NODES)
-        self.assertEqual(cluster.display_name, cluster_id)
+        self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
         # Perform the method and check the result.
         result = cluster.reload()
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'GetCluster',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
 
         # Check Cluster optional config values before.
-        self.assertEqual(cluster.serve_nodes, serve_nodes)
-        self.assertEqual(cluster.display_name, display_name)
+        self.assertEqual(cluster.serve_nodes, SERVE_NODES)
+        self.assertEqual(cluster.location, LOCATION)
 
     def test_create(self):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        timeout_seconds = 578
-
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client)
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
 
         # Create request_pb. Just a mock since we monkey patch
         # _prepare_create_request
         request_pb = object()
 
         # Create response_pb
-        op_id = 5678
-        op_begin = object()
-        op_name = ('operations/projects/%s/zones/%s/clusters/%s/'
-                   'operations/%d' % (project, zone, cluster_id, op_id))
-        current_op = operations_pb2.Operation(name=op_name)
-        response_pb = data_pb2.Cluster(current_operation=current_op)
+        OP_ID = 5678
+        OP_NAME = (
+            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
+            (self.PROJECT, self.INSTANCE_ID, self.CLUSTER_ID, OP_ID))
+        response_pb = operations_pb2.Operation(name=OP_NAME)
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        expected_result = MUT.Operation('create', op_id, op_begin,
-                                        cluster=cluster)
+        expected_result = MUT.Operation('create', OP_ID, cluster=cluster)
 
         # Create the mocks.
         prep_create_called = []
@@ -398,7 +380,7 @@ class TestCluster(unittest2.TestCase):
 
         def mock_process_operation(operation_pb):
             process_operation_called.append(operation_pb)
-            return op_id, op_begin
+            return OP_ID
 
         # Perform the method and check the result.
         with _Monkey(MUT, _prepare_create_request=mock_prep_create_req,
@@ -408,60 +390,47 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateCluster',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
         self.assertEqual(prep_create_called, [cluster])
-        self.assertEqual(process_operation_called, [current_op])
+        self.assertEqual(process_operation_called, [response_pb])
 
     def test_update(self):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
         from gcloud.bigtable._testing import _FakeStub
         from gcloud.bigtable import cluster as MUT
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        serve_nodes = 81
-        display_name = 'display_name'
-        timeout_seconds = 9
+        SERVE_NODES = 81
 
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client,
-                                display_name=display_name,
-                                serve_nodes=serve_nodes)
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance,
+                                serve_nodes=SERVE_NODES)
 
         # Create request_pb
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        request_pb = data_pb2.Cluster(
-            name=cluster_name,
-            display_name=display_name,
-            serve_nodes=serve_nodes,
+        request_pb = _ClusterPB(
+            name=self.CLUSTER_NAME,
+            serve_nodes=SERVE_NODES,
         )
 
         # Create response_pb
-        current_op = operations_pb2.Operation()
-        response_pb = data_pb2.Cluster(current_operation=current_op)
+        response_pb = operations_pb2.Operation()
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
-        op_id = 5678
-        op_begin = object()
-        expected_result = MUT.Operation('update', op_id, op_begin,
-                                        cluster=cluster)
+        OP_ID = 5678
+        expected_result = MUT.Operation('update', OP_ID, cluster=cluster)
 
         # Create mocks
         process_operation_called = []
 
         def mock_process_operation(operation_pb):
             process_operation_called.append(operation_pb)
-            return op_id, op_begin
+            return OP_ID
 
         # Perform the method and check the result.
         with _Monkey(MUT, _process_operation=mock_process_operation):
@@ -470,35 +439,27 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'UpdateCluster',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
-        self.assertEqual(process_operation_called, [current_op])
+        self.assertEqual(process_operation_called, [response_pb])
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        timeout_seconds = 57
-
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client)
+        client = _Client(self.PROJECT, timeout_seconds=self.TIMEOUT_SECONDS)
+        instance = _Instance(self.INSTANCE_ID, client)
+        cluster = self._makeOne(self.CLUSTER_ID, instance)
 
         # Create request_pb
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        request_pb = messages_pb2.DeleteClusterRequest(name=cluster_name)
+        request_pb = _DeleteClusterRequestPB(name=self.CLUSTER_NAME)
 
         # Create response_pb
         response_pb = empty_pb2.Empty()
 
         # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
+        client._instance_stub = stub = _FakeStub(response_pb)
 
         # Create expected_result.
         expected_result = None  # delete() has no return value.
@@ -509,126 +470,9 @@ class TestCluster(unittest2.TestCase):
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'DeleteCluster',
-            (request_pb, timeout_seconds),
+            (request_pb, self.TIMEOUT_SECONDS),
             {},
         )])
-
-    def test_undelete(self):
-        from google.longrunning import operations_pb2
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable import cluster as MUT
-
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        timeout_seconds = 78
-
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client)
-
-        # Create request_pb
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        request_pb = messages_pb2.UndeleteClusterRequest(name=cluster_name)
-
-        # Create response_pb
-        response_pb = operations_pb2.Operation()
-
-        # Patch the stub used by the API method.
-        client._cluster_stub = stub = _FakeStub(response_pb)
-
-        # Create expected_result.
-        op_id = 5678
-        op_begin = object()
-        expected_result = MUT.Operation('undelete', op_id, op_begin,
-                                        cluster=cluster)
-
-        # Create the mocks.
-        process_operation_called = []
-
-        def mock_process_operation(operation_pb):
-            process_operation_called.append(operation_pb)
-            return op_id, op_begin
-
-        # Perform the method and check the result.
-        with _Monkey(MUT, _process_operation=mock_process_operation):
-            result = cluster.undelete()
-
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'UndeleteCluster',
-            (request_pb, timeout_seconds),
-            {},
-        )])
-        self.assertEqual(process_operation_called, [response_pb])
-
-    def _list_tables_helper(self, table_id, table_name=None):
-        from gcloud.bigtable._generated import (
-            bigtable_table_data_pb2 as table_data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_table_service_messages_pb2 as table_messages_pb2)
-        from gcloud.bigtable._testing import _FakeStub
-
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        timeout_seconds = 45
-
-        client = _Client(project, timeout_seconds=timeout_seconds)
-        cluster = self._makeOne(zone, cluster_id, client)
-
-        # Create request_
-        cluster_name = ('projects/' + project + '/zones/' + zone +
-                        '/clusters/' + cluster_id)
-        request_pb = table_messages_pb2.ListTablesRequest(name=cluster_name)
-
-        # Create response_pb
-        table_name = table_name or (cluster_name + '/tables/' + table_id)
-        response_pb = table_messages_pb2.ListTablesResponse(
-            tables=[
-                table_data_pb2.Table(name=table_name),
-            ],
-        )
-
-        # Patch the stub used by the API method.
-        client._table_stub = stub = _FakeStub(response_pb)
-
-        # Create expected_result.
-        expected_table = cluster.table(table_id)
-        expected_result = [expected_table]
-
-        # Perform the method and check the result.
-        result = cluster.list_tables()
-
-        self.assertEqual(result, expected_result)
-        self.assertEqual(stub.method_calls, [(
-            'ListTables',
-            (request_pb, timeout_seconds),
-            {},
-        )])
-
-    def test_list_tables(self):
-        table_id = 'table_id'
-        self._list_tables_helper(table_id)
-
-    def test_list_tables_failure_bad_split(self):
-        with self.assertRaises(ValueError):
-            self._list_tables_helper(None, table_name='wrong-format')
-
-    def test_list_tables_failure_name_bad_before(self):
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-
-        table_id = 'table_id'
-        bad_table_name = ('nonempty-section-before' +
-                          'projects/' + project + '/zones/' + zone +
-                          '/clusters/' + cluster_id + '/tables/' + table_id)
-        with self.assertRaises(ValueError):
-            self._list_tables_helper(table_id, table_name=bad_table_name)
 
 
 class Test__prepare_create_request(unittest2.TestCase):
@@ -638,30 +482,23 @@ class Test__prepare_create_request(unittest2.TestCase):
         return _prepare_create_request(cluster)
 
     def test_it(self):
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
         from gcloud.bigtable.cluster import Cluster
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        display_name = u'DISPLAY_NAME'
-        serve_nodes = 8
-        client = _Client(project)
+        PROJECT = 'PROJECT'
+        INSTANCE_ID = 'instance-id'
+        CLUSTER_ID = 'cluster-id'
+        SERVE_NODES = 8
 
-        cluster = Cluster(zone, cluster_id, client,
-                          display_name=display_name, serve_nodes=serve_nodes)
+        client = _Client(PROJECT)
+        instance = _Instance(INSTANCE_ID, client)
+        cluster = Cluster(CLUSTER_ID, instance,
+                          serve_nodes=SERVE_NODES)
+
         request_pb = self._callFUT(cluster)
-        self.assertTrue(isinstance(request_pb,
-                                   messages_pb2.CreateClusterRequest))
-        self.assertEqual(request_pb.cluster_id, cluster_id)
-        self.assertEqual(request_pb.name,
-                         'projects/' + project + '/zones/' + zone)
-        self.assertTrue(isinstance(request_pb.cluster, data_pb2.Cluster))
-        self.assertEqual(request_pb.cluster.display_name, display_name)
-        self.assertEqual(request_pb.cluster.serve_nodes, serve_nodes)
+
+        self.assertEqual(request_pb.cluster_id, CLUSTER_ID)
+        self.assertEqual(request_pb.parent, instance.name)
+        self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
 
 
 class Test__parse_pb_any_to_native(unittest2.TestCase):
@@ -673,16 +510,16 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
     def test_with_known_type_url(self):
         from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import bigtable_data_pb2 as data_pb2
         from gcloud.bigtable import cluster as MUT
 
-        type_url = 'type.googleapis.com/' + data_pb2._CELL.full_name
-        fake_type_url_map = {type_url: data_pb2.Cell}
-
-        cell = data_pb2.Cell(
+        cell = _CellPB(
             timestamp_micros=0,
             value=b'foobar',
         )
+
+        type_url = 'type.googleapis.com/' + cell.DESCRIPTOR.full_name
+        fake_type_url_map = {type_url: cell.__class__}
+
         any_val = any_pb2.Any(
             type_url=type_url,
             value=cell.SerializeToString(),
@@ -691,85 +528,6 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
             result = self._callFUT(any_val)
 
         self.assertEqual(result, cell)
-
-    def test_with_create_cluster_metadata(self):
-        from google.protobuf import any_pb2
-        from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
-
-        type_url = ('type.googleapis.com/' +
-                    messages_pb2._CREATECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.CreateClusterMetadata(
-            request_time=Timestamp(seconds=1, nanos=1234),
-            finish_time=Timestamp(seconds=10, nanos=891011),
-            original_request=messages_pb2.CreateClusterRequest(
-                name='foo',
-                cluster_id='bar',
-                cluster=data_pb2.Cluster(
-                    display_name='quux',
-                    serve_nodes=1337,
-                ),
-            ),
-        )
-
-        any_val = any_pb2.Any(
-            type_url=type_url,
-            value=metadata.SerializeToString(),
-        )
-        result = self._callFUT(any_val)
-        self.assertEqual(result, metadata)
-
-    def test_with_update_cluster_metadata(self):
-        from google.protobuf import any_pb2
-        from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
-
-        type_url = ('type.googleapis.com/' +
-                    messages_pb2._UPDATECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.UpdateClusterMetadata(
-            request_time=Timestamp(seconds=1, nanos=1234),
-            finish_time=Timestamp(seconds=10, nanos=891011),
-            cancel_time=Timestamp(seconds=100, nanos=76543),
-            original_request=data_pb2.Cluster(
-                display_name='the-end',
-                serve_nodes=42,
-            ),
-        )
-
-        any_val = any_pb2.Any(
-            type_url=type_url,
-            value=metadata.SerializeToString(),
-        )
-        result = self._callFUT(any_val)
-        self.assertEqual(result, metadata)
-
-    def test_with_undelete_cluster_metadata(self):
-        from google.protobuf import any_pb2
-        from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
-
-        type_url = ('type.googleapis.com/' +
-                    messages_pb2._UNDELETECLUSTERMETADATA.full_name)
-        metadata = messages_pb2.UndeleteClusterMetadata(
-            request_time=Timestamp(seconds=1, nanos=1234),
-            finish_time=Timestamp(seconds=10, nanos=891011),
-        )
-
-        any_val = any_pb2.Any(
-            type_url=type_url,
-            value=metadata.SerializeToString(),
-        )
-        result = self._callFUT(any_val)
-        self.assertEqual(result, metadata)
 
     def test_unknown_type_url(self):
         from google.protobuf import any_pb2
@@ -804,58 +562,72 @@ class Test__process_operation(unittest2.TestCase):
 
     def test_it(self):
         from google.longrunning import operations_pb2
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_service_messages_pb2 as messages_pb2)
-        from gcloud.bigtable import cluster as MUT
 
-        project = 'PROJECT'
-        zone = 'zone'
-        cluster_id = 'cluster-id'
-        expected_operation_id = 234
-        operation_name = ('operations/projects/%s/zones/%s/clusters/%s/'
-                          'operations/%d' % (project, zone, cluster_id,
-                                             expected_operation_id))
+        PROJECT = 'project'
+        INSTANCE_ID = 'instance-id'
+        CLUSTER_ID = 'cluster-id'
+        EXPECTED_OPERATION_ID = 234
+        OPERATION_NAME = (
+            'operations/projects/%s/instances/%s/clusters/%s/operations/%d' %
+            (PROJECT, INSTANCE_ID, CLUSTER_ID, EXPECTED_OPERATION_ID))
 
-        current_op = operations_pb2.Operation(name=operation_name)
-
-        # Create mocks.
-        request_metadata = messages_pb2.CreateClusterMetadata()
-        parse_pb_any_called = []
-
-        def mock_parse_pb_any_to_native(any_val, expected_type=None):
-            parse_pb_any_called.append((any_val, expected_type))
-            return request_metadata
-
-        expected_operation_begin = object()
-        ts_to_dt_called = []
-
-        def mock_pb_timestamp_to_datetime(timestamp):
-            ts_to_dt_called.append(timestamp)
-            return expected_operation_begin
+        operation_pb = operations_pb2.Operation(name=OPERATION_NAME)
 
         # Exectute method with mocks in place.
-        with _Monkey(MUT, _parse_pb_any_to_native=mock_parse_pb_any_to_native,
-                     _pb_timestamp_to_datetime=mock_pb_timestamp_to_datetime):
-            operation_id, operation_begin = self._callFUT(current_op)
+        operation_id = self._callFUT(operation_pb)
 
         # Check outputs.
-        self.assertEqual(operation_id, expected_operation_id)
-        self.assertTrue(operation_begin is expected_operation_begin)
-
-        # Check mocks were used correctly.
-        self.assertEqual(parse_pb_any_called, [(current_op.metadata, None)])
-        self.assertEqual(ts_to_dt_called, [request_metadata.request_time])
+        self.assertEqual(operation_id, EXPECTED_OPERATION_ID)
 
     def test_op_name_parsing_failure(self):
         from google.longrunning import operations_pb2
-        from gcloud.bigtable._generated import (
-            bigtable_cluster_data_pb2 as data_pb2)
 
-        current_op = operations_pb2.Operation(name='invalid')
-        cluster = data_pb2.Cluster(current_operation=current_op)
+        operation_pb = operations_pb2.Operation(name='invalid')
         with self.assertRaises(ValueError):
-            self._callFUT(cluster)
+            self._callFUT(operation_pb)
+
+
+def _CellPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        data_pb2 as data_v2_pb2)
+    return data_v2_pb2.Cell(*args, **kw)
+
+
+def _ClusterPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        instance_pb2 as instance_v2_pb2)
+    return instance_v2_pb2.Cluster(*args, **kw)
+
+
+def _DeleteClusterRequestPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        bigtable_instance_admin_pb2 as messages_v2_pb2)
+    return messages_v2_pb2.DeleteClusterRequest(*args, **kw)
+
+
+def _GetClusterRequestPB(*args, **kw):
+    from gcloud.bigtable._generated_v2 import (
+        bigtable_instance_admin_pb2 as messages_v2_pb2)
+    return messages_v2_pb2.GetClusterRequest(*args, **kw)
+
+
+class _Instance(object):
+
+    def __init__(self, instance_id, client):
+        self.instance_id = instance_id
+        self._client = client
+
+    @property
+    def name(self):
+        return 'projects/%s/instances/%s' % (
+            self._client.project, self.instance_id)
+
+    def copy(self):
+        return self.__class__(self.instance_id, self._client)
+
+    def __eq__(self, other):
+        return (other.instance_id == self.instance_id and
+                other._client == self._client)
 
 
 class _Client(object):
@@ -864,10 +636,6 @@ class _Client(object):
         self.project = project
         self.project_name = 'projects/' + self.project
         self.timeout_seconds = timeout_seconds
-
-    def copy(self):
-        from copy import deepcopy
-        return deepcopy(self)
 
     def __eq__(self, other):
         return (other.project == self.project and

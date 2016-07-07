@@ -173,9 +173,12 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         query_params = {'project': client.project}
+        properties = dict(
+            (key, self._properties[key]) for key in self._changes)
+        properties['name'] = self.name
         api_response = client.connection.api_request(
             method='POST', path='/b', query_params=query_params,
-            data={'name': self.name}, _target_object=self)
+            data=properties, _target_object=self)
         self._set_properties(api_response)
 
     @property

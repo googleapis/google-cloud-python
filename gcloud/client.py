@@ -14,13 +14,12 @@
 
 """Base classes for client used to interact with Google Cloud APIs."""
 
+from oauth2client.service_account import ServiceAccountCredentials
 import six
 
 from gcloud._helpers import _determine_default_project
 from gcloud.connection import Connection
 from gcloud.credentials import get_credentials
-from gcloud.credentials import get_for_service_account_json
-from gcloud.credentials import get_for_service_account_p12
 
 
 class _ClientFactoryMixin(object):
@@ -56,7 +55,8 @@ class _ClientFactoryMixin(object):
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = get_for_service_account_json(json_credentials_path)
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(
+            json_credentials_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -90,8 +90,8 @@ class _ClientFactoryMixin(object):
         """
         if 'credentials' in kwargs:
             raise TypeError('credentials must not be in keyword arguments')
-        credentials = get_for_service_account_p12(client_email,
-                                                  private_key_path)
+        credentials = ServiceAccountCredentials.from_p12_keyfile(
+            client_email, private_key_path)
         kwargs['credentials'] = credentials
         return cls(*args, **kwargs)
 
@@ -132,18 +132,26 @@ class _ClientProjectMixin(object):
                     passed falls back to the default inferred from the
                     environment.
 
-    :raises: :class:`ValueError` if the project is neither passed in nor
-             set in the environment.
+    :raises: :class:`EnvironmentError` if the project is neither passed in nor
+             set in the environment. :class:`ValueError` if the project value
+             is invalid.
     """
 
     def __init__(self, project=None):
-        project = _determine_default_project(project)
+        project = self._determine_default(project)
         if project is None:
-            raise ValueError('Project was not passed and could not be '
-                             'determined from the environment.')
+            raise EnvironmentError('Project was not passed and could not be '
+                                   'determined from the environment.')
+        if isinstance(project, six.binary_type):
+            project = project.decode('utf-8')
         if not isinstance(project, six.string_types):
             raise ValueError('Project must be a string.')
         self.project = project
+
+    @staticmethod
+    def _determine_default(project):
+        """Helper:  use default project detection."""
+        return _determine_default_project(project)
 
 
 class JSONClient(Client, _ClientProjectMixin):

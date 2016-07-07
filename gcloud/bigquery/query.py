@@ -29,6 +29,7 @@ class _SyncQueryConfiguration(object):
     Values which are ``None`` -> server defaults.
     """
     _default_dataset = None
+    _dry_run = None
     _max_results = None
     _timeout_ms = None
     _preserve_nulls = None
@@ -50,6 +51,7 @@ class QueryResults(object):
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
+        self._job = None
 
     @property
     def project(self):
@@ -134,9 +136,12 @@ class QueryResults(object):
         :returns: Job instance used to run the query (None until
                   ``jobReference`` property is set by the server).
         """
-        job_ref = self._properties.get('jobReference')
-        if job_ref is not None:
-            return QueryJob(job_ref['jobId'], self.query, self._client)
+        if self._job is None:
+            job_ref = self._properties.get('jobReference')
+            if job_ref is not None:
+                self._job = QueryJob(job_ref['jobId'], self.query,
+                                     self._client)
+        return self._job
 
     @property
     def page_token(self):
@@ -203,6 +208,11 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
     """
 
+    dry_run = _TypedProperty('dry_run', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#dryRun
+    """
+
     max_results = _TypedProperty('max_results', six.integer_types)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#maxResults
@@ -253,6 +263,9 @@ class QueryResults(object):
 
         if self.use_query_cache is not None:
             resource['useQueryCache'] = self.use_query_cache
+
+        if self.dry_run is not None:
+            resource['dryRun'] = self.dry_run
 
         return resource
 

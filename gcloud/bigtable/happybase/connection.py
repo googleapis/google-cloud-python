@@ -15,7 +15,25 @@
 """Google Cloud Bigtable HappyBase connection module."""
 
 
+import datetime
+import warnings
+
 import six
+
+from grpc.beta import interfaces
+from grpc.framework.interfaces.face import face
+
+try:
+    from happybase.hbase.ttypes import AlreadyExists
+except ImportError:
+    from gcloud.exceptions import Conflict as AlreadyExists
+
+from gcloud.bigtable.client import Client
+from gcloud.bigtable.column_family import GCRuleIntersection
+from gcloud.bigtable.column_family import MaxAgeGCRule
+from gcloud.bigtable.column_family import MaxVersionsGCRule
+from gcloud.bigtable.happybase.table import Table
+from gcloud.bigtable.table import Table as _LowLevelTable
 
 
 # Constants reproduced here for HappyBase compatibility, though values
@@ -29,25 +47,71 @@ DEFAULT_TRANSPORT = None
 DEFAULT_COMPAT = None
 DEFAULT_PROTOCOL = None
 
+_LEGACY_ARGS = frozenset(('host', 'port', 'compat', 'transport', 'protocol'))
+_WARN = warnings.warn
+_DISABLE_DELETE_MSG = ('The disable argument should not be used in '
+                       'delete_table(). Cloud Bigtable has no concept '
+                       'of enabled / disabled tables.')
+
+
+def _get_instance(timeout=None):
+    """Gets instance for the default project.
+
+    Creates a client with the inferred credentials and project ID from
+    the local environment. Then uses
+    :meth:`.bigtable.client.Client.list_instances` to
+    get the unique instance owned by the project.
+
+    If the request fails for any reason, or if there isn't exactly one instance
+    owned by the project, then this function will fail.
+
+    :type timeout: int
+    :param timeout: (Optional) The socket timeout in milliseconds.
+
+    :rtype: :class:`gcloud.bigtable.instance.Instance`
+    :returns: The unique instance owned by the project inferred from
+              the environment.
+    :raises: :class:`ValueError <exceptions.ValueError>` if there is a failed
+             location or any number of instances other than one.
+    """
+    client_kwargs = {'admin': True}
+    if timeout is not None:
+        client_kwargs['timeout_seconds'] = timeout / 1000.0
+    client = Client(**client_kwargs)
+    try:
+        client.start()
+        instances, failed_locations = client.list_instances()
+    finally:
+        client.stop()
+
+    if len(failed_locations) != 0:
+        raise ValueError('Determining instance via ListInstances encountered '
+                         'failed locations.')
+    if len(instances) == 0:
+        raise ValueError('This client doesn\'t have access to any instances.')
+    if len(instances) > 1:
+        raise ValueError('This client has access to more than one instance. '
+                         'Please directly pass the instance you\'d '
+                         'like to use.')
+    return instances[0]
+
 
 class Connection(object):
     """Connection to Cloud Bigtable backend.
 
     .. note::
 
-        If you pass a ``cluster``, it will be :meth:`.Cluster.copy`-ed before
+        If you pass a ``instance``, it will be :meth:`.Instance.copy`-ed before
         being stored on the new connection. This also copies the
-        :class:`.Client` that created the :class:`.Cluster` instance and the
+        :class:`Client <gcloud.bigtable.client.Client>` that created the
+        :class:`Instance <gcloud.bigtable.instance.Instance>` instance and the
         :class:`Credentials <oauth2client.client.Credentials>` stored on the
         client.
 
-    :type host: :data:`NoneType <types.NoneType>`
-    :param host: Unused parameter. Provided for compatibility with HappyBase,
-                 but irrelevant for Cloud Bigtable since it has a fixed host.
-
-    :type port: :data:`NoneType <types.NoneType>`
-    :param port: Unused parameter. Provided for compatibility with HappyBase,
-                 but irrelevant for Cloud Bigtable since it has a fixed host.
+    The arguments ``host``, ``port``, ``compat``, ``transport`` and
+    ``protocol`` are allowed (as keyword arguments) for compatibility with
+    HappyBase. However, they will not be used in any way, and will cause a
+    warning if passed.
 
     :type timeout: int
     :param timeout: (Optional) The socket timeout in milliseconds.
@@ -63,43 +127,28 @@ class Connection(object):
     :param table_prefix_separator: (Optional) Separator used with
                                    ``table_prefix``. Defaults to ``_``.
 
-    :type compat: :data:`NoneType <types.NoneType>`
-    :param compat: Unused parameter. Provided for compatibility with
-                   HappyBase, but irrelevant for Cloud Bigtable since there
-                   is only one version.
+    :type instance: :class:`Instance <gcloud.bigtable.instance.Instance>`
+    :param instance: (Optional) A Cloud Bigtable instance. The instance also
+                    owns a client for making gRPC requests to the Cloud
+                    Bigtable API. If not passed in, defaults to creating client
+                    with ``admin=True`` and using the ``timeout`` here for the
+                    ``timeout_seconds`` argument to the
+                    :class:`Client <gcloud.bigtable.client.Client>`
+                    constructor. The credentials for the client
+                    will be the implicit ones loaded from the environment.
+                    Then that client is used to retrieve all the instances
+                    owned by the client's project.
 
-    :type transport: :data:`NoneType <types.NoneType>`
-    :param transport: Unused parameter. Provided for compatibility with
-                      HappyBase, but irrelevant for Cloud Bigtable since the
-                      transport is fixed.
-
-    :type protocol: :data:`NoneType <types.NoneType>`
-    :param protocol: Unused parameter. Provided for compatibility with
-                     HappyBase, but irrelevant for Cloud Bigtable since the
-                     protocol is fixed.
-
-    :raises: :class:`ValueError <exceptions.ValueError>` if any of the unused
-             parameters are specified with a value other than the defaults.
+    :type kwargs: dict
+    :param kwargs: Remaining keyword arguments. Provided for HappyBase
+                   compatibility.
     """
 
-    def __init__(self, host=DEFAULT_HOST, port=DEFAULT_PORT, timeout=None,
-                 autoconnect=True, table_prefix=None,
-                 table_prefix_separator='_', compat=DEFAULT_COMPAT,
-                 transport=DEFAULT_TRANSPORT, protocol=DEFAULT_PROTOCOL):
-        if host is not DEFAULT_HOST:
-            raise ValueError('Host cannot be set for gcloud HappyBase module')
-        if port is not DEFAULT_PORT:
-            raise ValueError('Port cannot be set for gcloud HappyBase module')
-        if compat is not DEFAULT_COMPAT:
-            raise ValueError('Compat cannot be set for gcloud '
-                             'HappyBase module')
-        if transport is not DEFAULT_TRANSPORT:
-            raise ValueError('Transport cannot be set for gcloud '
-                             'HappyBase module')
-        if protocol is not DEFAULT_PROTOCOL:
-            raise ValueError('Protocol cannot be set for gcloud '
-                             'HappyBase module')
+    _instance = None
 
+    def __init__(self, timeout=None, autoconnect=True, table_prefix=None,
+                 table_prefix_separator='_', instance=None, **kwargs):
+        self._handle_legacy_args(kwargs)
         if table_prefix is not None:
             if not isinstance(table_prefix, six.string_types):
                 raise TypeError('table_prefix must be a string', 'received',
@@ -110,7 +159,326 @@ class Connection(object):
                             'received', table_prefix_separator,
                             type(table_prefix_separator))
 
-        self.timeout = timeout
-        self.autoconnect = autoconnect
         self.table_prefix = table_prefix
         self.table_prefix_separator = table_prefix_separator
+
+        if instance is None:
+            self._instance = _get_instance(timeout=timeout)
+        else:
+            if timeout is not None:
+                raise ValueError('Timeout cannot be used when an existing '
+                                 'instance is passed')
+            self._instance = instance.copy()
+
+        if autoconnect:
+            self.open()
+
+        self._initialized = True
+
+    @staticmethod
+    def _handle_legacy_args(arguments_dict):
+        """Check legacy HappyBase arguments and warn if set.
+
+        :type arguments_dict: dict
+        :param arguments_dict: Unused keyword arguments.
+
+        :raises: :class:`TypeError <exceptions.TypeError>` if a keyword other
+                 than ``host``, ``port``, ``compat``, ``transport`` or
+                 ``protocol`` is used.
+        """
+        common_args = _LEGACY_ARGS.intersection(six.iterkeys(arguments_dict))
+        if common_args:
+            all_args = ', '.join(common_args)
+            message = ('The HappyBase legacy arguments %s were used. These '
+                       'arguments are unused by gcloud.' % (all_args,))
+            _WARN(message)
+        for arg_name in common_args:
+            arguments_dict.pop(arg_name)
+        if arguments_dict:
+            unexpected_names = arguments_dict.keys()
+            raise TypeError('Received unexpected arguments', unexpected_names)
+
+    def open(self):
+        """Open the underlying transport to Cloud Bigtable.
+
+        This method opens the underlying HTTP/2 gRPC connection using a
+        :class:`Client <gcloud.bigtable.client.Client>` bound to the
+        :class:`Instance <gcloud.bigtable.instance.Instance>` owned by
+        this connection.
+        """
+        self._instance._client.start()
+
+    def close(self):
+        """Close the underlying transport to Cloud Bigtable.
+
+        This method closes the underlying HTTP/2 gRPC connection using a
+        :class:`Client <gcloud.bigtable.client.Client>` bound to the
+        :class:`Instance <gcloud.bigtable.instance.Instance>` owned by
+        this connection.
+        """
+        self._instance._client.stop()
+
+    def __del__(self):
+        if self._instance is not None:
+            self.close()
+
+    def _table_name(self, name):
+        """Construct a table name by optionally adding a table name prefix.
+
+        :type name: str
+        :param name: The name to have a prefix added to it.
+
+        :rtype: str
+        :returns: The prefixed name, if the current connection has a table
+                  prefix set.
+        """
+        if self.table_prefix is None:
+            return name
+
+        return self.table_prefix + self.table_prefix_separator + name
+
+    def table(self, name, use_prefix=True):
+        """Table factory.
+
+        :type name: str
+        :param name: The name of the table to be created.
+
+        :type use_prefix: bool
+        :param use_prefix: Whether to use the table prefix (if any).
+
+        :rtype: :class:`Table <gcloud.bigtable.happybase.table.Table>`
+        :returns: Table instance owned by this connection.
+        """
+        if use_prefix:
+            name = self._table_name(name)
+        return Table(name, self)
+
+    def tables(self):
+        """Return a list of table names available to this connection.
+
+        .. note::
+
+            This lists every table in the instance owned by this connection,
+            **not** every table that a given user may have access to.
+
+        .. note::
+
+            If ``table_prefix`` is set on this connection, only returns the
+            table names which match that prefix.
+
+        :rtype: list
+        :returns: List of string table names.
+        """
+        low_level_table_instances = self._instance.list_tables()
+        table_names = [table_instance.table_id
+                       for table_instance in low_level_table_instances]
+
+        # Filter using prefix, and strip prefix from names
+        if self.table_prefix is not None:
+            prefix = self._table_name('')
+            offset = len(prefix)
+            table_names = [name[offset:] for name in table_names
+                           if name.startswith(prefix)]
+
+        return table_names
+
+    def create_table(self, name, families):
+        """Create a table.
+
+        .. warning::
+
+            The only column family options from HappyBase that are able to be
+            used with Cloud Bigtable are ``max_versions`` and ``time_to_live``.
+
+        .. note::
+
+            This method is **not** atomic. The Cloud Bigtable API separates
+            the creation of a table from the creation of column families. Thus
+            this method needs to send 1 request for the table creation and 1
+            request for each column family. If any of these fails, the method
+            will fail, but the progress made towards completion cannot be
+            rolled back.
+
+        Values in ``families`` represent column family options. In HappyBase,
+        these are dictionaries, corresponding to the ``ColumnDescriptor``
+        structure in the Thrift API. The accepted keys are:
+
+        * ``max_versions`` (``int``)
+        * ``compression`` (``str``)
+        * ``in_memory`` (``bool``)
+        * ``bloom_filter_type`` (``str``)
+        * ``bloom_filter_vector_size`` (``int``)
+        * ``bloom_filter_nb_hashes`` (``int``)
+        * ``block_cache_enabled`` (``bool``)
+        * ``time_to_live`` (``int``)
+
+        :type name: str
+        :param name: The name of the table to be created.
+
+        :type families: dict
+        :param families: Dictionary with column family names as keys and column
+                         family options as the values. The options can be among
+
+                         * :class:`dict`
+                         * :class:`.GarbageCollectionRule`
+
+        :raises: :class:`TypeError <exceptions.TypeError>` if ``families`` is
+                 not a dictionary,
+                 :class:`ValueError <exceptions.ValueError>` if ``families``
+                 has no entries
+        """
+        if not isinstance(families, dict):
+            raise TypeError('families arg must be a dictionary')
+
+        if not families:
+            raise ValueError('Cannot create table %r (no column '
+                             'families specified)' % (name,))
+
+        # Parse all keys before making any API requests.
+        gc_rule_dict = {}
+        for column_family_name, option in families.items():
+            if isinstance(column_family_name, six.binary_type):
+                column_family_name = column_family_name.decode('utf-8')
+            if column_family_name.endswith(':'):
+                column_family_name = column_family_name[:-1]
+            gc_rule_dict[column_family_name] = _parse_family_option(option)
+
+        # Create table instance and then make API calls.
+        name = self._table_name(name)
+        low_level_table = _LowLevelTable(name, self._instance)
+        try:
+            low_level_table.create()
+        except face.NetworkError as network_err:
+            if network_err.code == interfaces.StatusCode.ALREADY_EXISTS:
+                raise AlreadyExists(name)
+            else:
+                raise
+
+        for column_family_name, gc_rule in gc_rule_dict.items():
+            column_family = low_level_table.column_family(
+                column_family_name, gc_rule=gc_rule)
+            column_family.create()
+
+    def delete_table(self, name, disable=False):
+        """Delete the specified table.
+
+        :type name: str
+        :param name: The name of the table to be deleted. If ``table_prefix``
+                     is set, a prefix will be added to the ``name``.
+
+        :type disable: bool
+        :param disable: Whether to first disable the table if needed. This
+                        is provided for compatibility with HappyBase, but is
+                        not relevant for Cloud Bigtable since it has no concept
+                        of enabled / disabled tables.
+        """
+        if disable:
+            _WARN(_DISABLE_DELETE_MSG)
+
+        name = self._table_name(name)
+        _LowLevelTable(name, self._instance).delete()
+
+    def enable_table(self, name):
+        """Enable the specified table.
+
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def disable_table(self, name):
+        """Disable the specified table.
+
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def is_table_enabled(self, name):
+        """Return whether the specified table is enabled.
+
+        .. warning::
+
+            Cloud Bigtable has no concept of enabled / disabled tables so this
+            method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API has no concept of '
+                                  'enabled or disabled tables.')
+
+    def compact_table(self, name, major=False):
+        """Compact the specified table.
+
+        .. warning::
+
+            Cloud Bigtable does not support compacting a table, so this
+            method does not work. It is provided simply for compatibility.
+
+        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
+                 always
+        """
+        raise NotImplementedError('The Cloud Bigtable API does not support '
+                                  'compacting a table.')
+
+
+def _parse_family_option(option):
+    """Parses a column family option into a garbage collection rule.
+
+    .. note::
+
+        If ``option`` is not a dictionary, the type is not checked.
+        If ``option`` is :data:`None`, there is nothing to do, since this
+        is the correct output.
+
+    :type option: :class:`dict`,
+                  :data:`NoneType <types.NoneType>`,
+                  :class:`.GarbageCollectionRule`
+    :param option: A column family option passes as a dictionary value in
+                   :meth:`Connection.create_table`.
+
+    :rtype: :class:`.GarbageCollectionRule`
+    :returns: A garbage collection rule parsed from the input.
+    """
+    result = option
+    if isinstance(result, dict):
+        if not set(result.keys()) <= set(['max_versions', 'time_to_live']):
+            all_keys = ', '.join(repr(key) for key in result.keys())
+            warning_msg = ('Cloud Bigtable only supports max_versions and '
+                           'time_to_live column family settings. '
+                           'Received: %s' % (all_keys,))
+            _WARN(warning_msg)
+
+        max_num_versions = result.get('max_versions')
+        max_age = None
+        if 'time_to_live' in result:
+            max_age = datetime.timedelta(seconds=result['time_to_live'])
+
+        versions_rule = age_rule = None
+        if max_num_versions is not None:
+            versions_rule = MaxVersionsGCRule(max_num_versions)
+        if max_age is not None:
+            age_rule = MaxAgeGCRule(max_age)
+
+        if versions_rule is None:
+            result = age_rule
+        else:
+            if age_rule is None:
+                result = versions_rule
+            else:
+                result = GCRuleIntersection(rules=[age_rule, versions_rule])
+
+    return result
