@@ -238,7 +238,7 @@ class TestLogging(unittest2.TestCase):
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
         # Create the destination bucket, and set up the ACL to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         storage_client = storage.Client()
         bucket = storage_client.create_bucket(BUCKET_NAME)
         self.to_delete.append(bucket)
@@ -263,7 +263,7 @@ class TestLogging(unittest2.TestCase):
         from gcloud import pubsub
 
         # Create the destination topic, and set up the IAM policy to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         pubsub_client = pubsub.Client()
         topic = pubsub_client.topic(TOPIC_NAME)
         topic.create()
@@ -288,7 +288,7 @@ class TestLogging(unittest2.TestCase):
             Config.CLIENT.project, DATASET_NAME,)
 
         # Create the destination dataset, and set up the ACL to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         bigquery_client = bigquery.Client()
         dataset = bigquery_client.dataset(DATASET_NAME)
         dataset.create()

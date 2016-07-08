@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the `Google Monitoring API (V3)`_.
+"""Client for interacting with the `Google Stackdriver Monitoring API (V3)`_.
 
 Example::
 
@@ -24,7 +24,8 @@ Example::
 At present, the client supports querying of time series, metric descriptors,
 and monitored resource descriptors.
 
-.. _Google Monitoring API (V3): https://cloud.google.com/monitoring/api/v3/
+.. _Google Stackdriver Monitoring API (V3):
+    https://cloud.google.com/monitoring/api/v3/
 """
 
 from gcloud.client import JSONClient

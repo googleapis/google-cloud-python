@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Log entries within the Google Cloud Logging API."""
+"""Log entries within the Google Stackdriver Logging API."""
 
 import json
 import re

@@ -136,7 +136,7 @@ Manage log metrics
 ------------------
 
 Metrics are counters of entries which match a given filter.  They can be
-used within Cloud Monitoring to create charts and alerts.
+used within Stackdriver Monitoring to create charts and alerts.
 
 Create a metric:
 
