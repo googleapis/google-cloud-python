@@ -101,6 +101,18 @@ class Test_generate_signed_url(unittest2.TestCase):
                               generation=generation)
 
 
+class Test_generate_signed_url_exception(unittest2.TestCase):
+    def test_with_google_credentials(self):
+        import time
+        from gcloud.credentials import generate_signed_url
+        RESOURCE = '/name/path'
+
+        credentials = _GoogleCredentials()
+        expiration = int(time.time() + 5)
+        self.assertRaises(AttributeError, generate_signed_url, credentials,
+                          resource=RESOURCE, expiration=expiration)
+
+
 class Test__get_signed_query_params(unittest2.TestCase):
 
     def _callFUT(self, credentials, expiration, string_to_sign):
@@ -110,8 +122,6 @@ class Test__get_signed_query_params(unittest2.TestCase):
 
     def test_it(self):
         import base64
-        from gcloud._testing import _Monkey
-        from gcloud import credentials as MUT
 
         SIG_BYTES = b'DEADBEEF'
         ACCOUNT_NAME = object()
@@ -224,6 +234,12 @@ class _Credentials(object):
     def sign_blob(self, bytes_to_sign):
         self._signed.append(bytes_to_sign)
         return None, self._sign_result
+
+
+class _GoogleCredentials(object):
+
+    def __init__(self, service_account_email='testing@example.com'):
+        self.service_account_email = service_account_email
 
 
 class _Client(object):
