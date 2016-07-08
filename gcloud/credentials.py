@@ -95,10 +95,20 @@ def _get_signed_query_params(credentials, expiration, string_to_sign):
     :type string_to_sign: string
     :param string_to_sign: The string to be signed by the credentials.
 
+    :raises AttributeError: If :meth: sign_blob is unavailable.
+
     :rtype: dict
     :returns: Query parameters matching the signing credentials with a
               signed payload.
     """
+    if not hasattr(credentials, 'sign_blob'):
+        raise AttributeError('you need a private key to sign credentials.'
+                             'the credentials you are currently using %s '
+                             'just contains a token. see https://googlecloud'
+                             'platform.github.io/gcloud-python/stable/gcloud-'
+                             'auth.html#setting-up-a-service-account for more '
+                             'details.' % type(credentials))
+
     _, signature_bytes = credentials.sign_blob(string_to_sign)
     signature = base64.b64encode(signature_bytes)
     service_account_name = credentials.service_account_email
@@ -114,6 +124,8 @@ def _get_expiration_seconds(expiration):
 
     :type expiration: int, long, datetime.datetime, datetime.timedelta
     :param expiration: When the signed URL should expire.
+
+    :raises TypeError: When expiration is not an integer.
 
     :rtype: int
     :returns: a timestamp as an absolute number of seconds.
