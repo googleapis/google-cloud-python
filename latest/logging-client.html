@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Logging Client &mdash; gcloud 771bc7a documentation</title>
+    <title>Stackdriver Logging Client &mdash; gcloud 9fbcdb7 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '771bc7a',
+        VERSION:     '9fbcdb7',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 771bc7a documentation" href="index.html" />
+    <link rel="top" title="gcloud 9fbcdb7 documentation" href="index.html" />
     <link rel="next" title="Logger" href="logging-logger.html" />
     <link rel="prev" title="Using the API" href="logging-usage.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%20771bc7a" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+logging-client%0ARelease%3A%209fbcdb7" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (771bc7a)
+              Version History (9fbcdb7)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -92,8 +92,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
       <section class="content">
         
   <div class="section" id="module-gcloud.logging.client">
-<span id="logging-client"></span><h1>Logging Client<a class="headerlink" href="#module-gcloud.logging.client" title="Permalink to this headline">#</a></h1>
-<p>Client for interacting with the Google Cloud Logging API.</p>
+<span id="stackdriver-logging-client"></span><h1>Stackdriver Logging Client<a class="headerlink" href="#module-gcloud.logging.client" title="Permalink to this headline">#</a></h1>
+<p>Client for interacting with the Google Stackdriver Logging API.</p>
 <dl class="class">
 <dt id="gcloud.logging.client.Client">
 <em class="property">class </em><code class="descclassname">gcloud.logging.client.</code><code class="descname">Client</code><span class="sig-paren">(</span><em>project=None</em>, <em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/client.html#Client"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.client.Client" title="Permalink to this definition">#</a></dt>
@@ -330,12 +330,12 @@ already exist, to be refreshed via
 
 <div class="section" id="module-gcloud.logging.connection">
 <span id="connection"></span><h2>Connection<a class="headerlink" href="#module-gcloud.logging.connection" title="Permalink to this headline">#</a></h2>
-<p>Create / interact with gcloud logging connections.</p>
+<p>Create / interact with Stackdriver Logging connections.</p>
 <dl class="class">
 <dt id="gcloud.logging.connection.Connection">
 <em class="property">class </em><code class="descclassname">gcloud.logging.connection.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>credentials=None</em>, <em>http=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/logging/connection.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.logging.connection.Connection" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="gcloud-api.html#gcloud.connection.JSONConnection" title="gcloud.connection.JSONConnection"><code class="xref py py-class docutils literal"><span class="pre">gcloud.connection.JSONConnection</span></code></a></p>
-<p>A connection to Google Cloud Logging via the JSON REST API.</p>
+<p>A connection to Google Stackdriver Logging via the JSON REST API.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -372,7 +372,7 @@ connection.</li>
 <dl class="attribute">
 <dt id="gcloud.logging.connection.Connection.SCOPE">
 <code class="descname">SCOPE</code><em class="property"> = ('https://www.googleapis.com/auth/logging.read', 'https://www.googleapis.com/auth/logging.write', 'https://www.googleapis.com/auth/logging.admin', 'https://www.googleapis.com/auth/cloud-platform')</em><a class="headerlink" href="#gcloud.logging.connection.Connection.SCOPE" title="Permalink to this definition">#</a></dt>
-<dd><p>The scopes required for authenticating as a Cloud Logging consumer.</p>
+<dd><p>The scopes required for authenticating as a Logging consumer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -460,7 +460,7 @@ connection.</li>
 <li class="toctree-l1"><a class="reference internal" href="dns-resource-record-set.html">Resource Record Sets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dns-changes.html">Change Sets</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Cloud Logging</span></p>
+<p class="caption"><span class="caption-text">Stackdriver Logging</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="logging-usage.html">Using the API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Client</a></li>
@@ -469,7 +469,7 @@ connection.</li>
 <li class="toctree-l1"><a class="reference internal" href="logging-metric.html">Metrics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging-sink.html">Sinks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Cloud Monitoring</span></p>
+<p class="caption"><span class="caption-text">Stackdriver Monitoring</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-usage.html">Using the API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monitoring-client.html">Client</a></li>

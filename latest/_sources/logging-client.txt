@@ -1,5 +1,5 @@
-Logging Client
-==============
+Stackdriver Logging Client
+==========================
 
 .. automodule:: gcloud.logging.client
   :members:
@@ -11,4 +11,3 @@ Connection
 .. automodule:: gcloud.logging.connection
   :members:
   :show-inheritance:
-
