@@ -226,13 +226,17 @@ def lint_fileset(filenames, rcfile, description):
                  if os.path.exists(filename)]
     if filenames:
         rc_flag = '--rcfile=%s' % (rcfile,)
-        pylint_shell_command = ['pylint', rc_flag] + filenames
-        status_code = subprocess.call(pylint_shell_command)
-        if status_code != 0:
-            error_message = ('Pylint failed on %s with '
-                             'status %d.' % (description, status_code))
-            print(error_message, file=sys.stderr)
-            sys.exit(status_code)
+        pylint_shell_command = ['pylint', rc_flag]
+        errors = {}  # filename -> status_code
+        for filename in filenames:
+            cmd = pylint_shell_command + [filename]
+            status_code = subprocess.call(cmd)
+            if status_code != 0:
+                errors[filename] = status_code
+        if errors:
+            for filename, status_code in sorted(errors.items()):
+                print('%-30s: %d' % (filename, status_code), file=sys.stderr)
+            sys.exit(len(errors))
     else:
         print('Skipping %s, no files to lint.' % (description,))
 
