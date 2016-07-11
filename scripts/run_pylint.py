@@ -51,8 +51,6 @@ TEST_DISABLED_MESSAGES = [
     'import-error',
     'invalid-name',
     'missing-docstring',
-    'missing-raises-doc',
-    'missing-returns-doc',
     'no-init',
     'no-self-use',
     'superfluous-parens',
