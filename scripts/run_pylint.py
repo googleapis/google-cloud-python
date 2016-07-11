@@ -37,6 +37,7 @@ IGNORED_DIRECTORIES = [
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
+    os.path.join('gcloud', 'streaming', 'http_wrapper.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
