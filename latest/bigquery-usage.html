@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud aa56c9f documentation</title>
+    <title>Using the API &mdash; gcloud 2dcad57 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     'aa56c9f',
+        VERSION:     '2dcad57',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud aa56c9f documentation" href="index.html" />
+    <link rel="top" title="gcloud 2dcad57 documentation" href="index.html" />
     <link rel="next" title="BigQuery Client" href="bigquery-client.html" />
     <link rel="prev" title="IAM Policy" href="pubsub-iam.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%20aa56c9f" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-usage%0ARelease%3A%202dcad57" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (aa56c9f)
+              Version History (2dcad57)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -108,25 +108,11 @@ environment or directly via
 and
 <code class="xref py py-meth docutils literal"><span class="pre">from_service_account_p12</span></code>.</p>
 </li>
-<li><p class="first">After setting <code class="docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and <code class="docutils literal"><span class="pre">GCLOUD_PROJECT</span></code>
-environment variables, create an instance of
+<li><p class="first">After setting <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> and
+<span class="target" id="index-1"></span><code class="xref std std-envvar docutils literal"><span class="pre">GCLOUD_PROJECT</span></code> environment variables, create an instance of
 <a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">Client</span></code></a>.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">Override the credentials inferred from the environment by passing explicit
-<code class="docutils literal"><span class="pre">credentials</span></code> to one of the alternative <code class="docutils literal"><span class="pre">classmethod</span></code> factories,
-<code class="xref py py-meth docutils literal"><span class="pre">gcloud.bigquery.client.Client.from_service_account_json()</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_json</span><span class="p">(</span><span class="s1">&#39;/path/to/creds.json&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>or <code class="xref py py-meth docutils literal"><span class="pre">gcloud.bigquery.client.Client.from_service_account_p12()</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">from_service_account_p12</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="s1">&#39;/path/to/creds.p12&#39;</span><span class="p">,</span> <span class="s1">&#39;jrandom@example.com&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -167,43 +153,44 @@ dataset will have the value as their expiration period.</li>
 </ul>
 <div class="section" id="dataset-operations">
 <h3>Dataset operations<a class="headerlink" href="#dataset-operations" title="Permalink to this headline">#</a></h3>
+<p>List datasets for the client&#8217;s project:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">datasets</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">:</span>
+            <span class="n">do_something_with</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">datasets</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">(</span><span class="n">page_token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>  <span class="c1"># API request</span>
+</pre></div>
+</div>
 <p>Create a new dataset for the client&#8217;s project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="n">DATASET_NAME</span><span class="p">)</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Check for the existence of a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>List datasets for the client&#8217;s project:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span><span class="p">,</span> <span class="n">next_page_token</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">list_datasets</span><span class="p">()</span>  <span class="c1"># API request</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">dataset</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">dataset</span> <span class="ow">in</span> <span class="n">datasets</span><span class="p">]</span>
-<span class="go">[&#39;dataset_name&#39;]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="ow">not</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
 </pre></div>
 </div>
 <p>Refresh metadata for a dataset (to pick up changes made by another client):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">LOCALLY_CHANGED_DESCRIPTION</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">LOCALLY_CHANGED_DESCRIPTION</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>              <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
 </pre></div>
 </div>
 <p>Patch metadata for a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">one_day_ms</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Description goes here&#39;</span><span class="p">,</span>
-<span class="gp">... </span>              <span class="n">default_table_expiration_ms</span><span class="o">=</span><span class="n">one_day_ms</span><span class="p">)</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ONE_DAY_MS</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">ORIGINAL_DESCRIPTION</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span>
+        <span class="n">description</span><span class="o">=</span><span class="n">PATCHED_DESCRIPTION</span><span class="p">,</span>
+        <span class="n">default_table_expiration_ms</span><span class="o">=</span><span class="n">ONE_DAY_MS</span>
+    <span class="p">)</span>      <span class="c1"># API request</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">PATCHED_DESCRIPTION</span>
+    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">default_table_expiration_ms</span> <span class="o">==</span> <span class="n">ONE_DAY_MS</span>
 </pre></div>
 </div>
 <p>Replace the ACL for a dataset, and update all writeable fields:</p>
@@ -218,10 +205,9 @@ dataset will have the value as their expiration period.</li>
 </pre></div>
 </div>
 <p>Delete a dataset:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">bigquery</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">dataset</span><span class="p">(</span><span class="s1">&#39;dataset_name&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># API request</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">assert</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>       <span class="c1"># API request</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">dataset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>   <span class="c1"># API request</span>
 </pre></div>
 </div>
 </div>
