@@ -196,7 +196,7 @@ Upload table data from a file:
    ...     SchemaField('full_name', 'STRING', mode='required'),
    ...     SchemaField('age', 'INTEGER', mode='required)]
    >>> with open('person_ages.csv', 'rb') as csv_file:
-   ...     table.upload_from_file(csv_file, CSV,
+   ...     table.upload_from_file(csv_file, 'CSV',
    ...                            create_disposition='CREATE_IF_NEEDED')
 
 Get rows from a table's data:
