@@ -194,10 +194,11 @@ def _default_service_project_id():
         search_paths.append(os.path.expanduser(DEFAULT_CONFIGURATION_PATH))
     except ImportError:
         pass
-    win32_config_path = os.path.join(os.getenv('APPDATA', ''),
-                                     'gcloud', 'configurations',
-                                     'config_default')
-    search_paths.append(win32_config_path)
+
+    windows_config_path = os.path.join(os.getenv('APPDATA', ''),
+                                       'gcloud', 'configurations',
+                                       'config_default')
+    search_paths.append(windows_config_path)
     config = configparser.RawConfigParser()
     config.read(search_paths)
 
