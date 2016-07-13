@@ -207,7 +207,7 @@ Get rows from a table's data:
    >>> client = bigquery.Client()
    >>> dataset = client.dataset('dataset_name')
    >>> table = dataset.table(name='person_ages')
-   >>> rows, next_page_token = table.fetch_data(max_results=100)  # API request
+   >>> rows, _, next_page_token = table.fetch_data(max_results=100)  # API request
    >>> for row in rows:
    ...     for field, value in zip(table.schema, row):
    ...         do_something(field, value)
