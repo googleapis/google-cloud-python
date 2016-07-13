@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.resource_manager.project &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.resource_manager.project &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/project%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/resource_manager/project%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -108,7 +108,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;Utility for managing projects via the Cloud Resource Manager API.&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
 
 
 <div class="viewcode-block" id="Project"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project">[docs]</a><span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -144,13 +144,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type labels: dict</span>
 <span class="sd">    :param labels: A list of labels associated with the project.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project_id</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span> <span class="o">=</span> <span class="n">project_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;Project: </span><span class="si">%r</span><span class="s1"> (</span><span class="si">%r</span><span class="s1">)&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">)</span>
@@ -201,11 +201,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.resource_manager.client.Client`</span>
 <span class="sd">        :returns: The client passed in or the currently bound client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
         <span class="k">return</span> <span class="n">client</span>
 
-<div class="viewcode-block" id="Project.create"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.create"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create the project via a ``POST`` request.</span>
 
 <span class="sd">        See</span>
@@ -227,7 +227,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                              <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_properties_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.reload"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.reload"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  reload the project via a ``GET`` request.</span>
 
 <span class="sd">        This method will reload the newest metadata for the project. If you&#39;ve</span>
@@ -256,7 +256,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_properties_from_api_repr</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.exists"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.exists"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test the existence of a project via a ``GET`` request.</span>
 
 <span class="sd">        See</span>
@@ -274,11 +274,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1"># doesn&#39;t provide a way tocheck for existence only.</span>
             <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span></div>
+            <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Project.update"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.update"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update the project via a ``PUT`` request.</span>
 
 <span class="sd">        See</span>
@@ -296,7 +296,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                              <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_properties_from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Project.delete"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">reload_data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.delete"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reload_data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete the project via a ``DELETE`` request.</span>
 
 <span class="sd">        See:</span>
@@ -327,7 +327,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">reload_data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Project.undelete"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.undelete">[docs]</a>    <span class="k">def</span> <span class="nf">undelete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">reload_data</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Project.undelete"><a class="viewcode-back" href="../../../resource-manager-project.html#gcloud.resource_manager.project.Project.undelete">[docs]</a>    <span class="k">def</span> <span class="nf">undelete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reload_data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  undelete the project via a ``POST`` request.</span>
 
 <span class="sd">        See</span>

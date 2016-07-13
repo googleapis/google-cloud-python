@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.table &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.happybase.table &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/table%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/table%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,25 +113,25 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_from_microseconds</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_microseconds_from_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_total_seconds</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">GCRuleIntersection</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">MaxAgeGCRule</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">MaxVersionsGCRule</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="kn">import</span> <span class="n">_get_column_pairs</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="kn">import</span> <span class="n">_WAL_SENTINEL</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="kn">import</span> <span class="n">Batch</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">CellsColumnLimitFilter</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">ColumnQualifierRegexFilter</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">FamilyNameRegexFilter</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">RowFilterChain</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">RowFilterUnion</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">RowKeyRegexFilter</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">TimestampRange</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="kn">import</span> <span class="n">TimestampRangeFilter</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.table</span> <span class="kn">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">_LowLevelTable</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_total_seconds</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">GCRuleIntersection</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">MaxAgeGCRule</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">MaxVersionsGCRule</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="k">import</span> <span class="n">_get_column_pairs</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="k">import</span> <span class="n">_WAL_SENTINEL</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.batch</span> <span class="k">import</span> <span class="n">Batch</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">CellsColumnLimitFilter</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">ColumnQualifierRegexFilter</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">FamilyNameRegexFilter</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">RowFilterChain</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">RowFilterUnion</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">RowKeyRegexFilter</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">TimestampRange</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.row_filters</span> <span class="k">import</span> <span class="n">TimestampRangeFilter</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">_LowLevelTable</span>
 
 
 <span class="n">_WARN</span> <span class="o">=</span> <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span>
@@ -205,8 +205,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># This remains as legacy for HappyBase, but only the instance</span>
         <span class="c1"># from the connection is needed.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span> <span class="o">=</span> <span class="n">_LowLevelTable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                                                    <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
 
@@ -241,7 +241,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API does not have a &#39;</span>
                                   <span class="s1">&#39;concept of splitting a table into regions.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.row"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.row">[docs]</a>    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.row"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.row">[docs]</a>    <span class="k">def</span> <span class="nf">row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve a single row of data.</span>
 
 <span class="sd">        Returns the latest cells in each column (or all columns if ``columns``</span>
@@ -272,7 +272,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  the row.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_columns_filter_helper</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
         <span class="c1"># versions == 1 since we only want the latest.</span>
         <span class="n">filter_</span> <span class="o">=</span> <span class="n">_filter_chain_helper</span><span class="p">(</span><span class="n">versions</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
@@ -280,14 +280,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="n">partial_row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span>
             <span class="n">row</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">partial_row_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">partial_row_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{}</span>
 
         <span class="k">return</span> <span class="n">_partial_row_to_dict</span><span class="p">(</span><span class="n">partial_row_data</span><span class="p">,</span>
                                     <span class="n">include_timestamp</span><span class="o">=</span><span class="n">include_timestamp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.rows"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.rows">[docs]</a>    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-             <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.rows"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.rows">[docs]</a>    <span class="k">def</span> <span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve multiple rows of data.</span>
 
 <span class="sd">        All optional arguments behave the same in this method as they do in</span>
@@ -321,7 +321,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">return</span> <span class="p">[]</span>
 
         <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_columns_filter_helper</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_row_keys_filter_helper</span><span class="p">(</span><span class="n">rows</span><span class="p">))</span>
         <span class="c1"># versions == 1 since we only want the latest.</span>
@@ -344,8 +344,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Table.cells"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.cells">[docs]</a>    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-              <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.cells"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.cells">[docs]</a>    <span class="k">def</span> <span class="nf">cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+              <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Retrieve multiple versions of a single cell from the table.</span>
 
 <span class="sd">        :type row: str</span>
@@ -374,7 +374,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">filter_</span> <span class="o">=</span> <span class="n">_filter_chain_helper</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="n">versions</span><span class="p">,</span>
                                        <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
         <span class="n">partial_row_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span><span class="o">.</span><span class="n">read_row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="n">filter_</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">partial_row_data</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">partial_row_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cells</span> <span class="o">=</span> <span class="n">partial_row_data</span><span class="o">.</span><span class="n">_cells</span>
@@ -388,9 +388,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">return</span> <span class="n">_cells_to_pairs</span><span class="p">(</span>
                 <span class="n">curr_cells</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="n">include_timestamp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.scan"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.scan">[docs]</a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_start</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">row_stop</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">row_prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-             <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-             <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.scan"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.scan">[docs]</a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">row_stop</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">row_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a scanner for data in this table.</span>
 
 <span class="sd">        This method returns a generator that can be used for looping over the</span>
@@ -480,7 +480,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># Mutable copy of data.</span>
         <span class="n">rows_dict</span> <span class="o">=</span> <span class="n">partial_rows_data</span><span class="o">.</span><span class="n">rows</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">partial_rows_data</span><span class="o">.</span><span class="n">consume_next</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">row_key</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">rows_dict</span><span class="p">):</span>
@@ -492,7 +492,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
                 <span class="k">break</span></div>
 
-<div class="viewcode-block" id="Table.put"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">_WAL_SENTINEL</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.put"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.put">[docs]</a>    <span class="k">def</span> <span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">_WAL_SENTINEL</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Insert data into a row in this table.</span>
 
 <span class="sd">        .. note::</span>
@@ -523,7 +523,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">wal</span><span class="p">)</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.delete"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">_WAL_SENTINEL</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.delete"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">_WAL_SENTINEL</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete data from a row in this table.</span>
 
 <span class="sd">        This method deletes the entire ``row`` if ``columns`` is not</span>
@@ -559,7 +559,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">wal</span><span class="o">=</span><span class="n">wal</span><span class="p">)</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">columns</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Table.batch"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<div class="viewcode-block" id="Table.batch"><a class="viewcode-back" href="../../../../happybase-table.html#gcloud.bigtable.happybase.table.Table.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transaction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
               <span class="n">wal</span><span class="o">=</span><span class="n">_WAL_SENTINEL</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a new batch operation for this table.</span>
 
@@ -666,7 +666,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: int</span>
 <span class="sd">        :returns: Counter value after incrementing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_low_level_table</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
             <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column_qualifier</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
@@ -745,7 +745,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: The converted garbage collection rule.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">gc_rule</span>
-    <span class="k">if</span> <span class="n">gc_rule</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">gc_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gc_rule</span><span class="p">,</span> <span class="n">MaxAgeGCRule</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time_to_live&#39;</span><span class="p">:</span> <span class="n">_total_seconds</span><span class="p">(</span><span class="n">gc_rule</span><span class="o">.</span><span class="n">max_age</span><span class="p">)}</span>
@@ -816,7 +816,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">return</span> <span class="n">str_val</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">_next_char</span><span class="p">(</span><span class="n">str_val</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_convert_to_time_range</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_convert_to_time_range</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create a timestamp range from an HBase / HappyBase timestamp.</span>
 
 <span class="sd">    HBase uses timestamp as an argument to specify an exclusive end</span>
@@ -833,14 +833,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: The timestamp range corresponding to the passed in</span>
 <span class="sd">              ``timestamp``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">next_timestamp</span> <span class="o">=</span> <span class="n">_datetime_from_microseconds</span><span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">timestamp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">TimestampRange</span><span class="p">(</span><span class="n">end</span><span class="o">=</span><span class="n">next_timestamp</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_cells_to_pairs</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_cells_to_pairs</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Converts list of cells to HappyBase format.</span>
 
 <span class="sd">    For example::</span>
@@ -878,7 +878,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">_partial_row_to_dict</span><span class="p">(</span><span class="n">partial_row_data</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_partial_row_to_dict</span><span class="p">(</span><span class="n">partial_row_data</span><span class="p">,</span> <span class="n">include_timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a low-level row data object to a dictionary.</span>
 
 <span class="sd">    Assumes only the latest value in each row is needed. This assumption</span>
@@ -921,8 +921,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">_filter_chain_helper</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                         <span class="n">filters</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_filter_chain_helper</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create filter chain to limit a results set.</span>
 
 <span class="sd">    :type column: str</span>
@@ -946,20 +946,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if there are no</span>
 <span class="sd">             filters to chain.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">filters</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">filters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">if</span> <span class="n">column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">binary_type</span><span class="p">):</span>
             <span class="n">column</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column_qualifier</span> <span class="o">=</span> <span class="n">column</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
         <span class="n">fam_filter</span> <span class="o">=</span> <span class="n">FamilyNameRegexFilter</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span>
         <span class="n">qual_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="n">column_qualifier</span><span class="p">)</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">fam_filter</span><span class="p">,</span> <span class="n">qual_filter</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CellsColumnLimitFilter</span><span class="p">(</span><span class="n">versions</span><span class="p">))</span>
     <span class="n">time_range</span> <span class="o">=</span> <span class="n">_convert_to_time_range</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TimestampRangeFilter</span><span class="p">(</span><span class="n">time_range</span><span class="p">))</span>
 
     <span class="n">num_filters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">filters</span><span class="p">)</span>
@@ -974,7 +974,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="k">def</span> <span class="nf">_scan_filter_helper</span><span class="p">(</span><span class="n">row_start</span><span class="p">,</span> <span class="n">row_stop</span><span class="p">,</span> <span class="n">row_prefix</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span>
                         <span class="n">timestamp</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Helper for :meth:`scan`:  build up a filter chain.&quot;&quot;&quot;</span>
-    <span class="n">filter_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">filter_</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">legacy_args</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">kw_name</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;batch_size&#39;</span><span class="p">,</span> <span class="s1">&#39;scan_batching&#39;</span><span class="p">,</span> <span class="s1">&#39;sorted_columns&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">kw_name</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
@@ -988,10 +988,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Received unexpected arguments&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
-    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;limit must be positive&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">row_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">row_stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">row_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">row_stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;row_prefix cannot be combined with &#39;</span>
                              <span class="s1">&#39;row_start or row_stop&#39;</span><span class="p">)</span>
         <span class="n">row_start</span> <span class="o">=</span> <span class="n">row_prefix</span>
@@ -1002,10 +1002,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Specifying filters as a string is not supported &#39;</span>
                         <span class="s1">&#39;by Cloud Bigtable. Use a &#39;</span>
                         <span class="s1">&#39;gcloud.bigtable.row.RowFilter instead.&#39;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">columns</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_columns_filter_helper</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
 
     <span class="c1"># versions == 1 since we only want the latest.</span>
@@ -1032,7 +1032,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">filters</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column_qualifier</span> <span class="ow">in</span> <span class="n">_get_column_pairs</span><span class="p">(</span><span class="n">columns</span><span class="p">):</span>
         <span class="n">fam_filter</span> <span class="o">=</span> <span class="n">FamilyNameRegexFilter</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">column_qualifier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">column_qualifier</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">qual_filter</span> <span class="o">=</span> <span class="n">ColumnQualifierRegexFilter</span><span class="p">(</span><span class="n">column_qualifier</span><span class="p">)</span>
             <span class="n">combined_filter</span> <span class="o">=</span> <span class="n">RowFilterChain</span><span class="p">(</span>
                 <span class="n">filters</span><span class="o">=</span><span class="p">[</span><span class="n">fam_filter</span><span class="p">,</span> <span class="n">qual_filter</span><span class="p">])</span>

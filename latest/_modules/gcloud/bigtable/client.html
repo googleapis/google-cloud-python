@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.client &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.client &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/client%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/client%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -120,28 +120,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">get_distribution</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">get_distribution</span>
 
-<span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="kn">import</span> <span class="n">implementations</span>
+<span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="k">import</span> <span class="n">implementations</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_instance_admin_pb2</span> <span class="k">as</span> <span class="n">instance_admin_v2_pb2</span><span class="p">)</span>
 <span class="c1"># V1 table admin service</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_v2_pb2</span><span class="p">)</span>
 <span class="c1"># V1 data service</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">operations_grpc_pb2</span> <span class="k">as</span> <span class="n">operations_grpc_v2_pb2</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.cluster</span> <span class="kn">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="kn">import</span> <span class="n">Instance</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="kn">import</span> <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span>
-<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">_ClientFactoryMixin</span>
-<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">_ClientProjectMixin</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">get_credentials</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.cluster</span> <span class="k">import</span> <span class="n">DEFAULT_SERVE_NODES</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="k">import</span> <span class="n">Instance</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.instance</span> <span class="k">import</span> <span class="n">_EXISTING_INSTANCE_LOCATION_ID</span>
+<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="k">import</span> <span class="n">_ClientFactoryMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="k">import</span> <span class="n">_ClientProjectMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="k">import</span> <span class="n">get_credentials</span>
 
 
 <span class="n">TABLE_STUB_FACTORY_V2</span> <span class="o">=</span> <span class="p">(</span>
@@ -178,7 +178,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="n">DEFAULT_TIMEOUT_SECONDS</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="sd">&quot;&quot;&quot;The default timeout to use for API requests.&quot;&quot;&quot;</span>
 
-<span class="n">DEFAULT_USER_AGENT</span> <span class="o">=</span> <span class="s1">&#39;gcloud-python/{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="n">DEFAULT_USER_AGENT</span> <span class="o">=</span> <span class="s1">&#39;gcloud-python/</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
     <span class="n">get_distribution</span><span class="p">(</span><span class="s1">&#39;gcloud&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;The default user agent for API requests.&quot;&quot;&quot;</span>
 
@@ -226,11 +226,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">             and ``admin`` are :data:`True`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">read_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">admin</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">read_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">admin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">user_agent</span><span class="o">=</span><span class="n">DEFAULT_USER_AGENT</span><span class="p">,</span>
                  <span class="n">timeout_seconds</span><span class="o">=</span><span class="n">DEFAULT_TIMEOUT_SECONDS</span><span class="p">):</span>
         <span class="n">_ClientProjectMixin</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_credentials</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">read_only</span> <span class="ow">and</span> <span class="n">admin</span><span class="p">:</span>
@@ -256,10 +256,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout_seconds</span> <span class="o">=</span> <span class="n">timeout_seconds</span>
 
         <span class="c1"># These will be set in start().</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Client.copy"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a copy of this client.</span>
@@ -319,7 +319,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the current</span>
 <span class="sd">                 client has not been :meth:`start`-ed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client has not been started.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span>
 
@@ -335,7 +335,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client has not been started.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span>
 
@@ -351,7 +351,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client has not been started.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span>
 
@@ -367,7 +367,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client is not an admin client.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Client has not been started.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span>
 
@@ -416,7 +416,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: bool</span>
 <span class="sd">        :returns: Boolean indicating if the client has been started.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Client.start"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Prepare the client to make requests.</span>
@@ -455,23 +455,23 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># When exit-ing, we pass None as the exception type, value and</span>
         <span class="c1"># traceback to __exit__.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_admin</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span><span class="o">.</span><span class="n">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="bp">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_instance_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_operations_stub_internal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table_stub_internal</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stops the client as a context manager.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Client.instance"><a class="viewcode-back" href="../../../bigtable-client.html#gcloud.bigtable.client.Client.instance">[docs]</a>    <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance_id</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">_EXISTING_INSTANCE_LOCATION_ID</span><span class="p">,</span>
-                 <span class="n">display_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">):</span>
+                 <span class="n">display_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">serve_nodes</span><span class="o">=</span><span class="n">DEFAULT_SERVE_NODES</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory to create a instance associated with this client.</span>
 
 <span class="sd">        :type instance_id: str</span>
@@ -536,7 +536,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">,</span> <span class="s1">&#39;Bearer &#39;</span> <span class="o">+</span> <span class="n">access_token</span><span class="p">),</span>
             <span class="p">(</span><span class="s1">&#39;User-agent&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_agent</span><span class="p">),</span>
         <span class="p">]</span>
-        <span class="n">callback</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">callback</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_make_stub</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">stub_factory</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
@@ -563,7 +563,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Leaving the first argument to ssl_channel_credentials() as None</span>
     <span class="c1"># loads root certificates from `grpc/_adapter/credentials/roots.pem`.</span>
-    <span class="n">transport_creds</span> <span class="o">=</span> <span class="n">implementations</span><span class="o">.</span><span class="n">ssl_channel_credentials</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">transport_creds</span> <span class="o">=</span> <span class="n">implementations</span><span class="o">.</span><span class="n">ssl_channel_credentials</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">custom_metadata_plugin</span> <span class="o">=</span> <span class="n">_MetadataPlugin</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
     <span class="n">auth_creds</span> <span class="o">=</span> <span class="n">implementations</span><span class="o">.</span><span class="n">metadata_call_credentials</span><span class="p">(</span>
         <span class="n">custom_metadata_plugin</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;google_creds&#39;</span><span class="p">)</span>

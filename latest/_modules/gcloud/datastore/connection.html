@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.connection &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.datastore.connection &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -109,11 +109,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="kn">import</span> <span class="n">GCD_HOST</span>
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="kn">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
-<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="kn">import</span> <span class="n">status_pb2</span>
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.environment_vars</span> <span class="k">import</span> <span class="n">GCD_HOST</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="k">import</span> <span class="n">datastore_pb2</span> <span class="k">as</span> <span class="n">_datastore_pb2</span>
+<span class="kn">from</span> <span class="nn">google.rpc</span> <span class="k">import</span> <span class="n">status_pb2</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">Connection</span><span class="p">):</span>
@@ -139,16 +139,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v1beta3&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;{api_base}/{api_version}/projects&#39;</span>
-                        <span class="s1">&#39;/{project}:{method}&#39;</span><span class="p">)</span>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="si">{api_base}</span><span class="s1">/</span><span class="si">{api_version}</span><span class="s1">/projects&#39;</span>
+                        <span class="s1">&#39;/</span><span class="si">{project}</span><span class="s1">:</span><span class="si">{method}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/datastore&#39;</span><span class="p">,)</span>
     <span class="sd">&quot;&quot;&quot;The scopes required for authenticating as a Cloud Datastore consumer.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">api_base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Connection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span> <span class="n">http</span><span class="o">=</span><span class="n">http</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">api_base_url</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">api_base_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># gcd.sh has /datastore/ in the path still since it supports</span>
                 <span class="c1"># v1beta2 and v1beta3 simultaneously.</span>
@@ -188,7 +188,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">status</span> <span class="o">=</span> <span class="n">headers</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;200&#39;</span><span class="p">:</span>
             <span class="n">error_status</span> <span class="o">=</span> <span class="n">status_pb2</span><span class="o">.</span><span class="n">Status</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">error_status</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">make_exception</span><span class="p">(</span><span class="n">headers</span><span class="p">,</span> <span class="n">error_status</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">use_json</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">content</span>
 
@@ -214,8 +214,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                  <span class="n">data</span><span class="o">=</span><span class="n">request_pb</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">response_pb_cls</span><span class="o">.</span><span class="n">FromString</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">api_version</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.build_api_url"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.build_api_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_api_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">base_url</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">api_version</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct the URL for a particular API call.</span>
 
 <span class="sd">        This method is used internally to come up with the URL to use when</span>
@@ -242,7 +242,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Connection.lookup"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.lookup">[docs]</a>    <span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">key_pbs</span><span class="p">,</span>
-               <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+               <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Lookup keys from a project in the Cloud Datastore.</span>
 
 <span class="sd">        Maps the ``DatastoreService.Lookup`` protobuf RPC.</span>
@@ -300,8 +300,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">return</span> <span class="n">results</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">lookup_response</span><span class="o">.</span><span class="n">deferred</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Connection.run_query"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.run_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">query_pb</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">eventual</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.run_query"><a class="viewcode-back" href="../../../datastore-client.html#gcloud.datastore.connection.Connection.run_query">[docs]</a>    <span class="k">def</span> <span class="nf">run_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">query_pb</span><span class="p">,</span> <span class="n">namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">eventual</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transaction_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Run a query on the Cloud Datastore.</span>
 
 <span class="sd">        Maps the ``DatastoreService.RunQuery`` protobuf RPC.</span>
@@ -478,7 +478,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :raises: :class:`ValueError` if ``eventual`` is ``True`` and the</span>
 <span class="sd">             ``transaction_id`` is not ``None``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">eventual</span> <span class="ow">and</span> <span class="p">(</span><span class="n">transaction_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">eventual</span> <span class="ow">and</span> <span class="p">(</span><span class="n">transaction_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;eventual must be False when in a transaction&#39;</span><span class="p">)</span>
 
     <span class="n">opts</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">read_options</span>

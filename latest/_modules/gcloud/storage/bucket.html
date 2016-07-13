@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.bucket &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.storage.bucket &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/bucket%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,14 +111,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_rfc3339_to_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">gcloud.iterator</span> <span class="kn">import</span> <span class="n">Iterator</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">BucketACL</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">DefaultObjectACL</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.blob</span> <span class="kn">import</span> <span class="n">Blob</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.iterator</span> <span class="k">import</span> <span class="n">Iterator</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="k">import</span> <span class="n">BucketACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="k">import</span> <span class="n">DefaultObjectACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.blob</span> <span class="k">import</span> <span class="n">Blob</span>
 
 
 <span class="k">class</span> <span class="nc">_BlobIterator</span><span class="p">(</span><span class="n">Iterator</span><span class="p">):</span>
@@ -137,12 +137,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param client: Optional. The client to use for making connections.</span>
 <span class="sd">                   Defaults to the bucket&#39;s client.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">bucket</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefixes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_prefixes</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_prefixes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">_BlobIterator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span>
             <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">bucket</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/o&#39;</span><span class="p">,</span>
             <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">)</span>
@@ -182,7 +182,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="n">_STORAGE_CLASSES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;STANDARD&#39;</span><span class="p">,</span> <span class="s1">&#39;NEARLINE&#39;</span><span class="p">,</span> <span class="s1">&#39;DURABLE_REDUCED_AVAILABILITY&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Bucket</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_acl</span> <span class="o">=</span> <span class="n">BucketACL</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -196,7 +196,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;The client bound to this bucket.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
 
-<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.blob">[docs]</a>    <span class="k">def</span> <span class="nf">blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory constructor for blob object.</span>
 
 <span class="sd">        .. note::</span>
@@ -216,7 +216,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Blob</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.exists"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this bucket exists.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
@@ -235,15 +235,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1"># would limit the local properties.</span>
             <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                           <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                                          <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+                                          <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span></div>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.create"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates current bucket.</span>
 
 <span class="sd">        If the bucket already exists, will raise</span>
@@ -298,7 +298,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.get_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.get_blob">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a blob object by name.</span>
 
 <span class="sd">        This will return None if the blob doesn&#39;t exist::</span>
@@ -333,11 +333,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1">#       raised.</span>
             <span class="k">return</span> <span class="n">blob</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">delimiter</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.list_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.list_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">list_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">versions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;noAcl&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an iterator used to find blobs in the bucket.</span>
 
 <span class="sd">        :type max_results: integer or ``NoneType``</span>
@@ -378,32 +378,32 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">extra_params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_results</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;maxResults&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_results</span>
 
-        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prefix</span>
 
-        <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">delimiter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">delimiter</span>
 
-        <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;versions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span>
 
         <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">projection</span>
 
-        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">extra_params</span><span class="p">[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fields</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterator_class</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">extra_params</span><span class="o">=</span><span class="n">extra_params</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="c1"># Page token must be handled specially since the base `Iterator`</span>
         <span class="c1"># class has it as a reserved property.</span>
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">result</span><span class="o">.</span><span class="n">next_page_token</span> <span class="o">=</span> <span class="n">page_token</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete this bucket.</span>
 
 <span class="sd">        The bucket **must** be empty in order to submit a delete request. If</span>
@@ -444,16 +444,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
             <span class="c1"># Ignore 404 errors on delete.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">delete_blobs</span><span class="p">(</span><span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="k">lambda</span> <span class="n">blob</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
                               <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 
         <span class="c1"># We intentionally pass `_target_object=None` since a DELETE</span>
         <span class="c1"># request has no response value (whether in a standard request or</span>
         <span class="c1"># in a batch request).</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
-                                      <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+                                      <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blob">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from the current bucket.</span>
 
 <span class="sd">        If the blob isn&#39;t found (backend 404), raises a</span>
@@ -492,9 +492,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># request has no response value (whether in a standard request or</span>
         <span class="c1"># in a batch request).</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">blob_path</span><span class="p">,</span>
-                                      <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+                                      <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.delete_blobs"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.delete_blobs">[docs]</a>    <span class="k">def</span> <span class="nf">delete_blobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blobs</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a list of blobs from the current bucket.</span>
 
 <span class="sd">        Uses :func:`Bucket.delete_blob` to delete each individual blob.</span>
@@ -521,13 +521,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                     <span class="n">blob_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="n">blob_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">on_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">on_error</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span></div>
 
-<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.copy_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.copy_blob">[docs]</a>    <span class="k">def</span> <span class="nf">copy_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">destination_bucket</span><span class="p">,</span> <span class="n">new_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the given blob to the given bucket, optionally with a new name.</span>
 
 <span class="sd">        :type blob: :class:`gcloud.storage.blob.Blob`</span>
@@ -548,7 +548,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The new Blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">new_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">new_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span>
         <span class="n">new_blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span><span class="n">bucket</span><span class="o">=</span><span class="n">destination_bucket</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span>
         <span class="n">api_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;/copyTo&#39;</span> <span class="o">+</span> <span class="n">new_blob</span><span class="o">.</span><span class="n">path</span>
@@ -557,7 +557,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">new_blob</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">copy_result</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_blob</span></div>
 
-<div class="viewcode-block" id="Bucket.rename_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.rename_blob">[docs]</a>    <span class="k">def</span> <span class="nf">rename_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.rename_blob"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.rename_blob">[docs]</a>    <span class="k">def</span> <span class="nf">rename_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">,</span> <span class="n">new_name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Rename the given blob using copy and delete operations.</span>
 
 <span class="sd">        Effectively, copies blob to the same bucket with a new name, then</span>
@@ -599,7 +599,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">policy</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">,</span> <span class="p">())]</span>
 
-    <span class="nd">@cors.setter</span>
+    <span class="nd">@cors</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">cors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set CORS policies configured for this bucket.</span>
 
@@ -649,7 +649,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span> <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="p">())]</span>
 
-    <span class="nd">@lifecycle_rules.setter</span>
+    <span class="nd">@lifecycle_rules</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">lifecycle_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the lifecycle rules configured for this bucket.</span>
 
@@ -703,7 +703,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        See: https://cloud.google.com/storage/docs/accesslogs#disabling</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;logging&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">metageneration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -716,7 +716,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -742,7 +742,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">project_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;projectNumber&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">project_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">project_number</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">project_number</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -771,7 +771,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;storageClass&#39;</span><span class="p">)</span>
 
-    <span class="nd">@storage_class.setter</span>
+    <span class="nd">@storage_class</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">storage_class</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the storage class for the bucket.</span>
 
@@ -798,7 +798,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeCreated&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -812,9 +812,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: True if enabled, else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">versioning</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;versioning&#39;</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">versioning</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;enabled&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-    <span class="nd">@versioning_enabled.setter</span>
+    <span class="nd">@versioning_enabled</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">versioning_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable versioning for this bucket.</span>
 
@@ -826,7 +826,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_property</span><span class="p">(</span><span class="s1">&#39;versioning&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;enabled&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)})</span>
 
-<div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.configure_website"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.configure_website">[docs]</a>    <span class="k">def</span> <span class="nf">configure_website</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">main_page_suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">not_found_page</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configure website-related properties.</span>
 
 <span class="sd">        See: https://developers.google.com/storage/docs/website-configuration</span>
@@ -872,9 +872,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        This is really just a shortcut for setting the website-related</span>
 <span class="sd">        attributes to ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">configure_website</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Bucket.make_public"><a class="viewcode-back" href="../../../storage-buckets.html#gcloud.storage.bucket.Bucket.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make a bucket public.</span>
 
 <span class="sd">        If ``recursive=True`` and the bucket contains more than 256</span>

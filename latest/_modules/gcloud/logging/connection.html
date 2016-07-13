@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.connection &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.logging.connection &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/connection%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/connection%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -107,7 +107,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">&quot;&quot;&quot;Create / interact with Stackdriver Logging connections.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud</span> <span class="kn">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
+<span class="kn">from</span> <span class="nn">gcloud</span> <span class="k">import</span> <span class="n">connection</span> <span class="k">as</span> <span class="n">base_connection</span>
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../logging-client.html#gcloud.logging.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">base_connection</span><span class="o">.</span><span class="n">JSONConnection</span><span class="p">):</span>
@@ -131,7 +131,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">API_VERSION</span> <span class="o">=</span> <span class="s1">&#39;v2beta1&#39;</span>
     <span class="sd">&quot;&quot;&quot;The version of the API, used in building the API call&#39;s URL.&quot;&quot;&quot;</span>
 
-    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;{api_base_url}/{api_version}{path}&#39;</span>
+    <span class="n">API_URL_TEMPLATE</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{api_base_url}</span><span class="s1">/</span><span class="si">{api_version}{path}</span><span class="s1">&#39;</span>
     <span class="sd">&quot;&quot;&quot;A template for the URL of a particular API call.&quot;&quot;&quot;</span>
 
     <span class="n">SCOPE</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;https://www.googleapis.com/auth/logging.read&#39;</span><span class="p">,</span>
@@ -154,8 +154,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
-    <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                     <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a page of log entry resources.</span>
 
 <span class="sd">        See:</span>
@@ -189,16 +189,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projectIds&#39;</span><span class="p">:</span> <span class="n">projects</span><span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span>
 
-        <span class="k">if</span> <span class="n">order_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">order_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;orderBy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">order_by</span>
 
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span>
@@ -206,8 +206,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entries&#39;</span><span class="p">,</span> <span class="p">()),</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">write_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entries</span><span class="p">,</span> <span class="n">logger_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resource</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log an entry resource via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -230,13 +230,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;entries&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">entries</span><span class="p">)}</span>
 
-        <span class="k">if</span> <span class="n">logger_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">logger_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;logName&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">logger_name</span>
 
-        <span class="k">if</span> <span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">resource</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;resource&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">resource</span>
 
-        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;/entries:write&#39;</span><span class="p">,</span>
@@ -270,7 +270,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
-    <span class="k">def</span> <span class="nf">list_sinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">list_sinks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List sinks for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
@@ -295,10 +295,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/sinks&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
@@ -406,7 +406,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_connection</span> <span class="o">=</span> <span class="n">connection</span>
 
-    <span class="k">def</span> <span class="nf">list_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">list_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List metrics for the project associated with this client.</span>
 
 <span class="sd">        See:</span>
@@ -431,10 +431,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_size</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="s1">&#39;pageToken&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">page_token</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">%s</span><span class="s1">/metrics&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,)</span>
@@ -443,7 +443,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">metrics</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metrics&#39;</span><span class="p">,</span> <span class="p">())</span>
         <span class="k">return</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">metric_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">metric_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">project</span><span class="p">,</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">filter_</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create a metric resource.</span>
 
 <span class="sd">        See:</span>

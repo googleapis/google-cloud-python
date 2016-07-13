@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.storage.blob &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.storage.blob &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/storage/blob%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -110,7 +110,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -118,22 +118,22 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">httplib2</span>
 <span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+<span class="kn">from</span> <span class="nn">six.moves.urllib.parse</span> <span class="k">import</span> <span class="n">quote</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_rfc3339_to_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_bytes_to_unicode</span>
-<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="kn">import</span> <span class="n">generate_signed_url</span>
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">make_exception</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_PropertyMixin</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="kn">import</span> <span class="n">_scalar_property</span>
-<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="kn">import</span> <span class="n">ObjectACL</span>
-<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="kn">import</span> <span class="n">Request</span>
-<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="kn">import</span> <span class="n">make_api_request</span>
-<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="kn">import</span> <span class="n">Download</span>
-<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="kn">import</span> <span class="n">RESUMABLE_UPLOAD</span>
-<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="kn">import</span> <span class="n">Upload</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_rfc3339_to_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_bytes_to_unicode</span>
+<span class="kn">from</span> <span class="nn">gcloud.credentials</span> <span class="k">import</span> <span class="n">generate_signed_url</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">make_exception</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="k">import</span> <span class="n">_PropertyMixin</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage._helpers</span> <span class="k">import</span> <span class="n">_scalar_property</span>
+<span class="kn">from</span> <span class="nn">gcloud.storage.acl</span> <span class="k">import</span> <span class="n">ObjectACL</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">Request</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.http_wrapper</span> <span class="k">import</span> <span class="n">make_api_request</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Download</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="k">import</span> <span class="n">RESUMABLE_UPLOAD</span>
+<span class="kn">from</span> <span class="nn">gcloud.streaming.transfer</span> <span class="k">import</span> <span class="n">Upload</span>
 
 
 <span class="n">_API_ACCESS_ENDPOINT</span> <span class="o">=</span> <span class="s1">&#39;https://storage.googleapis.com&#39;</span>
@@ -155,12 +155,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       specification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_chunk_size</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># Default value for each instance.</span>
+    <span class="n">_chunk_size</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Default value for each instance.</span>
 
     <span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">1024</span>
     <span class="sd">&quot;&quot;&quot;Number (256 KB, in bytes) that must divide the chunk size.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">chunk_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Blob</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="o">=</span> <span class="n">chunk_size</span>  <span class="c1"># Check that setter accepts value.</span>
@@ -176,7 +176,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span>
 
-    <span class="nd">@chunk_size.setter</span>
+    <span class="nd">@chunk_size</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">chunk_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the blob&#39;s default chunk size.</span>
 
@@ -186,7 +186,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`ValueError` if ``value`` is not ``None`` and is not a</span>
 <span class="sd">                 multiple of 256 KB.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Chunk size must be a multiple of </span><span class="si">%d</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_CHUNK_SIZE_MULTIPLE</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_chunk_size</span> <span class="o">=</span> <span class="n">value</span>
@@ -215,7 +215,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="p">:</span>
             <span class="n">bucket_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">bucket_name</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">bucket_name</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">return</span> <span class="s1">&#39;&lt;Blob: </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">bucket_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
@@ -243,15 +243,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: `string`</span>
 <span class="sd">        :returns: The public URL for this blob.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s1">&#39;{storage_base_url}/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{storage_base_url}</span><span class="s1">/</span><span class="si">{bucket_name}</span><span class="s1">/</span><span class="si">{quoted_name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">storage_base_url</span><span class="o">=</span><span class="s1">&#39;https://storage.googleapis.com&#39;</span><span class="p">,</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Blob.generate_signed_url"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.generate_signed_url">[docs]</a>    <span class="k">def</span> <span class="nf">generate_signed_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-                            <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                            <span class="n">generation</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">response_disposition</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                            <span class="n">response_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                            <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">generation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response_disposition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">response_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generates a signed URL for this blob.</span>
 
 <span class="sd">        .. note::</span>
@@ -314,11 +314,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: A signed URL you can use to access the resource</span>
 <span class="sd">                  until expiration.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">resource</span> <span class="o">=</span> <span class="s1">&#39;/{bucket_name}/{quoted_name}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">resource</span> <span class="o">=</span> <span class="s1">&#39;/</span><span class="si">{bucket_name}</span><span class="s1">/</span><span class="si">{quoted_name}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">quoted_name</span><span class="o">=</span><span class="n">quote</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">safe</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
             <span class="n">credentials</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">credentials</span>
 
@@ -331,7 +331,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">response_disposition</span><span class="o">=</span><span class="n">response_disposition</span><span class="p">,</span>
             <span class="n">generation</span><span class="o">=</span><span class="n">generation</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.exists"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determines whether or not this blob exists.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
@@ -350,15 +350,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1"># would limit the local properties.</span>
             <span class="n">client</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">api_request</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
                                           <span class="n">query_params</span><span class="o">=</span><span class="n">query_params</span><span class="p">,</span>
-                                          <span class="n">_target_object</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+                                          <span class="n">_target_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
             <span class="c1"># NOTE: This will not fail immediately in a batch. However, when</span>
             <span class="c1">#       Batch.finish() is called, the resulting `NotFound` will be</span>
             <span class="c1">#       raised.</span>
-            <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span></div>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.delete"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes a blob from Cloud Storage.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
@@ -373,7 +373,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">delete_blob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_file">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a file-like object.</span>
 
 <span class="sd">        .. note::</span>
@@ -415,7 +415,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`gcloud.exceptions.NotFound`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># not yet loaded</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># not yet loaded</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
 
         <span class="n">download_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">media_link</span>
@@ -423,7 +423,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Use apitools &#39;Download&#39; facility.</span>
         <span class="n">download</span> <span class="o">=</span> <span class="n">Download</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span><span class="n">file_obj</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">download</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
@@ -440,7 +440,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># it has all three (http, API_BASE_URL and build_api_url).</span>
         <span class="n">download</span><span class="o">.</span><span class="n">initialize_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">_connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_to_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_to_filename">[docs]</a>    <span class="k">def</span> <span class="nf">download_to_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob into a named file.</span>
 
 <span class="sd">        :type filename: string</span>
@@ -463,7 +463,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">mtime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated</span><span class="o">.</span><span class="n">timetuple</span><span class="p">())</span>
         <span class="n">os</span><span class="o">.</span><span class="n">utime</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">mtime</span><span class="p">,</span> <span class="n">mtime</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.download_as_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.download_as_string">[docs]</a>    <span class="k">def</span> <span class="nf">download_as_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Download the contents of this blob as a string.</span>
 
 <span class="sd">        :type encryption_key: str or bytes</span>
@@ -494,9 +494,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                  <span class="n">error_info</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
 
     <span class="c1"># pylint: disable=too-many-locals</span>
-<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                         <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-                         <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_file"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_obj</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload the contents of this blob from a file-like object.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -582,7 +582,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
         <span class="c1"># Get the basic stats about the file.</span>
         <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">size</span>
-        <span class="k">if</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">total_bytes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="s1">&#39;fileno&#39;</span><span class="p">):</span>
                 <span class="n">total_bytes</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">fstat</span><span class="p">(</span><span class="n">file_obj</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span><span class="o">.</span><span class="n">st_size</span>
             <span class="k">else</span><span class="p">:</span>
@@ -598,9 +598,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">_set_encryption_headers</span><span class="p">(</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
 
         <span class="n">upload</span> <span class="o">=</span> <span class="n">Upload</span><span class="p">(</span><span class="n">file_obj</span><span class="p">,</span> <span class="n">content_type</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span>
-                        <span class="n">auto_transfer</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                        <span class="n">auto_transfer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">upload</span><span class="o">.</span><span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_size</span>
 
         <span class="n">url_builder</span> <span class="o">=</span> <span class="n">_UrlBuilder</span><span class="p">(</span><span class="n">bucket_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
@@ -624,7 +624,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">upload</span><span class="o">.</span><span class="n">initialize_upload</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">upload</span><span class="o">.</span><span class="n">strategy</span> <span class="o">==</span> <span class="n">RESUMABLE_UPLOAD</span><span class="p">:</span>
-            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">http_response</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">stream_file</span><span class="p">(</span><span class="n">use_chunks</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">http_response</span> <span class="o">=</span> <span class="n">make_api_request</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">http</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
                                              <span class="n">retries</span><span class="o">=</span><span class="n">num_retries</span><span class="p">)</span>
@@ -638,8 +638,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_properties</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">response_content</span><span class="p">))</span></div>
     <span class="c1"># pylint: enable=too-many-locals</span>
 
-<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.upload_from_filename"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_filename">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload this blob&#39;s contents from the content of a named file.</span>
 
 <span class="sd">        The content type of the upload will either be</span>
@@ -673,7 +673,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       to the ``client`` stored on the blob&#39;s bucket.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">content_type</span> <span class="o">=</span> <span class="n">content_type</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;contentType&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">content_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">content_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">content_type</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_obj</span><span class="p">:</span>
@@ -681,7 +681,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                   <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Blob.upload_from_string"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.upload_from_string">[docs]</a>    <span class="k">def</span> <span class="nf">upload_from_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-                           <span class="n">encryption_key</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                           <span class="n">encryption_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Upload contents of this blob from the provided string.</span>
 
 <span class="sd">        .. note::</span>
@@ -715,11 +715,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
         <span class="n">string_buffer</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
         <span class="n">string_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">upload_from_file</span><span class="p">(</span><span class="n">file_obj</span><span class="o">=</span><span class="n">string_buffer</span><span class="p">,</span> <span class="n">rewind</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                               <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">,</span>
                               <span class="n">encryption_key</span><span class="o">=</span><span class="n">encryption_key</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Blob.make_public"><a class="viewcode-back" href="../../../storage-blobs.html#gcloud.storage.blob.Blob.make_public">[docs]</a>    <span class="k">def</span> <span class="nf">make_public</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Make this blob public giving all users read access.</span>
 
 <span class="sd">        :type client: :class:`gcloud.storage.client.Client` or ``NoneType``</span>
@@ -807,7 +807,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  will not be set on objects not created via ``compose``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">component_count</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;componentCount&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">component_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">component_count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">component_count</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -833,7 +833,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">generation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;generation&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">generation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">generation</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -883,7 +883,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metadata&#39;</span><span class="p">))</span>
 
-    <span class="nd">@metadata.setter</span>
+    <span class="nd">@metadata</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update arbitrary/application specific metadata for the object.</span>
 
@@ -905,7 +905,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">metageneration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;metageneration&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">metageneration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">metageneration</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -943,7 +943,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -972,7 +972,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  not been deleted, this will never be set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeDeleted&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -986,7 +986,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  ``None`` if the property is not set locally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;updated&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_rfc3339_to_datetime</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
@@ -997,11 +997,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    &#39;samples/storage_sample/storage/storage_v1_client.py&#39;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">accept</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;*/*&#39;</span><span class="p">]</span>
-    <span class="n">max_size</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">resumable_multipart</span> <span class="o">=</span> <span class="bp">True</span>
-    <span class="n">resumable_path</span> <span class="o">=</span> <span class="s1">u&#39;/resumable/upload/storage/v1/b/{bucket}/o&#39;</span>
-    <span class="n">simple_multipart</span> <span class="o">=</span> <span class="bp">True</span>
-    <span class="n">simple_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/storage/v1/b/{bucket}/o&#39;</span>
+    <span class="n">max_size</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">resumable_multipart</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">resumable_path</span> <span class="o">=</span> <span class="s1">u&#39;/resumable/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o&#39;</span>
+    <span class="n">simple_multipart</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">simple_path</span> <span class="o">=</span> <span class="s1">u&#39;/upload/storage/v1/b/</span><span class="si">{bucket}</span><span class="s1">/o&#39;</span>
 
 
 <span class="k">class</span> <span class="nc">_UrlBuilder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

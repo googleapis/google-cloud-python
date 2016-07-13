@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -107,10 +107,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">&quot;&quot;&quot;Define API Subscriptions.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">NotFound</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="kn">import</span> <span class="n">topic_name_from_path</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="kn">import</span> <span class="n">Policy</span>
-<span class="kn">from</span> <span class="nn">gcloud.pubsub.message</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">NotFound</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub._helpers</span> <span class="k">import</span> <span class="n">topic_name_from_path</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">Policy</span>
+<span class="kn">from</span> <span class="nn">gcloud.pubsub.message</span> <span class="k">import</span> <span class="n">Message</span>
 
 
 <div class="viewcode-block" id="Subscription"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription">[docs]</a><span class="k">class</span> <span class="nc">Subscription</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -146,13 +146,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    https://cloud.google.com/pubsub/reference/rest/v1/projects.subscriptions#Subscription.FIELDS.topic</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Pass only one of &#39;topic&#39; or &#39;client&#39;.&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">topic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Pass only one of &#39;topic&#39; or &#39;client&#39;.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -163,7 +163,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.from_api_repr"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.from_api_repr">[docs]</a>    <span class="k">def</span> <span class="nf">from_api_repr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">resource</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">topics</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Factory:  construct a topic given its API representation</span>
 
 <span class="sd">        :type resource: dict</span>
@@ -180,14 +180,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.pubsub.subscription.Subscription`</span>
 <span class="sd">        :returns: Subscription parsed from ``resource``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">topics</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">topics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">topics</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">topic_path</span> <span class="o">=</span> <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;topic&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">topic_path</span> <span class="o">==</span> <span class="n">cls</span><span class="o">.</span><span class="n">_DELETED_TOPIC_PATH</span><span class="p">:</span>
-            <span class="n">topic</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">topic</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">topic</span> <span class="o">=</span> <span class="n">topics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># NOTE: This duplicates behavior from Topic.from_api_repr to</span>
                 <span class="c1">#       avoid an import cycle.</span>
                 <span class="n">topic_name</span> <span class="o">=</span> <span class="n">topic_name_from_path</span><span class="p">(</span><span class="n">topic_path</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
@@ -196,7 +196,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">ack_deadline</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ackDeadlineSeconds&#39;</span><span class="p">)</span>
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">topic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="o">=</span><span class="n">ack_deadline</span><span class="p">,</span>
                        <span class="n">push_endpoint</span><span class="o">=</span><span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span></div>
@@ -227,11 +227,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.pubsub.client.Client`</span>
 <span class="sd">        :returns: The client passed in or the currently bound client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
         <span class="k">return</span> <span class="n">client</span>
 
-<div class="viewcode-block" id="Subscription.create"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.create"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  create the subscription via a PUT request</span>
 
 <span class="sd">        See:</span>
@@ -253,7 +253,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ack_deadline</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.exists"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.exists">[docs]</a>    <span class="k">def</span> <span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  test existence of the subscription via a GET request</span>
 
 <span class="sd">        See</span>
@@ -274,11 +274,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">try</span><span class="p">:</span>
             <span class="n">api</span><span class="o">.</span><span class="n">subscription_get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">NotFound</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span></div>
+            <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Subscription.reload"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.reload"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  sync local subscription configuration via a GET request</span>
 
 <span class="sd">        See</span>
@@ -301,7 +301,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">push_config</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushConfig&#39;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pushEndpoint&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.delete"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete the subscription via a DELETE request.</span>
 
 <span class="sd">        See:</span>
@@ -321,7 +321,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.modify_push_configuration"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_push_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">modify_push_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.modify_push_configuration"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_push_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">modify_push_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update the push endpoint for the subscription.</span>
 
 <span class="sd">        See:</span>
@@ -351,7 +351,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_modify_push_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">push_endpoint</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">push_endpoint</span> <span class="o">=</span> <span class="n">push_endpoint</span></div>
 
-<div class="viewcode-block" id="Subscription.pull"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.pull"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.pull">[docs]</a>    <span class="k">def</span> <span class="nf">pull</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  retrieve messages for the subscription.</span>
 
 <span class="sd">        See:</span>
@@ -388,7 +388,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="p">[(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;ackId&#39;</span><span class="p">],</span> <span class="n">Message</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]))</span>
                 <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">response</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Subscription.acknowledge"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.acknowledge"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.acknowledge">[docs]</a>    <span class="k">def</span> <span class="nf">acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  acknowledge retrieved messages for the subscription.</span>
 
 <span class="sd">        See:</span>
@@ -411,7 +411,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">subscriber_api</span>
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_acknowledge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.modify_ack_deadline"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.modify_ack_deadline"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.modify_ack_deadline">[docs]</a>    <span class="k">def</span> <span class="nf">modify_ack_deadline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  update acknowledgement deadline for a retrieved message.</span>
 
 <span class="sd">        See:</span>
@@ -432,7 +432,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">api</span><span class="o">.</span><span class="n">subscription_modify_ack_deadline</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">ack_ids</span><span class="p">,</span> <span class="n">ack_deadline</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.get_iam_policy"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.get_iam_policy"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.get_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Fetch the IAM policy for the subscription.</span>
 
 <span class="sd">        See:</span>
@@ -457,7 +457,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.set_iam_policy"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.set_iam_policy"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.set_iam_policy">[docs]</a>    <span class="k">def</span> <span class="nf">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update the IAM policy for the subscription.</span>
 
 <span class="sd">        See:</span>
@@ -487,7 +487,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">resp</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="n">resource</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Policy</span><span class="o">.</span><span class="n">from_api_repr</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Subscription.check_iam_permissions"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.check_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">check_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Subscription.check_iam_permissions"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.check_iam_permissions">[docs]</a>    <span class="k">def</span> <span class="nf">check_iam_permissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">permissions</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify permissions allowed for the current user.</span>
 
 <span class="sd">        See:</span>

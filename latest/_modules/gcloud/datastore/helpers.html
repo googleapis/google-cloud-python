@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.helpers &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.datastore.helpers &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/helpers%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/helpers%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,20 +113,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="kn">import</span> <span class="n">struct_pb2</span>
-<span class="kn">from</span> <span class="nn">google.type</span> <span class="kn">import</span> <span class="n">latlng_pb2</span>
+<span class="kn">from</span> <span class="nn">google.protobuf</span> <span class="k">import</span> <span class="n">struct_pb2</span>
+<span class="kn">from</span> <span class="nn">google.type</span> <span class="k">import</span> <span class="n">latlng_pb2</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_to_pb_timestamp</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_pb_timestamp_to_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="kn">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="kn">import</span> <span class="n">Entity</span>
-<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_to_pb_timestamp</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_pb_timestamp_to_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore._generated</span> <span class="k">import</span> <span class="n">entity_pb2</span> <span class="k">as</span> <span class="n">_entity_pb2</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.entity</span> <span class="k">import</span> <span class="n">Entity</span>
+<span class="kn">from</span> <span class="nn">gcloud.datastore.key</span> <span class="k">import</span> <span class="n">Key</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;entity_from_protobuf&#39;</span><span class="p">,</span> <span class="s1">&#39;key_from_protobuf&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get the meaning from a protobuf value.</span>
 
 <span class="sd">    :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`</span>
@@ -143,12 +143,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">              means it just returns a list of meanings. If all the</span>
 <span class="sd">              list meanings agree, it just condenses them.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">meaning</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">meaning</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">is_list</span><span class="p">:</span>
         <span class="c1"># An empty list will have no values, hence no shared meaning</span>
         <span class="c1"># set among them.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
         <span class="c1"># We check among all the meanings, some of which may be None,</span>
         <span class="c1"># the rest which may be enum/int values.</span>
@@ -207,7 +207,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :rtype: :class:`gcloud.datastore.entity.Entity`</span>
 <span class="sd">    :returns: The entity derived from the protobuf.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">):</span>  <span class="c1"># Message field (Key)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">key_from_protobuf</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
 
@@ -222,7 +222,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Check if the property has an associated meaning.</span>
         <span class="n">is_list</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
         <span class="n">meaning</span> <span class="o">=</span> <span class="n">_get_meaning</span><span class="p">(</span><span class="n">value_pb</span><span class="p">,</span> <span class="n">is_list</span><span class="o">=</span><span class="n">is_list</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">entity_meanings</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">meaning</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
         <span class="c1"># Check if ``value_pb`` was excluded from index. Lists need to be</span>
@@ -249,7 +249,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 
 <span class="k">def</span> <span class="nf">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
-                                <span class="n">is_list</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+                                <span class="n">is_list</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add meaning information (from an entity) to a protobuf.</span>
 
 <span class="sd">    :type entity: :class:`gcloud.datastore.entity.Entity`</span>
@@ -284,7 +284,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">val_iter</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
                                  <span class="n">meaning</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">sub_value_pb</span><span class="p">,</span> <span class="n">sub_meaning</span> <span class="ow">in</span> <span class="n">val_iter</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">sub_meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sub_meaning</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">sub_value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">sub_meaning</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">value_pb</span><span class="o">.</span><span class="n">meaning</span> <span class="o">=</span> <span class="n">meaning</span>
@@ -300,7 +300,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: The protobuf representing the entity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">entity_pb</span> <span class="o">=</span> <span class="n">_entity_pb2</span><span class="o">.</span><span class="n">Entity</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">key_pb</span> <span class="o">=</span> <span class="n">entity</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
         <span class="n">entity_pb</span><span class="o">.</span><span class="n">key</span><span class="o">.</span><span class="n">CopyFrom</span><span class="p">(</span><span class="n">key_pb</span><span class="p">)</span>
 
@@ -316,10 +316,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Add index information to protobuf.</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">entity</span><span class="o">.</span><span class="n">exclude_from_indexes</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">value_is_list</span><span class="p">:</span>
-                <span class="n">value_pb</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">value_pb</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="kc">True</span>
 
             <span class="k">for</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value_pb</span><span class="o">.</span><span class="n">array_value</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
-                <span class="n">sub_value</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">sub_value</span><span class="o">.</span><span class="n">exclude_from_indexes</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Add meaning information to protobuf.</span>
         <span class="n">_set_pb_meaning_from_entity</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">value_pb</span><span class="p">,</span>
@@ -350,10 +350,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
             <span class="n">path_args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="n">project</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">project_id</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
         <span class="n">project</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">project_id</span>
-    <span class="n">namespace</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">namespace</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace_id</span><span class="p">:</span>  <span class="c1"># Simple field (string)</span>
         <span class="n">namespace</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">partition_id</span><span class="o">.</span><span class="n">namespace_id</span>
 
@@ -413,7 +413,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span> <span class="n">val</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">):</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;geo_point&#39;</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">to_protobuf</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">val</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span> <span class="n">struct_pb2</span><span class="o">.</span><span class="n">NULL_VALUE</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown protobuf attr type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
@@ -473,7 +473,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                           <span class="n">value_pb</span><span class="o">.</span><span class="n">geo_point_value</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">value_type</span> <span class="o">==</span> <span class="s1">&#39;null_value&#39;</span><span class="p">:</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Value protobuf did not have any value set&#39;</span><span class="p">)</span>
@@ -547,7 +547,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: True if the points compare equal, else False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">GeoPoint</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">latitude</span> <span class="ow">and</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>

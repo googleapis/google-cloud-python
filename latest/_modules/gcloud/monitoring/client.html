@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.monitoring.client &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.monitoring.client &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/client%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/client%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -121,13 +121,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    https://cloud.google.com/monitoring/api/v3/</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="kn">import</span> <span class="n">JSONClient</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="kn">import</span> <span class="n">MetricDescriptor</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="kn">import</span> <span class="n">MetricKind</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="kn">import</span> <span class="n">ValueType</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.query</span> <span class="kn">import</span> <span class="n">Query</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.resource</span> <span class="kn">import</span> <span class="n">ResourceDescriptor</span>
+<span class="kn">from</span> <span class="nn">gcloud.client</span> <span class="k">import</span> <span class="n">JSONClient</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.connection</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="k">import</span> <span class="n">MetricDescriptor</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="k">import</span> <span class="n">MetricKind</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.metric</span> <span class="k">import</span> <span class="n">ValueType</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.query</span> <span class="k">import</span> <span class="n">Query</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.resource</span> <span class="k">import</span> <span class="n">ResourceDescriptor</span>
 
 
 <div class="viewcode-block" id="Client"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client">[docs]</a><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">JSONClient</span><span class="p">):</span>
@@ -154,7 +154,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <div class="viewcode-block" id="Client.query"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client.query">[docs]</a>    <span class="k">def</span> <span class="nf">query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
               <span class="n">metric_type</span><span class="o">=</span><span class="n">Query</span><span class="o">.</span><span class="n">DEFAULT_METRIC_TYPE</span><span class="p">,</span>
-              <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+              <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">days</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a query object for retrieving metric data.</span>
 
@@ -303,7 +303,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">MetricDescriptor</span><span class="o">.</span><span class="n">_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_metric_descriptors"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client.list_metric_descriptors">[docs]</a>    <span class="k">def</span> <span class="nf">list_metric_descriptors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">type_prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_metric_descriptors"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client.list_metric_descriptors">[docs]</a>    <span class="k">def</span> <span class="nf">list_metric_descriptors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all metric descriptors for the project.</span>
 
 <span class="sd">        Examples::</span>
@@ -352,7 +352,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ResourceDescriptor</span><span class="o">.</span><span class="n">_fetch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_type</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Client.list_resource_descriptors"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client.list_resource_descriptors">[docs]</a>    <span class="k">def</span> <span class="nf">list_resource_descriptors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Client.list_resource_descriptors"><a class="viewcode-back" href="../../../monitoring-client.html#gcloud.monitoring.client.Client.list_resource_descriptors">[docs]</a>    <span class="k">def</span> <span class="nf">list_resource_descriptors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;List all monitored resource descriptors for the project.</span>
 
 <span class="sd">        Example::</span>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.logging.logger &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.logging.logger &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/logger%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/logging/logger%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -109,7 +109,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="kn">import</span> <span class="n">MessageToJson</span>
+<span class="kn">from</span> <span class="nn">google.protobuf.json_format</span> <span class="k">import</span> <span class="n">MessageToJson</span>
 
 
 <div class="viewcode-block" id="Logger"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger">[docs]</a><span class="k">class</span> <span class="nc">Logger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -129,7 +129,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param labels: (optional) mapping of default labels for entries written</span>
 <span class="sd">                   via this logger.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span>
@@ -164,11 +164,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :rtype: :class:`gcloud.logging.client.Client`</span>
 <span class="sd">        :returns: The client passed in or the currently bound client.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span>
         <span class="k">return</span> <span class="n">client</span>
 
-<div class="viewcode-block" id="Logger.batch"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.batch"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.batch">[docs]</a>    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a batch to use as a context manager.</span>
 
 <span class="sd">        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``</span>
@@ -181,9 +181,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_make_entry_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                             <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_make_entry_resource</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                             <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a log entry resource of the appropriate type.</span>
 
 <span class="sd">        Helper for :meth:`log_text`, :meth:`log_struct`, and :meth:`log_proto`.</span>
@@ -217,36 +217,36 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;global&#39;</span><span class="p">},</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;textPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
 
-        <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;jsonPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
 
-        <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">as_json_str</span> <span class="o">=</span> <span class="n">MessageToJson</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
             <span class="n">as_json</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">as_json_str</span><span class="p">)</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">as_json</span>
 
-        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span>
 
-        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
 
-        <span class="k">if</span> <span class="n">insert_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">insert_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">insert_id</span>
 
-        <span class="k">if</span> <span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">severity</span>
 
-        <span class="k">if</span> <span class="n">http_request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">http_request</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">resource</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">http_request</span>
 
         <span class="k">return</span> <span class="n">resource</span>
 
-<div class="viewcode-block" id="Logger.log_text"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.log_text"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a text message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -278,8 +278,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Logger.log_struct"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.log_struct"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a structured message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -311,8 +311,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Logger.log_proto"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.log_proto"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  log a protobuf message via a POST request</span>
 
 <span class="sd">        See:</span>
@@ -344,7 +344,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">severity</span><span class="o">=</span><span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="o">=</span><span class="n">http_request</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">write_entries</span><span class="p">([</span><span class="n">entry_resource</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Logger.delete"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.delete"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;API call:  delete all entries in a logger via a DELETE request</span>
 
 <span class="sd">        See:</span>
@@ -357,8 +357,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_require_client</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
         <span class="n">client</span><span class="o">.</span><span class="n">logging_api</span><span class="o">.</span><span class="n">logger_delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Logger.list_entries"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.list_entries">[docs]</a>    <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                     <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Logger.list_entries"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Logger.list_entries">[docs]</a>    <span class="k">def</span> <span class="nf">list_entries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projects</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a page of log entries.</span>
 
 <span class="sd">        See:</span>
@@ -392,7 +392,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                  value as ``page_token``).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">log_filter</span> <span class="o">=</span> <span class="s1">&#39;logName=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
-        <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filter_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filter_</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> AND </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">filter_</span><span class="p">,</span> <span class="n">log_filter</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">filter_</span> <span class="o">=</span> <span class="n">log_filter</span>
@@ -421,11 +421,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exc_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Batch.log_text"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.log_text"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_text">[docs]</a>    <span class="k">def</span> <span class="nf">log_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a text entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type text: string</span>
@@ -447,8 +447,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Batch.log_struct"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.log_struct"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_struct">[docs]</a>    <span class="k">def</span> <span class="nf">log_struct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a struct entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type info: dict</span>
@@ -470,8 +470,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;struct&#39;</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Batch.log_proto"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">http_request</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.log_proto"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.log_proto">[docs]</a>    <span class="k">def</span> <span class="nf">log_proto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">insert_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">severity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">http_request</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a protobuf entry to be logged during :meth:`commit`.</span>
 
 <span class="sd">        :type message: protobuf message</span>
@@ -493,21 +493,21 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="s1">&#39;proto&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">insert_id</span><span class="p">,</span> <span class="n">severity</span><span class="p">,</span> <span class="n">http_request</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Batch.commit"><a class="viewcode-back" href="../../../logging-logger.html#gcloud.logging.logger.Batch.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Send saved log entries as a single API call.</span>
 
 <span class="sd">        :type client: :class:`gcloud.logging.client.Client` or ``NoneType``</span>
 <span class="sd">        :param client: the client to use.  If not passed, falls back to the</span>
 <span class="sd">                       ``client`` stored on the current batch.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;logger_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="s1">&#39;resource&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;global&#39;</span><span class="p">},</span>
         <span class="p">}</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">labels</span>
 
         <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
@@ -522,13 +522,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="n">info</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;protoPayload&#39;</span><span class="p">:</span> <span class="n">as_json</span><span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown entry type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">entry_type</span><span class="p">,))</span>
-            <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
-            <span class="k">if</span> <span class="n">iid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">iid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;insertId&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iid</span>
-            <span class="k">if</span> <span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">severity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;severity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">severity</span>
-            <span class="k">if</span> <span class="n">http_req</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">http_req</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">info</span><span class="p">[</span><span class="s1">&#39;httpRequest&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">http_req</span>
             <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
 

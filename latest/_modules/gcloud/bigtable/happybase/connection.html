@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,32 +113,32 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="kn">import</span> <span class="n">interfaces</span>
-<span class="kn">from</span> <span class="nn">grpc.framework.interfaces.face</span> <span class="kn">import</span> <span class="n">face</span>
+<span class="kn">from</span> <span class="nn">grpc.beta</span> <span class="k">import</span> <span class="n">interfaces</span>
+<span class="kn">from</span> <span class="nn">grpc.framework.interfaces.face</span> <span class="k">import</span> <span class="n">face</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">happybase.hbase.ttypes</span> <span class="kn">import</span> <span class="n">AlreadyExists</span>
+    <span class="kn">from</span> <span class="nn">happybase.hbase.ttypes</span> <span class="k">import</span> <span class="n">AlreadyExists</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="kn">import</span> <span class="n">Conflict</span> <span class="k">as</span> <span class="n">AlreadyExists</span>
+    <span class="kn">from</span> <span class="nn">gcloud.exceptions</span> <span class="k">import</span> <span class="n">Conflict</span> <span class="k">as</span> <span class="n">AlreadyExists</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.client</span> <span class="kn">import</span> <span class="n">Client</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">GCRuleIntersection</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">MaxAgeGCRule</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="kn">import</span> <span class="n">MaxVersionsGCRule</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.table</span> <span class="kn">import</span> <span class="n">Table</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.table</span> <span class="kn">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">_LowLevelTable</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.client</span> <span class="k">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">GCRuleIntersection</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">MaxAgeGCRule</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">MaxVersionsGCRule</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.table</span> <span class="k">import</span> <span class="n">Table</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.table</span> <span class="k">import</span> <span class="n">Table</span> <span class="k">as</span> <span class="n">_LowLevelTable</span>
 
 
 <span class="c1"># Constants reproduced here for HappyBase compatibility, though values</span>
 <span class="c1"># are all null.</span>
-<span class="n">COMPAT_MODES</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">THRIFT_TRANSPORTS</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">THRIFT_PROTOCOLS</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">DEFAULT_HOST</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">DEFAULT_PORT</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">DEFAULT_TRANSPORT</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">DEFAULT_COMPAT</span> <span class="o">=</span> <span class="bp">None</span>
-<span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">COMPAT_MODES</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">THRIFT_TRANSPORTS</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">THRIFT_PROTOCOLS</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DEFAULT_HOST</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DEFAULT_PORT</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DEFAULT_TRANSPORT</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DEFAULT_COMPAT</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">DEFAULT_PROTOCOL</span> <span class="o">=</span> <span class="kc">None</span>
 
 <span class="n">_LEGACY_ARGS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">((</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="s1">&#39;compat&#39;</span><span class="p">,</span> <span class="s1">&#39;transport&#39;</span><span class="p">,</span> <span class="s1">&#39;protocol&#39;</span><span class="p">))</span>
 <span class="n">_WARN</span> <span class="o">=</span> <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span>
@@ -147,7 +147,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                        <span class="s1">&#39;of enabled / disabled tables.&#39;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Gets instance for the default project.</span>
 
 <span class="sd">    Creates a client with the inferred credentials and project ID from</span>
@@ -167,8 +167,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if there is a failed</span>
 <span class="sd">             location or any number of instances other than one.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">client_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
-    <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">client_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">client_kwargs</span><span class="p">[</span><span class="s1">&#39;timeout_seconds&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timeout</span> <span class="o">/</span> <span class="mf">1000.0</span>
     <span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="o">**</span><span class="n">client_kwargs</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -237,12 +237,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                   compatibility.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_instance</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">autoconnect</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">table_prefix</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">table_prefix_separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">autoconnect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">table_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">table_prefix_separator</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_handle_legacy_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">table_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">table_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">string_types</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;table_prefix must be a string&#39;</span><span class="p">,</span> <span class="s1">&#39;received&#39;</span><span class="p">,</span>
                                 <span class="n">table_prefix</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">table_prefix</span><span class="p">))</span>
@@ -255,10 +255,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="o">=</span> <span class="n">table_prefix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix_separator</span> <span class="o">=</span> <span class="n">table_prefix_separator</span>
 
-        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Timeout cannot be used when an existing &#39;</span>
                                  <span class="s1">&#39;instance is passed&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -266,7 +266,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">autoconnect</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_handle_legacy_args</span><span class="p">(</span><span class="n">arguments_dict</span><span class="p">):</span>
@@ -312,7 +312,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_table_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
@@ -325,12 +325,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns: The prefixed name, if the current connection has a table</span>
 <span class="sd">                  prefix set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">name</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix_separator</span> <span class="o">+</span> <span class="n">name</span>
 
-<div class="viewcode-block" id="Connection.table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">use_prefix</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">use_prefix</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Table factory.</span>
 
 <span class="sd">        :type name: str</span>
@@ -367,7 +367,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                        <span class="k">for</span> <span class="n">table_instance</span> <span class="ow">in</span> <span class="n">low_level_table_instances</span><span class="p">]</span>
 
         <span class="c1"># Filter using prefix, and strip prefix from names</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">prefix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
             <span class="n">offset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
             <span class="n">table_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span><span class="p">[</span><span class="n">offset</span><span class="p">:]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">table_names</span>
@@ -452,7 +452,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                 <span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
             <span class="n">column_family</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Connection.delete_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.delete_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete the specified table.</span>
 
 <span class="sd">        :type name: str</span>
@@ -513,7 +513,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API has no concept of &#39;</span>
                                   <span class="s1">&#39;enabled or disabled tables.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Connection.compact_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table">[docs]</a>    <span class="k">def</span> <span class="nf">compact_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.compact_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table">[docs]</a>    <span class="k">def</span> <span class="nf">compact_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compact the specified table.</span>
 
 <span class="sd">        .. warning::</span>
@@ -556,20 +556,20 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">_WARN</span><span class="p">(</span><span class="n">warning_msg</span><span class="p">)</span>
 
         <span class="n">max_num_versions</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_versions&#39;</span><span class="p">)</span>
-        <span class="n">max_age</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">max_age</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="s1">&#39;time_to_live&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
             <span class="n">max_age</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;time_to_live&#39;</span><span class="p">])</span>
 
-        <span class="n">versions_rule</span> <span class="o">=</span> <span class="n">age_rule</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">if</span> <span class="n">max_num_versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">versions_rule</span> <span class="o">=</span> <span class="n">age_rule</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">max_num_versions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">versions_rule</span> <span class="o">=</span> <span class="n">MaxVersionsGCRule</span><span class="p">(</span><span class="n">max_num_versions</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_age</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_age</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">age_rule</span> <span class="o">=</span> <span class="n">MaxAgeGCRule</span><span class="p">(</span><span class="n">max_age</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">versions_rule</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">versions_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="n">age_rule</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">age_rule</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">age_rule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">versions_rule</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">GCRuleIntersection</span><span class="p">(</span><span class="n">rules</span><span class="o">=</span><span class="p">[</span><span class="n">age_rule</span><span class="p">,</span> <span class="n">versions_rule</span><span class="p">])</span>

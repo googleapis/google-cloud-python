@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.monitoring.query &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.monitoring.query &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/query%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/query%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -118,8 +118,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.monitoring._dataframe</span> <span class="kn">import</span> <span class="n">_build_dataframe</span>
-<span class="kn">from</span> <span class="nn">gcloud.monitoring.timeseries</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring._dataframe</span> <span class="k">import</span> <span class="n">_build_dataframe</span>
+<span class="kn">from</span> <span class="nn">gcloud.monitoring.timeseries</span> <span class="k">import</span> <span class="n">TimeSeries</span>
 
 <span class="n">_UTCNOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>  <span class="c1"># To be replaced by tests.</span>
 
@@ -213,15 +213,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span>
                  <span class="n">metric_type</span><span class="o">=</span><span class="n">DEFAULT_METRIC_TYPE</span><span class="p">,</span>
-                 <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="n">start_time</span> <span class="o">=</span> <span class="bp">None</span>
+                 <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hours</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minutes</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">days</span> <span class="ow">or</span> <span class="n">hours</span> <span class="ow">or</span> <span class="n">minutes</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">end_time</span> <span class="o">=</span> <span class="n">_UTCNOW</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">,</span>
                                                        <span class="n">hours</span><span class="o">=</span><span class="n">hours</span><span class="p">,</span>
                                                        <span class="n">minutes</span><span class="o">=</span><span class="n">minutes</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Non-zero duration required for time interval.&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
@@ -229,9 +229,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="o">=</span> <span class="n">start_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="n">_Filter</span><span class="p">(</span><span class="n">metric_type</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_per_series_aligner</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment_period_seconds</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cross_series_reducer</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_per_series_aligner</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alignment_period_seconds</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cross_series_reducer</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_group_by_fields</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -252,7 +252,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Query.select_interval"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.select_interval">[docs]</a>    <span class="k">def</span> <span class="nf">select_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Query.select_interval"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.select_interval">[docs]</a>    <span class="k">def</span> <span class="nf">select_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Copy the query and set the query time interval.</span>
 
 <span class="sd">        Example::</span>
@@ -499,7 +499,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">new_query</span><span class="o">.</span><span class="n">_group_by_fields</span> <span class="o">=</span> <span class="n">group_by_fields</span>
         <span class="k">return</span> <span class="n">new_query</span></div>
 
-<div class="viewcode-block" id="Query.iter"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Query.iter"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield all time series objects selected by the query.</span>
 
 <span class="sd">        Note that the :class:`Query` object itself is an iterable, such that</span>
@@ -537,7 +537,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">points</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>  <span class="c1"># Order from oldest to newest.</span>
             <span class="k">yield</span> <span class="n">timeseries</span><span class="o">.</span><span class="n">header</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_iter_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_iter_fragments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield all time series fragments selected by the query.</span>
 
 <span class="sd">        There may be multiple fragments per time series. These will be</span>
@@ -545,14 +545,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        The parameters and return value are as for :meth:`Query.iter`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_end_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Query time interval not specified.&#39;</span><span class="p">)</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/{project}/timeSeries/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/projects/</span><span class="si">{project}</span><span class="s1">/timeSeries/&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">project</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span><span class="p">)</span>
 
-        <span class="n">page_token</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">page_token</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">params</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_query_params</span><span class="p">(</span>
                 <span class="n">headers_only</span><span class="o">=</span><span class="n">headers_only</span><span class="p">,</span>
                 <span class="n">page_size</span><span class="o">=</span><span class="n">page_size</span><span class="p">,</span>
@@ -570,8 +570,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="k">if</span> <span class="ow">not</span> <span class="n">page_token</span><span class="p">:</span>
                 <span class="k">break</span>
 
-    <span class="k">def</span> <span class="nf">_build_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                            <span class="n">page_size</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_build_query_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                            <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield key-value pairs for the URL query string.</span>
 
 <span class="sd">        We use a series of key-value pairs instead of a ``dict`` to allow for</span>
@@ -595,18 +595,18 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">yield</span> <span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span>
 
         <span class="k">yield</span> <span class="s1">&#39;interval.endTime&#39;</span><span class="p">,</span> <span class="n">_format_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_time</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;interval.startTime&#39;</span><span class="p">,</span> <span class="n">_format_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_time</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_series_aligner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_series_aligner</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;aggregation.perSeriesAligner&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_per_series_aligner</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment_period_seconds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">alignment_period</span> <span class="o">=</span> <span class="s1">&#39;{period}s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alignment_period_seconds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">alignment_period</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{period}</span><span class="s1">s&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">period</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_alignment_period_seconds</span><span class="p">)</span>
             <span class="k">yield</span> <span class="s1">&#39;aggregation.alignmentPeriod&#39;</span><span class="p">,</span> <span class="n">alignment_period</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cross_series_reducer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cross_series_reducer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="p">(</span><span class="s1">&#39;aggregation.crossSeriesReducer&#39;</span><span class="p">,</span>
                    <span class="bp">self</span><span class="o">.</span><span class="n">_cross_series_reducer</span><span class="p">)</span>
 
@@ -616,13 +616,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="n">headers_only</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;view&#39;</span><span class="p">,</span> <span class="s1">&#39;HEADERS&#39;</span>
 
-        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;pageSize&#39;</span><span class="p">,</span> <span class="n">page_size</span>
 
-        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page_token</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">yield</span> <span class="s1">&#39;pageToken&#39;</span><span class="p">,</span> <span class="n">page_token</span>
 
-<div class="viewcode-block" id="Query.as_dataframe"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Query.as_dataframe"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return all the selected time series as a :mod:`pandas` dataframe.</span>
 
 <span class="sd">        .. note::</span>
@@ -682,10 +682,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">metric_type</span> <span class="o">=</span> <span class="n">metric_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">projects</span> <span class="o">=</span> <span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">resource_label_filter</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metric_label_filter</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_label_filter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_label_filter</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">select_resources</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Select by resource labels.</span>
@@ -704,12 +704,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                                                        <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;metric.type = &quot;{type}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric_type</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;group.id = &quot;{id}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">))</span>
+        <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;metric.type = &quot;</span><span class="si">{type}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metric_type</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;group.id = &quot;</span><span class="si">{id}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_id</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects</span><span class="p">:</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s1">&#39; OR &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;project = &quot;{project}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
+                <span class="s1">&#39; OR &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;project = &quot;</span><span class="si">{project}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects</span><span class="p">))</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_label_filter</span><span class="p">:</span>
             <span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_label_filter</span><span class="p">)</span>
@@ -725,10 +725,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="sd">&quot;&quot;&quot;Construct a filter string to filter on metric or resource labels.&quot;&quot;&quot;</span>
     <span class="n">terms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">suffix</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_prefix&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_suffix&#39;</span><span class="p">):</span>
             <span class="n">key</span><span class="p">,</span> <span class="n">suffix</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -738,11 +738,11 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">category</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;prefix&#39;</span><span class="p">:</span>
-            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;{key} = starts_with(&quot;{value}&quot;)&#39;</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{key}</span><span class="s1"> = starts_with(&quot;</span><span class="si">{value}</span><span class="s1">&quot;)&#39;</span>
         <span class="k">elif</span> <span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;suffix&#39;</span><span class="p">:</span>
-            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;{key} = ends_with(&quot;{value}&quot;)&#39;</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{key}</span><span class="s1"> = ends_with(&quot;</span><span class="si">{value}</span><span class="s1">&quot;)&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;{key} = &quot;{value}&quot;&#39;</span>
+            <span class="n">term</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{key}</span><span class="s1"> = &quot;</span><span class="si">{value}</span><span class="s1">&quot;&#39;</span>
 
         <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">))</span>
 
@@ -759,9 +759,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :returns: The formatted timestamp. For example:</span>
 <span class="sd">        ``&quot;2016-02-17T19:18:01.763000Z&quot;``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">tzinfo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Convert to UTC and remove the time zone info.</span>
-        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;Z&#39;</span>
 </pre></div>

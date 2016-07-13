@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.pool &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.happybase.pool &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/pool%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/pool%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,8 +113,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="kn">import</span> <span class="n">_get_instance</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable.happybase.connection</span> <span class="k">import</span> <span class="n">_get_instance</span>
 
 
 <span class="n">_MIN_POOL_SIZE</span> <span class="o">=</span> <span class="mi">1</span>
@@ -167,7 +167,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_thread_connections</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">local</span><span class="p">()</span>
 
         <span class="n">connection_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
-        <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;autoconnect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;autoconnect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="s1">&#39;instance&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">connection_kwargs</span><span class="p">:</span>
             <span class="n">connection_kwargs</span><span class="p">[</span><span class="s1">&#39;instance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_instance</span><span class="p">(</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;timeout&#39;</span><span class="p">))</span>
@@ -176,7 +176,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="o">**</span><span class="n">connection_kwargs</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">connection</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_acquire_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_acquire_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Acquire a connection from the pool.</span>
 
 <span class="sd">        :type timeout: int</span>
@@ -189,13 +189,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 before the ``timeout`` (only if a timeout is specified).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">six</span><span class="o">.</span><span class="n">moves</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">NoConnectionsAvailable</span><span class="p">(</span><span class="s1">&#39;No connection available from pool &#39;</span>
                                          <span class="s1">&#39;within specified timeout&#39;</span><span class="p">)</span>
 
-    <span class="nd">@contextlib.contextmanager</span>
-<div class="viewcode-block" id="ConnectionPool.connection"><a class="viewcode-back" href="../../../../happybase-pool.html#gcloud.bigtable.happybase.pool.ConnectionPool.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<div class="viewcode-block" id="ConnectionPool.connection"><a class="viewcode-back" href="../../../../happybase-pool.html#gcloud.bigtable.happybase.pool.ConnectionPool.connection">[docs]</a>    <span class="k">def</span> <span class="nf">connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Obtain a connection from the pool.</span>
 
 <span class="sd">        Must be used as a context manager, for example::</span>
@@ -216,10 +216,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                 retrieved from the pool before the ``timeout`` (only if</span>
 <span class="sd">                 a timeout is specified).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">connection</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_thread_connections</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_thread_connections</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="n">retrieved_new_cnxn</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">retrieved_new_cnxn</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">connection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># In this case we need to actually grab a connection from the</span>
             <span class="c1"># pool. After retrieval, the connection is stored on a thread</span>
             <span class="c1"># local so that nested connection requests from the same</span>
@@ -229,7 +229,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="c1">#       thread local; see</span>
             <span class="c1">#       (&#39;https://emptysqua.re/blog/&#39;</span>
             <span class="c1">#        &#39;another-thing-about-pythons-threadlocals/&#39;)</span>
-            <span class="n">retrieved_new_cnxn</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">retrieved_new_cnxn</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">connection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_connection</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_thread_connections</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="n">connection</span>

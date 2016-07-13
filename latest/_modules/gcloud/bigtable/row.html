@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.row &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.row &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -112,12 +112,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_from_microseconds</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_microseconds_from_datetime</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_microseconds_from_datetime</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">data_pb2</span> <span class="k">as</span> <span class="n">data_v2_pb2</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">messages_v2_pb2</span><span class="p">)</span>
 
 
@@ -185,8 +185,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">_set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                  <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                  <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`set_cell`</span>
 
 <span class="sd">        Adds a mutation to set the value in a specific cell.</span>
@@ -219,7 +219,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">six</span><span class="o">.</span><span class="n">integer_types</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="n">_PACK_I64</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_to_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Use -1 for current Bigtable server time.</span>
             <span class="n">timestamp_micros</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span>
@@ -236,7 +236,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">set_cell</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`delete`</span>
 
 <span class="sd">        Adds a delete mutation (for the entire row) to the accumulated</span>
@@ -253,8 +253,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">mutation_pb</span> <span class="o">=</span> <span class="n">data_v2_pb2</span><span class="o">.</span><span class="n">Mutation</span><span class="p">(</span><span class="n">delete_from_row</span><span class="o">=</span><span class="n">mutation_val</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`delete_cell` and :meth:`delete_cells`.</span>
 
 <span class="sd">        ``state`` is unused by :class:`DirectRow` but is used by</span>
@@ -288,7 +288,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="n">mutations_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mutation_pb</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">delete_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">if</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">time_range</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">delete_kwargs</span><span class="p">[</span><span class="s1">&#39;time_range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_range</span><span class="o">.</span><span class="n">to_pb</span><span class="p">()</span>
 
             <span class="n">to_append</span> <span class="o">=</span> <span class="p">[]</span>
@@ -360,7 +360,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pb_mutations</span>
 
-<div class="viewcode-block" id="DirectRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets a value in this row.</span>
 
 <span class="sd">        The cell is determined by the ``row_key`` of this :class:`DirectRow`</span>
@@ -392,7 +392,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :param timestamp: (Optional) The timestamp of the operation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
-                       <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+                       <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DirectRow.delete"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes this row from the table.</span>
@@ -404,9 +404,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">            send an API request (with the mutations) to the Google Cloud</span>
 <span class="sd">            Bigtable API, call :meth:`commit`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DirectRow.delete_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectRow.delete_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes cell in this row.</span>
 
 <span class="sd">        .. note::</span>
@@ -430,9 +430,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                           should be deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
-                           <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+                           <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DirectRow.delete_cells"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cells">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectRow.delete_cells"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.delete_cells">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes cells in this row.</span>
 
 <span class="sd">        .. note::</span>
@@ -458,7 +458,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                           should be deleted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
-                           <span class="n">state</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span></div>
+                           <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DirectRow.commit"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.DirectRow.commit">[docs]</a>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes a ``MutateRow`` API request.</span>
@@ -475,7 +475,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the number of</span>
 <span class="sd">                 mutations exceeds the :data:`MAX_MUTATIONS`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mutations_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">mutations_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="n">num_mutations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mutations_list</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_mutations</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span>
@@ -584,8 +584,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if the number of</span>
 <span class="sd">                 mutations exceeds the :data:`MAX_MUTATIONS`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">true_mutations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="n">false_mutations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">true_mutations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">false_mutations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mutations</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">num_true_mutations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_mutations</span><span class="p">)</span>
         <span class="n">num_false_mutations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">false_mutations</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">num_true_mutations</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">num_false_mutations</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -612,8 +612,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">predicate_matched</span></div>
 
     <span class="c1"># pylint: disable=arguments-differ</span>
-<div class="viewcode-block" id="ConditionalRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ConditionalRow.set_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.set_cell">[docs]</a>    <span class="k">def</span> <span class="nf">set_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Sets a value in this row.</span>
 
 <span class="sd">        The cell is determined by the ``row_key`` of this</span>
@@ -652,7 +652,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_set_cell</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
                        <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ConditionalRow.delete"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ConditionalRow.delete"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes this row from the table.</span>
 
 <span class="sd">        .. note::</span>
@@ -668,8 +668,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_delete</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ConditionalRow.delete_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                    <span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ConditionalRow.delete_cell"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete_cell">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes cell in this row.</span>
 
 <span class="sd">        .. note::</span>
@@ -699,8 +699,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="bp">self</span><span class="o">.</span><span class="n">_delete_cells</span><span class="p">(</span><span class="n">column_family_id</span><span class="p">,</span> <span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">time_range</span><span class="o">=</span><span class="n">time_range</span><span class="p">,</span>
                            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ConditionalRow.delete_cells"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete_cells">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                     <span class="n">state</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ConditionalRow.delete_cells"><a class="viewcode-back" href="../../../bigtable-row.html#gcloud.bigtable.row.ConditionalRow.delete_cells">[docs]</a>    <span class="k">def</span> <span class="nf">delete_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_family_id</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">time_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Deletes cells in this row.</span>
 
 <span class="sd">        .. note::</span>

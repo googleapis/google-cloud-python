@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.row_data &mdash; gcloud a1b8066 documentation</title>
+    <title>gcloud.bigtable.row_data &mdash; gcloud aed487d documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     'a1b8066',
+        VERSION:     'aed487d',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud a1b8066 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud aed487d documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row_data%0ARelease%3A%20a1b8066" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/row_data%0ARelease%3A%20aed487d" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (a1b8066)
+              Version History (aed487d)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,8 +111,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">six</span>
 
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_datetime_from_microseconds</span>
-<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="kn">import</span> <span class="n">_to_bytes</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_datetime_from_microseconds</span>
+<span class="kn">from</span> <span class="nn">gcloud._helpers</span> <span class="k">import</span> <span class="n">_to_bytes</span>
 
 
 <div class="viewcode-block" id="Cell"><a class="viewcode-back" href="../../../bigtable-row-data.html#gcloud.bigtable.row_data.Cell">[docs]</a><span class="k">class</span> <span class="nc">Cell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -151,7 +151,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">labels</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
@@ -219,7 +219,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_row_key</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_key</span> <span class="ow">and</span>
                 <span class="n">other</span><span class="o">.</span><span class="n">_cells</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cells</span><span class="p">)</span>
 
@@ -293,19 +293,19 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Counter for responses pulled from iterator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1"># Maybe cached from previous response</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># In-progress row, unset until first response, after commit/reset</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Last complete row, unset until first commit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># In-progress cell, unset until first response, after completion</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># Last complete cell, unset until first completion, after new row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">return</span> <span class="kc">False</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">_response_iterator</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span>
 
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
@@ -319,15 +319,15 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :returns:  name of state corresponding to currrent row / chunk</span>
 <span class="sd">                   processing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">START</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="ow">is</span> <span class="bp">None</span>
-            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="ow">is</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_ROW</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">CELL_IN_PROGRESS</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROW_IN_PROGRESS</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">NEW_ROW</span>  <span class="c1"># row added, no chunk yet processed</span>
 
@@ -355,7 +355,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">response</span> <span class="o">=</span> <span class="n">six</span><span class="o">.</span><span class="n">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_response_iterator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>  <span class="c1"># first response</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_scanned_row_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># first response</span>
             <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">last_scanned_row_key</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">InvalidReadRowsResponse</span><span class="p">()</span>
 
@@ -369,14 +369,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
             <span class="bp">self</span><span class="o">.</span><span class="n">_validate_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">reset_row</span><span class="p">:</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">row</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span> <span class="o">=</span> <span class="n">PartialRowData</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span> <span class="o">=</span> <span class="n">PartialCellData</span><span class="p">(</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">,</span>
                     <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
@@ -390,14 +390,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
             <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_row</span><span class="p">()</span>
-                <span class="n">row</span> <span class="o">=</span> <span class="n">cell</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="bp">None</span></div>
+                <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="PartialRowsData.consume_all"><a class="viewcode-back" href="../../../bigtable-row-data.html#gcloud.bigtable.row_data.PartialRowsData.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_loops</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PartialRowsData.consume_all"><a class="viewcode-back" href="../../../bigtable-row-data.html#gcloud.bigtable.row_data.PartialRowsData.consume_all">[docs]</a>    <span class="k">def</span> <span class="nf">consume_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_loops</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Consume the streamed responses until there are no more.</span>
 
 <span class="sd">        This simply calls :meth:`consume_next` until there are no</span>
@@ -409,7 +409,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                          to avoid long wait times.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">curr_loop</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">if</span> <span class="n">max_loops</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_loops</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">max_loops</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
         <span class="k">while</span> <span class="n">curr_loop</span> <span class="o">&lt;</span> <span class="n">max_loops</span><span class="p">:</span>
             <span class="n">curr_loop</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -443,9 +443,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">_raise_if</span><span class="p">(</span><span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">family_name</span><span class="p">)</span>
         <span class="n">_raise_if</span><span class="p">(</span><span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">qualifier</span><span class="p">)</span>
         <span class="c1"># This constraint is not enforced in the Go example.</span>
-        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">_raise_if</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value_size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">chunk</span><span class="o">.</span><span class="n">commit_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span>
         <span class="c1"># This constraint is from the Go example, not the spec.</span>
-        <span class="n">_raise_if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+        <span class="n">_raise_if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
                   <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span><span class="o">.</span><span class="n">row_key</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_same_as_previous</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
@@ -492,12 +492,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">qualified</span> <span class="o">=</span> <span class="n">family</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">qualifier</span><span class="p">,</span> <span class="p">[])</span>
         <span class="n">complete</span> <span class="o">=</span> <span class="n">Cell</span><span class="o">.</span><span class="n">from_pb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">)</span>
         <span class="n">qualified</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">complete</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">cell</span>
 
     <span class="k">def</span> <span class="nf">_copy_from_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`consume_next`.&quot;&quot;&quot;</span>
         <span class="n">current</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span>
-        <span class="k">if</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">current</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span><span class="p">:</span>
                 <span class="n">chunk</span><span class="o">.</span><span class="n">row_key</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="n">row_key</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="o">.</span><span class="n">HasField</span><span class="p">(</span><span class="s1">&#39;family_name&#39;</span><span class="p">):</span>
@@ -512,7 +512,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">_copy_from_previous</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Helper for :meth:`consume_next`.&quot;&quot;&quot;</span>
         <span class="n">previous</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span>
-        <span class="k">if</span> <span class="n">previous</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">previous</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">row_key</span><span class="p">:</span>
                 <span class="n">cell</span><span class="o">.</span><span class="n">row_key</span> <span class="o">=</span> <span class="n">previous</span><span class="o">.</span><span class="n">row_key</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="o">.</span><span class="n">family_name</span><span class="p">:</span>
@@ -525,8 +525,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_save_current_cell</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="o">.</span><span class="n">row_key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="bp">None</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_row</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_previous_row</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_previous_cell</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <span class="k">def</span> <span class="nf">_raise_if</span><span class="p">(</span><span class="n">predicate</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
