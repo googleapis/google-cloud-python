@@ -23,9 +23,29 @@ a ``to_delete`` list;  the function adds to the list any objects created which
 need to be deleted during teardown.
 """
 
+import operator
 import time
 
+from gcloud.bigquery import SchemaField
 from gcloud.bigquery.client import Client
+
+ORIGINAL_FRIENDLY_NAME = 'Original friendly name'
+ORIGINAL_DESCRIPTION = 'Original description'
+LOCALLY_CHANGED_FRIENDLY_NAME = 'Locally-changed friendly name'
+LOCALLY_CHANGED_DESCRIPTION = 'Locally-changed description'
+PATCHED_FRIENDLY_NAME = 'Patched friendly name'
+PATCHED_DESCRIPTION = 'Patched description'
+UPDATED_FRIENDLY_NAME = 'Updated friendly name'
+UPDATED_DESCRIPTION = 'Updated description'
+
+SCHEMA = [
+    SchemaField('full_name', 'STRING', mode='required'),
+    SchemaField('age', 'INTEGER', mode='required'),
+]
+
+QUERY = (
+    'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
+    'WHERE state = "TX"')
 
 
 def snippet(func):
@@ -36,6 +56,15 @@ def snippet(func):
 
 def _millis():
     return time.time() * 1000
+
+
+class _CloseOnDelete(object):
+
+    def __init__(self, wrapped):
+        self._wrapped = wrapped
+
+    def delete(self):
+        self._wrapped.close()
 
 
 @snippet
@@ -87,8 +116,6 @@ def dataset_exists(client, to_delete):
 def dataset_reload(client, to_delete):
     """Reload a dataset's metadata."""
     DATASET_NAME = 'dataset_reload_%d' % (_millis(),)
-    ORIGINAL_DESCRIPTION = 'Original description'
-    LOCALLY_CHANGED_DESCRIPTION = 'Locally-changed description'
     dataset = client.dataset(DATASET_NAME)
     dataset.description = ORIGINAL_DESCRIPTION
     dataset.create()
@@ -107,8 +134,6 @@ def dataset_reload(client, to_delete):
 def dataset_patch(client, to_delete):
     """Patch a dataset's metadata."""
     DATASET_NAME = 'dataset_patch_%d' % (_millis(),)
-    ORIGINAL_DESCRIPTION = 'Original description'
-    PATCHED_DESCRIPTION = 'Patched description'
     dataset = client.dataset(DATASET_NAME)
     dataset.description = ORIGINAL_DESCRIPTION
     dataset.create()
@@ -130,8 +155,6 @@ def dataset_patch(client, to_delete):
 def dataset_update(client, to_delete):
     """Update a dataset's metadata."""
     DATASET_NAME = 'dataset_update_%d' % (_millis(),)
-    ORIGINAL_DESCRIPTION = 'Original description'
-    UPDATED_DESCRIPTION = 'Updated description'
     dataset = client.dataset(DATASET_NAME)
     dataset.description = ORIGINAL_DESCRIPTION
     dataset.create()
@@ -170,6 +193,268 @@ def dataset_delete(client, to_delete):  # pylint: disable=unused-argument
     dataset.delete()
     assert not dataset.exists()   # API request
     # [END dataset_delete]
+
+
+@snippet
+def dataset_list_tables(client, to_delete):
+    """List tables within a dataset."""
+    DATASET_NAME = 'dataset_list_tables_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'dataset_list_tables_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    # [START dataset_list_tables]
+    tables, token = dataset.list_tables()   # API request
+    assert len(tables) == 0
+    assert token is None
+    table = dataset.table(TABLE_NAME)
+    table.view_query = QUERY
+    table.create()                          # API request
+    tables, token = dataset.list_tables()   # API request
+    assert len(tables) == 1
+    assert tables[0].name == TABLE_NAME
+    # [END dataset_list_tables]
+    to_delete.insert(0, table)
+
+
+@snippet
+def table_create(client, to_delete):
+    """Create a table."""
+    DATASET_NAME = 'table_create_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_create_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    # [START table_create]
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.create()                          # API request
+    # [END table_create]
+
+    to_delete.insert(0, table)
+
+
+@snippet
+def table_exists(client, to_delete):
+    """Test existence of a table."""
+    DATASET_NAME = 'table_exists_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_exists_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    # [START table_exists]
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    assert not table.exists()               # API request
+    table.create()                          # API request
+    assert table.exists()                   # API request
+    # [END table_exists]
+
+    to_delete.insert(0, table)
+
+
+@snippet
+def table_reload(client, to_delete):
+    """Reload a table's metadata."""
+    DATASET_NAME = 'table_reload_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_reload_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.friendly_name = ORIGINAL_FRIENDLY_NAME
+    table.description = ORIGINAL_DESCRIPTION
+    table.create()
+    to_delete.insert(0, table)
+
+    # [START table_reload]
+    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME
+    assert table.description == ORIGINAL_DESCRIPTION
+    table.friendly_name = LOCALLY_CHANGED_FRIENDLY_NAME
+    table.description = LOCALLY_CHANGED_DESCRIPTION
+    table.reload()                  # API request
+    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME
+    assert table.description == ORIGINAL_DESCRIPTION
+    # [END table_reload]
+
+
+@snippet
+def table_patch(client, to_delete):
+    """Patch a table's metadata."""
+    DATASET_NAME = 'table_patch_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_patch_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.description = ORIGINAL_DESCRIPTION
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.friendly_name = ORIGINAL_FRIENDLY_NAME
+    table.description = ORIGINAL_DESCRIPTION
+    table.create()
+    to_delete.insert(0, table)
+
+    # [START table_patch]
+    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME
+    assert table.description == ORIGINAL_DESCRIPTION
+    table.patch(
+        friendly_name=PATCHED_FRIENDLY_NAME,
+        description=PATCHED_DESCRIPTION,
+    )      # API request
+    assert table.friendly_name == PATCHED_FRIENDLY_NAME
+    assert table.description == PATCHED_DESCRIPTION
+    # [END table_patch]
+
+
+@snippet
+def table_update(client, to_delete):
+    """Update a table's metadata."""
+    DATASET_NAME = 'table_update_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_update_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.description = ORIGINAL_DESCRIPTION
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.friendly_name = ORIGINAL_FRIENDLY_NAME
+    table.description = ORIGINAL_DESCRIPTION
+    table.create()
+    to_delete.insert(0, table)
+
+    # [START table_update]
+    assert table.friendly_name == ORIGINAL_FRIENDLY_NAME
+    assert table.description == ORIGINAL_DESCRIPTION
+    NEW_SCHEMA = table.schema[:]
+    NEW_SCHEMA.append(SchemaField('phone', 'string'))
+    table.friendly_name = UPDATED_FRIENDLY_NAME
+    table.description = UPDATED_DESCRIPTION
+    table.schema = NEW_SCHEMA
+    table.update()              # API request
+    assert table.friendly_name == UPDATED_FRIENDLY_NAME
+    assert table.description == UPDATED_DESCRIPTION
+    assert table.schema == NEW_SCHEMA
+    # [END table_update]
+
+
+def _warm_up_inserted_table_data(table):
+    # Allow for 90 seconds of "warm up" before rows visible.  See:
+    # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+    rows = ()
+    counter = 18
+
+    while len(rows) == 0 and counter > 0:
+        counter -= 1
+        rows, _, _ = table.fetch_data()
+        if len(rows) == 0:
+            time.sleep(5)
+
+
+@snippet
+def table_insert_fetch_data(client, to_delete):
+    """Insert / fetch table data."""
+    DATASET_NAME = 'table_insert_fetch_data_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_insert_fetch_data_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.create()
+    to_delete.insert(0, table)
+
+    # [START table_insert_data]
+    ROWS_TO_INSERT = [
+        (u'Phred Phlyntstone', 32),
+        (u'Wylma Phlyntstone', 29),
+    ]
+
+    table.insert_data(ROWS_TO_INSERT)
+    # [END table_insert_data]
+
+    _warm_up_inserted_table_data(table)
+
+    found_rows = []
+
+    def do_something(row):
+        found_rows.append(row)
+
+    # [START table_fetch_data]
+    rows, _, token = table.fetch_data()
+    while True:
+        for row in rows:
+            do_something(row)
+        if token is None:
+            break
+        rows, _, token = table.fetch_data(page_token=token)
+    # [END table_fetch_data]
+
+    assert len(found_rows) == len(ROWS_TO_INSERT)
+    by_age = operator.itemgetter(1)
+    found_rows = reversed(sorted(found_rows, key=by_age))
+    for found, to_insert in zip(found_rows, ROWS_TO_INSERT):
+        assert found == to_insert
+
+
+@snippet
+def table_upload_from_file(client, to_delete):
+    """Upload table data from a CSV file."""
+    import csv
+    import tempfile
+    DATASET_NAME = 'table_upload_from_file_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_upload_from_file_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.create()
+    to_delete.insert(0, table)
+
+    csv_file = tempfile.NamedTemporaryFile(suffix='.csv')
+    to_delete.append(_CloseOnDelete(csv_file))
+
+    # [START table_upload_from_file]
+    writer = csv.writer(csv_file)
+    writer.writerow((b'full_name', b'age'))
+    writer.writerow((b'Phred Phlyntstone', b'32'))
+    writer.writerow((b'Wylma Phlyntstone', b'29'))
+    csv_file.flush()
+
+    with open(csv_file.name, 'rb') as readable:
+        table.upload_from_file(
+            readable, source_format='CSV', skip_leading_rows=1)
+    # [END table_upload_from_file]
+
+    _warm_up_inserted_table_data(table)
+
+    rows, total, token = table.fetch_data()
+
+    assert len(rows) == total == 2
+    assert token is None
+    assert rows[0] == (u'Phred Phlyntstone', 32)
+    assert rows[1] == (u'Wylma Phlyntstone', 29)
+
+
+@snippet
+def table_delete(client, to_delete):  # pylint: disable=unused-argument
+    """Delete a table."""
+    DATASET_NAME = 'table_delete_dataset_%d' % (_millis(),)
+    TABLE_NAME = 'table_create_table_%d' % (_millis(),)
+    dataset = client.dataset(DATASET_NAME)
+    dataset.create()
+    to_delete.append(dataset)
+
+    table = dataset.table(TABLE_NAME, SCHEMA)
+    table.create()
+
+    # [START table_delete]
+    assert table.exists()       # API request
+    table.delete()              # API request
+    assert not table.exists()   # API request
+    # [END table_delete]
 
 
 def _find_examples():
