@@ -16,6 +16,7 @@ script:
 
 after_success:
   - tox -e coveralls
+  - tox -e codecov
 
 deploy:
   provider: pypi

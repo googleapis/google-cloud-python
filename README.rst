@@ -286,8 +286,8 @@ Apache 2.0 - See `LICENSE`_ for more information.
 
 .. |build| image:: https://travis-ci.org/GoogleCloudPlatform/gcloud-python.svg?branch=master
    :target: https://travis-ci.org/GoogleCloudPlatform/gcloud-python
-.. |coverage| image:: https://coveralls.io/repos/GoogleCloudPlatform/gcloud-python/badge.png?branch=master
-   :target: https://coveralls.io/r/GoogleCloudPlatform/gcloud-python?branch=master
+.. |coverage| image:: https://codecov.io/gh/GoogleCloudPlatform/gcloud-python/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/GoogleCloudPlatform/gcloud-python
 .. |pypi| image:: https://img.shields.io/pypi/v/gcloud.svg
    :target: https://pypi.python.org/pypi/gcloud
 .. |versions| image:: https://img.shields.io/pypi/pyversions/gcloud.svg
