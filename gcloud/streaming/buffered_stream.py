@@ -20,7 +20,12 @@ class BufferedStream(object):
         self._stream = stream
         self._start_pos = start
         self._buffer_pos = 0
-        self._buffered_data = self._stream.read(size)
+
+        if not hasattr(self._stream, 'closed') or not self._stream.closed:
+            self._buffered_data = self._stream.read(size)
+        else:
+            self._buffered_data = b''
+
         self._stream_at_end = len(self._buffered_data) < size
         self._end_pos = self._start_pos + len(self._buffered_data)
 
