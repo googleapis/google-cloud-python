@@ -18,6 +18,7 @@ import base64
 import copy
 import hashlib
 from io import BytesIO
+from io import UnsupportedOperation
 import json
 import mimetypes
 import os
@@ -491,10 +492,11 @@ class Blob(_PropertyMixin):
         total_bytes = size
         if total_bytes is None:
             if hasattr(file_obj, 'fileno'):
-                total_bytes = os.fstat(file_obj.fileno()).st_size
-            else:
-                raise ValueError('total bytes could not be determined. Please '
-                                 'pass an explicit size.')
+                try:
+                    total_bytes = os.fstat(file_obj.fileno()).st_size
+                except (OSError, UnsupportedOperation):
+                    pass  # Assuming fd is not an actual file (maybe socket).
+
         headers = {
             'Accept': 'application/json',
             'Accept-Encoding': 'gzip, deflate',
@@ -509,6 +511,13 @@ class Blob(_PropertyMixin):
 
         if self.chunk_size is not None:
             upload.chunksize = self.chunk_size
+
+            if total_bytes is None:
+                upload.strategy = RESUMABLE_UPLOAD
+        elif total_bytes is None:
+            raise ValueError('total bytes could not be determined. Please '
+                             'pass an explicit size, or supply a chunk size '
+                             'for a streaming transfer.')
 
         url_builder = _UrlBuilder(bucket_name=self.bucket.name,
                                   object_name=self.name)

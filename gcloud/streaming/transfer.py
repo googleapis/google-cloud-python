@@ -1038,14 +1038,16 @@ class Upload(_Transfer):
                     'Failed to transfer all bytes in chunk, upload paused at '
                     'byte %d' % self.progress)
         if self.complete and hasattr(self.stream, 'seek'):
-            current_pos = self.stream.tell()
-            self.stream.seek(0, os.SEEK_END)
-            end_pos = self.stream.tell()
-            self.stream.seek(current_pos)
-            if current_pos != end_pos:
-                raise TransferInvalidError(
-                    'Upload complete with %s additional bytes left in stream' %
-                    (int(end_pos) - int(current_pos)))
+            if not hasattr(self.stream, 'seekable') or self.stream.seekable():
+                current_pos = self.stream.tell()
+                self.stream.seek(0, os.SEEK_END)
+                end_pos = self.stream.tell()
+                self.stream.seek(current_pos)
+                if current_pos != end_pos:
+                    raise TransferInvalidError(
+                        'Upload complete with %s '
+                        'additional bytes left in stream' %
+                        (int(end_pos) - int(current_pos)))
         return response
 
     def _send_media_request(self, request, end):
