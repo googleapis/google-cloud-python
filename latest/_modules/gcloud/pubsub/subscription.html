@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.pubsub.subscription &mdash; gcloud 167a911 documentation</title>
+    <title>gcloud.pubsub.subscription &mdash; gcloud c618091 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '167a911',
+        VERSION:     'c618091',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 167a911 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud c618091 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -65,7 +65,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20167a911" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/pubsub/subscription%0ARelease%3A%20c618091" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -77,7 +77,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (167a911)
+              Version History (c618091)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -215,6 +215,24 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;URL path for the subscription&#39;s APIs&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s1">&#39;/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,)</span>
+
+<div class="viewcode-block" id="Subscription.auto_ack"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.Subscription.auto_ack">[docs]</a>    <span class="k">def</span> <span class="nf">auto_ack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;:class:`AutoAck` factory</span>
+
+<span class="sd">        :type return_immediately: boolean</span>
+<span class="sd">        :param return_immediately: passed through to :meth:`Subscription.pull`</span>
+
+<span class="sd">        :type max_messages: int</span>
+<span class="sd">        :param max_messages: passed through to :meth:`Subscription.pull`</span>
+
+<span class="sd">        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">        :param client: passed through to :meth:`Subscription.pull` and</span>
+<span class="sd">                      :meth:`Subscription.acknowledge`.</span>
+
+<span class="sd">        :rtype: :class:`AutoAck`</span>
+<span class="sd">        :returns: the instance created for the given ``ack_id`` and ``message``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">AutoAck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">return_immediately</span><span class="p">,</span> <span class="n">max_messages</span><span class="p">,</span> <span class="n">client</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_require_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check client or verify over-ride.</span>
@@ -513,6 +531,56 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">api</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">iam_policy_api</span>
         <span class="k">return</span> <span class="n">api</span><span class="o">.</span><span class="n">test_iam_permissions</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">permissions</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="AutoAck"><a class="viewcode-back" href="../../../pubsub-subscription.html#gcloud.pubsub.subscription.AutoAck">[docs]</a><span class="k">class</span> <span class="nc">AutoAck</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper for :meth:`Subscription.pull` results.</span>
+
+<span class="sd">    Mapping, tracks messages still-to-be-acknowledged.</span>
+
+<span class="sd">    When used as a context manager, acknowledges all messages still in the</span>
+<span class="sd">    mapping on `__exit__`.  When processing the pulled messsages, application</span>
+<span class="sd">    code MUST delete messages from the :class:`AutoAck` mapping which are not</span>
+<span class="sd">    successfully processed, e.g.:</span>
+
+<span class="sd">    .. code-block: python</span>
+
+<span class="sd">       with AutoAck(subscription) as ack:  # calls ``subscription.pull``</span>
+<span class="sd">           for ack_id, message in ack.items():</span>
+<span class="sd">               try:</span>
+<span class="sd">                   do_something_with(message):</span>
+<span class="sd">               except:</span>
+<span class="sd">                   del ack[ack_id]</span>
+
+<span class="sd">    :type subscription: :class:`Subscription`</span>
+<span class="sd">    :param subscription: subcription to be pulled.</span>
+
+<span class="sd">    :type return_immediately: boolean</span>
+<span class="sd">    :param return_immediately: passed through to :meth:`Subscription.pull`</span>
+
+<span class="sd">    :type max_messages: int</span>
+<span class="sd">    :param max_messages: passed through to :meth:`Subscription.pull`</span>
+
+<span class="sd">    :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``</span>
+<span class="sd">    :param client: passed through to :meth:`Subscription.pull` and</span>
+<span class="sd">                   :meth:`Subscription.acknowledge`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subscription</span><span class="p">,</span>
+                 <span class="n">return_immediately</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AutoAck</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subscription</span> <span class="o">=</span> <span class="n">subscription</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_return_immediately</span> <span class="o">=</span> <span class="n">return_immediately</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_messages</span> <span class="o">=</span> <span class="n">max_messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">client</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscription</span><span class="o">.</span><span class="n">pull</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_return_immediately</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_messages</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subscription</span><span class="o">.</span><span class="n">acknowledge</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="p">)</span></div>
 </pre></div>
 
       </section><!-- end of .content -->

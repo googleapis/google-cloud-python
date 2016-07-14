@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the API &mdash; gcloud 167a911 documentation</title>
+    <title>Using the API &mdash; gcloud c618091 documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '167a911',
+        VERSION:     'c618091',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 167a911 documentation" href="index.html" />
+    <link rel="top" title="gcloud c618091 documentation" href="index.html" />
     <link rel="next" title="Pub/Sub Client" href="pubsub-client.html" />
     <link rel="prev" title="Batches" href="storage-batch.html" /> 
   </head>
@@ -66,7 +66,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20167a911" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+pubsub-usage%0ARelease%3A%20c618091" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -78,7 +78,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (167a911)
+              Version History (c618091)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -178,8 +178,8 @@ environment variables, create a <a class="reference internal" href="pubsub-clien
 </div>
 <p>Publish a set of messages to a topic (as a single request):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="k">with</span> <span class="n">topic</span><span class="o">.</span><span class="n">batch</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;This is the message payload&#39;</span><span class="p">)</span>
-        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">b</span><span class="s1">&#39;Another message payload&#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s1">&#39;EXTRA&#39;</span><span class="p">)</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">PAYLOAD1</span><span class="p">)</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">PAYLOAD2</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="n">EXTRA</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -246,6 +246,25 @@ an exception.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
 </div>
+<p>Fetch the IAM policy for a subscription</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Update the IAM policy for a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
+    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
+    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
+    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
+</pre></div>
+</div>
+<p>Test permissions allowed by the current IAM policy on a subscription:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
+    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
+    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Delete a subscription:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">subscription</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>                               <span class="c1"># API request</span>
 </pre></div>
@@ -277,24 +296,22 @@ will re-send them later:</p>
         <span class="n">subscription</span><span class="o">.</span><span class="n">modify_ack_deadline</span><span class="p">(</span><span class="n">ack_id</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>    <span class="c1"># API request</span>
 </pre></div>
 </div>
-<p>Fetch the IAM policy for a subscription</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_iam_policy</span><span class="p">()</span>             <span class="c1"># API request</span>
+<p>Fetch pending messages, acknowledging those whose processing doesn&#8217;t raise an
+error:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.subscription</span> <span class="k">import</span> <span class="n">AutoAck</span>
+    <span class="k">with</span> <span class="n">AutoAck</span><span class="p">(</span><span class="n">subscription</span><span class="p">,</span> <span class="n">max_messages</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">ack</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ack_id</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ack</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">do_something_with</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
+                <span class="k">del</span> <span class="n">ack</span><span class="p">[</span><span class="n">ack_id</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Update the IAM policy for a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">ALL_USERS</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">all_users</span><span class="p">()</span>
-    <span class="n">policy</span><span class="o">.</span><span class="n">viewers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ALL_USERS</span><span class="p">)</span>
-    <span class="n">LOGS_GROUP</span> <span class="o">=</span> <span class="n">policy</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s1">&#39;cloud-logs@google.com&#39;</span><span class="p">)</span>
-    <span class="n">policy</span><span class="o">.</span><span class="n">editors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">LOGS_GROUP</span><span class="p">)</span>
-    <span class="n">new_policy</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">set_iam_policy</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>   <span class="c1"># API request</span>
-</pre></div>
-</div>
-<p>Test permissions allowed by the current IAM policy on a subscription:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="kn">from</span> <span class="nn">gcloud.pubsub.iam</span> <span class="k">import</span> <span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span>
-    <span class="n">TO_CHECK</span> <span class="o">=</span> <span class="p">[</span><span class="n">OWNER_ROLE</span><span class="p">,</span> <span class="n">EDITOR_ROLE</span><span class="p">,</span> <span class="n">VIEWER_ROLE</span><span class="p">]</span>
-    <span class="n">ALLOWED</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">check_iam_permissions</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">ALLOWED</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">TO_CHECK</span><span class="p">)</span>
-</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">pull</span></code> API request occurs at entry to the <code class="docutils literal"><span class="pre">with</span></code> block, and the
+<code class="docutils literal"><span class="pre">acknowlege</span></code> API request occurs at the end, passing only the <code class="docutils literal"><span class="pre">ack_ids</span></code>
+which haven&#8217;t been deleted from <code class="docutils literal"><span class="pre">ack</span></code></p>
 </div>
 </div>
 </div>
