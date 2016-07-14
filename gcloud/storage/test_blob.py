@@ -594,7 +594,7 @@ class Test_Blob(unittest2.TestCase):
         # Requested[2]
         headers = dict(
             [(x.title(), str(y)) for x, y in rq[2].pop('headers').items()])
-        self.assertEqual(headers['Content-Range'], 'bytes 5-9/*')
+        self.assertEqual(headers['Content-Range'], 'bytes */5')
         self.assertEqual(rq[2], {
             'method': 'PUT',
             'uri': UPLOAD_URL,
