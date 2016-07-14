@@ -1,5 +1,5 @@
-Monitoring Client
-=================
+Stackdriver Monitoring Client
+=============================
 
 .. automodule:: gcloud.monitoring.client
   :members:
@@ -11,4 +11,3 @@ Connection
 .. automodule:: gcloud.monitoring.connection
   :members:
   :show-inheritance:
-

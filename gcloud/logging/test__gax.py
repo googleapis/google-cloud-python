@@ -78,13 +78,16 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
     def test_list_entries_with_paging(self):
+        from google.protobuf.struct_pb2 import Value
         from gcloud._testing import _GAXPageIterator
         SIZE = 23
         TOKEN = 'TOKEN'
         NEW_TOKEN = 'NEW_TOKEN'
         PAYLOAD = {'message': 'MESSAGE', 'weather': 'sunny'}
+        struct_pb = _StructPB(dict([(key, Value(string_value=value))
+                                    for key, value in PAYLOAD.items()]))
         response = _GAXPageIterator(
-            [_LogEntryPB(self.LOG_NAME, json_payload=PAYLOAD)], NEW_TOKEN)
+            [_LogEntryPB(self.LOG_NAME, json_payload=struct_pb)], NEW_TOKEN)
         gax_api = _GAXLoggingAPI(_list_log_entries_response=response)
         api = self._makeOne(gax_api)
 
@@ -109,6 +112,7 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
 
     def test_list_entries_with_extra_properties(self):
         from datetime import datetime
+        from google.logging.type.log_severity_pb2 import WARNING
         from gcloud._testing import _GAXPageIterator
         from gcloud._helpers import UTC
         from gcloud._helpers import _datetime_to_rfc3339
@@ -126,7 +130,7 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         request = _HTTPRequestPB()
         operation = _LogEntryOperationPB()
         EXTRAS = {
-            'severity': SEVERITY,
+            'severity': WARNING,
             'labels': LABELS,
             'insert_id': IID,
             'http_request': request,
@@ -154,15 +158,15 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(entry['insertId'], IID)
         self.assertEqual(entry['timestamp'], _datetime_to_rfc3339(NOW))
         EXPECTED_REQUEST = {
-            'request_method': request.request_method,
-            'request_url': request.request_url,
+            'requestMethod': request.request_method,
+            'requestUrl': request.request_url,
             'status': request.status,
-            'request_size': request.request_size,
-            'response_size': request.response_size,
+            'requestSize': request.request_size,
+            'responseSize': request.response_size,
             'referer': request.referer,
-            'user_agent': request.user_agent,
-            'remote_ip': request.remote_ip,
-            'cache_hit': request.cache_hit,
+            'userAgent': request.user_agent,
+            'remoteIp': request.remote_ip,
+            'cacheHit': request.cache_hit,
         }
         self.assertEqual(entry['httpRequest'], EXPECTED_REQUEST)
         EXPECTED_OPERATION = {
@@ -439,7 +443,7 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, TOKEN)
 
         project, page_size, options = gax_api._list_sinks_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
@@ -465,7 +469,7 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, None)
 
         project, page_size, options = gax_api._list_sinks_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, PAGE_SIZE)
         self.assertEqual(options.page_token, TOKEN)
 
@@ -643,7 +647,7 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, TOKEN)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, 0)
         self.assertEqual(options.page_token, INITIAL_PAGE)
 
@@ -669,7 +673,7 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         self.assertEqual(token, None)
 
         project, page_size, options = gax_api._list_log_metrics_called_with
-        self.assertEqual(project, self.PROJECT)
+        self.assertEqual(project, self.PROJECT_PATH)
         self.assertEqual(page_size, PAGE_SIZE)
         self.assertEqual(options.page_token, TOKEN)
 
@@ -809,6 +813,75 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         metric_name, options = gax_api._delete_log_metric_called_with
         self.assertEqual(metric_name, self.METRIC_PATH)
         self.assertEqual(options, None)
+
+
+@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_value_pb_to_value(_Base, unittest2.TestCase):
+
+    def _callFUT(self, value_pb):
+        from gcloud.logging._gax import _value_pb_to_value
+        return _value_pb_to_value(value_pb)
+
+    def test_w_null_values(self):
+        from google.protobuf.struct_pb2 import Value
+        value_pb = Value()
+        self.assertEqual(self._callFUT(value_pb), None)
+        value_pb = Value(null_value=None)
+        self.assertEqual(self._callFUT(value_pb), None)
+
+    def test_w_string_value(self):
+        from google.protobuf.struct_pb2 import Value
+        STRING = 'STRING'
+        value_pb = Value(string_value=STRING)
+        self.assertEqual(self._callFUT(value_pb), STRING)
+
+    def test_w_bool_values(self):
+        from google.protobuf.struct_pb2 import Value
+        true_value_pb = Value(bool_value=True)
+        self.assertTrue(self._callFUT(true_value_pb) is True)
+        false_value_pb = Value(bool_value=False)
+        self.assertTrue(self._callFUT(false_value_pb) is False)
+
+    def test_w_number_values(self):
+        from google.protobuf.struct_pb2 import Value
+        ANSWER = 42
+        PI = 3.1415926
+        int_value_pb = Value(number_value=ANSWER)
+        self.assertEqual(self._callFUT(int_value_pb), ANSWER)
+        float_value_pb = Value(number_value=PI)
+        self.assertEqual(self._callFUT(float_value_pb), PI)
+
+    def test_w_list_value(self):
+        from google.protobuf.struct_pb2 import Value
+        STRING = 'STRING'
+        PI = 3.1415926
+        value_pb = Value()
+        value_pb.list_value.values.add(string_value=STRING)
+        value_pb.list_value.values.add(bool_value=True)
+        value_pb.list_value.values.add(number_value=PI)
+        self.assertEqual(self._callFUT(value_pb), [STRING, True, PI])
+
+    def test_w_struct_value(self):
+        from google.protobuf.struct_pb2 import Value
+        STRING = 'STRING'
+        PI = 3.1415926
+        value_pb = Value()
+        value_pb.struct_value.fields['string'].string_value = STRING
+        value_pb.struct_value.fields['bool'].bool_value = True
+        value_pb.struct_value.fields['number'].number_value = PI
+        self.assertEqual(self._callFUT(value_pb),
+                         {'string': STRING, 'bool': True, 'number': PI})
+
+    def test_w_unknown_kind(self):
+
+        class _Value(object):
+
+            def WhichOneof(self, name):
+                assert name == 'kind'
+                return 'UNKNOWN'
+
+        with self.assertRaises(ValueError):
+            self._callFUT(_Value())
 
 
 class _GAXBaseAPI(object):
@@ -974,9 +1047,15 @@ class _ResourcePB(object):
         self.labels = labels
 
 
+class _StructPB(object):
+
+    def __init__(self, fields):
+        self.fields = fields
+
+
 class _LogEntryPB(object):
 
-    severity = 'DEFAULT'
+    severity = 0
     http_request = operation = insert_id = None
     text_payload = json_payload = proto_payload = None
 
@@ -986,6 +1065,9 @@ class _LogEntryPB(object):
         self.timestamp = self._make_timestamp()
         self.labels = kw.pop('labels', {})
         self.__dict__.update(kw)
+
+    def HasField(self, field_name):
+        return getattr(self, field_name, None) is not None
 
     @staticmethod
     def _make_timestamp():

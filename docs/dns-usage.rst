@@ -140,7 +140,7 @@ bundling additions to or deletions from the set.
      >>> zone = client.zone('acme-co', 'example.com')
      >>> TWO_HOURS = 2 * 60 * 60  # seconds
      >>> record_set = zone.resource_record_set(
-     ...    'www.example.com', 'CNAME', TWO_HOURS, 'www1.example.com')
+     ...    'www.example.com.', 'CNAME', TWO_HOURS, ['www1.example.com.',])
      >>> changes = zone.changes()
      >>> changes.add_record_set(record_set)
      >>> changes.create()  # API request

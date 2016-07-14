@@ -63,10 +63,11 @@
   bigtable-usage
   HappyBase <happybase-package>
   bigtable-client-intro
-  bigtable-cluster-api
+  bigtable-instance-api
   bigtable-table-api
   bigtable-data-api
   Client <bigtable-client>
+  bigtable-instance
   bigtable-cluster
   bigtable-table
   bigtable-column-family
@@ -101,7 +102,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Logging
+  :caption: Stackdriver Logging
 
   logging-usage
   Client <logging-client>
@@ -113,7 +114,7 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
-  :caption: Cloud Monitoring
+  :caption: Stackdriver Monitoring
 
   monitoring-usage
   Client <monitoring-client>

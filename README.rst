@@ -20,12 +20,14 @@ This client supports the following Google Cloud Platform services:
 -  `Google Cloud Pub/Sub`_
 -  `Google BigQuery`_
 -  `Google Cloud Resource Manager`_
+-  `Google Stackdriver Logging`_
 
 .. _Google Cloud Datastore: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-datastore
 .. _Google Cloud Storage: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-storage
 .. _Google Cloud Pub/Sub: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-pubsub
 .. _Google BigQuery: https://github.com/GoogleCloudPlatform/gcloud-python#google-bigquery
 .. _Google Cloud Resource Manager: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-resource-manager
+.. _Google Stackdriver Logging: https://github.com/GoogleCloudPlatform/gcloud-python#google-cloud-logging
 
 If you need support for other Google APIs, check out the
 `Google APIs Python Client library`_.
@@ -174,6 +176,49 @@ append-only tables, using the processing power of Google's infrastructure.
 
 This package is still being implemented, but it is almost complete!
 
+Load data from CSV
+~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    import csv
+
+    from gcloud import bigquery
+    from gcloud.bigquery import SchemaField
+
+    client = bigquery.Client()
+
+    dataset = client.dataset('dataset_name')
+    dataset.create()  # API request
+
+    SCHEMA = [
+        SchemaField('full_name', 'STRING', mode='required'),
+        SchemaField('age', 'INTEGER', mode='required'),
+    ]
+    table = dataset.table('table_name', SCHEMA)
+    table.create()
+
+    with open('csv_file', 'rb') as readable:
+        table.upload_from_file(
+            readable, source_format='CSV', skip_leading_rows=1)
+
+Perform a synchronous query
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
+
+    # Perform a synchronous query.
+    QUERY = (
+        'SELECT name FROM [bigquery-public-data:usa_names.usa_1910_2013] '
+        'WHERE state = "TX"')
+    query = client.run_sync_query('%s LIMIT 100' % QUERY)
+    query.timeout_ms = TIMEOUT_MS
+    query.run()
+
+    for row in query.rows:
+        print row
+
+
 See the ``gcloud-python`` API `BigQuery documentation`_ to learn how to connect
 to BigQuery using this Client Library.
 
@@ -193,6 +238,35 @@ See the ``gcloud-python`` API `Resource Manager documentation`_ to learn how to
 manage projects using this Client Library.
 
 .. _Resource Manager documentation: https://googlecloudplatform.github.io/gcloud-python/stable/resource-manager-api.html
+
+Google Stackdriver Logging
+--------------------------
+
+`Stackdriver Logging`_ API (`Logging API docs`_) allows you to store, search,
+analyze, monitor, and alert on log data and events from Google Cloud Platform.
+
+.. _Stackdriver Logging: https://cloud.google.com/logging/
+.. _Logging API docs: https://cloud.google.com/logging/docs/
+
+.. code:: python
+
+    from gcloud import logging
+    client = logging.Client()
+    logger = client.logger('log_name')
+    logger.log_text("A simple entry")  # API call
+
+Example of fetching entries:
+
+.. code:: python
+
+    entries, token = logger.list_entries()
+    for entry in entries:
+        print entry.payload
+
+See the ``gcloud-python`` API `logging documentation`_ to learn how to connect
+to Stackdriver Logging using this Client Library.
+
+.. _logging documentation: https://googlecloudplatform.github.io/gcloud-python/stable/logging-usage.html
 
 Contributing
 ------------

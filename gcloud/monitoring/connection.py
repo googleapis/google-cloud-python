@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Create / interact with gcloud monitoring connections."""
+"""Create / interact with Stackdriver Monitoring connections."""
 
 from gcloud import connection as base_connection
 
 
 class Connection(base_connection.JSONConnection):
-    """A connection to Google Monitoring via the JSON REST API.
+    """A connection to Google Stackdriver Monitoring via the JSON REST API.
 
     :type credentials: :class:`oauth2client.client.OAuth2Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this

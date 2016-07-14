@@ -33,6 +33,33 @@ DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
 TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
+def _retry_backoff(result_predicate, meth, *args, **kw):
+    from grpc.beta.interfaces import StatusCode
+    from grpc.framework.interfaces.face.face import AbortionError
+    backoff_intervals = [1, 2, 4, 8]
+    while True:
+        try:
+            result = meth(*args, **kw)
+        except AbortionError as error:
+            if error.code != StatusCode.UNAVAILABLE:
+                raise
+            if backoff_intervals:
+                time.sleep(backoff_intervals.pop(0))
+                continue
+            else:
+                raise
+        if result_predicate(result):
+            return result
+        if backoff_intervals:
+            time.sleep(backoff_intervals.pop(0))
+        else:
+            raise RuntimeError('%s: %s %s' % (meth, args, kw))
+
+
+def _has_entries(result):
+    return len(result[0]) > 0
+
+
 class Config(object):
     """Run-time configuration to be modified at set-up.
 
@@ -75,8 +102,7 @@ class TestLogging(unittest2.TestCase):
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
-        time.sleep(2)
-        entries, _ = logger.list_entries()
+        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
@@ -86,7 +112,7 @@ class TestLogging(unittest2.TestCase):
         SEVERITY = 'INFO'
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
+        STATUS = 500
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -94,18 +120,22 @@ class TestLogging(unittest2.TestCase):
         }
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
+
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                         http_request=REQUEST)
-        time.sleep(2)
-        entries, _ = logger.list_entries()
+        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+
         self.assertEqual(len(entries), 1)
-        self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
-        self.assertEqual(entries[0].insert_id, INSERT_ID)
-        self.assertEqual(entries[0].severity, SEVERITY)
-        request = entries[0].http_request
+
+        entry = entries[0]
+        self.assertEqual(entry.payload, TEXT_PAYLOAD)
+        self.assertEqual(entry.insert_id, INSERT_ID)
+        self.assertEqual(entry.severity, SEVERITY)
+
+        request = entry.http_request
         self.assertEqual(request['requestMethod'], METHOD)
         self.assertEqual(request['requestUrl'], URI)
-        self.assertEqual(request['status'], int(STATUS))
+        self.assertEqual(request['status'], STATUS)
 
     def test_log_struct(self):
         JSON_PAYLOAD = {
@@ -114,9 +144,10 @@ class TestLogging(unittest2.TestCase):
         }
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
+
         logger.log_struct(JSON_PAYLOAD)
-        time.sleep(2)
-        entries, _ = logger.list_entries()
+        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
 
@@ -129,7 +160,7 @@ class TestLogging(unittest2.TestCase):
         SEVERITY = 'INFO'
         METHOD = 'POST'
         URI = 'https://api.example.com/endpoint'
-        STATUS = '500'
+        STATUS = 500
         REQUEST = {
             'requestMethod': METHOD,
             'requestUrl': URI,
@@ -137,10 +168,11 @@ class TestLogging(unittest2.TestCase):
         }
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
+
         logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                           http_request=REQUEST)
-        time.sleep(2)
-        entries, _ = logger.list_entries()
+        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
         self.assertEqual(entries[0].insert_id, INSERT_ID)
@@ -148,7 +180,7 @@ class TestLogging(unittest2.TestCase):
         request = entries[0].http_request
         self.assertEqual(request['requestMethod'], METHOD)
         self.assertEqual(request['requestUrl'], URI)
-        self.assertEqual(request['status'], int(STATUS))
+        self.assertEqual(request['status'], STATUS)
 
     def test_create_metric(self):
         metric = Config.CLIENT.metric(
@@ -206,7 +238,7 @@ class TestLogging(unittest2.TestCase):
         BUCKET_URI = 'storage.googleapis.com/%s' % (BUCKET_NAME,)
 
         # Create the destination bucket, and set up the ACL to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         storage_client = storage.Client()
         bucket = storage_client.create_bucket(BUCKET_NAME)
         self.to_delete.append(bucket)
@@ -231,7 +263,7 @@ class TestLogging(unittest2.TestCase):
         from gcloud import pubsub
 
         # Create the destination topic, and set up the IAM policy to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         pubsub_client = pubsub.Client()
         topic = pubsub_client.topic(TOPIC_NAME)
         topic.create()
@@ -256,7 +288,7 @@ class TestLogging(unittest2.TestCase):
             Config.CLIENT.project, DATASET_NAME,)
 
         # Create the destination dataset, and set up the ACL to allow
-        # Cloud Logging to write into it.
+        # Stackdriver Logging to write into it.
         bigquery_client = bigquery.Client()
         dataset = bigquery_client.dataset(DATASET_NAME)
         dataset.create()

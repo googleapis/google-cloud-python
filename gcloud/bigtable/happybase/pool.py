@@ -21,7 +21,7 @@ import threading
 import six
 
 from gcloud.bigtable.happybase.connection import Connection
-from gcloud.bigtable.happybase.connection import _get_cluster
+from gcloud.bigtable.happybase.connection import _get_instance
 
 
 _MIN_POOL_SIZE = 1
@@ -45,7 +45,7 @@ class ConnectionPool(object):
         :class:`Connection <.happybase.connection.Connection>` constructor
         **except** for ``autoconnect``. This is because the ``open`` /
         ``closed`` status of a connection is managed by the pool. In addition,
-        if ``cluster`` is not passed, the default / inferred cluster is
+        if ``instance`` is not passed, the default / inferred instance is
         determined by the pool and then passed to each
         :class:`Connection <.happybase.connection.Connection>` that is created.
 
@@ -75,8 +75,8 @@ class ConnectionPool(object):
 
         connection_kwargs = kwargs
         connection_kwargs['autoconnect'] = False
-        if 'cluster' not in connection_kwargs:
-            connection_kwargs['cluster'] = _get_cluster(
+        if 'instance' not in connection_kwargs:
+            connection_kwargs['instance'] = _get_instance(
                 timeout=kwargs.get('timeout'))
 
         for _ in six.moves.range(size):

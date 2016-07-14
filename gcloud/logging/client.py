@@ -12,19 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Client for interacting with the Google Cloud Logging API."""
+"""Client for interacting with the Google Stackdriver Logging API."""
+
+import os
+
+try:
+    from google.logging.v2.config_service_v2_api import (
+        ConfigServiceV2Api as GeneratedSinksAPI)
+    from google.logging.v2.logging_service_v2_api import (
+        LoggingServiceV2Api as GeneratedLoggingAPI)
+    from google.logging.v2.metrics_service_v2_api import (
+        MetricsServiceV2Api as GeneratedMetricsAPI)
+    from gcloud.logging._gax import _LoggingAPI as GAXLoggingAPI
+    from gcloud.logging._gax import _MetricsAPI as GAXMetricsAPI
+    from gcloud.logging._gax import _SinksAPI as GAXSinksAPI
+except ImportError:  # pragma: NO COVER
+    _HAVE_GAX = False
+    GeneratedLoggingAPI = GAXLoggingAPI = None
+    GeneratedMetricsAPI = GAXMetricsAPI = None
+    GeneratedSinksAPI = GAXSinksAPI = None
+else:
+    _HAVE_GAX = True
 
 from gcloud.client import JSONClient
 from gcloud.logging.connection import Connection
-from gcloud.logging.connection import _LoggingAPI
-from gcloud.logging.connection import _MetricsAPI
-from gcloud.logging.connection import _SinksAPI
+from gcloud.logging.connection import _LoggingAPI as JSONLoggingAPI
+from gcloud.logging.connection import _MetricsAPI as JSONMetricsAPI
+from gcloud.logging.connection import _SinksAPI as JSONSinksAPI
 from gcloud.logging.entries import ProtobufEntry
 from gcloud.logging.entries import StructEntry
 from gcloud.logging.entries import TextEntry
 from gcloud.logging.logger import Logger
 from gcloud.logging.metric import Metric
 from gcloud.logging.sink import Sink
+
+
+_USE_GAX = _HAVE_GAX and (os.environ.get('GCLOUD_ENABLE_GAX') is not None)
 
 
 class Client(JSONClient):
@@ -60,7 +83,11 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.logs
         """
         if self._logging_api is None:
-            self._logging_api = _LoggingAPI(self.connection)
+            if _USE_GAX:
+                generated = GeneratedLoggingAPI()
+                self._logging_api = GAXLoggingAPI(generated)
+            else:
+                self._logging_api = JSONLoggingAPI(self.connection)
         return self._logging_api
 
     @property
@@ -71,7 +98,11 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.sinks
         """
         if self._sinks_api is None:
-            self._sinks_api = _SinksAPI(self.connection)
+            if _USE_GAX:
+                generated = GeneratedSinksAPI()
+                self._sinks_api = GAXSinksAPI(generated)
+            else:
+                self._sinks_api = JSONSinksAPI(self.connection)
         return self._sinks_api
 
     @property
@@ -82,7 +113,11 @@ class Client(JSONClient):
         https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/projects.metrics
         """
         if self._metrics_api is None:
-            self._metrics_api = _MetricsAPI(self.connection)
+            if _USE_GAX:
+                generated = GeneratedMetricsAPI()
+                self._metrics_api = GAXMetricsAPI(generated)
+            else:
+                self._metrics_api = JSONMetricsAPI(self.connection)
         return self._metrics_api
 
     def logger(self, name):
