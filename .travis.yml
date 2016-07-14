@@ -15,6 +15,7 @@ script:
   - scripts/update_docs.sh
 
 after_success:
+  - tox -e coveralls
   - tox -e codecov
 
 deploy:
