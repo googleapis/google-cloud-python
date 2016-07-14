@@ -68,10 +68,10 @@ class _CloseOnDelete(object):
 
 
 @snippet
-def client_list_datasets(client, to_delete):  # pylint: disable=unused-argument
+def client_list_datasets(client, _):
     """List datasets for a project."""
 
-    def do_something_with(sub):  # pylint: disable=unused-argument
+    def do_something_with(_):
         pass
 
     # [START client_list_datasets]
@@ -182,7 +182,7 @@ def dataset_update(client, to_delete):
 
 
 @snippet
-def dataset_delete(client, to_delete):  # pylint: disable=unused-argument
+def dataset_delete(client, _):
     """Delete a dataset."""
     DATASET_NAME = 'dataset_delete_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
@@ -439,13 +439,12 @@ def table_upload_from_file(client, to_delete):
 
 
 @snippet
-def table_delete(client, to_delete):  # pylint: disable=unused-argument
+def table_delete(client, _):
     """Delete a table."""
     DATASET_NAME = 'table_delete_dataset_%d' % (_millis(),)
     TABLE_NAME = 'table_create_table_%d' % (_millis(),)
     dataset = client.dataset(DATASET_NAME)
     dataset.create()
-    to_delete.append(dataset)
 
     table = dataset.table(TABLE_NAME, SCHEMA)
     table.create()
@@ -455,6 +454,122 @@ def table_delete(client, to_delete):  # pylint: disable=unused-argument
     table.delete()              # API request
     assert not table.exists()   # API request
     # [END table_delete]
+
+
+@snippet
+def client_list_jobs(client, _):
+    """List jobs for a project."""
+
+    def do_something_with(_):
+        pass
+
+    # [START client_list_jobs]
+    jobs, token = client.list_jobs()   # API request
+    while True:
+        for job in jobs:
+            do_something_with(job)
+        if token is None:
+            break
+        jobs, token = client.list_jobs(page_token=token)  # API request
+    # [END client_list_jobs]
+
+
+@snippet
+def client_run_sync_query(client, _):
+    """Run a synchronous query."""
+    LIMIT = 100
+    LIMITED = '%s LIMIT %d' % (QUERY, LIMIT)
+    TIMEOUT_MS = 1000
+
+    # [START client_run_sync_query]
+    query = client.run_sync_query(LIMITED)
+    query.timeout_ms = TIMEOUT_MS
+    query.run()             # API request
+
+    assert query.complete
+    assert len(query.rows) == LIMIT
+    assert [field.name for field in query.schema] == ['name']
+    # [END client_run_sync_query]
+
+
+@snippet
+def client_run_sync_query_paged(client, _):
+    """Run a synchronous query with paged results."""
+    TIMEOUT_MS = 1000
+    PAGE_SIZE = 100
+    LIMIT = 1000
+    LIMITED = '%s LIMIT %d' % (QUERY, LIMIT)
+
+    all_rows = []
+
+    def do_something_with(rows):
+        all_rows.extend(rows)
+
+    # [START client_run_sync_query_paged]
+    query = client.run_sync_query(LIMITED)
+    query.timeout_ms = TIMEOUT_MS
+    query.max_results = PAGE_SIZE
+    query.run()                     # API request
+
+    assert query.complete
+    assert query.page_token is not None
+    assert len(query.rows) == PAGE_SIZE
+    assert [field.name for field in query.schema] == ['name']
+
+    rows = query.rows
+    token = query.page_token
+
+    while True:
+        do_something_with(rows)
+        if token is None:
+            break
+        rows, total_count, token = query.fetch_data(
+            page_token=token)       # API request
+    # [END client_run_sync_query_paged]
+
+    assert total_count == LIMIT
+    assert len(all_rows) == LIMIT
+
+
+@snippet
+def client_run_sync_query_timeout(client, _):
+    """Run a synchronous query w/ timeout"""
+    TIMEOUT_MS = 10
+
+    all_rows = []
+
+    def do_something_with(rows):
+        all_rows.extend(rows)
+
+    # [START client_run_sync_query_timeout]
+    query = client.run_sync_query(QUERY)
+    query.timeout_ms = TIMEOUT_MS
+    query.use_query_cache = False
+    query.run()                           # API request
+
+    assert not query.complete
+
+    job = query.job
+    job.reload()                          # API rquest
+    retry_count = 0
+
+    while retry_count < 10 and job.state != u'DONE':
+        time.sleep(1.5**retry_count)      # exponential backoff
+        retry_count += 1
+        job.reload()                      # API request
+
+    assert job.state == u'DONE'
+
+    rows, total_count, token = query.fetch_data()  # API request
+    while True:
+        do_something_with(rows)
+        if token is None:
+            break
+        rows, total_count, token = query.fetch_data(
+            page_token=token)  # API request
+    # [END client_run_sync_query_timeout]
+
+    assert len(all_rows) == total_count
 
 
 def _find_examples():
@@ -468,7 +583,7 @@ def main():
     client = Client()
     for example in _find_examples():
         to_delete = []
-        print('%-25s: %s' % (
+        print('%-30s: %s' % (
             example.func_name, example.func_doc))
         try:
             example(client, to_delete)

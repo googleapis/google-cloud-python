@@ -294,10 +294,10 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(req['query_params'], {'projection': 'full'})
 
-    def test_list_jobs_explicit_empty(self):
+    def test_list_jobs_explicit_missing(self):
         PROJECT = 'PROJECT'
         PATH = 'projects/%s/jobs' % PROJECT
-        DATA = {'jobs': []}
+        DATA = {}
         TOKEN = 'TOKEN'
         creds = _Credentials()
         client = self._makeOne(PROJECT, creds)

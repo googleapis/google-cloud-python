@@ -343,6 +343,8 @@ class QueryResults(object):
         self._set_properties(response)
 
         total_rows = response.get('totalRows')
+        if total_rows is not None:
+            total_rows = int(total_rows)
         page_token = response.get('pageToken')
         rows_data = _rows_from_json(response.get('rows', ()), self.schema)
 

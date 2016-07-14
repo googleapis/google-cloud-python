@@ -25,6 +25,7 @@ Authentication / Configuration
      >>> from gcloud import bigquery
      >>> client = bigquery.Client()
 
+
 Projects
 --------
 
@@ -43,12 +44,14 @@ To override the project inferred from the environment, pass an explicit
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
+
 Project ACLs
 ~~~~~~~~~~~~
 
 Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
 via the API:  it must be managed using the Google Developer Console.
+
 
 Datasets
 --------
@@ -61,6 +64,7 @@ policies to tables as they are created:
 
 - A default table expiration period.  If set, tables created within the
   dataset will have the value as their expiration period.
+
 
 Dataset operations
 ~~~~~~~~~~~~~~~~~~
@@ -191,104 +195,34 @@ Jobs describe actions peformed on data in BigQuery tables:
 
 List jobs for a project:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_list_jobs]
+   :end-before: [END client_list_jobs]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.name, job.job_type, job.created, job.state) for job in jobs]
-   ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Run a query which can be expected to complete within bounded time:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT count(*) AS age_count FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   True
-   >>> len(query.schema)
-   1
-   >>> field = query.schema[0]
-   >>> field.name
-   u'count'
-   >>> field.field_type
-   u'INTEGER'
-   >>> field.mode
-   u'NULLABLE'
-   >>> query.rows
-   [(15,)]
-   >>> query.total_rows
-   1
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query]
+   :end-before: [END client_run_sync_query]
 
 If the rows returned by the query do not fit into the inital response,
 then we need to fetch the remaining rows via ``fetch_data``:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT * FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   True
-   >>> query.total_rows
-   1234
-   >>> query.page_token
-   '8d6e452459238eb0fe87d8eb191dd526ee70a35e'
-   >>> do_something_with(query.schema, query.rows)
-   >>> token = query.page_token  # for initial request
-   >>> while True:
-   ...     do_something_with(query.schema, rows)
-   ...     if token is None:
-   ...         break
-   ...     rows, _, token = query.fetch_data(page_token=token)
-
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query_paged]
+   :end-before: [END client_run_sync_query_paged]
 
 If the query takes longer than the timeout allowed, ``query.complete``
 will be ``False``.  In that case, we need to poll the associated job until
 it is done, and then fetch the reuslts:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT * FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   False
-   >>> job = query.job
-   >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
-   ...     retry_count -= 1
-   ...     time.sleep(10)
-   ...     job.reload()  # API call
-   >>> job.state
-   'done'
-   >>> token = None  # for initial request
-   >>> while True:
-   ...     rows, _, token = query.fetch_data(page_token=token)
-   ...     do_something_with(query.schema, rows)
-   ...     if token is None:
-   ...         break
-
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query_timeout]
+   :end-before: [END client_run_sync_query_timeout]
 
 
 Querying data (asynchronous)
@@ -350,25 +284,6 @@ Poll until the job is complete:
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
 
-Inserting data (synchronous)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Load data synchronously from a local CSV file into a new table:
-
-.. doctest::
-
-   >>> import csv
-   >>> from gcloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
-   >>> client = bigquery.Client()
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
-   ...     reader = csv.reader(file_obj)
-   ...     rows = list(reader)
-   >>> table.insert_data(rows)  # API request
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -430,6 +345,7 @@ Poll until the job is complete:
    'done'
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+
 
 Exporting data (async)
 ~~~~~~~~~~~~~~~~~~~~~~
