@@ -179,21 +179,6 @@ def topic_publish_messages(client, to_delete):
 
 
 @snippet
-def topic_batch(client, to_delete):
-    """Publish multiple messages in a single request."""
-    TOPIC_NAME = 'topic_batch-%d' % (_millis(),)
-    topic = client.topic(TOPIC_NAME)
-    topic.create()
-    to_delete.append(topic)
-
-    # [START topic_batch]
-    with topic.batch() as batch:
-        batch.publish(b'This is the message payload')
-        batch.publish(b'Another message payload', extra='EXTRA')
-    # [END topic_batch]  API request on block exit
-
-
-@snippet
 def topic_subscription(client, to_delete):
     """Create subscriptions to a topic."""
     TOPIC_NAME = 'topic_subscription-%d' % (_millis(),)
@@ -356,6 +341,52 @@ def subscription_pull(client, to_delete):
         (payloads,))
     assert extras == [{'extra': EXTRA}], 'extras: %s' % (
         (extras,))
+
+
+@snippet
+def subscription_pull_w_autoack(client, to_delete):
+    """Pull messges from a topic, auto-acknowldging them"""
+    TOPIC_NAME = 'subscription_pull_autoack-%d' % (_millis(),)
+    SUB_NAME = 'subscription_pull_autoack-defaults-%d' % (_millis(),)
+    PAYLOAD1 = b'PAYLOAD1'
+    PAYLOAD2 = b'PAYLOAD2'
+    EXTRA = 'EXTRA'
+    topic = client.topic(TOPIC_NAME)
+    topic.create()
+    to_delete.append(topic)
+
+    subscription = topic.subscription(SUB_NAME)
+    subscription.create()
+    to_delete.append(subscription)
+
+    # [START topic_batch]
+    with topic.batch() as batch:
+        batch.publish(PAYLOAD1)
+        batch.publish(PAYLOAD2, extra=EXTRA)
+    # [END topic_batch]
+
+    time.sleep(1)  # eventually-consistent
+
+    payloads = []
+    extras = []
+
+    def do_something_with(message):  # pylint: disable=unused-argument
+        payloads.append(message.data)
+        if message.attributes:
+            extras.append(message.attributes)
+
+    # [START subscription_pull_autoack]
+    from gcloud.pubsub.subscription import AutoAck
+    with AutoAck(subscription, max_messages=10) as ack:
+        for ack_id, message in list(ack.items()):
+            try:
+                do_something_with(message)
+            except Exception:  # pylint: disable=broad-except
+                del ack[ack_id]
+    # [END subscription_pull_autoack]
+
+    assert set(payloads) == set(PAYLOAD1, PAYLOAD1), "eventual consistency"
+    assert extras == [{'extra': EXTRA}], "eventual consistency"
 
 
 @snippet

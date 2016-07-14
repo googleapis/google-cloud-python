@@ -134,15 +134,39 @@ class TestSubscription(unittest2.TestCase):
 
     def test_full_name_and_path(self):
         PROJECT = 'PROJECT'
-        SUB_NAME = 'sub_name'
-        SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, SUB_NAME)
+        SUB_FULL = 'projects/%s/subscriptions/%s' % (PROJECT, self.SUB_NAME)
         SUB_PATH = '/%s' % (SUB_FULL,)
         TOPIC_NAME = 'topic_name'
         CLIENT = _Client(project=PROJECT)
         topic = _Topic(TOPIC_NAME, client=CLIENT)
-        subscription = self._makeOne(SUB_NAME, topic)
+        subscription = self._makeOne(self.SUB_NAME, topic)
         self.assertEqual(subscription.full_name, SUB_FULL)
         self.assertEqual(subscription.path, SUB_PATH)
+
+    def test_autoack_defaults(self):
+        from gcloud.pubsub.subscription import AutoAck
+        client = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        auto_ack = subscription.auto_ack()
+        self.assertTrue(isinstance(auto_ack, AutoAck))
+        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertEqual(auto_ack._return_immediately, False)
+        self.assertEqual(auto_ack._max_messages, 1)
+        self.assertTrue(auto_ack._client is None)
+
+    def test_autoack_explicit(self):
+        from gcloud.pubsub.subscription import AutoAck
+        client1 = _Client(project=self.PROJECT)
+        client2 = _Client(project=self.PROJECT)
+        topic = _Topic(self.TOPIC_NAME, client=client1)
+        subscription = self._makeOne(self.SUB_NAME, topic)
+        auto_ack = subscription.auto_ack(True, 10, client2)
+        self.assertTrue(isinstance(auto_ack, AutoAck))
+        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertEqual(auto_ack._return_immediately, True)
+        self.assertEqual(auto_ack._max_messages, 10)
+        self.assertTrue(auto_ack._client is client2)
 
     def test_create_pull_wo_ack_deadline_w_bound_client(self):
         RESPONSE = {
@@ -642,6 +666,81 @@ class _FauxSubscribererAPI(object):
         return self._subscription_modify_ack_deadline_response
 
 
+class TestAutoAck(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.pubsub.subscription import AutoAck
+        return AutoAck
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        subscription = _FauxSubscription(())
+        auto_ack = self._makeOne(subscription)
+        self.assertEqual(auto_ack._return_immediately, False)
+        self.assertEqual(auto_ack._max_messages, 1)
+        self.assertTrue(auto_ack._client is None)
+
+    def test_ctor_explicit(self):
+        CLIENT = object()
+        subscription = _FauxSubscription(())
+        auto_ack = self._makeOne(
+            subscription, return_immediately=True, max_messages=10,
+            client=CLIENT)
+        self.assertTrue(auto_ack._subscription is subscription)
+        self.assertEqual(auto_ack._return_immediately, True)
+        self.assertEqual(auto_ack._max_messages, 10)
+        self.assertTrue(auto_ack._client is CLIENT)
+
+    def test___enter___w_defaults(self):
+        subscription = _FauxSubscription(())
+        auto_ack = self._makeOne(subscription)
+
+        with auto_ack as returned:
+            pass
+
+        self.assertTrue(returned is auto_ack)
+        self.assertEqual(subscription._return_immediately, False)
+        self.assertEqual(subscription._max_messages, 1)
+        self.assertTrue(subscription._client is None)
+
+    def test___enter___w_explicit(self):
+        CLIENT = object()
+        subscription = _FauxSubscription(())
+        auto_ack = self._makeOne(
+            subscription, return_immediately=True, max_messages=10,
+            client=CLIENT)
+
+        with auto_ack as returned:
+            pass
+
+        self.assertTrue(returned is auto_ack)
+        self.assertEqual(subscription._return_immediately, True)
+        self.assertEqual(subscription._max_messages, 10)
+        self.assertTrue(subscription._client is CLIENT)
+
+    def test___exit___(self):
+        CLIENT = object()
+        ACK_ID1, MESSAGE1 = 'ACK_ID1', _FallibleMessage()
+        ACK_ID2, MESSAGE2 = 'ACK_ID2', _FallibleMessage()
+        ACK_ID3, MESSAGE3 = 'ACK_ID3', _FallibleMessage(True)
+        ITEMS = [
+            (ACK_ID1, MESSAGE1),
+            (ACK_ID2, MESSAGE2),
+            (ACK_ID3, MESSAGE3),
+        ]
+        subscription = _FauxSubscription(ITEMS)
+        auto_ack = self._makeOne(subscription, client=CLIENT)
+        with auto_ack:
+            for ack_id, message in list(auto_ack.items()):
+                if message.fail:
+                    del auto_ack[ack_id]
+        self.assertEqual(sorted(subscription._acknowledged),
+                         [ACK_ID1, ACK_ID2])
+        self.assertTrue(subscription._ack_client is CLIENT)
+
+
 class _FauxIAMPolicy(object):
 
     def get_iam_policy(self, target_path):
@@ -677,3 +776,30 @@ class _Client(object):
     def topic(self, name, timestamp_messages=False):
         from gcloud.pubsub.topic import Topic
         return Topic(name, client=self, timestamp_messages=timestamp_messages)
+
+
+class _FallibleMessage(object):
+
+    def __init__(self, fail=False):
+        self.fail = fail
+
+
+class _FauxSubscription(object):
+
+    def __init__(self, items):
+        self._items = items
+        self._mapping = dict(items)
+        self._acknowledged = set()
+
+    def pull(self, return_immediately=False, max_messages=1, client=None):
+        self._return_immediately = return_immediately
+        self._max_messages = max_messages
+        self._client = client
+        return self._items
+
+    def acknowledge(self, ack_ids, client=None):
+        self._ack_client = client
+        for ack_id in ack_ids:
+            message = self._mapping[ack_id]
+            assert not message.fail
+            self._acknowledged.add(ack_id)
