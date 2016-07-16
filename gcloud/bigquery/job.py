@@ -938,7 +938,8 @@ class QueryJob(_AsyncJob):
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
-    user_defined_function_resources = _TypedProperty('user_defined_function_resources', list)
+    user_defined_function_resources = _TypedProperty(
+        'user_defined_function_resources', list)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
     """
@@ -984,7 +985,9 @@ class QueryJob(_AsyncJob):
         if self.use_legacy_sql is not None:
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.user_defined_function_resources is not None:
-            configuration['userDefinedFunctionResources'] = self.user_defined_function_resources
+            configuration['userDefinedFunctionResources'] = (
+                self.user_defined_function_resources
+            )
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
 
