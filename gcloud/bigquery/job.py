@@ -869,6 +869,7 @@ class _AsyncQueryConfiguration(object):
     _flatten_results = None
     _priority = None
     _use_query_cache = None
+    _user_defined_function_resources = None
     _write_disposition = None
 
 
@@ -927,6 +928,11 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
     """
 
+    user_defined_function_resources = _TypedProperty('user_defined_function_resources', list)
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
+    """
+
     write_disposition = WriteDisposition('write_disposition')
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
@@ -965,6 +971,8 @@ class QueryJob(_AsyncJob):
             configuration['priority'] = self.priority
         if self.use_query_cache is not None:
             configuration['useQueryCache'] = self.use_query_cache
+        if self.user_defined_function_resources is not None:
+            configuration['userDefinedFunctionResources'] = self.user_defined_function_resources
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
 
