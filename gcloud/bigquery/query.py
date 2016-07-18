@@ -34,6 +34,7 @@ class _SyncQueryConfiguration(object):
     _timeout_ms = None
     _preserve_nulls = None
     _use_query_cache = None
+    _use_legacy_sql = None
 
 
 class QueryResults(object):
@@ -233,6 +234,12 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache
     """
 
+    use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/\
+    reference/v2/jobs/query#useLegacySql
+    """
+
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
 
@@ -263,6 +270,9 @@ class QueryResults(object):
 
         if self.use_query_cache is not None:
             resource['useQueryCache'] = self.use_query_cache
+
+        if self.use_legacy_sql is not None:
+            resource['useLegacySql'] = self.use_legacy_sql
 
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run

@@ -1248,6 +1248,11 @@ class TestQueryJob(unittest2.TestCase, _Base):
                              config['useQueryCache'])
         else:
             self.assertTrue(job.use_query_cache is None)
+        if 'useLegacySql' in config:
+            self.assertEqual(job.use_legacy_sql,
+                             config['useLegacySql'])
+        else:
+            self.assertTrue(job.use_legacy_sql is None)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -1310,6 +1315,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(job.flatten_results is None)
         self.assertTrue(job.priority is None)
         self.assertTrue(job.use_query_cache is None)
+        self.assertTrue(job.use_legacy_sql is None)
         self.assertTrue(job.write_disposition is None)
 
     def test_from_api_repr_missing_identity(self):
@@ -1420,6 +1426,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'flattenResults': True,
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
+            'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
@@ -1439,6 +1446,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
+        job.use_legacy_sql = True
         job.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)
