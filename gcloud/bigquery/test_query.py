@@ -136,6 +136,7 @@ class TestQueryResults(unittest2.TestCase):
         self.assertTrue(query.max_results is None)
         self.assertTrue(query.preserve_nulls is None)
         self.assertTrue(query.use_query_cache is None)
+        self.assertTrue(query.use_legacy_sql is None)
 
     def test_job_wo_jobid(self):
         client = _Client(self.PROJECT)
@@ -206,6 +207,7 @@ class TestQueryResults(unittest2.TestCase):
         query.preserve_nulls = True
         query.timeout_ms = 20000
         query.use_query_cache = False
+        query.use_legacy_sql = True
         query.dry_run = True
 
         query.run(client=client2)
@@ -226,6 +228,7 @@ class TestQueryResults(unittest2.TestCase):
             'preserveNulls': True,
             'timeoutMs': 20000,
             'useQueryCache': False,
+            'useLegacySql': True,
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
