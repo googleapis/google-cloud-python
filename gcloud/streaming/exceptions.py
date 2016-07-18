@@ -49,6 +49,7 @@ class HttpError(CommunicationError):
         :param http_response: the response which returned the error
 
         :rtype: :class:`HttpError`
+        :returns: The error created from the response.
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url)
@@ -97,6 +98,7 @@ class RetryAfterError(HttpError):
         :param http_response: the response which returned the error
 
         :rtype: :class:`RetryAfterError`
+        :returns: The error created from the response.
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url, http_response.retry_after)

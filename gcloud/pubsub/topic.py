@@ -82,6 +82,9 @@ class Topic(object):
         :param push_endpoint: URL to which messages will be pushed by the
                               back-end. If not set, the application must pull
                               messages.
+
+        :rtype: :class:`Subscription`
+        :returns: The subscription created with the passed in arguments.
         """
         return Subscription(name, self, ack_deadline=ack_deadline,
                             push_endpoint=push_endpoint)
@@ -165,6 +168,9 @@ class Topic(object):
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current topic.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the topic.
         """
         client = self._require_client(client)
         api = client.publisher_api

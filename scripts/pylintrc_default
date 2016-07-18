@@ -94,9 +94,6 @@ load-plugins=pylint.extensions.check_docs
 # New opinions in pylint 1.6, enforcing PEP 257.  #1968 for eventual fixes
 # - catching-non-exception
 # - missing-raises-doc
-# - missing-returns-doc
-# - redundant-returns-doc
-# - ungrouped-imports
 disable =
     maybe-no-member,
     no-member,
@@ -108,9 +105,6 @@ disable =
     no-name-in-module,
     catching-non-exception,
     missing-raises-doc,
-    missing-returns-doc,
-    redundant-returns-doc,
-    ungrouped-imports
 
 
 [REPORTS]

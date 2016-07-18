@@ -166,6 +166,9 @@ def _base64_md5hash(buffer_object):
     :type buffer_object: bytes buffer
     :param buffer_object: Buffer containing bytes used to compute an MD5
                           hash (as base64).
+
+    :rtype: str
+    :returns: A base64 encoded digest of the MD5 hash.
     """
     hash_obj = md5()
     _write_buffer_to_hash(buffer_object, hash_obj)

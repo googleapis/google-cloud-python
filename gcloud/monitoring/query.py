@@ -409,6 +409,10 @@ class Query(object):
     def iter(self, headers_only=False, page_size=None):
         """Yield all time series objects selected by the query.
 
+        The generator returned iterates over
+        :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+        containing points ordered from oldest to newest.
+
         Note that the :class:`Query` object itself is an iterable, such that
         the following are equivalent::
 
@@ -428,9 +432,6 @@ class Query(object):
             points to return per page. This can be used to control how far
             the iterator reads ahead.
 
-        :rtype: iterator over :class:`~gcloud.monitoring.timeseries.TimeSeries`
-        :returns: Time series objects, containing points ordered from oldest
-            to newest.
         :raises: :exc:`ValueError` if the query time interval has not been
             specified.
         """
@@ -481,8 +482,8 @@ class Query(object):
                             page_size=None, page_token=None):
         """Yield key-value pairs for the URL query string.
 
-        We use a series of key-value pairs instead of a ``dict`` to allow for
-        repeated fields.
+        We use a series of key-value pairs (suitable for passing to
+        ``urlencode``) instead of a ``dict`` to allow for repeated fields.
 
         :type headers_only: boolean
         :param headers_only:
@@ -494,10 +495,6 @@ class Query(object):
 
         :type page_token: string or None
         :param page_token: A token to continue the retrieval.
-
-        :rtype: iterator over tuples
-        :returns:
-            Key-value pairs suitable for passing to ``urlencode``.
         """
         yield 'filter', self.filter
 

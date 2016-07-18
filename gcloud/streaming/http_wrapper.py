@@ -140,6 +140,7 @@ class Request(object):
         """Request body for logging purposes
 
         :rtype: str
+        :returns: The body to be logged.
         """
         return self.__loggable_body
 
@@ -162,6 +163,7 @@ class Request(object):
         """Request body
 
         :rtype: str
+        :returns: The body of the request.
         """
         return self.__body
 
@@ -226,6 +228,7 @@ class Response(_ResponseTuple):
         for responses larger than ``sys.maxint``.
 
         :rtype: integer or long
+        :returns: The length of the response.
         """
         if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
@@ -243,6 +246,7 @@ class Response(_ResponseTuple):
         """HTTP status code
 
         :rtype: integer
+        :returns: The response status code.
         """
         return int(self.info['status'])
 
@@ -438,6 +442,7 @@ def get_http(**kwds):
     :param kwds:  keyword arguments to pass to factories.
 
     :rtype: :class:`httplib2.Http` (or a workalike)
+    :returns: The HTTP object created.
     """
     for factory in _HTTP_FACTORIES:
         http = factory(**kwds)

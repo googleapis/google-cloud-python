@@ -71,8 +71,8 @@ def _get_instance(timeout=None):
     :rtype: :class:`gcloud.bigtable.instance.Instance`
     :returns: The unique instance owned by the project inferred from
               the environment.
-    :raises: :class:`ValueError <exceptions.ValueError>` if there is a failed
-             location or any number of instances other than one.
+    :raises ValueError: if there is a failed location or any number of
+                        instances other than one.
     """
     client_kwargs = {'admin': True}
     if timeout is not None:
@@ -182,9 +182,8 @@ class Connection(object):
         :type arguments_dict: dict
         :param arguments_dict: Unused keyword arguments.
 
-        :raises: :class:`TypeError <exceptions.TypeError>` if a keyword other
-                 than ``host``, ``port``, ``compat``, ``transport`` or
-                 ``protocol`` is used.
+        :raises TypeError: if a keyword other than ``host``, ``port``,
+                           ``compat``, ``transport`` or ``protocol`` is used.
         """
         common_args = _LEGACY_ARGS.intersection(six.iterkeys(arguments_dict))
         if common_args:
@@ -322,10 +321,12 @@ class Connection(object):
                          * :class:`dict`
                          * :class:`.GarbageCollectionRule`
 
-        :raises: :class:`TypeError <exceptions.TypeError>` if ``families`` is
-                 not a dictionary,
-                 :class:`ValueError <exceptions.ValueError>` if ``families``
-                 has no entries
+        :raises TypeError: If ``families`` is not a dictionary.
+        :raises ValueError: If ``families`` has no entries.
+        :raises AlreadyExists: If creation fails due to an already
+                               existing table.
+        :raises NetworkError: If creation fails for a reason other than
+                              table exists.
         """
         if not isinstance(families, dict):
             raise TypeError('families arg must be a dictionary')

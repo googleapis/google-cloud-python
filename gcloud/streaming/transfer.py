@@ -76,9 +76,10 @@ class _Transfer(object):
 
     @property
     def close_stream(self):
-        """Should this instance close the stream when deleted
+        """Should this instance close the stream when deleted.
 
         :rtype: boolean
+        :returns: Boolean indicated if the stream should be closed.
         """
         return self._close_stream
 
@@ -87,6 +88,7 @@ class _Transfer(object):
         """Http instance used to perform requests.
 
         :rtype: :class:`httplib2.Http` (or workalike)
+        :returns: The HTTP object used for requests.
         """
         return self._http
 
@@ -97,6 +99,7 @@ class _Transfer(object):
         Defaults to :attr:`http`.
 
         :rtype: :class:`httplib2.Http` (or workalike)
+        :returns: The HTTP object used for binary requests.
         """
         return self._bytes_http or self.http
 
@@ -114,6 +117,7 @@ class _Transfer(object):
         """How many retries should the transfer attempt
 
         :rtype: integer
+        :returns: The number of retries allowed.
         """
         return self._num_retries
 
@@ -136,6 +140,7 @@ class _Transfer(object):
         """Stream to/from which data is downloaded/uploaded.
 
         :rtype: file-like object
+        :returns: The stream that sends/receives data.
         """
         return self._stream
 
@@ -144,6 +149,7 @@ class _Transfer(object):
         """URL to / from which data is downloaded/uploaded.
 
         :rtype: string
+        :returns: The URL where data is sent/received.
         """
         return self._url
 
@@ -170,6 +176,8 @@ class _Transfer(object):
         """Has the instance been initialized
 
         :rtype: boolean
+        :returns: Boolean indicating if the current transfer
+                  has been initialized.
         """
         return self.url is not None and self.http is not None
 
@@ -239,6 +247,9 @@ class Download(_Transfer):
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
                       through to :meth:`_Transfer.__init__()`.
+
+        :rtype: :class:`Download`
+        :returns: The download initiated from the file passed.
         """
         path = os.path.expanduser(filename)
         if os.path.exists(path) and not overwrite:
@@ -263,6 +274,9 @@ class Download(_Transfer):
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
                       through to :meth:`_Transfer.__init__()`.
+
+        :rtype: :class:`Download`
+        :returns: The download initiated from the stream passed.
         """
         return cls(stream, auto_transfer=auto_transfer, total_size=total_size,
                    **kwds)
@@ -272,6 +286,7 @@ class Download(_Transfer):
         """Number of bytes have been downloaded.
 
         :rtype: integer >= 0
+        :returns: The number of downloaded bytes.
         """
         return self._progress
 
@@ -280,6 +295,7 @@ class Download(_Transfer):
         """Total number of bytes to be downloaded.
 
         :rtype: integer or None
+        :returns: The total number of bytes to download.
         """
         return self._total_size
 
@@ -288,6 +304,7 @@ class Download(_Transfer):
         """'Content-Encoding' used to transfer the file
 
         :rtype: string or None
+        :returns: The encoding of the downloaded content.
         """
         return self._encoding
 
@@ -431,6 +448,7 @@ class Download(_Transfer):
         :type use_chunks: boolean
         :param use_chunks: If False, ignore :attr:`chunksize`.
 
+        :rtype: str
         :returns: Last byte to use in a 'Range' header, or None.
         """
         end_byte = end
@@ -642,6 +660,9 @@ class Upload(_Transfer):
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
                       through to :meth:`_Transfer.__init__()`.
+
+        :rtype: :class:`Upload`
+        :returns: The upload initiated from the file passed.
         """
         path = os.path.expanduser(filename)
         if not mime_type:
@@ -673,6 +694,9 @@ class Upload(_Transfer):
         :type kwds: dict
         :param kwds:  keyword arguments:  passed
                       through to :meth:`_Transfer.__init__()`.
+
+        :rtype: :class:`Upload`
+        :returns: The upload initiated from the stream passed.
         """
         if mime_type is None:
             raise ValueError(
@@ -685,6 +709,7 @@ class Upload(_Transfer):
         """Has the entire stream been uploaded.
 
         :rtype: boolean
+        :returns: Boolean indicated if the upload is complete.
         """
         return self._complete
 
@@ -693,6 +718,7 @@ class Upload(_Transfer):
         """MIMEtype of the file being uploaded.
 
         :rtype: string
+        :returns: The mime-type of the upload.
         """
         return self._mime_type
 
@@ -701,6 +727,7 @@ class Upload(_Transfer):
         """Bytes uploaded so far
 
         :rtype: integer
+        :returns: The amount uploaded so far.
         """
         return self._progress
 
@@ -709,6 +736,7 @@ class Upload(_Transfer):
         """Upload strategy to use
 
         :rtype: string or None
+        :returns: The strategy used to upload the data.
         """
         return self._strategy
 
@@ -733,6 +761,7 @@ class Upload(_Transfer):
         """Total size of the stream to be uploaded.
 
         :rtype: integer or None
+        :returns: The total size to be uploaded.
         """
         return self._total_size
 
@@ -929,6 +958,7 @@ class Upload(_Transfer):
         :param response: response to be queried
 
         :rtype: string
+        :returns: The header used to determine the bytes range.
         """
         # NOTE: Per RFC 2616[1]/7233[2][3], 'Range' is a request header,
         #       not a response header.  If the back-end is actually setting
@@ -956,6 +986,9 @@ class Upload(_Transfer):
 
         :raises: :exc:`ValueError` if the instance has not been configured
                  with a strategy.
+        :rtype: :class:`~gcloud.streaming.http_wrapper.Response`
+        :returns: The response if the upload is resumable and auto transfer
+                  is not used.
         """
         if self.strategy is None:
             raise ValueError(
@@ -988,6 +1021,9 @@ class Upload(_Transfer):
 
         :type range_header: string
         :param range_header: 'Range' header value per RFC 2616/7233
+
+        :rtype: int
+        :returns: The last byte from a range header.
         """
         _, _, end = range_header.partition('-')
         return int(end)
@@ -1016,7 +1052,10 @@ class Upload(_Transfer):
 
         :type use_chunks: boolean
         :param use_chunks: If False, send the stream in a single request.
-                          Otherwise, send it in chunks.
+                           Otherwise, send it in chunks.
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: The response for the final request made.
         """
         if self.strategy != RESUMABLE_UPLOAD:
             raise ValueError(
@@ -1082,12 +1121,15 @@ class Upload(_Transfer):
         return response
 
     def _send_media_body(self, start):
-        """ Send the entire stream in a single request.
+        """Send the entire stream in a single request.
 
         Helper for :meth:`stream_file`:
 
         :type start: integer
         :param start: start byte of the range.
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: The response from the media upload request.
         """
         self._ensure_initialized()
         if self.total_size is None:
@@ -1115,6 +1157,9 @@ class Upload(_Transfer):
 
         :type start: integer
         :param start: start byte of the range.
+
+        :rtype: :class:`gcloud.streaming.http_wrapper.Response`
+        :returns: The response from the chunked upload request.
         """
         self._ensure_initialized()
         no_log_body = self.total_size is None

@@ -161,9 +161,6 @@ class Bucket(_PropertyMixin):
         :type client: :class:`gcloud.storage.client.Client` or ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
-
-        :rtype: :class:`gcloud.storage.bucket.Bucket`
-        :returns: The newly created bucket.
         """
         client = self._require_client(client)
         query_params = {'project': client.project}
@@ -558,14 +555,6 @@ class Bucket(_PropertyMixin):
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):
-        """Update the lifecycle rules configured for this bucket.
-
-        See: https://cloud.google.com/storage/docs/lifecycle and
-             https://cloud.google.com/storage/docs/json_api/v1/buckets
-
-        :rtype: list(dict)
-        :returns: A sequence of mappings describing each lifecycle rule.
-        """
         self._patch_property('lifecycle', {'rule': rules})
 
     location = _scalar_property('location')
