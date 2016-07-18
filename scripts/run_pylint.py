@@ -37,10 +37,6 @@ IGNORED_DIRECTORIES = [
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
-    # Both these files cause pylint 1.6 to barf.  See:
-    # https://github.com/PyCQA/pylint/issues/998
-    os.path.join('gcloud', 'bigtable', 'happybase', 'connection.py'),
-    os.path.join('gcloud', 'streaming', 'http_wrapper.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
