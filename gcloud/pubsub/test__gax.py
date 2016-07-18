@@ -749,7 +749,8 @@ class _GaxAPIBase(object):
             code = status_code
 
             def __init__(self):
-                pass
+                super(_DummyException, self).__init__(
+                    None, None, self.code, None)
 
         return _DummyException()
 
