@@ -297,15 +297,6 @@ class Connection(object):
             The only column family options from HappyBase that are able to be
             used with Cloud Bigtable are ``max_versions`` and ``time_to_live``.
 
-        .. note::
-
-            This method is **not** atomic. The Cloud Bigtable API separates
-            the creation of a table from the creation of column families. Thus
-            this method needs to send 1 request for the table creation and 1
-            request for each column family. If any of these fails, the method
-            will fail, but the progress made towards completion cannot be
-            rolled back.
-
         Values in ``families`` represent column family options. In HappyBase,
         these are dictionaries, corresponding to the ``ColumnDescriptor``
         structure in the Thrift API. The accepted keys are:
@@ -353,18 +344,17 @@ class Connection(object):
         # Create table instance and then make API calls.
         name = self._table_name(name)
         low_level_table = _LowLevelTable(name, self._instance)
+        column_families = (
+            low_level_table.column_family(column_family_name, gc_rule=gc_rule)
+            for column_family_name, gc_rule in six.iteritems(gc_rule_dict)
+        )
         try:
-            low_level_table.create()
+            low_level_table.create(column_families=column_families)
         except face.NetworkError as network_err:
             if network_err.code == interfaces.StatusCode.ALREADY_EXISTS:
                 raise AlreadyExists(name)
             else:
                 raise
-
-        for column_family_name, gc_rule in gc_rule_dict.items():
-            column_family = low_level_table.column_family(
-                column_family_name, gc_rule=gc_rule)
-            column_family.create()
 
     def delete_table(self, name, disable=False):
         """Delete the specified table.

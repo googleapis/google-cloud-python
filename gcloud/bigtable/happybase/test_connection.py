@@ -370,14 +370,11 @@ class TestConnection(unittest2.TestCase):
         col_fam_created.sort(key=operator.attrgetter('column_family_id'))
         self.assertEqual(col_fam_created[0].column_family_id, col_fam1)
         self.assertEqual(col_fam_created[0].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[0].create_calls, 1)
         self.assertEqual(col_fam_created[1].column_family_id, col_fam2)
         self.assertEqual(col_fam_created[1].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[1].create_calls, 1)
         self.assertEqual(col_fam_created[2].column_family_id,
                          col_fam3.decode('utf-8'))
         self.assertEqual(col_fam_created[2].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[2].create_calls, 1)
 
     def test_create_table_bad_type(self):
         instance = _Instance()  # Avoid implicit environ check.
@@ -696,10 +693,6 @@ class _MockLowLevelColumnFamily(object):
     def __init__(self, column_family_id, gc_rule=None):
         self.column_family_id = column_family_id
         self.gc_rule = gc_rule
-        self.create_calls = 0
-
-    def create(self):
-        self.create_calls += 1
 
 
 class _MockLowLevelTable(object):
@@ -715,12 +708,11 @@ class _MockLowLevelTable(object):
     def delete(self):
         self.delete_calls += 1
 
-    def create(self):
+    def create(self, column_families=()):
         self.create_calls += 1
+        self.col_fam_created.extend(column_families)
         if self.create_error:
             raise self.create_error
 
     def column_family(self, column_family_id, gc_rule=None):
-        result = _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)
-        self.col_fam_created.append(result)
-        return result
+        return _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)

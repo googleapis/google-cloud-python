@@ -388,6 +388,22 @@ class TestColumnFamily(unittest2.TestCase):
         column_family2 = self._makeOne('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
 
+    def test_to_pb_no_rules(self):
+        column_family = self._makeOne('column_family_id', None)
+        pb_val = column_family.to_pb()
+        expected = _ColumnFamilyPB()
+        self.assertEqual(pb_val, expected)
+
+    def test_to_pb_with_rule(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        gc_rule = MaxVersionsGCRule(1)
+        column_family = self._makeOne('column_family_id', None,
+                                      gc_rule=gc_rule)
+        pb_val = column_family.to_pb()
+        expected = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        self.assertEqual(pb_val, expected)
+
     def _create_test_helper(self, gc_rule=None):
         from gcloud.bigtable._generated_v2 import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
