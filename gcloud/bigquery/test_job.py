@@ -1441,7 +1441,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
-        job.user_defined_function_resources = [self.UDF]
+        job.udf_resources = [self.UDF]
         job.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)
