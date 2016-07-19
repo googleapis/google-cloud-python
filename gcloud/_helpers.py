@@ -26,17 +26,16 @@ import sys
 from threading import local as Local
 
 from google.protobuf import timestamp_pb2
+try:
+    from google.appengine.api import app_identity
+except ImportError:
+    app_identity = None
 import six
 from six.moves.http_client import HTTPConnection
 from six.moves import configparser
 
 from gcloud.environment_vars import PROJECT
 from gcloud.environment_vars import CREDENTIALS
-
-try:
-    from google.appengine.api import app_identity
-except ImportError:
-    app_identity = None
 
 
 _NOW = datetime.datetime.utcnow  # To be replaced by tests.
@@ -77,8 +76,9 @@ class _LocalStack(Local):
     def pop(self):
         """Pop a resource from our stack.
 
-        :raises: IndexError if the stack is empty.
+        :rtype: object
         :returns: the top-most resource, after removing it.
+        :raises IndexError: if the stack is empty.
         """
         return self._stack.pop()
 
@@ -86,6 +86,7 @@ class _LocalStack(Local):
     def top(self):
         """Get the top-most resource
 
+        :rtype: object
         :returns: the top-most item, or None if the stack is empty.
         """
         if len(self._stack) > 0:
@@ -141,8 +142,7 @@ def _ensure_tuple_or_list(arg_name, tuple_or_list):
 
     :rtype: list of str
     :returns: The ``tuple_or_list`` passed in cast to a ``list``.
-    :raises: class:`TypeError` if the ``tuple_or_list`` is not a tuple or
-             list.
+    :raises TypeError: if the ``tuple_or_list`` is not a tuple or list.
     """
     if not isinstance(tuple_or_list, (tuple, list)):
         raise TypeError('Expected %s to be a tuple or list. '
@@ -392,6 +392,8 @@ def _rfc3339_nanos_to_datetime(dt_str):
 
     :rtype: :class:`datetime.datetime`
     :returns: The datetime object created from the string.
+    :raises ValueError: If the timestamp does not match the RFC 3339
+                        regular expression.
     """
     with_nanos = _RFC3339_NANOS.match(dt_str)
     if with_nanos is None:
@@ -439,8 +441,7 @@ def _to_bytes(value, encoding='ascii'):
     :rtype: str / bytes
     :returns: The original value converted to bytes (if unicode) or as passed
               in if it started out as bytes.
-    :raises: :class:`TypeError <exceptions.TypeError>` if the value
-             could not be converted to bytes.
+    :raises TypeError: if the value could not be converted to bytes.
     """
     result = (value.encode(encoding)
               if isinstance(value, six.text_type) else value)
@@ -460,8 +461,7 @@ def _bytes_to_unicode(value):
     :returns: The original value converted to unicode (if bytes) or as passed
               in if it started out as unicode.
 
-    :raises: :class:`ValueError` if the value could not be converted to
-             unicode.
+    :raises ValueError: if the value could not be converted to unicode.
     """
     result = (value.decode('utf-8')
               if isinstance(value, six.binary_type) else value)
@@ -522,9 +522,9 @@ def _name_from_project_path(path, project, template):
 
     :rtype: str
     :returns: Name parsed from ``path``.
-    :raises: :class:`ValueError` if the ``path`` is ill-formed or if
-             the project from the ``path`` does not agree with the
-             ``project`` passed in.
+    :raises ValueError: if the ``path`` is ill-formed or if the project from
+                        the ``path`` does not agree with the ``project``
+                        passed in.
     """
     if isinstance(template, str):
         template = re.compile(template)

@@ -73,6 +73,7 @@ class Project(object):
         :param client: The Client used with this project.
 
         :rtype: :class:`gcloud.resource_manager.project.Project`
+        :returns: The project created.
         """
         project = cls(project_id=resource['projectId'], client=client)
         project.set_properties_from_api_repr(resource)
@@ -173,6 +174,9 @@ class Project(object):
                       :data:`NoneType <types.NoneType>`
         :param client: the client to use.  If not passed, falls back to
                        the client stored on the current project.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the project.
         """
         client = self._require_client(client)
 

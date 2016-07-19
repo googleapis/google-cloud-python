@@ -180,6 +180,9 @@ class Client(JSONClient):
 
         :type display_name: string
         :param display_name: An optional concise name for the metric.
+
+        :rtype: :class:`MetricDescriptor`
+        :returns: The metric descriptor created with the passed-in arguments.
         """
         return MetricDescriptor(
             self, type_,

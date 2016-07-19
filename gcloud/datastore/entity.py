@@ -131,6 +131,7 @@ class Entity(dict):
         """Names of fields which are *not* to be indexed for this entity.
 
         :rtype: sequence of field names
+        :returns: The set of fields excluded from indexes.
         """
         return frozenset(self._exclude_from_indexes)
 

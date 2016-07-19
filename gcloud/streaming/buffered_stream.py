@@ -42,6 +42,7 @@ class BufferedStream(object):
         """Does the stream have bytes remaining beyond the buffer
 
         :rtype: boolean
+        :returns: Boolean indicating if the stream is exhausted.
         """
         return self._stream_at_end
 
@@ -50,6 +51,7 @@ class BufferedStream(object):
         """Point to which stream was read into the buffer
 
         :rtype: integer
+        :returns: The end-position of the stream.
         """
         return self._end_pos
 
@@ -58,6 +60,7 @@ class BufferedStream(object):
         """Bytes remaining to be read from the buffer
 
         :rtype: integer
+        :returns: The number of bytes remaining.
         """
         return len(self._buffered_data) - self._buffer_pos
 
@@ -66,6 +69,9 @@ class BufferedStream(object):
 
         :type size: integer or None
         :param size: How many bytes to read (defaults to all remaining bytes).
+
+        :rtype: str
+        :returns: The data read from the stream.
         """
         if size is None or size < 0:
             raise ValueError(

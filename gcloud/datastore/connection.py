@@ -112,10 +112,13 @@ class Connection(connection.Connection):
         :type request_pb: :class:`google.protobuf.message.Message` instance
         :param request_pb: the protobuf instance representing the request.
 
-        :type response_pb_cls: A :class:`google.protobuf.message.Message'
+        :type response_pb_cls: A :class:`google.protobuf.message.Message`
                                subclass.
         :param response_pb_cls: The class used to unmarshall the response
                                 protobuf.
+
+        :rtype: :class:`google.protobuf.message.Message`
+        :returns: The RPC message parsed from the response.
         """
         response = self._request(project=project, method=method,
                                  data=request_pb.SerializeToString())
@@ -142,6 +145,9 @@ class Connection(connection.Connection):
         :type api_version: string
         :param api_version: The version of the API to connect to.
                             You shouldn't have to provide this.
+
+        :rtype: str
+        :returns: The API URL created.
         """
         return self.API_URL_TEMPLATE.format(
             api_base=(base_url or self.api_base_url),
@@ -322,9 +328,9 @@ class Connection(connection.Connection):
             This method will mutate ``request`` before using it.
 
         :rtype: tuple
-        :returns': The pair of the number of index updates and a list of
-                   :class:`._generated.entity_pb2.Key` for each incomplete key
-                   that was completed in the commit.
+        :returns: The pair of the number of index updates and a list of
+                  :class:`._generated.entity_pb2.Key` for each incomplete key
+                  that was completed in the commit.
         """
         if transaction_id:
             request.mode = _datastore_pb2.CommitRequest.TRANSACTIONAL
@@ -415,9 +421,9 @@ def _parse_commit_response(commit_response_pb):
     :param commit_response_pb: The protobuf response from a commit request.
 
     :rtype: tuple
-    :returns': The pair of the number of index updates and a list of
-               :class:`._generated.entity_pb2.Key` for each incomplete key
-               that was completed in the commit.
+    :returns: The pair of the number of index updates and a list of
+              :class:`._generated.entity_pb2.Key` for each incomplete key
+              that was completed in the commit.
     """
     mut_results = commit_response_pb.mutation_results
     index_updates = commit_response_pb.index_updates
