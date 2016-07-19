@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud d171791 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 24c4358 documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     'd171791',
+        VERSION:     '24c4358',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud d171791 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud 24c4358 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%20d171791" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (d171791)
+              Version History (24c4358)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -148,9 +148,16 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="n">_LEGACY_ARGS</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">((</span><span class="s1">&#39;host&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="s1">&#39;compat&#39;</span><span class="p">,</span> <span class="s1">&#39;transport&#39;</span><span class="p">,</span> <span class="s1">&#39;protocol&#39;</span><span class="p">))</span>
 <span class="n">_WARN</span> <span class="o">=</span> <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span>
+<span class="n">_BASE_DISABLE</span> <span class="o">=</span> <span class="s1">&#39;Cloud Bigtable has no concept of enabled / disabled tables.&#39;</span>
 <span class="n">_DISABLE_DELETE_MSG</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;The disable argument should not be used in &#39;</span>
-                       <span class="s1">&#39;delete_table(). Cloud Bigtable has no concept &#39;</span>
-                       <span class="s1">&#39;of enabled / disabled tables.&#39;</span><span class="p">)</span>
+                       <span class="s1">&#39;delete_table(). &#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">_BASE_DISABLE</span>
+<span class="n">_ENABLE_TMPL</span> <span class="o">=</span> <span class="s1">&#39;Connection.enable_table(</span><span class="si">%r</span><span class="s1">) was called, but &#39;</span> <span class="o">+</span> <span class="n">_BASE_DISABLE</span>
+<span class="n">_DISABLE_TMPL</span> <span class="o">=</span> <span class="s1">&#39;Connection.disable_table(</span><span class="si">%r</span><span class="s1">) was called, but &#39;</span> <span class="o">+</span> <span class="n">_BASE_DISABLE</span>
+<span class="n">_IS_ENABLED_TMPL</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Connection.is_table_enabled(</span><span class="si">%r</span><span class="s1">) was called, but &#39;</span> <span class="o">+</span>
+                    <span class="n">_BASE_DISABLE</span><span class="p">)</span>
+<span class="n">_COMPACT_TMPL</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Connection.compact_table(</span><span class="si">%r</span><span class="s1">, major=</span><span class="si">%r</span><span class="s1">) was called, but the &#39;</span>
+                 <span class="s1">&#39;Cloud Bigtable API handles table compactions automatically &#39;</span>
+                 <span class="s1">&#39;and does not expose an API for it.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_instance</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -477,61 +484,70 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Connection.enable_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.enable_table">[docs]</a>    <span class="k">def</span> <span class="nf">enable_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Connection.enable_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.enable_table">[docs]</a>    <span class="k">def</span> <span class="nf">enable_table</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Enable the specified table.</span>
 
 <span class="sd">        .. warning::</span>
 
 <span class="sd">            Cloud Bigtable has no concept of enabled / disabled tables so this</span>
-<span class="sd">            method does not work. It is provided simply for compatibility.</span>
+<span class="sd">            method does nothing. It is provided simply for compatibility.</span>
 
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: The name of the table to be enabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API has no concept of &#39;</span>
-                                  <span class="s1">&#39;enabled or disabled tables.&#39;</span><span class="p">)</span></div>
+        <span class="n">_WARN</span><span class="p">(</span><span class="n">_ENABLE_TMPL</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span></div>
 
-<div class="viewcode-block" id="Connection.disable_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.disable_table">[docs]</a>    <span class="k">def</span> <span class="nf">disable_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Connection.disable_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.disable_table">[docs]</a>    <span class="k">def</span> <span class="nf">disable_table</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Disable the specified table.</span>
 
 <span class="sd">        .. warning::</span>
 
 <span class="sd">            Cloud Bigtable has no concept of enabled / disabled tables so this</span>
-<span class="sd">            method does not work. It is provided simply for compatibility.</span>
+<span class="sd">            method does nothing. It is provided simply for compatibility.</span>
 
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: The name of the table to be disabled.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API has no concept of &#39;</span>
-                                  <span class="s1">&#39;enabled or disabled tables.&#39;</span><span class="p">)</span></div>
+        <span class="n">_WARN</span><span class="p">(</span><span class="n">_DISABLE_TMPL</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span></div>
 
-<div class="viewcode-block" id="Connection.is_table_enabled"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.is_table_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">is_table_enabled</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Connection.is_table_enabled"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.is_table_enabled">[docs]</a>    <span class="k">def</span> <span class="nf">is_table_enabled</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return whether the specified table is enabled.</span>
 
 <span class="sd">        .. warning::</span>
 
 <span class="sd">            Cloud Bigtable has no concept of enabled / disabled tables so this</span>
-<span class="sd">            method does not work. It is provided simply for compatibility.</span>
+<span class="sd">            method always returns :data:`True`. It is provided simply for</span>
+<span class="sd">            compatibility.</span>
 
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: The name of the table to check enabled / disabled status.</span>
+
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        :returns: The value :data:`True` always.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API has no concept of &#39;</span>
-                                  <span class="s1">&#39;enabled or disabled tables.&#39;</span><span class="p">)</span></div>
+        <span class="n">_WARN</span><span class="p">(</span><span class="n">_IS_ENABLED_TMPL</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Connection.compact_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table">[docs]</a>    <span class="k">def</span> <span class="nf">compact_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Connection.compact_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table">[docs]</a>    <span class="k">def</span> <span class="nf">compact_table</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compact the specified table.</span>
 
 <span class="sd">        .. warning::</span>
 
-<span class="sd">            Cloud Bigtable does not support compacting a table, so this</span>
-<span class="sd">            method does not work. It is provided simply for compatibility.</span>
+<span class="sd">            Cloud Bigtable supports table compactions, it just doesn&#39;t expose</span>
+<span class="sd">            an API for that feature, so this method does nothing. It is</span>
+<span class="sd">            provided simply for compatibility.</span>
 
-<span class="sd">        :raises: :class:`NotImplementedError &lt;exceptions.NotImplementedError&gt;`</span>
-<span class="sd">                 always</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param name: The name of the table to compact.</span>
+
+<span class="sd">        :type major: bool</span>
+<span class="sd">        :param major: Whether to perform a major compaction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;The Cloud Bigtable API does not support &#39;</span>
-                                  <span class="s1">&#39;compacting a table.&#39;</span><span class="p">)</span></div></div>
+        <span class="n">_WARN</span><span class="p">(</span><span class="n">_COMPACT_TMPL</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="p">))</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_parse_family_option</span><span class="p">(</span><span class="n">option</span><span class="p">):</span>
