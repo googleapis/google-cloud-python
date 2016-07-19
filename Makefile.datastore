@@ -8,7 +8,6 @@ help:
 	@echo 'Makefile for gcloud-python Bigtable protos                      '
 	@echo '                                                                '
 	@echo '   make generate                 Generates the protobuf modules '
-	@echo '   make check_generate           Checks that generate succeeded '
 	@echo '   make clean                    Clean generated files          '
 
 generate:
@@ -48,10 +47,7 @@ generate:
 	# Rewrite the imports in the generated *_pb2.py files.
 	python scripts/rewrite_imports.py $(DATASTORE_DIR)/*pb2.py
 
-check_generate:
-	python scripts/check_generate.py
-
 clean:
 	rm -fr $(GENERATED_DIR)
 
-.PHONY: generate check_generate clean
+.PHONY: generate clean
