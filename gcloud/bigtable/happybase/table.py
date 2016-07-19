@@ -42,6 +42,7 @@ from gcloud.bigtable.table import Table as _LowLevelTable
 
 
 _WARN = warnings.warn
+_PACK_I64 = struct.Struct('>q').pack
 _UNPACK_I64 = struct.Struct('>q').unpack
 _SIMPLE_GC_RULES = (MaxAgeGCRule, MaxVersionsGCRule)
 
@@ -531,9 +532,11 @@ class Table(object):
     def counter_set(self, row, column, value=0):
         """Set a counter column to a specific value.
 
-        This method is provided in HappyBase, but we do not provide it here
-        because it defeats the purpose of using atomic increment and decrement
-        of a counter.
+        .. note::
+
+            Be careful using this method. It can be useful for setting the
+            initial value of a counter, but it defeats the purpose of using
+            atomic increment and decrement.
 
         :type row: str
         :param row: Row key for the row we are setting a counter in.
@@ -544,13 +547,8 @@ class Table(object):
 
         :type value: int
         :param value: Value to set the counter to.
-
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
         """
-        raise NotImplementedError('Table.counter_set will not be implemented. '
-                                  'Instead use the increment/decrement '
-                                  'methods along with counter_get.')
+        self.put(row, {column: _PACK_I64(value)})
 
     def counter_inc(self, row, column, value=1):
         """Atomically increment a counter column.
