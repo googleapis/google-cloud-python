@@ -19,7 +19,7 @@ from gcloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
 from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
