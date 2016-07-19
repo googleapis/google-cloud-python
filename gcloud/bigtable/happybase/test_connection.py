@@ -488,37 +488,81 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(warned, [MUT._DISABLE_DELETE_MSG])
 
     def test_enable_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
             connection.enable_table(name)
 
+        self.assertEqual(warned, [MUT._ENABLE_TMPL % (name,)])
+
     def test_disable_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
             connection.disable_table(name)
 
+        self.assertEqual(warned, [MUT._DISABLE_TMPL % (name,)])
+
     def test_is_table_enabled(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
-            connection.is_table_enabled(name)
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
+            result = connection.is_table_enabled(name)
+
+        self.assertTrue(result)
+        self.assertEqual(warned, [MUT._IS_ENABLED_TMPL % (name,)])
 
     def test_compact_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        major = True
-        with self.assertRaises(NotImplementedError):
-            connection.compact_table(name, major=major)
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
+            connection.compact_table(name)
+
+        self.assertEqual(warned, [MUT._COMPACT_TMPL % (name, False)])
 
 
 class Test__parse_family_option(unittest2.TestCase):

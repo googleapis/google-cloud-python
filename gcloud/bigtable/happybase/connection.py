@@ -49,9 +49,16 @@ DEFAULT_PROTOCOL = None
 
 _LEGACY_ARGS = frozenset(('host', 'port', 'compat', 'transport', 'protocol'))
 _WARN = warnings.warn
+_BASE_DISABLE = 'Cloud Bigtable has no concept of enabled / disabled tables.'
 _DISABLE_DELETE_MSG = ('The disable argument should not be used in '
-                       'delete_table(). Cloud Bigtable has no concept '
-                       'of enabled / disabled tables.')
+                       'delete_table(). ') + _BASE_DISABLE
+_ENABLE_TMPL = 'Connection.enable_table(%r) was called, but ' + _BASE_DISABLE
+_DISABLE_TMPL = 'Connection.disable_table(%r) was called, but ' + _BASE_DISABLE
+_IS_ENABLED_TMPL = ('Connection.is_table_enabled(%r) was called, but ' +
+                    _BASE_DISABLE)
+_COMPACT_TMPL = ('Connection.compact_table(%r, major=%r) was called, but the '
+                 'Cloud Bigtable API handles table compactions automatically '
+                 'and does not expose an API for it.')
 
 
 def _get_instance(timeout=None):
@@ -378,61 +385,70 @@ class Connection(object):
         name = self._table_name(name)
         _LowLevelTable(name, self._instance).delete()
 
-    def enable_table(self, name):
+    @staticmethod
+    def enable_table(name):
         """Enable the specified table.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be enabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_ENABLE_TMPL % (name,))
 
-    def disable_table(self, name):
+    @staticmethod
+    def disable_table(name):
         """Disable the specified table.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be disabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_DISABLE_TMPL % (name,))
 
-    def is_table_enabled(self, name):
+    @staticmethod
+    def is_table_enabled(name):
         """Return whether the specified table is enabled.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method always returns :data:`True`. It is provided simply for
+            compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to check enabled / disabled status.
+
+        :rtype: bool
+        :returns: The value :data:`True` always.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_IS_ENABLED_TMPL % (name,))
+        return True
 
-    def compact_table(self, name, major=False):
+    @staticmethod
+    def compact_table(name, major=False):
         """Compact the specified table.
 
         .. warning::
 
-            Cloud Bigtable does not support compacting a table, so this
-            method does not work. It is provided simply for compatibility.
+            Cloud Bigtable supports table compactions, it just doesn't expose
+            an API for that feature, so this method does nothing. It is
+            provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to compact.
+
+        :type major: bool
+        :param major: Whether to perform a major compaction.
         """
-        raise NotImplementedError('The Cloud Bigtable API does not support '
-                                  'compacting a table.')
+        _WARN(_COMPACT_TMPL % (name, major))
 
 
 def _parse_family_option(option):
