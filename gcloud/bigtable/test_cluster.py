@@ -588,25 +588,25 @@ class Test__process_operation(unittest2.TestCase):
 
 
 def _CellPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ClusterPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         instance_pb2 as instance_v2_pb2)
     return instance_v2_pb2.Cluster(*args, **kw)
 
 
 def _DeleteClusterRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
     return messages_v2_pb2.DeleteClusterRequest(*args, **kw)
 
 
 def _GetClusterRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_instance_admin_pb2 as messages_v2_pb2)
     return messages_v2_pb2.GetClusterRequest(*args, **kw)
 

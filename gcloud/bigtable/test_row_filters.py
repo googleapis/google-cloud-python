@@ -960,42 +960,42 @@ class TestConditionalRowFilter(unittest2.TestCase):
 
 
 def _ColumnRangePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ColumnRange(*args, **kw)
 
 
 def _RowFilterPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter(*args, **kw)
 
 
 def _RowFilterChainPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Chain(*args, **kw)
 
 
 def _RowFilterConditionPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Condition(*args, **kw)
 
 
 def _RowFilterInterleavePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.RowFilter.Interleave(*args, **kw)
 
 
 def _TimestampRangePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.TimestampRange(*args, **kw)
 
 
 def _ValueRangePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ValueRange(*args, **kw)

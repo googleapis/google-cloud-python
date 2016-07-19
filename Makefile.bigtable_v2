@@ -1,6 +1,6 @@
 GRPCIO_VIRTUALENV=$(shell pwd)/grpc_python_venv
 GENERATED_DIR=$(shell pwd)/generated_python
-GENERATED_SUBDIR=_generated_v2
+GENERATED_SUBDIR=_generated
 BIGTABLE_DIR=$(shell pwd)/gcloud/bigtable/$(GENERATED_SUBDIR)
 PROTOC_CMD=$(GRPCIO_VIRTUALENV)/bin/python -m grpc.tools.protoc
 GOOGLEAPIS_PROTOS_DIR=$(shell pwd)/googleapis-pb

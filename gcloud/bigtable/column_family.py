@@ -20,9 +20,9 @@ import datetime
 from google.protobuf import duration_pb2
 
 from gcloud._helpers import _total_seconds
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
 
