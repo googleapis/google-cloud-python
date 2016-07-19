@@ -49,9 +49,13 @@ DEFAULT_PROTOCOL = None
 
 _LEGACY_ARGS = frozenset(('host', 'port', 'compat', 'transport', 'protocol'))
 _WARN = warnings.warn
+_BASE_DISABLE = 'Cloud Bigtable has no concept of enabled / disabled tables.'
 _DISABLE_DELETE_MSG = ('The disable argument should not be used in '
-                       'delete_table(). Cloud Bigtable has no concept '
-                       'of enabled / disabled tables.')
+                       'delete_table(). ') + _BASE_DISABLE
+_ENABLE_MSG = 'Connection.enable_table() was called, but ' + _BASE_DISABLE
+_DISABLE_MSG = 'Connection.disable_table() was called, but ' + _BASE_DISABLE
+_IS_ENABLED_MSG = ('Connection.is_table_enabled() was called, but ' +
+                   _BASE_DISABLE)
 
 
 def _get_instance(timeout=None):
@@ -384,13 +388,12 @@ class Connection(object):
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be enabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_ENABLE_MSG)
 
     def disable_table(self, name):
         """Disable the specified table.
@@ -398,13 +401,12 @@ class Connection(object):
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be disabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_DISABLE_MSG)
 
     def is_table_enabled(self, name):
         """Return whether the specified table is enabled.
@@ -412,13 +414,17 @@ class Connection(object):
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method always returns :data:`True`. It is provided simply for
+            compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to check enabled / disabled status.
+
+        :rtype: bool
+        :returns: The value :data:`True` always.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_IS_ENABLED_MSG)
+        return True
 
     def compact_table(self, name, major=False):
         """Compact the specified table.
