@@ -57,7 +57,8 @@ _DISABLE_TMPL = 'Connection.disable_table(%r) was called, but ' + _BASE_DISABLE
 _IS_ENABLED_TMPL = ('Connection.is_table_enabled(%r) was called, but ' +
                     _BASE_DISABLE)
 _COMPACT_TMPL = ('Connection.compact_table(%r, major=%r) was called, but the '
-                 'Cloud Bigtable API does not support compacting a table.')
+                 'Cloud Bigtable API handles table compactions automatically '
+                 'and does not expose an API for it.')
 
 
 def _get_instance(timeout=None):
@@ -437,8 +438,9 @@ class Connection(object):
 
         .. warning::
 
-            Cloud Bigtable does not support compacting a table, so this
-            method does nothing. It is provided simply for compatibility.
+            Cloud Bigtable supports table compactions, it just doesn't expose
+            an API for that feature, so this method does nothing. It is
+            provided simply for compatibility.
 
         :type name: str
         :param name: The name of the table to compact.
