@@ -92,7 +92,6 @@ load-plugins=pylint.extensions.check_docs
 #                      will be detected by our 100% code coverage.
 #
 # New opinions in pylint 1.6, enforcing PEP 257.  #1968 for eventual fixes
-# - catching-non-exception
 # - missing-raises-doc
 disable =
     maybe-no-member,
@@ -103,7 +102,6 @@ disable =
     redefined-variable-type,
     wrong-import-position,
     no-name-in-module,
-    catching-non-exception,
     missing-raises-doc,
 
 
