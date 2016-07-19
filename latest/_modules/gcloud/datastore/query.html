@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.query &mdash; gcloud 24c4358 documentation</title>
+    <title>gcloud.datastore.query &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/query%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -200,6 +200,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Get the project for this Query.</span>
 
 <span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The project for the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_project</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">project</span>
 
@@ -227,6 +228,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Get the Kind of the Query.</span>
 
 <span class="sd">        :rtype: string</span>
+<span class="sd">        :returns: The kind for the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kind</span>
 
@@ -254,6 +256,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;The ancestor key for the query.</span>
 
 <span class="sd">        :rtype: Key or None</span>
+<span class="sd">        :returns: The ancestor for the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ancestor</span>
 
@@ -278,6 +281,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Filters set on the query.</span>
 
 <span class="sd">        :rtype: sequence of (property_name, operator, value) tuples.</span>
+<span class="sd">        :returns: The filters set on the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filters</span><span class="p">[:]</span>
 
@@ -366,6 +370,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Names of fields used to sort query results.</span>
 
 <span class="sd">        :rtype: sequence of string</span>
+<span class="sd">        :returns: The order(s) set on the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order</span><span class="p">[:]</span>
 
@@ -390,6 +395,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="sd">&quot;&quot;&quot;Names of fields used to group query results.</span>
 
 <span class="sd">        :rtype: sequence of string</span>
+<span class="sd">        :returns: The &quot;distinct on&quot; fields set on the query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distinct_on</span><span class="p">[:]</span>
 
@@ -437,6 +443,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                       If not supplied, uses the query&#39;s value.</span>
 
 <span class="sd">        :rtype: :class:`Iterator`</span>
+<span class="sd">        :returns: The iterator for the query.</span>
 <span class="sd">        :raises: ValueError if ``connection`` is not passed and no implicit</span>
 <span class="sd">                 default has been set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -499,6 +506,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        to iterate on the current Iterator.</span>
 
 <span class="sd">        :rtype: tuple, (entities, more_results, cursor)</span>
+<span class="sd">        :returns: The next page of results.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pb</span> <span class="o">=</span> <span class="n">_pb_from_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">)</span>
 

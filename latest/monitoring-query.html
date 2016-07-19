@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Time Series Query &mdash; gcloud 24c4358 documentation</title>
+    <title>Time Series Query &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="index.html" />
     <link rel="next" title="Time Series" href="monitoring-timeseries.html" />
     <link rel="prev" title="Monitored Resource Descriptors" href="monitoring-resource.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-query%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+monitoring-query%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -271,6 +271,9 @@ and metric labels.</p>
 <dt id="gcloud.monitoring.query.Query.iter">
 <code class="descname">iter</code><span class="sig-paren">(</span><em>headers_only=False</em>, <em>page_size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/monitoring/query.html#Query.iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.monitoring.query.Query.iter" title="Permalink to this definition">#</a></dt>
 <dd><p>Yield all time series objects selected by the query.</p>
+<p>The generator returned iterates over
+<a class="reference internal" href="monitoring-timeseries.html#gcloud.monitoring.timeseries.TimeSeries" title="gcloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a> objects
+containing points ordered from oldest to newest.</p>
 <p>Note that the <a class="reference internal" href="#gcloud.monitoring.query.Query" title="gcloud.monitoring.query.Query"><code class="xref py py-class docutils literal"><span class="pre">Query</span></code></a> object itself is an iterable, such that
 the following are equivalent:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">timeseries</span> <span class="ow">in</span> <span class="n">query</span><span class="p">:</span>
@@ -290,13 +293,6 @@ the following are equivalent:</p>
 points to return per page. This can be used to control how far
 the iterator reads ahead.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">iterator over <a class="reference internal" href="monitoring-timeseries.html#gcloud.monitoring.timeseries.TimeSeries" title="gcloud.monitoring.timeseries.TimeSeries"><code class="xref py py-class docutils literal"><span class="pre">TimeSeries</span></code></a></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Time series objects, containing points ordered from oldest
-to newest.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ValueError</span></code> if the query time interval has not been

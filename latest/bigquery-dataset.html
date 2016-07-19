@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Datasets &mdash; gcloud 24c4358 documentation</title>
+    <title>Datasets &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="index.html" />
     <link rel="next" title="Jobs" href="bigquery-job.html" />
     <link rel="prev" title="BigQuery Client" href="bigquery-client.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigquery-dataset%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -139,7 +139,7 @@ a non <code class="docutils literal"><span class="pre">view</span></code> <stron
 </table>
 <dl class="attribute">
 <dt id="gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES">
-<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['specialGroup', 'groupByEmail', 'view', 'userByEmail', 'domain'])</em><a class="headerlink" href="#gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
+<code class="descname">ENTITY_TYPES</code><em class="property"> = frozenset(['groupByEmail', 'domain', 'specialGroup', 'view', 'userByEmail'])</em><a class="headerlink" href="#gcloud.bigquery.dataset.AccessGrant.ENTITY_TYPES" title="Permalink to this definition">#</a></dt>
 <dd><p>Allowed entity types.</p>
 </dd></dl>
 
@@ -308,6 +308,10 @@ for the dataset (which requires a project).</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>client</strong> (<a class="reference internal" href="bigquery-client.html#gcloud.bigquery.client.Client" title="gcloud.bigquery.client.Client"><code class="xref py py-class docutils literal"><span class="pre">gcloud.bigquery.client.Client</span></code></a> or <code class="docutils literal"><span class="pre">NoneType</span></code>) &#8211; the client to use.  If not passed, falls back to the
 <code class="docutils literal"><span class="pre">client</span></code> stored on the current dataset.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)">bool</a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Boolean indicating existence of the dataset.</td>
 </tr>
 </tbody>
 </table>

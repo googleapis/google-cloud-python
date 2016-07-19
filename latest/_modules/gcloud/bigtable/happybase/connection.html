@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 24c4358 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -177,8 +177,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :rtype: :class:`gcloud.bigtable.instance.Instance`</span>
 <span class="sd">    :returns: The unique instance owned by the project inferred from</span>
 <span class="sd">              the environment.</span>
-<span class="sd">    :raises: :class:`ValueError &lt;exceptions.ValueError&gt;` if there is a failed</span>
-<span class="sd">             location or any number of instances other than one.</span>
+<span class="sd">    :raises ValueError: if there is a failed location or any number of</span>
+<span class="sd">                        instances other than one.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">client_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;admin&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -288,9 +288,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type arguments_dict: dict</span>
 <span class="sd">        :param arguments_dict: Unused keyword arguments.</span>
 
-<span class="sd">        :raises: :class:`TypeError &lt;exceptions.TypeError&gt;` if a keyword other</span>
-<span class="sd">                 than ``host``, ``port``, ``compat``, ``transport`` or</span>
-<span class="sd">                 ``protocol`` is used.</span>
+<span class="sd">        :raises TypeError: if a keyword other than ``host``, ``port``,</span>
+<span class="sd">                           ``compat``, ``transport`` or ``protocol`` is used.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">common_args</span> <span class="o">=</span> <span class="n">_LEGACY_ARGS</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">six</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(</span><span class="n">arguments_dict</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">common_args</span><span class="p">:</span>
@@ -428,10 +427,12 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                         * :class:`dict`</span>
 <span class="sd">                         * :class:`.GarbageCollectionRule`</span>
 
-<span class="sd">        :raises: :class:`TypeError &lt;exceptions.TypeError&gt;` if ``families`` is</span>
-<span class="sd">                 not a dictionary,</span>
-<span class="sd">                 :class:`ValueError &lt;exceptions.ValueError&gt;` if ``families``</span>
-<span class="sd">                 has no entries</span>
+<span class="sd">        :raises TypeError: If ``families`` is not a dictionary.</span>
+<span class="sd">        :raises ValueError: If ``families`` has no entries.</span>
+<span class="sd">        :raises AlreadyExists: If creation fails due to an already</span>
+<span class="sd">                               existing table.</span>
+<span class="sd">        :raises NetworkError: If creation fails for a reason other than</span>
+<span class="sd">                              table exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">families</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;families arg must be a dictionary&#39;</span><span class="p">)</span>

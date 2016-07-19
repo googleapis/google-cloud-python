@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.monitoring.query &mdash; gcloud 24c4358 documentation</title>
+    <title>gcloud.monitoring.query &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/query%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/monitoring/query%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -508,6 +508,10 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <div class="viewcode-block" id="Query.iter"><a class="viewcode-back" href="../../../monitoring-query.html#gcloud.monitoring.query.Query.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield all time series objects selected by the query.</span>
 
+<span class="sd">        The generator returned iterates over</span>
+<span class="sd">        :class:`~gcloud.monitoring.timeseries.TimeSeries` objects</span>
+<span class="sd">        containing points ordered from oldest to newest.</span>
+
 <span class="sd">        Note that the :class:`Query` object itself is an iterable, such that</span>
 <span class="sd">        the following are equivalent::</span>
 
@@ -527,9 +531,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">            points to return per page. This can be used to control how far</span>
 <span class="sd">            the iterator reads ahead.</span>
 
-<span class="sd">        :rtype: iterator over :class:`~gcloud.monitoring.timeseries.TimeSeries`</span>
-<span class="sd">        :returns: Time series objects, containing points ordered from oldest</span>
-<span class="sd">            to newest.</span>
 <span class="sd">        :raises: :exc:`ValueError` if the query time interval has not been</span>
 <span class="sd">            specified.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -580,8 +581,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
                             <span class="n">page_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">page_token</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Yield key-value pairs for the URL query string.</span>
 
-<span class="sd">        We use a series of key-value pairs instead of a ``dict`` to allow for</span>
-<span class="sd">        repeated fields.</span>
+<span class="sd">        We use a series of key-value pairs (suitable for passing to</span>
+<span class="sd">        ``urlencode``) instead of a ``dict`` to allow for repeated fields.</span>
 
 <span class="sd">        :type headers_only: boolean</span>
 <span class="sd">        :param headers_only:</span>
@@ -593,10 +594,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        :type page_token: string or None</span>
 <span class="sd">        :param page_token: A token to continue the retrieval.</span>
-
-<span class="sd">        :rtype: iterator over tuples</span>
-<span class="sd">        :returns:</span>
-<span class="sd">            Key-value pairs suitable for passing to ``urlencode``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">yield</span> <span class="s1">&#39;filter&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span>
 

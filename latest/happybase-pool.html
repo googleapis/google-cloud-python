@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Connection Pool &mdash; gcloud 24c4358 documentation</title>
+    <title>HappyBase Connection Pool &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="index.html" />
     <link rel="next" title="HappyBase Table" href="happybase-table.html" />
     <link rel="prev" title="HappyBase Connection" href="happybase-connection.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-pool%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-pool%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -152,16 +152,14 @@ is not positive.</p>
 </div>
 <p>If <code class="docutils literal"><span class="pre">timeout</span></code> is omitted, this method waits forever for a connection
 to become available from the local queue.</p>
+<p>Yields an active <a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection" title="gcloud.bigtable.happybase.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a>
+from the pool.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; (Optional) Time (in seconds) to wait for a connection
 to open.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection" title="gcloud.bigtable.happybase.connection.Connection"><code class="xref py py-class docutils literal"><span class="pre">Connection</span></code></a></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An active connection from the pool.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#gcloud.bigtable.happybase.pool.NoConnectionsAvailable" title="gcloud.bigtable.happybase.pool.NoConnectionsAvailable"><code class="xref py py-class docutils literal"><span class="pre">NoConnectionsAvailable</span></code></a> if no connection can be
 retrieved from the pool before the <code class="docutils literal"><span class="pre">timeout</span></code> (only if

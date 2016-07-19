@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.datastore.connection &mdash; gcloud 24c4358 documentation</title>
+    <title>gcloud.datastore.connection &mdash; gcloud 8f3469c documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '24c4358',
+        VERSION:     '8f3469c',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 24c4358 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 8f3469c documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%2024c4358" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/datastore/connection%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (24c4358)
+              Version History (8f3469c)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -211,10 +211,13 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type request_pb: :class:`google.protobuf.message.Message` instance</span>
 <span class="sd">        :param request_pb: the protobuf instance representing the request.</span>
 
-<span class="sd">        :type response_pb_cls: A :class:`google.protobuf.message.Message&#39;</span>
+<span class="sd">        :type response_pb_cls: A :class:`google.protobuf.message.Message`</span>
 <span class="sd">                               subclass.</span>
 <span class="sd">        :param response_pb_cls: The class used to unmarshall the response</span>
 <span class="sd">                                protobuf.</span>
+
+<span class="sd">        :rtype: :class:`google.protobuf.message.Message`</span>
+<span class="sd">        :returns: The RPC message parsed from the response.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="p">(</span><span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
                                  <span class="n">data</span><span class="o">=</span><span class="n">request_pb</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
@@ -241,6 +244,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">        :type api_version: string</span>
 <span class="sd">        :param api_version: The version of the API to connect to.</span>
 <span class="sd">                            You shouldn&#39;t have to provide this.</span>
+
+<span class="sd">        :rtype: str</span>
+<span class="sd">        :returns: The API URL created.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">API_URL_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">api_base</span><span class="o">=</span><span class="p">(</span><span class="n">base_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">api_base_url</span><span class="p">),</span>
@@ -421,9 +427,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">            This method will mutate ``request`` before using it.</span>
 
 <span class="sd">        :rtype: tuple</span>
-<span class="sd">        :returns&#39;: The pair of the number of index updates and a list of</span>
-<span class="sd">                   :class:`._generated.entity_pb2.Key` for each incomplete key</span>
-<span class="sd">                   that was completed in the commit.</span>
+<span class="sd">        :returns: The pair of the number of index updates and a list of</span>
+<span class="sd">                  :class:`._generated.entity_pb2.Key` for each incomplete key</span>
+<span class="sd">                  that was completed in the commit.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">transaction_id</span><span class="p">:</span>
             <span class="n">request</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">_datastore_pb2</span><span class="o">.</span><span class="n">CommitRequest</span><span class="o">.</span><span class="n">TRANSACTIONAL</span>
@@ -514,9 +520,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :param commit_response_pb: The protobuf response from a commit request.</span>
 
 <span class="sd">    :rtype: tuple</span>
-<span class="sd">    :returns&#39;: The pair of the number of index updates and a list of</span>
-<span class="sd">               :class:`._generated.entity_pb2.Key` for each incomplete key</span>
-<span class="sd">               that was completed in the commit.</span>
+<span class="sd">    :returns: The pair of the number of index updates and a list of</span>
+<span class="sd">              :class:`._generated.entity_pb2.Key` for each incomplete key</span>
+<span class="sd">              that was completed in the commit.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mut_results</span> <span class="o">=</span> <span class="n">commit_response_pb</span><span class="o">.</span><span class="n">mutation_results</span>
     <span class="n">index_updates</span> <span class="o">=</span> <span class="n">commit_response_pb</span><span class="o">.</span><span class="n">index_updates</span>
