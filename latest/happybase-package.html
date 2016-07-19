@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Package &mdash; gcloud 8f3469c documentation</title>
+    <title>HappyBase Package &mdash; gcloud e0addef documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8f3469c',
+        VERSION:     'e0addef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8f3469c documentation" href="index.html" />
+    <link rel="top" title="gcloud e0addef documentation" href="index.html" />
     <link rel="next" title="Base for Everything" href="bigtable-client-intro.html" />
     <link rel="prev" title="Using the API" href="bigtable-usage.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-package%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-package%0ARelease%3A%20e0addef" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8f3469c)
+              Version History (e0addef)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -111,21 +111,21 @@ Google Cloud Bigtable as the backing store.</p>
 <div class="section" id="differences-in-public-api">
 <h2>Differences in Public API<a class="headerlink" href="#differences-in-public-api" title="Permalink to this headline">#</a></h2>
 <p>Some concepts from HBase/Thrift do not map directly to the Cloud
-Bigtable API. As a result, the following instance methods and functions
-could not be implemented:</p>
+Bigtable API. As a result</p>
 <ul class="simple">
-<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.enable_table" title="gcloud.bigtable.happybase.connection.Connection.enable_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.enable_table()</span></code></a> - no
-concept of enabled/disabled</li>
-<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.disable_table" title="gcloud.bigtable.happybase.connection.Connection.disable_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.disable_table()</span></code></a> - no
-concept of enabled/disabled</li>
-<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.is_table_enabled" title="gcloud.bigtable.happybase.connection.Connection.is_table_enabled"><code class="xref py py-meth docutils literal"><span class="pre">Connection.is_table_enabled()</span></code></a>
-- no concept of enabled/disabled</li>
-<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table" title="gcloud.bigtable.happybase.connection.Connection.compact_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.compact_table()</span></code></a> -
-table storage is opaque to user</li>
 <li><a class="reference internal" href="happybase-table.html#gcloud.bigtable.happybase.table.Table.regions" title="gcloud.bigtable.happybase.table.Table.regions"><code class="xref py py-meth docutils literal"><span class="pre">Table.regions()</span></code></a>
-- tables in Cloud Bigtable do not expose internal storage details</li>
-<li><a class="reference internal" href="happybase-table.html#gcloud.bigtable.happybase.table.Table.counter_set" title="gcloud.bigtable.happybase.table.Table.counter_set"><code class="xref py py-meth docutils literal"><span class="pre">Table.counter_set()</span></code></a> - method can&#8217;t
-be atomic, so we disable it</li>
+could not be implemented since tables in Cloud Bigtable do not expose
+internal storage details</li>
+<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.enable_table" title="gcloud.bigtable.happybase.connection.Connection.enable_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.enable_table()</span></code></a>
+does nothing since Cloud Bigtable has no concept of enabled/disabled</li>
+<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.disable_table" title="gcloud.bigtable.happybase.connection.Connection.disable_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.disable_table()</span></code></a>
+does nothing since Cloud Bigtable has no concept of enabled/disabled</li>
+<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.is_table_enabled" title="gcloud.bigtable.happybase.connection.Connection.is_table_enabled"><code class="xref py py-meth docutils literal"><span class="pre">Connection.is_table_enabled()</span></code></a>
+always returns <a class="reference external" href="https://docs.python.org/2/library/constants.html#True" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">True</span></code></a> since Cloud Bigtable has no concept of
+enabled/disabled</li>
+<li><a class="reference internal" href="happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.compact_table" title="gcloud.bigtable.happybase.connection.Connection.compact_table"><code class="xref py py-meth docutils literal"><span class="pre">Connection.compact_table()</span></code></a>
+does nothing since Cloud Bigtable handles table compactions automatically
+and does not expose an API for it</li>
 <li>The <code class="docutils literal"><span class="pre">__version__</span></code> value for the HappyBase package is <a class="reference external" href="https://docs.python.org/2/library/constants.html#None" title="(in Python v2.7)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a>.
 However, it&#8217;s worth nothing this implementation was based off HappyBase
 0.9.</li>

@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>HappyBase Table &mdash; gcloud 8f3469c documentation</title>
+    <title>HappyBase Table &mdash; gcloud e0addef documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8f3469c',
+        VERSION:     'e0addef',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8f3469c documentation" href="index.html" />
+    <link rel="top" title="gcloud e0addef documentation" href="index.html" />
     <link rel="next" title="HappyBase Batch" href="happybase-batch.html" />
     <link rel="prev" title="HappyBase Connection Pool" href="happybase-pool.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-table%0ARelease%3A%208f3469c" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+happybase-table%0ARelease%3A%20e0addef" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8f3469c)
+              Version History (e0addef)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -292,23 +292,22 @@ this is equivalent to decrement.)</li>
 <dt id="gcloud.bigtable.happybase.table.Table.counter_set">
 <code class="descname">counter_set</code><span class="sig-paren">(</span><em>row</em>, <em>column</em>, <em>value=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/happybase/table.html#Table.counter_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.happybase.table.Table.counter_set" title="Permalink to this definition">#</a></dt>
 <dd><p>Set a counter column to a specific value.</p>
-<p>This method is provided in HappyBase, but we do not provide it here
-because it defeats the purpose of using atomic increment and decrement
-of a counter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Be careful using this method. It can be useful for setting the
+initial value of a counter, but it defeats the purpose of using
+atomic increment and decrement.</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>row</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Row key for the row we are setting a counter in.</li>
 <li><strong>column</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Column we are setting a value in; of
 the form <code class="docutils literal"><span class="pre">fam:col</span></code>.</li>
 <li><strong>value</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Value to set the counter to.</li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/2/library/exceptions.html#exceptions.NotImplementedError" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">NotImplementedError</span></code></a>
-always</p>
 </td>
 </tr>
 </tbody>
