@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.table &mdash; gcloud 8e3caf9 documentation</title>
+    <title>gcloud.bigtable.table &mdash; gcloud 473de8e documentation</title>
     
     <link rel="stylesheet" href="../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '8e3caf9',
+        VERSION:     '473de8e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8e3caf9 documentation" href="../../../index.html" />
+    <link rel="top" title="gcloud 473de8e documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/table%0ARelease%3A%208e3caf9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/table%0ARelease%3A%20473de8e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8e3caf9)
+              Version History (473de8e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -118,6 +118,8 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="n">bigtable_pb2</span> <span class="k">as</span> <span class="n">data_messages_v2_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">bigtable_table_admin_pb2</span> <span class="k">as</span> <span class="n">table_admin_messages_v2_pb2</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">gcloud.bigtable._generated_v2</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">table_pb2</span> <span class="k">as</span> <span class="n">table_v2_pb2</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">_gc_rule_from_pb</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.column_family</span> <span class="k">import</span> <span class="n">ColumnFamily</span>
 <span class="kn">from</span> <span class="nn">gcloud.bigtable.row</span> <span class="k">import</span> <span class="n">AppendRow</span>
@@ -131,14 +133,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">    .. note::</span>
 
-<span class="sd">        We don&#39;t define any properties on a table other than the name. As</span>
-<span class="sd">        the proto says, in a request:</span>
-
-<span class="sd">          The ``name`` field of the Table and all of its ColumnFamilies must</span>
-<span class="sd">          be left blank, and will be populated in the response.</span>
-
-<span class="sd">        This leaves only the ``current_operation`` and ``granularity``</span>
-<span class="sd">        fields. The ``current_operation`` is only used for responses while</span>
+<span class="sd">        We don&#39;t define any properties on a table other than the name.</span>
+<span class="sd">        The only other fields are ``column_families`` and ``granularity``,</span>
+<span class="sd">        The ``column_families`` are not stored locally and</span>
 <span class="sd">        ``granularity`` is an enum with only one value.</span>
 
 <span class="sd">    We can use a :class:`Table` to:</span>
@@ -151,7 +148,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">    :type table_id: str</span>
 <span class="sd">    :param table_id: The ID of the table.</span>
 
-<span class="sd">    :type instance: :class:`Cluster &lt;.instance.Instance&gt;`</span>
+<span class="sd">    :type instance: :class:`Instance &lt;.instance.Instance&gt;`</span>
 <span class="sd">    :param instance: The instance that owns the table.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -170,7 +167,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 
 <span class="sd">        The table name is of the form</span>
 
-<span class="sd">            ``&quot;projects/../zones/../clusters/../tables/{table_id}&quot;``</span>
+<span class="sd">            ``&quot;projects/../instances/../tables/{table_id}&quot;``</span>
 
 <span class="sd">        :rtype: str</span>
 <span class="sd">        :returns: The table name.</span>
@@ -235,24 +232,14 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
     <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Table.create"><a class="viewcode-back" href="../../../bigtable-table.html#gcloud.bigtable.table.Table.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_split_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Table.create"><a class="viewcode-back" href="../../../bigtable-table.html#gcloud.bigtable.table.Table.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_split_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column_families</span><span class="o">=</span><span class="p">()):</span>
         <span class="sd">&quot;&quot;&quot;Creates this table.</span>
-
-<span class="sd">        .. note::</span>
-
-<span class="sd">            Though a :class:`._generated_v2.table_pb2.Table` is also</span>
-<span class="sd">            allowed (as the ``table`` property) in a create table request, we</span>
-<span class="sd">            do not support it in this method. As mentioned in the</span>
-<span class="sd">            :class:`Table` docstring, the name is the only useful property in</span>
-<span class="sd">            the table proto.</span>
 
 <span class="sd">        .. note::</span>
 
 <span class="sd">            A create request returns a</span>
 <span class="sd">            :class:`._generated_v2.table_pb2.Table` but we don&#39;t use</span>
-<span class="sd">            this response. The proto definition allows for the inclusion of a</span>
-<span class="sd">            ``current_operation`` in the response, but it does not appear that</span>
-<span class="sd">            the Cloud Bigtable API returns any operation.</span>
+<span class="sd">            this response.</span>
 
 <span class="sd">        :type initial_split_keys: list</span>
 <span class="sd">        :param initial_split_keys: (Optional) List of row keys that will be</span>
@@ -262,15 +249,28 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">                                   ``&quot;s1&quot;`` and ``&quot;s2&quot;``, three tablets will be</span>
 <span class="sd">                                   created, spanning the key ranges:</span>
 <span class="sd">                                   ``[, s1)``, ``[s1, s2)``, ``[s2, )``.</span>
+
+<span class="sd">        :type column_families: list</span>
+<span class="sd">        :param column_families: (Optional) List or other iterable of</span>
+<span class="sd">                                :class:`.ColumnFamily` instances.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">split_pb</span> <span class="o">=</span> <span class="n">table_admin_messages_v2_pb2</span><span class="o">.</span><span class="n">CreateTableRequest</span><span class="o">.</span><span class="n">Split</span>
         <span class="k">if</span> <span class="n">initial_split_keys</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">split_pb</span> <span class="o">=</span> <span class="n">table_admin_messages_v2_pb2</span><span class="o">.</span><span class="n">CreateTableRequest</span><span class="o">.</span><span class="n">Split</span>
             <span class="n">initial_split_keys</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">split_pb</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">initial_split_keys</span><span class="p">]</span>
+
+        <span class="n">table_pb</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">column_families</span><span class="p">:</span>
+            <span class="n">table_pb</span> <span class="o">=</span> <span class="n">table_v2_pb2</span><span class="o">.</span><span class="n">Table</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">col_fam</span> <span class="ow">in</span> <span class="n">column_families</span><span class="p">:</span>
+                <span class="n">curr_id</span> <span class="o">=</span> <span class="n">col_fam</span><span class="o">.</span><span class="n">column_family_id</span>
+                <span class="n">table_pb</span><span class="o">.</span><span class="n">column_families</span><span class="p">[</span><span class="n">curr_id</span><span class="p">]</span><span class="o">.</span><span class="n">MergeFrom</span><span class="p">(</span><span class="n">col_fam</span><span class="o">.</span><span class="n">to_pb</span><span class="p">())</span>
+
         <span class="n">request_pb</span> <span class="o">=</span> <span class="n">table_admin_messages_v2_pb2</span><span class="o">.</span><span class="n">CreateTableRequest</span><span class="p">(</span>
             <span class="n">initial_splits</span><span class="o">=</span><span class="n">initial_split_keys</span> <span class="ow">or</span> <span class="p">[],</span>
             <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">table_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">table_id</span><span class="p">,</span>
+            <span class="n">table</span><span class="o">=</span><span class="n">table_pb</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="o">.</span><span class="n">_client</span>
         <span class="c1"># We expect a `._generated_v2.table_pb2.Table`</span>

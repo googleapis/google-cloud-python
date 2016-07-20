@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Table &mdash; gcloud 8e3caf9 documentation</title>
+    <title>Table &mdash; gcloud 473de8e documentation</title>
     
     <link rel="stylesheet" href="_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '8e3caf9',
+        VERSION:     '473de8e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8e3caf9 documentation" href="index.html" />
+    <link rel="top" title="gcloud 473de8e documentation" href="index.html" />
     <link rel="next" title="Column Families" href="bigtable-column-family.html" />
     <link rel="prev" title="Cluster" href="bigtable-cluster.html" /> 
   </head>
@@ -72,7 +72,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%208e3caf9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+bigtable-table%0ARelease%3A%20473de8e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -84,7 +84,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8e3caf9)
+              Version History (473de8e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -113,13 +113,9 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <p>Representation of a Google Cloud Bigtable Table.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>We don&#8217;t define any properties on a table other than the name. As
-the proto says, in a request:</p>
-<blockquote>
-<div>The <code class="docutils literal"><span class="pre">name</span></code> field of the Table and all of its ColumnFamilies must
-be left blank, and will be populated in the response.</div></blockquote>
-<p class="last">This leaves only the <code class="docutils literal"><span class="pre">current_operation</span></code> and <code class="docutils literal"><span class="pre">granularity</span></code>
-fields. The <code class="docutils literal"><span class="pre">current_operation</span></code> is only used for responses while
+<p class="last">We don&#8217;t define any properties on a table other than the name.
+The only other fields are <code class="docutils literal"><span class="pre">column_families</span></code> and <code class="docutils literal"><span class="pre">granularity</span></code>,
+The <code class="docutils literal"><span class="pre">column_families</span></code> are not stored locally and
 <code class="docutils literal"><span class="pre">granularity</span></code> is an enum with only one value.</p>
 </div>
 <p>We can use a <a class="reference internal" href="#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> to:</p>
@@ -135,7 +131,7 @@ fields. The <code class="docutils literal"><span class="pre">current_operation</
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>table_id</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The ID of the table.</li>
-<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Cluster</span></code></a>) &#8211; The instance that owns the table.</li>
+<li><strong>instance</strong> (<a class="reference internal" href="bigtable-instance.html#gcloud.bigtable.instance.Instance" title="gcloud.bigtable.instance.Instance"><code class="xref py py-class docutils literal"><span class="pre">Instance</span></code></a>) &#8211; The instance that owns the table.</li>
 </ul>
 </td>
 </tr>
@@ -169,35 +165,30 @@ column family.</li>
 
 <dl class="method">
 <dt id="gcloud.bigtable.table.Table.create">
-<code class="descname">create</code><span class="sig-paren">(</span><em>initial_split_keys=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/table.html#Table.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.table.Table.create" title="Permalink to this definition">#</a></dt>
+<code class="descname">create</code><span class="sig-paren">(</span><em>initial_split_keys=None</em>, <em>column_families=()</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gcloud/bigtable/table.html#Table.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gcloud.bigtable.table.Table.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Creates this table.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Though a <code class="xref py py-class docutils literal"><span class="pre">_generated_v2.table_pb2.Table</span></code> is also
-allowed (as the <code class="docutils literal"><span class="pre">table</span></code> property) in a create table request, we
-do not support it in this method. As mentioned in the
-<a class="reference internal" href="#gcloud.bigtable.table.Table" title="gcloud.bigtable.table.Table"><code class="xref py py-class docutils literal"><span class="pre">Table</span></code></a> docstring, the name is the only useful property in
-the table proto.</p>
-</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">A create request returns a
 <code class="xref py py-class docutils literal"><span class="pre">_generated_v2.table_pb2.Table</span></code> but we don&#8217;t use
-this response. The proto definition allows for the inclusion of a
-<code class="docutils literal"><span class="pre">current_operation</span></code> in the response, but it does not appear that
-the Cloud Bigtable API returns any operation.</p>
+this response.</p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List of row keys that will be
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>initial_split_keys</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List of row keys that will be
 used to initially split the table into
 several tablets (Tablets are similar to
 HBase regions). Given two split keys,
 <code class="docutils literal"><span class="pre">&quot;s1&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;s2&quot;</span></code>, three tablets will be
 created, spanning the key ranges:
-<code class="docutils literal"><span class="pre">[,</span> <span class="pre">s1)</span></code>, <code class="docutils literal"><span class="pre">[s1,</span> <span class="pre">s2)</span></code>, <code class="docutils literal"><span class="pre">[s2,</span> <span class="pre">)</span></code>.</td>
+<code class="docutils literal"><span class="pre">[,</span> <span class="pre">s1)</span></code>, <code class="docutils literal"><span class="pre">[s1,</span> <span class="pre">s2)</span></code>, <code class="docutils literal"><span class="pre">[s2,</span> <span class="pre">)</span></code>.</li>
+<li><strong>column_families</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; (Optional) List or other iterable of
+<a class="reference internal" href="bigtable-column-family.html#gcloud.bigtable.column_family.ColumnFamily" title="gcloud.bigtable.column_family.ColumnFamily"><code class="xref py py-class docutils literal"><span class="pre">ColumnFamily</span></code></a> instances.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -242,7 +233,7 @@ return value is not cached.</p>
 </div>
 <p>The table name is of the form</p>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">&quot;projects/../zones/../clusters/../tables/{table_id}&quot;</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">&quot;projects/../instances/../tables/{table_id}&quot;</span></code></div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

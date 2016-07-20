@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 8e3caf9 documentation</title>
+    <title>gcloud.bigtable.happybase.connection &mdash; gcloud 473de8e documentation</title>
     
     <link rel="stylesheet" href="../../../../_static/css/main.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../../',
-        VERSION:     '8e3caf9',
+        VERSION:     '473de8e',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -22,7 +22,7 @@
     </script>
     <script type="text/javascript" src="../../../../_static/js/vendor/modernizr-2.6.2.min.js"></script>
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-    <link rel="top" title="gcloud 8e3caf9 documentation" href="../../../../index.html" />
+    <link rel="top" title="gcloud 473de8e documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -71,7 +71,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           </li>
         </ul>
       </nav><!-- end of .main-nav -->
-      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%208e3caf9" target="_blank" class="v-btn" id="file-issue">
+      <a href="https://github.com/GoogleCloudPlatform/gcloud-python/issues/new?title=%5BDocumentation+Issue%5D+&body=Page+Name%3A+_modules/gcloud/bigtable/happybase/connection%0ARelease%3A%20473de8e" target="_blank" class="v-btn" id="file-issue">
         <img src="_static/images/icon-link-github.svg" />
         Report an Issue
       </a>
@@ -83,7 +83,7 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
           <div class="versions">
             <a href="/gcloud-python/versions.html" class="v-btn">
               <img src="_static/images/icon-arrow-bullet.svg" />
-              Version History (8e3caf9)
+              Version History (473de8e)
             </a>
           </div><!-- end of .versions -->
           <div>
@@ -395,15 +395,6 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
 <span class="sd">            The only column family options from HappyBase that are able to be</span>
 <span class="sd">            used with Cloud Bigtable are ``max_versions`` and ``time_to_live``.</span>
 
-<span class="sd">        .. note::</span>
-
-<span class="sd">            This method is **not** atomic. The Cloud Bigtable API separates</span>
-<span class="sd">            the creation of a table from the creation of column families. Thus</span>
-<span class="sd">            this method needs to send 1 request for the table creation and 1</span>
-<span class="sd">            request for each column family. If any of these fails, the method</span>
-<span class="sd">            will fail, but the progress made towards completion cannot be</span>
-<span class="sd">            rolled back.</span>
-
 <span class="sd">        Values in ``families`` represent column family options. In HappyBase,</span>
 <span class="sd">        these are dictionaries, corresponding to the ``ColumnDescriptor``</span>
 <span class="sd">        structure in the Thrift API. The accepted keys are:</span>
@@ -453,18 +444,17 @@ http://googlecloudplatform.github.io/gcloud-ruby/docs/latest" title="Ruby docs p
         <span class="c1"># Create table instance and then make API calls.</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">low_level_table</span> <span class="o">=</span> <span class="n">_LowLevelTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span><span class="p">)</span>
+        <span class="n">column_families</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">low_level_table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span><span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span> <span class="ow">in</span> <span class="n">six</span><span class="o">.</span><span class="n">iteritems</span><span class="p">(</span><span class="n">gc_rule_dict</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">low_level_table</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="n">low_level_table</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">column_families</span><span class="o">=</span><span class="n">column_families</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">face</span><span class="o">.</span><span class="n">NetworkError</span> <span class="k">as</span> <span class="n">network_err</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">network_err</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">interfaces</span><span class="o">.</span><span class="n">StatusCode</span><span class="o">.</span><span class="n">ALREADY_EXISTS</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">AlreadyExists</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
-
-        <span class="k">for</span> <span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span> <span class="ow">in</span> <span class="n">gc_rule_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">column_family</span> <span class="o">=</span> <span class="n">low_level_table</span><span class="o">.</span><span class="n">column_family</span><span class="p">(</span>
-                <span class="n">column_family_name</span><span class="p">,</span> <span class="n">gc_rule</span><span class="o">=</span><span class="n">gc_rule</span><span class="p">)</span>
-            <span class="n">column_family</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></div>
+                <span class="k">raise</span></div>
 
 <div class="viewcode-block" id="Connection.delete_table"><a class="viewcode-back" href="../../../../happybase-connection.html#gcloud.bigtable.happybase.connection.Connection.delete_table">[docs]</a>    <span class="k">def</span> <span class="nf">delete_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete the specified table.</span>
