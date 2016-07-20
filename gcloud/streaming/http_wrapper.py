@@ -131,8 +131,8 @@ class Request(object):
         self.url = url
         self.http_method = http_method
         self.headers = headers or {}
-        self.__body = None
-        self.__loggable_body = None
+        self._body = None
+        self._loggable_body = None
         self.body = body
 
     @property
@@ -142,7 +142,7 @@ class Request(object):
         :rtype: str
         :returns: The body to be logged.
         """
-        return self.__loggable_body
+        return self._loggable_body
 
     @loggable_body.setter
     def loggable_body(self, value):
@@ -156,7 +156,7 @@ class Request(object):
         if self.body is None:
             raise RequestError(
                 'Cannot set loggable body on request with no body')
-        self.__loggable_body = value
+        self._loggable_body = value
 
     @property
     def body(self):
@@ -165,7 +165,7 @@ class Request(object):
         :rtype: str
         :returns: The body of the request.
         """
-        return self.__body
+        return self._body
 
     @body.setter
     def body(self, value):
@@ -176,11 +176,11 @@ class Request(object):
         :type value: str
         :param value: updated body
         """
-        self.__body = value
+        self._body = value
         if value is not None:
             # Avoid calling len() which cannot exceed 4GiB in 32-bit python.
             body_length = getattr(
-                self.__body, 'length', None) or len(self.__body)
+                self._body, 'length', None) or len(self._body)
             self.headers['content-length'] = str(body_length)
         else:
             self.headers.pop('content-length', None)
