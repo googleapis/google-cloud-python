@@ -944,12 +944,6 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
     """
 
-    udf_resources = _TypedProperty(
-        'udf_resources', list)
-    """See:
-    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
-    """
-
     write_disposition = WriteDisposition('write_disposition')
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
