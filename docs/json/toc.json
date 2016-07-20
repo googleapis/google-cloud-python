@@ -367,12 +367,11 @@
             {
                 "type": "gcloud/monitoring/timeseries/timeseries",
                 "title": "Time Series"
-            }
+            },
             {
                 "type": "gcloud/monitoring/label/labeldescriptor",
                 "title": "Label Descriptors"
-            },
-
+            }
         ]
   },{
     "title": "Pub/Sub",
