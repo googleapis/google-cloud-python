@@ -1429,7 +1429,6 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'useQueryCache': True,
             'useLegacySql': True,
             'userDefinedFunctionResources': [self.UDF],
-            'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
