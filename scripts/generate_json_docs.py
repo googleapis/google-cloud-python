@@ -484,6 +484,24 @@ def generate_class_docs(module, klass, base_path, toc):
 def get_snippet_examples(module, json_docs_dir):
     snippets_file_path = os.path.join(json_docs_dir,
                                       module + '_snippets.py')
+    usage_rst_path = os.path.join(json_docs_dir, module + '-usage.rst')
+
+    snippet_labels = {}
+
+    if os.path.isfile(usage_rst_path):
+        with open(usage_rst_path, 'r') as snippet_labels_file:
+            usage_rst = snippet_labels_file.read().splitlines()
+            line_index = 0
+
+            include_string = '.. literalinclude:: %s_snippets.py'
+            for line in usage_rst:
+                if line.startswith(include_string % module):
+                    label_key = (usage_rst[line_index + 1]
+                                 .replace('   :start-after: [START ', '')
+                                 .replace(']', ''))
+                    snippet_labels[label_key] = usage_rst[line_index - 2]
+                line_index += 1
+
     snippets = []
 
     if os.path.isfile(snippets_file_path):
@@ -494,7 +512,7 @@ def get_snippet_examples(module, json_docs_dir):
             for line in snippets_string.splitlines(True):
                 if line.strip().startswith('# [END'):
                     example = {
-                        'caption': label,
+                        'caption': snippet_labels.get(label),
                         'code': snippet
                     }
                     snippets.append(example)
