@@ -1219,6 +1219,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'
+    UDF = {"resourceUri": "gs://backet/functions.js", "inlineCode": ""}
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import QueryJob
@@ -1427,6 +1428,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
             'useLegacySql': True,
+            'userDefinedFunctionResources': [self.UDF],
             'writeDisposition': 'WRITE_TRUNCATE',
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
@@ -1447,6 +1449,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
         job.use_legacy_sql = True
+        job.udf_resources = [self.UDF]
         job.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)
