@@ -22,9 +22,9 @@ import six
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_pb2 as messages_v2_pb2)
 
 
@@ -854,7 +854,7 @@ def _parse_rmw_row_response(row_response):
 def _parse_family_pb(family_pb):
     """Parses a Family protobuf into a dictionary.
 
-    :type family_pb: :class:`._generated_v2.data_pb2.Family`
+    :type family_pb: :class:`._generated.data_pb2.Family`
     :param family_pb: A protobuf
 
     :rtype: tuple

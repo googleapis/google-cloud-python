@@ -805,91 +805,91 @@ class Test__parse_family_pb(unittest2.TestCase):
 
 
 def _CheckAndMutateRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.CheckAndMutateRowRequest(*args, **kw)
 
 
 def _CheckAndMutateRowResponsePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.CheckAndMutateRowResponse(*args, **kw)
 
 
 def _MutateRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.MutateRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadModifyWriteRowRequest(*args, **kw)
 
 
 def _ReadModifyWriteRowResponsePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadModifyWriteRowResponse(*args, **kw)
 
 
 def _CellPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Cell(*args, **kw)
 
 
 def _ColumnPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Column(*args, **kw)
 
 
 def _FamilyPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Family(*args, **kw)
 
 
 def _MutationPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation(*args, **kw)
 
 
 def _MutationSetCellPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.SetCell(*args, **kw)
 
 
 def _MutationDeleteFromColumnPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromColumn(*args, **kw)
 
 
 def _MutationDeleteFromFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromFamily(*args, **kw)
 
 
 def _MutationDeleteFromRowPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Mutation.DeleteFromRow(*args, **kw)
 
 
 def _RowPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.Row(*args, **kw)
 
 
 def _ReadModifyWriteRulePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         data_pb2 as data_v2_pb2)
     return data_v2_pb2.ReadModifyWriteRule(*args, **kw)
 

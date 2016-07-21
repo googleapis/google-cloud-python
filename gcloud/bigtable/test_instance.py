@@ -209,7 +209,7 @@ class TestInstance(unittest2.TestCase):
         self.assertEqual(table._instance, instance)
 
     def test__update_from_pb_success(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         display_name = 'display_name'
@@ -223,7 +223,7 @@ class TestInstance(unittest2.TestCase):
         self.assertEqual(instance.display_name, display_name)
 
     def test__update_from_pb_no_display_name(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         instance_pb = data_v2_pb2.Instance()
@@ -235,7 +235,7 @@ class TestInstance(unittest2.TestCase):
 
     def test_from_pb_success(self):
         from gcloud.bigtable.instance import _EXISTING_INSTANCE_LOCATION_ID
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         client = _Client(project=self.PROJECT)
@@ -254,7 +254,7 @@ class TestInstance(unittest2.TestCase):
                          _EXISTING_INSTANCE_LOCATION_ID)
 
     def test_from_pb_bad_instance_name(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         instance_name = 'INCORRECT_FORMAT'
@@ -265,7 +265,7 @@ class TestInstance(unittest2.TestCase):
             klass.from_pb(instance_pb, None)
 
     def test_from_pb_project_mistmatch(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
 
         ALT_PROJECT = 'ALT_PROJECT'
@@ -310,9 +310,9 @@ class TestInstance(unittest2.TestCase):
         self.assertNotEqual(instance1, instance2)
 
     def test_reload(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -458,7 +458,7 @@ class TestInstance(unittest2.TestCase):
         self.assertEqual(process_operation_called, [response_pb])
 
     def test_update(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -493,7 +493,7 @@ class TestInstance(unittest2.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -524,9 +524,9 @@ class TestInstance(unittest2.TestCase):
         )])
 
     def test_list_clusters(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as instance_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -581,9 +581,9 @@ class TestInstance(unittest2.TestCase):
         )])
 
     def _list_tables_helper(self, table_name=None):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             table_pb2 as table_data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_messages_v1_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -652,9 +652,9 @@ class Test__prepare_create_request(unittest2.TestCase):
 
     def test_w_defaults(self):
         from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable.instance import Instance
 
@@ -678,9 +678,9 @@ class Test__prepare_create_request(unittest2.TestCase):
         self.assertEqual(cluster.serve_nodes, DEFAULT_SERVE_NODES)
 
     def test_w_explicit_serve_nodes(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable.instance import Instance
         DISPLAY_NAME = u'DISPLAY_NAME'
@@ -715,7 +715,7 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
     def test_with_known_type_url(self):
         from google.protobuf import any_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             data_pb2 as data_v2_pb2)
         from gcloud.bigtable import instance as MUT
 
@@ -738,9 +738,9 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
     def test_with_create_instance_metadata(self):
         from google.protobuf import any_pb2
         from google.protobuf.timestamp_pb2 import Timestamp
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
 
         TYPE_URL = ('type.googleapis.com/' +
@@ -798,7 +798,7 @@ class Test__process_operation(unittest2.TestCase):
     def test_it(self):
         from google.longrunning import operations_pb2
         from gcloud._testing import _Monkey
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb)
         from gcloud.bigtable import instance as MUT
 

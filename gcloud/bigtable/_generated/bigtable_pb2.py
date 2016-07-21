@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
-from gcloud.bigtable._generated_v2 import data_pb2 as google_dot_bigtable_dot_v2_dot_data__pb2
+from gcloud.bigtable._generated import data_pb2 as google_dot_bigtable_dot_v2_dot_data__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from google.rpc import status_pb2 as google_dot_rpc_dot_status__pb2
 

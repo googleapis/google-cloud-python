@@ -15,11 +15,11 @@
 """User friendly container for Google Cloud Bigtable Table."""
 
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
@@ -139,7 +139,7 @@ class Table(object):
         .. note::
 
             A create request returns a
-            :class:`._generated_v2.table_pb2.Table` but we don't use
+            :class:`._generated.table_pb2.Table` but we don't use
             this response.
 
         :type initial_split_keys: list
@@ -174,7 +174,7 @@ class Table(object):
             table=table_pb,
         )
         client = self._instance._client
-        # We expect a `._generated_v2.table_pb2.Table`
+        # We expect a `._generated.table_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
 
     def delete(self):
@@ -199,7 +199,7 @@ class Table(object):
         request_pb = table_admin_messages_v2_pb2.GetTableRequest(
             name=self.name)
         client = self._instance._client
-        # We expect a `._generated_v2.table_pb2.Table`
+        # We expect a `._generated.table_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
                                                client.timeout_seconds)
 

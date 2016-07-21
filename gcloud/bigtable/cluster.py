@@ -19,9 +19,9 @@ import re
 
 from google.longrunning import operations_pb2
 
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
 
 
@@ -288,7 +288,7 @@ class Cluster(object):
     def reload(self):
         """Reload the metadata for this cluster."""
         request_pb = messages_v2_pb2.GetClusterRequest(name=self.name)
-        # We expect a `._generated_v2.instance_pb2.Cluster`.
+        # We expect a `._generated.instance_pb2.Cluster`.
         cluster_pb = self._instance._client._instance_stub.GetCluster(
             request_pb, self._instance._client.timeout_seconds)
 
@@ -346,7 +346,7 @@ class Cluster(object):
             name=self.name,
             serve_nodes=self.serve_nodes,
         )
-        # Ignore expected `._generated_v2.instance_pb2.Cluster`.
+        # Ignore expected `._generated.instance_pb2.Cluster`.
         operation_pb = self._instance._client._instance_stub.UpdateCluster(
             request_pb, self._instance._client.timeout_seconds)
 

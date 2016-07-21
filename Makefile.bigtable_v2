@@ -1,6 +1,6 @@
 GRPCIO_VIRTUALENV=$(shell pwd)/grpc_python_venv
 GENERATED_DIR=$(shell pwd)/generated_python
-GENERATED_SUBDIR=_generated_v2
+GENERATED_SUBDIR=_generated
 BIGTABLE_DIR=$(shell pwd)/gcloud/bigtable/$(GENERATED_SUBDIR)
 PROTOC_CMD=$(GRPCIO_VIRTUALENV)/bin/python -m grpc.tools.protoc
 GOOGLEAPIS_PROTOS_DIR=$(shell pwd)/googleapis-pb
@@ -9,7 +9,6 @@ help:
 	@echo 'Makefile for gcloud-python Bigtable protos                      '
 	@echo '                                                                '
 	@echo '   make generate                 Generates the protobuf modules '
-	@echo '   make check_generate           Checks that generate succeeded '
 	@echo '   make clean                    Clean generated files          '
 
 generate:
@@ -62,10 +61,7 @@ generate:
 	# Rewrite the imports in the generated *_pb2.py files.
 	python scripts/rewrite_imports.py $(BIGTABLE_DIR)/*pb2.py
 
-check_generate:
-	python scripts/check_generate.py
-
 clean:
 	rm -fr $(GRPCIO_VIRTUALENV) $(GOOGLEAPIS_PROTOS_DIR) $(GENERATED_DIR)
 
-.PHONY: generate check_generate clean
+.PHONY: generate clean

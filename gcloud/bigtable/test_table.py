@@ -507,37 +507,37 @@ class Test__create_row_request(unittest2.TestCase):
 
 
 def _CreateTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest(*args, **kw)
 
 
 def _CreateTableRequestSplitPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest.Split(*args, **kw)
 
 
 def _DeleteTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.DeleteTableRequest(*args, **kw)
 
 
 def _GetTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.GetTableRequest(*args, **kw)
 
 
 def _ReadRowsRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     family_name = kw.pop('family_name')
     qualifier = kw.pop('qualifier')
@@ -548,25 +548,25 @@ def _ReadRowsResponseCellChunkPB(*args, **kw):
 
 
 def _ReadRowsResponsePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
 def _SampleRowKeysRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
 
 
 def _TablePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.Table(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.ColumnFamily(*args, **kw)
 
