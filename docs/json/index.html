@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><title>gcloud</title><meta name="description" content="Google Cloud Platform's client library documentation"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="shortcut icon" href="https://cloud.google.com/images/gcp-favicon.ico"><link rel="stylesheet" href="src/vendor-d362a4bbd8.css"><link rel="stylesheet" href="src/app-a103c713b2.css"></head><body><!--[if lt IE 10]>
+ <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+ <![endif]--><main ui-view="" autoscroll="true"></main><script src="src/vendor-7173ada14e.js"></script><script src="src/app-4918b7fab6.js"></script><script>
+      (function() {
+        var $injector = angular.injector(['ng']);
+        var $http = $injector.get('$http');
+
+        $http.get('manifest.json')
+          .then(function(response) {
+            angular
+              .module('gcloud.manifest', [])
+              .constant('manifest', response.data);
+
+            angular.element(document)
+              .ready(function() {
+                angular.bootstrap(document, ['gcloud']);
+              });
+          });
+      }());
+    </script></body></html>

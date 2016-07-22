@@ -1,0 +1,477 @@
+{
+  "overview": "overview.html",
+  "guides": [{
+    "title": "Authentication",
+    "id": "authentication",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/authentication/readme.md",
+    "contents": [
+      "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/authentication/readme.md",
+      "authentication.md"
+    ]
+  }, {
+    "title": "FAQ",
+    "id": "faq",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/faq/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/faq/readme.md"
+  }, {
+    "title": "Troubleshooting",
+    "id": "troubleshooting",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/troubleshooting/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/troubleshooting/readme.md"
+  }, {
+    "title": "Contributing",
+    "id": "contributing",
+    "edit": "https://github.com/GoogleCloudPlatform/gcloud-common/edit/master/contributing/readme.md",
+    "contents": "https://raw.githubusercontent.com/GoogleCloudPlatform/gcloud-common/master/contributing/readme.md"
+  }],
+  "services": [{
+    "title": "gcloud",
+    "type": "gcloud/gcloud",
+    "nav": [{
+      "title": "Client",
+      "type": "gcloud/client/client"
+    },{
+      "title": "Connection",
+      "type": "gcloud/connection/connection"
+    },{
+      "title": "Credentials",
+      "type": "gcloud/credentials"
+    },{
+      "title": "Environment Variables",
+      "type": "gcloud/environment_vars"
+    },{
+      "title": "Iterator",
+      "type": "gcloud/iterator"
+    }]
+  },{
+    "title": "BigQuery",
+    "implemented": ">=0.7.0",
+    "type": "gcloud/bigquery",
+    "nav": [
+        {
+            "type": "gcloud/bigquery/client/client",
+            "title": "Client"
+        },
+        {
+            "type": "gcloud/bigquery/dataset/dataset",
+            "title": "Dataset"
+        },
+        {
+            "type": "gcloud/bigquery/job/job",
+            "title": "Jobs"
+        },
+        {
+            "type": "gcloud/bigquery/table/table",
+            "title": "Table"
+        },
+        {
+            "type": "gcloud/bigquery/query/query",
+            "title": "Query"
+        }
+    ]
+  },{
+    "title": "BigTable",
+    "implemented": ">=0.12.0",
+    "type": "gcloud/bigtable",
+    "nav": [
+            {
+                "type": "gcloud/bigtable/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/bigtable/cluster/cluster",
+                "title": "Cluster"
+            },
+            {
+                "type": "gcloud/bigtable/column_family/columnfamily",
+                "title": "Column Families"
+            },
+            {
+                "type": "gcloud/bigtable/row/row",
+                "title": "Bigtable Row"
+            },
+            {
+                "type": "gcloud/bigtable/row_filters/rowfilter",
+                "title": "Bigtable Row Filter"
+            },
+            {
+                "type": "gcloud/bigtable/table/table",
+                "title": "Table"
+            },
+            {
+                "type": "gcloud/bigtable/happybase/batch/batch",
+                "title": "HappyBase Batch"
+            },
+            {
+                "type": "gcloud/bigtable/happybase/connection/connection",
+                "title": "HappyBase Connection"
+            },
+            {
+                "type": "gcloud/bigtable/happybase/pool/connectionpool",
+                "title": "HappyBase Connection Pool"
+            },
+            {
+                "type": "gcloud/bigtable/happybase/table",
+                "title": "HappyBase Table"
+            }
+    ]
+  },{
+    "title": "Datastore",
+    "implemented": ">=0.3.0",
+    "type": "gcloud/datastore",
+    "nav": [
+            {
+                "type": "gcloud/datastore/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/datastore/entity/entity",
+                "title": "Entity"
+            },
+            {
+                "type": "gcloud/datastore/key/key",
+                "title": "Key"
+            },
+            {
+                "type": "gcloud/datastore/query/query",
+                "title": "Query"
+            },
+            {
+                "type": "gcloud/datastore/transaction/transaction",
+                "title": "Transaction"
+            },
+            {
+                "type": "gcloud/datastore/batch/batch",
+                "title": "Batch"
+            },
+            {
+                "type": "datastore/helpers",
+                "title": "Helpers"
+            }
+    ]
+  }, {
+    "title": "DNS",
+    "implemented": ">=0.8.0",
+    "type": "gcloud/dns",
+    "nav": [
+        {
+            "type": "gcloud/dns/client/client",
+            "title": "Client"
+        },
+        {
+            "type": "gcloud/dns/zone/managedzone",
+            "title": "Managed Zones"
+        },
+        {
+            "type": "gcloud/dns/resource_record_set/resourcerecordset",
+            "title": "Resource Record Set"
+        },
+        {
+            "type": "gcloud/dns/changes/changes",
+            "title": "Change Sets"
+        }
+    ]
+  }, {
+    "title": "Exceptions",
+    "type": "gcloud/exceptions",
+    "nav": [
+            {
+                "type": "gcloud/exceptions/badrequest",
+                "title": "BadRequest"
+            },
+            {
+                "type": "gcloud/exceptions/clienterror",
+                "title": "ClientError"
+            },
+            {
+                "type": "gcloud/exceptions/conflict",
+                "title": "Conflict"
+            },
+            {
+                "type": "gcloud/exceptions/forbidden",
+                "title": "Forbidden"
+            },
+            {
+                "type": "gcloud/exceptions/gclouderror",
+                "title": "GCloudError"
+            },
+            {
+                "type": "gcloud/exceptions/internalservererror",
+                "title": "InternalServerError"
+            },
+            {
+                "type": "gcloud/exceptions/lengthrequired",
+                "title": "LengthRequired"
+            },
+            {
+                "type": "gcloud/exceptions/methodnotallowed",
+                "title": "MethodNotAllowed"
+            },
+            {
+                "type": "gcloud/exceptions/methodnotimplemented",
+                "title": "MethodNotImplemented"
+            },
+            {
+                "type": "gcloud/exceptions/movedpermanently",
+                "title": "MovedPermanently"
+            },
+            {
+                "type": "gcloud/exceptions/notfound",
+                "title": "NotFound"
+            },
+            {
+                "type": "gcloud/exceptions/notmodified",
+                "title": "NotModified"
+            },
+            {
+                "type": "gcloud/exceptions/preconditionfailed",
+                "title": "PreconditionFailed"
+            },
+            {
+                "type": "gcloud/exceptions/redirection",
+                "title": "Redirection"
+            },
+            {
+                "type": "gcloud/exceptions/requestrangenotsatisfiable",
+                "title": "RequestRangeNotSatisfiable"
+            },
+            {
+                "type": "gcloud/exceptions/resumeincomplete",
+                "title": "ResumeIncomplete"
+            },
+            {
+                "type": "gcloud/exceptions/servererror",
+                "title": "ServerError"
+            },
+            {
+                "type": "gcloud/exceptions/serviceunavailable",
+                "title": "ServiceUnavailable"
+            },
+            {
+                "type": "gcloud/exceptions/temporaryredirect",
+                "title": "TemporaryRedirect"
+            },
+            {
+                "type": "gcloud/exceptions/toomanyrequests",
+                "title": "TooManyRequests"
+            },
+            {
+                "type": "gcloud/exceptions/unauthorized",
+                "title": "Unauthorized"
+            },
+            {
+                "type": "gcloud/exceptions",
+                "title": "Exceptions"
+            }
+        ],
+        "credentials": [
+            {
+                "type": "gcloud/credentials",
+                "title": "Credentials"
+            }
+        ],
+        "datastore": [
+            {
+                "type": "gcloud/datastore/batch/batch",
+                "title": "Batch"
+            },
+            {
+                "type": "gcloud/datastore/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/datastore/connection/connection",
+                "title": "Connection"
+            },
+            {
+                "type": "gcloud/datastore/entity/entity",
+                "title": "Entity"
+            },
+            {
+                "type": "gcloud/datastore/helpers",
+                "title": "Helpers"
+            },
+            {
+                "type": "gcloud/datastore/key/key",
+                "title": "Key"
+            },
+            {
+                "type": "gcloud/datastore/query/iterator",
+                "title": "Iterator"
+            },
+            {
+                "type": "gcloud/datastore/query/query",
+                "title": "Query"
+            },
+            {
+                "type": "gcloud/datastore/transaction/transaction",
+                "title": "Transaction"
+            }
+        ]
+  },
+  {
+    "title": "Cloud Logging",
+    "implemented": ">=0.12.0",
+    "type": "gcloud/logging",
+    "nav": [
+        {
+            "type": "gcloud/logging/client/client",
+            "title": "Client"
+        },
+        {
+            "type": "gcloud/logging/logger/logger",
+            "title": "Logger"
+        },
+        {
+            "type": "gcloud/logging/entries",
+            "title": "Entries"
+        },
+        {
+            "type": "gcloud/logging/metric/metric",
+            "title": "Metric"
+        },
+        {
+            "type": "gcloud/logging/sink/sink",
+            "title": "Sink"
+        }
+    ]
+  }, {
+    "title": "Cloud Monitoring",
+    "implemented": ">=0.12.0",
+    "type": "gcloud/monitoring",
+    "nav": [
+            {
+                "type": "gcloud/monitoring/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/monitoring/metric/metricdescriptor",
+                "title": "Metric Descriptors"
+            },
+            {
+                "type": "gcloud/monitoring/index/labeldescriptor",
+                "title": "Label Descriptors"
+            },
+            {
+                "type": "gcloud/monitoring/index/metricdescriptor",
+                "title": "Metric Descriptors"
+            },
+            {
+                "type": "gcloud/monitoring/index/resourcedescriptor",
+                "title": "Monitored Resource Descriptors"
+            },
+            {
+                "type": "gcloud/monitoring/index/query",
+                "title": "Time Series Query"
+            },
+            {
+                "type": "gcloud/monitoring/timeseries/timeseries",
+                "title": "Time Series"
+            },
+            {
+                "type": "gcloud/monitoring/label/labeldescriptor",
+                "title": "Label Descriptors"
+            }
+        ]
+  },{
+    "title": "Pub/Sub",
+    "implemented": ">=0.5.0",
+    "type": "gcloud/pubsub",
+    "nav": [
+            {
+                "type": "gcloud/pubsub/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/pubsub/topic/topic",
+                "title": "Topic"
+            },
+            {
+                "type": "gcloud/pubsub/subscription/subscription",
+                "title": "Subscription"
+            },
+            {
+                "type": "gcloud/pubsub/message/message",
+                "title": "Message"
+            },
+            {
+                "type": "gcloud/pubsub/iam/policy",
+                "title": "Policy"
+            }
+    ]
+  }, {
+    "title": "Resource Manager",
+    "implemented": ">=0.8.0",
+    "type": "gcloud/resource_manager",
+    "nav": [
+        {
+            "type": "gcloud/resource_manager/client/client",
+            "title": "Client"
+        },
+        {
+            "type": "gcloud/resource_manager/project/project",
+            "title": "Project"
+        }
+    ]
+  }, {
+    "title": "Storage",
+    "type": "gcloud/storage",
+    "implemented": ">=0.3.0",
+    "nav": [
+            {
+                "type": "gcloud/storage/client/client",
+                "title": "Client"
+            },
+            {
+                "type": "gcloud/storage/blob/blob",
+                "title": "Blob"
+            },
+            {
+                "type": "gcloud/storage/bucket/bucket",
+                "title": "Bucket"
+            },
+            {
+                "type": "gcloud/storage/acl/acl",
+                "title": "ACL"
+            },
+            {
+                "type": "gcloud/storage/batch/batch",
+                "title": "Batch"
+            }
+    ]
+  }, {
+    "title": "Streaming",
+    "type": "gcloud/streaming",
+    "nav": [
+        {
+                "type": "gcloud/streaming/buffered_stream/bufferedstream",
+                 "title": "Buffered Stream"
+            },
+            {
+                "type": "gcloud/streaming/http_wrapper/request",
+                "title": "Request"
+            },
+            {
+                "type": "gcloud/streaming/http_wrapper/response",
+                "title": "Response"
+            },
+            {
+                "type": "gcloud/streaming/stream_slice/streamslice",
+                "title": "Stream Slice"
+            },
+            {
+                "type": "gcloud/streaming/transfer/download",
+                "title": "Download"
+            },
+            {
+                "type": "gcloud/streaming/transfer/upload",
+                "title": "Upload"
+            },
+            {
+                "type": "gcloud/streaming/util",
+                "title": "Util"
+            }
+    ]
+  }
+ ]
+}

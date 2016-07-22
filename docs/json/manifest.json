@@ -1,0 +1,20 @@
+{
+  "lang": "python",
+  "friendlyLang": "Python",
+  "markdown": "python",
+  "titleDelimiter": ".",
+  "versions": [
+    "master"
+  ],
+  "content": "json",
+  "home": "home.html",
+  "package": {
+    "title": "PyPI",
+    "href": "https://pypi.python.org/pypi/gcloud"
+  },
+  "latestRelease": {
+    "name": "master",
+    "date": 1455306471454,
+    "link": "https://github.com/GoogleCloudPlatform/gcloud-python/tree/master"
+  }
+}
