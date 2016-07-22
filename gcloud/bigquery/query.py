@@ -20,7 +20,10 @@ from gcloud.bigquery._helpers import _TypedProperty
 from gcloud.bigquery._helpers import _rows_from_json
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
+from gcloud.bigquery.job import UDFResource
+from gcloud.bigquery.job import _build_udf_resources
 from gcloud.bigquery.table import _parse_schema_resource
+
 
 class _SyncQueryConfiguration(object):
     """User-settable configuration options for synchronous query jobs.
@@ -34,40 +37,6 @@ class _SyncQueryConfiguration(object):
     _preserve_nulls = None
     _use_query_cache = None
     _use_legacy_sql = None
-    
-class UDFResource(object):
-    """Describe a single user-defined function (UDF) resource.
-    See
-    https://cloud.google.com/bigquery/user-defined-functions#api
-    
-    :type udfType: str
-    :param udfType: the type of the resource (one of 'inlineCode' or 'resourceUri')
-
-    :type value: str
-    :param value: the inline code or resource URI
-    """
-    def __init__(self, udfType, value):
-        self.udfType = udfType
-        self.value = value
-    
-    def __eq__(self, other):
-        return(
-            self.udfType == other.udfType and
-            self.value == other.value)
-            
-def _build_udf_resources(resources):
-    """
-    :type resources: sequence of :class:`UDFResource`
-    :param resources: fields to be appended
-
-    :rtype: mapping
-    :returns: a mapping describing userDefinedFunctionResources for the query.
-    """
-    udfs = []
-    for resource in resources:
-        udf = {resource.udfType : resource.value}
-        udfs.append(udf)
-    return udfs
 
 
 class QueryResults(object):
@@ -79,16 +48,22 @@ class QueryResults(object):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type udf_resources: tuple
+    :param udf_resources: An iterable of
+                        :class:`gcloud.bigquery.query.UDFResource`
+                        (empty by default)
     """
-    
+
+    _UDF_KEY = 'userDefinedFunctionResources'
     _udf_resources = None
-    
-    def __init__(self, query, client, udfResources=()):
+
+    def __init__(self, query, client, udf_resources=()):
         self._client = client
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
-        self.udfResources = udfResources
+        self.udf_resources = udf_resources
         self._job = None
 
     @property
@@ -240,14 +215,17 @@ class QueryResults(object):
         :returns: fields describing the schema (None until set by the server).
         """
         return _parse_schema_resource(self._properties.get('schema', {}))
-        
+
     @property
-    def udfResources(self):
+    def udf_resources(self):
+        """Property for list of UDF resources attached to a query
+        See
+        https://cloud.google.com/bigquery/user-defined-functions#api
+        """
         return list(self._udf_resources)
 
-    
-    @udfResources.setter
-    def udfResources(self, value):
+    @udf_resources.setter
+    def udf_resources(self, value):
         """Update queries UDF resources
 
         :type value: list of :class:`UDFResource`
@@ -260,9 +238,8 @@ class QueryResults(object):
             raise ValueError("udf items must be UDFResource")
         if len(value) > 0:
             self._udf_resources = tuple(value)
-        
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)    
+    default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
     """
@@ -297,8 +274,6 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/\
     reference/v2/jobs/query#useLegacySql
     """
-    
-    
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
@@ -308,7 +283,6 @@ class QueryResults(object):
         """
         self._properties.clear()
         self._properties.update(api_response)
-        
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -337,12 +311,11 @@ class QueryResults(object):
 
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run
-            
+
         if self._udf_resources is not None:
-            resource["userDefinedFunctionResources"] = _build_udf_resources(self._udf_resources)
+            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
 
         return resource
-
 
     def run(self, client=None):
         """API call:  run the query via a POST request
