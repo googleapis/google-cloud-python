@@ -948,7 +948,7 @@ class QueryJob(_AsyncJob):
         """
         if not self._udf_resources:
             return []
-        if not all(isinstance(udf, UDFResource) for udf in self._udf_resources):
+        if not all(isinstance(u, UDFResource) for u in self._udf_resources):
             raise ValueError("udf items must be UDFResource")
         return list(self._udf_resources)
 
@@ -962,7 +962,7 @@ class QueryJob(_AsyncJob):
         :raises: TypeError if 'value' is not a sequence, or ValueError if
                  any item in the sequence is not a UDFResource
         """
-        if not all(isinstance(udf, UDFResource) for udf in value):
+        if not all(isinstance(u, UDFResource) for u in value):
             raise ValueError("udf items must be UDFResource")
         if len(value) > 0:
             self._udf_resources = tuple(value)

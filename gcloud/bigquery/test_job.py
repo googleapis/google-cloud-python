@@ -1492,7 +1492,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
         self.assertEqual(job.udf_resources,
-                        [UDFResource("resourceUri", RESOURCE_URI)])
+                         [UDFResource("resourceUri", RESOURCE_URI)])
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1525,10 +1525,9 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job._udf_resources = ["foo", 1]
         with self.assertRaises(ValueError):
             getattr(job, 'udf_resources')
-            
+
         with self.assertRaises(ValueError):
             job.udf_resources = ["foo"]
-
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
