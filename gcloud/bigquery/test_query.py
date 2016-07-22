@@ -307,9 +307,6 @@ class TestQueryResults(unittest2.TestCase):
 
     def test_run_w_bad_udfs(self):
         from gcloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        INLINE_UDF_CODE = 'var someCode = "here";'
-        PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)

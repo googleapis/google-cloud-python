@@ -1510,9 +1510,6 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_bad_udf(self):
-        from gcloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
         # Ensure None for missing server-set props
         del RESOURCE['statistics']['creationTime']
