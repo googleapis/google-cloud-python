@@ -35,7 +35,7 @@ class _SyncQueryConfiguration(object):
     _use_query_cache = None
     _use_legacy_sql = None
     
-class userDefinedFunctionResource(object):
+class UDFResource(object):
     """Describe a single user-defined function (UDF) resource.
     See
     https://cloud.google.com/bigquery/user-defined-functions#api
@@ -54,6 +54,21 @@ class userDefinedFunctionResource(object):
         return(
             self.udfType == other.udfType and
             self.value == other.value)
+            
+def _build_udf_resources(resources):
+    """
+    :type resources: sequence of :class:`UDFResource`
+    :param resources: fields to be appended
+
+    :rtype: mapping
+    :returns: a mapping describing userDefinedFunctionResources for the query.
+    """
+    udfs = []
+    for resource in resources:
+        udf = {resource.udfType : resource.value}
+        udfs.append(udf)
+    return udfs
+
 
 class QueryResults(object):
     """Synchronous job: query tables.
@@ -65,11 +80,15 @@ class QueryResults(object):
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
     """
-    def __init__(self, query, client):
+    
+    _udf_resources = None
+    
+    def __init__(self, query, client, udfResources=()):
         self._client = client
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
+        self.udfResources = udfResources
         self._job = None
 
     @property
@@ -221,8 +240,29 @@ class QueryResults(object):
         :returns: fields describing the schema (None until set by the server).
         """
         return _parse_schema_resource(self._properties.get('schema', {}))
+        
+    @property
+    def udfResources(self):
+        return list(self._udf_resources)
 
-    default_dataset = _TypedProperty('default_dataset', Dataset)
+    
+    @udfResources.setter
+    def udfResources(self, value):
+        """Update queries UDF resources
+
+        :type value: list of :class:`UDFResource`
+        :param value: an object which defines the type and value of a resource
+
+        :raises: TypeError if 'value' is not a sequence, or ValueError if
+                 any item in the sequence is not a UDFResource
+        """
+        if not all(isinstance(udf, UDFResource) for udf in value):
+            raise ValueError("udf items must be UDFResource")
+        if len(value) > 0:
+            self._udf_resources = tuple(value)
+        
+
+    default_dataset = _TypedProperty('default_dataset', Dataset)    
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
     """
@@ -268,6 +308,7 @@ class QueryResults(object):
         """
         self._properties.clear()
         self._properties.update(api_response)
+        
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -296,6 +337,9 @@ class QueryResults(object):
 
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run
+            
+        if self._udf_resources is not None:
+            resource["userDefinedFunctionResources"] = _build_udf_resources(self._udf_resources)
 
         return resource
 
