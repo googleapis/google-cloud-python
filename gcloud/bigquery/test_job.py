@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import unittest2
+from gcloud.bigquery.job import UdfResource
 
 
 class _Base(object):
@@ -1219,7 +1220,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'
-    UDF = {"resourceUri": "gs://backet/functions.js", "inlineCode": ""}
+    UDF = UdfResource(uri="gs://backet/functions.js", code="")
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import QueryJob
@@ -1428,7 +1429,12 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
             'useLegacySql': True,
-            'userDefinedFunctionResources': [self.UDF],
+            'userDefinedFunctionResources': [
+                {
+                    "resourceUri": self.UDF.uri,
+                    "inlineCode": self.UDF.code
+                }
+            ],
             'writeDisposition': 'WRITE_TRUNCATE',
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION

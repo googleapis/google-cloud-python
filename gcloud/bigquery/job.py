@@ -877,6 +877,14 @@ class _AsyncQueryConfiguration(object):
     _write_disposition = None
 
 
+class UdfResource(object):
+    """UDF resource for QueryJob."""
+
+    def __init__(self, uri=None, code=None):
+        self.uri = uri
+        self.code = code
+
+
 class QueryJob(_AsyncJob):
     """Asynchronous job: query tables.
 
@@ -938,8 +946,7 @@ class QueryJob(_AsyncJob):
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
-    udf_resources = _TypedProperty(
-        'udf_resources', list)
+    udf_resources = _TypedProperty('udf_resources', list)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
     """
@@ -985,8 +992,15 @@ class QueryJob(_AsyncJob):
         if self.use_legacy_sql is not None:
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.udf_resources is not None:
+            udf_list = []
+            for udf_resource in self.udf_resources:
+                udf = {
+                    'resourceUri': udf_resource.uri,
+                    'inlineCode': udf_resource.code
+                }
+                udf_list.append(udf)
             configuration['userDefinedFunctionResources'] = (
-                self.udf_resources
+                udf_list
             )
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
