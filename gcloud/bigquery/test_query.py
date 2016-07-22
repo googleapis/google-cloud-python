@@ -306,7 +306,6 @@ class TestQueryResults(unittest2.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_bad_udfs(self):
-        from gcloud.bigquery.job import UDFResource
         RESOURCE = self._makeResource(complete=False)
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
