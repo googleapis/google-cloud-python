@@ -1,0 +1,327 @@
+{
+  "description": "\n Manipulate access control lists that Cloud Storage provides.\n <a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a> has a getting method that creates an ACL object under the hood, and you can interact with that using <a data-custom-type=\"gcloud/storage/bucket/bucket/acl\">gcloud.storage.bucket.Bucket.acl</a>\n<pre><code>  >>> from gcloud import storage\n  >>> client = storage.Client()\n  >>> bucket = client.get_bucket(bucket_name)\n  >>> acl = bucket.acl\n</code></pre>\n Adding and removing permissions can be done with the following methods (in increasing order of granularity):\n - ACL.all corresponds to access for all users. - ACL.all_authenticated corresponds to access for all users that are signed into a Google account. - ACL.domain corresponds to access on a per Google Apps domain (ie, example.com). - ACL.group corresponds to access on a per group basis (either by ID or e-mail address). - ACL.user corresponds to access on a per user basis (either by ID or e-mail address).\n And you are able to <code>grant</code> and <code>revoke</code> the following roles:\n - **Reading**: _ACLEntity.grant_read and _ACLEntity.revoke_read - **Writing**: _ACLEntity.grant_write and _ACLEntity.revoke_write - **Owning**: _ACLEntity.grant_owner and _ACLEntity.revoke_owner\n You can use any of these like any other factory method (these happen to be _ACLEntity factories)\n<pre><code>  >>> acl.user('me@example.org').grant_read()\n  >>> acl.all_authenticated().grant_write()\n</code></pre>\n You can also chain these <code>grant_*</code> and <code>revoke_*</code> methods together for brevity\n<pre><code>  >>> acl.all().grant_read().revoke_write()\n</code></pre>\n After that, you can save any changes you make with the <a data-custom-type=\"gcloud/storage/acl/acl/save\">gcloud.storage.acl.ACL.save</a> method\n<pre><code>  >>> acl.save()\n</code></pre>\n You can alternatively save any existing <a data-custom-type=\"gcloud/storage/acl/acl\">gcloud.storage.acl.ACL</a> object (whether it was created by a factory method or not) from a <a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>\n<pre><code>  >>> bucket.acl.save(acl=acl)\n</code></pre>\n To get the list of <code>entity</code> and <code>role</code> for each unique pair, the ACL class is iterable\n<pre><code>  >>> print list(ACL)\n  [{'role': 'OWNER', 'entity': 'allUsers'}, ...]\n</code></pre>\n This list of tuples can be used as the <code>entity</code> and <code>role</code> fields when sending metadata for ACLs to the API.", 
+  "examples": [], 
+  "id": "gcloud.storage.acl.objectacl", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L543", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.add_entity", 
+      "name": "add_entity", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L284", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.all", 
+      "name": "all", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L352", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.all_authenticated", 
+      "name": "all_authenticated", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L360", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.clear", 
+      "name": "clear", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L487", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.domain", 
+      "name": "domain", 
+      "params": [
+        {
+          "description": " The domain for this entity.", 
+          "name": "domain", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L341", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.entity", 
+      "name": "entity", 
+      "params": [
+        {
+          "description": " The type of entity to create (ie, user, group, etc)", 
+          "name": "entity_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The ID of the entity (if applicable). This can be either an ID or an e-mail address.", 
+          "name": "identifier", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L293", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.entity_from_dict", 
+      "name": "entity_from_dict", 
+      "params": [
+        {
+          "description": " Dictionary full of data from an ACL lookup.", 
+          "name": "entity_dict", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L222", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.get_entities", 
+      "name": "get_entities", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            " _ACLEntity objects"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L368", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.get_entity", 
+      "name": "get_entity", 
+      "params": [
+        {
+          "description": " This value will be returned if the entity doesn't exist.", 
+          "name": "default", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "anything"
+          ]
+        }, 
+        {
+          "description": " The entity to get lookup in the ACL.", 
+          "name": "entity", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "_ACLEntity or string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L267", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.group", 
+      "name": "group", 
+      "params": [
+        {
+          "description": " An id or e-mail for this particular group.", 
+          "name": "identifier", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L330", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.has_entity", 
+      "name": "has_entity", 
+      "params": [
+        {
+          "description": " The entity to check for existence in this ACL.", 
+          "name": "entity", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "boolean"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L255", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L396", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.reset", 
+      "name": "reset", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L209", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.save", 
+      "name": "save", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L446", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.save_predefined", 
+      "name": "save_predefined", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L466", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.acl.ObjectACL.user", 
+      "name": "user", 
+      "params": [
+        {
+          "description": " An id or e-mail for this particular user.", 
+          "name": "identifier", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_ACLEntity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L319", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Objectacl", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,8 @@
+{
+  "description": "\n Define API Datasets.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.dataset", 
+  "methods": [], 
+  "name": "Dataset", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,69 @@
+{
+  "description": "\n Comprehensive list of environment variables used in gcloud.\n These enable many types of implicit behavior in both production and tests.", 
+  "examples": [], 
+  "id": "gcloud.environment_vars", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.CREDENTIALS", 
+      "name": "CREDENTIALS", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.GCD_DATASET", 
+      "name": "GCD_DATASET", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.GCD_HOST", 
+      "name": "GCD_HOST", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.PROJECT", 
+      "name": "PROJECT", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.PUBSUB_EMULATOR", 
+      "name": "PUBSUB_EMULATOR", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.environment_vars.TESTS_PROJECT", 
+      "name": "TESTS_PROJECT", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Environment_Vars", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

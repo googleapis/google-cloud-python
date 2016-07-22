@@ -1,0 +1,54 @@
+{
+  "description": "\n Define API ResourceRecordSets.", 
+  "examples": [], 
+  "id": "gcloud.dns.resource_record_set.resourcerecordset", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.dns.resource_record_set.ResourceRecordSet.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py#L42", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.dns.resource_record_set.ResourceRecordSet.from_api_repr", 
+      "name": "from_api_repr", 
+      "params": [
+        {
+          "description": " record sets representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " A zone which holds one or more record sets.", 
+          "name": "zone", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/zone/managedzone\">gcloud.dns.zone.ManagedZone</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/zone/resourcerecordset\">gcloud.dns.zone.ResourceRecordSet</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py#L49", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Resourcerecordset", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

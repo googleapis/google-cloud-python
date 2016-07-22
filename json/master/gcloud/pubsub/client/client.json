@@ -1,0 +1,221 @@
+{
+  "description": "\n Client for interacting with the Google Cloud Pub/Sub API.", 
+  "examples": [], 
+  "id": "gcloud.pubsub.client.client", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L184", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.from_service_account_json", 
+      "name": "from_service_account_json", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L33", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.from_service_account_p12", 
+      "name": "from_service_account_p12", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/client/client\">gcloud.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L63", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.list_subscriptions", 
+      "name": "list_subscriptions", 
+      "params": [
+        {
+          "description": " maximum number of topics to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/client.py#L134", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.list_topics", 
+      "name": "list_topics", 
+      "params": [
+        {
+          "description": " maximum number of topics to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/client.py#L100", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.client.Client.topic", 
+      "name": "topic", 
+      "params": [
+        {
+          "description": " the name of the topic to be constructed.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " To be passed to <code>Topic</code> constructor.", 
+          "name": "timestamp_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/topic/topic\">gcloud.pubsub.topic.Topic</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/client.py#L170", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Client", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

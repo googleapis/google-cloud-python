@@ -1,0 +1,35 @@
+{
+  "description": "\n Create / interact with gcloud datastore queries.", 
+  "examples": [], 
+  "id": "gcloud.datastore.query.iterator", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Iterator.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L392", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Iterator.next_page", 
+      "name": "next_page", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (entities, more_results, cursor)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L403", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Iterator", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

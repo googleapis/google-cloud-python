@@ -1,0 +1,19 @@
+{
+  "description": "\n Class for representing a single entity in the Cloud Datastore.", 
+  "examples": [], 
+  "id": "gcloud.datastore.entity.entity", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.entity.Entity.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/entity.py#L79", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Entity", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

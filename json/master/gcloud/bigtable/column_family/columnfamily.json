@@ -1,0 +1,65 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Column Family.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.column_family.columnfamily", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.ColumnFamily.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L218", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.ColumnFamily.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L262", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.ColumnFamily.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L299", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.ColumnFamily.to_pb", 
+      "name": "to_pb", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/column_family/columnfamily/table_v2_pb2/columnfamily\">gcloud.bigtable.column_family.ColumnFamily.table_v2_pb2.ColumnFamily</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L251", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.ColumnFamily.update", 
+      "name": "update", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L278", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Columnfamily", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

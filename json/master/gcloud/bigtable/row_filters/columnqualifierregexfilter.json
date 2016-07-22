@@ -1,0 +1,35 @@
+{
+  "description": "\n Filters for Google Cloud Bigtable Row classes.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.row_filters.columnqualifierregexfilter", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_filters.ColumnQualifierRegexFilter.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L122", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_filters.ColumnQualifierRegexFilter.to_pb", 
+      "name": "to_pb", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/row_filters/columnqualifierregexfilter/data_v2_pb2/rowfilter\">gcloud.bigtable.row_filters.ColumnQualifierRegexFilter.data_v2_pb2.RowFilter</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L233", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Columnqualifierregexfilter", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

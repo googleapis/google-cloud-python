@@ -1,0 +1,19 @@
+{
+  "description": "\n Define API Datasets.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.dataset.accessgrant", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.dataset.AccessGrant.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L59", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Accessgrant", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

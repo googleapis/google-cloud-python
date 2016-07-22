@@ -1,0 +1,63 @@
+{
+  "description": "\n Log entries within the Google Stackdriver Logging API.", 
+  "examples": [], 
+  "id": "gcloud.logging.entries.structentry", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.entries.StructEntry.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py#L75", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.entries.StructEntry.from_api_repr", 
+      "name": "from_api_repr", 
+      "params": [
+        {
+          "description": " Client which holds credentials and project configuration.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " text entry resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " A mapping of logger fullnames -> loggers. If not passed, the entry will have a newly-created logger.", 
+          "name": "loggers", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/entries/textentry\">gcloud.logging.entries.TextEntry</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py#L85", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Structentry", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

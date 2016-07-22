@@ -1,0 +1,147 @@
+{
+  "description": "\n Define API Loggers.", 
+  "examples": [], 
+  "id": "gcloud.logging.logger.logger", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L39", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.batch", 
+      "name": "batch", 
+      "params": [
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/client/client or nonetype\">gcloud.logging.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Batch"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L78", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L257", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.list_entries", 
+      "name": "list_entries", 
+      "params": [
+        {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L270", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.log_proto", 
+      "name": "log_proto", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L224", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.log_struct", 
+      "name": "log_struct", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L191", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.logger.Logger.log_text", 
+      "name": "log_text", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L158", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Logger", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

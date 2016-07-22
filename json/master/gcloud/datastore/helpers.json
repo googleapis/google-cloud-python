@@ -1,0 +1,61 @@
+{
+  "description": "\n Helper functions for dealing with Cloud Datastore's Protobuf API.\n The non-private functions are part of the API.", 
+  "examples": [], 
+  "id": "gcloud.datastore.helpers", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.helpers.entity_from_protobuf", 
+      "name": "entity_from_protobuf", 
+      "params": [
+        {
+          "description": " The Protobuf representing the entity.", 
+          "name": "pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/entity_pb2/entity\">gcloud.datastore._generated.entity_pb2.Entity</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/entity/entity\">gcloud.datastore.entity.Entity</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/helpers.py#L105", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.helpers.key_from_protobuf", 
+      "name": "key_from_protobuf", 
+      "params": [
+        {
+          "description": " The Protobuf representing the key.", 
+          "name": "pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/entity_pb2/key\">gcloud.datastore._generated.entity_pb2.Key</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/helpers.py#L238", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Helpers", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

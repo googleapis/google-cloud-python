@@ -1,0 +1,61 @@
+{
+  "description": "\n PubSub API IAM policy definitions\n For allowed roles / permissions, see: <a href=\"https://cloud.google.com/pubsub/access_control#permissions\">https://cloud.google.com/pubsub/access_control#permissions</a>", 
+  "examples": [], 
+  "id": "gcloud.pubsub.iam.policy", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.Policy.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/iam.py#L110", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.Policy.from_api_repr", 
+      "name": "from_api_repr", 
+      "params": [
+        {
+          "description": " resource returned from the <code>getIamPolicy</code> API.", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Policy"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/iam.py#L185", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.pubsub.iam.Policy.to_api_repr", 
+      "name": "to_api_repr", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/iam.py#L215", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Policy", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

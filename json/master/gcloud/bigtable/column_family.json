@@ -1,0 +1,8 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Column Family.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.column_family", 
+  "methods": [], 
+  "name": "Column_Family", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

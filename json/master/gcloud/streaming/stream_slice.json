@@ -1,0 +1,8 @@
+{
+  "description": "\n Small helper class to provide a small slice of a stream.", 
+  "examples": [], 
+  "id": "gcloud.streaming.stream_slice", 
+  "methods": [], 
+  "name": "Stream_Slice", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

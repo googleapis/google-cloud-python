@@ -1,0 +1,8 @@
+{
+  "description": "\n Client for interacting with the Google BigQuery API.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.client", 
+  "methods": [], 
+  "name": "Client", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

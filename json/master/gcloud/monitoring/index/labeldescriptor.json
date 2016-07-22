@@ -1,0 +1,19 @@
+{
+  "description": "\n Google Stackdriver Monitoring API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.monitoring.__init__.labeldescriptor", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.LabelDescriptor.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/label.py#L51", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Labeldescriptor", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

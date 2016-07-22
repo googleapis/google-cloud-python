@@ -1,0 +1,79 @@
+{
+  "description": "\n Assorted utilities shared between parts of apitools.", 
+  "examples": [], 
+  "id": "gcloud.streaming.util", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.streaming.util.acceptable_mime_type", 
+      "name": "acceptable_mime_type", 
+      "params": [
+        {
+          "description": " acceptable MIME types.", 
+          "name": "accept_patterns", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
+          ]
+        }, 
+        {
+          "description": " the MIME being checked", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "boolean"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/util.py#L43", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.streaming.util.calculate_wait_for_retry", 
+      "name": "calculate_wait_for_retry", 
+      "params": [
+        {
+          "description": " Upper bound for wait time [seconds].", 
+          "name": "max_wait", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Retry attempt counter.", 
+          "name": "retry_attempt", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "integer"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/util.py#L20", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Util", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

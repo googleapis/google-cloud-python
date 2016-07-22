@@ -1,0 +1,427 @@
+{
+  "description": "\n Create / interact with gcloud storage buckets.", 
+  "examples": [], 
+  "id": "gcloud.storage.bucket.bucket", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L92", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.blob", 
+      "name": "blob", 
+      "params": [
+        {
+          "description": " The name of the blob to be instantiated.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
+          "name": "chunk_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L106", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.configure_website", 
+      "name": "configure_website", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L725", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.copy_blob", 
+      "name": "copy_blob", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The bucket into which the blob should be copied.", 
+          "name": "destination_bucket", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/bucket/bucket\">gcloud.storage.bucket.Bucket</a>"
+          ]
+        }, 
+        {
+          "description": " The blob to be copied.", 
+          "name": "blob", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
+          "description": " (optional) the new name for the copied file.", 
+          "name": "new_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L433", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L153", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L310", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.delete_blob", 
+      "name": "delete_blob", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L360", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.delete_blobs", 
+      "name": "delete_blobs", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L401", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.disable_logging", 
+      "name": "disable_logging", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L597", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.disable_website", 
+      "name": "disable_website", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L765", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.enable_logging", 
+      "name": "enable_logging", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L583", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.exists", 
+      "name": "exists", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "boolean"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L126", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.get_blob", 
+      "name": "get_blob", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to retrieve.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob or none\">gcloud.storage.blob.Blob or None</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L205", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.get_logging", 
+      "name": "get_logging", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "dict or None"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L571", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.list_blobs", 
+      "name": "list_blobs", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " maximum number of blobs to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " optional prefix used to filter blobs.", 
+          "name": "prefix", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "_BlobIterator."
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L242", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.make_public", 
+      "name": "make_public", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L773", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.patch", 
+      "name": "patch", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py#L108", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py#L64", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.storage.bucket.Bucket.rename_blob", 
+      "name": "rename_blob", 
+      "params": [
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The blob to be renamed.", 
+          "name": "blob", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/blob/blob\">gcloud.storage.blob.Blob</a>"
+          ]
+        }, 
+        {
+          "description": " The new name for this blob.", 
+          "name": "new_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Blob"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L464", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Bucket", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

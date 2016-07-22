@@ -1,0 +1,8 @@
+{
+  "description": "\n Create / interact with a batch of updates / deletes.\n Batches provide the ability to execute multiple operations in a single request to the Cloud Datastore API.\n See <a href=\"https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations\">https://cloud.google.com/datastore/docs/concepts/entities#Datastore_Batch_operations</a>", 
+  "examples": [], 
+  "id": "gcloud.datastore.batch", 
+  "methods": [], 
+  "name": "Batch", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

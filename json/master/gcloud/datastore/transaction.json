@@ -1,0 +1,8 @@
+{
+  "description": "\n Create / interact with gcloud datastore transactions.", 
+  "examples": [], 
+  "id": "gcloud.datastore.transaction", 
+  "methods": [], 
+  "name": "Transaction", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,302 @@
+{
+  "description": "\n Connections to gcloud datastore API servers.", 
+  "examples": [], 
+  "id": "gcloud.datastore.connection.connection", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L56", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.allocate_ids", 
+      "name": "allocate_ids", 
+      "params": [
+        {
+          "description": " The project to which the transaction belongs.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The keys for which the backend should allocate IDs.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            " gcloud.datastore._generated.entity_pb2.Key"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L363", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.begin_transaction", 
+      "name": "begin_transaction", 
+      "params": [
+        {
+          "description": " The project to which the transaction applies.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "bytes"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L294", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.build_api_url", 
+      "name": "build_api_url", 
+      "params": [
+        {
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
+          "name": "base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L127", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.commit", 
+      "name": "commit", 
+      "params": [
+        {
+          "description": " The project to which the transaction applies.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The protobuf with the mutations being committed.", 
+          "name": "request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
+          ]
+        }, 
+        {
+          "description": " The transaction ID returned from", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L310", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.lookup", 
+      "name": "lookup", 
+      "params": [
+        {
+          "description": " The project to look up the keys in.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L157", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.rollback", 
+      "name": "rollback", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L345", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.connection.Connection.run_query", 
+      "name": "run_query", 
+      "params": [
+        {
+          "description": " The project over which to run the query.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
+          ]
+        }, 
+        {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
+          "name": "eventual", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/connection.py#L216", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Connection", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,19 @@
+{
+  "description": "\n Custom exceptions for <a data-custom-type=\"gcloud\">gcloud</a> package.\n See: <a href=\"https://cloud.google.com/storage/docs/json_api/v1/status-codes\">https://cloud.google.com/storage/docs/json_api/v1/status-codes</a>", 
+  "examples": [], 
+  "id": "gcloud.exceptions.methodnotallowed", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.exceptions.MethodNotAllowed.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/exceptions.py#L38", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Methodnotallowed", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

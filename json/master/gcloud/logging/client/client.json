@@ -1,0 +1,362 @@
+{
+  "description": "\n Client for interacting with the Google Stackdriver Logging API.", 
+  "examples": [], 
+  "id": "gcloud.logging.client.client", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L184", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.from_service_account_json", 
+      "name": "from_service_account_json", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L33", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.from_service_account_p12", 
+      "name": "from_service_account_p12", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/client/client\">gcloud.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L63", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.list_entries", 
+      "name": "list_entries", 
+      "params": [
+        {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of entries. If not passed, the API will return the first page of entries.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L158", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.list_metrics", 
+      "name": "list_metrics", 
+      "params": [
+        {
+          "description": " maximum number of metrics to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of metrics. If not passed, the API will return the first page of metrics.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L275", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.list_sinks", 
+      "name": "list_sinks", 
+      "params": [
+        {
+          "description": " maximum number of sinks to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of sinks. If not passed, the API will return the first page of sinks.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "tuple, (list, str)"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L226", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.logger", 
+      "name": "logger", 
+      "params": [
+        {
+          "description": " the name of the logger to be constructed.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/logger/logger\">gcloud.logging.logger.Logger</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L123", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.metric", 
+      "name": "metric", 
+      "params": [
+        {
+          "description": " the name of the metric to be constructed.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " the advanced logs filter expression defining the entries tracked by the metric. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/metric/metric\">gcloud.logging.metric.Metric</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L253", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.logging.client.Client.sink", 
+      "name": "sink", 
+      "params": [
+        {
+          "description": " the name of the sink to be constructed.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (optional) the advanced logs filter expression defining the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via Sink.reload.", 
+          "name": "filter_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " destination URI for the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/sink/sink\">gcloud.logging.sink.Sink</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py#L203", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Client", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,111 @@
+{
+  "description": "\n Create / interact with gcloud datastore queries.", 
+  "examples": [], 
+  "id": "gcloud.datastore.query.query", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Query.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L75", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Query.add_filter", 
+      "name": "add_filter", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L189", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Query.fetch", 
+      "name": "fetch", 
+      "params": [
+        {
+          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "end_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " An optional limit passed through to the iterator.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
+          ]
+        }, 
+        {
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "start_cursor", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Iterator"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L315", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Query.key_filter", 
+      "name": "key_filter", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L257", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.query.Query.keys_only", 
+      "name": "keys_only", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L253", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Query", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

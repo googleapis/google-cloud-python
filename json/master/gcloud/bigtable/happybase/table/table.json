@@ -1,0 +1,429 @@
+{
+  "description": "\n Google Cloud Bigtable HappyBase table module.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.happybase.table.table", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L111", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.batch", 
+      "name": "batch", 
+      "params": [
+        {
+          "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
+          "name": "batch_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch) that all mutations will be applied at.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
+          "name": "wal", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object"
+          ]
+        }, 
+        {
+          "description": " Flag indicating if the mutations should be sent transactionally or not. If <code>transaction=True</code> and an error occurs while a", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Batch <gcloud.bigtable.happybase.batch.Batch>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L470", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.cells", 
+      "name": "cells", 
+      "params": [
+        {
+          "description": " (Optional) The maximum number of cells to return. If not set, returns all cells found.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Column we are reading from; of the form <code>fam:col</code>.", 
+          "name": "column", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L255", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.counter_dec", 
+      "name": "counter_dec", 
+      "params": [
+        {
+          "description": " Amount to decrement the counter by. (If negative, this is equivalent to increment.)", 
+          "name": "value", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are decrementing a counter in.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "int"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L601", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.counter_get", 
+      "name": "counter_get", 
+      "params": [
+        {
+          "description": " Row key for the row we are getting a counter from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Column we are get-ing from; of the form <code>fam:col</code>.", 
+          "name": "column", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "int"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L507", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.counter_inc", 
+      "name": "counter_inc", 
+      "params": [
+        {
+          "description": " Amount to increment the counter by. (If negative, this is equivalent to decrement.)", 
+          "name": "value", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are incrementing a counter in.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "int"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L553", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.counter_set", 
+      "name": "counter_set", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L532", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L434", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.families", 
+      "name": "families", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L124", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.put", 
+      "name": "put", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L403", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.regions", 
+      "name": "regions", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L137", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.row", 
+      "name": "row", 
+      "params": [
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
+          "name": "columns", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L152", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.rows", 
+      "name": "rows", 
+      "params": [
+        {
+          "description": " Iterable of the row keys for the rows we are reading from.", 
+          "name": "rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
+          "name": "columns", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L197", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.happybase.table.Table.scan", 
+      "name": "scan", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py#L299", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Table", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

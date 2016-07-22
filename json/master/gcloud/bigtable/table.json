@@ -1,0 +1,8 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Table.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.table", 
+  "methods": [], 
+  "name": "Table", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

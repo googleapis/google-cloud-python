@@ -1,0 +1,49 @@
+{
+  "description": "\n Container for Google Cloud Bigtable Cells and Streaming Row Contents.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.row_data.partialrowsdata", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.PartialRowsData.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L196", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.PartialRowsData.cancel", 
+      "name": "cancel", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L252", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.PartialRowsData.consume_all", 
+      "name": "consume_all", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L307", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_data.PartialRowsData.consume_next", 
+      "name": "consume_next", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L256", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Partialrowsdata", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

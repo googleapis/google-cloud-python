@@ -1,0 +1,8 @@
+{
+  "description": "\n Define API Subscriptions.", 
+  "examples": [], 
+  "id": "gcloud.pubsub.subscription", 
+  "methods": [], 
+  "name": "Subscription", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

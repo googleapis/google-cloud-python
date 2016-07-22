@@ -1,0 +1,35 @@
+{
+  "description": "\n Google Stackdriver Monitoring API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.monitoring.__init__.timeseries", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.TimeSeries.header", 
+      "name": "header", 
+      "params": [
+        {
+          "description": " An optional point list.", 
+          "name": "points", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " Point, or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "TimeSeries"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/timeseries.py#L75", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Timeseries", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

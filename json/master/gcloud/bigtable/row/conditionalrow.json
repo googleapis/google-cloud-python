@@ -1,0 +1,85 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Row.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.row.conditionalrow", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L443", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.clear", 
+      "name": "clear", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L643", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.commit", 
+      "name": "commit", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L471", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L562", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.delete_cell", 
+      "name": "delete_cell", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L578", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.delete_cells", 
+      "name": "delete_cells", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L609", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row.ConditionalRow.set_cell", 
+      "name": "set_cell", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L522", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Conditionalrow", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

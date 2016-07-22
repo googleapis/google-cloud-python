@@ -1,0 +1,35 @@
+{
+  "description": "\n Filters for Google Cloud Bigtable Row classes.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.row_filters.stripvaluetransformerfilter", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_filters.StripValueTransformerFilter.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L46", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.row_filters.StripValueTransformerFilter.to_pb", 
+      "name": "to_pb", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/row_filters/stripvaluetransformerfilter/data_v2_pb2/rowfilter\">gcloud.bigtable.row_filters.StripValueTransformerFilter.data_v2_pb2.RowFilter</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L601", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Stripvaluetransformerfilter", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

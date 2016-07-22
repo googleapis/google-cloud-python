@@ -1,0 +1,19 @@
+{
+  "description": "\n Google Cloud Resource Manager API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.resource_manager.__init__", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.resource_manager.__init__.SCOPE", 
+      "name": "SCOPE", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "__Init__", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,19 @@
+{
+  "description": "\n Define API Jobs.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.job.sourceformat", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.SourceFormat.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/_helpers.py#L105", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Sourceformat", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,8 @@
+{
+  "description": "\n Exceptions for generated client libraries.", 
+  "examples": [], 
+  "id": "gcloud.streaming.exceptions.transferinvaliderror", 
+  "methods": [], 
+  "name": "Transferinvaliderror", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

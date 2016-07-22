@@ -1,0 +1,19 @@
+{
+  "description": "\n Convenience wrapper for invoking APIs/factories w/ a project.", 
+  "examples": [], 
+  "id": "gcloud.datastore.client", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.GCD_DATASET", 
+      "name": "GCD_DATASET", 
+      "params": [], 
+      "returns": [], 
+      "source": "", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Client", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

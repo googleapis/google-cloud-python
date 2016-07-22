@@ -1,0 +1,337 @@
+{
+  "description": "\n Convenience wrapper for invoking APIs/factories w/ a project.", 
+  "examples": [], 
+  "id": "gcloud.datastore.client.client", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L168", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.allocate_ids", 
+      "name": "allocate_ids", 
+      "params": [
+        {
+          "description": " The number of IDs to allocate.", 
+          "name": "num_ids", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Partial key to use as base for allocated IDs.", 
+          "name": "incomplete_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            " gcloud.datastore.key.Key"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L393", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.batch", 
+      "name": "batch", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L434", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L357", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.delete_multi", 
+      "name": "delete_multi", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L371", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.from_service_account_json", 
+      "name": "from_service_account_json", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L33", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.from_service_account_p12", 
+      "name": "from_service_account_p12", 
+      "params": [
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/client/client\">gcloud.client.Client</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L63", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.get", 
+      "name": "get", 
+      "params": [
+        {
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
+          "name": "deferred", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
+          "description": " The key to be retrieved from the datastore.", 
+          "name": "key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
+          "name": "missing", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/entity/entity or nonetype\">gcloud.datastore.entity.Entity or NoneType</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L226", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.get_multi", 
+      "name": "get_multi", 
+      "params": [
+        {
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "deferred", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
+          "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
+          "name": "transaction", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/transaction/transaction\">gcloud.datastore.transaction.Transaction</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "missing", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
+          "description": " The keys to be retrieved from the datastore.", 
+          "name": "keys", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.datastore.key.Key"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            " gcloud.datastore.entity.Entity"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L259", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.key", 
+      "name": "key", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L422", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.put", 
+      "name": "put", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L317", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.put_multi", 
+      "name": "put_multi", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L331", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.query", 
+      "name": "query", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L442", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.datastore.client.Client.transaction", 
+      "name": "transaction", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/client.py#L438", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Client", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

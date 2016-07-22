@@ -1,0 +1,325 @@
+{
+  "description": "\n Time series query for the Google Stackdriver Monitoring API (V3)_.\n .. _Google Stackdriver Monitoring API (V3): <a href=\"https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\">https://cloud.google.com/monitoring/api/ref_v3/rest/v3/</a> projects.timeSeries/list", 
+  "examples": [], 
+  "id": "gcloud.monitoring.query.query", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L121", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.align", 
+      "name": "align", 
+      "params": [
+        {
+          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
+          "name": "per_series_aligner", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The number of seconds in the alignment period.", 
+          "name": "seconds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " The number of hours in the alignment period.", 
+          "name": "hours", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the alignment period.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L331", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.as_dataframe", 
+      "name": "as_dataframe", 
+      "params": [
+        {
+          "description": " A list or tuple of label names to use for the dataframe header. If more than one label name is provided, the resulting dataframe will have a multi-level column header. Providing values for both <code>label</code> and <code>labels</code> is an error.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings, or None"
+          ]
+        }, 
+        {
+          "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
+          "name": "label", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "pandas.DataFrame"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L529", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.copy", 
+      "name": "copy", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L571", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.iter", 
+      "name": "iter", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L409", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.reduce", 
+      "name": "reduce", 
+      "params": [
+        {
+          "description": " The approach to be used to combine time series. For example:", 
+          "name": "cross_series_reducer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
+          "name": "group_by_fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "strings"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L373", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.select_group", 
+      "name": "select_group", 
+      "params": [
+        {
+          "description": " The ID of a group to filter by.", 
+          "name": "group_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L194", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.select_interval", 
+      "name": "select_interval", 
+      "params": [
+        {
+          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object. If not specified, the interval is a point in time.", 
+          "name": "start_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
+          ]
+        }, 
+        {
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object.", 
+          "name": "end_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L162", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.select_metrics", 
+      "name": "select_metrics", 
+      "params": [
+        {
+          "description": " Label filters to include in the conjunction as described above.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L291", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.select_projects", 
+      "name": "select_projects", 
+      "params": [
+        {
+          "description": " Project IDs limiting the resources to be included in the query.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L211", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.query.Query.select_resources", 
+      "name": "select_resources", 
+      "params": [
+        {
+          "description": " Label filters to include in the conjunction as described above.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "Query"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L233", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Query", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

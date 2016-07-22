@@ -1,0 +1,19 @@
+{
+  "description": "\n Google Stackdriver Monitoring API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.monitoring.__init__.resourcedescriptor", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.ResourceDescriptor.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/resource.py#L54", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Resourcedescriptor", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

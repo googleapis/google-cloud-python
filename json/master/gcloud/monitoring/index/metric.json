@@ -1,0 +1,8 @@
+{
+  "description": "\n Google Stackdriver Monitoring API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.monitoring.__init__.metric", 
+  "methods": [], 
+  "name": "Metric", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

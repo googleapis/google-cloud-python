@@ -1,0 +1,110 @@
+{
+  "description": "\n Define API Jobs.", 
+  "examples": [], 
+  "id": "gcloud.bigquery.job.queryjob", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L894", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.begin", 
+      "name": "begin", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L297", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.cancel", 
+      "name": "cancel", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L352", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.exists", 
+      "name": "exists", 
+      "params": [
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L313", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.from_api_repr", 
+      "name": "from_api_repr", 
+      "params": [
+        {
+          "description": " Client which holds credentials and project configuration for the dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client\">gcloud.bigquery.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " dataset job representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/job/runasyncqueryjob\">gcloud.bigquery.job.RunAsyncQueryJob</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L1022", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigquery.job.QueryJob.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/job.py#L336", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Queryjob", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

@@ -1,0 +1,35 @@
+{
+  "description": "\n User friendly container for Google Cloud Bigtable Column Family.", 
+  "examples": [], 
+  "id": "gcloud.bigtable.column_family.maxagegcrule", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.MaxAgeGCRule.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L127", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.bigtable.column_family.MaxAgeGCRule.to_pb", 
+      "name": "to_pb", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/column_family/maxagegcrule/table_v2_pb2/gcrule\">gcloud.bigtable.column_family.MaxAgeGCRule.table_v2_pb2.GcRule</a>"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py#L135", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Maxagegcrule", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}

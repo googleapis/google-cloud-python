@@ -1,0 +1,45 @@
+{
+  "description": "\n Small helper class to provide a small slice of a stream.\n This class reads ahead to detect if we are at the end of the stream.", 
+  "examples": [], 
+  "id": "gcloud.streaming.buffered_stream.bufferedstream", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.streaming.buffered_stream.BufferedStream.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/buffered_stream.py#L33", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.streaming.buffered_stream.BufferedStream.read", 
+      "name": "read", 
+      "params": [
+        {
+          "description": " How many bytes to read (defaults to all remaining bytes).", 
+          "name": "size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            "str"
+          ]
+        }
+      ], 
+      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/buffered_stream.py#L81", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Bufferedstream", 
+  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+}
