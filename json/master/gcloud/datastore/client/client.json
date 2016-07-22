@@ -85,12 +85,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -103,12 +103,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -128,15 +128,6 @@
       "id": "gcloud.datastore.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
         {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
@@ -163,6 +154,15 @@
           "types": [
             "string"
           ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
         }
       ], 
       "returns": [
@@ -182,21 +182,21 @@
       "name": "get", 
       "params": [
         {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
-          "name": "deferred", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
-          ]
-        }, 
-        {
           "description": " The key to be retrieved from the datastore.", 
           "name": "key", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/key/key\">gcloud.datastore.key.Key</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
+          "name": "missing", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
           ]
         }, 
         {
@@ -209,8 +209,8 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
-          "name": "missing", 
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
+          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -235,8 +235,17 @@
       "name": "get_multi", 
       "params": [
         {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "deferred", 
+          "description": " The keys to be retrieved from the datastore.", 
+          "name": "keys", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.datastore.key.Key"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "missing", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -253,21 +262,12 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "missing", 
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "list"
-          ]
-        }, 
-        {
-          "description": " The keys to be retrieved from the datastore.", 
-          "name": "keys", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.datastore.key.Key"
           ]
         }
       ], 

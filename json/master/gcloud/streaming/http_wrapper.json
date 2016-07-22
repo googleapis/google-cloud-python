@@ -36,17 +36,44 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Number of redirects to follow.", 
-          "name": "redirections", 
+          "description": " Function to validate the HTTP response.", 
+          "name": "check_response_func", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "function taking (response, content, url)."
           ]
         }, 
         {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " Function to make HTTP request without retries.", 
+          "name": "wo_retry_func", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "function taking (http, request, redirections, check_response_func)"
+          ]
+        }, 
+        {
+          "description": " the request to send.", 
+          "name": "http_request", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "Request"
+          ]
+        }, 
+        {
+          "description": " an instance which impelements the Http API.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http"
+          ]
+        }, 
+        {
+          "description": " Number of redirects to follow.", 
+          "name": "redirections", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -63,39 +90,12 @@
           ]
         }, 
         {
-          "description": " an instance which impelements the Http API.", 
-          "name": "http", 
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "httplib2.Http"
-          ]
-        }, 
-        {
-          "description": " the request to send.", 
-          "name": "http_request", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "Request"
-          ]
-        }, 
-        {
-          "description": " Function to validate the HTTP response.", 
-          "name": "check_response_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (response, content, url)."
-          ]
-        }, 
-        {
-          "description": " Function to make HTTP request without retries.", 
-          "name": "wo_retry_func", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "function taking (http, request, redirections, check_response_func)"
+            "integer"
           ]
         }
       ], 

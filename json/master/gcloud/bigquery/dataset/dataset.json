@@ -66,21 +66,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client\">gcloud.bigquery.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " dataset resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client\">gcloud.bigquery.client.Client</a>"
           ]
         }
       ], 
@@ -101,21 +101,21 @@
       "name": "list_tables", 
       "params": [
         {
-          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " maximum number of tables to return, If not passed, defaults to a value set by the API.", 
           "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of datasets. If not passed, the API will return the first page of datasets.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -156,21 +156,21 @@
       "name": "table", 
       "params": [
         {
-          "description": " The table's schema", 
-          "name": "schema", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.bigquery.table.SchemaField"
-          ]
-        }, 
-        {
           "description": " Name of the table.", 
           "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The table's schema", 
+          "name": "schema", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.bigquery.table.SchemaField"
           ]
         }
       ], 

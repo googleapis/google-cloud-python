@@ -72,6 +72,24 @@
       "name": "translate", 
       "params": [
         {
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
+          ]
+        }, 
+        {
+          "description": " (Optional) One of <code>text</code> or html, to specify if the input text is plain text or HTML.", 
+          "name": "format_", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " (Optional) ID or list of customization IDs for translation. Sets the <code>cid</code> parameter in the query.", 
           "name": "customization_ids", 
           "nullable": null, 
@@ -90,26 +108,8 @@
           ]
         }, 
         {
-          "description": " String or list of strings to translate.", 
-          "name": "values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or list"
-          ]
-        }, 
-        {
           "description": " (Optional) The language of the text to be translated.", 
           "name": "source_language", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) One of <code>text</code> or html, to specify if the input text is plain text or HTML.", 
-          "name": "format_", 
           "nullable": null, 
           "optional": null, 
           "types": [

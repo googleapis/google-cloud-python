@@ -88,12 +88,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -106,12 +106,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -131,15 +131,6 @@
       "id": "gcloud.storage.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
         {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
@@ -165,6 +156,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -211,17 +211,17 @@
       "name": "list_buckets", 
       "params": [
         {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
-          "name": "fields", 
+          "description": " Optional. Maximum number of buckets to return.", 
+          "name": "max_results", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or NoneType"
+            "integer or NoneType"
           ]
         }, 
         {
-          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
-          "name": "prefix", 
+          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -238,8 +238,8 @@
           ]
         }, 
         {
-          "description": " Optional. Opaque marker for the next \"page\" of buckets. If not passed, will return the first page of buckets.", 
-          "name": "page_token", 
+          "description": " Optional. Filter results to buckets whose names begin with this prefix.", 
+          "name": "prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -247,12 +247,12 @@
           ]
         }, 
         {
-          "description": " Optional. Maximum number of buckets to return.", 
-          "name": "max_results", 
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each bucket returned: 'items/id,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or NoneType"
+            "string or NoneType"
           ]
         }
       ], 

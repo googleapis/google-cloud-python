@@ -20,12 +20,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -38,12 +38,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }
       ], 
@@ -63,15 +63,6 @@
       "id": "gcloud.logging.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
         {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
@@ -98,6 +89,15 @@
           "types": [
             "string"
           ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
         }
       ], 
       "returns": [
@@ -117,17 +117,8 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
-          ]
-        }, 
-        {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -135,8 +126,8 @@
           ]
         }, 
         {
-          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
-          "name": "filter_", 
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -150,6 +141,15 @@
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
           ]
         }, 
         {
@@ -275,8 +275,8 @@
       "name": "metric", 
       "params": [
         {
-          "description": " the name of the metric to be constructed.", 
-          "name": "name", 
+          "description": " the advanced logs filter expression defining the entries tracked by the metric. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -284,8 +284,8 @@
           ]
         }, 
         {
-          "description": " the advanced logs filter expression defining the entries tracked by the metric. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
-          "name": "filter_", 
+          "description": " the name of the metric to be constructed.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -319,8 +319,8 @@
       "name": "sink", 
       "params": [
         {
-          "description": " the name of the sink to be constructed.", 
-          "name": "name", 
+          "description": " (optional) the advanced logs filter expression defining the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via Sink.reload.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -328,8 +328,8 @@
           ]
         }, 
         {
-          "description": " (optional) the advanced logs filter expression defining the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via Sink.reload.", 
-          "name": "filter_", 
+          "description": " the name of the sink to be constructed.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
