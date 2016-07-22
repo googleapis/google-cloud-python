@@ -22,7 +22,6 @@ from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
 from gcloud.bigquery.table import _parse_schema_resource
 
-
 class _SyncQueryConfiguration(object):
     """User-settable configuration options for synchronous query jobs.
 
@@ -35,7 +34,26 @@ class _SyncQueryConfiguration(object):
     _preserve_nulls = None
     _use_query_cache = None
     _use_legacy_sql = None
+    
+class userDefinedFunctionResource(object):
+    """Describe a single user-defined function (UDF) resource.
+    See
+    https://cloud.google.com/bigquery/user-defined-functions#api
+    
+    :type udfType: str
+    :param udfType: the type of the resource (one of 'inlineCode' or 'resourceUri')
 
+    :type value: str
+    :param value: the inline code or resource URI
+    """
+    def __init__(self, udfType, value):
+        self.udfType = udfType
+        self.value = value
+    
+    def __eq__(self, other):
+        return(
+            self.udfType == other.udfType and
+            self.value == other.value)
 
 class QueryResults(object):
     """Synchronous job: query tables.
@@ -239,6 +257,8 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/\
     reference/v2/jobs/query#useLegacySql
     """
+    
+    
 
     def _set_properties(self, api_response):
         """Update properties from resource in body of ``api_response``
@@ -278,6 +298,7 @@ class QueryResults(object):
             resource['dryRun'] = self.dry_run
 
         return resource
+
 
     def run(self, client=None):
         """API call:  run the query via a POST request
