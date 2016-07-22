@@ -222,6 +222,10 @@ class QueryResults(object):
         See
         https://cloud.google.com/bigquery/user-defined-functions#api
         """
+        if not self._udf_resources:
+            return []
+        if not all(isinstance(udf, UDFResource) for udf in self._udf_resources):
+            raise ValueError("udf items must be UDFResource")
         return list(self._udf_resources)
 
     @udf_resources.setter

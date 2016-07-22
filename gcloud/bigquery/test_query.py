@@ -181,7 +181,7 @@ class TestQueryResults(unittest2.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._makeOne(self.QUERY, client)
-
+        self.assertEqual(query.udf_resources, [])
         query.run()
 
         self.assertEqual(len(conn._requested), 1)
@@ -295,12 +295,32 @@ class TestQueryResults(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(query.udf_resources,
+                        [UDFResource("resourceUri", RESOURCE_URI),
+                        UDFResource("inlineCode", INLINE_UDF_CODE)]
+                        )
         SENT = {'query': self.QUERY,
                 'userDefinedFunctionResources': [
                     {'resourceUri': RESOURCE_URI},
                     {"inlineCode": INLINE_UDF_CODE}]}
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
+        
+    def test_run_w_bad_udfs(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        INLINE_UDF_CODE = 'var someCode = "here";'
+        PATH = 'projects/%s/queries' % self.PROJECT
+        RESOURCE = self._makeResource(complete=False)
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        query = self._makeOne(self.QUERY, client)
+        query._udf_resources = ["foo", 1]
+        with self.assertRaises(ValueError):
+            getattr(query, 'udf_resources')
+            
+        with self.assertRaises(ValueError):
+            query.udf_resources = ["foo"]
 
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()

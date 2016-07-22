@@ -1384,7 +1384,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
 
         job.begin()
-
+        self.assertEqual(job.udf_resources, [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -1491,6 +1491,8 @@ class TestQueryJob(unittest2.TestCase, _Base):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(job.udf_resources,
+                        [UDFResource("resourceUri", RESOURCE_URI)])
         SENT = {
             'jobReference': {
                 'projectId': self.PROJECT,
@@ -1506,6 +1508,27 @@ class TestQueryJob(unittest2.TestCase, _Base):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_bad_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job._udf_resources = ["foo", 1]
+        with self.assertRaises(ValueError):
+            getattr(job, 'udf_resources')
+            
+        with self.assertRaises(ValueError):
+            job.udf_resources = ["foo"]
+
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
