@@ -972,7 +972,8 @@ class QueryJob(_AsyncJob):
         :type value: list of :class:`UdfResource`
         :param value:the new list
 
-        :raises: ValueError, if the items in the list are not all instance of :class:`UdfResource`
+        :raises: ValueError, if the items in the list are not all instance of
+                  :class:`UdfResource`
         """
         if not all((isinstance(item, UdfResource) for item in value)):
             raise ValueError("pass a list of UdfResource instances")
