@@ -1220,7 +1220,8 @@ class TestQueryJob(unittest2.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'
-    UDF = UdfResource(uri="gs://backet/functions.js", code="")
+    UDF1 = UdfResource(uri="gs://backet/functions.js")
+    UDF2 = UdfResource(code="function foo(row, emit) {...")
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import QueryJob
@@ -1291,6 +1292,18 @@ class TestQueryJob(unittest2.TestCase, _Base):
                              config['priority'])
         else:
             self.assertTrue(job.priority is None)
+        if 'userDefinedFunctionResources' in config:
+            config_udf_list = config['userDefinedFunctionResources']
+            udf_list = job.udf_resources
+            self.assertEquals(len(config_udf_list), len(udf_list))
+            for config_udf, udf in zip(config_udf_list, udf_list):
+                udf_ref = {
+                    'inlineCode': udf.code,
+                    'resourceUri': udf.uri
+                }
+                self.assertEqual(udf_ref, config_udf)
+        else:
+            self.assertTrue(job.udf_resources is None)
         if 'writeDisposition' in config:
             self.assertEqual(job.write_disposition,
                              config['writeDisposition'])
@@ -1373,6 +1386,16 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
+    def test_set_udf_resource(self):
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        job.udf_resources = [self.UDF1]
+        job.udf_resources = [self.UDF1, self.UDF2]
+        with self.assertRaises(ValueError):
+            job.udf_resources = [self.UDF1, 'error']
+
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
@@ -1431,8 +1454,8 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'useLegacySql': True,
             'userDefinedFunctionResources': [
                 {
-                    "resourceUri": self.UDF.uri,
-                    "inlineCode": self.UDF.code
+                    "resourceUri": self.UDF1.uri,
+                    "inlineCode": self.UDF1.code
                 }
             ],
             'writeDisposition': 'WRITE_TRUNCATE',
@@ -1455,7 +1478,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
         job.use_legacy_sql = True
-        job.udf_resources = [self.UDF]
+        job.udf_resources = [self.UDF1]
         job.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)

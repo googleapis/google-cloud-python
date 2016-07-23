@@ -946,7 +946,7 @@ class QueryJob(_AsyncJob):
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
-    udf_resources = _TypedProperty('udf_resources', list)
+    _udf_resources = None
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
     """
@@ -955,6 +955,28 @@ class QueryJob(_AsyncJob):
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
     """
+
+    @property
+    def udf_resources(self):
+        """List of user-defined-function resources.
+
+        :type: list of :class:`UdfResource`
+        :returns: the list, if set, or None
+        """
+        return list(self._udf_resources) if self._udf_resources else None
+
+    @udf_resources.setter
+    def udf_resources(self, value):
+        """Update list of user-defined-function resources.
+
+        :type value: list of :class:`UdfResource`
+        :param value:the new list
+
+        :raises: ValueError, if the items in the list are not all instance of :class:`UdfResource`
+        """
+        if not all((isinstance(item, UdfResource) for item in value)):
+            raise ValueError("pass a list of UdfResource instances")
+        self._udf_resources = tuple(value)
 
     def _destination_table_resource(self):
         """Create a JSON resource for the destination table.
