@@ -33,6 +33,7 @@ import sys
 IGNORED_DIRECTORIES = [
     os.path.join('gcloud', 'bigtable', '_generated'),
     os.path.join('gcloud', 'datastore', '_generated'),
+    'scripts/verify_included_modules.py',
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
