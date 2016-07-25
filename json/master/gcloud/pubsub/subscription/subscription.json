@@ -31,15 +31,6 @@
       "params": [
         {
           "description": " passed through to Subscription.pull", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " passed through to Subscription.pull", 
           "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
@@ -54,6 +45,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " passed through to Subscription.pull", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -155,15 +155,6 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " topic resource representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " A mapping of topic names -> topics. If not passed, the subscription will have a newly-created topic.", 
           "name": "topics", 
           "nullable": null, 
@@ -179,6 +170,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " topic resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -245,15 +245,6 @@
       "name": "pull", 
       "params": [
         {
-          "description": " the maximum number of messages to return.", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
           "name": "return_immediately", 
           "nullable": null, 
@@ -269,6 +260,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the maximum number of messages to return.", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 

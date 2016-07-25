@@ -19,12 +19,12 @@
           ]
         }, 
         {
-          "description": " A response object that defines a status code as the status attribute.", 
-          "name": "response", 
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "httplib2.Response or other HTTP response object"
+            "string"
           ]
         }, 
         {
@@ -37,12 +37,12 @@
           ]
         }, 
         {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
+          "description": " A response object that defines a status code as the status attribute.", 
+          "name": "response", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "httplib2.Response or other HTTP response object"
           ]
         }
       ], 

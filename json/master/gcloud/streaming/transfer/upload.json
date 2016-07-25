@@ -30,8 +30,26 @@
       "name": "from_file", 
       "params": [
         {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or None"
+          ]
+        }, 
+        {
           "description": " MIMEtype of the file being uploaded", 
           "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -45,24 +63,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or None"
-          ]
-        }, 
-        {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }
       ], 
@@ -83,12 +83,12 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " the target file", 
+          "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "writable file-like object"
           ]
         }, 
         {
@@ -101,12 +101,12 @@
           ]
         }, 
         {
-          "description": " the target file", 
-          "name": "stream", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "writable file-like object"
+            "string"
           ]
         }, 
         {

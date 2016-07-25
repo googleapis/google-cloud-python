@@ -66,21 +66,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " project resource representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The Client used with this project.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/resource_manager/client/client\">gcloud.resource_manager.client.Client</a>"
+          ]
+        }, 
+        {
+          "description": " project resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 

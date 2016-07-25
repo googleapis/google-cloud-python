@@ -73,8 +73,8 @@
       "name": "cells", 
       "params": [
         {
-          "description": " Column we are reading from; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -100,8 +100,8 @@
           ]
         }, 
         {
-          "description": " Row key for the row we are reading from.", 
-          "name": "row", 
+          "description": " Column we are reading from; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -135,8 +135,8 @@
       "name": "counter_dec", 
       "params": [
         {
-          "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are decrementing a counter in.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -153,8 +153,8 @@
           ]
         }, 
         {
-          "description": " Row key for the row we are decrementing a counter in.", 
-          "name": "row", 
+          "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -179,8 +179,8 @@
       "name": "counter_get", 
       "params": [
         {
-          "description": " Column we are get-ing from; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are getting a counter from.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -188,8 +188,8 @@
           ]
         }, 
         {
-          "description": " Row key for the row we are getting a counter from.", 
-          "name": "row", 
+          "description": " Column we are get-ing from; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -214,8 +214,8 @@
       "name": "counter_inc", 
       "params": [
         {
-          "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are incrementing a counter in.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -232,8 +232,8 @@
           ]
         }, 
         {
-          "description": " Row key for the row we are incrementing a counter in.", 
-          "name": "row", 
+          "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -314,6 +314,15 @@
       "name": "row", 
       "params": [
         {
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
           "name": "columns", 
           "nullable": null, 
@@ -329,15 +338,6 @@
           "optional": null, 
           "types": [
             "bool"
-          ]
-        }, 
-        {
-          "description": " Row key for the row we are reading from.", 
-          "name": "row", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
           ]
         }, 
         {
@@ -367,6 +367,15 @@
       "name": "rows", 
       "params": [
         {
+          "description": " Iterable of the row keys for the rows we are reading from.", 
+          "name": "rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
+        {
           "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
           "name": "columns", 
           "nullable": null, 
@@ -382,15 +391,6 @@
           "optional": null, 
           "types": [
             "bool"
-          ]
-        }, 
-        {
-          "description": " Iterable of the row keys for the rows we are reading from.", 
-          "name": "rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
           ]
         }, 
         {

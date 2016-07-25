@@ -72,15 +72,6 @@
       "name": "translate", 
       "params": [
         {
-          "description": " String or list of strings to translate.", 
-          "name": "values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or list"
-          ]
-        }, 
-        {
           "description": " (Optional) One of <code>text</code> or html, to specify if the input text is plain text or HTML.", 
           "name": "format_", 
           "nullable": null, 
@@ -105,6 +96,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " String or list of strings to translate.", 
+          "name": "values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or list"
           ]
         }, 
         {
