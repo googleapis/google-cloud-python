@@ -16,6 +16,7 @@ import argparse
 import inspect
 import json
 import os
+import sys
 import types
 
 import pdoc
@@ -290,10 +291,11 @@ def build_type(type_id, title, contents):
 
 def clean_source_path(source):
     source_path = ''
-    if 'gcloud' in source:
-        source_path = source.split('gcloud')[1]
+    for path in sys.path:
+        if path in source:
+            source_path = source.replace(path, '')
 
-    return source_path[1:]
+    return source_path
 
 
 def process_code_blocks(doc):
