@@ -240,8 +240,7 @@ class QueryResults(object):
         """
         if not all(isinstance(udf, UDFResource) for udf in value):
             raise ValueError("udf items must be UDFResource")
-        if len(value) > 0:
-            self._udf_resources = tuple(value)
+        self._udf_resources = tuple(value)
 
     default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:

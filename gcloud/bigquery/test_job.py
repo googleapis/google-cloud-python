@@ -1397,6 +1397,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'configuration': {
                 'query': {
                     'query': self.QUERY,
+                    'userDefinedFunctionResources': []
                 },
             },
         }
@@ -1426,6 +1427,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'flattenResults': True,
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
+            'userDefinedFunctionResources': [],
             'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
         }
@@ -1520,11 +1522,10 @@ class TestQueryJob(unittest2.TestCase, _Base):
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
         job._udf_resources = ["foo", 1]
-        with self.assertRaises(ValueError):
-            getattr(job, 'udf_resources')
 
         with self.assertRaises(ValueError):
             job.udf_resources = ["foo"]
+            self.assertEqual(job.udf_resources, None)
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)

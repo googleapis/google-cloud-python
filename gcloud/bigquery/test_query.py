@@ -188,7 +188,7 @@ class TestQueryResults(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
-        SENT = {'query': self.QUERY}
+        SENT = {'query': self.QUERY, 'userDefinedFunctionResources': []}
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
@@ -228,6 +228,7 @@ class TestQueryResults(unittest2.TestCase):
             'preserveNulls': True,
             'timeoutMs': 20000,
             'useQueryCache': False,
+            'userDefinedFunctionResources': [],
             'useLegacySql': True,
         }
         self.assertEqual(req['data'], SENT)
@@ -311,11 +312,10 @@ class TestQueryResults(unittest2.TestCase):
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._makeOne(self.QUERY, client)
         query._udf_resources = ["foo", 1]
-        with self.assertRaises(ValueError):
-            getattr(query, 'udf_resources')
 
         with self.assertRaises(ValueError):
             query.udf_resources = ["foo"]
+            self.assertEqual(query.udf_resources, None)
 
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()

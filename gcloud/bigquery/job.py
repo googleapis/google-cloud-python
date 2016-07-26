@@ -964,8 +964,7 @@ class QueryJob(_AsyncJob):
         """
         if not all(isinstance(u, UDFResource) for u in value):
             raise ValueError("udf items must be UDFResource")
-        if len(value) > 0:
-            self._udf_resources = tuple(value)
+        self._udf_resources = tuple(value)
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See:
@@ -1050,6 +1049,9 @@ class QueryJob(_AsyncJob):
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
+        if self._udf_resources is not None:
+            configuration[self._UDF_KEY] = _build_udf_resources(
+                self._udf_resources)
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
@@ -1061,13 +1063,10 @@ class QueryJob(_AsyncJob):
             },
             'configuration': {
                 self._JOB_TYPE: {
-                    'query': self.query
+                    'query': self.query,
                 },
             },
         }
-        if self._udf_resources is not None:
-            resource['configuration'][self._JOB_TYPE][self._UDF_KEY] = \
-                _build_udf_resources(self._udf_resources)
         configuration = resource['configuration'][self._JOB_TYPE]
         self._populate_config_resource(configuration)
 
