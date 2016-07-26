@@ -16,14 +16,17 @@ import argparse
 import inspect
 import json
 import os
-import sys
 import types
 
+import gcloud
 import pdoc
 from parinx.parser import parse_docstring
 from parinx.errors import MethodParsingException
 
 from verify_included_modules import get_public_modules
+
+ABSOLUTE_LIBRARY_PATH = '/'.join(os.path.abspath(gcloud.__file__)
+                                   .split('/')[:-2])
 
 
 class Module(object):
@@ -291,9 +294,8 @@ def build_type(type_id, title, contents):
 
 def clean_source_path(source):
     source_path = ''
-    for path in sys.path:
-        if path in source:
-            source_path = source.replace(path, '')
+    if ABSOLUTE_LIBRARY_PATH in source:
+        source_path = source.replace(ABSOLUTE_LIBRARY_PATH, '')
 
     return source_path
 
