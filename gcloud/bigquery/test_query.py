@@ -310,11 +310,10 @@ class TestQueryResults(unittest2.TestCase):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         query = self._makeOne(self.QUERY, client)
-        query._udf_resources = ["foo", 1]
 
         with self.assertRaises(ValueError):
             query.udf_resources = ["foo"]
-            self.assertEqual(query.udf_resources, None)
+        self.assertEqual(query.udf_resources, [])
 
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()

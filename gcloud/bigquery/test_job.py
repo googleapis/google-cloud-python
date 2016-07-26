@@ -1519,11 +1519,10 @@ class TestQueryJob(unittest2.TestCase, _Base):
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
-        job._udf_resources = ["foo", 1]
 
         with self.assertRaises(ValueError):
             job.udf_resources = ["foo"]
-            self.assertEqual(job.udf_resources, None)
+        self.assertEqual(job.udf_resources, [])
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)
