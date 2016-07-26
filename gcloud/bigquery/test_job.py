@@ -1396,8 +1396,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             },
             'configuration': {
                 'query': {
-                    'query': self.QUERY,
-                    'userDefinedFunctionResources': []
+                    'query': self.QUERY
                 },
             },
         }
@@ -1427,7 +1426,6 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'flattenResults': True,
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
-            'userDefinedFunctionResources': [],
             'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
         }

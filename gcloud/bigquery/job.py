@@ -1049,7 +1049,7 @@ class QueryJob(_AsyncJob):
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
-        if self._udf_resources is not None:
+        if len(self._udf_resources) > 0:
             configuration[self._UDF_KEY] = _build_udf_resources(
                 self._udf_resources)
 

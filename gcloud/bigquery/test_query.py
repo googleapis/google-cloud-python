@@ -188,7 +188,7 @@ class TestQueryResults(unittest2.TestCase):
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
         self.assertEqual(req['path'], '/%s' % PATH)
-        SENT = {'query': self.QUERY, 'userDefinedFunctionResources': []}
+        SENT = {'query': self.QUERY}
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
 
@@ -228,7 +228,6 @@ class TestQueryResults(unittest2.TestCase):
             'preserveNulls': True,
             'timeoutMs': 20000,
             'useQueryCache': False,
-            'userDefinedFunctionResources': [],
             'useLegacySql': True,
         }
         self.assertEqual(req['data'], SENT)

@@ -335,7 +335,7 @@ class QueryResults(object):
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run
 
-        if self._udf_resources is not None:
+        if len(self._udf_resources) > 0:
             resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
 
         return resource
