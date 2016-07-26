@@ -18,15 +18,16 @@ import json
 import os
 import types
 
-import gcloud
 import pdoc
 from parinx.parser import parse_docstring
 from parinx.errors import MethodParsingException
 
 from verify_included_modules import get_public_modules
 
-ABSOLUTE_LIBRARY_PATH = '/'.join(os.path.abspath(gcloud.__file__)
-                                   .split('/')[:-2])
+import gcloud
+
+ABSOLUTE_LIBRARY_PATH = os.path.dirname(os.path.dirname(os.path.abspath(
+    gcloud.__file__)))
 
 
 class Module(object):
