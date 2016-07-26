@@ -290,8 +290,8 @@ def build_type(type_id, title, contents):
 
 def clean_source_path(source):
     source_path = ''
-    if 'gcloud-python' in source:
-        source_path = source.split('gcloud-python')[1]
+    if 'gcloud' in source:
+        source_path = source.split('gcloud')[1]
 
     return source_path[1:]
 
