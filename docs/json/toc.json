@@ -171,6 +171,15 @@
             "title": "Change Sets"
         }
     ]
+  },{
+    "title": "Error Reporting",
+    "type": "gcloud/error_reporting",
+    "nav": [
+        {
+            "type": "gcloud/error_reporting/client/client",
+            "title": "Client"
+        }
+    ]
   }, {
     "title": "Exceptions",
     "type": "gcloud/exceptions",

@@ -554,6 +554,7 @@ def main():
             'credentials': [],
             'datastore': [],
             'dns': [],
+            'error_reporting': [],
             'environment_vars': [],
             'exceptions': [],
             'iterator': [],
