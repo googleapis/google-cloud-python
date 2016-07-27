@@ -927,7 +927,7 @@ class QueryJob(_AsyncJob):
 
     :type udf_resources: tuple
     :param udf_resources: An iterable of
-                        :class:`gcloud.bigquery.job.UDFResource`
+                        :class:`gcloud.bigquery.query.UDFResource`
                         (empty by default)
     """
     _JOB_TYPE = 'query'
