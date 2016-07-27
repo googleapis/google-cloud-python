@@ -15,6 +15,76 @@
 import unittest2
 
 
+class Test_UDFResourcesProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import UDFResourcesProperty
+        return UDFResourcesProperty
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def _descriptor_and_klass(self):
+        descriptor = self._makeOne()
+
+        class _Test(object):
+            _udf_resources = ()
+            udf_resources = descriptor
+
+        return descriptor, _Test
+
+    def test_class_getter(self):
+        descriptor, klass = self._descriptor_and_klass()
+        self.assertTrue(klass.udf_resources is descriptor)
+
+    def test_instance_getter_empty(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        self.assertEqual(instance.udf_resources, [])
+
+    def test_instance_getter_w_non_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._udf_resources = tuple(udf_resources)
+
+        self.assertEqual(instance.udf_resources, udf_resources)
+
+    def test_instance_setter_w_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._udf_resources = udf_resources
+
+        instance.udf_resources = []
+
+        self.assertEqual(instance.udf_resources, [])
+
+    def test_instance_setter_w_valid_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        instance.udf_resources = udf_resources
+
+        self.assertEqual(instance.udf_resources, udf_resources)
+
+    def test_instance_setter_w_bad_udfs(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        with self.assertRaises(ValueError):
+            instance.udf_resources = ["foo"]
+
+        self.assertEqual(instance.udf_resources, [])
+
+
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
@@ -1370,38 +1440,6 @@ class TestQueryJob(unittest2.TestCase, _Base):
         dataset = klass.from_api_repr(RESOURCE, client=client)
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
-
-    def test_udf_resources_setter_w_empty_list(self):
-        from gcloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        client = _Client(project=self.PROJECT)
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client,
-                            udf_resources=udf_resources)
-
-        job.udf_resources = []
-
-        self.assertEqual(job.udf_resources, [])
-
-    def test_udf_resources_setter_w_valid_udf(self):
-        from gcloud.bigquery.job import UDFResource
-        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
-        client = _Client(project=self.PROJECT)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
-        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
-
-        job.udf_resources = udf_resources
-
-        self.assertEqual(job.udf_resources, udf_resources)
-
-    def test_udf_resources_setter_w_bad_udfs(self):
-        client = _Client(project=self.PROJECT)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
-
-        with self.assertRaises(ValueError):
-            job.udf_resources = ["foo"]
-
-        self.assertEqual(job.udf_resources, [])
 
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT

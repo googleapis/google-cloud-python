@@ -20,7 +20,7 @@ from gcloud.bigquery._helpers import _TypedProperty
 from gcloud.bigquery._helpers import _rows_from_json
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
-from gcloud.bigquery.job import UDFResource
+from gcloud.bigquery.job import UDFResourcesProperty
 from gcloud.bigquery.job import _build_udf_resources
 from gcloud.bigquery.table import _parse_schema_resource
 
@@ -56,7 +56,6 @@ class QueryResults(object):
     """
 
     _UDF_KEY = 'userDefinedFunctionResources'
-    _udf_resources = None
 
     def __init__(self, query, client, udf_resources=()):
         self._client = client
@@ -216,28 +215,6 @@ class QueryResults(object):
         """
         return _parse_schema_resource(self._properties.get('schema', {}))
 
-    @property
-    def udf_resources(self):
-        """Property for list of UDF resources attached to a query
-        See
-        https://cloud.google.com/bigquery/user-defined-functions#api
-        """
-        return list(self._udf_resources)
-
-    @udf_resources.setter
-    def udf_resources(self, value):
-        """Update queries UDF resources
-
-        :type value: list of :class:`UDFResource`
-        :param value: an object which defines the type and value of a resource
-
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a UDFResource
-        """
-        if not all(isinstance(udf, UDFResource) for udf in value):
-            raise ValueError("udf items must be UDFResource")
-        self._udf_resources = tuple(value)
-
     default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
@@ -262,6 +239,8 @@ class QueryResults(object):
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs
     """
+
+    udf_resources = UDFResourcesProperty()
 
     use_query_cache = _TypedProperty('use_query_cache', bool)
     """See:

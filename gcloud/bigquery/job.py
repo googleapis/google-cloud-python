@@ -63,6 +63,22 @@ def _build_udf_resources(resources):
     return udfs
 
 
+class UDFResourcesProperty(object):
+    """Custom property type for :class:`QueryJob` / :class:`.query.Query`."""
+
+    def __get__(self, instance, owner):
+        """Descriptor protocal:  accesstor"""
+        if instance is None:
+            return self
+        return list(instance._udf_resources)
+
+    def __set__(self, instance, value):
+        """Descriptor protocal:  mutator"""
+        if not all(isinstance(u, UDFResource) for u in value):
+            raise ValueError("udf items must be UDFResource")
+        instance._udf_resources = tuple(value)
+
+
 class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
@@ -932,35 +948,12 @@ class QueryJob(_AsyncJob):
     """
     _JOB_TYPE = 'query'
     _UDF_KEY = 'userDefinedFunctionResources'
-    _udf_resources = None
 
     def __init__(self, name, query, client, udf_resources=()):
         super(QueryJob, self).__init__(name, client)
         self.query = query
         self.udf_resources = udf_resources
         self._configuration = _AsyncQueryConfiguration()
-
-    @property
-    def udf_resources(self):
-        """Property for list of UDF resources attached to a query
-        See
-        https://cloud.google.com/bigquery/user-defined-functions#api
-        """
-        return list(self._udf_resources)
-
-    @udf_resources.setter
-    def udf_resources(self, value):
-        """Update queries UDF resources
-
-        :type value: list of :class:`UDFResource`
-        :param value: an object which defines the type and value of a resource
-
-        :raises: TypeError if 'value' is not a sequence, or ValueError if
-                 any item in the sequence is not a UDFResource
-        """
-        if not all(isinstance(u, UDFResource) for u in value):
-            raise ValueError("udf items must be UDFResource")
-        self._udf_resources = tuple(value)
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See:
@@ -991,6 +984,8 @@ class QueryJob(_AsyncJob):
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority
     """
+
+    udf_resources = UDFResourcesProperty()
 
     use_query_cache = _TypedProperty('use_query_cache', bool)
     """See:
