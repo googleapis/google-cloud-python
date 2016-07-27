@@ -20,6 +20,8 @@ from gcloud.bigquery._helpers import _TypedProperty
 from gcloud.bigquery._helpers import _rows_from_json
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
+from gcloud.bigquery.job import UDFResourcesProperty
+from gcloud.bigquery.job import _build_udf_resources
 from gcloud.bigquery.table import _parse_schema_resource
 
 
@@ -46,12 +48,21 @@ class QueryResults(object):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type udf_resources: tuple
+    :param udf_resources: An iterable of
+                        :class:`gcloud.bigquery.job.UDFResource`
+                        (empty by default)
     """
-    def __init__(self, query, client):
+
+    _UDF_KEY = 'userDefinedFunctionResources'
+
+    def __init__(self, query, client, udf_resources=()):
         self._client = client
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
+        self.udf_resources = udf_resources
         self._job = None
 
     @property
@@ -229,6 +240,8 @@ class QueryResults(object):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#timeoutMs
     """
 
+    udf_resources = UDFResourcesProperty()
+
     use_query_cache = _TypedProperty('use_query_cache', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#useQueryCache
@@ -276,6 +289,9 @@ class QueryResults(object):
 
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run
+
+        if len(self._udf_resources) > 0:
+            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
 
         return resource
 
