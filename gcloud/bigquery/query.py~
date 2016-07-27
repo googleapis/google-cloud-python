@@ -51,7 +51,7 @@ class QueryResults(object):
 
     :type udf_resources: tuple
     :param udf_resources: An iterable of
-                        :class:`gcloud.bigquery.job.UDFResource`
+                        :class:`gcloud.bigquery.query.UDFResource`
                         (empty by default)
     """
 
