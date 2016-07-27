@@ -27,6 +27,42 @@ from gcloud.bigquery._helpers import _EnumProperty
 from gcloud.bigquery._helpers import _TypedProperty
 
 
+class UDFResource(object):
+    """Describe a single user-defined function (UDF) resource.
+    :type udf_type: str
+    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
+
+    :type value: str
+    :param value: the inline code or resource URI
+
+    See
+    https://cloud.google.com/bigquery/user-defined-functions#api
+    """
+    def __init__(self, udf_type, value):
+        self.udf_type = udf_type
+        self.value = value
+
+    def __eq__(self, other):
+        return(
+            self.udf_type == other.udf_type and
+            self.value == other.value)
+
+
+def _build_udf_resources(resources):
+    """
+    :type resources: sequence of :class:`UDFResource`
+    :param resources: fields to be appended
+
+    :rtype: mapping
+    :returns: a mapping describing userDefinedFunctionResources for the query.
+    """
+    udfs = []
+    for resource in resources:
+        udf = {resource.udf_type: resource.value}
+        udfs.append(udf)
+    return udfs
+
+
 class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
@@ -888,13 +924,43 @@ class QueryJob(_AsyncJob):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type udf_resources: tuple
+    :param udf_resources: An iterable of
+                        :class:`gcloud.bigquery.query.UDFResource`
+                        (empty by default)
     """
     _JOB_TYPE = 'query'
+    _UDF_KEY = 'userDefinedFunctionResources'
+    _udf_resources = None
 
-    def __init__(self, name, query, client):
+    def __init__(self, name, query, client, udf_resources=()):
         super(QueryJob, self).__init__(name, client)
         self.query = query
+        self.udf_resources = udf_resources
         self._configuration = _AsyncQueryConfiguration()
+
+    @property
+    def udf_resources(self):
+        """Property for list of UDF resources attached to a query
+        See
+        https://cloud.google.com/bigquery/user-defined-functions#api
+        """
+        return list(self._udf_resources)
+
+    @udf_resources.setter
+    def udf_resources(self, value):
+        """Update queries UDF resources
+
+        :type value: list of :class:`UDFResource`
+        :param value: an object which defines the type and value of a resource
+
+        :raises: TypeError if 'value' is not a sequence, or ValueError if
+                 any item in the sequence is not a UDFResource
+        """
+        if not all(isinstance(u, UDFResource) for u in value):
+            raise ValueError("udf items must be UDFResource")
+        self._udf_resources = tuple(value)
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
     """See:
@@ -979,6 +1045,9 @@ class QueryJob(_AsyncJob):
             configuration['useLegacySql'] = self.use_legacy_sql
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
+        if len(self._udf_resources) > 0:
+            configuration[self._UDF_KEY] = _build_udf_resources(
+                self._udf_resources)
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""

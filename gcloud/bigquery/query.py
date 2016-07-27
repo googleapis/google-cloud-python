@@ -20,6 +20,8 @@ from gcloud.bigquery._helpers import _TypedProperty
 from gcloud.bigquery._helpers import _rows_from_json
 from gcloud.bigquery.dataset import Dataset
 from gcloud.bigquery.job import QueryJob
+from gcloud.bigquery.job import UDFResource
+from gcloud.bigquery.job import _build_udf_resources
 from gcloud.bigquery.table import _parse_schema_resource
 
 
@@ -46,12 +48,22 @@ class QueryResults(object):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type udf_resources: tuple
+    :param udf_resources: An iterable of
+                        :class:`gcloud.bigquery.query.UDFResource`
+                        (empty by default)
     """
-    def __init__(self, query, client):
+
+    _UDF_KEY = 'userDefinedFunctionResources'
+    _udf_resources = None
+
+    def __init__(self, query, client, udf_resources=()):
         self._client = client
         self._properties = {}
         self.query = query
         self._configuration = _SyncQueryConfiguration()
+        self.udf_resources = udf_resources
         self._job = None
 
     @property
@@ -204,6 +216,28 @@ class QueryResults(object):
         """
         return _parse_schema_resource(self._properties.get('schema', {}))
 
+    @property
+    def udf_resources(self):
+        """Property for list of UDF resources attached to a query
+        See
+        https://cloud.google.com/bigquery/user-defined-functions#api
+        """
+        return list(self._udf_resources)
+
+    @udf_resources.setter
+    def udf_resources(self, value):
+        """Update queries UDF resources
+
+        :type value: list of :class:`UDFResource`
+        :param value: an object which defines the type and value of a resource
+
+        :raises: TypeError if 'value' is not a sequence, or ValueError if
+                 any item in the sequence is not a UDFResource
+        """
+        if not all(isinstance(udf, UDFResource) for udf in value):
+            raise ValueError("udf items must be UDFResource")
+        self._udf_resources = tuple(value)
+
     default_dataset = _TypedProperty('default_dataset', Dataset)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs/query#defaultDataset
@@ -276,6 +310,9 @@ class QueryResults(object):
 
         if self.dry_run is not None:
             resource['dryRun'] = self.dry_run
+
+        if len(self._udf_resources) > 0:
+            resource[self._UDF_KEY] = _build_udf_resources(self._udf_resources)
 
         return resource
 
