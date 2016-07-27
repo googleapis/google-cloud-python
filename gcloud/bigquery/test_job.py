@@ -1371,6 +1371,38 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(dataset._client is client)
         self._verifyResourceProperties(dataset, RESOURCE)
 
+    def test_udf_resources_setter_w_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(project=self.PROJECT)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client,
+                            udf_resources=udf_resources)
+
+        job.udf_resources = []
+
+        self.assertEqual(job.udf_resources, [])
+
+    def test_udf_resources_setter_w_valid_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(project=self.PROJECT)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+
+        job.udf_resources = udf_resources
+
+        self.assertEqual(job.udf_resources, udf_resources)
+
+    def test_udf_resources_setter_w_bad_udfs(self):
+        client = _Client(project=self.PROJECT)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
+
+        with self.assertRaises(ValueError):
+            job.udf_resources = ["foo"]
+
+        self.assertEqual(job.udf_resources, [])
+
     def test_begin_w_bound_client(self):
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource()
@@ -1508,21 +1540,6 @@ class TestQueryJob(unittest2.TestCase, _Base):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(job, RESOURCE)
-
-    def test_begin_w_bad_udf(self):
-        RESOURCE = self._makeResource()
-        # Ensure None for missing server-set props
-        del RESOURCE['statistics']['creationTime']
-        del RESOURCE['etag']
-        del RESOURCE['selfLink']
-        del RESOURCE['user_email']
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        job = self._makeOne(self.JOB_NAME, self.QUERY, client)
-
-        with self.assertRaises(ValueError):
-            job.udf_resources = ["foo"]
-        self.assertEqual(job.udf_resources, [])
 
     def test_exists_miss_w_bound_client(self):
         PATH = 'projects/%s/jobs/%s' % (self.PROJECT, self.JOB_NAME)

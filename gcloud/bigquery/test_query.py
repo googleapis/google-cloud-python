@@ -175,6 +175,37 @@ class TestQueryResults(unittest2.TestCase):
         query._set_properties(resource)
         self._verifyResourceProperties(query, resource)
 
+    def test_udf_resources_setter_w_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(project=self.PROJECT)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        query = self._makeOne(self.QUERY, client, udf_resources=udf_resources)
+
+        query.udf_resources = []
+
+        self.assertEqual(query.udf_resources, [])
+
+    def test_udf_resources_setter_w_valid_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        client = _Client(project=self.PROJECT)
+        query = self._makeOne(self.QUERY, client)
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+
+        query.udf_resources = udf_resources
+
+        self.assertEqual(query.udf_resources, udf_resources)
+
+    def test_udf_resources_setter_w_bad_udfs(self):
+        client = _Client(project=self.PROJECT)
+        query = self._makeOne(self.QUERY, client)
+
+        with self.assertRaises(ValueError):
+            query.udf_resources = ["foo"]
+
+        self.assertEqual(query.udf_resources, [])
+
     def test_run_w_bound_client(self):
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
@@ -304,16 +335,6 @@ class TestQueryResults(unittest2.TestCase):
                     {"inlineCode": INLINE_UDF_CODE}]}
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(query, RESOURCE)
-
-    def test_run_w_bad_udfs(self):
-        RESOURCE = self._makeResource(complete=False)
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        query = self._makeOne(self.QUERY, client)
-
-        with self.assertRaises(ValueError):
-            query.udf_resources = ["foo"]
-        self.assertEqual(query.udf_resources, [])
 
     def test_fetch_data_query_not_yet_run(self):
         conn = _Connection()
