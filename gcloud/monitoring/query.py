@@ -27,6 +27,7 @@ import six
 
 from gcloud._helpers import _datetime_to_rfc3339
 from gcloud.monitoring._dataframe import _build_dataframe
+from gcloud.monitoring._helpers import _format_timestamp
 from gcloud.monitoring.timeseries import TimeSeries
 
 _UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.

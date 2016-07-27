@@ -128,6 +128,7 @@
   Client <monitoring-client>
   monitoring-metric
   monitoring-resource
+  monitoring-group
   monitoring-query
   monitoring-timeseries
   monitoring-label

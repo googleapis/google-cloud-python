@@ -154,6 +154,41 @@ before you call
     projects.metricDescriptors
 
 
+Groups
+------
+
+A group is a dynamic collection of *monitored resources* whose membership is
+defined by a `filter`_.  These groups are usually created via the `Stackdriver
+dashboard`_. You can list all of these with the
+:meth:`~gcloud.monitoring.client.Client.list_groups` method::
+
+    >>> for group in client.list_groups():
+    ...     print(group.id, group.display_name)
+
+Each :class:`~gcloud.monitoring.group.Group`
+has a name, a display name, a parent name, a filter, and a cluster flag.
+The group membership changes over time, as *monitored resources* come and go,
+and as they change properties.
+
+You can get the current members of a group using the
+`~gcloud.monitoring.group.Group.members` method::
+
+    >>> for resource in group.members():
+    ...     print(resource)
+
+Passing in ``end_time`` and ``start_time`` to the above method will return
+historical members based on the current filter of the group.
+
+.. _Stackdriver dashboard:
+    https://support.stackdriver.com/customer/portal/articles/\
+    1535145-creating-groups
+.. _filter:
+    https://cloud.google.com/monitoring/api/v3/filters#group-filter
+.. _Groups:
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.groups
+
+
 Time Series Queries
 -------------------
 

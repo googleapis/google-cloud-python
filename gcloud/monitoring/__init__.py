@@ -16,6 +16,7 @@
 
 from gcloud.monitoring.client import Client
 from gcloud.monitoring.connection import Connection
+from gcloud.monitoring.group import Group
 from gcloud.monitoring.label import LabelDescriptor
 from gcloud.monitoring.label import LabelValueType
 from gcloud.monitoring.metric import Metric
@@ -33,6 +34,7 @@ from gcloud.monitoring.timeseries import TimeSeries
 __all__ = (
     'Client',
     'Connection',
+    'Group',
     'LabelDescriptor', 'LabelValueType',
     'Metric', 'MetricDescriptor', 'MetricKind', 'ValueType',
     'Aligner', 'Query', 'Reducer',

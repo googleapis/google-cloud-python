@@ -30,6 +30,7 @@ and monitored resource descriptors.
 
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
+from gcloud.monitoring.group import Group
 from gcloud.monitoring.metric import MetricDescriptor
 from gcloud.monitoring.metric import MetricKind
 from gcloud.monitoring.metric import ValueType
@@ -282,3 +283,33 @@ class Client(JSONClient):
             https://cloud.google.com/monitoring/api/v3/filters
         """
         return ResourceDescriptor._list(self, filter_string)
+
+    def fetch_group(self, group_id):
+        """Look up a group by ID.
+
+        Example::
+
+            >>> print(client.fetch_group('1234'))
+
+        :type group_id: string
+        :param group_id: The ID of the group.
+
+        :rtype: :class:`~gcloud.monitoring.group.Group`
+        :returns: The group instance.
+
+        :raises: :class:`gcloud.exceptions.NotFound` if the group is not found.
+        """
+        return Group._fetch(self, group_id)
+
+    def list_groups(self):
+        """List all groups for the project.
+
+        Example::
+
+            >>> for group in client.list_groups():
+            ...     print(group.display_name, group.name)
+
+        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :returns: A list of group instances.
+        """
+        return Group._list(self)
