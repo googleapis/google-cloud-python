@@ -64,8 +64,10 @@ def _build_udf_resources(resources):
 
 
 class UDFResourcesProperty(object):
-    """Custom property type for :class:`QueryJob` / :class:`.query.Query`."""
+    """Custom property type for :class:`QueryJob`.
 
+    Also used by :class:`~gcloud.bigquery.query.Query`.
+    """
     def __get__(self, instance, owner):
         """Descriptor protocal:  accesstor"""
         if instance is None:
