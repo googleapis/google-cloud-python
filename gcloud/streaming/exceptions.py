@@ -1,3 +1,17 @@
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Exceptions for generated client libraries."""
 
 
@@ -49,6 +63,7 @@ class HttpError(CommunicationError):
         :param http_response: the response which returned the error
 
         :rtype: :class:`HttpError`
+        :returns: The error created from the response.
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url)
@@ -97,6 +112,7 @@ class RetryAfterError(HttpError):
         :param http_response: the response which returned the error
 
         :rtype: :class:`RetryAfterError`
+        :returns: The error created from the response.
         """
         return cls(http_response.info, http_response.content,
                    http_response.request_url, http_response.retry_after)

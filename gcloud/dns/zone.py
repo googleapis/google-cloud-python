@@ -267,6 +267,9 @@ class ManagedZone(object):
         :type client: :class:`gcloud.dns.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current zone.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the managed zone.
         """
         client = self._require_client(client)
 

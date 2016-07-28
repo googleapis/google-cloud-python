@@ -21,26 +21,25 @@ Differences in Public API
 -------------------------
 
 Some concepts from HBase/Thrift do not map directly to the Cloud
-Bigtable API. As a result, the following instance methods and functions
-could not be implemented:
+Bigtable API. As a result
 
+* :meth:`Table.regions() <gcloud.bigtable.happybase.table.Table.regions>`
+  could not be implemented since tables in Cloud Bigtable do not expose
+  internal storage details
 * :meth:`Connection.enable_table() \
-      <gcloud.bigtable.happybase.connection.Connection.enable_table>` - no
-  concept of enabled/disabled
+      <gcloud.bigtable.happybase.connection.Connection.enable_table>`
+  does nothing since Cloud Bigtable has no concept of enabled/disabled
 * :meth:`Connection.disable_table() \
-      <gcloud.bigtable.happybase.connection.Connection.disable_table>` - no
-  concept of enabled/disabled
+      <gcloud.bigtable.happybase.connection.Connection.disable_table>`
+  does nothing since Cloud Bigtable has no concept of enabled/disabled
 * :meth:`Connection.is_table_enabled() \
       <gcloud.bigtable.happybase.connection.Connection.is_table_enabled>`
-  - no concept of enabled/disabled
+  always returns :data:`True` since Cloud Bigtable has no concept of
+  enabled/disabled
 * :meth:`Connection.compact_table() \
-      <gcloud.bigtable.happybase.connection.Connection.compact_table>` -
-  table storage is opaque to user
-* :meth:`Table.regions() <gcloud.bigtable.happybase.table.Table.regions>`
-  - tables in Cloud Bigtable do not expose internal storage details
-* :meth:`Table.counter_set() \
-      <gcloud.bigtable.happybase.table.Table.counter_set>` - method can't
-  be atomic, so we disable it
+      <gcloud.bigtable.happybase.connection.Connection.compact_table>`
+  does nothing since Cloud Bigtable handles table compactions automatically
+  and does not expose an API for it
 * The ``__version__`` value for the HappyBase package is :data:`None`.
   However, it's worth nothing this implementation was based off HappyBase
   0.9.

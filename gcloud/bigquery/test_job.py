@@ -15,6 +15,76 @@
 import unittest2
 
 
+class Test_UDFResourcesProperty(unittest2.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.bigquery.job import UDFResourcesProperty
+        return UDFResourcesProperty
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def _descriptor_and_klass(self):
+        descriptor = self._makeOne()
+
+        class _Test(object):
+            _udf_resources = ()
+            udf_resources = descriptor
+
+        return descriptor, _Test
+
+    def test_class_getter(self):
+        descriptor, klass = self._descriptor_and_klass()
+        self.assertTrue(klass.udf_resources is descriptor)
+
+    def test_instance_getter_empty(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        self.assertEqual(instance.udf_resources, [])
+
+    def test_instance_getter_w_non_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._udf_resources = tuple(udf_resources)
+
+        self.assertEqual(instance.udf_resources, udf_resources)
+
+    def test_instance_setter_w_empty_list(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+        instance._udf_resources = udf_resources
+
+        instance.udf_resources = []
+
+        self.assertEqual(instance.udf_resources, [])
+
+    def test_instance_setter_w_valid_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        udf_resources = [UDFResource("resourceUri", RESOURCE_URI)]
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        instance.udf_resources = udf_resources
+
+        self.assertEqual(instance.udf_resources, udf_resources)
+
+    def test_instance_setter_w_bad_udfs(self):
+        _, klass = self._descriptor_and_klass()
+        instance = klass()
+
+        with self.assertRaises(ValueError):
+            instance.udf_resources = ["foo"]
+
+        self.assertEqual(instance.udf_resources, [])
+
+
 class _Base(object):
     PROJECT = 'project'
     SOURCE1 = 'http://example.com/source1.csv'
@@ -1248,6 +1318,11 @@ class TestQueryJob(unittest2.TestCase, _Base):
                              config['useQueryCache'])
         else:
             self.assertTrue(job.use_query_cache is None)
+        if 'useLegacySql' in config:
+            self.assertEqual(job.use_legacy_sql,
+                             config['useLegacySql'])
+        else:
+            self.assertTrue(job.use_legacy_sql is None)
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
@@ -1310,6 +1385,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         self.assertTrue(job.flatten_results is None)
         self.assertTrue(job.priority is None)
         self.assertTrue(job.use_query_cache is None)
+        self.assertTrue(job.use_legacy_sql is None)
         self.assertTrue(job.write_disposition is None)
 
     def test_from_api_repr_missing_identity(self):
@@ -1378,7 +1454,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job = self._makeOne(self.JOB_NAME, self.QUERY, client)
 
         job.begin()
-
+        self.assertEqual(job.udf_resources, [])
         self.assertEqual(len(conn._requested), 1)
         req = conn._requested[0]
         self.assertEqual(req['method'], 'POST')
@@ -1390,7 +1466,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             },
             'configuration': {
                 'query': {
-                    'query': self.QUERY,
+                    'query': self.QUERY
                 },
             },
         }
@@ -1420,6 +1496,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
             'flattenResults': True,
             'priority': 'INTERACTIVE',
             'useQueryCache': True,
+            'useLegacySql': True,
             'writeDisposition': 'WRITE_TRUNCATE',
         }
         RESOURCE['configuration']['query'] = QUERY_CONFIGURATION
@@ -1439,6 +1516,7 @@ class TestQueryJob(unittest2.TestCase, _Base):
         job.flatten_results = True
         job.priority = 'INTERACTIVE'
         job.use_query_cache = True
+        job.use_legacy_sql = True
         job.write_disposition = 'WRITE_TRUNCATE'
 
         job.begin(client=client2)
@@ -1455,6 +1533,47 @@ class TestQueryJob(unittest2.TestCase, _Base):
             },
             'configuration': {
                 'query': QUERY_CONFIGURATION,
+            },
+        }
+        self.assertEqual(req['data'], SENT)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_begin_w_bound_client_and_udf(self):
+        from gcloud.bigquery.job import UDFResource
+        RESOURCE_URI = 'gs://some-bucket/js/lib.js'
+        PATH = 'projects/%s/jobs' % self.PROJECT
+        RESOURCE = self._makeResource()
+        # Ensure None for missing server-set props
+        del RESOURCE['statistics']['creationTime']
+        del RESOURCE['etag']
+        del RESOURCE['selfLink']
+        del RESOURCE['user_email']
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        job = self._makeOne(self.JOB_NAME, self.QUERY, client,
+                            udf_resources=[
+                                UDFResource("resourceUri", RESOURCE_URI)
+                            ])
+
+        job.begin()
+
+        self.assertEqual(len(conn._requested), 1)
+        req = conn._requested[0]
+        self.assertEqual(req['method'], 'POST')
+        self.assertEqual(req['path'], '/%s' % PATH)
+        self.assertEqual(job.udf_resources,
+                         [UDFResource("resourceUri", RESOURCE_URI)])
+        SENT = {
+            'jobReference': {
+                'projectId': self.PROJECT,
+                'jobId': self.JOB_NAME,
+            },
+            'configuration': {
+                'query': {
+                    'query': self.QUERY,
+                    'userDefinedFunctionResources':
+                        [{'resourceUri': RESOURCE_URI}]
+                },
             },
         }
         self.assertEqual(req['data'], SENT)

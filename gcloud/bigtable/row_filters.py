@@ -17,7 +17,7 @@
 
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     data_pb2 as data_v2_pb2)
 
 

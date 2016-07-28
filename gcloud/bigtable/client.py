@@ -31,16 +31,16 @@ from pkg_resources import get_distribution
 
 from grpc.beta import implementations
 
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as instance_admin_v2_pb2)
 # V1 table admin service
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 # V1 data service
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_pb2 as data_v2_pb2)
 
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     operations_grpc_pb2 as operations_grpc_v2_pb2)
 
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES

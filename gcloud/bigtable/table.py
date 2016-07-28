@@ -15,10 +15,12 @@
 """User friendly container for Google Cloud Bigtable Table."""
 
 from gcloud._helpers import _to_bytes
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_pb2 as data_messages_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_messages_v2_pb2)
+from gcloud.bigtable._generated import (
+    table_pb2 as table_v2_pb2)
 from gcloud.bigtable.column_family import _gc_rule_from_pb
 from gcloud.bigtable.column_family import ColumnFamily
 from gcloud.bigtable.row import AppendRow
@@ -32,14 +34,9 @@ class Table(object):
 
     .. note::
 
-        We don't define any properties on a table other than the name. As
-        the proto says, in a request:
-
-          The ``name`` field of the Table and all of its ColumnFamilies must
-          be left blank, and will be populated in the response.
-
-        This leaves only the ``current_operation`` and ``granularity``
-        fields. The ``current_operation`` is only used for responses while
+        We don't define any properties on a table other than the name.
+        The only other fields are ``column_families`` and ``granularity``,
+        The ``column_families`` are not stored locally and
         ``granularity`` is an enum with only one value.
 
     We can use a :class:`Table` to:
@@ -52,7 +49,7 @@ class Table(object):
     :type table_id: str
     :param table_id: The ID of the table.
 
-    :type instance: :class:`Cluster <.instance.Instance>`
+    :type instance: :class:`Instance <.instance.Instance>`
     :param instance: The instance that owns the table.
     """
 
@@ -71,7 +68,7 @@ class Table(object):
 
         The table name is of the form
 
-            ``"projects/../zones/../clusters/../tables/{table_id}"``
+            ``"projects/../instances/../tables/{table_id}"``
 
         :rtype: str
         :returns: The table name.
@@ -136,24 +133,14 @@ class Table(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-    def create(self, initial_split_keys=None):
+    def create(self, initial_split_keys=None, column_families=()):
         """Creates this table.
 
         .. note::
 
-            Though a :class:`._generated_v2.table_pb2.Table` is also
-            allowed (as the ``table`` property) in a create table request, we
-            do not support it in this method. As mentioned in the
-            :class:`Table` docstring, the name is the only useful property in
-            the table proto.
-
-        .. note::
-
             A create request returns a
-            :class:`._generated_v2.table_pb2.Table` but we don't use
-            this response. The proto definition allows for the inclusion of a
-            ``current_operation`` in the response, but it does not appear that
-            the Cloud Bigtable API returns any operation.
+            :class:`._generated.table_pb2.Table` but we don't use
+            this response.
 
         :type initial_split_keys: list
         :param initial_split_keys: (Optional) List of row keys that will be
@@ -163,18 +150,31 @@ class Table(object):
                                    ``"s1"`` and ``"s2"``, three tablets will be
                                    created, spanning the key ranges:
                                    ``[, s1)``, ``[s1, s2)``, ``[s2, )``.
+
+        :type column_families: list
+        :param column_families: (Optional) List or other iterable of
+                                :class:`.ColumnFamily` instances.
         """
-        split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
         if initial_split_keys is not None:
+            split_pb = table_admin_messages_v2_pb2.CreateTableRequest.Split
             initial_split_keys = [
                 split_pb(key=key) for key in initial_split_keys]
+
+        table_pb = None
+        if column_families:
+            table_pb = table_v2_pb2.Table()
+            for col_fam in column_families:
+                curr_id = col_fam.column_family_id
+                table_pb.column_families[curr_id].MergeFrom(col_fam.to_pb())
+
         request_pb = table_admin_messages_v2_pb2.CreateTableRequest(
             initial_splits=initial_split_keys or [],
             parent=self._instance.name,
             table_id=self.table_id,
+            table=table_pb,
         )
         client = self._instance._client
-        # We expect a `._generated_v2.table_pb2.Table`
+        # We expect a `._generated.table_pb2.Table`
         client._table_stub.CreateTable(request_pb, client.timeout_seconds)
 
     def delete(self):
@@ -199,7 +199,7 @@ class Table(object):
         request_pb = table_admin_messages_v2_pb2.GetTableRequest(
             name=self.name)
         client = self._instance._client
-        # We expect a `._generated_v2.table_pb2.Table`
+        # We expect a `._generated.table_pb2.Table`
         table_pb = client._table_stub.GetTable(request_pb,
                                                client.timeout_seconds)
 

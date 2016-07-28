@@ -201,6 +201,10 @@ class _SinksAPI(object):
 
         :type sink_name: string
         :param sink_name: the name of the sink
+
+        :rtype: dict
+        :returns: The sink object returned from the API (converted from a
+                  protobuf to a dictionary).
         """
         options = None
         path = 'projects/%s/sinks/%s' % (project, sink_name)
@@ -228,6 +232,10 @@ class _SinksAPI(object):
         :type destination: string
         :param destination: destination URI for the entries exported by
                             the sink.
+
+        :rtype: dict
+        :returns: The sink object returned from the API (converted from a
+                  protobuf to a dictionary).
         """
         options = None
         path = 'projects/%s/sinks/%s' % (project, sink_name)
@@ -336,6 +344,10 @@ class _MetricsAPI(object):
 
         :type metric_name: string
         :param metric_name: the name of the metric
+
+        :rtype: dict
+        :returns: The metric object returned from the API (converted from a
+                  protobuf to a dictionary).
         """
         options = None
         path = 'projects/%s/metrics/%s' % (project, metric_name)
@@ -362,6 +374,10 @@ class _MetricsAPI(object):
 
         :type description: string
         :param description: description of the metric.
+
+        :rtype: dict
+        :returns: The metric object returned from the API (converted from a
+                  protobuf to a dictionary).
         """
         options = None
         path = 'projects/%s/metrics/%s' % (project, metric_name)

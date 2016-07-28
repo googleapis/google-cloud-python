@@ -28,7 +28,7 @@ class TestCell(unittest2.TestCase):
     def _from_pb_test_helper(self, labels=None):
         import datetime
         from gcloud._helpers import _EPOCH
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             data_pb2 as data_v2_pb2)
 
         timestamp_micros = 18738724000  # Make sure millis granularity
@@ -698,7 +698,7 @@ class _ReadRowsResponseV2(object):
 
 def _generate_cell_chunks(chunk_text_pbs):
     from google.protobuf.text_format import Merge
-    from gcloud.bigtable._generated_v2.bigtable_pb2 import ReadRowsResponse
+    from gcloud.bigtable._generated.bigtable_pb2 import ReadRowsResponse
 
     chunks = []
 

@@ -44,7 +44,7 @@ class Cell(object):
     def from_pb(cls, cell_pb):
         """Create a new cell from a Cell protobuf.
 
-        :type cell_pb: :class:`._generated_v2.data_pb2.Cell`
+        :type cell_pb: :class:`._generated.data_pb2.Cell`
         :param cell_pb: The protobuf to convert.
 
         :rtype: :class:`Cell`

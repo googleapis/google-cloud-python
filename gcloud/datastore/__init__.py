@@ -14,14 +14,14 @@
 
 """Shortcut methods for getting set up with Google Cloud Datastore.
 
-You'll typically use these to get started with the API:
+You'll typically use these to get started with the API::
 
->>> from gcloud import datastore
->>>
->>> client = datastore.Client()
->>> key = client.key('EntityKind', 1234)
->>> entity = datastore.Entity(key)
->>> query = client.query(kind='EntityKind')
+    >>> from gcloud import datastore
+    >>>
+    >>> client = datastore.Client()
+    >>> key = client.key('EntityKind', 1234)
+    >>> entity = datastore.Entity(key)
+    >>> query = client.query(kind='EntityKind')
 
 The main concepts with this API are:
 

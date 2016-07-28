@@ -101,6 +101,7 @@ class Query(object):
         """Get the project for this Query.
 
         :rtype: str
+        :returns: The project for the query.
         """
         return self._project or self._client.project
 
@@ -128,6 +129,7 @@ class Query(object):
         """Get the Kind of the Query.
 
         :rtype: string
+        :returns: The kind for the query.
         """
         return self._kind
 
@@ -155,6 +157,7 @@ class Query(object):
         """The ancestor key for the query.
 
         :rtype: Key or None
+        :returns: The ancestor for the query.
         """
         return self._ancestor
 
@@ -179,6 +182,7 @@ class Query(object):
         """Filters set on the query.
 
         :rtype: sequence of (property_name, operator, value) tuples.
+        :returns: The filters set on the query.
         """
         return self._filters[:]
 
@@ -267,6 +271,7 @@ class Query(object):
         """Names of fields used to sort query results.
 
         :rtype: sequence of string
+        :returns: The order(s) set on the query.
         """
         return self._order[:]
 
@@ -291,6 +296,7 @@ class Query(object):
         """Names of fields used to group query results.
 
         :rtype: sequence of string
+        :returns: The "distinct on" fields set on the query.
         """
         return self._distinct_on[:]
 
@@ -338,6 +344,7 @@ class Query(object):
                        If not supplied, uses the query's value.
 
         :rtype: :class:`Iterator`
+        :returns: The iterator for the query.
         :raises: ValueError if ``connection`` is not passed and no implicit
                  default has been set.
         """
@@ -400,6 +407,7 @@ class Iterator(object):
         to iterate on the current Iterator.
 
         :rtype: tuple, (entities, more_results, cursor)
+        :returns: The next page of results.
         """
         pb = _pb_from_query(self._query)
 

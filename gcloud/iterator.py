@@ -136,9 +136,6 @@ class Iterator(object):
 
         :type response: dict
         :param response: The response of asking for the next page of items.
-
-        :rtype: iterable
-        :returns: Items that the iterator should yield.
         """
         raise NotImplementedError
 

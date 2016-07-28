@@ -121,6 +121,9 @@ class Metric(object):
         :type client: :class:`gcloud.logging.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current metric.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the metric.
         """
         client = self._require_client(client)
 

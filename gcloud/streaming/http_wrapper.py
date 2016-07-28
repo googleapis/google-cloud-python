@@ -1,3 +1,17 @@
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """HTTP wrapper for apitools.
 
 This library wraps the underlying http library we use, which is
@@ -131,8 +145,8 @@ class Request(object):
         self.url = url
         self.http_method = http_method
         self.headers = headers or {}
-        self.__body = None
-        self.__loggable_body = None
+        self._body = None
+        self._loggable_body = None
         self.body = body
 
     @property
@@ -140,8 +154,9 @@ class Request(object):
         """Request body for logging purposes
 
         :rtype: str
+        :returns: The body to be logged.
         """
-        return self.__loggable_body
+        return self._loggable_body
 
     @loggable_body.setter
     def loggable_body(self, value):
@@ -155,15 +170,16 @@ class Request(object):
         if self.body is None:
             raise RequestError(
                 'Cannot set loggable body on request with no body')
-        self.__loggable_body = value
+        self._loggable_body = value
 
     @property
     def body(self):
         """Request body
 
         :rtype: str
+        :returns: The body of the request.
         """
-        return self.__body
+        return self._body
 
     @body.setter
     def body(self, value):
@@ -174,11 +190,11 @@ class Request(object):
         :type value: str
         :param value: updated body
         """
-        self.__body = value
+        self._body = value
         if value is not None:
             # Avoid calling len() which cannot exceed 4GiB in 32-bit python.
             body_length = getattr(
-                self.__body, 'length', None) or len(self.__body)
+                self._body, 'length', None) or len(self._body)
             self.headers['content-length'] = str(body_length)
         else:
             self.headers.pop('content-length', None)
@@ -226,6 +242,7 @@ class Response(_ResponseTuple):
         for responses larger than ``sys.maxint``.
 
         :rtype: integer or long
+        :returns: The length of the response.
         """
         if 'content-encoding' in self.info and 'content-range' in self.info:
             # httplib2 rewrites content-length in the case of a compressed
@@ -243,6 +260,7 @@ class Response(_ResponseTuple):
         """HTTP status code
 
         :rtype: integer
+        :returns: The response status code.
         """
         return int(self.info['status'])
 
@@ -438,6 +456,7 @@ def get_http(**kwds):
     :param kwds:  keyword arguments to pass to factories.
 
     :rtype: :class:`httplib2.Http` (or a workalike)
+    :returns: The HTTP object created.
     """
     for factory in _HTTP_FACTORIES:
         http = factory(**kwds)

@@ -370,14 +370,11 @@ class TestConnection(unittest2.TestCase):
         col_fam_created.sort(key=operator.attrgetter('column_family_id'))
         self.assertEqual(col_fam_created[0].column_family_id, col_fam1)
         self.assertEqual(col_fam_created[0].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[0].create_calls, 1)
         self.assertEqual(col_fam_created[1].column_family_id, col_fam2)
         self.assertEqual(col_fam_created[1].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[1].create_calls, 1)
         self.assertEqual(col_fam_created[2].column_family_id,
                          col_fam3.decode('utf-8'))
         self.assertEqual(col_fam_created[2].gc_rule, mock_gc_rule)
-        self.assertEqual(col_fam_created[2].create_calls, 1)
 
     def test_create_table_bad_type(self):
         instance = _Instance()  # Avoid implicit environ check.
@@ -488,37 +485,81 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(warned, [MUT._DISABLE_DELETE_MSG])
 
     def test_enable_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
             connection.enable_table(name)
 
+        self.assertEqual(warned, [MUT._ENABLE_TMPL % (name,)])
+
     def test_disable_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
             connection.disable_table(name)
 
+        self.assertEqual(warned, [MUT._DISABLE_TMPL % (name,)])
+
     def test_is_table_enabled(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        with self.assertRaises(NotImplementedError):
-            connection.is_table_enabled(name)
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
+            result = connection.is_table_enabled(name)
+
+        self.assertTrue(result)
+        self.assertEqual(warned, [MUT._IS_ENABLED_TMPL % (name,)])
 
     def test_compact_table(self):
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import connection as MUT
+
         instance = _Instance()  # Avoid implicit environ check.
         connection = self._makeOne(autoconnect=False, instance=instance)
 
         name = 'table-name'
-        major = True
-        with self.assertRaises(NotImplementedError):
-            connection.compact_table(name, major=major)
+
+        warned = []
+
+        def mock_warn(msg):
+            warned.append(msg)
+
+        with _Monkey(MUT, _WARN=mock_warn):
+            connection.compact_table(name)
+
+        self.assertEqual(warned, [MUT._COMPACT_TMPL % (name, False)])
 
 
 class Test__parse_family_option(unittest2.TestCase):
@@ -652,10 +693,6 @@ class _MockLowLevelColumnFamily(object):
     def __init__(self, column_family_id, gc_rule=None):
         self.column_family_id = column_family_id
         self.gc_rule = gc_rule
-        self.create_calls = 0
-
-    def create(self):
-        self.create_calls += 1
 
 
 class _MockLowLevelTable(object):
@@ -671,12 +708,11 @@ class _MockLowLevelTable(object):
     def delete(self):
         self.delete_calls += 1
 
-    def create(self):
+    def create(self, column_families=()):
         self.create_calls += 1
+        self.col_fam_created.extend(column_families)
         if self.create_error:
             raise self.create_error
 
     def column_family(self, column_family_id, gc_rule=None):
-        result = _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)
-        self.col_fam_created.append(result)
-        return result
+        return _MockLowLevelColumnFamily(column_family_id, gc_rule=gc_rule)

@@ -71,6 +71,9 @@ def _operation_wait(operation, max_attempts=5):
     :type max_attempts: int
     :param max_attempts: (Optional) The maximum number of times to check if
                          the operation has finished. Defaults to 5.
+
+    :rtype: bool
+    :returns: Boolean indicating if the operation finished.
     """
     total_sleep = 0
     while not operation.finished():

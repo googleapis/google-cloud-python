@@ -303,9 +303,6 @@ def _unpack_batch_response(response, content):
 
     :type content: str
     :param content: Response payload with a batch response.
-
-    :rtype: generator
-    :returns: A generator of header, payload pairs.
     """
     parser = Parser()
     message = _generate_faux_mime_message(parser, response, content)

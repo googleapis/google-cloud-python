@@ -366,7 +366,7 @@ class Client(_BaseClient, _ClientProjectMixin):
         :type key: :class:`gcloud.datastore.key.Key`
         :param key: The key to be deleted from the datastore.
         """
-        return self.delete_multi(keys=[key])
+        self.delete_multi(keys=[key])
 
     def delete_multi(self, keys):
         """Delete keys from the Cloud Datastore.

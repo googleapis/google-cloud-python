@@ -49,9 +49,16 @@ DEFAULT_PROTOCOL = None
 
 _LEGACY_ARGS = frozenset(('host', 'port', 'compat', 'transport', 'protocol'))
 _WARN = warnings.warn
+_BASE_DISABLE = 'Cloud Bigtable has no concept of enabled / disabled tables.'
 _DISABLE_DELETE_MSG = ('The disable argument should not be used in '
-                       'delete_table(). Cloud Bigtable has no concept '
-                       'of enabled / disabled tables.')
+                       'delete_table(). ') + _BASE_DISABLE
+_ENABLE_TMPL = 'Connection.enable_table(%r) was called, but ' + _BASE_DISABLE
+_DISABLE_TMPL = 'Connection.disable_table(%r) was called, but ' + _BASE_DISABLE
+_IS_ENABLED_TMPL = ('Connection.is_table_enabled(%r) was called, but ' +
+                    _BASE_DISABLE)
+_COMPACT_TMPL = ('Connection.compact_table(%r, major=%r) was called, but the '
+                 'Cloud Bigtable API handles table compactions automatically '
+                 'and does not expose an API for it.')
 
 
 def _get_instance(timeout=None):
@@ -71,8 +78,8 @@ def _get_instance(timeout=None):
     :rtype: :class:`gcloud.bigtable.instance.Instance`
     :returns: The unique instance owned by the project inferred from
               the environment.
-    :raises: :class:`ValueError <exceptions.ValueError>` if there is a failed
-             location or any number of instances other than one.
+    :raises ValueError: if there is a failed location or any number of
+                        instances other than one.
     """
     client_kwargs = {'admin': True}
     if timeout is not None:
@@ -182,9 +189,8 @@ class Connection(object):
         :type arguments_dict: dict
         :param arguments_dict: Unused keyword arguments.
 
-        :raises: :class:`TypeError <exceptions.TypeError>` if a keyword other
-                 than ``host``, ``port``, ``compat``, ``transport`` or
-                 ``protocol`` is used.
+        :raises TypeError: if a keyword other than ``host``, ``port``,
+                           ``compat``, ``transport`` or ``protocol`` is used.
         """
         common_args = _LEGACY_ARGS.intersection(six.iterkeys(arguments_dict))
         if common_args:
@@ -290,15 +296,6 @@ class Connection(object):
             The only column family options from HappyBase that are able to be
             used with Cloud Bigtable are ``max_versions`` and ``time_to_live``.
 
-        .. note::
-
-            This method is **not** atomic. The Cloud Bigtable API separates
-            the creation of a table from the creation of column families. Thus
-            this method needs to send 1 request for the table creation and 1
-            request for each column family. If any of these fails, the method
-            will fail, but the progress made towards completion cannot be
-            rolled back.
-
         Values in ``families`` represent column family options. In HappyBase,
         these are dictionaries, corresponding to the ``ColumnDescriptor``
         structure in the Thrift API. The accepted keys are:
@@ -322,10 +319,12 @@ class Connection(object):
                          * :class:`dict`
                          * :class:`.GarbageCollectionRule`
 
-        :raises: :class:`TypeError <exceptions.TypeError>` if ``families`` is
-                 not a dictionary,
-                 :class:`ValueError <exceptions.ValueError>` if ``families``
-                 has no entries
+        :raises TypeError: If ``families`` is not a dictionary.
+        :raises ValueError: If ``families`` has no entries.
+        :raises AlreadyExists: If creation fails due to an already
+                               existing table.
+        :raises NetworkError: If creation fails for a reason other than
+                              table exists.
         """
         if not isinstance(families, dict):
             raise TypeError('families arg must be a dictionary')
@@ -346,18 +345,17 @@ class Connection(object):
         # Create table instance and then make API calls.
         name = self._table_name(name)
         low_level_table = _LowLevelTable(name, self._instance)
+        column_families = (
+            low_level_table.column_family(column_family_name, gc_rule=gc_rule)
+            for column_family_name, gc_rule in six.iteritems(gc_rule_dict)
+        )
         try:
-            low_level_table.create()
+            low_level_table.create(column_families=column_families)
         except face.NetworkError as network_err:
             if network_err.code == interfaces.StatusCode.ALREADY_EXISTS:
                 raise AlreadyExists(name)
             else:
                 raise
-
-        for column_family_name, gc_rule in gc_rule_dict.items():
-            column_family = low_level_table.column_family(
-                column_family_name, gc_rule=gc_rule)
-            column_family.create()
 
     def delete_table(self, name, disable=False):
         """Delete the specified table.
@@ -378,61 +376,70 @@ class Connection(object):
         name = self._table_name(name)
         _LowLevelTable(name, self._instance).delete()
 
-    def enable_table(self, name):
+    @staticmethod
+    def enable_table(name):
         """Enable the specified table.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be enabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_ENABLE_TMPL % (name,))
 
-    def disable_table(self, name):
+    @staticmethod
+    def disable_table(name):
         """Disable the specified table.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method does nothing. It is provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to be disabled.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_DISABLE_TMPL % (name,))
 
-    def is_table_enabled(self, name):
+    @staticmethod
+    def is_table_enabled(name):
         """Return whether the specified table is enabled.
 
         .. warning::
 
             Cloud Bigtable has no concept of enabled / disabled tables so this
-            method does not work. It is provided simply for compatibility.
+            method always returns :data:`True`. It is provided simply for
+            compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to check enabled / disabled status.
+
+        :rtype: bool
+        :returns: The value :data:`True` always.
         """
-        raise NotImplementedError('The Cloud Bigtable API has no concept of '
-                                  'enabled or disabled tables.')
+        _WARN(_IS_ENABLED_TMPL % (name,))
+        return True
 
-    def compact_table(self, name, major=False):
+    @staticmethod
+    def compact_table(name, major=False):
         """Compact the specified table.
 
         .. warning::
 
-            Cloud Bigtable does not support compacting a table, so this
-            method does not work. It is provided simply for compatibility.
+            Cloud Bigtable supports table compactions, it just doesn't expose
+            an API for that feature, so this method does nothing. It is
+            provided simply for compatibility.
 
-        :raises: :class:`NotImplementedError <exceptions.NotImplementedError>`
-                 always
+        :type name: str
+        :param name: The name of the table to compact.
+
+        :type major: bool
+        :param major: Whether to perform a major compaction.
         """
-        raise NotImplementedError('The Cloud Bigtable API does not support '
-                                  'compacting a table.')
+        _WARN(_COMPACT_TMPL % (name, major))
 
 
 def _parse_family_option(option):

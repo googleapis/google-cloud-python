@@ -20,10 +20,12 @@ REQUIREMENTS = [
 ]
 
 GRPC_EXTRAS = [
-    'grpcio >= 0.14.0',
-    'google-gax >= 0.12.1',
-    'gax-google-pubsub-v1 >= 0.7.10',
-    'gax-google-logging-v2 >= 0.7.10',
+    'grpcio >= 1.0rc1',
+    'google-gax >= 0.12.3, < 0.13dev',
+    'gax-google-pubsub-v1 >= 0.7.12, < 0.8dev',
+    'grpc-google-pubsub-v1 >= 0.7.12, < 0.8dev',
+    'gax-google-logging-v2 >= 0.7.12, < 0.8dev',
+    'grpc-google-logging-v2 >= 0.7.12, < 0.8dev',
 ]
 
 if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:

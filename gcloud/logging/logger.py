@@ -118,6 +118,9 @@ class Logger(object):
         :type http_request: dict or :class:`NoneType`
         :param http_request: (optional) info about HTTP request associated with
                              the entry
+
+        :rtype: dict
+        :returns: The JSON resource created.
         """
         resource = {
             'logName': self.full_name,

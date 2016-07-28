@@ -81,6 +81,9 @@ class Message(object):
 
         :type api_repr: dict or None
         :param api_repr: The API representation of the message
+
+        :rtype: :class:`Message`
+        :returns: The message created from the response.
         """
         data = base64.b64decode(api_repr.get('data', b''))
         instance = cls(

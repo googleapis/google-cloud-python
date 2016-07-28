@@ -32,15 +32,11 @@ import sys
 
 IGNORED_DIRECTORIES = [
     os.path.join('gcloud', 'bigtable', '_generated'),
-    os.path.join('gcloud', 'bigtable', '_generated_v2'),
     os.path.join('gcloud', 'datastore', '_generated'),
+    'scripts/verify_included_modules.py',
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
-    # Both these files cause pylint 1.6 to barf.  See:
-    # https://github.com/PyCQA/pylint/issues/998
-    os.path.join('gcloud', 'bigtable', 'happybase', 'connection.py'),
-    os.path.join('gcloud', 'streaming', 'http_wrapper.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -70,7 +66,7 @@ TEST_RC_ADDITIONS = {
 }
 TEST_RC_REPLACEMENTS = {
     'FORMAT': {
-        'max-module-lines': 1900,
+        'max-module-lines': 1950,
     },
 }
 

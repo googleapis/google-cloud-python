@@ -20,9 +20,9 @@ import datetime
 from google.protobuf import duration_pb2
 
 from gcloud._helpers import _total_seconds
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
 
@@ -248,13 +248,20 @@ class ColumnFamily(object):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def to_pb(self):
+        """Converts the column family to a protobuf.
+
+        :rtype: :class:`.table_v2_pb2.ColumnFamily`
+        :returns: The converted current object.
+        """
+        if self.gc_rule is None:
+            return table_v2_pb2.ColumnFamily()
+        else:
+            return table_v2_pb2.ColumnFamily(gc_rule=self.gc_rule.to_pb())
+
     def create(self):
         """Create this column family."""
-        if self.gc_rule is None:
-            column_family = table_v2_pb2.ColumnFamily()
-        else:
-            column_family = table_v2_pb2.ColumnFamily(
-                gc_rule=self.gc_rule.to_pb())
+        column_family = self.to_pb()
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
             name=self._table.name)
         request_pb.modifications.add(
@@ -276,11 +283,7 @@ class ColumnFamily(object):
             Only the GC rule can be updated. By changing the column family ID,
             you will simply be referring to a different column family.
         """
-        if self.gc_rule is None:
-            column_family = table_v2_pb2.ColumnFamily()
-        else:
-            column_family = table_v2_pb2.ColumnFamily(
-                gc_rule=self.gc_rule.to_pb())
+        column_family = self.to_pb()
         request_pb = table_admin_v2_pb2.ModifyColumnFamiliesRequest(
             name=self._table.name)
         request_pb.modifications.add(

@@ -253,6 +253,9 @@ class _SinksAPI(object):
 
         :type sink_name: string
         :param sink_name: the name of the sink
+
+        :rtype: dict
+        :returns: The JSON sink object returned from the API.
         """
         target = '/projects/%s/sinks/%s' % (project, sink_name)
         return self._connection.api_request(method='GET', path=target)
@@ -388,6 +391,9 @@ class _MetricsAPI(object):
 
         :type metric_name: string
         :param metric_name: the name of the metric
+
+        :rtype: dict
+        :returns: The JSON metric object returned from the API.
         """
         target = '/projects/%s/metrics/%s' % (project, metric_name)
         return self._connection.api_request(method='GET', path=target)

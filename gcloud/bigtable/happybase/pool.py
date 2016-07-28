@@ -113,12 +113,13 @@ class ConnectionPool(object):
         If ``timeout`` is omitted, this method waits forever for a connection
         to become available from the local queue.
 
+        Yields an active :class:`Connection <.happybase.connection.Connection>`
+        from the pool.
+
         :type timeout: int
         :param timeout: (Optional) Time (in seconds) to wait for a connection
                         to open.
 
-        :rtype: :class:`Connection <.happybase.connection.Connection>`
-        :returns: An active connection from the pool.
         :raises: :class:`NoConnectionsAvailable` if no connection can be
                  retrieved from the pool before the ``timeout`` (only if
                  a timeout is specified).

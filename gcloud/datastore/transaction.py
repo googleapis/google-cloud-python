@@ -112,6 +112,7 @@ class Transaction(Batch):
             returns None.
 
         :rtype: :class:`gcloud.datastore.transaction.Transaction` or None
+        :returns: The current transaction (if any are active).
         """
         top = super(Transaction, self).current()
         if isinstance(top, Transaction):

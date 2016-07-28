@@ -1,3 +1,17 @@
+# Copyright 2016 Google Inc. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Small helper class to provide a small slice of a stream.
 
 This class reads ahead to detect if we are at the end of the stream.
@@ -42,6 +56,7 @@ class BufferedStream(object):
         """Does the stream have bytes remaining beyond the buffer
 
         :rtype: boolean
+        :returns: Boolean indicating if the stream is exhausted.
         """
         return self._stream_at_end
 
@@ -50,6 +65,7 @@ class BufferedStream(object):
         """Point to which stream was read into the buffer
 
         :rtype: integer
+        :returns: The end-position of the stream.
         """
         return self._end_pos
 
@@ -58,6 +74,7 @@ class BufferedStream(object):
         """Bytes remaining to be read from the buffer
 
         :rtype: integer
+        :returns: The number of bytes remaining.
         """
         return len(self._buffered_data) - self._buffer_pos
 
@@ -66,6 +83,9 @@ class BufferedStream(object):
 
         :type size: integer or None
         :param size: How many bytes to read (defaults to all remaining bytes).
+
+        :rtype: str
+        :returns: The data read from the stream.
         """
         if size is None or size < 0:
             raise ValueError(

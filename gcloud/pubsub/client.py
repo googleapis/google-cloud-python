@@ -24,6 +24,7 @@ from gcloud.pubsub.connection import _IAMPolicyAPI
 from gcloud.pubsub.subscription import Subscription
 from gcloud.pubsub.topic import Topic
 
+# pylint: disable=ungrouped-imports
 try:
     from google.pubsub.v1.publisher_api import (
         PublisherApi as GeneratedPublisherAPI)
@@ -37,6 +38,7 @@ except ImportError:  # pragma: NO COVER
     GeneratedSubscriberAPI = GAXSubscriberAPI = None
 else:
     _HAVE_GAX = True
+# pylint: enable=ungrouped-imports
 
 
 _USE_GAX = _HAVE_GAX and (os.environ.get('GCLOUD_ENABLE_GAX') is not None)

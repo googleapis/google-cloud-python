@@ -133,7 +133,7 @@ class TestTable(unittest2.TestCase):
         table2 = self._makeOne('table_id2', 'instance2')
         self.assertNotEqual(table1, table2)
 
-    def _create_test_helper(self, initial_split_keys):
+    def _create_test_helper(self, initial_split_keys, column_families=()):
         from gcloud._helpers import _to_bytes
         from gcloud.bigtable._testing import _FakeStub
 
@@ -145,10 +145,18 @@ class TestTable(unittest2.TestCase):
         splits_pb = [
             _CreateTableRequestSplitPB(key=_to_bytes(key))
             for key in initial_split_keys or ()]
+        table_pb = None
+        if column_families:
+            table_pb = _TablePB()
+            for cf in column_families:
+                cf_pb = table_pb.column_families[cf.column_family_id]
+                if cf.gc_rule is not None:
+                    cf_pb.gc_rule.MergeFrom(cf.gc_rule.to_pb())
         request_pb = _CreateTableRequestPB(
             initial_splits=splits_pb,
             parent=self.INSTANCE_NAME,
             table_id=self.TABLE_ID,
+            table=table_pb,
         )
 
         # Create response_pb
@@ -161,7 +169,8 @@ class TestTable(unittest2.TestCase):
         expected_result = None  # create() has no return value.
 
         # Perform the method and check the result.
-        result = table.create(initial_split_keys=initial_split_keys)
+        result = table.create(initial_split_keys=initial_split_keys,
+                              column_families=column_families)
         self.assertEqual(result, expected_result)
         self.assertEqual(stub.method_calls, [(
             'CreateTable',
@@ -176,6 +185,21 @@ class TestTable(unittest2.TestCase):
     def test_create_with_split_keys(self):
         initial_split_keys = [b's1', b's2']
         self._create_test_helper(initial_split_keys)
+
+    def test_create_with_column_families(self):
+        from gcloud.bigtable.column_family import ColumnFamily
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        cf_id1 = 'col-fam-id1'
+        cf1 = ColumnFamily(cf_id1, None)
+        cf_id2 = 'col-fam-id2'
+        gc_rule = MaxVersionsGCRule(42)
+        cf2 = ColumnFamily(cf_id2, None, gc_rule=gc_rule)
+
+        initial_split_keys = None
+        column_families = [cf1, cf2]
+        self._create_test_helper(initial_split_keys,
+                                 column_families=column_families)
 
     def _list_column_families_helper(self):
         from gcloud.bigtable._testing import _FakeStub
@@ -483,37 +507,37 @@ class Test__create_row_request(unittest2.TestCase):
 
 
 def _CreateTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest(*args, **kw)
 
 
 def _CreateTableRequestSplitPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.CreateTableRequest.Split(*args, **kw)
 
 
 def _DeleteTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.DeleteTableRequest(*args, **kw)
 
 
 def _GetTableRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_table_admin_pb2 as table_admin_v2_pb2)
     return table_admin_v2_pb2.GetTableRequest(*args, **kw)
 
 
 def _ReadRowsRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsRequest(*args, **kw)
 
 
 def _ReadRowsResponseCellChunkPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     family_name = kw.pop('family_name')
     qualifier = kw.pop('qualifier')
@@ -524,25 +548,25 @@ def _ReadRowsResponseCellChunkPB(*args, **kw):
 
 
 def _ReadRowsResponsePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
 def _SampleRowKeysRequestPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         bigtable_pb2 as messages_v2_pb2)
     return messages_v2_pb2.SampleRowKeysRequest(*args, **kw)
 
 
 def _TablePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.Table(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.ColumnFamily(*args, **kw)
 

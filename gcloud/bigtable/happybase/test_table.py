@@ -889,15 +889,45 @@ class TestTable(unittest2.TestCase):
                          {tuple(column.split(':')): incremented_value})
 
     def test_counter_set(self):
+        import struct
+        from gcloud._testing import _Monkey
+        from gcloud.bigtable.happybase import table as MUT
+
         name = 'table-name'
         connection = None
         table = self._makeOne(name, connection)
+        batches_created = []
+
+        def make_batch(*args, **kwargs):
+            result = _MockBatch(*args, **kwargs)
+            batches_created.append(result)
+            return result
 
         row = 'row-key'
         column = 'fam:col1'
         value = 42
-        with self.assertRaises(NotImplementedError):
-            table.counter_set(row, column, value=value)
+        with _Monkey(MUT, Batch=make_batch):
+            result = table.counter_set(row, column, value=value)
+
+        # There is no return value.
+        self.assertEqual(result, None)
+
+        # Check how the batch was created and used.
+        batch, = batches_created
+        self.assertTrue(isinstance(batch, _MockBatch))
+        self.assertEqual(batch.args, (table,))
+        expected_kwargs = {
+            'timestamp': None,
+            'batch_size': None,
+            'transaction': False,
+            'wal': MUT._WAL_SENTINEL,
+        }
+        self.assertEqual(batch.kwargs, expected_kwargs)
+        # Make sure it was a successful context manager
+        self.assertEqual(batch.exit_vals, [(None, None, None)])
+        data = {column: struct.Struct('>q').pack(value)}
+        self.assertEqual(batch.put_args, [(row, data)])
+        self.assertEqual(batch.delete_args, [])
 
     def test_counter_inc(self):
         import struct

@@ -570,9 +570,9 @@ class TestClient(unittest2.TestCase):
         self.assertTrue(instance._client is client)
 
     def test_list_instances(self):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             instance_pb2 as data_v2_pb2)
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_instance_admin_pb2 as messages_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 

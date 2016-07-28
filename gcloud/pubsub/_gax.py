@@ -133,9 +133,6 @@ class _PublisherAPI(object):
         :type topic_path: string
         :param topic_path: fully-qualified path of the new topic, in format
                             ``projects/<PROJECT>/topics/<TOPIC_NAME>``.
-
-        :rtype: dict
-        :returns: ``Topic`` resource returned from the API.
         """
         try:
             self._gax_api.delete_topic(topic_path)

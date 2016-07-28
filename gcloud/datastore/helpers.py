@@ -296,6 +296,7 @@ def _pb_attr_value(val):
                bool, float, integer, string
     :param val: The value to be scrutinized.
 
+    :rtype: tuple
     :returns: A tuple of the attribute name and proper value type.
     """
 
@@ -341,6 +342,7 @@ def _get_value_from_value_pb(value_pb):
     :type value_pb: :class:`gcloud.datastore._generated.entity_pb2.Value`
     :param value_pb: The Value Protobuf.
 
+    :rtype: object
     :returns: The value provided by the Protobuf.
     :raises: :class:`ValueError <exceptions.ValueError>` if no value type
              has been set.

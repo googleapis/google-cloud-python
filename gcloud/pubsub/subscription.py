@@ -193,6 +193,9 @@ class Subscription(object):
         :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current subscription's topic.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the subscription.
         """
         client = self._require_client(client)
         api = client.subscriber_api

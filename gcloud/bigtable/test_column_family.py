@@ -388,8 +388,24 @@ class TestColumnFamily(unittest2.TestCase):
         column_family2 = self._makeOne('column_family_id2', None)
         self.assertNotEqual(column_family1, column_family2)
 
+    def test_to_pb_no_rules(self):
+        column_family = self._makeOne('column_family_id', None)
+        pb_val = column_family.to_pb()
+        expected = _ColumnFamilyPB()
+        self.assertEqual(pb_val, expected)
+
+    def test_to_pb_with_rule(self):
+        from gcloud.bigtable.column_family import MaxVersionsGCRule
+
+        gc_rule = MaxVersionsGCRule(1)
+        column_family = self._makeOne('column_family_id', None,
+                                      gc_rule=gc_rule)
+        pb_val = column_family.to_pb()
+        expected = _ColumnFamilyPB(gc_rule=gc_rule.to_pb())
+        self.assertEqual(pb_val, expected)
+
     def _create_test_helper(self, gc_rule=None):
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -449,7 +465,7 @@ class TestColumnFamily(unittest2.TestCase):
 
     def _update_test_helper(self, gc_rule=None):
         from gcloud.bigtable._testing import _FakeStub
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
 
         project_id = 'project-id'
@@ -508,7 +524,7 @@ class TestColumnFamily(unittest2.TestCase):
 
     def test_delete(self):
         from google.protobuf import empty_pb2
-        from gcloud.bigtable._generated_v2 import (
+        from gcloud.bigtable._generated import (
             bigtable_table_admin_pb2 as table_admin_v2_pb2)
         from gcloud.bigtable._testing import _FakeStub
 
@@ -627,25 +643,25 @@ class Test__gc_rule_from_pb(unittest2.TestCase):
 
 
 def _GcRulePB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.GcRule(*args, **kw)
 
 
 def _GcRuleIntersectionPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.GcRule.Intersection(*args, **kw)
 
 
 def _GcRuleUnionPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.GcRule.Union(*args, **kw)
 
 
 def _ColumnFamilyPB(*args, **kw):
-    from gcloud.bigtable._generated_v2 import (
+    from gcloud.bigtable._generated import (
         table_pb2 as table_v2_pb2)
     return table_v2_pb2.ColumnFamily(*args, **kw)
 

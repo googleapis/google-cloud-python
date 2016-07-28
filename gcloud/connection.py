@@ -324,6 +324,9 @@ class JSONConnection(Connection):
                                initialization of the object at a later time.
 
         :raises: Exception if the response code is not 200 OK.
+        :rtype: dict or str
+        :returns: The API response payload, either as a raw string or
+                  a dictionary if the response is valid JSON.
         """
         url = self.build_api_url(path=path, query_params=query_params,
                                  api_base_url=api_base_url,

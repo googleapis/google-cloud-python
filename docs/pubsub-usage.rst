@@ -104,8 +104,6 @@ Manage subscriptions to topics
 
 List all subscriptions for the default project:
 
-.. doctest::
-
 .. literalinclude:: pubsub_snippets.py
    :start-after: [START client_list_subscriptions]
    :end-before: [END client_list_subscriptions]

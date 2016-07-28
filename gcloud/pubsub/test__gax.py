@@ -218,14 +218,14 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         topic_path, message_pbs, options = gax_api._publish_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
         message_pb, = message_pbs
-        self.assertEqual(message_pb.data, B64)
+        self.assertEqual(message_pb.data.decode('ascii'), B64)
         self.assertEqual(message_pb.attributes, {})
         self.assertEqual(options.is_bundling, False)
 
     def test_topic_publish_miss_w_attrs_w_bytes_payload(self):
         import base64
         from gcloud.exceptions import NotFound
-        PAYLOAD = u'This is the message text'
+        PAYLOAD = b'This is the message text'
         B64 = base64.b64encode(PAYLOAD)
         MESSAGE = {'data': B64, 'attributes': {'foo': 'bar'}}
         gax_api = _GAXPublisherAPI()
@@ -256,7 +256,7 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         topic_path, message_pbs, options = gax_api._publish_called_with
         self.assertEqual(topic_path, self.TOPIC_PATH)
         message_pb, = message_pbs
-        self.assertEqual(message_pb.data, B64)
+        self.assertEqual(message_pb.data.decode('ascii'), B64)
         self.assertEqual(message_pb.attributes, {})
         self.assertEqual(options.is_bundling, False)
 
@@ -749,7 +749,8 @@ class _GaxAPIBase(object):
             code = status_code
 
             def __init__(self):
-                pass
+                super(_DummyException, self).__init__(
+                    None, None, self.code, None)
 
         return _DummyException()
 

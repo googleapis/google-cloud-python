@@ -1429,12 +1429,44 @@ class Test_Upload(unittest2.TestCase):
         with self.assertRaises(CommunicationError):
             upload.stream_file()
 
-    def test_stream_file_already_complete_w_seekable_stream_synced(self):
+    def test_stream_file_already_complete_wo_seekable_method_synced(self):
         import os
         from gcloud.streaming.transfer import RESUMABLE_UPLOAD
         CONTENT = b'ABCDEFGHIJ'
         http = object()
         stream = _Stream(CONTENT)
+        stream.seek(0, os.SEEK_END)
+        response = object()
+        upload = self._makeOne(stream, chunksize=1024)
+        upload.strategy = RESUMABLE_UPLOAD
+        upload._server_chunk_granularity = 128
+        upload._initialize(http, _Request.URL)
+        upload._final_response = response
+        upload._complete = True
+        self.assertTrue(upload.stream_file(use_chunks=False) is response)
+
+    def test_stream_file_already_complete_w_seekable_method_true_synced(self):
+        import os
+        from gcloud.streaming.transfer import RESUMABLE_UPLOAD
+        CONTENT = b'ABCDEFGHIJ'
+        http = object()
+        stream = _StreamWithSeekableMethod(CONTENT, True)
+        stream.seek(0, os.SEEK_END)
+        response = object()
+        upload = self._makeOne(stream, chunksize=1024)
+        upload.strategy = RESUMABLE_UPLOAD
+        upload._server_chunk_granularity = 128
+        upload._initialize(http, _Request.URL)
+        upload._final_response = response
+        upload._complete = True
+        self.assertTrue(upload.stream_file(use_chunks=False) is response)
+
+    def test_stream_file_already_complete_w_seekable_method_false(self):
+        import os
+        from gcloud.streaming.transfer import RESUMABLE_UPLOAD
+        CONTENT = b'ABCDEFGHIJ'
+        http = object()
+        stream = _StreamWithSeekableMethod(CONTENT, False)
         stream.seek(0, os.SEEK_END)
         response = object()
         upload = self._makeOne(stream, chunksize=1024)
@@ -1833,6 +1865,16 @@ class _Stream(object):
 
     def close(self):
         self._closed = True
+
+
+class _StreamWithSeekableMethod(_Stream):
+
+    def __init__(self, to_read=b'', seekable=True):
+        super(_StreamWithSeekableMethod, self).__init__(to_read)
+        self._seekable = seekable
+
+    def seekable(self):
+        return self._seekable
 
 
 class _Request(object):

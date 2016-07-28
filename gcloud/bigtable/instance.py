@@ -20,11 +20,11 @@ import re
 from google.longrunning import operations_pb2
 
 from gcloud._helpers import _pb_timestamp_to_datetime
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     instance_pb2 as data_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as messages_v2_pb2)
-from gcloud.bigtable._generated_v2 import (
+from gcloud.bigtable._generated import (
     bigtable_table_admin_pb2 as table_messages_v2_pb2)
 from gcloud.bigtable.cluster import Cluster
 from gcloud.bigtable.cluster import DEFAULT_SERVE_NODES

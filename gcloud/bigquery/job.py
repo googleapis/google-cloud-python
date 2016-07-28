@@ -27,6 +27,60 @@ from gcloud.bigquery._helpers import _EnumProperty
 from gcloud.bigquery._helpers import _TypedProperty
 
 
+class UDFResource(object):
+    """Describe a single user-defined function (UDF) resource.
+    :type udf_type: str
+    :param udf_type: the type of the resource ('inlineCode' or 'resourceUri')
+
+    :type value: str
+    :param value: the inline code or resource URI
+
+    See
+    https://cloud.google.com/bigquery/user-defined-functions#api
+    """
+    def __init__(self, udf_type, value):
+        self.udf_type = udf_type
+        self.value = value
+
+    def __eq__(self, other):
+        return(
+            self.udf_type == other.udf_type and
+            self.value == other.value)
+
+
+def _build_udf_resources(resources):
+    """
+    :type resources: sequence of :class:`UDFResource`
+    :param resources: fields to be appended
+
+    :rtype: mapping
+    :returns: a mapping describing userDefinedFunctionResources for the query.
+    """
+    udfs = []
+    for resource in resources:
+        udf = {resource.udf_type: resource.value}
+        udfs.append(udf)
+    return udfs
+
+
+class UDFResourcesProperty(object):
+    """Custom property type for :class:`QueryJob`.
+
+    Also used by :class:`~gcloud.bigquery.query.Query`.
+    """
+    def __get__(self, instance, owner):
+        """Descriptor protocal:  accesstor"""
+        if instance is None:
+            return self
+        return list(instance._udf_resources)
+
+    def __set__(self, instance, value):
+        """Descriptor protocal:  mutator"""
+        if not all(isinstance(u, UDFResource) for u in value):
+            raise ValueError("udf items must be UDFResource")
+        instance._udf_resources = tuple(value)
+
+
 class Compression(_EnumProperty):
     """Pseudo-enum for ``compression`` properties."""
     GZIP = 'GZIP'
@@ -319,6 +373,9 @@ class _AsyncJob(_BaseJob):
         :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current dataset.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the job.
         """
         client = self._require_client(client)
 
@@ -869,6 +926,7 @@ class _AsyncQueryConfiguration(object):
     _flatten_results = None
     _priority = None
     _use_query_cache = None
+    _use_legacy_sql = None
     _write_disposition = None
 
 
@@ -884,12 +942,19 @@ class QueryJob(_AsyncJob):
     :type client: :class:`gcloud.bigquery.client.Client`
     :param client: A client which holds credentials and project configuration
                    for the dataset (which requires a project).
+
+    :type udf_resources: tuple
+    :param udf_resources: An iterable of
+                        :class:`gcloud.bigquery.job.UDFResource`
+                        (empty by default)
     """
     _JOB_TYPE = 'query'
+    _UDF_KEY = 'userDefinedFunctionResources'
 
-    def __init__(self, name, query, client):
+    def __init__(self, name, query, client, udf_resources=()):
         super(QueryJob, self).__init__(name, client)
         self.query = query
+        self.udf_resources = udf_resources
         self._configuration = _AsyncQueryConfiguration()
 
     allow_large_results = _TypedProperty('allow_large_results', bool)
@@ -922,9 +987,17 @@ class QueryJob(_AsyncJob):
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.priority
     """
 
+    udf_resources = UDFResourcesProperty()
+
     use_query_cache = _TypedProperty('use_query_cache', bool)
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.useQueryCache
+    """
+
+    use_legacy_sql = _TypedProperty('use_legacy_sql', bool)
+    """See:
+    https://cloud.google.com/bigquery/docs/\
+    reference/v2/jobs#configuration.query.useLegacySql
     """
 
     write_disposition = WriteDisposition('write_disposition')
@@ -965,8 +1038,13 @@ class QueryJob(_AsyncJob):
             configuration['priority'] = self.priority
         if self.use_query_cache is not None:
             configuration['useQueryCache'] = self.use_query_cache
+        if self.use_legacy_sql is not None:
+            configuration['useLegacySql'] = self.use_legacy_sql
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
+        if len(self._udf_resources) > 0:
+            configuration[self._UDF_KEY] = _build_udf_resources(
+                self._udf_resources)
 
     def _build_resource(self):
         """Generate a resource for :meth:`begin`."""
