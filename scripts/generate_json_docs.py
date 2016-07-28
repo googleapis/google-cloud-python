@@ -296,7 +296,7 @@ def build_type(type_id, title, contents):
 def clean_source_path(source):
     source_path = ''
     if ABSOLUTE_LIBRARY_PATH in source:
-        source_path = source.replace(ABSOLUTE_LIBRARY_PATH, '')
+        source_path = source.replace(ABSOLUTE_LIBRARY_PATH, source)
 
     return source_path
 
