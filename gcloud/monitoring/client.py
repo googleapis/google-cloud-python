@@ -284,12 +284,68 @@ class Client(JSONClient):
         """
         return ResourceDescriptor._list(self, filter_string)
 
+    def group(self, group_id=None, name=None, display_name='', parent_name='',
+              filter_string='', is_cluster=False):
+        """Factory constructor for group object.
+
+        .. note::
+          This will not make an HTTP request; it simply instantiates
+          a group object owned by this client.
+
+        :type group_id: string
+        :param group_id:
+              The ID of the group. This is useful for reading or modifying an
+              existing group.
+
+        :type name: string or None
+        :param name:
+              The fully qualified name of the group.
+
+        :type display_name: string
+        :param display_name:
+            A user-assigned name for this group, used only for display
+            purposes.
+
+        :type parent_name: string
+        :param parent_name:
+            The fully qualified name of the group's parent, if it has one.
+
+        :type filter_string: string
+        :param filter_string:
+            The filter string used to determine which monitored resources
+            belong to this group.
+
+        :type is_cluster: boolean
+        :param is_cluster:
+            If true, the members of this group are considered to be a cluster.
+            The system can perform additional analysis on groups that are
+            clusters.
+
+        :rtype: :class:`Group`
+        :returns: The group created with the passed-in arguments.
+
+        :raises:
+            :exc:`ValueError` if both ``group_id`` and ``name`` are specified.
+        """
+        return Group(
+            self,
+            group_id=group_id,
+            name=name,
+            display_name=display_name,
+            parent_name=parent_name,
+            filter_string=filter_string,
+            is_cluster=is_cluster,
+        )
+
     def fetch_group(self, group_id):
-        """Look up a group by ID.
+        """Fetch a group from the API based on it's ID.
 
         Example::
 
-            >>> print(client.fetch_group('1234'))
+          >>> try:
+          >>>   group = client.fetch_group('1234')
+          >>> except gcloud.exceptions.NotFound:
+          >>>   print('That group does not exist!')
 
         :type group_id: string
         :param group_id: The ID of the group.

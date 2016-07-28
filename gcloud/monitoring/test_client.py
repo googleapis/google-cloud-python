@@ -330,6 +330,27 @@ class TestClient(unittest2.TestCase):
                             'query_params': {}}
         self.assertEqual(request, expected_request)
 
+    def test_group(self):
+        GROUP_ID = 'GROUP_ID'
+        GROUP_NAME = 'projects/{project}/groups/{group_id}'.format(
+            project=PROJECT, group_id=GROUP_ID)
+        DISPLAY_NAME = 'My Group'
+        PARENT_NAME = 'projects/{project}/groups/{group_id}'.format(
+            project=PROJECT, group_id='PARENT_ID')
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        group = client.group(GROUP_ID, display_name=DISPLAY_NAME,
+                             parent_name=PARENT_NAME, filter_string=FILTER,
+                             is_cluster=IS_CLUSTER)
+
+        self.assertEqual(group.name, GROUP_NAME)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_name, PARENT_NAME)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
     def test_fetch_group(self):
         GROUP_ID = 'GROUP_ID'
         GROUP_NAME = 'projects/{project}/groups/{group_id}'.format(

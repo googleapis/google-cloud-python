@@ -15,11 +15,11 @@
 import unittest2
 
 
-class Test_group_id_from_path(unittest2.TestCase):
+class Test_group_id_from_name(unittest2.TestCase):
 
     def _callFUT(self, path, project):
-        from gcloud.monitoring.group import group_id_from_path
-        return group_id_from_path(path, project)
+        from gcloud.monitoring.group import group_id_from_name
+        return group_id_from_name(path, project)
 
     def test_w_empty_name(self):
         PROJECT = 'my-project-1234'
@@ -133,7 +133,7 @@ class TestGroup(unittest2.TestCase):
             self.assertIs(group.client, client)
             self._validateGroup(group, expected_groups_json[i])
 
-    def test_constructor(self):
+    def test_constructor_w_name(self):
         client = _Client(project=self.PROJECT)
         group = self._makeOne(
             client=client,
@@ -150,10 +150,19 @@ class TestGroup(unittest2.TestCase):
         self.assertEqual(group.display_name, self.DISPLAY_NAME)
         self.assertEqual(group.parent_name, self.PARENT_NAME)
         self.assertEqual(group.filter, self.FILTER)
-        self.assertEqual(group.is_cluster, True)
+        self.assertTrue(group.is_cluster)
 
-        self.assertEqual(group.id, self.GROUP_ID)
-        self.assertEqual(group.parent_id, self.PARENT_ID)
+    def test_contructor_w_id(self):
+        client = _Client(project=self.PROJECT)
+        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+
+        self.assertIs(group.client, client)
+
+        self.assertEqual(group.name, self.GROUP_NAME)
+        self.assertEqual(group.display_name, '')
+        self.assertEqual(group.parent_name, '')
+        self.assertEqual(group.filter, '')
+        self.assertFalse(group.is_cluster)
 
     def test_constructor_defaults(self):
         client = _Client(project=self.PROJECT)
@@ -167,15 +176,135 @@ class TestGroup(unittest2.TestCase):
         self.assertEqual(group.filter, '')
         self.assertFalse(group.is_cluster)
 
-        self.assertEqual(group.id, '')
+    def test_construct_w_name_and_id(self):
+        client = _Client(project=self.PROJECT)
+        with self.assertRaises(ValueError):
+            self._makeOne(client=client, group_id=self.GROUP_ID,
+                          name=self.GROUP_NAME)
+
+    def test_id_no_name(self):
+        group = self._makeOne(client=None)
+        self.assertRaises(ValueError, getattr, group, 'id')
+
+    def test_id_w_name(self):
+        client = _Client(project=self.PROJECT)
+        group = self._makeOne(client=client, name=self.GROUP_NAME)
+        self.assertEqual(group.id, self.GROUP_ID)
+
+    def test_parent_id_no_name(self):
+        group = self._makeOne(client=None)
         self.assertEqual(group.parent_id, '')
+
+    def test_parent_id_w_name(self):
+        client = _Client(project=self.PROJECT)
+        group = self._makeOne(client=client, parent_name=self.PARENT_NAME)
+        self.assertEqual(group.parent_id, self.PARENT_ID)
+
+    def test_path_no_name(self):
+        group = self._makeOne(client=None)
+        self.assertRaises(ValueError, getattr, group, 'path')
+
+    def test_path_w_name(self):
+        group = self._makeOne(client=None, name=self.GROUP_NAME)
+        self.assertEqual(group.path, '/%s' % self.GROUP_NAME)
 
     def test_from_dict(self):
         client = _Client(project=self.PROJECT)
         group = self._getTargetClass()._from_dict(client, self.JSON_GROUP)
 
         self.assertIs(group.client, client)
-        self._validateGroup(group, self.JSON_GROUP)
+
+        self.assertEqual(group.name, self.GROUP_NAME)
+        self.assertEqual(group.display_name, self.DISPLAY_NAME)
+        self.assertEqual(group.parent_name, self.PARENT_NAME)
+        self.assertEqual(group.filter, self.FILTER)
+        self.assertTrue(group.is_cluster)
+
+    def test_from_dict_defaults(self):
+        client = _Client(project=self.PROJECT)
+        info = {
+            'name': self.GROUP_NAME,
+            'displayName': self.DISPLAY_NAME,
+            'filter': self.FILTER,
+        }
+        group = self._getTargetClass()._from_dict(client, info)
+
+        self.assertIs(group.client, client)
+
+        self.assertEqual(group.name, self.GROUP_NAME)
+        self.assertEqual(group.display_name, self.DISPLAY_NAME)
+        self.assertEqual(group.parent_name, '')
+        self.assertEqual(group.filter, self.FILTER)
+        self.assertFalse(group.is_cluster)
+
+    def test_to_dict(self):
+        group = self._makeOneFromJSON(self.JSON_GROUP)
+        self.assertEqual(group._to_dict(), self.JSON_GROUP)
+
+    def test_to_dict_defaults(self):
+        info = {
+            'name': self.GROUP_NAME,
+            'displayName': self.DISPLAY_NAME,
+            'filter': self.FILTER,
+        }
+        group = self._makeOneFromJSON(info)
+        self.assertEqual(group._to_dict(), info)
+
+    def test_create(self):
+        RESPONSE = self.JSON_GROUP
+
+        REQUEST = dict(RESPONSE)
+        REQUEST.pop('name')
+
+        connection = _Connection(RESPONSE)
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOne(
+            client=client,
+            display_name=self.DISPLAY_NAME,
+            parent_name=self.PARENT_NAME,
+            filter_string=self.FILTER,
+            is_cluster=True
+        )
+        group.create()
+
+        self._validateGroup(group, RESPONSE)
+
+        request, = connection._requested
+        expected_request = {'method': 'POST', 'path': '/' + self.PATH,
+                            'data': REQUEST}
+        self.assertEqual(request, expected_request)
+
+    def test_exists_hit(self):
+        connection = _Connection(self.JSON_GROUP)
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+
+        self.assertTrue(group.exists())
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
+        self.assertEqual(request, expected_request)
+
+    def test_exists_miss(self):
+        connection = _Connection()
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOne(client=client, group_id=self.GROUP_ID)
+
+        self.assertFalse(group.exists())
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
+        self.assertEqual(request, expected_request)
+
+    def test_delete(self):
+        connection = _Connection(self.JSON_GROUP)
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOneFromJSON(self.JSON_GROUP, client)
+        group.delete()
+
+        request, = connection._requested
+        expected_request = {'method': 'DELETE', 'path': group.path}
+        self.assertEqual(request, expected_request)
 
     def test_fetch(self):
         connection = _Connection(self.JSON_GROUP)

@@ -179,6 +179,25 @@ You can get the current members of a group using the
 Passing in ``end_time`` and ``start_time`` to the above method will return
 historical members based on the current filter of the group.
 
+You can create new groups to define new collections of *monitored resources*.
+You do this by creating a :class:`~gcloud.monitoring.group.Group` object using
+the client's :meth:`~gcloud.monitoring.client.Client.group` factory and then
+calling the object's :meth:`~gcloud.monitoring.group.Group.create` method::
+
+    >>> group = client.group(
+    ...     display_name='My group',
+    ...     filter_string='resource.type = "gce_instance"',
+    ...     parent_name='projects/my-project/groups/5678',
+    ...     is_cluster=True)
+    >>> group.create()
+
+You can delete a group by initializing a Group object with it's ID or name, and
+then calling the :meth:`~gcloud.monitoring.group.Group.delete` method. Any
+other field is ignored during deletion::
+
+    >>> group = client.group('1234')
+    >>> group.delete()
+
 .. _Stackdriver dashboard:
     https://support.stackdriver.com/customer/portal/articles/\
     1535145-creating-groups

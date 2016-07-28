@@ -22,6 +22,7 @@
 import re
 
 from gcloud._helpers import _name_from_project_path
+from gcloud.exceptions import NotFound
 from gcloud.monitoring._helpers import _format_timestamp
 from gcloud.monitoring.resource import Resource
 
@@ -34,7 +35,7 @@ _GROUP_TEMPLATE = re.compile(r"""
 """, re.VERBOSE)
 
 
-def group_id_from_path(path, project=None):
+def group_id_from_name(path, project=None):
     """Validate a group URI path and get the group ID.
 
     :type path: string
@@ -55,13 +56,32 @@ def group_id_from_path(path, project=None):
     return _name_from_project_path(path, project, _GROUP_TEMPLATE)
 
 
+def group_name_from_id(project, group_id):
+    """Build the group name given the project and group ID.
+
+    :type project: string
+    :param project: The project associated with the group.
+
+    :type group_id: string
+    :param group_id: The group ID.
+
+    :rtype: string
+    :returns: The fully qualified name of the group.
+    """
+    return 'projects/{project}/groups/{group_id}'.format(
+        project=project, group_id=group_id)
+
+
 class Group(object):
     """A dynamic collection of monitored resources.
 
     :type client: :class:`gcloud.monitoring.client.Client`
     :param client: A client for operating on the metric descriptor.
 
-    :type name: string
+    :type group_id: string or None
+    :param group_id: The ID of the group.
+
+    :type name: string or None
     :param name:
           The fully qualified name of the group in the format
           "projects/<project>/groups/<id>". This is a read-only property.
@@ -83,11 +103,21 @@ class Group(object):
     :param is_cluster:
         If true, the members of this group are considered to be a cluster. The
         system can perform additional analysis on groups that are clusters.
+
+    :raises: :exc:`ValueError` if both ``group_id`` and ``name`` are specified.
     """
-    def __init__(self, client, name=None, display_name='', parent_name='',
-                 filter_string='', is_cluster=False):
+    def __init__(self, client, group_id=None, name=None, display_name='',
+                 parent_name='', filter_string='', is_cluster=False):
+        if not (group_id is None or name is None):
+            raise ValueError('At most one of "group_id" and "name" can be '
+                             'specified')
+
         self.client = client
-        self.name = name
+        if group_id is not None:
+            self.name = group_name_from_id(client.project, group_id)
+        else:
+            self.name = name
+
         self.display_name = display_name
         self.parent_name = parent_name
         self.filter = filter_string
@@ -95,16 +125,90 @@ class Group(object):
 
     @property
     def id(self):
-        """Retrieve the ID of the group."""
-        return group_id_from_path(self.name, self.client.project)
+        """Retrieve the ID of the group.
+
+        :rtype: str
+        :returns: the ID of the group based on it's name.
+
+        :raises: :exc:`ValueError` if :attr:`name` is not specified.
+        """
+        if not self.name:
+            raise ValueError('Cannot determine group ID without group name.')
+        return group_id_from_name(self.name, self.client.project)
 
     @property
     def parent_id(self):
-        """The ID of  the parent group."""
-        return group_id_from_path(self.parent_name, self.client.project)
+        """The ID of the parent group.
+
+        :rtype: str
+        :returns: the ID of the parent group based on ``parent_name``.
+        """
+        if not self.parent_name:
+            return ''
+        return group_id_from_name(self.parent_name, self.client.project)
+
+    @property
+    def path(self):
+        """URL path to this group.
+
+        :rtype: str
+        :returns: the path based on project and group name.
+
+        :raises: :exc:`ValueError` if :attr:`name` is not specified.
+        """
+        if not self.name:
+            raise ValueError('Cannot determine path without group name.')
+        return '/' + self.name
+
+    def create(self):
+        """Create a new group based on this object via a POST request.
+
+        Example::
+
+            >>> group = client.group(
+            ...     display_name='My group',
+            ...     filter_string='resource.type = "gce_instance"',
+            ...     parent_name='projects/my-project/groups/5678',
+            ...     is_cluster=True)
+            >>> group.create()
+
+
+        The ``name`` attribute is ignored in preparing the creation request.
+        All attributes are overwritten by the values received in the response
+        (normally affecting only name).
+        """
+        path = self.path_helper(self.client.project)
+        info = self.client.connection.api_request(
+            method='POST', path=path, data=self._to_dict())
+        self._init_from_dict(info)
+
+    def exists(self):
+        """Test for the existence of the group via a GET request.
+
+        :rtype: bool
+        :returns: Boolean indicating existence of the group.
+        """
+        try:
+            self.client.connection.api_request(method='GET', path=self.path)
+        except NotFound:
+            return False
+        else:
+            return True
+
+    def delete(self):
+        """Delete the group identified by this object via a DELETE request.
+
+        Example::
+
+            >>> group = client.group('1234')
+            >>> group.delete()
+
+        Only the ``client`` and ``name`` attributes are used.
+        """
+        self.client.connection.api_request(method='DELETE', path=self.path)
 
     def parent(self):
-        """Returns the parent group of this group.
+        """Returns the parent group of this group via a GET request.
 
         :rtype: :class:`Group` or None
         :returns: The parent of the group.
@@ -114,7 +218,7 @@ class Group(object):
         return self._fetch(self.client, self.parent_id)
 
     def children(self):
-        """Lists all children of this group.
+        """Lists all children of this group via a GET request.
 
         Returns groups whose parent_name field contains the group name. If no
         groups have this parent, the results are empty.
@@ -125,7 +229,7 @@ class Group(object):
         return self._list(self.client, children_of_group=self.name)
 
     def ancestors(self):
-        """Lists all ancestors of this group.
+        """Lists all ancestors of this group via a GET request.
 
         The groups are returned in order, starting with the immediate parent
         and ending with the most distant ancestor. If the specified group has
@@ -137,7 +241,7 @@ class Group(object):
         return self._list(self.client, ancestors_of_group=self.name)
 
     def descendants(self):
-        """Lists all descendants of this group.
+        """Lists all descendants of this group via a GET request.
 
         This returns a superset of the results returned by the :meth:`children`
         method, and includes children-of-children, and so forth.
@@ -148,7 +252,7 @@ class Group(object):
         return self._list(self.client, descendants_of_group=self.name)
 
     def members(self, filter_string=None, end_time=None, start_time=None):
-        """Lists all monitored resources that are members of this group.
+        """Lists all members of this group via a GET request.
 
         If no end_time and start_time is provided then the group membership
         over the last minute is returned.
@@ -198,7 +302,7 @@ class Group(object):
             raise ValueError('If "start_time" is specified, "end_time" must '
                              'also be specified')
 
-        path = '/%s/members' % self.name
+        path = '%s/members' % self.path
         resources = []
         page_token = None
 
@@ -241,12 +345,11 @@ class Group(object):
         :rtype: string
         :returns: The relative URL path for the specific group.
         """
-        return '/projects/{project}/groups/{group_id}'.format(
-            project=project, group_id=group_id)
+        return '/' + group_name_from_id(project, group_id)
 
     @classmethod
     def _fetch(cls, client, group_id):
-        """Look up a group by ID.
+        """Fetch a group from the API based on it's ID.
 
         :type client: :class:`gcloud.monitoring.client.Client`
         :param client: The client to use.
@@ -351,6 +454,26 @@ class Group(object):
         self.parent_name = info.get('parentName', '')
         self.filter = info['filter']
         self.is_cluster = info.get('isCluster', False)
+
+    def _to_dict(self):
+        """Build a dictionary ready to be serialized to the JSON wire format.
+
+        :rtype: dict
+        :returns: A dictionary.
+        """
+        info = {
+            'filter': self.filter,
+            'displayName': self.display_name,
+        }
+
+        if self.name:
+            info['name'] = self.name
+        if self.parent_name:
+            info['parentName'] = self.parent_name
+        if self.is_cluster:
+            info['isCluster'] = self.is_cluster
+
+        return info
 
     def __repr__(self):
         return (
