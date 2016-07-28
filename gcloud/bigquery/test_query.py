@@ -234,7 +234,7 @@ class TestQueryResults(unittest2.TestCase):
         self._verifyResourceProperties(query, RESOURCE)
 
     def test_run_w_inline_udf(self):
-        from gcloud.bigquery.query import UDFResource
+        from gcloud.bigquery.job import UDFResource
         INLINE_UDF_CODE = 'var someCode = "here";'
         PATH = 'projects/%s/queries' % self.PROJECT
         RESOURCE = self._makeResource(complete=False)
