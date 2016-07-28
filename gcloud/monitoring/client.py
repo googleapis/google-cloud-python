@@ -28,14 +28,22 @@ and monitored resource descriptors.
     https://cloud.google.com/monitoring/api/v3/
 """
 
+import datetime
+
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
 from gcloud.monitoring.group import Group
+from gcloud.monitoring.metric import Metric
 from gcloud.monitoring.metric import MetricDescriptor
 from gcloud.monitoring.metric import MetricKind
 from gcloud.monitoring.metric import ValueType
 from gcloud.monitoring.query import Query
+from gcloud.monitoring.resource import Resource
 from gcloud.monitoring.resource import ResourceDescriptor
+from gcloud.monitoring.timeseries import Point
+from gcloud.monitoring.timeseries import TimeSeries
+
+_UTCNOW = datetime.datetime.utcnow  # To be replaced by tests.
 
 
 class Client(JSONClient):
@@ -194,6 +202,126 @@ class Client(JSONClient):
             description=description,
             display_name=display_name,
         )
+
+    @staticmethod
+    def metric(type_, labels):
+        """Factory for constructing metric objects.
+
+        :class:`~gcloud.monitoring.metric.Metric` objects are typically
+        created to write custom metric values. The type should match the
+        metric type specified in the
+        :class:`~gcloud.monitoring.metric.MetricDescriptor` used to
+        create the custom metric::
+
+             >>> metric = client.metric('custom.googleapis.com/my_metric',
+             ...                        labels={
+             ...                            'status': 'successful',
+             ...                         })
+
+        :type type_: string
+        :param type_: The metric type name.
+
+        :type labels: dict
+        :param labels: A mapping from label names to values for all labels
+                       enumerated in the associated
+                       :class:`~gcloud.monitoring.metric.MetricDescriptor`.
+
+        :rtype: :class:`~gcloud.monitoring.metric.Metric`
+        :returns: The metric object.
+        """
+        return Metric(type=type_, labels=labels)
+
+    @staticmethod
+    def resource(type_, labels):
+        """Factory for constructing monitored resource objects.
+
+        A monitored resource object (
+        :class:`~gcloud.monitoring.resource.Resource`) is
+        typically used to create a
+        :class:`~gcloud.monitoring.timeseries.TimeSeries` object.
+
+        For a list of possible monitored resource types and their associated
+        labels, see:
+
+        https://cloud.google.com/monitoring/api/resources
+
+        :type type_: string
+        :param type_: The monitored resource type name.
+
+        :type labels: dict
+        :param labels: A mapping from label names to values for all labels
+                       enumerated in the associated
+                       :class:`~gcloud.monitoring.resource.ResourceDescriptor`,
+                       except that ``project_id`` can and should be omitted
+                       when writing time series data.
+
+        :rtype: :class:`~gcloud.monitoring.resource.Resource`
+        :returns: A monitored resource object.
+        """
+        return Resource(type_, labels)
+
+    @staticmethod
+    def time_series(metric, resource, value,
+                    end_time=None, start_time=None):
+        """Construct a time series object for a single data point.
+
+        .. note::
+
+           While :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+           returned by the API typically have multiple data points,
+           :class:`~gcloud.monitoring.timeseries.TimeSeries` objects
+           sent to the API must have at most one point.
+
+        For example::
+
+            >>> timeseries = client.time_series(metric, resource, 1.23,
+            ...                                 end_time=end)
+
+        For more information, see:
+
+        https://cloud.google.com/monitoring/api/ref_v3/rest/v3/TimeSeries
+
+        :type metric: :class:`~gcloud.monitoring.metric.Metric`
+        :param metric: A :class:`~gcloud.monitoring.metric.Metric` object.
+
+        :type resource: :class:`~gcloud.monitoring.resource.Resource`
+        :param resource: A :class:`~gcloud.monitoring.resource.Resource`
+                         object.
+
+        :type value: bool, int, string, or float
+        :param value:
+            The value of the data point to create for the
+            :class:`~gcloud.monitoring.timeseries.TimeSeries`.
+
+            .. note::
+
+               The Python type of the value will determine the
+               `class`:ValueType: sent to the API, which must match the value
+               type specified in the metric descriptor. For example, a Python
+               float will be sent to the API as a :data:`ValueType.DOUBLE`.
+
+        :type end_time: :class:`~datetime.datetime`
+        :param end_time:
+            The end time for the point to be included in the time series.
+            Assumed to be UTC if no time zone information is present.
+            Defaults to the current time, as obtained by calling
+            :meth:`datetime.datetime.utcnow`.
+
+        :type start_time: :class:`~datetime.datetime`
+        :param start_time:
+            The start time for the point to be included in the time series.
+            Assumed to be UTC if no time zone information is present
+            Defaults to None. If the start time is unspecified,
+            the API interprets the start time to be the same as the end time.
+
+        :rtype: :class:`~gcloud.monitoring.timeseries.TimeSeries`
+        :returns: A time series object.
+        """
+        if end_time is None:
+            end_time = _UTCNOW()
+        point = Point(value=value, start_time=start_time, end_time=end_time)
+        return TimeSeries(metric=metric, resource=resource, metric_kind=None,
+                          value_type=None, points=[point])
 
     def fetch_metric_descriptor(self, metric_type):
         """Look up a metric descriptor by type.

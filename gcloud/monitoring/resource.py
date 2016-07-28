@@ -158,6 +158,10 @@ class ResourceDescriptor(object):
 class Resource(collections.namedtuple('Resource', 'type labels')):
     """A monitored resource identified by specifying values for all labels.
 
+    The preferred way to construct a resource object is using the
+    :meth:`~gcloud.monitoring.client.Client.resource` factory method
+    of the :class:`~gcloud.monitoring.client.Client` class.
+
     :type type: string
     :param type: The resource type name.
 

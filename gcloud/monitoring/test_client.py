@@ -157,6 +157,120 @@ class TestClient(unittest.TestCase):
         self.assertEqual(descriptor.description, DESCRIPTION)
         self.assertEqual(descriptor.display_name, '')
 
+    def test_metric_factory(self):
+        TYPE = 'custom.googleapis.com/my_metric'
+        LABELS = {
+            'instance_name': 'my-instance'
+        }
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        client.connection = _Connection()   # For safety's sake.
+        metric = client.metric(TYPE, LABELS)
+        self.assertEqual(metric.type, TYPE)
+        self.assertEqual(metric.labels, LABELS)
+
+    def test_resource_factory(self):
+        TYPE = 'https://cloud.google.com/monitoring/api/resources'
+        LABELS = {
+            'instance_id': 'my-instance-id',
+            'zone': 'us-central1-f'
+        }
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        client.connection = _Connection()   # For safety's sake.
+        resource = client.resource(TYPE, LABELS)
+        self.assertEqual(resource.type, TYPE)
+        self.assertEqual(resource.labels, LABELS)
+
+    def test_timeseries_factory_gauge(self):
+        import datetime
+        from gcloud._testing import _Monkey
+        import gcloud.monitoring.client
+        METRIC_TYPE = 'custom.googleapis.com/my_metric'
+        METRIC_LABELS = {
+            'status': 'successful'
+        }
+
+        RESOURCE_TYPE = 'gce_instance'
+        RESOURCE_LABELS = {
+            'instance_id': '1234567890123456789',
+            'zone': 'us-central1-f'
+        }
+
+        VALUE = 42
+        TIME1 = datetime.datetime.utcnow()
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        client.connection = _Connection()   # For safety's sake.
+        metric = client.metric(METRIC_TYPE, METRIC_LABELS)
+        resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
+
+        # Construct a time series assuming a gauge metric.
+        timeseries = client.time_series(metric, resource, VALUE,
+                                        end_time=TIME1)
+        self.assertEqual(timeseries.metric, metric)
+        self.assertEqual(timeseries.resource, resource)
+        self.assertEqual(len(timeseries.points), 1)
+        self.assertEqual(timeseries.points[0].value, VALUE)
+        self.assertIsNone(timeseries.points[0].start_time)
+        self.assertEqual(timeseries.points[0].end_time, TIME1)
+
+        TIME2 = datetime.datetime.utcnow()
+        # Construct a time series assuming a gauge metric using the current
+        # time
+        with _Monkey(gcloud.monitoring.client, _UTCNOW=lambda: TIME2):
+            timeseries_no_end = client.time_series(metric, resource, VALUE)
+
+        self.assertEqual(timeseries_no_end.points[0].end_time, TIME2)
+        self.assertIsNone(timeseries_no_end.points[0].start_time)
+
+    def test_timeseries_factory_cumulative(self):
+        import datetime
+        MY_CUMULATIVE_METRIC = 'custom.googleapis.com/my_cumulative_metric'
+        METRIC_LABELS = {
+            'status': 'successful'
+        }
+
+        RESOURCE_TYPE = 'gce_instance'
+        RESOURCE_LABELS = {
+            'instance_id': '1234567890123456789',
+            'zone': 'us-central1-f'
+        }
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        client.connection = _Connection()   # For safety's sake.
+        resource = client.resource(RESOURCE_TYPE, RESOURCE_LABELS)
+
+        VALUE = 42
+        VALUE2 = 43
+        RESET_TIME = datetime.datetime.utcnow()
+        TIME1 = datetime.datetime.utcnow()
+        TIME2 = datetime.datetime.utcnow()
+
+        # Construct a couple of time series assuming a cumulative metric.
+        cumulative_metric = client.metric(MY_CUMULATIVE_METRIC, METRIC_LABELS)
+        cumulative_timeseries = client.time_series(cumulative_metric,
+                                                   resource,
+                                                   VALUE,
+                                                   start_time=RESET_TIME,
+                                                   end_time=TIME1)
+
+        cumulative_timeseries2 = client.time_series(cumulative_metric,
+                                                    resource,
+                                                    VALUE2,
+                                                    start_time=RESET_TIME,
+                                                    end_time=TIME2)
+
+        self.assertEqual(cumulative_timeseries.points[0].start_time,
+                         RESET_TIME)
+        self.assertEqual(cumulative_timeseries.points[0].end_time, TIME1)
+        self.assertEqual(cumulative_timeseries.points[0].value, VALUE)
+        self.assertEqual(cumulative_timeseries2.points[0].start_time,
+                         RESET_TIME)
+        self.assertEqual(cumulative_timeseries2.points[0].end_time,
+                         TIME2)
+        self.assertEqual(cumulative_timeseries2.points[0].value, VALUE2)
+
     def test_fetch_metric_descriptor(self):
         TYPE = 'custom.googleapis.com/my_metric'
         NAME = 'projects/{project}/metricDescriptors/{type}'.format(

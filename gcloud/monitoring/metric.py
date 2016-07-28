@@ -319,6 +319,10 @@ class MetricDescriptor(object):
 class Metric(collections.namedtuple('Metric', 'type labels')):
     """A specific metric identified by specifying values for all labels.
 
+    The preferred way to construct a metric object is using the
+    :meth:`~gcloud.monitoring.client.Client.metric` factory method
+    of the :class:`~gcloud.monitoring.client.Client` class.
+
     :type type: string
     :param type: The metric type name.
 
