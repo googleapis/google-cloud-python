@@ -10,14 +10,7 @@ function pushDocs () {
       git submodule add -f -b gh-pages https://${GH_OAUTH_TOKEN}@github.com/${GH_OWNER}/${GH_PROJECT_NAME} ghpages
   fi
   mkdir -p ghpages/json/${1}
-  cp -R docs/_build/json/${1}/* ghpages/json/${1}
-  cp docs/json/toc.json ghpages/json/${1}
-  cp docs/json/index.json ghpages/json/${1}
-  cp docs/json/overview.html ghpages/json/${1}
-  cp docs/json/home.html ghpages/json/
-  cp -R docs/json/src ghpages
-  cp docs/json/manifest.json ghpages
-  cp docs/json/index.html ghpages
+  cp -R docs/_build/json_build/* ghpages/
   cd ghpages
   git add .
   if [[ -n "$(git status --porcelain)" ]]; then

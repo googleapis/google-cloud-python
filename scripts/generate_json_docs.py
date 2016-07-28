@@ -16,6 +16,7 @@ import argparse
 import inspect
 import json
 import os
+import shutil
 import types
 
 import pdoc
@@ -536,6 +537,40 @@ def get_snippet_examples(module, json_docs_dir):
     return snippets
 
 
+def package_files(generated_json_dir, docs_build_dir, static_json_dir,
+                  tag='master'):
+    """Copy app and JSON files into a convenient place to deploy from.
+
+    Structure needs to be...
+    root
+        - src/
+            - images/
+            - app.js
+            - app.css
+            - vendor.js
+            - vendor.css
+        - json/
+            - master/
+                - toc.json
+                - types.json
+                - home.html
+                - index.json
+                - overview.html
+            - home.html
+        - home.html
+        - index.html
+        - manifest.json
+    """
+    package_path = os.path.join(docs_build_dir, 'json_build')
+    shutil.rmtree(package_path, ignore_errors=True)
+
+    shutil.copytree(static_json_dir, package_path)
+    shutil.copytree(os.path.join(generated_json_dir, 'gcloud'),
+                    os.path.join(package_path, 'json', tag, 'gcloud'))
+    shutil.copyfile(os.path.join(generated_json_dir, 'types.json'),
+                    os.path.join(package_path, 'json', tag, 'types.json'))
+
+
 def main():
     parser = argparse.ArgumentParser(description='Document Python modules.')
     parser.add_argument('--tag', help='The version of the documentation.',
@@ -557,8 +592,8 @@ def main():
             'credentials': [],
             'datastore': [],
             'dns': [],
-            'error_reporting': [],
             'environment_vars': [],
+            'error_reporting': [],
             'exceptions': [],
             'iterator': [],
             'logging': [],
@@ -572,7 +607,10 @@ def main():
     }
 
     BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    JSON_DOCS_DIR = os.path.join(BASE_DIR, 'docs', '_build', 'json', args.tag)
+    BASE_JSON_DOCS_DIR = os.path.join(BASE_DIR, 'docs', 'json')
+
+    DOCS_BUILD_DIR = os.path.join(BASE_DIR, 'docs', '_build')
+    JSON_DOCS_DIR = os.path.join(DOCS_BUILD_DIR, 'json', args.tag)
     LIB_DIR = os.path.abspath(args.basepath)
 
     library_dir = os.path.join(LIB_DIR, 'gcloud')
@@ -581,7 +619,7 @@ def main():
     generate_module_docs(public_mods, JSON_DOCS_DIR, BASE_DIR, toc)
     generate_doc_types_json(public_mods,
                             os.path.join(JSON_DOCS_DIR, 'types.json'))
-
+    package_files(JSON_DOCS_DIR, DOCS_BUILD_DIR, BASE_JSON_DOCS_DIR)
     if args.show_toc:
         print json.dumps(toc, indent=4)
 
