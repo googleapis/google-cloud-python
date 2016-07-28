@@ -16,10 +16,14 @@
 
 import logging
 
+from gcloud.logging.handlers.transports import BackgroundThreadTransport
+
 EXCLUDE_LOGGER_DEFAULTS = (
     'gcloud',
-    'oauth2client.client'
+    'oauth2client'
 )
+
+DEFAULT_LOGGER_NAME = "python"
 
 
 class CloudLoggingHandler(logging.StreamHandler, object):
@@ -36,6 +40,17 @@ class CloudLoggingHandler(logging.StreamHandler, object):
     :type client: :class:`gcloud.logging.client`
     :param client: the authenticated gcloud logging client for this handler
                    to use
+    :type name: str
+    :param name: the name of the custom log in Stackdriver Logging. Defaults
+                 to "python". The name of the Python logger will be represented
+                 in the "python_logger" field.
+
+    :type transport: :class:`gcloud.logging.handlers.transports.Transport`
+    :param transport: the class object to instantiate. It should extend from
+                      the base Transport type and implement
+                      :meth`gcloud.logging.handlers.transports.base.Transport.send`
+                      Defaults to BackgroundThreadTransport. The other
+                      option is SyncTransport.
 
     Example:
 
@@ -55,9 +70,13 @@ class CloudLoggingHandler(logging.StreamHandler, object):
 
     """
 
-    def __init__(self, client):
+    def __init__(self, client,
+                 name=DEFAULT_LOGGER_NAME,
+                 transport=BackgroundThreadTransport):
         super(CloudLoggingHandler, self).__init__()
+        self.name = name
         self.client = client
+        self.transport = transport(client, name)
 
     def emit(self, record):
         """
@@ -66,13 +85,11 @@ class CloudLoggingHandler(logging.StreamHandler, object):
         See: https://docs.python.org/2/library/logging.html#handler-objects
         """
         message = super(CloudLoggingHandler, self).format(record)
-        logger = self.client.logger(record.name)
-        logger.log_struct({"message": message},
-                          severity=record.levelname)
+        self.transport.send(record, message)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
-    """Helper function to attach the CloudLoggingAPI handler to the Python
+    """Helper function to attach the CloudLogging handler to the Python
     root logger, while excluding loggers this library itself uses to avoid
     infinite recursion
 
@@ -90,11 +107,11 @@ def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
 
         import logging
         import gcloud.logging
-        from gcloud.logging.handlers import CloudLoggingAPIHandler
+        from gcloud.logging.handlers import CloudLoggingHandler
 
         client = gcloud.logging.Client()
         handler = CloudLoggingHandler(client)
-        setup_logging(handler)
+        gcloud.logging.setup_logging(handler)
         logging.getLogger().setLevel(logging.DEBUG)
 
         logging.error("bad news") # API call

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright 2016 Google Inc. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +22,7 @@ class TestCloudLoggingHandler(unittest2.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):
-        from gcloud.logging.handlers import CloudLoggingHandler
+        from gcloud.logging.handlers.handlers import CloudLoggingHandler
         return CloudLoggingHandler
 
     def _makeOne(self, *args, **kw):
@@ -31,24 +30,24 @@ class TestCloudLoggingHandler(unittest2.TestCase):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client)
+        handler = self._makeOne(client, transport=_Transport)
         self.assertEqual(handler.client, client)
 
     def test_emit(self):
         client = _Client(self.PROJECT)
-        handler = self._makeOne(client)
+        handler = self._makeOne(client, transport=_Transport)
         LOGNAME = 'loggername'
         MESSAGE = 'hello world'
         record = _Record(LOGNAME, logging.INFO, MESSAGE)
         handler.emit(record)
-        self.assertEqual(client.logger(LOGNAME).log_struct_called_with,
-                         ({'message': MESSAGE}, logging.INFO))
+
+        self.assertEqual(handler.transport.send_called_with, (record, MESSAGE))
 
 
 class TestSetupLogging(unittest2.TestCase):
 
     def _callFUT(self, handler, excludes=None):
-        from gcloud.logging.handlers import setup_logging
+        from gcloud.logging.handlers.handlers import setup_logging
         if excludes:
             return setup_logging(handler, excluded_loggers=excludes)
         else:
@@ -95,20 +94,10 @@ class _Handler(object):
         pass  # pragma: NO COVER
 
 
-class _Logger(object):
-
-    def log_struct(self, message, severity=None):
-        self.log_struct_called_with = (message, severity)
-
-
 class _Client(object):
 
     def __init__(self, project):
         self.project = project
-        self.logger_ = _Logger()
-
-    def logger(self, _):  # pylint: disable=unused-argument
-        return self.logger_
 
 
 class _Record(object):
@@ -123,3 +112,12 @@ class _Record(object):
 
     def getMessage(self):
         return self.message
+
+
+class _Transport(object):
+
+    def __init__(self, client, name):
+        pass
+
+    def send(self, record, message):
+        self.send_called_with = (record, message)
