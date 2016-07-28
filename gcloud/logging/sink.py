@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Define Logging API Sinks."""
+"""Define Stackdriver Logging API Sinks."""
 
 from gcloud.exceptions import NotFound
 

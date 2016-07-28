@@ -834,7 +834,6 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         import datetime
         from gcloud._helpers import UTC
         from gcloud._helpers import _millis
-        from gcloud.bigquery.table import SchemaField
 
         PATH = 'projects/%s/datasets/%s/tables/%s' % (
             self.PROJECT, self.DS_NAME, self.TABLE_NAME)

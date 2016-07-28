@@ -507,6 +507,102 @@ class Test_Blob(unittest2.TestCase):
         self.assertEqual(headers['Content-Length'], '6')
         self.assertEqual(headers['Content-Type'], expected_content_type)
 
+    def test_upload_from_file_stream(self):
+        from six.moves.http_client import OK
+        from six.moves.urllib.parse import parse_qsl
+        from six.moves.urllib.parse import urlsplit
+        from gcloud.streaming import http_wrapper
+
+        BLOB_NAME = 'blob-name'
+        UPLOAD_URL = 'http://example.com/upload/name/key'
+        DATA = b'ABCDE'
+        loc_response = {'status': OK, 'location': UPLOAD_URL}
+        chunk1_response = {'status': http_wrapper.RESUME_INCOMPLETE,
+                           'range': 'bytes 0-4'}
+        chunk2_response = {'status': OK}
+        # Need valid JSON on last response, since resumable.
+        connection = _Connection(
+            (loc_response, b''),
+            (chunk1_response, b''),
+            (chunk2_response, b'{}'),
+        )
+        client = _Client(connection)
+        bucket = _Bucket(client)
+        blob = self._makeOne(BLOB_NAME, bucket=bucket)
+        blob._CHUNK_SIZE_MULTIPLE = 1
+        blob.chunk_size = 5
+
+        from gcloud.streaming.test_transfer import _Stream
+        file_obj = _Stream(DATA)
+
+        # Mock stream closes at end of data, like a socket might
+        def is_stream_closed(stream):
+            if stream.tell() < len(DATA):
+                return stream._closed
+            else:
+                return stream.close() or True
+
+        _Stream.closed = property(is_stream_closed)
+
+        def fileno_mock():
+            from io import UnsupportedOperation
+            raise UnsupportedOperation()
+
+        file_obj.fileno = fileno_mock
+
+        blob.upload_from_file(file_obj)
+
+        # Remove the temp property
+        delattr(_Stream, "closed")
+
+        rq = connection.http._requested
+        self.assertEqual(len(rq), 3)
+
+        # Requested[0]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[0].pop('headers').items()])
+        self.assertEqual(headers['Content-Length'], '0')
+        self.assertEqual(headers['X-Upload-Content-Type'],
+                         'application/octet-stream')
+
+        uri = rq[0].pop('uri')
+        scheme, netloc, path, qs, _ = urlsplit(uri)
+        self.assertEqual(scheme, 'http')
+        self.assertEqual(netloc, 'example.com')
+        self.assertEqual(path, '/b/name/o')
+        self.assertEqual(dict(parse_qsl(qs)),
+                         {'uploadType': 'resumable', 'name': BLOB_NAME})
+        self.assertEqual(rq[0], {
+            'method': 'POST',
+            'body': '',
+            'connection_type': None,
+            'redirections': 5,
+        })
+
+        # Requested[1]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[1].pop('headers').items()])
+        self.assertEqual(headers['Content-Range'], 'bytes 0-4/*')
+        self.assertEqual(rq[1], {
+            'method': 'PUT',
+            'uri': UPLOAD_URL,
+            'body': DATA[:5],
+            'connection_type': None,
+            'redirections': 5,
+        })
+
+        # Requested[2]
+        headers = dict(
+            [(x.title(), str(y)) for x, y in rq[2].pop('headers').items()])
+        self.assertEqual(headers['Content-Range'], 'bytes */5')
+        self.assertEqual(rq[2], {
+            'method': 'PUT',
+            'uri': UPLOAD_URL,
+            'body': DATA[5:],
+            'connection_type': None,
+            'redirections': 5,
+        })
+
     def test_upload_from_file_simple(self):
         self._upload_from_file_simple_test_helper(
             expected_content_type='application/octet-stream')

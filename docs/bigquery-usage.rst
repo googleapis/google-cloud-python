@@ -16,31 +16,14 @@ Authentication / Configuration
   and
   :meth:`from_service_account_p12 <gcloud.bigquery.client.Client.from_service_account_p12>`.
 
-- After setting ``GOOGLE_APPLICATION_CREDENTIALS`` and ``GCLOUD_PROJECT``
-  environment variables, create an instance of
+- After setting :envvar:`GOOGLE_APPLICATION_CREDENTIALS` and
+  :envvar:`GCLOUD_PROJECT` environment variables, create an instance of
   :class:`Client <gcloud.bigquery.client.Client>`.
 
   .. doctest::
 
      >>> from gcloud import bigquery
      >>> client = bigquery.Client()
-
-- Override the credentials inferred from the environment by passing explicit
-  ``credentials`` to one of the alternative ``classmethod`` factories,
-  :meth:`gcloud.bigquery.client.Client.from_service_account_json`:
-
-  .. doctest::
-
-     >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_json('/path/to/creds.json')
-
-  or :meth:`gcloud.bigquery.client.Client.from_service_account_p12`:
-
-  .. doctest::
-
-     >>> from gcloud import bigquery
-     >>> client = bigquery.Client.from_service_account_p12(
-     ...     '/path/to/creds.p12', 'jrandom@example.com')
 
 
 Projects
@@ -61,12 +44,14 @@ To override the project inferred from the environment, pass an explicit
      >>> from gcloud import bigquery
      >>> client = bigquery.Client(project='PROJECT_ID')
 
+
 Project ACLs
 ~~~~~~~~~~~~
 
 Each project has an access control list granting reader / writer / owner
 permission to one or more entities.  This list cannot be queried or set
 via the API:  it must be managed using the Google Developer Console.
+
 
 Datasets
 --------
@@ -80,57 +65,39 @@ policies to tables as they are created:
 - A default table expiration period.  If set, tables created within the
   dataset will have the value as their expiration period.
 
+
 Dataset operations
 ~~~~~~~~~~~~~~~~~~
 
+List datasets for the client's project:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_list_datasets]
+   :end-before: [END client_list_datasets]
+
 Create a new dataset for the client's project:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.create()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_create]
+   :end-before: [END dataset_create]
 
 Check for the existence of a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.exists()  # API request
-   True
-
-List datasets for the client's project:
-
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> datasets, next_page_token = client.list_datasets()  # API request
-   >>> [dataset.name for dataset in datasets]
-   ['dataset_name']
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_exists]
+   :end-before: [END dataset_exists]
 
 Refresh metadata for a dataset (to pick up changes made by another client):
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.reload()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_reload]
+   :end-before: [END dataset_reload]
 
 Patch metadata for a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> one_day_ms = 24 * 60 * 60 * 1000
-   >>> dataset.patch(description='Description goes here',
-   ...               default_table_expiration_ms=one_day_ms)  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_patch]
+   :end-before: [END dataset_patch]
 
 Replace the ACL for a dataset, and update all writeable fields:
 
@@ -147,12 +114,9 @@ Replace the ACL for a dataset, and update all writeable fields:
 
 Delete a dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.delete()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_delete]
+   :end-before: [END dataset_delete]
 
 
 Tables
@@ -160,107 +124,64 @@ Tables
 
 Tables exist within datasets.  List tables for the dataset:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> tables, next_page_token = dataset.list_tables()  # API request
-   >>> [table.name for table in tables]
-   ['table_name']
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START dataset_list_tables]
+   :end-before: [END dataset_list_tables]
 
 Create a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.create()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_create]
+   :end-before: [END table_create]
 
 Check for the existence of a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.exists()  # API request
-   True
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_exists]
+   :end-before: [END table_exists]
 
 Refresh metadata for a table (to pick up changes made by another client):
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> dataset.reload()  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_reload]
+   :end-before: [END table_reload]
 
 Patch specific properties for a table:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.patch(friendly_name='Person Ages',
-   ...             description='Ages of persons')  # API request
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_patch]
+   :end-before: [END table_patch]
 
 Update all writable metadata for a table
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> table.update()  # API request
-
-Upload table data from a file:
-
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> with open('person_ages.csv', 'rb') as csv_file:
-   ...     table.upload_from_file(csv_file, CSV,
-   ...                            create_disposition='CREATE_IF_NEEDED')
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_update]
+   :end-before: [END table_update]
 
 Get rows from a table's data:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_fetch_data]
+   :end-before: [END table_fetch_data]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> rows, next_page_token = table.fetch_data(max_results=100)  # API request
-   >>> for row in rows:
-   ...     for field, value in zip(table.schema, row):
-   ...         do_something(field, value)
+Insert rows into a table's data:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_insert_data]
+   :end-before: [END table_insert_data]
+
+Upload table data from a file:
+
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_upload_from_file]
+   :end-before: [END table_upload_from_file]
 
 Delete a table:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START table_delete]
+   :end-before: [END table_delete]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> dataset = client.dataset('dataset_name')
-   >>> table = dataset.table(name='person_ages')
-   >>> table.delete()  # API request
 
 Jobs
 ----
@@ -274,104 +195,34 @@ Jobs describe actions peformed on data in BigQuery tables:
 
 List jobs for a project:
 
-.. doctest::
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_list_jobs]
+   :end-before: [END client_list_jobs]
 
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> jobs, token = client.list_jobs()  # API request
-   >>> [(job.name, job.job_type, job.created, job.state) for job in jobs]
-   ['load-table-job', 'load', (datetime.datetime(2015, 7, 23, 9, 30, 20, 268260, tzinfo=<UTC>), 'done')]
 
 Querying data (synchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Run a query which can be expected to complete within bounded time:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT count(*) AS age_count FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   True
-   >>> len(query.schema)
-   1
-   >>> field = query.schema[0]
-   >>> field.name
-   u'count'
-   >>> field.field_type
-   u'INTEGER'
-   >>> field.mode
-   u'NULLABLE'
-   >>> query.rows
-   [(15,)]
-   >>> query.total_rows
-   1
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query]
+   :end-before: [END client_run_sync_query]
 
 If the rows returned by the query do not fit into the inital response,
 then we need to fetch the remaining rows via ``fetch_data``:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT * FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   True
-   >>> query.total_rows
-   1234
-   >>> query.page_token
-   '8d6e452459238eb0fe87d8eb191dd526ee70a35e'
-   >>> do_something_with(query.schema, query.rows)
-   >>> token = query.page_token  # for initial request
-   >>> while True:
-   ...     do_something_with(query.schema, rows)
-   ...     if token is None:
-   ...         break
-   ...     rows, _, token = query.fetch_data(page_token=token)
-
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query_paged]
+   :end-before: [END client_run_sync_query_paged]
 
 If the query takes longer than the timeout allowed, ``query.complete``
 will be ``False``.  In that case, we need to poll the associated job until
 it is done, and then fetch the reuslts:
 
-.. doctest::
-
-   >>> from gcloud import bigquery
-   >>> client = bigquery.Client()
-   >>> QUERY = """\
-   ... SELECT * FROM dataset_name.person_ages
-   ... """
-   >>> query = client.run_sync_query(QUERY)
-   >>> query.timeout_ms = 1000
-   >>> query.run()  # API request
-   >>> query.complete
-   False
-   >>> job = query.job
-   >>> retry_count = 100
-   >>> while retry_count > 0 and job.state == 'running':
-   ...     retry_count -= 1
-   ...     time.sleep(10)
-   ...     job.reload()  # API call
-   >>> job.state
-   'done'
-   >>> token = None  # for initial request
-   >>> while True:
-   ...     rows, _, token = query.fetch_data(page_token=token)
-   ...     do_something_with(query.schema, rows)
-   ...     if token is None:
-   ...         break
-
+.. literalinclude:: bigquery_snippets.py
+   :start-after: [START client_run_sync_query_timeout]
+   :end-before: [END client_run_sync_query_timeout]
 
 
 Querying data (asynchronous)
@@ -433,25 +284,6 @@ Poll until the job is complete:
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
 
-Inserting data (synchronous)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Load data synchronously from a local CSV file into a new table:
-
-.. doctest::
-
-   >>> import csv
-   >>> from gcloud import bigquery
-   >>> from gcloud.bigquery import SchemaField
-   >>> client = bigquery.Client()
-   >>> table = dataset.table(name='person_ages')
-   >>> table.schema = [
-   ...     SchemaField('full_name', 'STRING', mode='required'),
-   ...     SchemaField('age', 'INTEGER', mode='required)]
-   >>> with open('/path/to/person_ages.csv', 'rb') as file_obj:
-   ...     reader = csv.reader(file_obj)
-   ...     rows = list(reader)
-   >>> table.insert_data(rows)  # API request
 
 Inserting data (asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -513,6 +345,7 @@ Poll until the job is complete:
    'done'
    >>> job.ended
    datetime.datetime(2015, 7, 23, 9, 30, 21, 334792, tzinfo=<UTC>)
+
 
 Exporting data (async)
 ~~~~~~~~~~~~~~~~~~~~~~

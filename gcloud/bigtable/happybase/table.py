@@ -109,13 +109,13 @@ class Table(object):
 
     def __init__(self, name, connection):
         self.name = name
-        # This remains as legacy for HappyBase, but only the cluster
+        # This remains as legacy for HappyBase, but only the instance
         # from the connection is needed.
         self.connection = connection
         self._low_level_table = None
         if self.connection is not None:
             self._low_level_table = _LowLevelTable(self.name,
-                                                   self.connection._cluster)
+                                                   self.connection._instance)
 
     def __repr__(self):
         return '<table.Table name=%r>' % (self.name,)
@@ -378,42 +378,8 @@ class Table(object):
                  :class:`TypeError <exceptions.TypeError>` if a string
                  ``filter`` is used.
         """
-        filter_ = kwargs.pop('filter', None)
-        legacy_args = []
-        for kw_name in ('batch_size', 'scan_batching', 'sorted_columns'):
-            if kw_name in kwargs:
-                legacy_args.append(kw_name)
-                kwargs.pop(kw_name)
-        if legacy_args:
-            legacy_args = ', '.join(legacy_args)
-            message = ('The HappyBase legacy arguments %s were used. These '
-                       'arguments are unused by gcloud.' % (legacy_args,))
-            _WARN(message)
-        if kwargs:
-            raise TypeError('Received unexpected arguments', kwargs.keys())
-
-        if limit is not None and limit < 1:
-            raise ValueError('limit must be positive')
-        if row_prefix is not None:
-            if row_start is not None or row_stop is not None:
-                raise ValueError('row_prefix cannot be combined with '
-                                 'row_start or row_stop')
-            row_start = row_prefix
-            row_stop = _string_successor(row_prefix)
-
-        filters = []
-        if isinstance(filter_, six.string_types):
-            raise TypeError('Specifying filters as a string is not supported '
-                            'by Cloud Bigtable. Use a '
-                            'gcloud.bigtable.row.RowFilter instead.')
-        elif filter_ is not None:
-            filters.append(filter_)
-
-        if columns is not None:
-            filters.append(_columns_filter_helper(columns))
-        # versions == 1 since we only want the latest.
-        filter_chain = _filter_chain_helper(versions=1, timestamp=timestamp,
-                                            filters=filters)
+        row_start, row_stop, filter_chain = _scan_filter_helper(
+            row_start, row_stop, row_prefix, columns, timestamp, limit, kwargs)
 
         partial_rows_data = self._low_level_table.read_rows(
             start_key=row_start, end_key=row_stop,
@@ -424,11 +390,12 @@ class Table(object):
         while True:
             try:
                 partial_rows_data.consume_next()
-                row_key, curr_row_data = rows_dict.popitem()
-                # NOTE: We expect len(rows_dict) == 0, but don't check it.
-                curr_row_dict = _partial_row_to_dict(
-                    curr_row_data, include_timestamp=include_timestamp)
-                yield (row_key, curr_row_dict)
+                for row_key in sorted(rows_dict):
+                    curr_row_data = rows_dict.pop(row_key)
+                    # NOTE: We expect len(rows_dict) == 0, but don't check it.
+                    curr_row_dict = _partial_row_to_dict(
+                        curr_row_data, include_timestamp=include_timestamp)
+                    yield (row_key, curr_row_dict)
             except StopIteration:
                 break
 
@@ -909,6 +876,49 @@ def _filter_chain_helper(column=None, versions=None, timestamp=None,
         return filters[0]
     else:
         return RowFilterChain(filters=filters)
+
+
+def _scan_filter_helper(row_start, row_stop, row_prefix, columns,
+                        timestamp, limit, kwargs):
+    """Helper for :meth:`scan`:  build up a filter chain."""
+    filter_ = kwargs.pop('filter', None)
+    legacy_args = []
+    for kw_name in ('batch_size', 'scan_batching', 'sorted_columns'):
+        if kw_name in kwargs:
+            legacy_args.append(kw_name)
+            kwargs.pop(kw_name)
+    if legacy_args:
+        legacy_args = ', '.join(legacy_args)
+        message = ('The HappyBase legacy arguments %s were used. These '
+                   'arguments are unused by gcloud.' % (legacy_args,))
+        _WARN(message)
+    if kwargs:
+        raise TypeError('Received unexpected arguments', kwargs.keys())
+
+    if limit is not None and limit < 1:
+        raise ValueError('limit must be positive')
+    if row_prefix is not None:
+        if row_start is not None or row_stop is not None:
+            raise ValueError('row_prefix cannot be combined with '
+                             'row_start or row_stop')
+        row_start = row_prefix
+        row_stop = _string_successor(row_prefix)
+
+    filters = []
+    if isinstance(filter_, six.string_types):
+        raise TypeError('Specifying filters as a string is not supported '
+                        'by Cloud Bigtable. Use a '
+                        'gcloud.bigtable.row.RowFilter instead.')
+    elif filter_ is not None:
+        filters.append(filter_)
+
+    if columns is not None:
+        filters.append(_columns_filter_helper(columns))
+
+    # versions == 1 since we only want the latest.
+    filter_ = _filter_chain_helper(versions=1, timestamp=timestamp,
+                                   filters=filters)
+    return row_start, row_stop, filter_
 
 
 def _columns_filter_helper(columns):

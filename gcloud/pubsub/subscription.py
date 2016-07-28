@@ -123,6 +123,24 @@ class Subscription(object):
         """URL path for the subscription's APIs"""
         return '/%s' % (self.full_name,)
 
+    def auto_ack(self, return_immediately=False, max_messages=1, client=None):
+        """:class:`AutoAck` factory
+
+        :type return_immediately: boolean
+        :param return_immediately: passed through to :meth:`Subscription.pull`
+
+        :type max_messages: int
+        :param max_messages: passed through to :meth:`Subscription.pull`
+
+        :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+        :param client: passed through to :meth:`Subscription.pull` and
+                      :meth:`Subscription.acknowledge`.
+
+        :rtype: :class:`AutoAck`
+        :returns: the instance created for the given ``ack_id`` and ``message``
+        """
+        return AutoAck(self, return_immediately, max_messages, client)
+
     def _require_client(self, client):
         """Check client or verify over-ride.
 
@@ -420,3 +438,53 @@ class Subscription(object):
         api = client.iam_policy_api
         return api.test_iam_permissions(
             self.full_name, list(permissions))
+
+
+class AutoAck(dict):
+    """Wrapper for :meth:`Subscription.pull` results.
+
+    Mapping, tracks messages still-to-be-acknowledged.
+
+    When used as a context manager, acknowledges all messages still in the
+    mapping on `__exit__`.  When processing the pulled messsages, application
+    code MUST delete messages from the :class:`AutoAck` mapping which are not
+    successfully processed, e.g.:
+
+    .. code-block: python
+
+       with AutoAck(subscription) as ack:  # calls ``subscription.pull``
+           for ack_id, message in ack.items():
+               try:
+                   do_something_with(message):
+               except:
+                   del ack[ack_id]
+
+    :type subscription: :class:`Subscription`
+    :param subscription: subcription to be pulled.
+
+    :type return_immediately: boolean
+    :param return_immediately: passed through to :meth:`Subscription.pull`
+
+    :type max_messages: int
+    :param max_messages: passed through to :meth:`Subscription.pull`
+
+    :type client: :class:`gcloud.pubsub.client.Client` or ``NoneType``
+    :param client: passed through to :meth:`Subscription.pull` and
+                   :meth:`Subscription.acknowledge`.
+    """
+    def __init__(self, subscription,
+                 return_immediately=False, max_messages=1, client=None):
+        super(AutoAck, self).__init__()
+        self._subscription = subscription
+        self._return_immediately = return_immediately
+        self._max_messages = max_messages
+        self._client = client
+
+    def __enter__(self):
+        items = self._subscription.pull(
+            self._return_immediately, self._max_messages, self._client)
+        self.update(items)
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._subscription.acknowledge(list(self), self._client)

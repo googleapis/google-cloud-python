@@ -29,7 +29,7 @@ Here's a quick example of the full life-cycle:
 
     >>> # Create a new project
     >>> new_project = client.new_project('your-project-id-here',
-    ...                                  name='My new project)
+    ...                                  name='My new project')
     >>> new_project.create()
 
     >>> # Update an existing project

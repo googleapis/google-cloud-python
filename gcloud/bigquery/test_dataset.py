@@ -636,8 +636,6 @@ class TestDataset(unittest2.TestCase):
         self.assertEqual(req['path'], '/%s' % PATH)
 
     def test_list_tables_empty(self):
-        from gcloud.bigquery.table import Table
-
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)
         dataset = self._makeOne(self.DS_NAME, client=client)

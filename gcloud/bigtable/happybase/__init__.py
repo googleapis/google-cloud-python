@@ -84,9 +84,9 @@ API Behavior Changes
   * ``protocol``
 * In order to make
   :class:`Connection <gcloud.bigtable.happybase.connection.Connection>`
-  compatible with Cloud Bigtable, we add a ``cluster`` keyword argument to
+  compatible with Cloud Bigtable, we add a ``instance`` keyword argument to
   allow users to pass in their own
-  :class:`Cluster <gcloud.bigtable.cluster.Cluster>` (which they can
+  :class:`Instance <gcloud.bigtable.instance.Instance>` (which they can
   construct beforehand).
 
   For example:
@@ -95,11 +95,11 @@ API Behavior Changes
 
       from gcloud.bigtable.client import Client
       client = Client(project=PROJECT_ID, admin=True)
-      cluster = client.cluster(zone, cluster_id)
-      cluster.reload()
+      instance = client.instance(instance_id, location_id)
+      instance.reload()
 
       from gcloud.bigtable.happybase import Connection
-      connection = Connection(cluster=cluster)
+      connection = Connection(instance=instance)
 
 * Any uses of the ``wal`` (Write Ahead Log) argument will result in a
   warning as well. This includes uses in:

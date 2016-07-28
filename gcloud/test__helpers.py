@@ -183,34 +183,42 @@ class Test__get_credentials_file_project_id(unittest2.TestCase):
 class Test__get_default_service_project_id(unittest2.TestCase):
     config_path = '.config/gcloud/configurations/'
     config_file = 'config_default'
+    temp_APPDATA = ''
 
     def setUp(self):
         import tempfile
         import os
 
         self.temp_config_path = tempfile.mkdtemp()
+        self.temp_APPDATA = os.getenv('APPDATA')
+        if self.temp_APPDATA:  # pragma: NO COVER Windows
+            os.environ['APPDATA'] = self.temp_config_path
 
+        self.config_path = os.path.join(os.getenv('APPDATA', '~/.config'),
+                                        'gcloud', 'configurations')
         conf_path = os.path.join(self.temp_config_path, self.config_path)
         os.makedirs(conf_path)
-        full_config_path = os.path.join(conf_path, self.config_file)
+        self.temp_config_file = os.path.join(conf_path, self.config_file)
 
-        self.temp_config_file = full_config_path
-
-        with open(full_config_path, 'w') as conf_file:
+        with open(self.temp_config_file, 'w') as conf_file:
             conf_file.write('[core]\nproject = test-project-id')
 
     def tearDown(self):
         import shutil
-
-        shutil.rmtree(self.temp_config_path)
+        import os
+        if os.path.exists(self.temp_config_path):
+            shutil.rmtree(self.temp_config_path)
+        if self.temp_APPDATA:  # pragma: NO COVER Windows
+            os.environ['APPDATA'] = self.temp_APPDATA
 
     def callFUT(self, project_id=None):
         import os
         from gcloud._helpers import _default_service_project_id
         from gcloud._testing import _Monkey
 
-        def mock_expanduser(path=''):
-            if project_id and path.startswith('~'):
+        def mock_expanduser(path=None):
+            if project_id and path:
+                __import__('pwd')  # Simulate actual expanduser imports.
                 return self.temp_config_file
             return ''
 
@@ -221,7 +229,21 @@ class Test__get_default_service_project_id(unittest2.TestCase):
         project_id = self.callFUT('test-project-id')
         self.assertEqual('test-project-id', project_id)
 
+    def test_gae_without_expanduser(self):
+        import sys
+        import shutil
+        shutil.rmtree(self.temp_config_path)
+
+        try:
+            sys.modules['pwd'] = None  # Blocks pwd from being imported.
+            project_id = self.callFUT('test-project-id')
+            self.assertEqual(None, project_id)
+        finally:
+            del sys.modules['pwd']  # Unblocks importing of pwd.
+
     def test_info_value_not_present(self):
+        import shutil
+        shutil.rmtree(self.temp_config_path)
         project_id = self.callFUT()
         self.assertEqual(None, project_id)
 

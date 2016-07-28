@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Google Cloud Logging API wrapper."""
+"""Google Stackdriver Logging API wrapper."""
 
 from gcloud.logging.client import Client
 from gcloud.logging.connection import Connection

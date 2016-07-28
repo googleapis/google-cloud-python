@@ -188,12 +188,19 @@ def _default_service_project_id():
     :rtype: str or ``NoneType``
     :returns: Project-ID from default configuration file else ``None``
     """
-    full_config_path = os.path.expanduser(DEFAULT_CONFIGURATION_PATH)
-    win32_config_path = os.path.join(os.getenv('APPDATA', ''),
-                                     'gcloud', 'configurations',
-                                     'config_default')
+    search_paths = []
+    # Workaround for GAE not supporting pwd which is used by expanduser.
+    try:
+        search_paths.append(os.path.expanduser(DEFAULT_CONFIGURATION_PATH))
+    except ImportError:
+        pass
+
+    windows_config_path = os.path.join(os.getenv('APPDATA', ''),
+                                       'gcloud', 'configurations',
+                                       'config_default')
+    search_paths.append(windows_config_path)
     config = configparser.RawConfigParser()
-    config.read([full_config_path, win32_config_path])
+    config.read(search_paths)
 
     if config.has_section('core'):
         return config.get('core', 'project')

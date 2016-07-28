@@ -178,7 +178,8 @@ class Client(JSONClient):
         path = '/projects/%s/jobs' % (self.project,)
         resp = self.connection.api_request(method='GET', path=path,
                                            query_params=params)
-        jobs = [self.job_from_resource(resource) for resource in resp['jobs']]
+        jobs = [self.job_from_resource(resource)
+                for resource in resp.get('jobs', ())]
         return jobs, resp.get('nextPageToken')
 
     def load_table_from_storage(self, job_name, destination, *source_uris):

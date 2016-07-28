@@ -57,3 +57,4 @@ scripts/pylintrc_reduced
 generated_python/
 cloud-bigtable-client/
 googleapis-pb/
+grpc_python_venv/

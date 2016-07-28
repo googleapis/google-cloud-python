@@ -5,7 +5,7 @@ Using the API
 Introduction
 ------------
 
-With the Monitoring API, you can work with Stackdriver metric data
+With the Stackdriver Monitoring API, you can work with Stackdriver metric data
 pertaining to monitored resources in Google Cloud Platform (GCP)
 or elsewhere.
 
@@ -21,7 +21,7 @@ Essential concepts:
 - A **time series** is a collection of data points associated with
   points or intervals in time.
 
-Please refer to the documentation for the `Monitoring API`_ for
+Please refer to the documentation for the `Stackdriver Monitoring API`_ for
 more information.
 
 At present, this client library supports the following features
@@ -32,13 +32,13 @@ of the API:
 - Creation and deletion of metric descriptors for custom metrics.
 - (Writing of custom metric data will be coming soon.)
 
-.. _Monitoring API: https://cloud.google.com/monitoring/api/v3/
+.. _Stackdriver Monitoring API: https://cloud.google.com/monitoring/api/v3/
 
 
-The Monitoring Client Object
-----------------------------
+The Stackdriver Monitoring Client Object
+----------------------------------------
 
-The monitoring client library generally makes its
+The Stackdriver Monitoring client library generally makes its
 functionality available as methods of the monitoring
 :class:`~gcloud.monitoring.client.Client` class.
 A :class:`~gcloud.monitoring.client.Client` instance holds

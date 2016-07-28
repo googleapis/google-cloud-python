@@ -56,7 +56,6 @@ class TestChanges(unittest2.TestCase):
 
     def _verifyResourceProperties(self, changes, resource, zone):
         from gcloud._helpers import _rfc3339_to_datetime
-        from gcloud._helpers import UTC
         self.assertEqual(changes.name, resource['id'])
         started = _rfc3339_to_datetime(resource['startTime'])
         self.assertEqual(changes.started, started)

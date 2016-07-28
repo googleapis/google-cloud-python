@@ -54,25 +54,25 @@ _DISABLE_DELETE_MSG = ('The disable argument should not be used in '
                        'of enabled / disabled tables.')
 
 
-def _get_cluster(timeout=None):
-    """Gets cluster for the default project.
+def _get_instance(timeout=None):
+    """Gets instance for the default project.
 
     Creates a client with the inferred credentials and project ID from
     the local environment. Then uses
-    :meth:`.bigtable.client.Client.list_clusters` to
-    get the unique cluster owned by the project.
+    :meth:`.bigtable.client.Client.list_instances` to
+    get the unique instance owned by the project.
 
-    If the request fails for any reason, or if there isn't exactly one cluster
+    If the request fails for any reason, or if there isn't exactly one instance
     owned by the project, then this function will fail.
 
     :type timeout: int
     :param timeout: (Optional) The socket timeout in milliseconds.
 
-    :rtype: :class:`gcloud.bigtable.cluster.Cluster`
-    :returns: The unique cluster owned by the project inferred from
+    :rtype: :class:`gcloud.bigtable.instance.Instance`
+    :returns: The unique instance owned by the project inferred from
               the environment.
     :raises: :class:`ValueError <exceptions.ValueError>` if there is a failed
-             zone or any number of clusters other than one.
+             location or any number of instances other than one.
     """
     client_kwargs = {'admin': True}
     if timeout is not None:
@@ -80,20 +80,20 @@ def _get_cluster(timeout=None):
     client = Client(**client_kwargs)
     try:
         client.start()
-        clusters, failed_zones = client.list_clusters()
+        instances, failed_locations = client.list_instances()
     finally:
         client.stop()
 
-    if len(failed_zones) != 0:
-        raise ValueError('Determining cluster via ListClusters encountered '
-                         'failed zones.')
-    if len(clusters) == 0:
-        raise ValueError('This client doesn\'t have access to any clusters.')
-    if len(clusters) > 1:
-        raise ValueError('This client has access to more than one cluster. '
-                         'Please directly pass the cluster you\'d '
+    if len(failed_locations) != 0:
+        raise ValueError('Determining instance via ListInstances encountered '
+                         'failed locations.')
+    if len(instances) == 0:
+        raise ValueError('This client doesn\'t have access to any instances.')
+    if len(instances) > 1:
+        raise ValueError('This client has access to more than one instance. '
+                         'Please directly pass the instance you\'d '
                          'like to use.')
-    return clusters[0]
+    return instances[0]
 
 
 class Connection(object):
@@ -101,10 +101,10 @@ class Connection(object):
 
     .. note::
 
-        If you pass a ``cluster``, it will be :meth:`.Cluster.copy`-ed before
+        If you pass a ``instance``, it will be :meth:`.Instance.copy`-ed before
         being stored on the new connection. This also copies the
         :class:`Client <gcloud.bigtable.client.Client>` that created the
-        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` instance and the
+        :class:`Instance <gcloud.bigtable.instance.Instance>` instance and the
         :class:`Credentials <oauth2client.client.Credentials>` stored on the
         client.
 
@@ -127,8 +127,8 @@ class Connection(object):
     :param table_prefix_separator: (Optional) Separator used with
                                    ``table_prefix``. Defaults to ``_``.
 
-    :type cluster: :class:`Cluster <gcloud.bigtable.cluster.Cluster>`
-    :param cluster: (Optional) A Cloud Bigtable cluster. The instance also
+    :type instance: :class:`Instance <gcloud.bigtable.instance.Instance>`
+    :param instance: (Optional) A Cloud Bigtable instance. The instance also
                     owns a client for making gRPC requests to the Cloud
                     Bigtable API. If not passed in, defaults to creating client
                     with ``admin=True`` and using the ``timeout`` here for the
@@ -136,7 +136,7 @@ class Connection(object):
                     :class:`Client <gcloud.bigtable.client.Client>`
                     constructor. The credentials for the client
                     will be the implicit ones loaded from the environment.
-                    Then that client is used to retrieve all the clusters
+                    Then that client is used to retrieve all the instances
                     owned by the client's project.
 
     :type kwargs: dict
@@ -144,10 +144,10 @@ class Connection(object):
                    compatibility.
     """
 
-    _cluster = None
+    _instance = None
 
     def __init__(self, timeout=None, autoconnect=True, table_prefix=None,
-                 table_prefix_separator='_', cluster=None, **kwargs):
+                 table_prefix_separator='_', instance=None, **kwargs):
         self._handle_legacy_args(kwargs)
         if table_prefix is not None:
             if not isinstance(table_prefix, six.string_types):
@@ -162,13 +162,13 @@ class Connection(object):
         self.table_prefix = table_prefix
         self.table_prefix_separator = table_prefix_separator
 
-        if cluster is None:
-            self._cluster = _get_cluster(timeout=timeout)
+        if instance is None:
+            self._instance = _get_instance(timeout=timeout)
         else:
             if timeout is not None:
                 raise ValueError('Timeout cannot be used when an existing '
-                                 'cluster is passed')
-            self._cluster = cluster.copy()
+                                 'instance is passed')
+            self._instance = instance.copy()
 
         if autoconnect:
             self.open()
@@ -203,23 +203,23 @@ class Connection(object):
 
         This method opens the underlying HTTP/2 gRPC connection using a
         :class:`Client <gcloud.bigtable.client.Client>` bound to the
-        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` owned by
+        :class:`Instance <gcloud.bigtable.instance.Instance>` owned by
         this connection.
         """
-        self._cluster._client.start()
+        self._instance._client.start()
 
     def close(self):
         """Close the underlying transport to Cloud Bigtable.
 
         This method closes the underlying HTTP/2 gRPC connection using a
         :class:`Client <gcloud.bigtable.client.Client>` bound to the
-        :class:`Cluster <gcloud.bigtable.cluster.Cluster>` owned by
+        :class:`Instance <gcloud.bigtable.instance.Instance>` owned by
         this connection.
         """
-        self._cluster._client.stop()
+        self._instance._client.stop()
 
     def __del__(self):
-        if self._cluster is not None:
+        if self._instance is not None:
             self.close()
 
     def _table_name(self, name):
@@ -258,7 +258,7 @@ class Connection(object):
 
         .. note::
 
-            This lists every table in the cluster owned by this connection,
+            This lists every table in the instance owned by this connection,
             **not** every table that a given user may have access to.
 
         .. note::
@@ -269,7 +269,7 @@ class Connection(object):
         :rtype: list
         :returns: List of string table names.
         """
-        low_level_table_instances = self._cluster.list_tables()
+        low_level_table_instances = self._instance.list_tables()
         table_names = [table_instance.table_id
                        for table_instance in low_level_table_instances]
 
@@ -345,7 +345,7 @@ class Connection(object):
 
         # Create table instance and then make API calls.
         name = self._table_name(name)
-        low_level_table = _LowLevelTable(name, self._cluster)
+        low_level_table = _LowLevelTable(name, self._instance)
         try:
             low_level_table.create()
         except face.NetworkError as network_err:
@@ -376,7 +376,7 @@ class Connection(object):
             _WARN(_DISABLE_DELETE_MSG)
 
         name = self._table_name(name)
-        _LowLevelTable(name, self._cluster).delete()
+        _LowLevelTable(name, self._instance).delete()
 
     def enable_table(self, name):
         """Enable the specified table.

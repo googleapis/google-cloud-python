@@ -443,6 +443,9 @@ class Batch(object):
         :param client: the client to use.  If not passed, falls back to the
                        ``client`` stored on the current batch.
         """
+        if not self.messages:
+            return
+
         if client is None:
             client = self.client
         api = client.publisher_api

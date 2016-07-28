@@ -7,20 +7,20 @@ Table Admin API
     ``grpcio`` is only supported in Python 2.7, so importing
     :mod:`gcloud.bigtable` in other versions of Python will fail.
 
-After creating a :class:`Cluster <gcloud.bigtable.cluster.Cluster>`, you can
+After creating a :class:`Instance <gcloud.bigtable.instance.Instance>`, you can
 interact with individual tables, groups of tables or column families within
 a table.
 
 List Tables
 -----------
 
-If you want a comprehensive list of all existing tables in a cluster, make a
+If you want a comprehensive list of all existing tables in a instance, make a
 `ListTables`_ API request with
-:meth:`Cluster.list_tables() <gcloud.bigtable.cluster.Cluster.list_tables>`:
+:meth:`Instance.list_tables() <gcloud.bigtable.instance.Instance.list_tables>`:
 
 .. code:: python
 
-    >>> cluster.list_tables()
+    >>> instance.list_tables()
     [<gcloud.bigtable.table.Table at 0x7ff6a1de8f50>,
      <gcloud.bigtable.table.Table at 0x7ff6a1de8350>]
 
@@ -31,7 +31,7 @@ To create a :class:`Table <gcloud.bigtable.table.Table>` object:
 
 .. code:: python
 
-    table = cluster.table(table_id)
+    table = instance.table(table_id)
 
 Even if this :class:`Table <gcloud.bigtable.table.Table>` already
 has been created with the API, you'll want this object to use as a
@@ -64,17 +64,6 @@ Make a `DeleteTable`_ API request with
 .. code:: python
 
     table.delete()
-
-Rename an existing Table
-------------------------
-
-Though the `RenameTable`_ API request is listed in the service
-definition, requests to that method return::
-
-    BigtableTableService.RenameTable is not yet implemented
-
-We have implemented :meth:`rename() <gcloud.bigtable.table.Table.rename>`
-but it will not work unless the backend supports the method.
 
 List Column Families in a Table
 -------------------------------

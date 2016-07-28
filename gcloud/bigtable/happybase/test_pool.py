@@ -31,10 +31,10 @@ class TestConnectionPool(unittest2.TestCase):
         from gcloud.bigtable.happybase.connection import Connection
 
         size = 11
-        cluster_copy = _Cluster()
-        all_copies = [cluster_copy] * size
-        cluster = _Cluster(copies=all_copies)  # Avoid implicit environ check.
-        pool = self._makeOne(size, cluster=cluster)
+        instance_copy = _Instance()
+        all_copies = [instance_copy] * size
+        instance = _Instance(all_copies)  # Avoid implicit environ check.
+        pool = self._makeOne(size, instance=instance)
 
         self.assertTrue(isinstance(pool._lock, type(threading.Lock())))
         self.assertTrue(isinstance(pool._thread_connections, threading.local))
@@ -46,17 +46,17 @@ class TestConnectionPool(unittest2.TestCase):
         self.assertEqual(queue.maxsize, size)
         for connection in queue.queue:
             self.assertTrue(isinstance(connection, Connection))
-            self.assertTrue(connection._cluster is cluster_copy)
+            self.assertTrue(connection._instance is instance_copy)
 
     def test_constructor_passes_kwargs(self):
         table_prefix = 'foo'
         table_prefix_separator = '<>'
-        cluster = _Cluster()  # Avoid implicit environ check.
+        instance = _Instance()  # Avoid implicit environ check.
 
         size = 1
         pool = self._makeOne(size, table_prefix=table_prefix,
                              table_prefix_separator=table_prefix_separator,
-                             cluster=cluster)
+                             instance=instance)
 
         for connection in pool._queue.queue:
             self.assertEqual(connection.table_prefix, table_prefix)
@@ -76,53 +76,52 @@ class TestConnectionPool(unittest2.TestCase):
                 self._open_called = True
 
         # First make sure the custom Connection class does as expected.
-        cluster_copy1 = _Cluster()
-        cluster_copy2 = _Cluster()
-        cluster_copy3 = _Cluster()
-        cluster = _Cluster(
-            copies=[cluster_copy1, cluster_copy2, cluster_copy3])
-        connection = ConnectionWithOpen(autoconnect=False, cluster=cluster)
+        instance_copy1 = _Instance()
+        instance_copy2 = _Instance()
+        instance_copy3 = _Instance()
+        instance = _Instance([instance_copy1, instance_copy2, instance_copy3])
+        connection = ConnectionWithOpen(autoconnect=False, instance=instance)
         self.assertFalse(connection._open_called)
-        self.assertTrue(connection._cluster is cluster_copy1)
-        connection = ConnectionWithOpen(autoconnect=True, cluster=cluster)
+        self.assertTrue(connection._instance is instance_copy1)
+        connection = ConnectionWithOpen(autoconnect=True, instance=instance)
         self.assertTrue(connection._open_called)
-        self.assertTrue(connection._cluster is cluster_copy2)
+        self.assertTrue(connection._instance is instance_copy2)
 
         # Then make sure autoconnect=True is ignored in a pool.
         size = 1
         with _Monkey(MUT, Connection=ConnectionWithOpen):
-            pool = self._makeOne(size, autoconnect=True, cluster=cluster)
+            pool = self._makeOne(size, autoconnect=True, instance=instance)
 
         for connection in pool._queue.queue:
             self.assertTrue(isinstance(connection, ConnectionWithOpen))
-            self.assertTrue(connection._cluster is cluster_copy3)
+            self.assertTrue(connection._instance is instance_copy3)
             self.assertFalse(connection._open_called)
 
-    def test_constructor_infers_cluster(self):
+    def test_constructor_infers_instance(self):
         from gcloud._testing import _Monkey
         from gcloud.bigtable.happybase.connection import Connection
         from gcloud.bigtable.happybase import pool as MUT
 
         size = 1
-        cluster_copy = _Cluster()
-        all_copies = [cluster_copy] * size
-        cluster = _Cluster(copies=all_copies)
-        get_cluster_calls = []
+        instance_copy = _Instance()
+        all_copies = [instance_copy] * size
+        instance = _Instance(all_copies)
+        get_instance_calls = []
 
-        def mock_get_cluster(timeout=None):
-            get_cluster_calls.append(timeout)
-            return cluster
+        def mock_get_instance(timeout=None):
+            get_instance_calls.append(timeout)
+            return instance
 
-        with _Monkey(MUT, _get_cluster=mock_get_cluster):
+        with _Monkey(MUT, _get_instance=mock_get_instance):
             pool = self._makeOne(size)
 
         for connection in pool._queue.queue:
             self.assertTrue(isinstance(connection, Connection))
             # We know that the Connection() constructor will
-            # call cluster.copy().
-            self.assertTrue(connection._cluster is cluster_copy)
+            # call instance.copy().
+            self.assertTrue(connection._instance is instance_copy)
 
-        self.assertEqual(get_cluster_calls, [None])
+        self.assertEqual(get_instance_calls, [None])
 
     def test_constructor_non_integer_size(self):
         size = None
@@ -142,11 +141,11 @@ class TestConnectionPool(unittest2.TestCase):
         from gcloud.bigtable.happybase import pool as MUT
 
         # We are going to use a fake queue, so we don't want any connections
-        # or clusters to be created in the constructor.
+        # or instances to be created in the constructor.
         size = -1
-        cluster = object()
+        instance = object()
         with _Monkey(MUT, _MIN_POOL_SIZE=size):
-            pool = self._makeOne(size, cluster=cluster)
+            pool = self._makeOne(size, instance=instance)
 
         pool._queue = _Queue(queue_return)
         return pool
@@ -230,7 +229,7 @@ class _Connection(object):
         pass
 
 
-class _Cluster(object):
+class _Instance(object):
 
     def __init__(self, copies=()):
         self.copies = list(copies)

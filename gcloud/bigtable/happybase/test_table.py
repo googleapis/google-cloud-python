@@ -51,8 +51,8 @@ class TestTable(unittest2.TestCase):
         from gcloud.bigtable.happybase import table as MUT
 
         name = 'table-name'
-        cluster = object()
-        connection = _Connection(cluster)
+        instance = object()
+        connection = _Connection(instance)
         tables_constructed = []
 
         def make_low_level_table(*args, **kwargs):
@@ -67,7 +67,7 @@ class TestTable(unittest2.TestCase):
 
         table_instance, = tables_constructed
         self.assertEqual(table._low_level_table, table_instance)
-        self.assertEqual(table_instance.args, (name, cluster))
+        self.assertEqual(table_instance.args, (name, instance))
         self.assertEqual(table_instance.kwargs, {})
 
     def test_constructor_null_connection(self):
@@ -1405,8 +1405,8 @@ class Test__row_keys_filter_helper(unittest2.TestCase):
 
 class _Connection(object):
 
-    def __init__(self, cluster):
-        self._cluster = cluster
+    def __init__(self, instance):
+        self._instance = instance
 
 
 class _MockLowLevelColumnFamily(object):

@@ -90,6 +90,13 @@ load-plugins=pylint.extensions.check_docs
 # - no-name-in-module: Error gives a lot of false positives for names which
 #                      are defined dynamically. Also, any truly missing names
 #                      will be detected by our 100% code coverage.
+#
+# New opinions in pylint 1.6, enforcing PEP 257.  #1968 for eventual fixes
+# - catching-non-exception
+# - missing-raises-doc
+# - missing-returns-doc
+# - redundant-returns-doc
+# - ungrouped-imports
 disable =
     maybe-no-member,
     no-member,
@@ -99,6 +106,11 @@ disable =
     redefined-variable-type,
     wrong-import-position,
     no-name-in-module,
+    catching-non-exception,
+    missing-raises-doc,
+    missing-returns-doc,
+    redundant-returns-doc,
+    ungrouped-imports
 
 
 [REPORTS]

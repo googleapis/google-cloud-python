@@ -32,10 +32,15 @@ import sys
 
 IGNORED_DIRECTORIES = [
     os.path.join('gcloud', 'bigtable', '_generated'),
+    os.path.join('gcloud', 'bigtable', '_generated_v2'),
     os.path.join('gcloud', 'datastore', '_generated'),
 ]
 IGNORED_FILES = [
     os.path.join('docs', 'conf.py'),
+    # Both these files cause pylint 1.6 to barf.  See:
+    # https://github.com/PyCQA/pylint/issues/998
+    os.path.join('gcloud', 'bigtable', 'happybase', 'connection.py'),
+    os.path.join('gcloud', 'streaming', 'http_wrapper.py'),
     'setup.py',
 ]
 SCRIPTS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -224,13 +229,17 @@ def lint_fileset(filenames, rcfile, description):
                  if os.path.exists(filename)]
     if filenames:
         rc_flag = '--rcfile=%s' % (rcfile,)
-        pylint_shell_command = ['pylint', rc_flag] + filenames
-        status_code = subprocess.call(pylint_shell_command)
-        if status_code != 0:
-            error_message = ('Pylint failed on %s with '
-                             'status %d.' % (description, status_code))
-            print(error_message, file=sys.stderr)
-            sys.exit(status_code)
+        pylint_shell_command = ['pylint', rc_flag]
+        errors = {}  # filename -> status_code
+        for filename in filenames:
+            cmd = pylint_shell_command + [filename]
+            status_code = subprocess.call(cmd)
+            if status_code != 0:
+                errors[filename] = status_code
+        if errors:
+            for filename, status_code in sorted(errors.items()):
+                print('%-30s: %d' % (filename, status_code), file=sys.stderr)
+            sys.exit(len(errors))
     else:
         print('Skipping %s, no files to lint.' % (description,))
 

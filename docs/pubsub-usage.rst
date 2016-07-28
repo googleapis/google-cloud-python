@@ -158,6 +158,24 @@ Re-synchronize a subscription with the back-end:
    :start-after: [START subscription_reload]
    :end-before: [END subscription_reload]
 
+Fetch the IAM policy for a subscription
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_get_iam_policy]
+   :end-before: [END subscription_get_iam_policy]
+
+Update the IAM policy for a subscription:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_set_iam_policy]
+   :end-before: [END subscription_set_iam_policy]
+
+Test permissions allowed by the current IAM policy on a subscription:
+
+.. literalinclude:: pubsub_snippets.py
+   :start-after: [START subscription_check_iam_permissions]
+   :end-before: [END subscription_check_iam_permissions]
+
 Delete a subscription:
 
 .. literalinclude:: pubsub_snippets.py
@@ -193,20 +211,15 @@ Update the acknowlegement deadline for pulled messages:
    :start-after: [START subscription_modify_ack_deadline]
    :end-before: [END subscription_modify_ack_deadline]
 
-Fetch the IAM policy for a subscription
+Fetch pending messages, acknowledging those whose processing doesn't raise an
+error:
 
 .. literalinclude:: pubsub_snippets.py
-   :start-after: [START subscription_get_iam_policy]
-   :end-before: [END subscription_get_iam_policy]
+   :start-after: [START subscription_pull_autoack]
+   :end-before: [END subscription_pull_autoack]
 
-Update the IAM policy for a subscription:
+.. note::
 
-.. literalinclude:: pubsub_snippets.py
-   :start-after: [START subscription_set_iam_policy]
-   :end-before: [END subscription_set_iam_policy]
-
-Test permissions allowed by the current IAM policy on a subscription:
-
-.. literalinclude:: pubsub_snippets.py
-   :start-after: [START subscription_check_iam_permissions]
-   :end-before: [END subscription_check_iam_permissions]
+   The ``pull`` API request occurs at entry to the ``with`` block, and the
+   ``acknowlege`` API request occurs at the end, passing only the ``ack_ids``
+   which haven't been deleted from ``ack``
