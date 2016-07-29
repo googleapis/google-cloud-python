@@ -927,7 +927,16 @@ class _AsyncQueryConfiguration(object):
     _priority = None
     _use_query_cache = None
     _use_legacy_sql = None
+    _udf_resources = None
     _write_disposition = None
+
+
+class UdfResource(object):
+    """UDF resource for QueryJob."""
+
+    def __init__(self, uri=None, code=None):
+        self.uri = uri
+        self.code = code
 
 
 class QueryJob(_AsyncJob):
@@ -1000,10 +1009,38 @@ class QueryJob(_AsyncJob):
     reference/v2/jobs#configuration.query.useLegacySql
     """
 
+    _udf_resources = None
+    """See:
+    https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.userDefinedFunctionResources
+    """
+
     write_disposition = WriteDisposition('write_disposition')
     """See:
     https://cloud.google.com/bigquery/docs/reference/v2/jobs#configuration.query.writeDisposition
     """
+
+    @property
+    def udf_resources(self):
+        """List of user-defined-function resources.
+
+        :type: list of :class:`UdfResource`
+        :returns: the list, if set, or None
+        """
+        return list(self._udf_resources) if self._udf_resources else None
+
+    @udf_resources.setter
+    def udf_resources(self, value):
+        """Update list of user-defined-function resources.
+
+        :type value: list of :class:`UdfResource`
+        :param value:the new list
+
+        :raises: ValueError, if the items in the list are not all instance of
+                  :class:`UdfResource`
+        """
+        if not all((isinstance(item, UdfResource) for item in value)):
+            raise ValueError("pass a list of UdfResource instances")
+        self._udf_resources = tuple(value)
 
     def _destination_table_resource(self):
         """Create a JSON resource for the destination table.
@@ -1040,6 +1077,17 @@ class QueryJob(_AsyncJob):
             configuration['useQueryCache'] = self.use_query_cache
         if self.use_legacy_sql is not None:
             configuration['useLegacySql'] = self.use_legacy_sql
+        if self.udf_resources is not None:
+            udf_list = []
+            for udf_resource in self.udf_resources:
+                udf = {
+                    'resourceUri': udf_resource.uri,
+                    'inlineCode': udf_resource.code
+                }
+                udf_list.append(udf)
+            configuration['userDefinedFunctionResources'] = (
+                udf_list
+            )
         if self.write_disposition is not None:
             configuration['writeDisposition'] = self.write_disposition
         if len(self._udf_resources) > 0:
