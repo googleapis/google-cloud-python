@@ -24,6 +24,11 @@ from parinx.errors import MethodParsingException
 
 from verify_included_modules import get_public_modules
 
+import gcloud
+
+ABSOLUTE_LIBRARY_PATH = os.path.dirname(os.path.dirname(os.path.abspath(
+    gcloud.__file__)))
+
 
 class Module(object):
 
@@ -290,10 +295,10 @@ def build_type(type_id, title, contents):
 
 def clean_source_path(source):
     source_path = ''
-    if 'gcloud-python' in source:
-        source_path = source.split('gcloud-python')[1]
+    if ABSOLUTE_LIBRARY_PATH in source:
+        source_path = source.replace(ABSOLUTE_LIBRARY_PATH, source)
 
-    return source_path[1:]
+    return source_path
 
 
 def process_code_blocks(doc):
@@ -552,6 +557,7 @@ def main():
             'credentials': [],
             'datastore': [],
             'dns': [],
+            'error_reporting': [],
             'environment_vars': [],
             'exceptions': [],
             'iterator': [],
