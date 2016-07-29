@@ -194,14 +194,11 @@ def get_python_files(all_files=None):
     :param all_files: Optional list of files to be linted.
 
     :rtype: tuple
-    :returns: A tuple containing two lists and a boolean. The first list
-              contains all production files, the next all test files and
-              the boolean indicates if a restricted fileset was used.
+    :returns: A tuple containing two lists. The first list
+              contains all production files, the next all test files.
     """
-    using_restricted = False
     if all_files is None:
         all_files, diff_base = get_files_for_linting()
-        using_restricted = diff_base is not None
 
     library_files = []
     non_library_files = []
@@ -212,7 +209,7 @@ def get_python_files(all_files=None):
             else:
                 non_library_files.append(filename)
 
-    return library_files, non_library_files, using_restricted
+    return library_files, non_library_files, diff_base
 
 
 def lint_fileset(filenames, rcfile, description):
@@ -244,21 +241,11 @@ def main():
     """Script entry point. Lints both sets of files."""
     make_test_rc(PRODUCTION_RC, TEST_RC_ADDITIONS,
                  TEST_RC_REPLACEMENTS, TEST_RC)
-    library_files, non_library_files, using_restricted = get_python_files()
-    try:
-        lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test code')
-    except SystemExit:
-        if not using_restricted:
-            raise
-
-        message = 'Restricted lint failed, expanding to full fileset.'
-        print(message, file=sys.stderr)
-        all_files, _ = get_files_for_linting(allow_limited=False)
-        library_files, non_library_files, _ = get_python_files(
-            all_files=all_files)
-        lint_fileset(library_files, PRODUCTION_RC, 'library code')
-        lint_fileset(non_library_files, TEST_RC, 'test code')
+    library_files, non_library_files, diff_base = get_python_files()
+    if diff_base:
+        print('Checking only files which differ from base.')
+    lint_fileset(library_files, PRODUCTION_RC, 'library code')
+    lint_fileset(non_library_files, TEST_RC, 'test code')
 
 
 if __name__ == '__main__':
