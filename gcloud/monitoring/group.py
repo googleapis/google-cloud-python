@@ -220,6 +220,11 @@ class Group(object):
             >>> group.delete()
 
         Only the ``client`` and ``name`` attributes are used.
+
+        .. warning::
+
+            This method will fail for groups that have one or more children
+            groups.
         """
         self.client.connection.api_request(method='DELETE', path=self.path)
 

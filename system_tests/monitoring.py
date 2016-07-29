@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 import unittest2
 
 from gcloud import _helpers
@@ -175,3 +177,145 @@ class TestMonitoring(unittest2.TestCase):
         descriptor.delete()
         with self.assertRaises(NotFound):
             descriptor.delete()
+
+
+class TestMonitoringGroups(unittest2.TestCase):
+
+    def setUp(self):
+        self.to_delete = []
+        self.DISPLAY_NAME = 'Testing: New group'
+        self.FILTER = 'resource.type = "gce_instance"'
+        self.IS_CLUSTER = True
+
+    def tearDown(self):
+        for group in self.to_delete:
+            backoff_intervals = [1, 2, 4, 8]
+            while True:
+                try:
+                    group.delete()
+                    break
+                except NotFound:
+                    if backoff_intervals:
+                        time.sleep(backoff_intervals.pop(0))
+                    else:
+                        raise
+
+    def test_create_group(self):
+        client = monitoring.Client()
+        group = client.group(
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER,
+            is_cluster=self.IS_CLUSTER,
+        )
+        group.create()
+        self.to_delete.append(group)
+        self.assertTrue(group.exists())
+
+    def test_list_groups(self):
+        client = monitoring.Client()
+        new_group = client.group(
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER,
+            is_cluster=self.IS_CLUSTER,
+        )
+        before_groups = client.list_groups()
+        before_names = set(group.name for group in before_groups)
+        new_group.create()
+        self.to_delete.append(new_group)
+        self.assertTrue(new_group.exists())
+        after_groups = client.list_groups()
+        after_names = set(group.name for group in after_groups)
+        self.assertEqual(after_names - before_names,
+                         set([new_group.name]))
+
+    def test_reload_group(self):
+        client = monitoring.Client()
+        group = client.group(
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER,
+            is_cluster=self.IS_CLUSTER,
+        )
+        group.create()
+        self.to_delete.append(group)
+        group.filter = 'resource.type = "aws_ec2_instance"'
+        group.display_name = 'locally changed name'
+        group.reload()
+        self.assertEqual(group.filter, self.FILTER)
+        self.assertEqual(group.display_name, self.DISPLAY_NAME)
+
+    def test_update_group(self):
+        NEW_FILTER = 'resource.type = "aws_ec2_instance"'
+        NEW_DISPLAY_NAME = 'updated'
+
+        client = monitoring.Client()
+        group = client.group(
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER,
+            is_cluster=self.IS_CLUSTER,
+        )
+        group.create()
+        self.to_delete.append(group)
+
+        group.filter = NEW_FILTER
+        group.display_name = NEW_DISPLAY_NAME
+        group.update()
+
+        after = client.fetch_group(group.id)
+        self.assertEqual(after.filter, NEW_FILTER)
+        self.assertEqual(after.display_name, NEW_DISPLAY_NAME)
+
+    def test_group_members(self):
+        client = monitoring.Client()
+        group = client.group(
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER,
+            is_cluster=self.IS_CLUSTER,
+        )
+        group.create()
+        self.to_delete.append(group)
+
+        for _ in group.members():
+            pass    # Not necessarily reached.
+
+    def test_group_hierarchy(self):
+        client = monitoring.Client()
+        root_group = client.group(
+            display_name='Testing: Root group',
+            filter_string=self.FILTER,
+        )
+        root_group.create()
+
+        middle_group = client.group(
+            display_name='Testing: Middle group',
+            filter_string=self.FILTER,
+            parent_name=root_group.name,
+        )
+        middle_group.create()
+
+        leaf_group = client.group(
+            display_name='Testing: Leaf group',
+            filter_string=self.FILTER,
+            parent_name=middle_group.name,
+        )
+        leaf_group.create()
+        self.to_delete.extend([leaf_group, middle_group, root_group])
+
+        # Test for parent.
+        actual_parent = middle_group.parent()
+        self.assertTrue(actual_parent.name, root_group.name)
+
+        # Test for children.
+        actual_children = middle_group.children()
+        children_names = [group.name for group in actual_children]
+        self.assertEqual(children_names, [leaf_group.name])
+
+        # Test for descendants.
+        actual_descendants = root_group.descendants()
+        descendant_names = {group.name for group in actual_descendants}
+        self.assertEqual(descendant_names,
+                         set([middle_group.name, leaf_group.name]))
+
+        # Test for ancestors.
+        actual_ancestors = leaf_group.ancestors()
+        ancestor_names = [group.name for group in actual_ancestors]
+        self.assertEqual(ancestor_names, [middle_group.name, root_group.name])
