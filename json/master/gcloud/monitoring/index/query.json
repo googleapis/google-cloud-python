@@ -29,6 +29,15 @@
           ]
         }, 
         {
+          "description": " The number of minutes in the alignment period.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
           "description": " The number of seconds in the alignment period.", 
           "name": "seconds", 
           "nullable": null, 
@@ -40,15 +49,6 @@
         {
           "description": " The number of hours in the alignment period.", 
           "name": "hours", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " The number of minutes in the alignment period.", 
-          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -73,21 +73,21 @@
       "name": "as_dataframe", 
       "params": [
         {
-          "description": " A list or tuple of label names to use for the dataframe header. If more than one label name is provided, the resulting dataframe will have a multi-level column header. Providing values for both <code>label</code> and <code>labels</code> is an error.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings, or None"
-          ]
-        }, 
-        {
           "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
           "name": "label", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or None"
+          ]
+        }, 
+        {
+          "description": " A list or tuple of label names to use for the dataframe header. If more than one label name is provided, the resulting dataframe will have a multi-level column header. Providing values for both <code>label</code> and <code>labels</code> is an error.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings, or None"
           ]
         }
       ], 
@@ -134,21 +134,21 @@
       "name": "reduce", 
       "params": [
         {
-          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
-          "name": "group_by_fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "strings"
-          ]
-        }, 
-        {
           "description": " The approach to be used to combine time series. For example:", 
           "name": "cross_series_reducer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
+          "name": "group_by_fields", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "strings"
           ]
         }
       ], 
@@ -230,21 +230,21 @@
       "name": "select_metrics", 
       "params": [
         {
-          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Label filters to include in the conjunction as described above.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -291,21 +291,21 @@
       "name": "select_resources", 
       "params": [
         {
-          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " Label filters to include in the conjunction as described above.", 
           "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 

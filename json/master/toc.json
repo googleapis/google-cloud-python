@@ -57,7 +57,7 @@
             "title": "Dataset"
         },
         {
-            "type": "gcloud/bigquery/job/job",
+            "type": "gcloud/bigquery/job",
             "title": "Jobs"
         },
         {
