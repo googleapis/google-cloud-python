@@ -296,6 +296,35 @@ class TestGroup(unittest2.TestCase):
         expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
         self.assertEqual(request, expected_request)
 
+    def test_reload(self):
+        connection = _Connection(self.JSON_GROUP)
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOne(client, group_id=self.GROUP_ID)
+        group.reload()
+
+        self.assertIs(group.client, client)
+        self._validateGroup(group, self.JSON_GROUP)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
+        self.assertEqual(request, expected_request)
+
+    def test_update(self):
+        REQUEST = self.JSON_GROUP
+        RESPONSE = REQUEST
+
+        connection = _Connection(RESPONSE)
+        client = _Client(project=self.PROJECT, connection=connection)
+        group = self._makeOneFromJSON(REQUEST, client)
+        group.update()
+
+        self._validateGroup(group, RESPONSE)
+
+        request, = connection._requested
+        expected_request = {'method': 'PUT', 'path': '/' + self.GROUP_NAME,
+                            'data': REQUEST}
+        self.assertEqual(request, expected_request)
+
     def test_delete(self):
         connection = _Connection(self.JSON_GROUP)
         client = _Client(project=self.PROJECT, connection=connection)
@@ -304,18 +333,6 @@ class TestGroup(unittest2.TestCase):
 
         request, = connection._requested
         expected_request = {'method': 'DELETE', 'path': group.path}
-        self.assertEqual(request, expected_request)
-
-    def test_fetch(self):
-        connection = _Connection(self.JSON_GROUP)
-        client = _Client(project=self.PROJECT, connection=connection)
-        group = self._getTargetClass()._fetch(client, self.GROUP_ID)
-
-        self.assertIs(group.client, client)
-        self._validateGroup(group, self.JSON_GROUP)
-
-        request, = connection._requested
-        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
         self.assertEqual(request, expected_request)
 
     def test_parent(self):

@@ -161,7 +161,7 @@ class Group(object):
         return '/' + self.name
 
     def create(self):
-        """Create a new group based on this object via a POST request.
+        """Create a new group based on this object via a ``POST`` request.
 
         Example::
 
@@ -172,10 +172,9 @@ class Group(object):
             ...     is_cluster=True)
             >>> group.create()
 
-
         The ``name`` attribute is ignored in preparing the creation request.
         All attributes are overwritten by the values received in the response
-        (normally affecting only name).
+        (normally affecting only ``name``).
         """
         path = self.path_helper(self.client.project)
         info = self.client.connection.api_request(
@@ -183,7 +182,7 @@ class Group(object):
         self._init_from_dict(info)
 
     def exists(self):
-        """Test for the existence of the group via a GET request.
+        """Test for the existence of the group via a ``GET`` request.
 
         :rtype: bool
         :returns: Boolean indicating existence of the group.
@@ -195,8 +194,25 @@ class Group(object):
         else:
             return True
 
+    def reload(self):
+        """Sync local group information via a ``GET`` request.
+
+        .. warning::
+
+            This will overwrite any local changes you've made and not saved
+            via :meth:`update`.
+        """
+        info = self.client.connection.api_request(method='GET', path=self.path)
+        self._init_from_dict(info)
+
+    def update(self):
+        """Update the group via a ``PUT`` request."""
+        info = self.client.connection.api_request(
+            method='PUT', path=self.path, data=self._to_dict())
+        self._init_from_dict(info)
+
     def delete(self):
-        """Delete the group identified by this object via a DELETE request.
+        """Delete the group via a ``DELETE`` request.
 
         Example::
 
@@ -208,7 +224,7 @@ class Group(object):
         self.client.connection.api_request(method='DELETE', path=self.path)
 
     def parent(self):
-        """Returns the parent group of this group via a GET request.
+        """Returns the parent group of this group via a ``GET`` request.
 
         :rtype: :class:`Group` or None
         :returns: The parent of the group.
@@ -218,7 +234,7 @@ class Group(object):
         return self._fetch(self.client, self.parent_id)
 
     def children(self):
-        """Lists all children of this group via a GET request.
+        """Lists all children of this group via a ``GET`` request.
 
         Returns groups whose parent_name field contains the group name. If no
         groups have this parent, the results are empty.
@@ -229,7 +245,7 @@ class Group(object):
         return self._list(self.client, children_of_group=self.name)
 
     def ancestors(self):
-        """Lists all ancestors of this group via a GET request.
+        """Lists all ancestors of this group via a ``GET`` request.
 
         The groups are returned in order, starting with the immediate parent
         and ending with the most distant ancestor. If the specified group has
@@ -241,7 +257,7 @@ class Group(object):
         return self._list(self.client, ancestors_of_group=self.name)
 
     def descendants(self):
-        """Lists all descendants of this group via a GET request.
+        """Lists all descendants of this group via a ``GET`` request.
 
         This returns a superset of the results returned by the :meth:`children`
         method, and includes children-of-children, and so forth.
@@ -252,7 +268,7 @@ class Group(object):
         return self._list(self.client, descendants_of_group=self.name)
 
     def members(self, filter_string=None, end_time=None, start_time=None):
-        """Lists all members of this group via a GET request.
+        """Lists all members of this group via a ``GET`` request.
 
         If no end_time and start_time is provided then the group membership
         over the last minute is returned.
@@ -363,9 +379,9 @@ class Group(object):
         :raises: :class:`gcloud.exceptions.NotFound` if the group
             is not found.
         """
-        path = cls.path_helper(client.project, group_id)
-        info = client.connection.api_request(method='GET', path=path)
-        return cls._from_dict(client, info)
+        new_group = cls(client, group_id)
+        new_group.reload()
+        return new_group
 
     @classmethod
     def _list(cls, client, children_of_group=None, ancestors_of_group=None,

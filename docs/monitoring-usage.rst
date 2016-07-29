@@ -159,25 +159,32 @@ Groups
 
 A group is a dynamic collection of *monitored resources* whose membership is
 defined by a `filter`_.  These groups are usually created via the `Stackdriver
-dashboard`_. You can list all of these with the
+dashboard`_. You can list all the groups in a project with the
 :meth:`~gcloud.monitoring.client.Client.list_groups` method::
 
     >>> for group in client.list_groups():
-    ...     print(group.id, group.display_name)
+    ...     print(group.id, group.display_name, group.parent_id)
+    ('1001', 'Production', '')
+    ('1002', 'Front-end', '1001')
+    ('1003', 'Back-end', '1001')
 
-Each :class:`~gcloud.monitoring.group.Group`
-has a name, a display name, a parent name, a filter, and a cluster flag.
-The group membership changes over time, as *monitored resources* come and go,
-and as they change properties.
+See :class:`~gcloud.monitoring.group.Group` and the API documentation for
+`Groups`_ and `Group members`_ for more information.
 
-You can get the current members of a group using the
-`~gcloud.monitoring.group.Group.members` method::
+You can get a specific group based on it's ID as follows::
+
+    >>> group = client.fetch_group('1001')
+
+You can get the current members of this group using the
+:meth:`~gcloud.monitoring.group.Group.members` method::
 
     >>> for resource in group.members():
     ...     print(resource)
 
 Passing in ``end_time`` and ``start_time`` to the above method will return
-historical members based on the current filter of the group.
+historical members based on the current filter of the group. The group
+membership changes over time, as *monitored resources* come and go, and as they
+change properties.
 
 You can create new groups to define new collections of *monitored resources*.
 You do this by creating a :class:`~gcloud.monitoring.group.Group` object using
@@ -186,17 +193,32 @@ calling the object's :meth:`~gcloud.monitoring.group.Group.create` method::
 
     >>> group = client.group(
     ...     display_name='My group',
-    ...     filter_string='resource.type = "gce_instance"',
-    ...     parent_name='projects/my-project/groups/5678',
+    ...     filter_string='resource.zone = "us-central1-a"',
+    ...     parent_name='projects/my-project/groups/1001',
     ...     is_cluster=True)
     >>> group.create()
+    >>> group.id
+    '1234'
 
-You can delete a group by initializing a Group object with it's ID or name, and
-then calling the :meth:`~gcloud.monitoring.group.Group.delete` method. Any
-other field is ignored during deletion::
+You can further manipulate an existing group by first initializing a Group
+object with it's ID or name, and then calling various methods on it.
+
+Delete a group::
 
     >>> group = client.group('1234')
+    >>> group.exists()
+    True
     >>> group.delete()
+
+
+Update a group::
+
+    >>> group = client.group('1234')
+    >>> group.exists()
+    True
+    >>> group.reload()
+    >>> group.display_name = 'New Display Name'
+    >>> group.update()
 
 .. _Stackdriver dashboard:
     https://support.stackdriver.com/customer/portal/articles/\
@@ -206,6 +228,9 @@ other field is ignored during deletion::
 .. _Groups:
     https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
     projects.groups
+.. _Group members:
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.groups.members
 
 
 Time Series Queries
