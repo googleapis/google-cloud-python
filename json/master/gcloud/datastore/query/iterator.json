@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L392", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L392", 
       "type": "instance"
     }, 
     {
@@ -26,10 +26,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py#L403", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/query.py/gcloud/datastore/query.py#L403", 
       "type": "instance"
     }
   ], 
   "name": "Iterator", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

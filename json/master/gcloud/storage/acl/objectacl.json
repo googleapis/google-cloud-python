@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L543", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L543", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "add_entity", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L284", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L284", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L352", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L352", 
       "type": "instance"
     }, 
     {
@@ -52,7 +52,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L360", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L360", 
       "type": "instance"
     }, 
     {
@@ -62,7 +62,7 @@
       "name": "clear", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L487", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L487", 
       "type": "instance"
     }, 
     {
@@ -88,7 +88,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L341", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L341", 
       "type": "instance"
     }, 
     {
@@ -123,7 +123,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L293", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L293", 
       "type": "instance"
     }, 
     {
@@ -149,7 +149,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L222", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L222", 
       "type": "instance"
     }, 
     {
@@ -165,7 +165,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L368", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L368", 
       "type": "instance"
     }, 
     {
@@ -200,7 +200,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L267", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L267", 
       "type": "instance"
     }, 
     {
@@ -226,7 +226,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L330", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L330", 
       "type": "instance"
     }, 
     {
@@ -252,7 +252,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L255", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L255", 
       "type": "instance"
     }, 
     {
@@ -262,7 +262,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L396", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L396", 
       "type": "instance"
     }, 
     {
@@ -272,7 +272,7 @@
       "name": "reset", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L209", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L209", 
       "type": "instance"
     }, 
     {
@@ -282,7 +282,7 @@
       "name": "save", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L446", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L446", 
       "type": "instance"
     }, 
     {
@@ -292,7 +292,7 @@
       "name": "save_predefined", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L466", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L466", 
       "type": "instance"
     }, 
     {
@@ -318,10 +318,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py#L319", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/acl.py/gcloud/storage/acl.py#L319", 
       "type": "instance"
     }
   ], 
   "name": "Objectacl", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

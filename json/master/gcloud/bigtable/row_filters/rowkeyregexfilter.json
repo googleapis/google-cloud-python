@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L122", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py/gcloud/bigtable/row_filters.py#L122", 
       "type": "instance"
     }, 
     {
@@ -26,10 +26,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py#L154", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_filters.py/gcloud/bigtable/row_filters.py#L154", 
       "type": "instance"
     }
   ], 
   "name": "Rowkeyregexfilter", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

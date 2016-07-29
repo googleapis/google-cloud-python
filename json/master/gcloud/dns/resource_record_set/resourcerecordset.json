@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py#L42", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py/gcloud/dns/resource_record_set.py#L42", 
       "type": "instance"
     }, 
     {
@@ -45,10 +45,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py#L49", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/resource_record_set.py/gcloud/dns/resource_record_set.py#L49", 
       "type": "instance"
     }
   ], 
   "name": "Resourcerecordset", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

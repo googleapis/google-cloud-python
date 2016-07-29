@@ -19,21 +19,21 @@
           ]
         }, 
         {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The body of the HTTP error response.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or dictionary"
+          ]
+        }, 
+        {
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -53,7 +53,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/exceptions.py#L160", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/exceptions.py/gcloud/exceptions.py#L160", 
       "type": "instance"
     }, 
     {
@@ -68,5 +68,5 @@
     }
   ], 
   "name": "Exceptions", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L649", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L649", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "configure_request", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L830", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L830", 
       "type": "instance"
     }, 
     {
@@ -48,21 +48,21 @@
           ]
         }, 
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -73,7 +73,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L663", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L663", 
       "type": "instance"
     }, 
     {
@@ -92,12 +92,12 @@
           ]
         }, 
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "boolean or None"
           ]
         }, 
         {
@@ -110,21 +110,21 @@
           ]
         }, 
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or None"
-          ]
-        }, 
-        {
           "description": " keyword arguments: passed through to _Transfer.__init__().", 
           "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }
       ], 
@@ -135,7 +135,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L693", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L693", 
       "type": "instance"
     }, 
     {
@@ -170,7 +170,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L994", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L994", 
       "type": "instance"
     }, 
     {
@@ -180,7 +180,7 @@
       "name": "refresh_upload_state", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L925", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L925", 
       "type": "instance"
     }, 
     {
@@ -206,10 +206,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py#L1066", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/streaming/transfer.py/gcloud/streaming/transfer.py#L1066", 
       "type": "instance"
     }
   ], 
   "name": "Upload", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

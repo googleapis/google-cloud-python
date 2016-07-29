@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L232", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L232", 
       "type": "instance"
     }, 
     {
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L421", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L421", 
       "type": "instance"
     }, 
     {
@@ -61,7 +61,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L282", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L282", 
       "type": "instance"
     }, 
     {
@@ -77,7 +77,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L339", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L339", 
       "type": "instance"
     }, 
     {
@@ -87,7 +87,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L389", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L389", 
       "type": "instance"
     }, 
     {
@@ -122,7 +122,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L251", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L251", 
       "type": "instance"
     }, 
     {
@@ -138,7 +138,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L436", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L436", 
       "type": "instance"
     }, 
     {
@@ -154,7 +154,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L466", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L466", 
       "type": "instance"
     }, 
     {
@@ -164,7 +164,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L328", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L328", 
       "type": "instance"
     }, 
     {
@@ -190,7 +190,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L455", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L455", 
       "type": "instance"
     }, 
     {
@@ -200,10 +200,10 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py#L367", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/instance.py/gcloud/bigtable/instance.py#L367", 
       "type": "instance"
     }
   ], 
   "name": "Instance", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

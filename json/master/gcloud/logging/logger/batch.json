@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L325", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L325", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "commit", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L406", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L406", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "log_proto", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L383", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L383", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "log_struct", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L360", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L360", 
       "type": "instance"
     }, 
     {
@@ -50,10 +50,10 @@
       "name": "log_text", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py#L337", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/logger.py/gcloud/logging/logger.py#L337", 
       "type": "instance"
     }
   ], 
   "name": "Batch", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

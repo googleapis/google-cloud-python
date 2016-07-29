@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L92", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L92", 
       "type": "instance"
     }, 
     {
@@ -20,21 +20,21 @@
       "name": "blob", 
       "params": [
         {
-          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
-          "name": "chunk_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The name of the blob to be instantiated.", 
           "name": "blob_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The size of a chunk of data whenever iterating (1 MB). This must be a multiple of 256 KB per the API specification.", 
+          "name": "chunk_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
@@ -45,7 +45,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L106", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L106", 
       "type": "instance"
     }, 
     {
@@ -55,7 +55,7 @@
       "name": "configure_website", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L725", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L725", 
       "type": "instance"
     }, 
     {
@@ -74,21 +74,21 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " (optional) the new name for the copied file.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -108,7 +108,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L433", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L433", 
       "type": "instance"
     }, 
     {
@@ -118,7 +118,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L153", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L153", 
       "type": "instance"
     }, 
     {
@@ -128,7 +128,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L310", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L310", 
       "type": "instance"
     }, 
     {
@@ -138,7 +138,7 @@
       "name": "delete_blob", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L360", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L360", 
       "type": "instance"
     }, 
     {
@@ -148,7 +148,7 @@
       "name": "delete_blobs", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L401", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L401", 
       "type": "instance"
     }, 
     {
@@ -158,7 +158,7 @@
       "name": "disable_logging", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L597", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L597", 
       "type": "instance"
     }, 
     {
@@ -168,7 +168,7 @@
       "name": "disable_website", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L765", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L765", 
       "type": "instance"
     }, 
     {
@@ -178,7 +178,7 @@
       "name": "enable_logging", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L583", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L583", 
       "type": "instance"
     }, 
     {
@@ -204,7 +204,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L126", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L126", 
       "type": "instance"
     }, 
     {
@@ -239,7 +239,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L205", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L205", 
       "type": "instance"
     }, 
     {
@@ -255,7 +255,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L571", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L571", 
       "type": "instance"
     }, 
     {
@@ -265,30 +265,21 @@
       "name": "list_blobs", 
       "params": [
         {
-          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
-          "name": "delimiter", 
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
+          "name": "fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -310,30 +301,39 @@
           ]
         }, 
         {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
           "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
           "name": "projection", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " Selector specifying which fields to include in a partial response. Must be a list of fields. For example to get a partial response with just the next page token and the language of each blob returned: 'items/contentLanguage,nextPageToken'", 
-          "name": "fields", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
           ]
         }
       ], 
@@ -344,7 +344,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L242", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L242", 
       "type": "instance"
     }, 
     {
@@ -354,7 +354,7 @@
       "name": "make_public", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L773", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L773", 
       "type": "instance"
     }, 
     {
@@ -364,7 +364,7 @@
       "name": "patch", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py#L108", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py/gcloud/storage/_helpers.py#L108", 
       "type": "instance"
     }, 
     {
@@ -374,7 +374,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py#L64", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/_helpers.py/gcloud/storage/_helpers.py#L64", 
       "type": "instance"
     }, 
     {
@@ -384,21 +384,21 @@
       "name": "rename_blob", 
       "params": [
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " The new name for this blob.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -418,10 +418,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py#L464", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/storage/bucket.py/gcloud/storage/bucket.py#L464", 
       "type": "instance"
     }
   ], 
   "name": "Bucket", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L443", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L443", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "clear", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L643", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L643", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L471", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L471", 
       "type": "instance"
     }, 
     {
@@ -46,7 +46,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L562", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L562", 
       "type": "instance"
     }, 
     {
@@ -56,7 +56,7 @@
       "name": "delete_cell", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L578", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L578", 
       "type": "instance"
     }, 
     {
@@ -66,7 +66,7 @@
       "name": "delete_cells", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L609", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L609", 
       "type": "instance"
     }, 
     {
@@ -76,10 +76,10 @@
       "name": "set_cell", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py#L522", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row.py/gcloud/bigtable/row.py#L522", 
       "type": "instance"
     }
   ], 
   "name": "Conditionalrow", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

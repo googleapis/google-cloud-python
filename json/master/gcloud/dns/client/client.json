@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L184", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L184", 
       "type": "instance"
     }, 
     {
@@ -20,21 +20,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
@@ -54,7 +54,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L33", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L33", 
       "type": "instance"
     }, 
     {
@@ -63,15 +63,6 @@
       "id": "gcloud.dns.client.Client.from_service_account_p12", 
       "name": "from_service_account_p12", 
       "params": [
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
         {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
@@ -98,6 +89,15 @@
           "types": [
             "dict"
           ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -107,7 +107,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/client.py#L63", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/client.py/gcloud/client.py#L63", 
       "type": "instance"
     }, 
     {
@@ -142,7 +142,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py#L62", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py/gcloud/dns/client.py#L62", 
       "type": "instance"
     }, 
     {
@@ -158,7 +158,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py#L46", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py/gcloud/dns/client.py#L46", 
       "type": "instance"
     }, 
     {
@@ -167,15 +167,6 @@
       "id": "gcloud.dns.client.Client.zone", 
       "name": "zone", 
       "params": [
-        {
-          "description": " DNS name of the zone. If not passed, then calls to zone.create will fail.", 
-          "name": "dns_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
         {
           "description": " the description for the zone. If not passed, defaults to the value of 'dns_name'.", 
           "name": "description", 
@@ -193,6 +184,15 @@
           "types": [
             "string"
           ]
+        }, 
+        {
+          "description": " DNS name of the zone. If not passed, then calls to zone.create will fail.", 
+          "name": "dns_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
         }
       ], 
       "returns": [
@@ -202,10 +202,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py#L98", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/client.py/gcloud/dns/client.py#L98", 
       "type": "instance"
     }
   ], 
   "name": "Client", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L64", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L64", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "get_items_from_response", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L127", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L127", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L105", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L105", 
       "type": "instance"
     }, 
     {
@@ -52,7 +52,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L94", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L94", 
       "type": "instance"
     }, 
     {
@@ -68,7 +68,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L83", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L83", 
       "type": "instance"
     }, 
     {
@@ -78,10 +78,10 @@
       "name": "reset", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py#L122", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/iterator.py/gcloud/iterator.py#L122", 
       "type": "instance"
     }
   ], 
   "name": "Iterator", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L48", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L48", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L255", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L255", 
       "type": "instance"
     }, 
     {
@@ -71,7 +71,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L376", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L376", 
       "type": "instance"
     }, 
     {
@@ -81,7 +81,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L136", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L136", 
       "type": "instance"
     }, 
     {
@@ -91,7 +91,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L185", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L185", 
       "type": "instance"
     }, 
     {
@@ -117,7 +117,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L156", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L156", 
       "type": "instance"
     }, 
     {
@@ -127,21 +127,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " topic resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
           ]
         }
       ], 
@@ -152,7 +152,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L92", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L92", 
       "type": "instance"
     }, 
     {
@@ -178,7 +178,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L321", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L321", 
       "type": "instance"
     }, 
     {
@@ -197,21 +197,21 @@
           ]
         }, 
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " opaque marker for the next \"page\" of topics. If not passed, the API will return the first page of topics.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -222,7 +222,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L280", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L280", 
       "type": "instance"
     }, 
     {
@@ -232,21 +232,21 @@
       "name": "publish", 
       "params": [
         {
-          "description": " the message payload", 
-          "name": "message", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the message payload", 
+          "name": "message", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
           ]
         }, 
         {
@@ -266,7 +266,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L215", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L215", 
       "type": "instance"
     }, 
     {
@@ -276,21 +276,21 @@
       "name": "set_iam_policy", 
       "params": [
         {
-          "description": " the new policy, typically fetched via", 
-          "name": "policy", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current batch.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the new policy, typically fetched via", 
+          "name": "policy", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
           ]
         }
       ], 
@@ -301,7 +301,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L346", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L346", 
       "type": "instance"
     }, 
     {
@@ -345,10 +345,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L53", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L53", 
       "type": "instance"
     }
   ], 
   "name": "Topic", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py#L50", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py/gcloud/bigquery/query.py#L60", 
       "type": "instance"
     }, 
     {
@@ -29,17 +29,17 @@
           ]
         }, 
         {
-          "description": " timeout, in milliseconds, to wait for query to complete", 
-          "name": "timeout_ms", 
+          "description": " token representing a cursor into the table's rows.", 
+          "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or NoneType"
+            "string or NoneType"
           ]
         }, 
         {
-          "description": " zero-based index of starting row", 
-          "name": "start_index", 
+          "description": " timeout, in milliseconds, to wait for query to complete", 
+          "name": "timeout_ms", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -56,12 +56,12 @@
           ]
         }, 
         {
-          "description": " token representing a cursor into the table's rows.", 
-          "name": "page_token", 
+          "description": " zero-based index of starting row", 
+          "name": "start_index", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or NoneType"
+            "integer or NoneType"
           ]
         }
       ], 
@@ -72,7 +72,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py#L298", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py/gcloud/bigquery/query.py#L314", 
       "type": "instance"
     }, 
     {
@@ -82,10 +82,10 @@
       "name": "run", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py#L282", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/query.py/gcloud/bigquery/query.py#L298", 
       "type": "instance"
     }
   ], 
   "name": "Queryresults", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

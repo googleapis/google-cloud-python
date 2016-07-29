@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L46", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L46", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L192", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L192", 
       "type": "instance"
     }, 
     {
@@ -36,7 +36,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L245", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L245", 
       "type": "instance"
     }, 
     {
@@ -46,7 +46,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L300", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L300", 
       "type": "instance"
     }, 
     {
@@ -72,7 +72,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L261", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L261", 
       "type": "instance"
     }, 
     {
@@ -82,21 +82,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client\">gcloud.dns.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " zone resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client\">gcloud.dns.client.Client</a>"
           ]
         }
       ], 
@@ -107,7 +107,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L55", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L55", 
       "type": "instance"
     }, 
     {
@@ -126,21 +126,21 @@
           ]
         }, 
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " opaque marker for the next \"page\" of zones. If not passed, the API will return the first page of zones.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -151,7 +151,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L357", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L357", 
       "type": "instance"
     }, 
     {
@@ -170,21 +170,21 @@
           ]
         }, 
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " opaque marker for the next \"page\" of zones. If not passed, the API will return the first page of zones.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current zone.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/dns/client/client or nonetype\">gcloud.dns.client.Client or NoneType</a>"
           ]
         }
       ], 
@@ -195,7 +195,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L313", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L313", 
       "type": "instance"
     }, 
     {
@@ -205,7 +205,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L284", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L284", 
       "type": "instance"
     }, 
     {
@@ -215,12 +215,12 @@
       "name": "resource_record_set", 
       "params": [
         {
-          "description": " resource data for the RR", 
-          "name": "rrdatas", 
+          "description": " TTL for the RR, in seconds", 
+          "name": "ttl", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            " string"
+            "integer"
           ]
         }, 
         {
@@ -233,21 +233,21 @@
           ]
         }, 
         {
-          "description": " TTL for the RR, in seconds", 
-          "name": "ttl", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Name of the record set.", 
           "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " resource data for the RR", 
+          "name": "rrdatas", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
           ]
         }
       ], 
@@ -258,10 +258,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py#L172", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/zone.py/gcloud/dns/zone.py#L172", 
       "type": "instance"
     }
   ], 
   "name": "Managedzone", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

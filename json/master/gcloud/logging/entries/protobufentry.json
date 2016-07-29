@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py#L75", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L75", 
       "type": "instance"
     }, 
     {
@@ -29,21 +29,21 @@
           ]
         }, 
         {
-          "description": " Client which holds credentials and project configuration.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " text entry resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/logging/client/client\">gcloud.logging.client.Client</a>"
           ]
         }
       ], 
@@ -54,7 +54,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py#L85", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L85", 
       "type": "instance"
     }, 
     {
@@ -64,10 +64,10 @@
       "name": "parse_message", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py#L149", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/entries.py/gcloud/logging/entries.py#L149", 
       "type": "instance"
     }
   ], 
   "name": "Protobufentry", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

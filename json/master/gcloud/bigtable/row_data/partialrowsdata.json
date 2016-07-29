@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L196", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L196", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "cancel", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L252", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L252", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "consume_all", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L307", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L307", 
       "type": "instance"
     }, 
     {
@@ -40,10 +40,10 @@
       "name": "consume_next", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py#L256", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/row_data.py/gcloud/bigtable/row_data.py#L256", 
       "type": "instance"
     }
   ], 
   "name": "Partialrowsdata", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L36", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L36", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "add_record_set", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L143", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L143", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L204", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L204", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "delete_record_set", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L156", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L156", 
       "type": "instance"
     }, 
     {
@@ -66,7 +66,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L223", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L223", 
       "type": "instance"
     }, 
     {
@@ -101,7 +101,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L41", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L41", 
       "type": "instance"
     }, 
     {
@@ -111,10 +111,10 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py#L245", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/dns/changes.py/gcloud/dns/changes.py#L245", 
       "type": "instance"
     }
   ], 
   "name": "Changes", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L107", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L107", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L410", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L410", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L518", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L518", 
       "type": "instance"
     }, 
     {
@@ -56,7 +56,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L426", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L426", 
       "type": "instance"
     }, 
     {
@@ -66,21 +66,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " Client which holds credentials and project configuration for the dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client\">gcloud.bigquery.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " dataset resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " Client which holds credentials and project configuration for the dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client\">gcloud.bigquery.client.Client</a>"
           ]
         }
       ], 
@@ -91,7 +91,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L294", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L294", 
       "type": "instance"
     }, 
     {
@@ -126,7 +126,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L531", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L531", 
       "type": "instance"
     }, 
     {
@@ -136,7 +136,7 @@
       "name": "patch", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L465", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L465", 
       "type": "instance"
     }, 
     {
@@ -146,7 +146,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L449", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L449", 
       "type": "instance"
     }, 
     {
@@ -156,21 +156,21 @@
       "name": "table", 
       "params": [
         {
-          "description": " The table's schema", 
-          "name": "schema", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.bigquery.table.SchemaField"
-          ]
-        }, 
-        {
           "description": " Name of the table.", 
           "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The table's schema", 
+          "name": "schema", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.bigquery.table.SchemaField"
           ]
         }
       ], 
@@ -181,7 +181,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L568", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L568", 
       "type": "instance"
     }, 
     {
@@ -191,10 +191,10 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py#L503", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigquery/dataset.py/gcloud/bigquery/dataset.py#L503", 
       "type": "instance"
     }
   ], 
   "name": "Dataset", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

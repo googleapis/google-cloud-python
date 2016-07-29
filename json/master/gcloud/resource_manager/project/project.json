@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L54", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L54", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "create", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L116", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L116", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L210", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L210", 
       "type": "instance"
     }, 
     {
@@ -56,7 +56,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L167", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L167", 
       "type": "instance"
     }, 
     {
@@ -66,21 +66,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " The Client used with this project.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/resource_manager/client/client\">gcloud.resource_manager.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " project resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The Client used with this project.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/resource_manager/client/client\">gcloud.resource_manager.client.Client</a>"
           ]
         }
       ], 
@@ -91,7 +91,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L65", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L65", 
       "type": "instance"
     }, 
     {
@@ -101,7 +101,7 @@
       "name": "reload", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L138", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L138", 
       "type": "instance"
     }, 
     {
@@ -111,7 +111,7 @@
       "name": "set_properties_from_api_repr", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L82", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L82", 
       "type": "instance"
     }, 
     {
@@ -121,7 +121,7 @@
       "name": "undelete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L241", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L241", 
       "type": "instance"
     }, 
     {
@@ -131,10 +131,10 @@
       "name": "update", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py#L192", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/resource_manager/project.py/gcloud/resource_manager/project.py#L192", 
       "type": "instance"
     }
   ], 
   "name": "Project", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

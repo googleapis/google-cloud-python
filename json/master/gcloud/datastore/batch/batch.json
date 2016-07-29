@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L78", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L78", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "begin", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L221", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L221", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "commit", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L252", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L252", 
       "type": "instance"
     }, 
     {
@@ -40,7 +40,7 @@
       "name": "current", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L84", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L84", 
       "type": "instance"
     }, 
     {
@@ -50,7 +50,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L203", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L203", 
       "type": "instance"
     }, 
     {
@@ -60,7 +60,7 @@
       "name": "put", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L164", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L164", 
       "type": "instance"
     }, 
     {
@@ -70,10 +70,10 @@
       "name": "rollback", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py#L264", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/datastore/batch.py/gcloud/datastore/batch.py#L264", 
       "type": "instance"
     }
   ], 
   "name": "Batch", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

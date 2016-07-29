@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L415", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L415", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "commit", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L445", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L445", 
       "type": "instance"
     }, 
     {
@@ -30,10 +30,10 @@
       "name": "publish", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py#L431", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/pubsub/topic.py/gcloud/pubsub/topic.py#L431", 
       "type": "instance"
     }
   ], 
   "name": "Batch", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }

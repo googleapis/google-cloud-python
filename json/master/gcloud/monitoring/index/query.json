@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L121", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L121", 
       "type": "instance"
     }, 
     {
@@ -19,15 +19,6 @@
       "id": "gcloud.monitoring.__init__.Query.align", 
       "name": "align", 
       "params": [
-        {
-          "description": " The number of seconds in the alignment period.", 
-          "name": "seconds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
         {
           "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
           "name": "per_series_aligner", 
@@ -38,8 +29,8 @@
           ]
         }, 
         {
-          "description": " The number of minutes in the alignment period.", 
-          "name": "minutes", 
+          "description": " The number of seconds in the alignment period.", 
+          "name": "seconds", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -54,6 +45,15 @@
           "types": [
             "integer"
           ]
+        }, 
+        {
+          "description": " The number of minutes in the alignment period.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
         }
       ], 
       "returns": [
@@ -63,7 +63,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L331", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L331", 
       "type": "instance"
     }, 
     {
@@ -73,21 +73,21 @@
       "name": "as_dataframe", 
       "params": [
         {
-          "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
-          "name": "label", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " A list or tuple of label names to use for the dataframe header. If more than one label name is provided, the resulting dataframe will have a multi-level column header. Providing values for both <code>label</code> and <code>labels</code> is an error.", 
           "name": "labels", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " strings, or None"
+          ]
+        }, 
+        {
+          "description": " The label name to use for the dataframe header. This can be the name of a resource label or metric label (e.g., \"instance_name\"), or the string <code>\"resource_type\"</code>.", 
+          "name": "label", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
           ]
         }
       ], 
@@ -98,7 +98,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L529", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L529", 
       "type": "instance"
     }, 
     {
@@ -114,7 +114,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L571", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L571", 
       "type": "instance"
     }, 
     {
@@ -124,7 +124,7 @@
       "name": "iter", 
       "params": [], 
       "returns": [], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L409", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L409", 
       "type": "instance"
     }, 
     {
@@ -159,7 +159,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L373", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L373", 
       "type": "instance"
     }, 
     {
@@ -185,7 +185,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L194", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L194", 
       "type": "instance"
     }, 
     {
@@ -195,21 +195,21 @@
       "name": "select_interval", 
       "params": [
         {
-          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object. If not specified, the interval is a point in time.", 
-          "name": "start_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
-          ]
-        }, 
-        {
           "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object.", 
           "name": "end_time", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "datetime.datetime"
+          ]
+        }, 
+        {
+          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object. If not specified, the interval is a point in time.", 
+          "name": "start_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
           ]
         }
       ], 
@@ -220,7 +220,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L162", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L162", 
       "type": "instance"
     }, 
     {
@@ -255,7 +255,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L291", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L291", 
       "type": "instance"
     }, 
     {
@@ -281,7 +281,7 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L211", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L211", 
       "type": "instance"
     }, 
     {
@@ -316,10 +316,10 @@
           ]
         }
       ], 
-      "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py#L233", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/query.py/gcloud/monitoring/query.py#L233", 
       "type": "instance"
     }
   ], 
   "name": "Query", 
-  "source": ".tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py"
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
 }
