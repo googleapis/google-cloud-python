@@ -20,21 +20,12 @@
       "name": "batch", 
       "params": [
         {
-          "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
-          "name": "batch_size", 
+          "description": " (Optional) Timestamp (in milliseconds since the epoch) that all mutations will be applied at.", 
+          "name": "timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
-          ]
-        }, 
-        {
-          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
-          "name": "wal", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object"
           ]
         }, 
         {
@@ -47,8 +38,17 @@
           ]
         }, 
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch) that all mutations will be applied at.", 
-          "name": "timestamp", 
+          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
+          "name": "wal", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object"
+          ]
+        }, 
+        {
+          "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
+          "name": "batch_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -73,8 +73,8 @@
       "name": "cells", 
       "params": [
         {
-          "description": " (Optional) The maximum number of cells to return. If not set, returns all cells found.", 
-          "name": "versions", 
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -88,6 +88,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The maximum number of cells to return. If not set, returns all cells found.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }, 
         {
@@ -106,15 +115,6 @@
           "optional": null, 
           "types": [
             "bool"
-          ]
-        }, 
-        {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
-          "name": "timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }
       ], 
@@ -135,15 +135,6 @@
       "name": "counter_dec", 
       "params": [
         {
-          "description": " Amount to decrement the counter by. (If negative, this is equivalent to increment.)", 
-          "name": "value", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
           "name": "column", 
           "nullable": null, 
@@ -159,6 +150,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Amount to decrement the counter by. (If negative, this is equivalent to increment.)", 
+          "name": "value", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -214,15 +214,6 @@
       "name": "counter_inc", 
       "params": [
         {
-          "description": " Amount to increment the counter by. (If negative, this is equivalent to decrement.)", 
-          "name": "value", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
           "name": "column", 
           "nullable": null, 
@@ -238,6 +229,15 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " Amount to increment the counter by. (If negative, this is equivalent to decrement.)", 
+          "name": "value", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -314,21 +314,12 @@
       "name": "row", 
       "params": [
         {
-          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
-          "name": "columns", 
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
+          "name": "timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "list"
-          ]
-        }, 
-        {
-          "description": " Row key for the row we are reading from.", 
-          "name": "row", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
+            "int"
           ]
         }, 
         {
@@ -341,12 +332,21 @@
           ]
         }, 
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
-          "name": "timestamp", 
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
+          "name": "columns", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
           ]
         }
       ], 
@@ -367,17 +367,17 @@
       "name": "rows", 
       "params": [
         {
-          "description": " Iterable of the row keys for the rows we are reading from.", 
-          "name": "rows", 
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "list"
+            "int"
           ]
         }, 
         {
-          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
-          "name": "columns", 
+          "description": " Iterable of the row keys for the rows we are reading from.", 
+          "name": "rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -394,12 +394,12 @@
           ]
         }, 
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
-          "name": "timestamp", 
+          "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
+          "name": "columns", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "list"
           ]
         }
       ], 

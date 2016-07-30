@@ -65,21 +65,21 @@
       "name": "copy_blob", 
       "params": [
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " (optional) the new name for the copied file.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -214,21 +214,21 @@
       "name": "get_blob", 
       "params": [
         {
-          "description": " The name of the blob to retrieve.", 
-          "name": "blob_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " The name of the blob to retrieve.", 
+          "name": "blob_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -265,6 +265,33 @@
       "name": "list_blobs", 
       "params": [
         {
+          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
+          "name": "projection", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
+          "description": " whether object versions should be returned as separate blobs.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " optional prefix used to filter blobs.", 
           "name": "prefix", 
           "nullable": null, 
@@ -292,33 +319,6 @@
           ]
         }, 
         {
-          "description": " whether object versions should be returned as separate blobs.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " If used, must be 'full' or 'noAcl'. Defaults to 'noAcl'. Specifies the set of properties to return.", 
-          "name": "projection", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
-          "name": "delimiter", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
-          ]
-        }, 
-        {
           "description": " maximum number of blobs to return.", 
           "name": "max_results", 
           "nullable": null, 
@@ -328,12 +328,12 @@
           ]
         }, 
         {
-          "description": " opaque marker for the next \"page\" of blobs. If not passed, will return the first page of blobs.", 
-          "name": "page_token", 
+          "description": " optional delimter, used with <code>prefix</code> to emulate hierarchy.", 
+          "name": "delimiter", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "string or NoneType"
           ]
         }
       ], 
@@ -384,21 +384,21 @@
       "name": "rename_blob", 
       "params": [
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " The new name for this blob.", 
           "name": "new_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {

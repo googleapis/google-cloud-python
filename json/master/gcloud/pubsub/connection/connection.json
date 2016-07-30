@@ -38,8 +38,8 @@
           ]
         }, 
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
-          "name": "api_version", 
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -56,17 +56,8 @@
           ]
         }, 
         {
-          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
-          "name": "expect_json", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -89,6 +80,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
+          "name": "expect_json", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
           ]
         }, 
         {
@@ -118,15 +118,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The path to the resource.", 
           "name": "path", 
           "nullable": null, 
@@ -142,6 +133,15 @@
           "optional": null, 
           "types": [
             "dict or list"
+          ]
+        }, 
+        {
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
