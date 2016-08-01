@@ -284,33 +284,27 @@ class Client(JSONClient):
         """
         return ResourceDescriptor._list(self, filter_string)
 
-    def group(self, group_id=None, name=None, display_name='', parent_name='',
-              filter_string='', is_cluster=False):
+    def group(self, group_id=None, display_name=None, parent_id=None,
+              filter_string=None, is_cluster=False):
         """Factory constructor for group object.
 
         .. note::
           This will not make an HTTP request; it simply instantiates
           a group object owned by this client.
 
-        :type group_id: string
-        :param group_id:
-              The ID of the group. This is useful for reading or modifying an
-              existing group.
+        :type group_id: string or None
+        :param group_id: The ID of the group.
 
-        :type name: string or None
-        :param name:
-              The fully qualified name of the group.
-
-        :type display_name: string
+        :type display_name: string or None
         :param display_name:
             A user-assigned name for this group, used only for display
             purposes.
 
-        :type parent_name: string
-        :param parent_name:
-            The fully qualified name of the group's parent, if it has one.
+        :type parent_id: string or None
+        :param parent_id:
+            The ID of the group's parent, if it has one.
 
-        :type filter_string: string
+        :type filter_string: string or None
         :param filter_string:
             The filter string used to determine which monitored resources
             belong to this group.
@@ -330,9 +324,8 @@ class Client(JSONClient):
         return Group(
             self,
             group_id=group_id,
-            name=name,
             display_name=display_name,
-            parent_name=parent_name,
+            parent_id=parent_id,
             filter_string=filter_string,
             is_cluster=is_cluster,
         )

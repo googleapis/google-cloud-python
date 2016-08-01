@@ -288,14 +288,14 @@ class TestMonitoringGroups(unittest2.TestCase):
         middle_group = client.group(
             display_name='Testing: Middle group',
             filter_string=self.FILTER,
-            parent_name=root_group.name,
+            parent_id=root_group.id,
         )
         middle_group.create()
 
         leaf_group = client.group(
             display_name='Testing: Leaf group',
             filter_string=self.FILTER,
-            parent_name=middle_group.name,
+            parent_id=middle_group.id,
         )
         leaf_group.create()
         self.to_delete.extend([leaf_group, middle_group, root_group])

@@ -24,8 +24,8 @@ class Test_group_id_from_name(unittest2.TestCase):
     def test_w_empty_name(self):
         PROJECT = 'my-project-1234'
         PATH = ''
-        group_id = self._callFUT(PATH, PROJECT)
-        self.assertEqual(group_id, '')
+        with self.assertRaises(ValueError):
+            self._callFUT(PATH, PROJECT)
 
     def test_w_simple_name(self):
         GROUP_ID = 'GROUP_ID'
@@ -120,10 +120,10 @@ class TestGroup(unittest2.TestCase):
 
     def _validateGroup(self, actual_group, expected_group_json):
         expected_group = self._makeOneFromJSON(expected_group_json)
-        self.assertEqual(actual_group.name, expected_group.name)
+        self.assertEqual(actual_group.id, expected_group.id)
         self.assertEqual(actual_group.display_name,
                          expected_group.display_name)
-        self.assertEqual(actual_group.parent_name, expected_group.parent_name)
+        self.assertEqual(actual_group.parent_id, expected_group.parent_id)
         self.assertEqual(actual_group.filter, expected_group.filter)
         self.assertEqual(actual_group.is_cluster, expected_group.is_cluster)
 
@@ -133,36 +133,26 @@ class TestGroup(unittest2.TestCase):
             self.assertIs(group.client, client)
             self._validateGroup(group, expected_groups_json[i])
 
-    def test_constructor_w_name(self):
+    def test_constructor(self):
         client = _Client(project=self.PROJECT)
         group = self._makeOne(
             client=client,
-            name=self.GROUP_NAME,
+            group_id=self.GROUP_ID,
             display_name=self.DISPLAY_NAME,
-            parent_name=self.PARENT_NAME,
+            parent_id=self.PARENT_ID,
             filter_string=self.FILTER,
             is_cluster=True,
         )
 
         self.assertIs(group.client, client)
 
+        self.assertEqual(group.id, self.GROUP_ID)
         self.assertEqual(group.name, self.GROUP_NAME)
         self.assertEqual(group.display_name, self.DISPLAY_NAME)
+        self.assertEqual(group.parent_id, self.PARENT_ID)
         self.assertEqual(group.parent_name, self.PARENT_NAME)
         self.assertEqual(group.filter, self.FILTER)
         self.assertTrue(group.is_cluster)
-
-    def test_contructor_w_id(self):
-        client = _Client(project=self.PROJECT)
-        group = self._makeOne(client=client, group_id=self.GROUP_ID)
-
-        self.assertIs(group.client, client)
-
-        self.assertEqual(group.name, self.GROUP_NAME)
-        self.assertEqual(group.display_name, '')
-        self.assertEqual(group.parent_name, '')
-        self.assertEqual(group.filter, '')
-        self.assertFalse(group.is_cluster)
 
     def test_constructor_defaults(self):
         client = _Client(project=self.PROJECT)
@@ -170,42 +160,21 @@ class TestGroup(unittest2.TestCase):
 
         self.assertIs(group.client, client)
 
+        self.assertIsNone(group.id)
         self.assertIsNone(group.name)
-        self.assertEqual(group.display_name, '')
-        self.assertEqual(group.parent_name, '')
-        self.assertEqual(group.filter, '')
+        self.assertIsNone(group.display_name)
+        self.assertIsNone(group.parent_id)
+        self.assertIsNone(group.parent_name)
+        self.assertIsNone(group.filter)
         self.assertFalse(group.is_cluster)
 
-    def test_construct_w_name_and_id(self):
-        client = _Client(project=self.PROJECT)
-        with self.assertRaises(ValueError):
-            self._makeOne(client=client, group_id=self.GROUP_ID,
-                          name=self.GROUP_NAME)
-
-    def test_id_no_name(self):
-        group = self._makeOne(client=None)
-        self.assertRaises(ValueError, getattr, group, 'id')
-
-    def test_id_w_name(self):
-        client = _Client(project=self.PROJECT)
-        group = self._makeOne(client=client, name=self.GROUP_NAME)
-        self.assertEqual(group.id, self.GROUP_ID)
-
-    def test_parent_id_no_name(self):
-        group = self._makeOne(client=None)
-        self.assertEqual(group.parent_id, '')
-
-    def test_parent_id_w_name(self):
-        client = _Client(project=self.PROJECT)
-        group = self._makeOne(client=client, parent_name=self.PARENT_NAME)
-        self.assertEqual(group.parent_id, self.PARENT_ID)
-
-    def test_path_no_name(self):
+    def test_path_no_id(self):
         group = self._makeOne(client=None)
         self.assertRaises(ValueError, getattr, group, 'path')
 
-    def test_path_w_name(self):
-        group = self._makeOne(client=None, name=self.GROUP_NAME)
+    def test_path_w_id(self):
+        client = _Client(project=self.PROJECT)
+        group = self._makeOne(client=client, group_id=self.GROUP_ID)
         self.assertEqual(group.path, '/%s' % self.GROUP_NAME)
 
     def test_from_dict(self):
@@ -231,24 +200,30 @@ class TestGroup(unittest2.TestCase):
 
         self.assertIs(group.client, client)
 
-        self.assertEqual(group.name, self.GROUP_NAME)
+        self.assertEqual(group.id, self.GROUP_ID)
         self.assertEqual(group.display_name, self.DISPLAY_NAME)
-        self.assertEqual(group.parent_name, '')
+        self.assertIsNone(group.parent_id)
         self.assertEqual(group.filter, self.FILTER)
         self.assertFalse(group.is_cluster)
 
     def test_to_dict(self):
-        group = self._makeOneFromJSON(self.JSON_GROUP)
+        client = _Client(project=self.PROJECT)
+        group = self._makeOneFromJSON(self.JSON_GROUP, client)
         self.assertEqual(group._to_dict(), self.JSON_GROUP)
 
     def test_to_dict_defaults(self):
-        info = {
+        client = _Client(project=self.PROJECT)
+        group = self._makeOne(
+            client=client, group_id=self.GROUP_ID,
+            display_name=self.DISPLAY_NAME,
+            filter_string=self.FILTER)
+        expected_dict = {
             'name': self.GROUP_NAME,
             'displayName': self.DISPLAY_NAME,
             'filter': self.FILTER,
+            'isCluster': False,
         }
-        group = self._makeOneFromJSON(info)
-        self.assertEqual(group._to_dict(), info)
+        self.assertEqual(group._to_dict(), expected_dict)
 
     def test_create(self):
         RESPONSE = self.JSON_GROUP
@@ -261,7 +236,7 @@ class TestGroup(unittest2.TestCase):
         group = self._makeOne(
             client=client,
             display_name=self.DISPLAY_NAME,
-            parent_name=self.PARENT_NAME,
+            parent_id=self.PARENT_ID,
             filter_string=self.FILTER,
             is_cluster=True
         )

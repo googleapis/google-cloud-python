@@ -194,7 +194,7 @@ calling the object's :meth:`~gcloud.monitoring.group.Group.create` method::
     >>> group = client.group(
     ...     display_name='My group',
     ...     filter_string='resource.zone = "us-central1-a"',
-    ...     parent_name='projects/my-project/groups/1001',
+    ...     parent_id='1001',
     ...     is_cluster=True)
     >>> group.create()
     >>> group.id

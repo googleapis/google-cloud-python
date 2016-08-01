@@ -51,8 +51,6 @@ def group_id_from_name(path, project=None):
              the project from the ``path`` does not agree with the
              ``project`` passed in.
     """
-    if not path:
-        return ''
     return _name_from_project_path(path, project, _GROUP_TEMPLATE)
 
 
@@ -81,20 +79,15 @@ class Group(object):
     :type group_id: string or None
     :param group_id: The ID of the group.
 
-    :type name: string or None
-    :param name:
-          The fully qualified name of the group in the format
-          "projects/<project>/groups/<id>". This is a read-only property.
-
-    :type display_name: string
+    :type display_name: string or None
     :param display_name:
         A user-assigned name for this group, used only for display purposes.
 
-    :type parent_name: string
-    :param parent_name:
-        The fully qualified name of the group's parent, if it has one.
+    :type parent_id: string or None
+    :param parent_id:
+        The ID of the group's parent, if it has one.
 
-    :type filter_string: string
+    :type filter_string: string or None
     :param filter_string:
         The filter string used to determine which monitored resources belong to
         this group.
@@ -103,49 +96,52 @@ class Group(object):
     :param is_cluster:
         If true, the members of this group are considered to be a cluster. The
         system can perform additional analysis on groups that are clusters.
-
-    :raises: :exc:`ValueError` if both ``group_id`` and ``name`` are specified.
     """
-    def __init__(self, client, group_id=None, name=None, display_name='',
-                 parent_name='', filter_string='', is_cluster=False):
-        if not (group_id is None or name is None):
-            raise ValueError('At most one of "group_id" and "name" can be '
-                             'specified')
-
+    def __init__(self, client, group_id=None, display_name=None,
+                 parent_id=None, filter_string=None, is_cluster=False):
         self.client = client
-        if group_id is not None:
-            self.name = group_name_from_id(client.project, group_id)
-        else:
-            self.name = name
-
+        self._id = group_id
         self.display_name = display_name
-        self.parent_name = parent_name
+        self.parent_id = parent_id
         self.filter = filter_string
         self.is_cluster = is_cluster
 
+        if group_id:
+            self._name = group_name_from_id(client.project, group_id)
+        else:
+            self._name = None
+
     @property
     def id(self):
-        """Retrieve the ID of the group.
+        """Returns the group ID.
 
-        :rtype: str
+        :rtype: str or None
         :returns: the ID of the group based on it's name.
-
-        :raises: :exc:`ValueError` if :attr:`name` is not specified.
         """
-        if not self.name:
-            raise ValueError('Cannot determine group ID without group name.')
-        return group_id_from_name(self.name, self.client.project)
+        return self._id
 
     @property
-    def parent_id(self):
-        """The ID of the parent group.
+    def name(self):
+        """Returns the fully qualified name of the group.
 
-        :rtype: str
-        :returns: the ID of the parent group based on ``parent_name``.
+        :rtype: str or None
+        :returns:
+            The fully qualified name of the group in the format
+            "projects/<project>/groups/<id>".
         """
-        if not self.parent_name:
-            return ''
-        return group_id_from_name(self.parent_name, self.client.project)
+        return self._name
+
+    @property
+    def parent_name(self):
+        """Returns the fully qualified name of the parent group.
+
+        :rtype: str or None
+        :returns:
+            The fully qualified name of the parent group.
+        """
+        if not self.parent_id:
+            return None
+        return group_name_from_id(self.client.project, self.parent_id)
 
     @property
     def path(self):
@@ -156,8 +152,8 @@ class Group(object):
 
         :raises: :exc:`ValueError` if :attr:`name` is not specified.
         """
-        if not self.name:
-            raise ValueError('Cannot determine path without group name.')
+        if not self.id:
+            raise ValueError('Cannot determine path without group ID.')
         return '/' + self.name
 
     def create(self):
@@ -168,7 +164,7 @@ class Group(object):
             >>> group = client.group(
             ...     display_name='My group',
             ...     filter_string='resource.type = "gce_instance"',
-            ...     parent_name='projects/my-project/groups/5678',
+            ...     parent_id='5678',
             ...     is_cluster=True)
             >>> group.create()
 
@@ -234,7 +230,7 @@ class Group(object):
         :rtype: :class:`Group` or None
         :returns: The parent of the group.
         """
-        if not self.parent_name:
+        if not self.parent_id:
             return None
         return self._fetch(self.client, self.parent_id)
 
@@ -470,11 +466,17 @@ class Group(object):
         :param info:
             A ``dict`` parsed from the JSON wire-format representation.
         """
-        self.name = info['name']
+        self._name = info['name']
+        self._id = group_id_from_name(info['name'])
         self.display_name = info['displayName']
-        self.parent_name = info.get('parentName', '')
+        parent_name = info.get('parentName', '')
         self.filter = info['filter']
         self.is_cluster = info.get('isCluster', False)
+
+        if not parent_name:
+            self.parent_id = None
+        else:
+            self.parent_id = group_id_from_name(parent_name)
 
     def _to_dict(self):
         """Build a dictionary ready to be serialized to the JSON wire format.
@@ -485,23 +487,16 @@ class Group(object):
         info = {
             'filter': self.filter,
             'displayName': self.display_name,
+            'isCluster': self.is_cluster,
         }
 
         if self.name:
             info['name'] = self.name
-        if self.parent_name:
-            info['parentName'] = self.parent_name
-        if self.is_cluster:
-            info['isCluster'] = self.is_cluster
+        if self.parent_id:
+            info['parentName'] = group_name_from_id(
+                self.client.project, self.parent_id)
 
         return info
 
     def __repr__(self):
-        return (
-            '<Group: \n'
-            ' name={name!r},\n'
-            ' display_name={display_name!r},\n'
-            ' parent_name={parent_name!r},\n'
-            ' filter={filter!r},\n'
-            ' is_cluster={is_cluster!r}>'
-        ).format(**self.__dict__)
+        return '<Group: %s>' % self.name
