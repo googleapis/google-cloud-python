@@ -422,7 +422,7 @@ def _datetime_to_rfc3339(value, ignore_zone=True):
     :rtype: str
     :returns: The string representing the datetime stamp.
     """
-    if not(ignore_zone or value.tzinfo is None):
+    if not ignore_zone and value.tzinfo is not None:
         # Convert to UTC and remove the time zone info.
         value = value.replace(tzinfo=None) - value.utcoffset()
 
