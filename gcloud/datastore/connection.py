@@ -227,29 +227,7 @@ class Connection(connection.Connection):
         :meth:`gcloud.datastore.query.Query.fetch` method.
 
         Under the hood, the :class:`gcloud.datastore.query.Query` class
-        uses this method to fetch data:
-
-        >>> from gcloud import datastore
-        >>> client = datastore.Client()
-        >>> query = client.query(kind='MyKind')
-        >>> query.add_filter('property', '=', 'val')
-
-        Using the query iterator's
-        :meth:`next_page() <.datastore.query.Iterator.next_page>` method:
-
-        >>> query_iter = query.fetch()
-        >>> entities, more_results, cursor = query_iter.next_page()
-        >>> entities
-        [<list of Entity unmarshalled from protobuf>]
-        >>> more_results
-        <boolean of more results>
-        >>> cursor
-        <string containing cursor where fetch stopped>
-
-        Under the hood this is doing:
-
-        >>> connection.run_query('project', query.to_protobuf())
-        [<list of Entity Protobufs>], cursor, more_results, skipped_results
+        uses this method to fetch data.
 
         :type project: string
         :param project: The project over which to run the query.

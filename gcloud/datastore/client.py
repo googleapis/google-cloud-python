@@ -443,6 +443,37 @@ class Client(_BaseClient, _ClientProjectMixin):
         """Proxy to :class:`gcloud.datastore.query.Query`.
 
         Passes our ``project``.
+
+        Using query to search a datastore::
+
+        >>> from gcloud import datastore
+        >>> client = datastore.Client()
+        >>> query = client.query(kind='MyKind')
+        >>> query.add_filter('property', '=', 'val')
+
+        Using the query iterator's
+        :meth:`next_page() <gcloud.datastore.query.Iterator.next_page>` method:
+
+        >>> query_iter = query.fetch()
+        >>> entities, more_results, cursor = query_iter.next_page()
+        >>> entities
+        [<list of Entity unmarshalled from protobuf>]
+        >>> more_results
+        <boolean of more results>
+        >>> cursor
+        <string containing cursor where fetch stopped>
+
+        Under the hood this is doing:
+
+        >>> connection.run_query('project', query.to_protobuf())
+        [<list of Entity Protobufs>], cursor, more_results, skipped_results
+
+        :type **kwargs: dict
+        :param **kwargs: Parameters for initializing and instance of
+                         :class:`gcloud.datastore.query.Query`.
+
+        :rtype: :class:`gcloud.datastore.query.Query`
+        :returns: An instance of :class:`gcloud.datastore.query.Query`
         """
         if 'client' in kwargs:
             raise TypeError('Cannot pass client')
