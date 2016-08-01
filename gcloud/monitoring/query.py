@@ -25,6 +25,7 @@ import itertools
 
 import six
 
+from gcloud._helpers import _datetime_to_rfc3339
 from gcloud.monitoring._dataframe import _build_dataframe
 from gcloud.monitoring.timeseries import TimeSeries
 
@@ -498,9 +499,12 @@ class Query(object):
         """
         yield 'filter', self.filter
 
-        yield 'interval.endTime', _format_timestamp(self._end_time)
+        yield 'interval.endTime', _datetime_to_rfc3339(
+            self._end_time, ignore_zone=False)
+
         if self._start_time is not None:
-            yield 'interval.startTime', _format_timestamp(self._start_time)
+            yield 'interval.startTime', _datetime_to_rfc3339(
+                self._start_time, ignore_zone=False)
 
         if self._per_series_aligner is not None:
             yield 'aggregation.perSeriesAligner', self._per_series_aligner
@@ -651,20 +655,3 @@ def _build_label_filter(category, *args, **kwargs):
         terms.append(term.format(key=key, value=value))
 
     return ' AND '.join(sorted(terms))
-
-
-def _format_timestamp(timestamp):
-    """Convert a datetime object to a string as required by the API.
-
-    :type timestamp: :class:`datetime.datetime`
-    :param timestamp: A datetime object.
-
-    :rtype: string
-    :returns: The formatted timestamp. For example:
-        ``"2016-02-17T19:18:01.763000Z"``
-    """
-    if timestamp.tzinfo is not None:
-        # Convert to UTC and remove the time zone info.
-        timestamp = timestamp.replace(tzinfo=None) - timestamp.utcoffset()
-
-    return timestamp.isoformat() + 'Z'

@@ -80,6 +80,11 @@ class TestQuery(unittest2.TestCase):
     def _makeOne(self, *args, **kwargs):
         return self._getTargetClass()(*args, **kwargs)
 
+    @staticmethod
+    def _make_timestamp(value):
+        from gcloud._helpers import _datetime_to_rfc3339
+        return _datetime_to_rfc3339(value)
+
     def test_constructor_minimal(self):
         client = _Client(project=PROJECT, connection=_Connection())
         query = self._makeOne(client)
@@ -217,7 +222,7 @@ class TestQuery(unittest2.TestCase):
         actual = list(query._build_query_params())
         expected = [
             ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-            ('interval.endTime', T1.isoformat() + 'Z'),
+            ('interval.endTime', self._make_timestamp(T1)),
         ]
         self.assertEqual(actual, expected)
 
@@ -246,8 +251,8 @@ class TestQuery(unittest2.TestCase):
                                                 page_token=PAGE_TOKEN))
         expected = [
             ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-            ('interval.endTime', T1.isoformat() + 'Z'),
-            ('interval.startTime', T0.isoformat() + 'Z'),
+            ('interval.endTime', self._make_timestamp(T1)),
+            ('interval.startTime', self._make_timestamp(T0)),
             ('aggregation.perSeriesAligner', ALIGNER),
             ('aggregation.alignmentPeriod', PERIOD),
             ('aggregation.crossSeriesReducer', REDUCER),
@@ -318,8 +323,8 @@ class TestQuery(unittest2.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', T1.isoformat() + 'Z'),
-                ('interval.startTime', T0.isoformat() + 'Z'),
+                ('interval.endTime', self._make_timestamp(T1)),
+                ('interval.startTime', self._make_timestamp(T0)),
             ],
         }
 
@@ -398,8 +403,8 @@ class TestQuery(unittest2.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', T1.isoformat() + 'Z'),
-                ('interval.startTime', T0.isoformat() + 'Z'),
+                ('interval.endTime', self._make_timestamp(T1)),
+                ('interval.startTime', self._make_timestamp(T0)),
             ],
         }
 
@@ -432,8 +437,8 @@ class TestQuery(unittest2.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', T1.isoformat() + 'Z'),
-                ('interval.startTime', T0.isoformat() + 'Z'),
+                ('interval.endTime', self._make_timestamp(T1)),
+                ('interval.startTime', self._make_timestamp(T0)),
             ],
         }
         request, = connection._requested
@@ -482,8 +487,8 @@ class TestQuery(unittest2.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', T1.isoformat() + 'Z'),
-                ('interval.startTime', T0.isoformat() + 'Z'),
+                ('interval.endTime', self._make_timestamp(T1)),
+                ('interval.startTime', self._make_timestamp(T0)),
                 ('view', 'HEADERS'),
             ],
         }
@@ -594,26 +599,6 @@ class Test__build_label_filter(unittest2.TestCase):
         actual = self._callFUT('resource', resource_type_suffix='-foo')
         expected = 'resource.type = ends_with("-foo")'
         self.assertEqual(actual, expected)
-
-
-class Test__format_timestamp(unittest2.TestCase):
-
-    def _callFUT(self, timestamp):
-        from gcloud.monitoring.query import _format_timestamp
-        return _format_timestamp(timestamp)
-
-    def test_naive(self):
-        from datetime import datetime
-        TIMESTAMP = datetime(2016, 4, 5, 13, 30, 0)
-        timestamp = self._callFUT(TIMESTAMP)
-        self.assertEqual(timestamp, '2016-04-05T13:30:00Z')
-
-    def test_with_timezone(self):
-        from datetime import datetime
-        from gcloud._helpers import UTC
-        TIMESTAMP = datetime(2016, 4, 5, 13, 30, 0, tzinfo=UTC)
-        timestamp = self._callFUT(TIMESTAMP)
-        self.assertEqual(timestamp, '2016-04-05T13:30:00Z')
 
 
 class _Connection(object):
