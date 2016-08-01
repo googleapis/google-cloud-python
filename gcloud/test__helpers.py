@@ -648,28 +648,52 @@ class Test__rfc3339_nanos_to_datetime(unittest2.TestCase):
 
 class Test__datetime_to_rfc3339(unittest2.TestCase):
 
-    def _callFUT(self, value):
+    def _callFUT(self, *args, **kwargs):
         from gcloud._helpers import _datetime_to_rfc3339
-        return _datetime_to_rfc3339(value)
+        return _datetime_to_rfc3339(*args, **kwargs)
 
-    def test_it(self):
+    @staticmethod
+    def _make_timezone(offset):
+        from gcloud._helpers import _UTC
+
+        class CET(_UTC):
+            _tzname = 'CET'
+            _utcoffset = offset
+
+        return CET()
+
+    def test_w_utc_datetime(self):
         import datetime
         from gcloud._helpers import UTC
 
-        year = 2009
-        month = 12
-        day = 17
-        hour = 12
-        minute = 44
-        seconds = 32
-        micros = 123456
+        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=UTC)
+        result = self._callFUT(TIMESTAMP, ignore_zone=False)
+        self.assertEqual(result, '2016-04-05T13:30:00.000000Z')
 
-        to_convert = datetime.datetime(
-            year, month, day, hour, minute, seconds, micros, UTC)
-        dt_str = '%d-%02d-%02dT%02d:%02d:%02d.%06dZ' % (
-            year, month, day, hour, minute, seconds, micros)
-        result = self._callFUT(to_convert)
-        self.assertEqual(result, dt_str)
+    def test_w_non_utc_datetime(self):
+        import datetime
+        from gcloud._helpers import _UTC
+
+        zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
+        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)
+        result = self._callFUT(TIMESTAMP, ignore_zone=False)
+        self.assertEqual(result, '2016-04-05T14:30:00.000000Z')
+
+    def test_w_non_utc_datetime_and_ignore_zone(self):
+        import datetime
+        from gcloud._helpers import _UTC
+
+        zone = self._make_timezone(offset=datetime.timedelta(hours=-1))
+        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0, tzinfo=zone)
+        result = self._callFUT(TIMESTAMP)
+        self.assertEqual(result, '2016-04-05T13:30:00.000000Z')
+
+    def test_w_naive_datetime(self):
+        import datetime
+
+        TIMESTAMP = datetime.datetime(2016, 4, 5, 13, 30, 0)
+        result = self._callFUT(TIMESTAMP)
+        self.assertEqual(result, '2016-04-05T13:30:00.000000Z')
 
 
 class Test__to_bytes(unittest2.TestCase):

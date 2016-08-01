@@ -409,15 +409,23 @@ def _rfc3339_nanos_to_datetime(dt_str):
     return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
-def _datetime_to_rfc3339(value):
-    """Convert a native timestamp to a string.
+def _datetime_to_rfc3339(value, ignore_zone=True):
+    """Convert a timestamp to a string.
 
     :type value: :class:`datetime.datetime`
     :param value: The datetime object to be converted to a string.
 
+    :type ignore_zone: boolean
+    :param ignore_zone: If True, then the timezone (if any) of the datetime
+                        object is ignored.
+
     :rtype: str
     :returns: The string representing the datetime stamp.
     """
+    if not(ignore_zone or value.tzinfo is None):
+        # Convert to UTC and remove the time zone info.
+        value = value.replace(tzinfo=None) - value.utcoffset()
+
     return value.strftime(_RFC3339_MICROS)
 
 
