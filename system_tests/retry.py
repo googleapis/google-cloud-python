@@ -5,22 +5,22 @@ from functools import wraps
 def retry(exception, tries=4, delay=3, backoff=2, logger=None):
     """Retry calling the decorated function using an exponential backoff.
 
-    :type exception: Exception or tuple
-    :param exception: the exception to check. may be a tuple of
-        exceptions to check
+    :type exception: Exception or tuple of Exceptions
+    :param exception: The exception to check or may be a tuple of
+                      exceptions to check.
 
     :type tries: int
-    :param tries: number of times to try (not retry) before giving up
+    :param tries: Number of times to try (not retry) before giving up.
 
     :type delay: int
-    :param delay: initial delay between retries in seconds
+    :param delay: Initial delay between retries in seconds.
 
     :type backoff: int
-    :param backoff: backoff multiplier e.g. value of 2 will double the delay
-        each retry
+    :param backoff: Backoff multiplier e.g. value of 2 will double the delay
+                    each retry.
 
     :type logger: logging.Logger instance
-    :param logger: logger to use. If None, print
+    :param logger: Logger to use. If None, print.
 
     :rtype: func
     :returns: Retry wrapper function.

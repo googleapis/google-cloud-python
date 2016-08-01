@@ -93,6 +93,9 @@ class TestBigQuery(unittest2.TestCase):
                  if grant.entity_id != 'projectWriters']
         dataset.access_grants = after
 
+        # We should try and keep `delay` and tries as low as possible to
+        # reduce test running time. tries=3 and delay=30 worked consistenly
+        # when updating a dataset.
         @retry(Forbidden, tries=3, delay=30)
         def update_dataset():
             dataset.update()
@@ -196,9 +199,13 @@ class TestBigQuery(unittest2.TestCase):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
 
+        # We should try and keep `delay` and tries as low as possible to
+        # reduce test running time. tries=3 and delay=20 worked consistenly
+        # when creating a dataset.
         @retry(Forbidden, tries=3, delay=20)
         def create_dataset():
             dataset.create()
+
         create_dataset()
         self.to_delete.append(dataset)
         TABLE_NAME = 'test_table'
