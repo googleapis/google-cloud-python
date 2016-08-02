@@ -22,7 +22,7 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
 from gcloud.exceptions import Forbidden
 
-from retry import retry
+from retry import Retry
 from system_test_utils import unique_resource_id
 
 
@@ -96,7 +96,7 @@ class TestBigQuery(unittest2.TestCase):
         # We should try and keep `delay` and tries as low as possible to
         # reduce test running time. tries=3 and delay=30 worked consistenly
         # when updating a dataset.
-        @retry(Forbidden, tries=3, delay=30)
+        @Retry(Forbidden, tries=2, delay=30)
         def update_dataset():
             dataset.update()
 
@@ -202,7 +202,7 @@ class TestBigQuery(unittest2.TestCase):
         # We should try and keep `delay` and tries as low as possible to
         # reduce test running time. tries=3 and delay=20 worked consistenly
         # when creating a dataset.
-        @retry(Forbidden, tries=3, delay=20)
+        @Retry(Forbidden, tries=2, delay=30)
         def create_dataset():
             dataset.create()
 
