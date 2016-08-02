@@ -38,17 +38,20 @@ class Retry(object):
         @wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries_counter = self.tries
+            exception = self.exception
+            delay = self.delay
+            backoff = self.backoff
             while tries_counter > 0:
                 try:
                     return to_wrap(*args, **kwargs)
-                except self.exception as caught_exception:
+                except exception as caught_exception:
                     msg = ("%s, Trying again in %d seconds..." %
-                           (str(caught_exception), self.delay))
+                           (str(caught_exception), delay))
                     self.logger(msg)
 
-                    time.sleep(self.delay)
+                    time.sleep(delay)
                     tries_counter -= 1
-                    self.delay *= self.backoff
+                    delay *= backoff
             return to_wrap(*args, **kwargs)
 
         return wrapped_function
