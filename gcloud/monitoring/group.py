@@ -21,9 +21,9 @@
 
 import re
 
+from gcloud._helpers import _datetime_to_rfc3339
 from gcloud._helpers import _name_from_project_path
 from gcloud.exceptions import NotFound
-from gcloud.monitoring._helpers import _format_timestamp
 from gcloud.monitoring.resource import Resource
 
 
@@ -330,10 +330,12 @@ class Group(object):
                 params['filter'] = filter_string
 
             if end_time is not None:
-                params['interval.endTime'] = _format_timestamp(end_time)
+                params['interval.endTime'] = _datetime_to_rfc3339(
+                    end_time, ignore_zone=False)
 
             if start_time is not None:
-                params['interval.startTime'] = _format_timestamp(start_time)
+                params['interval.startTime'] = _datetime_to_rfc3339(
+                    start_time, ignore_zone=False)
 
             if page_token is not None:
                 params['pageToken'] = page_token
