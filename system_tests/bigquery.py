@@ -93,9 +93,9 @@ class TestBigQuery(unittest2.TestCase):
                  if grant.entity_id != 'projectWriters']
         dataset.access_grants = after
 
-        # We need to wait for the changes in the dataset to propgate and be
-        # eventually consistent. The alternative outcome is a 403 Forbidden
-        # response from upstream due to upstream rate limiting.
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
         @Retry(Forbidden, tries=2, delay=30)
         def update_dataset():
             dataset.update()
@@ -199,9 +199,9 @@ class TestBigQuery(unittest2.TestCase):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
 
-        # We need to wait for the changes in the dataset to propgate and be
-        # eventually consistent. The alternative outcome is a 403 Forbidden
-        # response from upstream due to upstream rate limiting.
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
         @Retry(Forbidden, tries=2, delay=30)
         def create_dataset():
             dataset.create()
