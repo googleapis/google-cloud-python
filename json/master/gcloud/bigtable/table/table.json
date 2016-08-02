@@ -20,21 +20,21 @@
       "name": "column_family", 
       "params": [
         {
-          "description": " The ID of the column family. Must be of the form <code>[_a-zA-Z0-9][-_.a-zA-Z0-9]*</code>.", 
-          "name": "column_family_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " (Optional) The garbage collection settings for this column family.", 
           "name": "gc_rule", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
+          ]
+        }, 
+        {
+          "description": " The ID of the column family. Must be of the form <code>[_a-zA-Z0-9][-_.a-zA-Z0-9]*</code>.", 
+          "name": "column_family_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -126,15 +126,6 @@
       "name": "read_rows", 
       "params": [
         {
-          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " (Optional) The filter to apply to the contents of the specified row(s). If unset, reads every column in each row.", 
           "name": "filter_", 
           "nullable": null, 
@@ -159,6 +150,15 @@
           "optional": null, 
           "types": [
             "bytes"
+          ]
+        }, 
+        {
+          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 

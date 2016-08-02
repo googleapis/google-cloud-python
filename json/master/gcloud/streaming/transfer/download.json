@@ -30,15 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should an existing file be overwritten", 
           "name": "overwrite", 
           "nullable": null, 
@@ -64,6 +55,15 @@
           "types": [
             "boolean"
           ]
+        }, 
+        {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -82,15 +82,6 @@
       "id": "gcloud.streaming.transfer.Download.from_stream", 
       "name": "from_stream", 
       "params": [
-        {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
         {
           "description": " total size of the file to be downloaded", 
           "name": "total_size", 
@@ -116,6 +107,15 @@
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
           ]
         }
       ], 

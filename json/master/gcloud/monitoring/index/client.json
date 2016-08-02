@@ -72,12 +72,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }, 
         {
@@ -90,12 +90,12 @@
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }
       ], 
@@ -116,24 +116,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
@@ -149,6 +131,24 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }
       ], 
@@ -230,8 +230,8 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -239,8 +239,17 @@
           ]
         }, 
         {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -257,6 +266,15 @@
           ]
         }, 
         {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " An optional unit in which the metric value is reported.", 
           "name": "unit", 
           "nullable": null, 
@@ -266,30 +284,12 @@
           ]
         }, 
         {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
           ]
         }
       ], 
@@ -310,6 +310,24 @@
       "name": "query", 
       "params": [
         {
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
           "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
           "name": "end_time", 
           "nullable": null, 
@@ -325,24 +343,6 @@
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }, 
         {
