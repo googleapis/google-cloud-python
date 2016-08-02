@@ -20,7 +20,9 @@ import unittest2
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
+from gcloud.exceptions import Forbidden
 
+from retry import Retry
 from system_test_utils import unique_resource_id
 
 
@@ -90,7 +92,15 @@ class TestBigQuery(unittest2.TestCase):
         after = [grant for grant in dataset.access_grants
                  if grant.entity_id != 'projectWriters']
         dataset.access_grants = after
-        dataset.update()
+
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
+        @Retry(Forbidden, tries=2, delay=30)
+        def update_dataset():
+            dataset.update()
+
+        update_dataset()
         self.assertEqual(len(dataset.access_grants), len(after))
         for found, expected in zip(dataset.access_grants, after):
             self.assertEqual(found.role, expected.role)
@@ -188,7 +198,15 @@ class TestBigQuery(unittest2.TestCase):
     def test_update_table(self):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
-        dataset.create()
+
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
+        @Retry(Forbidden, tries=2, delay=30)
+        def create_dataset():
+            dataset.create()
+
+        create_dataset()
         self.to_delete.append(dataset)
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
