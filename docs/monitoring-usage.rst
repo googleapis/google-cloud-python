@@ -158,28 +158,28 @@ Groups
 ------
 
 A group is a dynamic collection of *monitored resources* whose membership is
-defined by a `filter`_.  These groups are usually created via the `Stackdriver
-dashboard`_. You can list all the groups in a project with the
+defined by a `filter`_.  These groups are usually created via the
+`Stackdriver dashboard`_. You can list all the groups in a project with the
 :meth:`~gcloud.monitoring.client.Client.list_groups` method::
 
     >>> for group in client.list_groups():
     ...     print(group.id, group.display_name, group.parent_id)
-    ('1001', 'Production', '')
-    ('1002', 'Front-end', '1001')
-    ('1003', 'Back-end', '1001')
+    ('a001', 'Production', None)
+    ('a002', 'Front-end', 'a001')
+    ('1003', 'Back-end', 'a001')
 
 See :class:`~gcloud.monitoring.group.Group` and the API documentation for
 `Groups`_ and `Group members`_ for more information.
 
 You can get a specific group based on it's ID as follows::
 
-    >>> group = client.fetch_group('1001')
+    >>> group = client.fetch_group('a001')
 
 You can get the current members of this group using the
-:meth:`~gcloud.monitoring.group.Group.members` method::
+:meth:`~gcloud.monitoring.group.Group.list_members` method::
 
-    >>> for resource in group.members():
-    ...     print(resource)
+    >>> for member in group.list_members():
+    ...     print(member)
 
 Passing in ``end_time`` and ``start_time`` to the above method will return
 historical members based on the current filter of the group. The group
@@ -191,10 +191,11 @@ You do this by creating a :class:`~gcloud.monitoring.group.Group` object using
 the client's :meth:`~gcloud.monitoring.client.Client.group` factory and then
 calling the object's :meth:`~gcloud.monitoring.group.Group.create` method::
 
+    >>> filter_string = 'resource.zone = "us-central1-a"'
     >>> group = client.group(
     ...     display_name='My group',
-    ...     filter_string='resource.zone = "us-central1-a"',
-    ...     parent_id='1001',
+    ...     filter_string=filter_string,
+    ...     parent_id='a001',
     ...     is_cluster=True)
     >>> group.create()
     >>> group.id

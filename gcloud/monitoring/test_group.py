@@ -18,8 +18,8 @@ import unittest2
 class Test_group_id_from_name(unittest2.TestCase):
 
     def _callFUT(self, path, project):
-        from gcloud.monitoring.group import group_id_from_name
-        return group_id_from_name(path, project)
+        from gcloud.monitoring.group import _group_id_from_name
+        return _group_id_from_name(path, project)
 
     def test_w_empty_name(self):
         PROJECT = 'my-project-1234'
@@ -67,7 +67,6 @@ class TestGroup(unittest2.TestCase):
         self.JSON_PARENT = {
             'name': self.PARENT_NAME,
             'displayName': 'Parent group',
-            'parentName': '',
             'filter': FILTER_TEMPLATE % 'red',
             'isCluster': False,
         }
@@ -257,7 +256,8 @@ class TestGroup(unittest2.TestCase):
         self.assertTrue(group.exists())
 
         request, = connection._requested
-        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
+        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME,
+                            'query_params': {'fields': 'name'}}
         self.assertEqual(request, expected_request)
 
     def test_exists_miss(self):
@@ -268,7 +268,8 @@ class TestGroup(unittest2.TestCase):
         self.assertFalse(group.exists())
 
         request, = connection._requested
-        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME}
+        expected_request = {'method': 'GET', 'path': '/' + self.GROUP_NAME,
+                            'query_params': {'fields': 'name'}}
         self.assertEqual(request, expected_request)
 
     def test_reload(self):
@@ -310,12 +311,12 @@ class TestGroup(unittest2.TestCase):
         expected_request = {'method': 'DELETE', 'path': group.path}
         self.assertEqual(request, expected_request)
 
-    def test_parent(self):
+    def test_fetch_parent(self):
         connection = _Connection(self.JSON_PARENT)
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOneFromJSON(self.JSON_GROUP, client)
 
-        actual_parent = group.parent()
+        actual_parent = group.fetch_parent()
 
         self.assertIs(actual_parent.client, client)
         self._validateGroup(actual_parent, self.JSON_PARENT)
@@ -324,11 +325,11 @@ class TestGroup(unittest2.TestCase):
         expected_request = {'method': 'GET', 'path': '/' + self.PARENT_NAME}
         self.assertEqual(request, expected_request)
 
-    def test_parent_empty(self):
+    def test_fetch_parent_empty(self):
         connection = _Connection()
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOne(client=client)
-        actual_parent = group.parent()
+        actual_parent = group.fetch_parent()
 
         self.assertIsNone(actual_parent)
         self.assertEqual(connection._requested, [])
@@ -377,7 +378,7 @@ class TestGroup(unittest2.TestCase):
         with self.assertRaises(NotFound):
             self._getTargetClass()._list(client)
 
-    def test_children(self):
+    def test_list_children(self):
         CHILDREN = [self.JSON_GROUP, self.JSON_SIBLING]
         RESPONSE = {
             'group': CHILDREN,
@@ -385,7 +386,7 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
         parent_group = self._makeOneFromJSON(self.JSON_PARENT, client)
-        groups = parent_group.children()
+        groups = parent_group.list_children()
         self._validateGroupList(client, groups, CHILDREN)
 
         request, = connection._requested
@@ -395,7 +396,7 @@ class TestGroup(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
-    def test_ancestors(self):
+    def test_list_ancestors(self):
         ANCESTORS = [self.JSON_GROUP, self.JSON_PARENT]
         RESPONSE = {
             'group': ANCESTORS,
@@ -403,7 +404,7 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
         child_group = self._makeOneFromJSON(self.JSON_CHILD, client)
-        groups = child_group.ancestors()
+        groups = child_group.list_ancestors()
         self._validateGroupList(client, groups, ANCESTORS)
 
         request, = connection._requested
@@ -413,7 +414,7 @@ class TestGroup(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
-    def test_descendants(self):
+    def test_list_descendants(self):
         DESCENDANTS = [self.JSON_GROUP, self.JSON_SIBLING, self.JSON_CHILD]
         RESPONSE = {
             'group': DESCENDANTS,
@@ -421,7 +422,7 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
         parent_group = self._makeOneFromJSON(self.JSON_PARENT, client)
-        groups = parent_group.descendants()
+        groups = parent_group.list_descendants()
         self._validateGroupList(client, groups, DESCENDANTS)
 
         request, = connection._requested
@@ -431,7 +432,7 @@ class TestGroup(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
-    def test_members(self):
+    def test_list_members(self):
         self._setUpResources()
         RESPONSE = {
             'members': self.MEMBERS,
@@ -439,7 +440,7 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOneFromJSON(self.JSON_GROUP, client)
-        members = group.members()
+        members = group.list_members()
 
         self.assertEqual(members, [self.RESOURCE1, self.RESOURCE2])
 
@@ -450,7 +451,7 @@ class TestGroup(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
-    def test_members_paged(self):
+    def test_list_members_paged(self):
         self._setUpResources()
         TOKEN = 'second-page-please'
         RESPONSE1 = {
@@ -464,7 +465,7 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE1, RESPONSE2)
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOneFromJSON(self.JSON_GROUP, client)
-        members = group.members()
+        members = group.list_members()
 
         self.assertEqual(members, [self.RESOURCE1, self.RESOURCE2])
 
@@ -480,7 +481,7 @@ class TestGroup(unittest2.TestCase):
         self.assertEqual(request1, expected_request1)
         self.assertEqual(request2, expected_request2)
 
-    def test_members_w_all_arguments(self):
+    def test_list_members_w_all_arguments(self):
         import datetime
         from gcloud._helpers import _datetime_to_rfc3339
 
@@ -496,8 +497,8 @@ class TestGroup(unittest2.TestCase):
         connection = _Connection(RESPONSE)
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOneFromJSON(self.JSON_GROUP, client)
-        members = group.members(start_time=T0, end_time=T1,
-                                filter_string=MEMBER_FILTER)
+        members = group.list_members(
+            start_time=T0, end_time=T1, filter_string=MEMBER_FILTER)
 
         self.assertEqual(members, [self.RESOURCE1, self.RESOURCE2])
 
@@ -512,7 +513,7 @@ class TestGroup(unittest2.TestCase):
         }
         self.assertEqual(request, expected_request)
 
-    def test_members_w_missing_end_time(self):
+    def test_list_members_w_missing_end_time(self):
         import datetime
 
         T0 = datetime.datetime(2016, 4, 6, 22, 5, 0)
@@ -521,7 +522,7 @@ class TestGroup(unittest2.TestCase):
         client = _Client(project=self.PROJECT, connection=connection)
         group = self._makeOneFromJSON(self.JSON_GROUP, client)
         with self.assertRaises(ValueError):
-            group.members(start_time=T0)
+            group.list_members(start_time=T0)
 
 
 class _Connection(object):

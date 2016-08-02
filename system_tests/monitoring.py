@@ -264,7 +264,7 @@ class TestMonitoringGroups(unittest2.TestCase):
         self.assertEqual(after.filter, NEW_FILTER)
         self.assertEqual(after.display_name, NEW_DISPLAY_NAME)
 
-    def test_group_members(self):
+    def test_list_group_members(self):
         client = monitoring.Client()
         group = client.group(
             display_name=self.DISPLAY_NAME,
@@ -274,8 +274,8 @@ class TestMonitoringGroups(unittest2.TestCase):
         group.create()
         self.to_delete.append(group)
 
-        for _ in group.members():
-            pass    # Not necessarily reached.
+        for member in group.list_members():
+            self.assertIsInstance(member, monitoring.Resource)
 
     def test_group_hierarchy(self):
         client = monitoring.Client()
@@ -301,21 +301,21 @@ class TestMonitoringGroups(unittest2.TestCase):
         self.to_delete.extend([leaf_group, middle_group, root_group])
 
         # Test for parent.
-        actual_parent = middle_group.parent()
+        actual_parent = middle_group.fetch_parent()
         self.assertTrue(actual_parent.name, root_group.name)
 
         # Test for children.
-        actual_children = middle_group.children()
+        actual_children = middle_group.list_children()
         children_names = [group.name for group in actual_children]
         self.assertEqual(children_names, [leaf_group.name])
 
         # Test for descendants.
-        actual_descendants = root_group.descendants()
+        actual_descendants = root_group.list_descendants()
         descendant_names = {group.name for group in actual_descendants}
         self.assertEqual(descendant_names,
                          set([middle_group.name, leaf_group.name]))
 
         # Test for ancestors.
-        actual_ancestors = leaf_group.ancestors()
+        actual_ancestors = leaf_group.list_ancestors()
         ancestor_names = [group.name for group in actual_ancestors]
         self.assertEqual(ancestor_names, [middle_group.name, root_group.name])

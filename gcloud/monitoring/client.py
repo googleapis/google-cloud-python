@@ -335,10 +335,10 @@ class Client(JSONClient):
 
         Example::
 
-          >>> try:
-          >>>   group = client.fetch_group('1234')
-          >>> except gcloud.exceptions.NotFound:
-          >>>   print('That group does not exist!')
+            >>> try:
+            >>>     group = client.fetch_group('1234')
+            >>> except gcloud.exceptions.NotFound:
+            >>>     print('That group does not exist!')
 
         :type group_id: string
         :param group_id: The ID of the group.
@@ -356,7 +356,7 @@ class Client(JSONClient):
         Example::
 
             >>> for group in client.list_groups():
-            ...     print(group.display_name, group.name)
+            ...     print((group.display_name, group.name))
 
         :rtype: list of :class:`~gcloud.monitoring.group.Group`
         :returns: A list of group instances.

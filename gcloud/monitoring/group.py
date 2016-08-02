@@ -35,7 +35,7 @@ _GROUP_TEMPLATE = re.compile(r"""
 """, re.VERBOSE)
 
 
-def group_id_from_name(path, project=None):
+def _group_id_from_name(path, project=None):
     """Validate a group URI path and get the group ID.
 
     :type path: string
@@ -54,7 +54,7 @@ def group_id_from_name(path, project=None):
     return _name_from_project_path(path, project, _GROUP_TEMPLATE)
 
 
-def group_name_from_id(project, group_id):
+def _group_name_from_id(project, group_id):
     """Build the group name given the project and group ID.
 
     :type project: string
@@ -107,7 +107,7 @@ class Group(object):
         self.is_cluster = is_cluster
 
         if group_id:
-            self._name = group_name_from_id(client.project, group_id)
+            self._name = _group_name_from_id(client.project, group_id)
         else:
             self._name = None
 
@@ -141,7 +141,7 @@ class Group(object):
         """
         if not self.parent_id:
             return None
-        return group_name_from_id(self.client.project, self.parent_id)
+        return _group_name_from_id(self.client.project, self.parent_id)
 
     @property
     def path(self):
@@ -161,9 +161,10 @@ class Group(object):
 
         Example::
 
+            >>> filter_string = 'resource.type = "gce_instance"'
             >>> group = client.group(
             ...     display_name='My group',
-            ...     filter_string='resource.type = "gce_instance"',
+            ...     filter_string=filter_string,
             ...     parent_id='5678',
             ...     is_cluster=True)
             >>> group.create()
@@ -172,10 +173,10 @@ class Group(object):
         All attributes are overwritten by the values received in the response
         (normally affecting only ``name``).
         """
-        path = self.path_helper(self.client.project)
+        path = '/projects/%s/groups/' % (self.client.project,)
         info = self.client.connection.api_request(
             method='POST', path=path, data=self._to_dict())
-        self._init_from_dict(info)
+        self._set_properties_from_dict(info)
 
     def exists(self):
         """Test for the existence of the group via a ``GET`` request.
@@ -184,7 +185,8 @@ class Group(object):
         :returns: Boolean indicating existence of the group.
         """
         try:
-            self.client.connection.api_request(method='GET', path=self.path)
+            self.client.connection.api_request(
+                method='GET', path=self.path, query_params={'fields': 'name'})
         except NotFound:
             return False
         else:
@@ -199,13 +201,13 @@ class Group(object):
             via :meth:`update`.
         """
         info = self.client.connection.api_request(method='GET', path=self.path)
-        self._init_from_dict(info)
+        self._set_properties_from_dict(info)
 
     def update(self):
         """Update the group via a ``PUT`` request."""
         info = self.client.connection.api_request(
             method='PUT', path=self.path, data=self._to_dict())
-        self._init_from_dict(info)
+        self._set_properties_from_dict(info)
 
     def delete(self):
         """Delete the group via a ``DELETE`` request.
@@ -224,7 +226,7 @@ class Group(object):
         """
         self.client.connection.api_request(method='DELETE', path=self.path)
 
-    def parent(self):
+    def fetch_parent(self):
         """Returns the parent group of this group via a ``GET`` request.
 
         :rtype: :class:`Group` or None
@@ -234,7 +236,7 @@ class Group(object):
             return None
         return self._fetch(self.client, self.parent_id)
 
-    def children(self):
+    def list_children(self):
         """Lists all children of this group via a ``GET`` request.
 
         Returns groups whose parent_name field contains the group name. If no
@@ -245,7 +247,7 @@ class Group(object):
         """
         return self._list(self.client, children_of_group=self.name)
 
-    def ancestors(self):
+    def list_ancestors(self):
         """Lists all ancestors of this group via a ``GET`` request.
 
         The groups are returned in order, starting with the immediate parent
@@ -257,7 +259,7 @@ class Group(object):
         """
         return self._list(self.client, ancestors_of_group=self.name)
 
-    def descendants(self):
+    def list_descendants(self):
         """Lists all descendants of this group via a ``GET`` request.
 
         This returns a superset of the results returned by the :meth:`children`
@@ -268,24 +270,30 @@ class Group(object):
         """
         return self._list(self.client, descendants_of_group=self.name)
 
-    def members(self, filter_string=None, end_time=None, start_time=None):
+    def list_members(self, filter_string=None, end_time=None, start_time=None):
         """Lists all members of this group via a ``GET`` request.
 
-        If no end_time and start_time is provided then the group membership
-        over the last minute is returned.
+        If no ``end_time`` is provided then the group membership over the last
+        minute is returned.
 
-        Examples::
+        Example::
 
-            To get current members that are Compute Engine VM instances:
+            >>> for member in group.list_members():
+            ...     print member
 
-                group.members('resource.type = "gce_instance"')
+        List members that are Compute Engine VM instances::
 
-            To get historical members that existed between 4 and 5 hours ago:
+            >>> filter_string = 'resource.type = "gce_instance"'
+            >>> for member in group.list_members(filter_string=filter_string):
+            ...     print member
 
-                import datetime
-                t1 = datetime.datetime.utcnow() - datetime.timedelta(hours=4)
-                t0 = t1 - datetime.timedelta(hours=1)
-                group.members(end_time=t1, start_time=t0)
+        List historical members that existed between 4 and 5 hours ago::
+
+            >>> import datetime
+            >>> t1 = datetime.datetime.utcnow() - datetime.timedelta(hours=4)
+            >>> t0 = t1 - datetime.timedelta(hours=1)
+            >>> for member in group.list_members(end_time=t1, start_time=t0):
+            ...     print member
 
 
         :type filter_string: string or None
@@ -297,13 +305,13 @@ class Group(object):
         :type end_time: :class:`datetime.datetime` or None
         :param end_time:
             The end time (inclusive) of the time interval for which results
-            should be returned, as a datetime object.
+            should be returned, as a datetime object. If ``start_time`` is
+            specified, then this must also be specified.
 
         :type start_time: :class:`datetime.datetime` or None
         :param start_time:
             The start time (exclusive) of the time interval for which results
-            should be returned, as a datetime object.  If not specified, the
-            interval is a point in time.
+            should be returned, as a datetime object.
 
         :rtype: list of :class:`~gcloud.monitoring.resource.Resource`
         :returns: A list of resource instances.
@@ -319,30 +327,29 @@ class Group(object):
             raise ValueError('If "start_time" is specified, "end_time" must '
                              'also be specified')
 
-        path = '%s/members' % self.path
+        path = '%s/members' % (self.path,)
         resources = []
         page_token = None
+        params = {}
+
+        if filter_string is not None:
+            params['filter'] = filter_string
+
+        if end_time is not None:
+            params['interval.endTime'] = _datetime_to_rfc3339(
+                end_time, ignore_zone=False)
+
+        if start_time is not None:
+            params['interval.startTime'] = _datetime_to_rfc3339(
+                start_time, ignore_zone=False)
 
         while True:
-            params = {}
-
-            if filter_string is not None:
-                params['filter'] = filter_string
-
-            if end_time is not None:
-                params['interval.endTime'] = _datetime_to_rfc3339(
-                    end_time, ignore_zone=False)
-
-            if start_time is not None:
-                params['interval.startTime'] = _datetime_to_rfc3339(
-                    start_time, ignore_zone=False)
-
             if page_token is not None:
                 params['pageToken'] = page_token
 
             response = self.client.connection.api_request(
-                method='GET', path=path, query_params=params)
-            for info in response.get('members', []):
+                method='GET', path=path, query_params=params.copy())
+            for info in response.get('members', ()):
                 resources.append(Resource._from_dict(info))
 
             page_token = response.get('nextPageToken')
@@ -350,21 +357,6 @@ class Group(object):
                 break
 
         return resources
-
-    @staticmethod
-    def path_helper(project, group_id=''):
-        """Returns the path to the group API.
-
-        :type project: string
-        :param project: The project ID or number to use.
-
-        :type group_id: string
-        :param group_id: The group ID.
-
-        :rtype: string
-        :returns: The relative URL path for the specific group.
-        """
-        return '/' + group_name_from_id(project, group_id)
 
     @classmethod
     def _fetch(cls, client, group_id):
@@ -413,28 +405,27 @@ class Group(object):
         :rtype: list of :class:`~gcloud.monitoring.group.Group`
         :returns: A list of group instances.
         """
-        path = cls.path_helper(client.project)
+        path = '/projects/%s/groups/' % (client.project,)
         groups = []
         page_token = None
+        params = {}
+
+        if children_of_group is not None:
+            params['childrenOfGroup'] = children_of_group
+
+        if ancestors_of_group is not None:
+            params['ancestorsOfGroup'] = ancestors_of_group
+
+        if descendants_of_group is not None:
+            params['descendantsOfGroup'] = descendants_of_group
 
         while True:
-            params = {}
-
-            if children_of_group is not None:
-                params['childrenOfGroup'] = children_of_group
-
-            if ancestors_of_group is not None:
-                params['ancestorsOfGroup'] = ancestors_of_group
-
-            if descendants_of_group is not None:
-                params['descendantsOfGroup'] = descendants_of_group
-
             if page_token is not None:
                 params['pageToken'] = page_token
 
             response = client.connection.api_request(
-                method='GET', path=path, query_params=params)
-            for info in response.get('group', []):
+                method='GET', path=path, query_params=params.copy())
+            for info in response.get('group', ()):
                 groups.append(cls._from_dict(client, info))
 
             page_token = response.get('nextPageToken')
@@ -458,27 +449,27 @@ class Group(object):
         :returns: A group.
         """
         group = cls(client)
-        group._init_from_dict(info)
+        group._set_properties_from_dict(info)
         return group
 
-    def _init_from_dict(self, info):
-        """Initialize attributes from the parsed JSON representation.
+    def _set_properties_from_dict(self, info):
+        """Update the group properties from its API representation.
 
         :type info: dict
         :param info:
             A ``dict`` parsed from the JSON wire-format representation.
         """
         self._name = info['name']
-        self._id = group_id_from_name(info['name'])
+        self._id = _group_id_from_name(self._name)
         self.display_name = info['displayName']
-        parent_name = info.get('parentName', '')
         self.filter = info['filter']
         self.is_cluster = info.get('isCluster', False)
 
-        if not parent_name:
+        parent_name = info.get('parentName')
+        if parent_name is None:
             self.parent_id = None
         else:
-            self.parent_id = group_id_from_name(parent_name)
+            self.parent_id = _group_id_from_name(parent_name)
 
     def _to_dict(self):
         """Build a dictionary ready to be serialized to the JSON wire format.
@@ -492,13 +483,14 @@ class Group(object):
             'isCluster': self.is_cluster,
         }
 
-        if self.name:
+        if self.name is not None:
             info['name'] = self.name
-        if self.parent_id:
-            info['parentName'] = group_name_from_id(
-                self.client.project, self.parent_id)
+
+        parent_name = self.parent_name
+        if parent_name is not None:
+            info['parentName'] = parent_name
 
         return info
 
     def __repr__(self):
-        return '<Group: %s>' % self.name
+        return '<Group: %s>' % (self.name,)
