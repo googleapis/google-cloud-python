@@ -93,9 +93,9 @@ class TestBigQuery(unittest2.TestCase):
                  if grant.entity_id != 'projectWriters']
         dataset.access_grants = after
 
-        # We should try and keep `delay` and tries as low as possible to
-        # reduce test running time. tries=3 and delay=30 worked consistenly
-        # when updating a dataset.
+        # We need to wait for the changes in the dataset to propgate and be
+        # eventually consistent. The alternative outcome is a 403 Forbidden
+        # response from upstream.
         @Retry(Forbidden, tries=2, delay=30)
         def update_dataset():
             dataset.update()
@@ -199,9 +199,9 @@ class TestBigQuery(unittest2.TestCase):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
 
-        # We should try and keep `delay` and tries as low as possible to
-        # reduce test running time. tries=3 and delay=20 worked consistenly
-        # when creating a dataset.
+        # We need to wait for the changes in the dataset to propgate and be
+        # eventually consistent. The alternative outcome is a 403 Forbidden
+        # response from upstream.
         @Retry(Forbidden, tries=2, delay=30)
         def create_dataset():
             dataset.create()

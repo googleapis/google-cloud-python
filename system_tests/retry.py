@@ -7,12 +7,6 @@ import six
 class Retry(object):
     """Retry class for retrying eventually consistent resources in testing."""
 
-    logger = None
-    exception = None
-    tries = None
-    delay = None
-    backoff = None
-
     def __init__(self, exception, tries=4, delay=3, backoff=2, logger=None):
         """Retry calling the decorated function using an exponential backoff.
 
@@ -32,21 +26,19 @@ class Retry(object):
 
         :type logger: logging.Logger instance
         :param logger: Logger to use. If None, print.
-
-        :rtype: func
-        :returns: Retry wrapper function.
         """
 
         self.exception = exception
         self.tries = tries
         self.delay = delay
         self.backoff = backoff
-        self.logger = logger.warning if self.logger else six.print_
+        self.logger = logger.warning if logger else six.print_
 
     def __call__(self, to_wrap):
         @wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
-            while self.tries > 1:
+            tries_counter = self.tries
+            while tries_counter > 0:
                 try:
                     return to_wrap(*args, **kwargs)
                 except self.exception as caught_exception:
@@ -55,7 +47,7 @@ class Retry(object):
                     self.logger(msg)
 
                     time.sleep(self.delay)
-                    self.tries -= 1
+                    tries_counter -= 1
                     self.delay *= self.backoff
             return to_wrap(*args, **kwargs)
 
