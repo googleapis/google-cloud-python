@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
 import unittest2
 
 from gcloud import _helpers
@@ -189,16 +187,7 @@ class TestMonitoringGroups(unittest2.TestCase):
 
     def tearDown(self):
         for group in self.to_delete:
-            backoff_intervals = [1, 2, 4, 8]
-            while True:
-                try:
-                    group.delete()
-                    break
-                except NotFound:
-                    if backoff_intervals:
-                        time.sleep(backoff_intervals.pop(0))
-                    else:
-                        raise
+            group.delete()
 
     def test_create_group(self):
         client = monitoring.Client()
