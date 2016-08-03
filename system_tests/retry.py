@@ -130,3 +130,51 @@ class RetryResult(RetryBase):
             return to_wrap(*args, **kwargs)
 
         return wrapped_function
+
+
+class RetryInstanceState(RetryBase):
+    """Decorator for retrying based on instance state.
+
+    :type instance_predicate: function, takes instance, returns bool
+    :param instance_predicate: Predicate evaluating whether to retry after an
+                               API-invoking method is called.
+
+    :type max_tries: int
+    :param max_tries: Number of times to try (not retry) before giving up.
+
+    :type delay: int
+    :param delay: Initial delay between retries in seconds.
+
+    :type backoff: int
+    :param backoff: Backoff multiplier e.g. value of 2 will double the
+                    delay each retry.
+
+    :type logger: logging.Logger instance
+    :param logger: Logger to use. If None, print.
+    """
+    def __init__(self, instance_predicate,
+                 max_tries=4, delay=1, backoff=2, logger=None):
+        super(RetryInstanceState, self).__init__(
+            max_tries, delay, backoff, logger)
+        self.instance_predicate = instance_predicate
+
+    def __call__(self, to_wrap):
+        instance = to_wrap.__self__   # only instance methods allowed
+        @wraps(to_wrap)
+        def wrapped_function(*args, **kwargs):
+            tries = 0
+            while tries < self.max_tries:
+                result = to_wrap(*args, **kwargs)
+                if self.instance_predicate(instance):
+                    return result
+
+                delay = self.delay * self.backoff**tries
+                msg = "%s. Trying again in %d seconds..." % (
+                    self.instance_predicate.__name__, delay,)
+                self.logger(msg)
+
+                time.sleep(delay)
+                tries += 1
+            return to_wrap(*args, **kwargs)
+
+        return wrapped_function

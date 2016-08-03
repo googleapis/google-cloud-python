@@ -23,6 +23,7 @@ from gcloud import bigquery
 from gcloud.exceptions import Forbidden
 
 from retry import RetryErrors
+from retry import RetryInstanceState
 from retry import RetryResult
 from system_test_utils import unique_resource_id
 
@@ -331,13 +332,14 @@ class TestBigQuery(unittest.TestCase):
 
         job.begin()
 
-        counter = 9  # Allow for 90 seconds of lag.
+        def _job_done(instance):
+            return instance.state in ('DONE', 'done')
 
-        while job.state not in ('DONE', 'done') and counter > 0:
-            counter -= 1
-            job.reload()
-            if job.state not in ('DONE', 'done'):
-                time.sleep(10)
+        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+        # 7 tries -> 2**7 + 2**6 + ... 1 = 127 seconds.
+        retry = RetryInstanceState(_job_done, max_tries=7)
+        retry(job.reload)()
 
         self.assertTrue(job.state in ('DONE', 'done'))
 
