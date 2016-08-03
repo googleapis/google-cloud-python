@@ -72,6 +72,15 @@
       "name": "from_service_account_json", 
       "params": [
         {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -87,15 +96,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
           ]
         }
       ], 
@@ -116,6 +116,24 @@
       "name": "from_service_account_p12", 
       "params": [
         {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
@@ -131,24 +149,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
           ]
         }
       ], 
@@ -169,8 +169,8 @@
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -178,8 +178,8 @@
           ]
         }, 
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -239,17 +239,8 @@
           ]
         }, 
         {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
-          ]
-        }, 
-        {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -266,8 +257,8 @@
           ]
         }, 
         {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -284,8 +275,17 @@
           ]
         }, 
         {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -310,12 +310,12 @@
       "name": "query", 
       "params": [
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "integer"
           ]
         }, 
         {
@@ -337,12 +337,12 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "string"
           ]
         }, 
         {
