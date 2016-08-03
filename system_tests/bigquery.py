@@ -88,7 +88,13 @@ class TestBigQuery(unittest.TestCase):
     def test_update_dataset(self):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
-        dataset.create()
+
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
+        retry = RetryErrors(Forbidden, max_tries=2, delay=30)
+        retry(dataset.create)()
+
         self.to_delete.append(dataset)
         self.assertTrue(dataset.exists())
         after = [grant for grant in dataset.access_grants
@@ -98,11 +104,8 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @RetryErrors(Forbidden, max_tries=2, delay=30)
-        def update_dataset():
-            dataset.update()
+        retry(dataset.update)()
 
-        update_dataset()
         self.assertEqual(len(dataset.access_grants), len(after))
         for found, expected in zip(dataset.access_grants, after):
             self.assertEqual(found.role, expected.role)
@@ -204,11 +207,9 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @RetryErrors(Forbidden, max_tries=2, delay=30)
-        def create_dataset():
-            dataset.create()
+        retry = RetryErrors(Forbidden, max_tries=2, delay=30)
+        retry(dataset.create)()
 
-        create_dataset()
         self.to_delete.append(dataset)
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
