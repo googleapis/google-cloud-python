@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os
-import time
 import unittest
 
 import httplib2
@@ -23,6 +22,7 @@ from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
 
+from retry import RetryInstanceState
 from retry import RetryResult
 from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
@@ -263,5 +263,12 @@ class TestPubsub(unittest.TestCase):
                    if subscription.name == ORPHANED]
         self.assertEqual(len(created), 1)
         orphaned = created[0]
+
+        def _no_topic(instance):
+            return instance.topic is None
+
+        retry = RetryInstanceState(_no_topic)
+        retry(orphaned.reload)()
+
         self.assertTrue(orphaned.topic is None)
         orphaned.delete()
