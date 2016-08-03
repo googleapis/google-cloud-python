@@ -70,6 +70,7 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(topic.name, topic_name)
 
     def test_list_topics(self):
+        before, _ = Config.CLIENT.list_topics()
         topics_to_create = [
             'new' + unique_resource_id(),
             'newer' + unique_resource_id(),
@@ -81,8 +82,13 @@ class TestPubsub(unittest.TestCase):
             self.to_delete.append(topic)
 
         # Retrieve the topics.
-        all_topics, _ = Config.CLIENT.list_topics()
-        created = [topic for topic in all_topics
+        def _all_created(result):
+            return len(result[0]) == len(before) + len(topics_to_create)
+
+        retry = RetryResult(_all_created)
+        after, _ = retry(Config.CLIENT.list_topics)()
+
+        created = [topic for topic in after
                    if topic.name in topics_to_create and
                    topic.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(topics_to_create))
@@ -134,7 +140,12 @@ class TestPubsub(unittest.TestCase):
             self.to_delete.append(subscription)
 
         # Retrieve the subscriptions.
-        all_subscriptions, _ = topic.list_subscriptions()
+        def _all_created(result):
+            return len(result[0]) == len(subscriptions_to_create)
+
+        retry = RetryResult(_all_created)
+        all_subscriptions, _ = retry(topic.list_subscriptions)()
+
         created = [subscription for subscription in all_subscriptions
                    if subscription.name in subscriptions_to_create]
         self.assertEqual(len(created), len(subscriptions_to_create))
