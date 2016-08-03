@@ -41,6 +41,10 @@ TEST_MODULES = {
 }
 
 
+class FailedSystemTestModule(Exception):
+    pass
+
+
 def get_parser():
     parser = argparse.ArgumentParser(
         description='GCloud test runner against actual project.')
@@ -68,14 +72,17 @@ def run_module_tests(module_name, ignore_requirements=False):
     test_result = unittest.TextTestRunner(verbosity=2).run(suite)
     # Exit if not successful.
     if not test_result.wasSuccessful():
-        sys.exit(1)
+        raise FailedSystemTestModule(module_name)
 
 
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    run_module_tests(args.package,
-                     ignore_requirements=args.ignore_requirements)
+    try:
+        run_module_tests(args.package,
+                         ignore_requirements=args.ignore_requirements)
+    except FailedSystemTestModule:
+        sys.exit(1)
 
 
 if __name__ == '__main__':

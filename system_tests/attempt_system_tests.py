@@ -26,6 +26,7 @@ import os
 import subprocess
 import sys
 
+from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests
 
 
@@ -111,9 +112,14 @@ def prepare_to_run():
 def main():
     """Run all the system tests if necessary."""
     prepare_to_run()
+    failed_modules = 0
     for module in MODULES:
-        run_module_tests(module)
+        try:
+            run_module_tests(module)
+        except FailedSystemTestModule:
+            failed_modules += 1
 
+    sys.exit(failed_modules)
 
 if __name__ == '__main__':
     main()
