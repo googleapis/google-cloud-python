@@ -4,18 +4,19 @@ from functools import wraps
 import six
 
 
-class Retry(object):
-    """Retry class for retrying eventually consistent resources in testing."""
+class RetryErrors(object):
+    """Retry class for retrying given exceptions in testing."""
 
-    def __init__(self, exception, tries=4, delay=3, backoff=2, logger=None):
+    def __init__(self, exception, max_tries=4, delay=1, backoff=2,
+                 logger=None):
         """Retry calling the decorated function using an exponential backoff.
 
         :type exception: Exception or tuple of Exceptions
         :param exception: The exception to check or may be a tuple of
                           exceptions to check.
 
-        :type tries: int
-        :param tries: Number of times to try (not retry) before giving up.
+        :type max_tries: int
+        :param max_tries: Number of times to try (not retry) before giving up.
 
         :type delay: int
         :param delay: Initial delay between retries in seconds.
@@ -29,7 +30,7 @@ class Retry(object):
         """
 
         self.exception = exception
-        self.tries = tries
+        self.max_tries = max_tries
         self.delay = delay
         self.backoff = backoff
         self.logger = logger.warning if logger else six.print_
@@ -37,19 +38,18 @@ class Retry(object):
     def __call__(self, to_wrap):
         @wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
-            tries_counter = self.tries
-            delay = self.delay
-            while tries_counter > 0:
+            tries = 0
+            while tries < self.max_tries:
                 try:
                     return to_wrap(*args, **kwargs)
                 except self.exception as caught_exception:
+                    delay = self.delay * self.backoff**tries
                     msg = ("%s, Trying again in %d seconds..." %
                            (str(caught_exception), delay))
                     self.logger(msg)
 
                     time.sleep(delay)
-                    tries_counter -= 1
-                    delay *= self.backoff
+                    tries += 1
             return to_wrap(*args, **kwargs)
 
         return wrapped_function

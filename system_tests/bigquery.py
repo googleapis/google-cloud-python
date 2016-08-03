@@ -22,7 +22,7 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
 from gcloud.exceptions import Forbidden
 
-from retry import Retry
+from retry import RetryErrors
 from system_test_utils import unique_resource_id
 
 
@@ -96,7 +96,7 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @Retry(Forbidden, tries=2, delay=30)
+        @RetryErrors(Forbidden, max_tries=2, delay=30)
         def update_dataset():
             dataset.update()
 
@@ -202,7 +202,7 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @Retry(Forbidden, tries=2, delay=30)
+        @RetryErrors(Forbidden, max_tries=2, delay=30)
         def create_dataset():
             dataset.create()
 
