@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
 import unittest
 
 from gcloud import _helpers
@@ -188,10 +186,12 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_METRIC_NAME]))
 
     def test_reload_metric(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        metric.create()
+        retry(metric.create)()
         self.to_delete.append(metric)
         metric.filter_ = 'logName:other'
         metric.description = 'local changes'
@@ -200,12 +200,14 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
     def test_update_metric(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
         NEW_DESCRIPTION = 'updated'
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        metric.create()
+        retry(metric.create)()
         self.to_delete.append(metric)
         metric.filter_ = NEW_FILTER
         metric.description = NEW_DESCRIPTION
@@ -307,10 +309,12 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_SINK_NAME]))
 
     def test_reload_sink(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         sink.filter_ = 'BOGUS FILTER'
         sink.destination = 'BOGUS DESTINATION'
@@ -319,13 +323,15 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.destination, uri)
 
     def test_update_sink(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = 'logName:syslog'
         sink = Config.CLIENT.sink(
             DEFAULT_SINK_NAME, DEFAULT_FILTER, bucket_uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         sink.filter_ = UPDATED_FILTER
         sink.destination = dataset_uri
