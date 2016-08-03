@@ -81,17 +81,8 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
-          "name": "base_url", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The project to connect to. This is usually your project name in the cloud console.", 
-          "name": "project", 
+          "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
+          "name": "method", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -108,8 +99,17 @@
           ]
         }, 
         {
-          "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
-          "name": "method", 
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
+          "name": "base_url", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -187,8 +187,8 @@
           ]
         }, 
         {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
+          "description": " The project to look up the keys in.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -196,8 +196,8 @@
           ]
         }, 
         {
-          "description": " The project to look up the keys in.", 
-          "name": "project", 
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -268,21 +268,21 @@
           ]
         }, 
         {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The Protobuf representing the query to run.", 
           "name": "query_pb", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
+          ]
+        }, 
+        {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 

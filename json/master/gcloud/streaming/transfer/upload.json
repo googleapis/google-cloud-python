@@ -30,24 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename to the file being uploaded", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -63,6 +45,24 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " path/filename to the file being uploaded", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -83,30 +83,30 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
-          ]
-        }, 
-        {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean or None"
+          ]
+        }, 
+        {
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
           ]
         }, 
         {
@@ -119,12 +119,12 @@
           ]
         }, 
         {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "string"
           ]
         }
       ], 

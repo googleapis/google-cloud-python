@@ -66,21 +66,21 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
           "description": " token representing a cursor into the table's rows.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str or NoneType"
+          ]
+        }, 
+        {
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
           ]
         }, 
         {
@@ -145,33 +145,6 @@
       "name": "insert_data", 
       "params": [
         {
-          "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
-          "name": "rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " tuples"
-          ]
-        }, 
-        {
-          "description": " treat <code>name</code> as a template table and provide a suffix. BigQuery will create the table <name> + <template_suffix> based on the schema of the template table. See: <a href=\"https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables\">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a>", 
-          "name": "template_suffix", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or NoneType"
-          ]
-        }, 
-        {
-          "description": " skip rows w/ invalid data?", 
-          "name": "skip_invalid_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
           "description": " ignore columns beyond schema?", 
           "name": "ignore_unknown_values", 
           "nullable": null, 
@@ -196,6 +169,33 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " treat <code>name</code> as a template table and provide a suffix. BigQuery will create the table <name> + <template_suffix> based on the schema of the template table. See: <a href=\"https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables\">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a>", 
+          "name": "template_suffix", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or NoneType"
+          ]
+        }, 
+        {
+          "description": " skip rows w/ invalid data?", 
+          "name": "skip_invalid_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
+          "name": "rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " tuples"
           ]
         }
       ], 
@@ -246,17 +246,8 @@
       "name": "upload_from_file", 
       "params": [
         {
-          "description": " A file handle opened in binary mode for reading.", 
-          "name": "file_obj", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "file"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "skip_leading_rows", 
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -270,24 +261,6 @@
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "encoding", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
           ]
         }, 
         {
@@ -319,6 +292,15 @@
         }, 
         {
           "description": " job configuration option; see", 
+          "name": "write_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
           "name": "field_delimiter", 
           "nullable": null, 
           "optional": null, 
@@ -336,6 +318,15 @@
           ]
         }, 
         {
+          "description": " A file handle opened in binary mode for reading.", 
+          "name": "file_obj", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "file"
+          ]
+        }, 
+        {
           "description": " job configuration option; see", 
           "name": "create_disposition", 
           "nullable": null, 
@@ -346,20 +337,20 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "ignore_unknown_values", 
+          "name": "skip_leading_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
+          "name": "rewind", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "write_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
           ]
         }, 
         {
@@ -381,12 +372,21 @@
           ]
         }, 
         {
-          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
-          "name": "rewind", 
+          "description": " job configuration option; see", 
+          "name": "ignore_unknown_values", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "encoding", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

@@ -36,15 +36,6 @@
       "name": "make_api_request", 
       "params": [
         {
-          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
-          "name": "retries", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " Number of redirects to follow.", 
           "name": "redirections", 
           "nullable": null, 
@@ -54,12 +45,30 @@
           ]
         }, 
         {
+          "description": " an instance which impelements the Http API.", 
+          "name": "http", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "httplib2.Http"
+          ]
+        }, 
+        {
           "description": " Function to validate the HTTP response.", 
           "name": "check_response_func", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "function taking (response, content, url)."
+          ]
+        }, 
+        {
+          "description": " Maximum number of seconds to wait when retrying.", 
+          "name": "max_retry_wait", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {
@@ -81,17 +90,8 @@
           ]
         }, 
         {
-          "description": " an instance which impelements the Http API.", 
-          "name": "http", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "httplib2.Http"
-          ]
-        }, 
-        {
-          "description": " Maximum number of seconds to wait when retrying.", 
-          "name": "max_retry_wait", 
+          "description": " Number of retries to attempt on retryable responses (such as 429 or 5XX).", 
+          "name": "retries", 
           "nullable": null, 
           "optional": null, 
           "types": [

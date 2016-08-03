@@ -56,12 +56,12 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
-          "name": "page_size", 
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "string"
           ]
         }, 
         {
@@ -74,12 +74,12 @@
           ]
         }, 
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
+          "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
+          "name": "page_size", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "int"
           ]
         }, 
         {
