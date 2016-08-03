@@ -23,6 +23,7 @@ from gcloud import bigquery
 from gcloud.exceptions import Forbidden
 
 from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -262,14 +263,15 @@ class TestBigQuery(unittest.TestCase):
 
         rows = ()
         counter = 9
+
+        def _has_rows(result):
+            return len(result[0]) > 0
+
         # Allow for 90 seconds of "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-
-        while len(rows) == 0 and counter > 0:
-            counter -= 1
-            rows, _, _ = table.fetch_data()
-            if len(rows) == 0:
-                time.sleep(10)
+        # 7 tries -> 2**7 + 2**6 + ... 1 = 127 seconds.
+        retry = RetryResult(_has_rows, max_tries=7)
+        rows, _, _ = retry(table.fetch_data)()
 
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),

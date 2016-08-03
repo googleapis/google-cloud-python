@@ -23,6 +23,7 @@ from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
 
+from retry import RetryResult
 from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
 
@@ -185,12 +186,14 @@ class TestPubsub(unittest.TestCase):
         topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
-        count = 5
-        while count > 0 and not topic.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(topic.exists)()
+
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
+
         if topic.check_iam_permissions([PUBSUB_TOPICS_GET_IAM_POLICY]):
             policy = topic.get_iam_policy()
             policy.viewers.add(policy.user('jjg@google.com'))
@@ -203,21 +206,24 @@ class TestPubsub(unittest.TestCase):
         topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
-        count = 5
-        while count > 0 and not topic.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(topic.exists)()
+
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
         SUB_NAME = 'test-sub-iam-policy-sub' + unique_resource_id('-')
         subscription = topic.subscription(SUB_NAME)
         subscription.create()
-        count = 5
-        while count > 0 and not subscription.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(subscription.exists)()
+
         self.assertTrue(subscription.exists())
         self.to_delete.insert(0, subscription)
+
         if subscription.check_iam_permissions(
                 [PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY]):
             policy = subscription.get_iam_policy()

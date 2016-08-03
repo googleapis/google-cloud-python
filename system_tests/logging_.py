@@ -20,6 +20,8 @@ from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import logging
 
+from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -33,27 +35,10 @@ DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
 TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
-def _retry_backoff(result_predicate, meth, *args, **kw):
+def _retry_on_unavailable(exc):
+    """Retry only AbortionErrors whose status code is 'UNAVAILABLE'."""
     from grpc.beta.interfaces import StatusCode
-    from grpc.framework.interfaces.face.face import AbortionError
-    backoff_intervals = [1, 2, 4, 8]
-    while True:
-        try:
-            result = meth(*args, **kw)
-        except AbortionError as error:
-            if error.code != StatusCode.UNAVAILABLE:
-                raise
-            if backoff_intervals:
-                time.sleep(backoff_intervals.pop(0))
-                continue
-            else:
-                raise
-        if result_predicate(result):
-            return result
-        if backoff_intervals:
-            time.sleep(backoff_intervals.pop(0))
-        else:
-            raise RuntimeError('%s: %s %s' % (meth, args, kw))
+    return exc.code == StatusCode.UNAVAILABLE
 
 
 def _has_entries(result):
@@ -89,12 +74,18 @@ class TestLogging(unittest.TestCase):
     def _logger_name():
         return 'system-tests-logger' + unique_resource_id('-')
 
+    def _list_entries(self, logger):
+        from grpc.framework.interfaces.face.face import AbortionError
+        inner = RetryResult(_has_entries)(logger.list_entries)
+        outer = RetryErrors(AbortionError, _retry_on_unavailable)(inner)
+        return outer()
+
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
@@ -115,7 +106,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                         http_request=REQUEST)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
 
@@ -138,7 +129,7 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(logger)
 
         logger.log_struct(JSON_PAYLOAD)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
@@ -163,7 +154,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                           http_request=REQUEST)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)

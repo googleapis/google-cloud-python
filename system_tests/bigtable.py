@@ -33,6 +33,7 @@ from gcloud.bigtable.row_data import PartialRowData
 from gcloud.environment_vars import TESTS_PROJECT
 
 from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -76,14 +77,12 @@ def _operation_wait(operation, max_attempts=5):
     :rtype: bool
     :returns: Boolean indicating if the operation finished.
     """
-    total_sleep = 0
-    while not operation.finished():
-        if total_sleep > max_attempts:
-            return False
-        time.sleep(1)
-        total_sleep += 1
 
-    return True
+    def _operation_finished(result):
+        return result
+
+    retry = RetryResult(_operation_finished, max_tries=max_attempts)
+    return retry(operation.finished)()
 
 
 def _retry_on_unavailable(exc):
