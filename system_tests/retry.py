@@ -4,7 +4,7 @@ from functools import wraps
 import six
 
 
-def _retry_all(ignored):
+def _retry_all(_):
     """Retry all caught exceptions."""
     return True
 
@@ -160,6 +160,7 @@ class RetryInstanceState(RetryBase):
 
     def __call__(self, to_wrap):
         instance = to_wrap.__self__   # only instance methods allowed
+
         @wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0

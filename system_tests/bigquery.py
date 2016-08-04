@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import operator
-import time
 
 import unittest
 
@@ -264,7 +263,6 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(errors), 0)
 
         rows = ()
-        counter = 9
 
         def _has_rows(result):
             return len(result[0]) > 0
