@@ -3,6 +3,10 @@ from functools import wraps
 
 import six
 
+MAX_TRIES = 4
+DELAY = 1
+BACKOFF = 2
+
 
 def _retry_all(_):
     """Retry all caught exceptions."""
@@ -25,7 +29,8 @@ class RetryBase(object):
     :type logger: logging.Logger instance
     :param logger: Logger to use. If None, print.
     """
-    def __init__(self, max_tries=4, delay=1, backoff=2, logger=None):
+    def __init__(self, max_tries=MAX_TRIES, delay=DELAY, backoff=BACKOFF,
+                 logger=None):
         self.max_tries = max_tries
         self.delay = delay
         self.backoff = backoff
@@ -57,7 +62,8 @@ class RetryErrors(RetryBase):
     :param logger: Logger to use. If None, print.
     """
     def __init__(self, exception, error_predicate=_retry_all,
-                 max_tries=4, delay=1, backoff=2, logger=None):
+                 max_tries=MAX_TRIES, delay=DELAY, backoff=BACKOFF,
+                 logger=None):
         super(RetryErrors, self).__init__(max_tries, delay, backoff, logger)
         self.exception = exception
         self.error_predicate = error_predicate
@@ -107,7 +113,8 @@ class RetryResult(RetryBase):
     :param logger: Logger to use. If None, print.
     """
     def __init__(self, result_predicate,
-                 max_tries=4, delay=1, backoff=2, logger=None):
+                 max_tries=MAX_TRIES, delay=DELAY, backoff=BACKOFF,
+                 logger=None):
         super(RetryResult, self).__init__(max_tries, delay, backoff, logger)
         self.result_predicate = result_predicate
 
@@ -153,7 +160,8 @@ class RetryInstanceState(RetryBase):
     :param logger: Logger to use. If None, print.
     """
     def __init__(self, instance_predicate,
-                 max_tries=4, delay=1, backoff=2, logger=None):
+                 max_tries=MAX_TRIES, delay=DELAY, backoff=BACKOFF,
+                 logger=None):
         super(RetryInstanceState, self).__init__(
             max_tries, delay, backoff, logger)
         self.instance_predicate = instance_predicate
