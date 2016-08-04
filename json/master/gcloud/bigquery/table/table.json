@@ -66,15 +66,6 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " token representing a cursor into the table's rows.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or NoneType"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
           "name": "client", 
           "nullable": null, 
@@ -90,6 +81,15 @@
           "optional": null, 
           "types": [
             "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " token representing a cursor into the table's rows.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or NoneType"
           ]
         }
       ], 
@@ -145,6 +145,15 @@
       "name": "insert_data", 
       "params": [
         {
+          "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
+          "name": "row_ids", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
+          ]
+        }, 
+        {
           "description": " treat <code>name</code> as a template table and provide a suffix. BigQuery will create the table <name> + <template_suffix> based on the schema of the template table. See: <a href=\"https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables\">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a>", 
           "name": "template_suffix", 
           "nullable": null, 
@@ -154,12 +163,12 @@
           ]
         }, 
         {
-          "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
-          "name": "rows", 
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            " tuples"
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -181,21 +190,12 @@
           ]
         }, 
         {
-          "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
-          "name": "row_ids", 
+          "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
+          "name": "rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            " string"
-          ]
-        }, 
-        {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+            " tuples"
           ]
         }
       ], 
@@ -246,8 +246,44 @@
       "name": "upload_from_file", 
       "params": [
         {
+          "description": " A file handle opened in binary mode for reading.", 
+          "name": "file_obj", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "file"
+          ]
+        }, 
+        {
+          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
+          "name": "source_format", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " job configuration option; see", 
-          "name": "max_bad_records", 
+          "name": "create_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "field_delimiter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -265,15 +301,6 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "skip_leading_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
           "name": "allow_quoted_newlines", 
           "nullable": null, 
           "optional": null, 
@@ -283,79 +310,7 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "quote_character", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
-          "name": "source_format", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "field_delimiter", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
           "name": "write_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
-          "name": "size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " A file handle opened in binary mode for reading.", 
-          "name": "file_obj", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "file"
-          ]
-        }, 
-        {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "ignore_unknown_values", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "create_disposition", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -372,12 +327,57 @@
           ]
         }, 
         {
+          "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
+          "name": "size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "skip_leading_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
           "description": " job configuration option; see", 
           "name": "encoding", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "quote_character", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "max_bad_records", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "ignore_unknown_values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }, 
         {

@@ -10,7 +10,7 @@
       "name": "make_ordered_row", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L75", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L74", 
       "type": "instance"
     }, 
     {
@@ -20,7 +20,7 @@
       "name": "make_row", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L50", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L49", 
       "type": "instance"
     }
   ], 

@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L111", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L110", 
       "type": "instance"
     }, 
     {
@@ -20,12 +20,12 @@
       "name": "batch", 
       "params": [
         {
-          "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
-          "name": "batch_size", 
+          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
+          "name": "wal", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "object"
           ]
         }, 
         {
@@ -38,21 +38,21 @@
           ]
         }, 
         {
-          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
-          "name": "wal", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object"
-          ]
-        }, 
-        {
           "description": " Flag indicating if the mutations should be sent transactionally or not. If <code>transaction=True</code> and an error occurs while a", 
           "name": "transaction", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
+          "name": "batch_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 
@@ -63,7 +63,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L470", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L469", 
       "type": "instance"
     }, 
     {
@@ -73,30 +73,12 @@
       "name": "cells", 
       "params": [
         {
-          "description": " Flag to indicate if cell timestamps should be included with the output.", 
-          "name": "include_timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
-        {
           "description": " Row key for the row we are reading from.", 
           "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The maximum number of cells to return. If not set, returns all cells found.", 
-          "name": "versions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }, 
         {
@@ -116,6 +98,24 @@
           "types": [
             "str"
           ]
+        }, 
+        {
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) The maximum number of cells to return. If not set, returns all cells found.", 
+          "name": "versions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
         }
       ], 
       "returns": [
@@ -125,7 +125,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L255", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L254", 
       "type": "instance"
     }, 
     {
@@ -169,7 +169,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L601", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L600", 
       "type": "instance"
     }, 
     {
@@ -204,7 +204,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L507", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L506", 
       "type": "instance"
     }, 
     {
@@ -248,7 +248,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L553", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L552", 
       "type": "instance"
     }, 
     {
@@ -258,7 +258,7 @@
       "name": "counter_set", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L532", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L531", 
       "type": "instance"
     }, 
     {
@@ -268,7 +268,7 @@
       "name": "delete", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L434", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L433", 
       "type": "instance"
     }, 
     {
@@ -284,7 +284,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L124", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L123", 
       "type": "instance"
     }, 
     {
@@ -294,7 +294,7 @@
       "name": "put", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L403", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L402", 
       "type": "instance"
     }, 
     {
@@ -304,7 +304,7 @@
       "name": "regions", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L137", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L136", 
       "type": "instance"
     }, 
     {
@@ -313,15 +313,6 @@
       "id": "gcloud.bigtable.happybase.table.Table.row", 
       "name": "row", 
       "params": [
-        {
-          "description": " Flag to indicate if cell timestamps should be included with the output.", 
-          "name": "include_timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
-          ]
-        }, 
         {
           "description": " Row key for the row we are reading from.", 
           "name": "row", 
@@ -332,6 +323,15 @@
           ]
         }, 
         {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " (Optional) Iterable containing column names (as strings). Each column name can be either * an entire column family: <code>fam</code> or <code>fam:</code> * a single column: <code>fam:col</code>", 
           "name": "columns", 
           "nullable": null, 
@@ -341,12 +341,12 @@
           ]
         }, 
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
-          "name": "timestamp", 
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "bool"
           ]
         }
       ], 
@@ -357,7 +357,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L152", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L151", 
       "type": "instance"
     }, 
     {
@@ -367,12 +367,12 @@
       "name": "rows", 
       "params": [
         {
-          "description": " Flag to indicate if cell timestamps should be included with the output.", 
-          "name": "include_timestamp", 
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bool"
+            "int"
           ]
         }, 
         {
@@ -385,12 +385,12 @@
           ]
         }, 
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
-          "name": "timestamp", 
+          "description": " Flag to indicate if cell timestamps should be included with the output.", 
+          "name": "include_timestamp", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "bool"
           ]
         }, 
         {
@@ -410,7 +410,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L197", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L196", 
       "type": "instance"
     }, 
     {
@@ -420,7 +420,7 @@
       "name": "scan", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L299", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/happybase/table.py/gcloud/bigtable/happybase/table.py#L298", 
       "type": "instance"
     }
   ], 
