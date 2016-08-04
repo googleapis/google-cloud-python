@@ -269,8 +269,8 @@ class TestBigQuery(unittest.TestCase):
 
         # Allow for 90 seconds of "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-        # 7 tries -> 2**7 + 2**6 + ... 1 = 127 seconds.
-        retry = RetryResult(_has_rows, max_tries=7)
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryResult(_has_rows, max_tries=8)
         rows, _, _ = retry(table.fetch_data)()
 
         by_age = operator.itemgetter(1)
@@ -336,8 +336,8 @@ class TestBigQuery(unittest.TestCase):
 
         # Allow for 90 seconds of "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-        # 7 tries -> 2**7 + 2**6 + ... 1 = 127 seconds.
-        retry = RetryInstanceState(_job_done, max_tries=7)
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryInstanceState(_job_done, max_tries=8)
         retry(job.reload)()
 
         self.assertTrue(job.state in ('DONE', 'done'))
