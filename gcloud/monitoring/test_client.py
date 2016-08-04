@@ -330,6 +330,103 @@ class TestClient(unittest2.TestCase):
                             'query_params': {}}
         self.assertEqual(request, expected_request)
 
+    def test_group(self):
+        GROUP_ID = 'GROUP_ID'
+        DISPLAY_NAME = 'My Group'
+        PARENT_ID = 'PARENT_ID'
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        group = client.group(GROUP_ID, display_name=DISPLAY_NAME,
+                             parent_id=PARENT_ID, filter_string=FILTER,
+                             is_cluster=IS_CLUSTER)
+
+        self.assertEqual(group.id, GROUP_ID)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_id, PARENT_ID)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
+    def test_group_defaults(self):
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        group = client.group()
+
+        self.assertIsNone(group.id)
+        self.assertIsNone(group.display_name)
+        self.assertIsNone(group.parent_id)
+        self.assertIsNone(group.filter)
+        self.assertFalse(group.is_cluster)
+
+    def test_fetch_group(self):
+        PATH = 'projects/{project}/groups/'.format(project=PROJECT)
+        GROUP_ID = 'GROUP_ID'
+        GROUP_NAME = PATH + GROUP_ID
+        DISPLAY_NAME = 'My Group'
+        PARENT_ID = 'PARENT_ID'
+        PARENT_NAME = PATH + PARENT_ID
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        GROUP = {
+            'name': GROUP_NAME,
+            'displayName': DISPLAY_NAME,
+            'parentName': PARENT_NAME,
+            'filter': FILTER,
+            'isCluster': IS_CLUSTER
+        }
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        connection = client.connection = _Connection(GROUP)
+        group = client.fetch_group(GROUP_ID)
+
+        self.assertEqual(group.id, GROUP_ID)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_id, PARENT_ID)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + GROUP_NAME}
+        self.assertEqual(request, expected_request)
+
+    def test_list_groups(self):
+        PATH = 'projects/{project}/groups/'.format(project=PROJECT)
+        GROUP_NAME = PATH + 'GROUP_ID'
+        DISPLAY_NAME = 'My Group'
+        PARENT_NAME = PATH + 'PARENT_ID'
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        GROUP = {
+            'name': GROUP_NAME,
+            'displayName': DISPLAY_NAME,
+            'parentName': PARENT_NAME,
+            'filter': FILTER,
+            'isCluster': IS_CLUSTER,
+        }
+
+        RESPONSE = {
+            'group': [GROUP],
+        }
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        connection = client.connection = _Connection(RESPONSE)
+        groups = client.list_groups()
+
+        self.assertEqual(len(groups), 1)
+
+        group = groups[0]
+        self.assertEqual(group.name, GROUP_NAME)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_name, PARENT_NAME)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + PATH,
+                            'query_params': {}}
+        self.assertEqual(request, expected_request)
+
 
 class _Credentials(object):
 
