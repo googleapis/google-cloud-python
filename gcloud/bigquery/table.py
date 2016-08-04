@@ -229,6 +229,53 @@ class Table(object):
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('type')
+        
+    @property
+    def partitioningType(self):
+        """Time partitioning of the table.
+        :rtype: str, or ``NoneType``
+        :returns: Returns type if the table is partitioned, None otherwise.
+        """
+        partitioned = None
+        if "timePartitioning" in self._properties:
+            partitioned = self._properties.get('timePartitioning').get('type')
+        return partitioned
+    
+    @partitioningType.setter
+    def partitioningType(self, value):
+        """Update the partitioning type of the table
+
+        :type value: str
+        :param value: partitioning type only "DAY" is currently supported
+        """
+        if not isinstance(value, six.string_types) or value.upper() != "DAY":
+            raise ValueError("value must be one of ['DAY']")
+        if "timePartitioning" not in self._properties:
+            self._properties['timePartitioning'] = {}
+        self._properties['timePartitioning']['type'] = value.upper()
+        
+    @property
+    def partitionExpiration(self):
+        """Expiration time in ms for a partition
+        :rtype: int
+        :returns: Returns the time in ms for partition expiration
+        """
+        if "timePartitioning" not in self._properties:
+            self._properties['timePartitioning'] = {'type': "DAY"}
+        return self._properties.get("timePartitioning").get("expirationMs")
+    
+    @partitionExpiration.setter
+    def partitionExpiration(self, value):
+        """Update the experation time in ms for a partition
+        
+        :type value: int
+        :param value: partition experiation time in ms
+        """
+        if not isinstance(value, int):
+            raise ValueError("must be an integer representing millisseconds")
+        if "timePartitioning" not in self._properties:
+            self._properties['timePartitioning'] = {'type': "DAY"}
+        self._properties["timePartitioning"]["expirationMs"] = value
 
     @property
     def description(self):
@@ -422,6 +469,9 @@ class Table(object):
 
         if self.location is not None:
             resource['location'] = self.location
+
+        if self.partitioningType is not None:
+            resource['timePartitioning'] = self._properties['timePartitioning']
 
         if self.view_query is not None:
             view = resource['view'] = {}
