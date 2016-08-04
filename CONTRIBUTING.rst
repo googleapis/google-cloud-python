@@ -376,7 +376,7 @@ and lack of continuous integration `support`_.
 .. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
 .. _support: http://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
 
-We haved `dropped 2.6`_ as a supported version as well since Python 2.6 is no
+We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
 
 We also explicitly decided to support Python 3 beginning with version
