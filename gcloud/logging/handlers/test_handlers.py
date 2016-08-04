@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import logging
+import os
 
 import unittest2
 
@@ -33,15 +34,52 @@ class TestCloudLoggingHandler(unittest2.TestCase):
         handler = self._makeOne(client, transport=_Transport)
         self.assertEqual(handler.client, client)
 
+    def test_generate_log_struct_kwargs(self):
+        client = _Client(self.PROJECT)
+        handler = self._makeOne(client, transport=_Transport)
+        LOGNAME = 'loggername'
+        MESSAGE = 'hello world'
+        record = _Record(LOGNAME, logging.INFO, MESSAGE)
+        kwargs = handler.generate_log_struct_kwargs(record, MESSAGE)
+        self.assertIsInstance(kwargs, dict)
+        self.assertEqual(len(kwargs), 2)
+        self.assertIn('info', kwargs)
+        self.assertIn('severity', kwargs)
+        info = kwargs['info']
+        self.assertIsInstance(info, dict)
+        self.assertEqual(len(info), 3)
+        self.assertIn('message', info)
+        self.assertIn('python_logger', info)
+        self.assertIn('data', info)
+        self.assertEqual(info['message'], MESSAGE)
+        self.assertEqual(info['python_logger'], LOGNAME)
+        data = info['data']
+        self.assertIsInstance(data, dict)
+        for field in handler.LOG_RECORD_DATA_WHITELIST:
+            self.assertIn(field, data)
+            self.assertEqual(data[field], getattr(record, field))
+
+    def test_ctor_extra_fields(self):
+        client = _Client(self.PROJECT)
+        handler = self._makeOne(client, transport=_Transport,
+                                extra_fields=('secret',))
+        LOGNAME = 'loggername'
+        MESSAGE = 'hello world'
+        record = _Record(LOGNAME, logging.INFO, MESSAGE)
+        record.secret = 'top'
+        kwargs = handler.generate_log_struct_kwargs(record, MESSAGE)
+        self.assertEqual(kwargs['info']['data']['secret'], 'top')
+
     def test_emit(self):
         client = _Client(self.PROJECT)
         handler = self._makeOne(client, transport=_Transport)
         LOGNAME = 'loggername'
         MESSAGE = 'hello world'
         record = _Record(LOGNAME, logging.INFO, MESSAGE)
+        kwargs = handler.generate_log_struct_kwargs(record, MESSAGE)
         handler.emit(record)
 
-        self.assertEqual(handler.transport.send_called_with, (record, MESSAGE))
+        self.assertEqual(handler.transport.send_called_with, (kwargs,))
 
 
 class TestSetupLogging(unittest2.TestCase):
@@ -109,6 +147,7 @@ class _Record(object):
         self.exc_info = None
         self.exc_text = None
         self.stack_info = None
+        self.process = os.getpid()
 
     def getMessage(self):
         return self.message

@@ -24,15 +24,13 @@ class Transport(object):
     def __init__(self, client, name):
         pass  # pragma: NO COVER
 
-    def send(self, record, message):
-        """Must be overriden by transport options. record is the LogRecord
-        the handler was called with, message is the message from LogRecord
-        after being formatted by associated log formatters.
+    def send(self, kwargs):
+        """Must be overriden by transport options. kwargs is the dictionary
+        with keyword arguments which will be passed to
+        :method:`gcloud.logging.Logger.log_struct()`.
 
-        :type record: :class:`logging.LogRecord`
-        :param record: Python log record
-
-        :type message: str
-        :param message: The formatted log message
+        :type kwargs: dict
+        :param kwargs: {'info': ..., 'severity': ...} - keyword arguments
+                       passed to :method:`gcloud.logging.Logger.log_struct()`.
         """
         raise NotImplementedError()

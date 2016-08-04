@@ -120,16 +120,14 @@ class _Worker(object):
         self._stop_condition.release()
         self.stopped = True
 
-    def enqueue(self, record, message):
+    def enqueue(self, kwargs):
         """enqueue queues up a log entry to be written by the background
         thread. """
         try:
             self._entries_condition.acquire()
             if self.stopping:
                 return
-            self.batch.log_struct({"message": message,
-                                   "python_logger": record.name},
-                                  severity=record.levelname)
+            self.batch.log_struct(**kwargs)
             self._entries_condition.notify()
         finally:
             self._entries_condition.release()
@@ -149,15 +147,13 @@ class BackgroundThreadTransport(Transport):
         logger = self.client.logger(name)
         self.worker = _Worker(logger)
 
-    def send(self, record, message):
-        """Overrides Transport.send(). record is the LogRecord
-        the handler was called with, message is the message from LogRecord
-        after being formatted by associated log formatters.
+    def send(self, kwargs):
+        """Overrides Transport.send(). kwargs is the dictionary
+        with keyword arguments which will be passed to
+        :method:`gcloud.logging.Logger.log_struct()`.
 
-        :type record: :class:`logging.LogRecord`
-        :param record: Python log record
-
-        :type message: str
-        :param message: The formatted log message
+        :type kwargs: dict
+        :param kwargs: {'info': ..., 'severity': ...} - keyword arguments
+                       passed to :method:`gcloud.logging.Logger.log_struct()`.
         """
-        self.worker.enqueue(record, message)
+        self.worker.enqueue(kwargs)

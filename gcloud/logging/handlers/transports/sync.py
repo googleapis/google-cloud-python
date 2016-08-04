@@ -26,17 +26,13 @@ class SyncTransport(Transport):
         super(SyncTransport, self).__init__(client, name)
         self.logger = client.logger(name)
 
-    def send(self, record, message):
-        """Overrides transport.send(). record is the LogRecord
-        the handler was called with, message is the message from LogRecord
-        after being formatted by associated log formatters.
+    def send(self, kwargs):
+        """Overrides transport.send(). kwargs is the dictionary
+        with keyword arguments which will be passed to
+        :method:`gcloud.logging.Logger.log_struct()`.
 
-        :type record: :class:`logging.LogRecord`
-        :param record: Python log record
-
-        :type message: str
-        :param message: The formatted log message
+        :type kwargs: dict
+        :param kwargs: {'info': ..., 'severity': ...} - keyword arguments
+                       passed to :method:`gcloud.logging.Logger.log_struct()`.
         """
-        self.logger.log_struct({"message": message,
-                                "python_logger": record.name},
-                               severity=record.levelname)
+        self.logger.log_struct(**kwargs)

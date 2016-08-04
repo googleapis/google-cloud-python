@@ -18,6 +18,17 @@ import time
 import unittest2
 
 
+def generate_log_struct_kwargs(record, message, data):
+    return {
+        'info': {
+            'message': message,
+            'python_logger': record.name,
+            'data': data
+        },
+        'severity': record.levelname
+    }
+
+
 class TestBackgroundThreadHandler(unittest2.TestCase):
 
     PROJECT = 'PROJECT'
@@ -32,24 +43,25 @@ class TestBackgroundThreadHandler(unittest2.TestCase):
 
     def test_ctor(self):
         client = _Client(self.PROJECT)
-        NAME = "python_logger"
+        NAME = 'python_logger'
         transport = self._makeOne(client, NAME)
         self.assertEquals(transport.worker.logger.name, NAME)
 
     def test_send(self):
         client = _Client(self.PROJECT)
-        NAME = "python_logger"
+        NAME = 'python_logger'
         transport = self._makeOne(client, NAME)
         transport.worker.batch = client.logger(NAME).batch()
 
-        PYTHON_LOGGER_NAME = "mylogger"
-        MESSAGE = "hello world"
+        PYTHON_LOGGER_NAME = 'mylogger'
+        MESSAGE = 'hello world'
         record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
-        transport.send(record, MESSAGE)
+        transport.send(generate_log_struct_kwargs(record, MESSAGE, {'one': 1}))
 
         EXPECTED_STRUCT = {
-            "message": MESSAGE,
-            "python_logger": PYTHON_LOGGER_NAME
+            'message': MESSAGE,
+            'python_logger': PYTHON_LOGGER_NAME,
+            'data': {'one': 1}
         }
         EXPECTED_SENT = (EXPECTED_STRUCT, logging.INFO)
         self.assertEqual(transport.worker.batch.log_struct_called_with,
@@ -67,18 +79,18 @@ class TestWorker(unittest2.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test_ctor(self):
-        NAME = "python_logger"
+        NAME = 'python_logger'
         logger = _Logger(NAME)
         worker = self._makeOne(logger)
         self.assertEquals(worker.batch, logger._batch)
 
     def test_run(self):
-        NAME = "python_logger"
+        NAME = 'python_logger'
         logger = _Logger(NAME)
         worker = self._makeOne(logger)
 
-        PYTHON_LOGGER_NAME = "mylogger"
-        MESSAGE = "hello world"
+        PYTHON_LOGGER_NAME = 'mylogger'
+        MESSAGE = 'hello world'
         record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
 
         worker._start()
@@ -91,7 +103,7 @@ class TestWorker(unittest2.TestCase):
         while not worker.started:
             time.sleep(1)  # pragma: NO COVER
 
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(generate_log_struct_kwargs(record, MESSAGE, {'one': 1}))
         # Set timeout to none so worker thread finishes
         worker._stop_timeout = None
         worker._stop()
@@ -99,12 +111,12 @@ class TestWorker(unittest2.TestCase):
 
     def test_run_after_stopped(self):
         # No-op
-        NAME = "python_logger"
+        NAME = 'python_logger'
         logger = _Logger(NAME)
         worker = self._makeOne(logger)
 
-        PYTHON_LOGGER_NAME = "mylogger"
-        MESSAGE = "hello world"
+        PYTHON_LOGGER_NAME = 'mylogger'
+        MESSAGE = 'hello world'
         record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
 
         worker._start()
@@ -112,21 +124,21 @@ class TestWorker(unittest2.TestCase):
             time.sleep(1)  # pragma: NO COVER
         worker._stop_timeout = None
         worker._stop()
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(generate_log_struct_kwargs(record, MESSAGE, {}))
         self.assertFalse(worker.batch.commit_called)
         worker._stop()
 
     def test_run_enqueue_early(self):
         # No-op
-        NAME = "python_logger"
+        NAME = 'python_logger'
         logger = _Logger(NAME)
         worker = self._makeOne(logger)
 
-        PYTHON_LOGGER_NAME = "mylogger"
-        MESSAGE = "hello world"
+        PYTHON_LOGGER_NAME = 'mylogger'
+        MESSAGE = 'hello world'
         record = _Record(PYTHON_LOGGER_NAME, logging.INFO, MESSAGE)
 
-        worker.enqueue(record, MESSAGE)
+        worker.enqueue(generate_log_struct_kwargs(record, MESSAGE, None))
         worker._start()
         while not worker.started:
             time.sleep(1)  # pragma: NO COVER

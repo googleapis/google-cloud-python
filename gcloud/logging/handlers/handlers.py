@@ -14,6 +14,7 @@
 
 """Python :mod:`logging` handlers for Google Cloud Logging."""
 
+import itertools
 import logging
 
 from gcloud.logging.handlers.transports import BackgroundThreadTransport
@@ -52,6 +53,12 @@ class CloudLoggingHandler(logging.StreamHandler, object):
                       Defaults to BackgroundThreadTransport. The other
                       option is SyncTransport.
 
+    :type extra_fields: iterable, e.g. tuple, list, set
+    :param extra_fields: the container with LogRecord.__dict__ fields which
+                         are forcefully submitted. Please note that some
+                         whitelisted fields like process or threadName are
+                         included by default.
+
     Example:
 
     .. doctest::
@@ -70,13 +77,45 @@ class CloudLoggingHandler(logging.StreamHandler, object):
 
     """
 
+    LOG_RECORD_DATA_WHITELIST = (
+        'process', 'processName', 'thread', 'threadName', 'created',
+        'relativeCreated', 'pathname', 'filename', 'lineno', 'module',
+        'funcName', 'levelno'
+    )
+
     def __init__(self, client,
                  name=DEFAULT_LOGGER_NAME,
-                 transport=BackgroundThreadTransport):
+                 transport=BackgroundThreadTransport,
+                 extra_fields=tuple()):
         super(CloudLoggingHandler, self).__init__()
         self.name = name
         self.client = client
+        self.extra_fields = extra_fields
         self.transport = transport(client, name)
+
+    def generate_log_struct_kwargs(self, record, message):
+        """Produces the dictionary of chosen LogRecord fields. extra_fields
+        are taken into account.
+
+        :type record: :class:`logging.LogRecord`
+        :param record: Python log record
+
+        :type message: str
+        :param message: The formatted log message
+
+        :return: dict with keyword arguments for
+                 :method:`gcloud.logging.Logger.log_struct()`.
+        """
+        data = {k: getattr(record, k, None) for k in itertools.chain(
+            self.LOG_RECORD_DATA_WHITELIST, self.extra_fields)}
+        return {
+            'info': {
+                'message': message,
+                'python_logger': record.name,
+                'data': data
+            },
+            'severity': record.levelname
+        }
 
     def emit(self, record):
         """
@@ -85,7 +124,8 @@ class CloudLoggingHandler(logging.StreamHandler, object):
         See: https://docs.python.org/2/library/logging.html#handler-objects
         """
         message = super(CloudLoggingHandler, self).format(record)
-        self.transport.send(record, message)
+        kwargs = self.generate_log_struct_kwargs(record, message)
+        self.transport.send(kwargs)
 
 
 def setup_logging(handler, excluded_loggers=EXCLUDE_LOGGER_DEFAULTS):
