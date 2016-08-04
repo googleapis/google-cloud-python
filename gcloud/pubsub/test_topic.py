@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestTopic(unittest2.TestCase):
+class TestTopic(unittest.TestCase):
     PROJECT = 'PROJECT'
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -559,7 +559,7 @@ class TestTopic(unittest2.TestCase):
                          (self.TOPIC_PATH, ROLES))
 
 
-class TestBatch(unittest2.TestCase):
+class TestBatch(unittest.TestCase):
     PROJECT = 'PROJECT'
 
     def _getTargetClass(self):

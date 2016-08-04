@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test__httplib2_debug_level(unittest2.TestCase):
+class Test__httplib2_debug_level(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.http_wrapper import _httplib2_debug_level
@@ -60,7 +60,7 @@ class Test__httplib2_debug_level(unittest2.TestCase):
         self.assertEqual(skip_me.debuglevel, 0)
 
 
-class Test_Request(unittest2.TestCase):
+class Test_Request(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.http_wrapper import Request
@@ -100,7 +100,7 @@ class Test_Request(unittest2.TestCase):
         self.assertEqual(request.loggable_body, '<media body>')
 
 
-class Test_Response(unittest2.TestCase):
+class Test_Response(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.http_wrapper import Response
@@ -196,7 +196,7 @@ class Test_Response(unittest2.TestCase):
         self.assertTrue(response.is_redirect)
 
 
-class Test__check_response(unittest2.TestCase):
+class Test__check_response(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import _check_response
@@ -233,7 +233,7 @@ class Test__check_response(unittest2.TestCase):
         self._callFUT(_Response(200))
 
 
-class Test__reset_http_connections(unittest2.TestCase):
+class Test__reset_http_connections(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import _reset_http_connections
@@ -251,7 +251,7 @@ class Test__reset_http_connections(unittest2.TestCase):
         self.assertTrue('skip_me' in connections)
 
 
-class Test___make_api_request_no_retry(unittest2.TestCase):
+class Test___make_api_request_no_retry(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import _make_api_request_no_retry
@@ -366,7 +366,7 @@ class Test___make_api_request_no_retry(unittest2.TestCase):
         self._verify_requested(_http, _request, connection_type=CONN_TYPE)
 
 
-class Test_make_api_request(unittest2.TestCase):
+class Test_make_api_request(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import make_api_request
@@ -453,7 +453,7 @@ class Test_make_api_request(unittest2.TestCase):
         self.assertEqual(_checked, [])  # not called by '_wo_exception'
 
 
-class Test__register_http_factory(unittest2.TestCase):
+class Test__register_http_factory(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import _register_http_factory
@@ -471,7 +471,7 @@ class Test__register_http_factory(unittest2.TestCase):
             self.assertEqual(_factories, [FACTORY])
 
 
-class Test_get_http(unittest2.TestCase):
+class Test_get_http(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.http_wrapper import get_http

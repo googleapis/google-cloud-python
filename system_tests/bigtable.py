@@ -16,7 +16,7 @@ import datetime
 import operator
 import time
 
-import unittest2
+import unittest
 
 from gcloud import _helpers
 from gcloud._helpers import _datetime_from_microseconds
@@ -125,7 +125,7 @@ def tearDownModule():
     Config.CLIENT.stop()
 
 
-class TestInstanceAdminAPI(unittest2.TestCase):
+class TestInstanceAdminAPI(unittest.TestCase):
 
     def setUp(self):
         self.instances_to_delete = []
@@ -189,7 +189,7 @@ class TestInstanceAdminAPI(unittest2.TestCase):
         Config.INSTANCE.update()
 
 
-class TestTableAdminAPI(unittest2.TestCase):
+class TestTableAdminAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -292,7 +292,7 @@ class TestTableAdminAPI(unittest2.TestCase):
         self.assertEqual(temp_table.list_column_families(), {})
 
 
-class TestDataAPI(unittest2.TestCase):
+class TestDataAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

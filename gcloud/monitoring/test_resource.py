@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestResourceDescriptor(unittest2.TestCase):
+class TestResourceDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.resource import ResourceDescriptor
@@ -274,7 +274,7 @@ class TestResourceDescriptor(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
 
-class TestResource(unittest2.TestCase):
+class TestResource(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.resource import Resource

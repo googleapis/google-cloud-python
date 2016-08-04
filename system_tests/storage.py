@@ -15,10 +15,10 @@
 import os
 import tempfile
 import time
+import unittest
 
 import httplib2
 import six
-import unittest2
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
@@ -55,7 +55,7 @@ def tearDownModule():
     Config.TEST_BUCKET.delete(force=True)
 
 
-class TestStorageBuckets(unittest2.TestCase):
+class TestStorageBuckets(unittest.TestCase):
 
     def setUp(self):
         self.case_buckets_to_delete = []
@@ -91,7 +91,7 @@ class TestStorageBuckets(unittest2.TestCase):
         self.assertEqual(len(created_buckets), len(buckets_to_create))
 
 
-class TestStorageFiles(unittest2.TestCase):
+class TestStorageFiles(unittest.TestCase):
 
     FILES = {
         'logo': {

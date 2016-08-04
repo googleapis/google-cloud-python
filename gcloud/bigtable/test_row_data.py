@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestCell(unittest2.TestCase):
+class TestCell(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_data import Cell
@@ -91,7 +91,7 @@ class TestCell(unittest2.TestCase):
         self.assertNotEqual(cell1, cell2)
 
 
-class TestPartialRowData(unittest2.TestCase):
+class TestPartialRowData(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_data import PartialRowData
@@ -182,7 +182,7 @@ class TestPartialRowData(unittest2.TestCase):
         self.assertTrue(partial_row_data.row_key is row_key)
 
 
-class TestPartialRowsData(unittest2.TestCase):
+class TestPartialRowsData(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_data import PartialRowsData
@@ -422,7 +422,7 @@ class TestPartialRowsData(unittest2.TestCase):
             prd.consume_next()
 
 
-class TestPartialRowsData_JSON_acceptance_tests(unittest2.TestCase):
+class TestPartialRowsData_JSON_acceptance_tests(unittest.TestCase):
 
     _json_tests = None
 

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestManagedZone(unittest2.TestCase):
+class TestManagedZone(unittest.TestCase):
     PROJECT = 'project'
     ZONE_NAME = 'zone-name'
     DESCRIPTION = 'ZONE DESCRIPTION'

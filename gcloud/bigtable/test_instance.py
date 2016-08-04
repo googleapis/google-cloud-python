@@ -14,10 +14,10 @@
 
 
 import datetime
-import unittest2
+import unittest
 
 
-class TestOperation(unittest2.TestCase):
+class TestOperation(unittest.TestCase):
 
     OP_TYPE = 'fake-op'
     OP_ID = 8915
@@ -140,7 +140,7 @@ class TestOperation(unittest2.TestCase):
         self._finished_helper(done=False)
 
 
-class TestInstance(unittest2.TestCase):
+class TestInstance(unittest.TestCase):
 
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
@@ -637,7 +637,7 @@ class TestInstance(unittest2.TestCase):
             self._list_tables_helper(table_name=BAD_TABLE_NAME)
 
 
-class Test__prepare_create_request(unittest2.TestCase):
+class Test__prepare_create_request(unittest.TestCase):
     PROJECT = 'PROJECT'
     PARENT = 'projects/' + PROJECT
     LOCATION_ID = 'locname'
@@ -706,7 +706,7 @@ class Test__prepare_create_request(unittest2.TestCase):
         self.assertEqual(cluster.serve_nodes, SERVE_NODES)
 
 
-class Test__parse_pb_any_to_native(unittest2.TestCase):
+class Test__parse_pb_any_to_native(unittest.TestCase):
 
     def _callFUT(self, any_val, expected_type=None):
         from gcloud.bigtable.instance import _parse_pb_any_to_native
@@ -789,7 +789,7 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
                 self._callFUT(any_val, expected_type=TYPE_URL1)
 
 
-class Test__process_operation(unittest2.TestCase):
+class Test__process_operation(unittest.TestCase):
 
     def _callFUT(self, operation_pb):
         from gcloud.bigtable.instance import _process_operation

@@ -14,9 +14,9 @@
 
 import os
 import time
+import unittest
 
 import httplib2
-import unittest2
 
 from gcloud import _helpers
 from gcloud.environment_vars import PUBSUB_EMULATOR
@@ -50,7 +50,7 @@ def setUpModule():
                                       http=http)
 
 
-class TestPubsub(unittest2.TestCase):
+class TestPubsub(unittest.TestCase):
 
     def setUp(self):
         self.to_delete = []
@@ -172,7 +172,7 @@ class TestPubsub(unittest2.TestCase):
         self.assertEqual(message2.attributes['extra'], EXTRA_2)
 
     def _maybe_emulator_skip(self):
-        # NOTE: We check at run-time rather than using the @unittest2.skipIf
+        # NOTE: We check at run-time rather than using the @unittest.skipIf
         #       decorator. This matches the philosophy behind using
         #       setUpModule to determine the environment at run-time
         #       rather than at import time.

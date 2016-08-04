@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test_calculate_wait_for_retry(unittest2.TestCase):
+class Test_calculate_wait_for_retry(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.util import calculate_wait_for_retry
@@ -20,7 +20,7 @@ class Test_calculate_wait_for_retry(unittest2.TestCase):
             self.assertEqual(self._callFUT(4, 10), 10)
 
 
-class Test_acceptable_mime_type(unittest2.TestCase):
+class Test_acceptable_mime_type(unittest.TestCase):
 
     def _callFUT(self, *args, **kw):
         from gcloud.streaming.util import acceptable_mime_type

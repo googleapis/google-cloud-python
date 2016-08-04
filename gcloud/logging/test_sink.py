@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestSink(unittest2.TestCase):
+class TestSink(unittest.TestCase):
 
     PROJECT = 'test-project'
     SINK_NAME = 'sink-name'

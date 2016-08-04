@@ -14,7 +14,7 @@
 
 import time
 
-import unittest2
+import unittest
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
@@ -74,7 +74,7 @@ def setUpModule():
     Config.CLIENT = logging.Client()
 
 
-class TestLogging(unittest2.TestCase):
+class TestLogging(unittest.TestCase):
 
     def setUp(self):
         self.to_delete = []

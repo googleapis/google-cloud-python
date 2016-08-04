@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_ClientFactoryMixin(unittest2.TestCase):
+class Test_ClientFactoryMixin(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.client import _ClientFactoryMixin
@@ -26,7 +26,7 @@ class Test_ClientFactoryMixin(unittest2.TestCase):
         self.assertFalse('__init__' in klass.__dict__)
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def setUp(self):
         KLASS = self._getTargetClass()
@@ -115,7 +115,7 @@ class TestClient(unittest2.TestCase):
                           None, credentials=CREDENTIALS)
 
 
-class TestJSONClient(unittest2.TestCase):
+class TestJSONClient(unittest.TestCase):
 
     def setUp(self):
         KLASS = self._getTargetClass()

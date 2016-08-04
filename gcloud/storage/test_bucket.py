@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test__BlobIterator(unittest2.TestCase):
+class Test__BlobIterator(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.bucket import _BlobIterator
@@ -85,7 +85,7 @@ class Test__BlobIterator(unittest2.TestCase):
         self.assertEqual(iterator.prefixes, set(['foo', 'bar']))
 
 
-class Test_Bucket(unittest2.TestCase):
+class Test_Bucket(unittest.TestCase):
 
     def _makeOne(self, client=None, name=None, properties=None):
         from gcloud.storage.bucket import Bucket

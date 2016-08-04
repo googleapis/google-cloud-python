@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_PropertyMixin(unittest2.TestCase):
+class Test_PropertyMixin(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage._helpers import _PropertyMixin
@@ -94,7 +94,7 @@ class Test_PropertyMixin(unittest2.TestCase):
         self.assertEqual(derived._changes, set())
 
 
-class Test__scalar_property(unittest2.TestCase):
+class Test__scalar_property(unittest.TestCase):
 
     def _callFUT(self, fieldName):
         from gcloud.storage._helpers import _scalar_property
@@ -122,7 +122,7 @@ class Test__scalar_property(unittest2.TestCase):
         self.assertEqual(test._patched, ('solfege', 'Latido'))
 
 
-class Test__base64_md5hash(unittest2.TestCase):
+class Test__base64_md5hash(unittest.TestCase):
 
     def _callFUT(self, bytes_to_sign):
         from gcloud.storage._helpers import _base64_md5hash

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class _Base(unittest2.TestCase):
+class _Base(unittest.TestCase):
     PROJECT = 'PROJECT'
     LIST_TOPICS_PATH = 'projects/%s/topics' % (PROJECT,)
     LIST_SUBSCRIPTIONS_PATH = 'projects/%s/subscriptions' % (PROJECT,)

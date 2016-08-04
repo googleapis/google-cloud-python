@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class Test_BoolFilter(unittest2.TestCase):
+class Test_BoolFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import _BoolFilter
@@ -50,7 +50,7 @@ class Test_BoolFilter(unittest2.TestCase):
         self.assertFalse(comparison_val)
 
 
-class TestSinkFilter(unittest2.TestCase):
+class TestSinkFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import SinkFilter
@@ -67,7 +67,7 @@ class TestSinkFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestPassAllFilter(unittest2.TestCase):
+class TestPassAllFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import PassAllFilter
@@ -84,7 +84,7 @@ class TestPassAllFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestBlockAllFilter(unittest2.TestCase):
+class TestBlockAllFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import BlockAllFilter
@@ -101,7 +101,7 @@ class TestBlockAllFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class Test_RegexFilter(unittest2.TestCase):
+class Test_RegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import _RegexFilter
@@ -140,7 +140,7 @@ class Test_RegexFilter(unittest2.TestCase):
         self.assertFalse(comparison_val)
 
 
-class TestRowKeyRegexFilter(unittest2.TestCase):
+class TestRowKeyRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import RowKeyRegexFilter
@@ -157,7 +157,7 @@ class TestRowKeyRegexFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestRowSampleFilter(unittest2.TestCase):
+class TestRowSampleFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import RowSampleFilter
@@ -191,7 +191,7 @@ class TestRowSampleFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestFamilyNameRegexFilter(unittest2.TestCase):
+class TestFamilyNameRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import FamilyNameRegexFilter
@@ -208,7 +208,7 @@ class TestFamilyNameRegexFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestColumnQualifierRegexFilter(unittest2.TestCase):
+class TestColumnQualifierRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ColumnQualifierRegexFilter
@@ -226,7 +226,7 @@ class TestColumnQualifierRegexFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestTimestampRange(unittest2.TestCase):
+class TestTimestampRange(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import TimestampRange
@@ -300,7 +300,7 @@ class TestTimestampRange(unittest2.TestCase):
         self._to_pb_helper(end_micros=end_micros)
 
 
-class TestTimestampRangeFilter(unittest2.TestCase):
+class TestTimestampRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import TimestampRangeFilter
@@ -337,7 +337,7 @@ class TestTimestampRangeFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestColumnRangeFilter(unittest2.TestCase):
+class TestColumnRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ColumnRangeFilter
@@ -461,7 +461,7 @@ class TestColumnRangeFilter(unittest2.TestCase):
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
 
-class TestValueRegexFilter(unittest2.TestCase):
+class TestValueRegexFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ValueRegexFilter
@@ -478,7 +478,7 @@ class TestValueRegexFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestValueRangeFilter(unittest2.TestCase):
+class TestValueRangeFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ValueRangeFilter
@@ -569,7 +569,7 @@ class TestValueRangeFilter(unittest2.TestCase):
         self.assertEqual(row_filter.to_pb(), expected_pb)
 
 
-class Test_CellCountFilter(unittest2.TestCase):
+class Test_CellCountFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import _CellCountFilter
@@ -603,7 +603,7 @@ class Test_CellCountFilter(unittest2.TestCase):
         self.assertFalse(comparison_val)
 
 
-class TestCellsRowOffsetFilter(unittest2.TestCase):
+class TestCellsRowOffsetFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import CellsRowOffsetFilter
@@ -621,7 +621,7 @@ class TestCellsRowOffsetFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestCellsRowLimitFilter(unittest2.TestCase):
+class TestCellsRowLimitFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import CellsRowLimitFilter
@@ -639,7 +639,7 @@ class TestCellsRowLimitFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestCellsColumnLimitFilter(unittest2.TestCase):
+class TestCellsColumnLimitFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import CellsColumnLimitFilter
@@ -657,7 +657,7 @@ class TestCellsColumnLimitFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestStripValueTransformerFilter(unittest2.TestCase):
+class TestStripValueTransformerFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import StripValueTransformerFilter
@@ -674,7 +674,7 @@ class TestStripValueTransformerFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class TestApplyLabelFilter(unittest2.TestCase):
+class TestApplyLabelFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ApplyLabelFilter
@@ -708,7 +708,7 @@ class TestApplyLabelFilter(unittest2.TestCase):
         self.assertEqual(pb_val, expected_pb)
 
 
-class Test_FilterCombination(unittest2.TestCase):
+class Test_FilterCombination(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import _FilterCombination
@@ -739,7 +739,7 @@ class Test_FilterCombination(unittest2.TestCase):
         self.assertNotEqual(row_filter1, row_filter2)
 
 
-class TestRowFilterChain(unittest2.TestCase):
+class TestRowFilterChain(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import RowFilterChain
@@ -793,7 +793,7 @@ class TestRowFilterChain(unittest2.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
 
-class TestRowFilterUnion(unittest2.TestCase):
+class TestRowFilterUnion(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import RowFilterUnion
@@ -847,7 +847,7 @@ class TestRowFilterUnion(unittest2.TestCase):
         self.assertEqual(filter_pb, expected_pb)
 
 
-class TestConditionalRowFilter(unittest2.TestCase):
+class TestConditionalRowFilter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row_filters import ConditionalRowFilter

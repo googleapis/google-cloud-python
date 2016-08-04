@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestSchemaField(unittest2.TestCase):
+class TestSchemaField(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery.table import SchemaField
@@ -125,7 +125,7 @@ class _SchemaBase(object):
             self._verify_field(field, r_field)
 
 
-class TestTable(unittest2.TestCase, _SchemaBase):
+class TestTable(unittest.TestCase, _SchemaBase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
     TABLE_NAME = 'table-name'
@@ -1552,7 +1552,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
     # pylint: enable=too-many-statements
 
 
-class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
+class Test_parse_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
         from gcloud.bigquery.table import _parse_schema_resource
@@ -1596,7 +1596,7 @@ class Test_parse_schema_resource(unittest2.TestCase, _SchemaBase):
         self._verifySchema(schema, RESOURCE)
 
 
-class Test_build_schema_resource(unittest2.TestCase, _SchemaBase):
+class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
     def _callFUT(self, resource):
         from gcloud.bigquery.table import _build_schema_resource

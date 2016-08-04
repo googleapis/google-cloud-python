@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
 def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
@@ -31,7 +31,7 @@ def _make_entity_pb(project, kind, integer_id, name=None, str_val=None):
     return entity_pb
 
 
-class Test__get_gcd_project(unittest2.TestCase):
+class Test__get_gcd_project(unittest.TestCase):
 
     def _callFUT(self):
         from gcloud.datastore.client import _get_gcd_project
@@ -58,7 +58,7 @@ class Test__get_gcd_project(unittest2.TestCase):
             self.assertEqual(project, MOCK_PROJECT)
 
 
-class Test__determine_default_project(unittest2.TestCase):
+class Test__determine_default_project(unittest.TestCase):
 
     def _callFUT(self, project=None):
         from gcloud.datastore.client import (
@@ -115,7 +115,7 @@ class Test__determine_default_project(unittest2.TestCase):
         self.assertEqual(callers, ['gcd_mock', ('fallback_mock', None)])
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
 

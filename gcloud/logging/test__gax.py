@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
 try:
@@ -34,8 +34,8 @@ class _Base(object):
         return self._getTargetClass()(*args, **kw)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_LoggingAPI(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_LoggingAPI(_Base, unittest.TestCase):
     LOG_NAME = 'log_name'
 
     def _getTargetClass(self):
@@ -407,8 +407,8 @@ class Test_LoggingAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_SinksAPI(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_SinksAPI(_Base, unittest.TestCase):
     SINK_NAME = 'sink_name'
     SINK_PATH = 'projects/%s/sinks/%s' % (_Base.PROJECT, SINK_NAME)
     DESTINATION_URI = 'faux.googleapis.com/destination'
@@ -611,8 +611,8 @@ class Test_SinksAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_MetricsAPI(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_MetricsAPI(_Base, unittest.TestCase):
     METRIC_NAME = 'metric_name'
     METRIC_PATH = 'projects/%s/metrics/%s' % (_Base.PROJECT, METRIC_NAME)
     DESCRIPTION = 'Description'
@@ -815,8 +815,8 @@ class Test_MetricsAPI(_Base, unittest2.TestCase):
         self.assertEqual(options, None)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_value_pb_to_value(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_value_pb_to_value(_Base, unittest.TestCase):
 
     def _callFUT(self, value_pb):
         from gcloud.logging._gax import _value_pb_to_value

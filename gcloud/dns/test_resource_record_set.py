@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestResourceRecordSet(unittest2.TestCase):
+class TestResourceRecordSet(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.dns.resource_record_set import ResourceRecordSet

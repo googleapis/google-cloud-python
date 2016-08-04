@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestAccessGrant(unittest2.TestCase):
+class TestAccessGrant(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery.dataset import AccessGrant
@@ -76,7 +76,7 @@ class TestAccessGrant(unittest2.TestCase):
         self.assertEqual(grant, other)
 
 
-class TestDataset(unittest2.TestCase):
+class TestDataset(unittest.TestCase):
     PROJECT = 'project'
     DS_NAME = 'dataset-name'
 

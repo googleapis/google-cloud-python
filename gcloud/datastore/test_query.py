@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestQuery(unittest2.TestCase):
+class TestQuery(unittest.TestCase):
 
     _PROJECT = 'PROJECT'
 
@@ -330,7 +330,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(iterator._offset, 8)
 
 
-class TestIterator(unittest2.TestCase):
+class TestIterator(unittest.TestCase):
     _PROJECT = 'PROJECT'
     _NAMESPACE = 'NAMESPACE'
     _KIND = 'KIND'
@@ -611,7 +611,7 @@ class TestIterator(unittest2.TestCase):
         self.assertEqual(connection._called_with[2], EXPECTED3)
 
 
-class Test__pb_from_query(unittest2.TestCase):
+class Test__pb_from_query(unittest.TestCase):
 
     def _callFUT(self, query):
         from gcloud.datastore.query import _pb_from_query
