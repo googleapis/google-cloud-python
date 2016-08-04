@@ -76,7 +76,7 @@ class RetryErrors(RetryBase):
 
                     delay = self.delay * self.backoff**tries
                     msg = ("%s, Trying again in %d seconds..." %
-                           (str(caught_exception), delay))
+                           (caught_exception, delay))
                     self.logger(msg)
 
                     time.sleep(delay)
