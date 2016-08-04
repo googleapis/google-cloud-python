@@ -20,21 +20,21 @@
       "name": "allocate_ids", 
       "params": [
         {
-          "description": " The keys for which the backend should allocate IDs.", 
-          "name": "key_pbs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            ""
-          ]
-        }, 
-        {
           "description": " The project to which the transaction belongs.", 
           "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The keys for which the backend should allocate IDs.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
           ]
         }
       ], 
@@ -81,15 +81,6 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The API method to call (e.g. 'runQuery', 'lookup').", 
           "name": "method", 
           "nullable": null, 
@@ -101,6 +92,15 @@
         {
           "description": " The base URL where the API lives. You shouldn't have to provide this.", 
           "name": "base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -178,12 +178,12 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " The keys to retrieve from the datastore.", 
-          "name": "key_pbs", 
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            ""
+            "string"
           ]
         }, 
         {
@@ -196,8 +196,8 @@
           ]
         }, 
         {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
+          "description": " The project to look up the keys in.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -205,12 +205,12 @@
           ]
         }, 
         {
-          "description": " The project to look up the keys in.", 
-          "name": "project", 
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            ""
           ]
         }
       ], 
@@ -250,6 +250,15 @@
           ]
         }, 
         {
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
           "name": "eventual", 
           "nullable": null, 
@@ -270,15 +279,6 @@
         {
           "description": " The project over which to run the query.", 
           "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
