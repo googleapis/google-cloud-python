@@ -229,7 +229,7 @@ class Table(object):
         :returns: the URL (None until set from the server).
         """
         return self._properties.get('type')
-        
+
     @property
     def partitioningType(self):
         """Time partitioning of the table.
@@ -240,7 +240,7 @@ class Table(object):
         if "timePartitioning" in self._properties:
             partitioned = self._properties.get('timePartitioning').get('type')
         return partitioned
-    
+
     @partitioningType.setter
     def partitioningType(self, value):
         """Update the partitioning type of the table
@@ -250,32 +250,38 @@ class Table(object):
         """
         if not isinstance(value, six.string_types) or value.upper() != "DAY":
             raise ValueError("value must be one of ['DAY']")
-        if "timePartitioning" not in self._properties:
+        try:
+            self._properties['timePartitioning']['type'] = value.upper()
+        except KeyError:
             self._properties['timePartitioning'] = {}
-        self._properties['timePartitioning']['type'] = value.upper()
-        
+            self._properties['timePartitioning']['type'] = value.upper()
+
     @property
     def partitionExpiration(self):
         """Expiration time in ms for a partition
-        :rtype: int
+        :rtype: int, or ``NoneType``
         :returns: Returns the time in ms for partition expiration
         """
-        if "timePartitioning" not in self._properties:
-            self._properties['timePartitioning'] = {'type': "DAY"}
-        return self._properties.get("timePartitioning").get("expirationMs")
-    
+        expiry = None
+        if "timePartitioning" in self._properties:
+            tp = self._properties.get("timePartitioning")
+            expiry = tp.get("expirationMs")
+        return expiry
+
     @partitionExpiration.setter
     def partitionExpiration(self, value):
         """Update the experation time in ms for a partition
-        
+
         :type value: int
         :param value: partition experiation time in ms
         """
         if not isinstance(value, int):
             raise ValueError("must be an integer representing millisseconds")
-        if "timePartitioning" not in self._properties:
+        try:
+            self._properties["timePartitioning"]["expirationMs"] = value
+        except KeyError:
             self._properties['timePartitioning'] = {'type': "DAY"}
-        self._properties["timePartitioning"]["expirationMs"] = value
+            self._properties["timePartitioning"]["expirationMs"] = value
 
     @property
     def description(self):

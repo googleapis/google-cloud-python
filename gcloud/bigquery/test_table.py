@@ -523,7 +523,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
-    
+
     def test_create_w_partition_no_expire(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
@@ -536,6 +536,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
 
+        self.assertEqual(table.partitioningType, None)
         table.partitioningType = "DAY"
         self.assertEqual(table.partitioningType, "DAY")
         table.create()
@@ -556,7 +557,7 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
-        
+
     def test_create_w_partition_and_expire(self):
         from gcloud.bigquery.table import SchemaField
         PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
@@ -568,8 +569,8 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
         table = self._makeOne(self.TABLE_NAME, dataset,
                               schema=[full_name, age])
-
-        table.partitionExpiration=100
+        self.assertEqual(table.partitionExpiration, None)
+        table.partitionExpiration = 100
         self.assertEqual(table.partitioningType, "DAY")
         self.assertEqual(table.partitionExpiration, 100)
         table.create()
@@ -590,6 +591,24 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         }
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
+
+    def test_create_w_bad_partitions(self):
+        from gcloud.bigquery.table import SchemaField
+        PATH = 'projects/%s/datasets/%s/tables' % (self.PROJECT, self.DS_NAME)
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        with self.assertRaises(ValueError):
+            table.partitioningType = 123
+        with self.assertRaises(ValueError):
+            table.partitioningType = "HASH"
+        with self.assertRaises(ValueError):
+            table.partitionExpiration = "NEVER"
 
     def test_create_w_alternate_client(self):
         import datetime
