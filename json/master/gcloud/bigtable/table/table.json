@@ -20,21 +20,21 @@
       "name": "column_family", 
       "params": [
         {
-          "description": " (Optional) The garbage collection settings for this column family.", 
-          "name": "gc_rule", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
-          ]
-        }, 
-        {
           "description": " The ID of the column family. Must be of the form <code>[_a-zA-Z0-9][-_.a-zA-Z0-9]*</code>.", 
           "name": "column_family_id", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The garbage collection settings for this column family.", 
+          "name": "gc_rule", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigtable/table/table/garbagecollectionrule\">gcloud.bigtable.table.Table.GarbageCollectionRule</a>"
           ]
         }
       ], 
@@ -91,21 +91,21 @@
       "name": "read_row", 
       "params": [
         {
-          "description": " The key of the row to read from.", 
-          "name": "row_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
-          ]
-        }, 
-        {
           "description": " (Optional) The filter to apply to the contents of the row. If unset, returns the entire row.", 
           "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+          ]
+        }, 
+        {
+          "description": " The key of the row to read from.", 
+          "name": "row_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bytes"
           ]
         }
       ], 
@@ -125,15 +125,6 @@
       "id": "gcloud.bigtable.table.Table.read_rows", 
       "name": "read_rows", 
       "params": [
-        {
-          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
-          "name": "limit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
         {
           "description": " (Optional) The end of a range of row keys to read from. The range will not include <code>end_key</code>. If left empty, will be interpreted as an infinite string.", 
           "name": "end_key", 
@@ -160,6 +151,15 @@
           "types": [
             "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
+        }, 
+        {
+          "description": " (Optional) The read will terminate after committing to N rows' worth of results. The default (zero) is to return all results.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
         }
       ], 
       "returns": [
@@ -179,12 +179,12 @@
       "name": "row", 
       "params": [
         {
-          "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
-          "name": "append", 
+          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "bool"
+            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
           ]
         }, 
         {
@@ -197,12 +197,12 @@
           ]
         }, 
         {
-          "description": " (Optional) Filter to be used for conditional mutations. See .DirectRow for more details.", 
-          "name": "filter_", 
+          "description": " (Optional) Flag to determine if the row should be used for append mutations.", 
+          "name": "append", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigtable/table/table/rowfilter\">gcloud.bigtable.table.Table.RowFilter</a>"
+            "bool"
           ]
         }
       ], 

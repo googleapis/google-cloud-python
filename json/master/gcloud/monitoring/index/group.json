@@ -1,0 +1,183 @@
+{
+  "description": "\n Google Stackdriver Monitoring API wrapper.", 
+  "examples": [], 
+  "id": "gcloud.monitoring.__init__.group", 
+  "methods": [
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.__init__", 
+      "name": "__init__", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L100", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.create", 
+      "name": "create", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L159", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.delete", 
+      "name": "delete", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L212", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.exists", 
+      "name": "exists", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "bool"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L181", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.fetch_parent", 
+      "name": "fetch_parent", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            "Group or None"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L229", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.list_ancestors", 
+      "name": "list_ancestors", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            " ~gcloud.monitoring.group.Group"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L250", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.list_children", 
+      "name": "list_children", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            " ~gcloud.monitoring.group.Group"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L239", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.list_descendants", 
+      "name": "list_descendants", 
+      "params": [], 
+      "returns": [
+        {
+          "types": [
+            " ~gcloud.monitoring.group.Group"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L262", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.list_members", 
+      "name": "list_members", 
+      "params": [
+        {
+          "description": " An optional list filter describing the members to be returned. The filter may reference the type, labels, and metadata of monitored resources that comprise the group. See the filter documentation_.", 
+          "name": "filter_string", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " The start time (exclusive) of the time interval for which results should be returned, as a datetime object.", 
+          "name": "start_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
+          ]
+        }, 
+        {
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. If <code>start_time</code> is specified, then this must also be specified.", 
+          "name": "end_time", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "datetime.datetime or None"
+          ]
+        }
+      ], 
+      "returns": [
+        {
+          "types": [
+            " ~gcloud.monitoring.resource.Resource"
+          ]
+        }
+      ], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L273", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.reload", 
+      "name": "reload", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L195", 
+      "type": "instance"
+    }, 
+    {
+      "examples": [], 
+      "exceptions": [], 
+      "id": "gcloud.monitoring.__init__.Group.update", 
+      "name": "update", 
+      "params": [], 
+      "returns": [], 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/monitoring/group.py/gcloud/monitoring/group.py#L206", 
+      "type": "instance"
+    }
+  ], 
+  "name": "Group", 
+  "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/__init__.py/gcloud/__init__.py"
+}

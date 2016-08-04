@@ -19,21 +19,21 @@
           ]
         }, 
         {
-          "description": " Optional string giving extra information about the failed request.", 
-          "name": "error_info", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The body of the HTTP error response.", 
           "name": "content", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string or dictionary"
+          ]
+        }, 
+        {
+          "description": " Optional string giving extra information about the failed request.", 
+          "name": "error_info", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
