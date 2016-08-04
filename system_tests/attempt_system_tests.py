@@ -30,7 +30,7 @@ from run_system_test import FailedSystemTestModule
 from run_system_test import run_module_tests
 
 
-MODULES = (
+MODULES = (  # ordered from most to least stable
     'datastore',
     'storage',
     'bigquery',
