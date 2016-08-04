@@ -19,7 +19,7 @@ except ImportError:
 else:
     HAVE_PANDAS = True  # pragma: NO COVER
 
-import unittest2
+import unittest
 
 
 PROJECT = 'my-project'
@@ -83,8 +83,8 @@ def generate_query_results():  # pragma: NO COVER
         )
 
 
-@unittest2.skipUnless(HAVE_PANDAS, 'No pandas')
-class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
+@unittest.skipUnless(HAVE_PANDAS, 'No pandas')
+class Test__build_dataframe(unittest.TestCase):  # pragma: NO COVER
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.monitoring._dataframe import _build_dataframe
@@ -205,7 +205,7 @@ class Test__build_dataframe(unittest2.TestCase):  # pragma: NO COVER
         self.assertIsInstance(dataframe.index, pandas.DatetimeIndex)
 
 
-class Test__sorted_resource_labels(unittest2.TestCase):
+class Test__sorted_resource_labels(unittest.TestCase):
 
     def _callFUT(self, labels):
         from gcloud.monitoring._dataframe import _sorted_resource_labels

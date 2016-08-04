@@ -14,7 +14,7 @@
 
 import argparse
 import sys
-import unittest2
+import unittest
 
 import bigquery
 import bigtable
@@ -59,13 +59,13 @@ def run_module_tests(module_name, ignore_requirements=False):
         # Make sure environ is set before running test.
         system_test_utils.check_environ()
 
-    suite = unittest2.TestSuite()
+    suite = unittest.TestSuite()
     test_mod = TEST_MODULES[module_name]
-    tests = unittest2.defaultTestLoader.loadTestsFromModule(test_mod)
+    tests = unittest.defaultTestLoader.loadTestsFromModule(test_mod)
     suite.addTest(tests)
 
     # Run tests.
-    test_result = unittest2.TextTestRunner(verbosity=2).run(suite)
+    test_result = unittest.TextTestRunner(verbosity=2).run(suite)
     # Exit if not successful.
     if not test_result.wasSuccessful():
         sys.exit(1)

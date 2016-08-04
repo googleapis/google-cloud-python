@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestMetricKind(unittest2.TestCase):
+class TestMetricKind(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.metric import MetricKind
@@ -30,7 +30,7 @@ class TestMetricKind(unittest2.TestCase):
                 self.assertEqual(getattr(self._getTargetClass(), name), name)
 
 
-class TestValueType(unittest2.TestCase):
+class TestValueType(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.metric import ValueType
@@ -45,7 +45,7 @@ class TestValueType(unittest2.TestCase):
                 self.assertEqual(getattr(self._getTargetClass(), name), name)
 
 
-class TestMetricDescriptor(unittest2.TestCase):
+class TestMetricDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.metric import MetricDescriptor
@@ -490,7 +490,7 @@ class TestMetricDescriptor(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
 
-class TestMetric(unittest2.TestCase):
+class TestMetric(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.metric import Metric

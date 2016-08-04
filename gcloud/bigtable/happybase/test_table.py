@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_make_row(unittest2.TestCase):
+class Test_make_row(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import make_row
@@ -26,7 +26,7 @@ class Test_make_row(unittest2.TestCase):
             self._callFUT({}, False)
 
 
-class Test_make_ordered_row(unittest2.TestCase):
+class Test_make_ordered_row(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import make_ordered_row
@@ -37,7 +37,7 @@ class Test_make_ordered_row(unittest2.TestCase):
             self._callFUT([], False)
 
 
-class TestTable(unittest2.TestCase):
+class TestTable(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.happybase.table import Table
@@ -1013,7 +1013,7 @@ class TestTable(unittest2.TestCase):
             self._counter_inc_helper(row, column, value, commit_result)
 
 
-class Test__gc_rule_to_dict(unittest2.TestCase):
+class Test__gc_rule_to_dict(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _gc_rule_to_dict
@@ -1102,7 +1102,7 @@ class Test__gc_rule_to_dict(unittest2.TestCase):
         self.assertTrue(result is gc_rule)
 
 
-class Test__string_successor(unittest2.TestCase):
+class Test__string_successor(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _string_successor
@@ -1125,7 +1125,7 @@ class Test__string_successor(unittest2.TestCase):
         self.assertEqual(self._callFUT(u'boa'), b'bob')
 
 
-class Test__convert_to_time_range(unittest2.TestCase):
+class Test__convert_to_time_range(unittest.TestCase):
 
     def _callFUT(self, timestamp=None):
         from gcloud.bigtable.happybase.table import _convert_to_time_range
@@ -1153,7 +1153,7 @@ class Test__convert_to_time_range(unittest2.TestCase):
         self.assertEqual(result.end, ts_dt)
 
 
-class Test__cells_to_pairs(unittest2.TestCase):
+class Test__cells_to_pairs(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _cells_to_pairs
@@ -1189,7 +1189,7 @@ class Test__cells_to_pairs(unittest2.TestCase):
                          [(value1, ts1_millis), (value2, ts2_millis)])
 
 
-class Test__partial_row_to_dict(unittest2.TestCase):
+class Test__partial_row_to_dict(unittest.TestCase):
 
     def _callFUT(self, partial_row_data, include_timestamp=False):
         from gcloud.bigtable.happybase.table import _partial_row_to_dict
@@ -1238,7 +1238,7 @@ class Test__partial_row_to_dict(unittest2.TestCase):
         self.assertEqual(result, expected_result)
 
 
-class Test__filter_chain_helper(unittest2.TestCase):
+class Test__filter_chain_helper(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _filter_chain_helper
@@ -1348,7 +1348,7 @@ class Test__filter_chain_helper(unittest2.TestCase):
                             timestamp=timestamp)
 
 
-class Test__columns_filter_helper(unittest2.TestCase):
+class Test__columns_filter_helper(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _columns_filter_helper
@@ -1396,7 +1396,7 @@ class Test__columns_filter_helper(unittest2.TestCase):
         self.assertEqual(filter2b.regex, col_qual2.encode('utf-8'))
 
 
-class Test__row_keys_filter_helper(unittest2.TestCase):
+class Test__row_keys_filter_helper(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.table import _row_keys_filter_helper

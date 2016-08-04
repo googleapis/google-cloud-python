@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
@@ -26,7 +26,7 @@ def setUpModule():
     _helpers.PROJECT = TESTS_PROJECT
 
 
-class TestMonitoring(unittest2.TestCase):
+class TestMonitoring(unittest.TestCase):
 
     def test_fetch_metric_descriptor(self):
         METRIC_TYPE = (
@@ -177,7 +177,7 @@ class TestMonitoring(unittest2.TestCase):
             descriptor.delete()
 
 
-class TestMonitoringGroups(unittest2.TestCase):
+class TestMonitoringGroups(unittest.TestCase):
 
     def setUp(self):
         self.to_delete = []

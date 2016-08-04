@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_get_credentials(unittest2.TestCase):
+class Test_get_credentials(unittest.TestCase):
 
     def _callFUT(self):
         from gcloud import credentials
@@ -33,7 +33,7 @@ class Test_get_credentials(unittest2.TestCase):
         self.assertTrue(client._get_app_default_called)
 
 
-class Test_generate_signed_url(unittest2.TestCase):
+class Test_generate_signed_url(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.credentials import generate_signed_url
@@ -101,7 +101,7 @@ class Test_generate_signed_url(unittest2.TestCase):
                               generation=generation)
 
 
-class Test_generate_signed_url_exception(unittest2.TestCase):
+class Test_generate_signed_url_exception(unittest.TestCase):
     def test_with_google_credentials(self):
         import time
         from gcloud.credentials import generate_signed_url
@@ -113,7 +113,7 @@ class Test_generate_signed_url_exception(unittest2.TestCase):
                           resource=RESOURCE, expiration=expiration)
 
 
-class Test__get_signed_query_params(unittest2.TestCase):
+class Test__get_signed_query_params(unittest.TestCase):
 
     def _callFUT(self, credentials, expiration, string_to_sign):
         from gcloud.credentials import _get_signed_query_params
@@ -140,7 +140,7 @@ class Test__get_signed_query_params(unittest2.TestCase):
         self.assertEqual(CREDENTIALS._signed, [STRING_TO_SIGN])
 
 
-class Test__get_expiration_seconds(unittest2.TestCase):
+class Test__get_expiration_seconds(unittest.TestCase):
 
     def _callFUT(self, expiration):
         from gcloud.credentials import _get_expiration_seconds

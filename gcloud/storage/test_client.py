@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.client import Client
@@ -370,7 +370,7 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(parse_qs(uri_parts.query), EXPECTED_QUERY)
 
 
-class Test__BucketIterator(unittest2.TestCase):
+class Test__BucketIterator(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.client import _BucketIterator

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestConnection(unittest2.TestCase):
+class TestConnection(unittest.TestCase):
 
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'
@@ -34,7 +34,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.credentials._scopes, klass.SCOPE)
 
 
-class Test_LoggingAPI(unittest2.TestCase):
+class Test_LoggingAPI(unittest.TestCase):
 
     PROJECT = 'project'
     LIST_ENTRIES_PATH = 'entries:list'
@@ -217,7 +217,7 @@ class Test_LoggingAPI(unittest2.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
 
-class Test_SinksAPI(unittest2.TestCase):
+class Test_SinksAPI(unittest.TestCase):
 
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'
@@ -412,7 +412,7 @@ class Test_SinksAPI(unittest2.TestCase):
         self.assertEqual(conn._called_with['path'], path)
 
 
-class Test_MetricsAPI(unittest2.TestCase):
+class Test_MetricsAPI(unittest.TestCase):
 
     PROJECT = 'project'
     FILTER = 'logName:syslog AND severity>=ERROR'

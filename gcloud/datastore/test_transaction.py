@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestTransaction(unittest2.TestCase):
+class TestTransaction(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.transaction import Transaction

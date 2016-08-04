@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test__Transfer(unittest2.TestCase):
+class Test__Transfer(unittest.TestCase):
     URL = 'http://example.com/api'
 
     def _getTargetClass(self):
@@ -145,7 +145,7 @@ class Test__Transfer(unittest2.TestCase):
         self.assertTrue(stream._closed)
 
 
-class Test_Download(unittest2.TestCase):
+class Test_Download(unittest.TestCase):
     URL = "http://example.com/api"
 
     def _getTargetClass(self):
@@ -778,7 +778,7 @@ class Test_Download(unittest2.TestCase):
         self.assertEqual(download.total_size, LEN)
 
 
-class Test_Upload(unittest2.TestCase):
+class Test_Upload(unittest.TestCase):
     URL = "http://example.com/api"
     MIME_TYPE = 'application/octet-stream'
     UPLOAD_URL = 'http://example.com/upload/id=foobar'

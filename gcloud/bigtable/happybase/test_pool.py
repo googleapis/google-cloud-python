@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestConnectionPool(unittest2.TestCase):
+class TestConnectionPool(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.happybase.pool import ConnectionPool

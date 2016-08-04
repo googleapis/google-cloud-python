@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestChanges(unittest2.TestCase):
+class TestChanges(unittest.TestCase):
     PROJECT = 'project'
     ZONE_NAME = 'example.com'
     CHANGES_NAME = 'changeset_id'

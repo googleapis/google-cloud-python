@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_GCloudError(unittest2.TestCase):
+class Test_GCloudError(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.exceptions import GCloudError
@@ -46,7 +46,7 @@ class Test_GCloudError(unittest2.TestCase):
         self.assertEqual(list(e.errors), [ERROR])
 
 
-class Test_make_exception(unittest2.TestCase):
+class Test_make_exception(unittest.TestCase):
 
     def _callFUT(self, response, content, error_info=None, use_json=True):
         from gcloud.exceptions import make_exception

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_group_id_from_name(unittest2.TestCase):
+class Test_group_id_from_name(unittest.TestCase):
 
     def _callFUT(self, path, project):
         from gcloud.monitoring.group import _group_id_from_name
@@ -42,7 +42,7 @@ class Test_group_id_from_name(unittest2.TestCase):
         self.assertEqual(group_id, GROUP_ID)
 
 
-class TestGroup(unittest2.TestCase):
+class TestGroup(unittest.TestCase):
 
     def setUp(self):
         self.PROJECT = 'PROJECT'

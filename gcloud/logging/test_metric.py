@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestMetric(unittest2.TestCase):
+class TestMetric(unittest.TestCase):
 
     PROJECT = 'test-project'
     METRIC_NAME = 'metric-name'

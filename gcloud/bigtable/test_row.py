@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class Test_SetDeleteRow(unittest2.TestCase):
+class Test_SetDeleteRow(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row import _SetDeleteRow
@@ -31,7 +31,7 @@ class Test_SetDeleteRow(unittest2.TestCase):
             row._get_mutations(None)
 
 
-class TestDirectRow(unittest2.TestCase):
+class TestDirectRow(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row import DirectRow
@@ -375,7 +375,7 @@ class TestDirectRow(unittest2.TestCase):
         self.assertEqual(stub.method_calls, [])
 
 
-class TestConditionalRow(unittest2.TestCase):
+class TestConditionalRow(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row import ConditionalRow
@@ -517,7 +517,7 @@ class TestConditionalRow(unittest2.TestCase):
         self.assertEqual(stub.method_calls, [])
 
 
-class TestAppendRow(unittest2.TestCase):
+class TestAppendRow(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.row import AppendRow
@@ -662,7 +662,7 @@ class TestAppendRow(unittest2.TestCase):
                 row.commit()
 
 
-class Test__parse_rmw_row_response(unittest2.TestCase):
+class Test__parse_rmw_row_response(unittest.TestCase):
 
     def _callFUT(self, row_response):
         from gcloud.bigtable.row import _parse_rmw_row_response
@@ -747,7 +747,7 @@ class Test__parse_rmw_row_response(unittest2.TestCase):
         self.assertEqual(expected_output, self._callFUT(sample_input))
 
 
-class Test__parse_family_pb(unittest2.TestCase):
+class Test__parse_family_pb(unittest.TestCase):
 
     def _callFUT(self, family_pb):
         from gcloud.bigtable.row import _parse_family_pb

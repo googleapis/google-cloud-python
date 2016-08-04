@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 PROJECT = 'my-project'
 
@@ -40,7 +40,7 @@ TS1 = '2016-04-06T22:05:01.042Z'
 TS2 = '2016-04-06T22:05:02.042Z'
 
 
-class TestAligner(unittest2.TestCase):
+class TestAligner(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.query import Aligner
@@ -55,7 +55,7 @@ class TestAligner(unittest2.TestCase):
                 self.assertEqual(getattr(self._getTargetClass(), name), name)
 
 
-class TestReducer(unittest2.TestCase):
+class TestReducer(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.query import Reducer
@@ -71,7 +71,7 @@ class TestReducer(unittest2.TestCase):
                 self.assertEqual(getattr(self._getTargetClass(), name), name)
 
 
-class TestQuery(unittest2.TestCase):
+class TestQuery(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.query import Query
@@ -497,7 +497,7 @@ class TestQuery(unittest2.TestCase):
         self.assertEqual(request, expected_request)
 
 
-class Test_Filter(unittest2.TestCase):
+class Test_Filter(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.query import _Filter
@@ -531,7 +531,7 @@ class Test_Filter(unittest2.TestCase):
         self.assertEqual(str(obj), expected)
 
 
-class Test__build_label_filter(unittest2.TestCase):
+class Test__build_label_filter(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.monitoring.query import _build_label_filter

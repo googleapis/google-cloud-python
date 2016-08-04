@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestMessage(unittest2.TestCase):
+class TestMessage(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.pubsub.message import Message

@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 PROJECT = 'my-project'
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.client import Client

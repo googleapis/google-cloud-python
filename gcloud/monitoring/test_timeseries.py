@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 METRIC_TYPE = 'compute.googleapis.com/instance/uptime'
 METRIC_LABELS = {'instance_name': 'instance-1'}
@@ -32,7 +32,7 @@ TS1 = '2016-04-06T22:05:01.042Z'
 TS2 = '2016-04-06T22:05:02.042Z'
 
 
-class TestTimeSeries(unittest2.TestCase):
+class TestTimeSeries(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.timeseries import TimeSeries
@@ -148,7 +148,7 @@ class TestTimeSeries(unittest2.TestCase):
         self.assertEqual(series.labels, labels)
 
 
-class TestPoint(unittest2.TestCase):
+class TestPoint(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.timeseries import Point

@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestConnection(unittest2.TestCase):
+class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.connection import Connection
@@ -808,7 +808,7 @@ class TestConnection(unittest2.TestCase):
             self.assertEqual(key_before, key_after)
 
 
-class Test__parse_commit_response(unittest2.TestCase):
+class Test__parse_commit_response(unittest.TestCase):
 
     def _callFUT(self, commit_response_pb):
         from gcloud.datastore.connection import _parse_commit_response

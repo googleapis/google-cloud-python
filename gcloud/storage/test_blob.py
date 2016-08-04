@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_Blob(unittest2.TestCase):
+class Test_Blob(unittest.TestCase):
 
     def _makeOne(self, *args, **kw):
         from gcloud.storage.blob import Blob
