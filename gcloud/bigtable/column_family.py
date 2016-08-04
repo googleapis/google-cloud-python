@@ -19,7 +19,6 @@ import datetime
 
 from google.protobuf import duration_pb2
 
-from gcloud._helpers import _total_seconds
 from gcloud.bigtable._generated import (
     table_pb2 as table_v2_pb2)
 from gcloud.bigtable._generated import (
@@ -40,7 +39,7 @@ def _timedelta_to_duration_pb(timedelta_val):
     :rtype: :class:`google.protobuf.duration_pb2.Duration`
     :returns: A duration object equivalent to the time delta.
     """
-    seconds_decimal = _total_seconds(timedelta_val)
+    seconds_decimal = timedelta_val.total_seconds()
     # Truncate the parts other than the integer.
     seconds = int(seconds_decimal)
     if seconds_decimal < 0:
