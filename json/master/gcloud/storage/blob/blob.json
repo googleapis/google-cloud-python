@@ -46,21 +46,21 @@
       "name": "download_as_string", 
       "params": [
         {
-          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
-          "name": "encryption_key", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str or bytes"
-          ]
-        }, 
-        {
           "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " Optional 32 byte encryption key for customer-supplied encryption.", 
+          "name": "encryption_key", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or bytes"
           ]
         }
       ], 
@@ -127,17 +127,8 @@
       "name": "generate_signed_url", 
       "params": [
         {
-          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
-          "name": "response_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " The HTTP verb that will be used when requesting the URL.", 
-          "name": "method", 
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -147,24 +138,6 @@
         {
           "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
           "name": "response_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -196,6 +169,33 @@
           "optional": null, 
           "types": [
             "int, long, datetime.datetime, datetime.timedelta"
+          ]
+        }, 
+        {
+          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
+          "name": "response_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " The HTTP verb that will be used when requesting the URL.", 
+          "name": "method", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

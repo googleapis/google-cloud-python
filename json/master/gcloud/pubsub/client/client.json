@@ -64,15 +64,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -97,6 +88,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -187,21 +187,21 @@
       "name": "topic", 
       "params": [
         {
-          "description": " To be passed to <code>Topic</code> constructor.", 
-          "name": "timestamp_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " the name of the topic to be constructed.", 
           "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " To be passed to <code>Topic</code> constructor.", 
+          "name": "timestamp_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
