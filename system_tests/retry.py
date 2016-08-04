@@ -37,7 +37,7 @@ class RetryErrors(RetryBase):
 
     :type exception: Exception or tuple of Exceptions
     :param exception: The exception to check or may be a tuple of
-                        exceptions to check.
+                      exceptions to check.
 
     :type error_predicate: function, takes caught exception, returns bool
     :param error_predicate: Predicate evaluating whether to retry after a
