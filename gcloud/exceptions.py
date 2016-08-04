@@ -36,8 +36,7 @@ class GCloudError(Exception):
     """
 
     def __init__(self, message, errors=()):
-        super(GCloudError, self).__init__()
-        # suppress deprecation warning under 2.6.x
+        super(GCloudError, self).__init__(message)
         self.message = message
         self._errors = errors
 

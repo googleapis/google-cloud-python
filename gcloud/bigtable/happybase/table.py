@@ -23,7 +23,6 @@ import six
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud._helpers import _microseconds_from_datetime
 from gcloud._helpers import _to_bytes
-from gcloud._helpers import _total_seconds
 from gcloud.bigtable.column_family import GCRuleIntersection
 from gcloud.bigtable.column_family import MaxAgeGCRule
 from gcloud.bigtable.column_family import MaxVersionsGCRule
@@ -653,7 +652,7 @@ def _gc_rule_to_dict(gc_rule):
     if gc_rule is None:
         result = {}
     elif isinstance(gc_rule, MaxAgeGCRule):
-        result = {'time_to_live': _total_seconds(gc_rule.max_age)}
+        result = {'time_to_live': gc_rule.max_age.total_seconds()}
     elif isinstance(gc_rule, MaxVersionsGCRule):
         result = {'max_versions': gc_rule.max_num_versions}
     elif isinstance(gc_rule, GCRuleIntersection):

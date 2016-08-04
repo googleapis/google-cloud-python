@@ -171,11 +171,10 @@ class Client(object):
         if http_context:
             http_context_dict = http_context.__dict__
             # strip out None values
-            # once py26 support is dropped this can use dict comprehension
-            payload['context']['httpContext'] = dict(
-                (k, v) for (k, v) in six.iteritems(http_context_dict)
-                if v is not None
-            )
+            payload['context']['httpContext'] = {
+                key: value for key, value in six.iteritems(http_context_dict)
+                if value is not None
+            }
 
         if user:
             payload['context']['user'] = user
