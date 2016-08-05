@@ -231,7 +231,7 @@ class Table(object):
         return self._properties.get('type')
 
     @property
-    def partitioningType(self):
+    def partitioning_type(self):
         """Time partitioning of the table.
         :rtype: str, or ``NoneType``
         :returns: Returns type if the table is partitioned, None otherwise.
@@ -241,8 +241,8 @@ class Table(object):
             partitioned = self._properties.get('timePartitioning').get('type')
         return partitioned
 
-    @partitioningType.setter
-    def partitioningType(self, value):
+    @partitioning_type.setter
+    def partitioning_type(self, value):
         """Update the partitioning type of the table
 
         :type value: str
@@ -257,19 +257,19 @@ class Table(object):
             self._properties['timePartitioning']['type'] = value.upper()
 
     @property
-    def partitionExpiration(self):
+    def partition_expiration(self):
         """Expiration time in ms for a partition
         :rtype: int, or ``NoneType``
         :returns: Returns the time in ms for partition expiration
         """
         expiry = None
         if "timePartitioning" in self._properties:
-            tp = self._properties.get("timePartitioning")
-            expiry = tp.get("expirationMs")
+            time_part = self._properties.get("timePartitioning")
+            expiry = time_part.get("expirationMs")
         return expiry
 
-    @partitionExpiration.setter
-    def partitionExpiration(self, value):
+    @partition_expiration.setter
+    def partition_expiration(self, value):
         """Update the experation time in ms for a partition
 
         :type value: int
@@ -476,7 +476,7 @@ class Table(object):
         if self.location is not None:
             resource['location'] = self.location
 
-        if self.partitioningType is not None:
+        if self.partitioning_type is not None:
             resource['timePartitioning'] = self._properties['timePartitioning']
 
         if self.view_query is not None:
