@@ -236,10 +236,7 @@ class Table(object):
         :rtype: str, or ``NoneType``
         :returns: Returns type if the table is partitioned, None otherwise.
         """
-        partitioned = None
-        if "timePartitioning" in self._properties:
-            partitioned = self._properties.get('timePartitioning').get('type')
-        return partitioned
+        return self._properties.get('timePartitioning', {}).get('type')
 
     @partitioning_type.setter
     def partitioning_type(self, value):
@@ -248,12 +245,12 @@ class Table(object):
         :type value: str
         :param value: partitioning type only "DAY" is currently supported
         """
-        if not isinstance(value, six.string_types) or value.upper() != "DAY":
-            raise ValueError("value must be one of ['DAY']")
-        try:
-            self._properties['timePartitioning']['type'] = value.upper()
-        except KeyError:
-            self._properties['timePartitioning'] = {}
+        if not (isinstance(value, six.string_types)
+                and value.upper() == "DAY") and value is not None:
+            raise ValueError("value must be one of ['DAY', None]")
+
+        self._properties.setdefault('timePartitioning', {})
+        if value is not None:
             self._properties['timePartitioning']['type'] = value.upper()
 
     @property
@@ -400,6 +397,22 @@ class Table(object):
     def view_query(self):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
+
+    def list_partitions(self, client=None):
+        """List the partitions in a table.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: list
+        :returns: a list of time partitions
+        """
+        query = self._require_client(client).run_sync_query(
+            'SELECT partition_id from [%s.%s$__PARTITIONS_SUMMARY__]' %
+            (self.dataset_name, self.name))
+        query.run()
+        return [row[0] for row in query.rows]
 
     @classmethod
     def from_api_repr(cls, resource, dataset):

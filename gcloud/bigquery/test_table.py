@@ -592,7 +592,21 @@ class TestTable(unittest2.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_create_w_bad_partitions(self):
+    def test_partition_type_setter_none_type(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partitioning_type, None)
+        table.partitioning_type = None
+        self.assertEqual(table.partitioning_type, None)
+
+    def test_partition_type_setter_bad_type(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -604,10 +618,59 @@ class TestTable(unittest2.TestCase, _SchemaBase):
                               schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = 123
+
+    def test_partition_type_setter_unknown_value(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
+
+    def test_partition_experiation_bad_type(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
+
+    def test_partition_expiration(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partition_expiration, None)
+        table.partition_expiration = 100
+        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partition_expiration, 100)
+
+    def test_list_partitions(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.list_partitions(), [20160804, 20160805])
 
     def test_create_w_alternate_client(self):
         import datetime
@@ -1753,6 +1816,18 @@ class _Client(object):
 
     def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job
+
+    def run_sync_query(self, q=None):  # pylint: disable=unused-argument
+        return _Query(self)
+
+
+class _Query(object):
+
+    def __init__(self, client=None):  # pylint: disable=unused-argument
+        self.rows = []
+
+    def run(self):
+        self.rows = [(20160804, None), (20160805, None)]
 
 
 class _Dataset(object):
