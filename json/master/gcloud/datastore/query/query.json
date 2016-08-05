@@ -30,15 +30,6 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
-          ]
-        }, 
-        {
           "description": " An optional cursor passed through to the iterator.", 
           "name": "end_cursor", 
           "nullable": null, 
@@ -48,12 +39,12 @@
           ]
         }, 
         {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
+          "description": " client used to connect to datastore. If not supplied, uses the query's value.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "<a data-custom-type=\"gcloud/datastore/client/client\">gcloud.datastore.client.Client</a>"
           ]
         }, 
         {
@@ -63,6 +54,15 @@
           "optional": null, 
           "types": [
             "integer or None"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {

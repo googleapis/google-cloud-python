@@ -30,21 +30,12 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or None"
-          ]
-        }, 
-        {
-          "description": " keyword arguments: passed through to _Transfer.__init__().", 
-          "name": "kwds", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
+            "string"
           ]
         }, 
         {
@@ -57,12 +48,21 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " keyword arguments: passed through to _Transfer.__init__().", 
+          "name": "kwds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "dict"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or None"
           ]
         }
       ], 
@@ -83,12 +83,12 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean or None"
+            "string"
           ]
         }, 
         {
@@ -101,15 +101,6 @@
           ]
         }, 
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
           "description": " the target file", 
           "name": "stream", 
           "nullable": null, 
@@ -119,12 +110,21 @@
           ]
         }, 
         {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "boolean or None"
+          ]
+        }, 
+        {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
           ]
         }
       ], 
