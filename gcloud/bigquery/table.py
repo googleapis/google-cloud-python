@@ -245,13 +245,14 @@ class Table(object):
         :type value: str
         :param value: partitioning type only "DAY" is currently supported
         """
-        if not (isinstance(value, six.string_types)
-                and value.upper() == "DAY") and value is not None:
+        if value not in ['DAY', None]:
             raise ValueError("value must be one of ['DAY', None]")
 
-        self._properties.setdefault('timePartitioning', {})
-        if value is not None:
-            self._properties['timePartitioning']['type'] = value.upper()
+        if value is None:
+            self._properties.pop('timePartitioning', None)
+        else:
+            time_part = self._properties.setdefault('timePartitioning', {})
+            time_part['type'] = value.upper()
 
     @property
     def partition_expiration(self):
@@ -259,11 +260,7 @@ class Table(object):
         :rtype: int, or ``NoneType``
         :returns: Returns the time in ms for partition expiration
         """
-        expiry = None
-        if "timePartitioning" in self._properties:
-            time_part = self._properties.get("timePartitioning")
-            expiry = time_part.get("expirationMs")
-        return expiry
+        return self._properties.get('timePartitioning', {}).get('expirationMs')
 
     @partition_expiration.setter
     def partition_expiration(self, value):
@@ -272,13 +269,19 @@ class Table(object):
         :type value: int
         :param value: partition experiation time in ms
         """
-        if not isinstance(value, int):
-            raise ValueError("must be an integer representing millisseconds")
-        try:
-            self._properties["timePartitioning"]["expirationMs"] = value
-        except KeyError:
-            self._properties['timePartitioning'] = {'type': "DAY"}
-            self._properties["timePartitioning"]["expirationMs"] = value
+        if not isinstance(value, (int, type(None))):
+            raise ValueError(
+                "must be an integer representing millisseconds or None")
+
+        if value is None:
+            if 'timePartitioning' in self._properties:
+                self._properties['timePartitioning'].pop('expirationMs')
+        else:
+            try:
+                self._properties["timePartitioning"]["expirationMs"] = value
+            except KeyError:
+                self._properties['timePartitioning'] = {'type': "DAY"}
+                self._properties["timePartitioning"]["expirationMs"] = value
 
     @property
     def description(self):

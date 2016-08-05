@@ -592,20 +592,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_partition_type_setter_none_type(self):
-        from gcloud.bigquery.table import SchemaField
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = _Dataset(client)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
-        self.assertEqual(table.partitioning_type, None)
-        table.partitioning_type = None
-        self.assertEqual(table.partitioning_type, None)
-
     def test_partition_type_setter_bad_type(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
@@ -632,7 +618,36 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
 
-    def test_partition_experiation_bad_type(self):
+    def test_partition_type_setter_w_known_value(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partitioning_type, None)
+        table.partitioning_type = 'DAY'
+        self.assertEqual(table.partitioning_type, 'DAY')
+
+    def test_partition_type_setter_w_none(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        table._properties['timePartitioning'] = {'type': 'DAY'}
+        table.partitioning_type = None
+        self.assertEqual(table.partitioning_type, None)
+        self.assertFalse('timePartitioning' in table._properties)
+
+    def test_partition_experation_bad_type(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -645,7 +660,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
 
-    def test_partition_expiration(self):
+    def test_partition_expiration_w_integer(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -660,11 +675,45 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
 
-    def test_list_partitions(self):
+    def test_partition_expiration_w_none(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partition_expiration, None)
+        table._properties['timePartitioning'] = {
+            'type': 'DAY',
+            'expirationMs': 100,
+        }
+        table.partition_expiration = None
+        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partition_expiration, None)
+
+    def test_partition_expiration_w_none_no_partition_set(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partition_expiration, None)
+        table.partition_expiration = None
+        self.assertEqual(table.partitioning_type, None)
+        self.assertEqual(table.partition_expiration, None)
+
+    def test_list_partitions(self):
+        from gcloud.bigquery.table import SchemaField
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        client._query_results = [(20160804, None), (20160805, None)]
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -1810,6 +1859,8 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
 class _Client(object):
 
+    _query_results = ()
+
     def __init__(self, project='project', connection=None):
         self.project = project
         self.connection = connection
@@ -1817,17 +1868,19 @@ class _Client(object):
     def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job
 
-    def run_sync_query(self, q=None):  # pylint: disable=unused-argument
-        return _Query(self)
+    def run_sync_query(self, query):
+        return _Query(query, self)
 
 
 class _Query(object):
 
-    def __init__(self, client=None):  # pylint: disable=unused-argument
+    def __init__(self, query, client):
+        self.query = query
         self.rows = []
+        self.client = client
 
     def run(self):
-        self.rows = [(20160804, None), (20160805, None)]
+        self.rows = self.client._query_results
 
 
 class _Dataset(object):
