@@ -73,7 +73,7 @@ class TestQueryResults(unittest.TestCase):
         return resource
 
     def _verifySchema(self, query, resource):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         if 'schema' in resource:
             fields = resource['schema']['fields']
             self.assertEqual(len(query.schema), len(fields))

@@ -28,47 +28,11 @@ from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.transfer import RESUMABLE_UPLOAD
 from gcloud.streaming.transfer import Upload
+from gcloud.bigquery.schema import SchemaField
 from gcloud.bigquery._helpers import _rows_from_json
 
 
 _MARKER = object()
-
-
-class SchemaField(object):
-    """Describe a single field within a table schema.
-
-    :type name: str
-    :param name: the name of the field
-
-    :type field_type: str
-    :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD')
-
-    :type mode: str
-    :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
-                 or 'REPEATED')
-
-    :type description: str
-    :param description: optional description for the field
-
-    :type fields: list of :class:`SchemaField`, or None
-    :param fields: subfields (requires ``field_type`` of 'RECORD').
-    """
-    def __init__(self, name, field_type, mode='NULLABLE', description=None,
-                 fields=None):
-        self.name = name
-        self.field_type = field_type
-        self.mode = mode
-        self.description = description
-        self.fields = fields
-
-    def __eq__(self, other):
-        return (
-            self.name == other.name and
-            self.field_type.lower() == other.field_type.lower() and
-            self.mode == other.mode and
-            self.description == other.description and
-            self.fields == other.fields)
 
 
 class Table(object):
