@@ -27,6 +27,7 @@ from gcloud import storage
 from gcloud.storage._helpers import _base64_md5hash
 
 from system_test_utils import unique_resource_id
+from retry import RetryErrors
 
 
 HTTP = httplib2.Http()
@@ -52,7 +53,8 @@ def setUpModule():
 
 
 def tearDownModule():
-    Config.TEST_BUCKET.delete(force=True)
+    retry = RetryErrors(exceptions.Conflict)
+    retry(Config.TEST_BUCKET.delete)(force=True)
 
 
 class TestStorageBuckets(unittest.TestCase):
@@ -253,7 +255,10 @@ class TestStoragePseudoHierarchy(TestStorageFiles):
         super(TestStoragePseudoHierarchy, cls).setUpClass()
         # Make sure bucket empty before beginning.
         for blob in cls.bucket.list_blobs():
-            blob.delete()
+            try:
+                blob.delete()
+            except exceptions.NotFound:  # eventual consistency
+                pass
 
         simple_path = cls.FILES['simple']['path']
         blob = storage.Blob(cls.FILENAMES[0], bucket=cls.bucket)
