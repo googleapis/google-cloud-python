@@ -151,6 +151,13 @@
 .. toctree::
   :maxdepth: 0
   :hidden:
+  :caption: Natural Language
+
+  language-usage
+
+.. toctree::
+  :maxdepth: 0
+  :hidden:
   :caption: External Links
 
   GitHub <https://github.com/GoogleCloudPlatform/gcloud-python/>
