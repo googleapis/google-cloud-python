@@ -209,7 +209,7 @@ class Table(object):
         :type value: str
         :param value: partitioning type only "DAY" is currently supported
         """
-        if value not in ['DAY', None]:
+        if value not in ('DAY', None):
             raise ValueError("value must be one of ['DAY', None]")
 
         if value is None:
@@ -242,10 +242,10 @@ class Table(object):
                 self._properties['timePartitioning'].pop('expirationMs')
         else:
             try:
-                self._properties["timePartitioning"]["expirationMs"] = value
+                self._properties['timePartitioning']['expirationMs'] = value
             except KeyError:
-                self._properties['timePartitioning'] = {'type': "DAY"}
-                self._properties["timePartitioning"]["expirationMs"] = value
+                self._properties['timePartitioning'] = {'type': 'DAY'}
+                self._properties['timePartitioning']['expirationMs'] = value
 
     @property
     def description(self):
