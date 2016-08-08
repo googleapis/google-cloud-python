@@ -309,13 +309,14 @@ class TestClient(unittest.TestCase):
             make_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, _make_stub=mock_make_stub):
+        with _Monkey(MUT, make_stub=mock_make_stub):
             result = client._make_data_stub()
 
         self.assertTrue(result is fake_stub)
         self.assertEqual(make_stub_args, [
             (
-                client,
+                client.credentials,
+                client.user_agent,
                 DATA_STUB_FACTORY_V2,
                 DATA_API_HOST_V2,
                 DATA_API_PORT_V2,
@@ -340,13 +341,14 @@ class TestClient(unittest.TestCase):
             make_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, _make_stub=mock_make_stub):
+        with _Monkey(MUT, make_stub=mock_make_stub):
             result = client._make_instance_stub()
 
         self.assertTrue(result is fake_stub)
         self.assertEqual(make_stub_args, [
             (
-                client,
+                client.credentials,
+                client.user_agent,
                 INSTANCE_STUB_FACTORY_V2,
                 INSTANCE_ADMIN_HOST_V2,
                 INSTANCE_ADMIN_PORT_V2,
@@ -371,13 +373,14 @@ class TestClient(unittest.TestCase):
             make_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, _make_stub=mock_make_stub):
+        with _Monkey(MUT, make_stub=mock_make_stub):
             result = client._make_operations_stub()
 
         self.assertTrue(result is fake_stub)
         self.assertEqual(make_stub_args, [
             (
-                client,
+                client.credentials,
+                client.user_agent,
                 OPERATIONS_STUB_FACTORY_V2,
                 OPERATIONS_API_HOST_V2,
                 OPERATIONS_API_PORT_V2,
@@ -402,13 +405,14 @@ class TestClient(unittest.TestCase):
             make_stub_args.append(args)
             return fake_stub
 
-        with _Monkey(MUT, _make_stub=mock_make_stub):
+        with _Monkey(MUT, make_stub=mock_make_stub):
             result = client._make_table_stub()
 
         self.assertTrue(result is fake_stub)
         self.assertEqual(make_stub_args, [
             (
-                client,
+                client.credentials,
+                client.user_agent,
                 TABLE_STUB_FACTORY_V2,
                 TABLE_ADMIN_HOST_V2,
                 TABLE_ADMIN_PORT_V2,
@@ -443,7 +447,7 @@ class TestClient(unittest.TestCase):
             make_stub_args.append(args)
             return stub
 
-        with _Monkey(MUT, _make_stub=mock_make_stub):
+        with _Monkey(MUT, make_stub=mock_make_stub):
             client.start()
 
         self.assertTrue(client._data_stub_internal is stub)
@@ -636,131 +640,6 @@ class TestClient(unittest.TestCase):
         )])
 
 
-class Test_MetadataPlugin(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.bigtable.client import _MetadataPlugin
-        return _MetadataPlugin
-
-    def _makeOne(self, *args, **kwargs):
-        return self._getTargetClass()(*args, **kwargs)
-
-    def test_constructor(self):
-        from gcloud.bigtable.client import Client
-        from gcloud.bigtable.client import DATA_SCOPE
-        PROJECT = 'PROJECT'
-        USER_AGENT = 'USER_AGENT'
-
-        credentials = _Credentials()
-        client = Client(project=PROJECT, credentials=credentials,
-                        user_agent=USER_AGENT)
-        transformer = self._makeOne(client)
-        self.assertTrue(transformer._credentials is credentials)
-        self.assertEqual(transformer._user_agent, USER_AGENT)
-        self.assertEqual(credentials.scopes, [DATA_SCOPE])
-
-    def test___call__(self):
-        from gcloud.bigtable.client import Client
-        from gcloud.bigtable.client import DATA_SCOPE
-        from gcloud.bigtable.client import DEFAULT_USER_AGENT
-
-        access_token_expected = 'FOOBARBAZ'
-        credentials = _Credentials(access_token=access_token_expected)
-        project = 'PROJECT'
-        client = Client(project=project, credentials=credentials)
-        callback_args = []
-
-        def callback(*args):
-            callback_args.append(args)
-
-        transformer = self._makeOne(client)
-        result = transformer(None, callback)
-        cb_headers = [
-            ('Authorization', 'Bearer ' + access_token_expected),
-            ('User-agent', DEFAULT_USER_AGENT),
-        ]
-        self.assertEqual(result, None)
-        self.assertEqual(callback_args, [(cb_headers, None)])
-        self.assertEqual(credentials.scopes, [DATA_SCOPE])
-        self.assertEqual(len(credentials._tokens), 1)
-
-
-class Test__make_stub(unittest.TestCase):
-
-    def _callFUT(self, *args, **kwargs):
-        from gcloud.bigtable.client import _make_stub
-        return _make_stub(*args, **kwargs)
-
-    def test_it(self):
-        from gcloud._testing import _Monkey
-        from gcloud.bigtable import client as MUT
-
-        mock_result = object()
-        stub_inputs = []
-
-        SSL_CREDS = object()
-        METADATA_CREDS = object()
-        COMPOSITE_CREDS = object()
-        CHANNEL = object()
-
-        class _ImplementationsModule(object):
-
-            def __init__(self):
-                self.ssl_channel_credentials_args = None
-                self.metadata_call_credentials_args = None
-                self.composite_channel_credentials_args = None
-                self.secure_channel_args = None
-
-            def ssl_channel_credentials(self, *args):
-                self.ssl_channel_credentials_args = args
-                return SSL_CREDS
-
-            def metadata_call_credentials(self, *args, **kwargs):
-                self.metadata_call_credentials_args = (args, kwargs)
-                return METADATA_CREDS
-
-            def composite_channel_credentials(self, *args):
-                self.composite_channel_credentials_args = args
-                return COMPOSITE_CREDS
-
-            def secure_channel(self, *args):
-                self.secure_channel_args = args
-                return CHANNEL
-
-        implementations_mod = _ImplementationsModule()
-
-        def mock_stub_factory(channel):
-            stub_inputs.append(channel)
-            return mock_result
-
-        metadata_plugin = object()
-        clients = []
-
-        def mock_plugin(client):
-            clients.append(client)
-            return metadata_plugin
-
-        host = 'HOST'
-        port = 1025
-        client = object()
-        with _Monkey(MUT, implementations=implementations_mod,
-                     _MetadataPlugin=mock_plugin):
-            result = self._callFUT(client, mock_stub_factory, host, port)
-
-        self.assertTrue(result is mock_result)
-        self.assertEqual(stub_inputs, [CHANNEL])
-        self.assertEqual(clients, [client])
-        self.assertEqual(implementations_mod.ssl_channel_credentials_args,
-                         (None, None, None))
-        self.assertEqual(implementations_mod.metadata_call_credentials_args,
-                         ((metadata_plugin,), {'name': 'google_creds'}))
-        self.assertEqual(
-            implementations_mod.composite_channel_credentials_args,
-            (SSL_CREDS, METADATA_CREDS))
-        self.assertEqual(implementations_mod.secure_channel_args,
-                         (host, port, COMPOSITE_CREDS))
-
-
 class _Credentials(object):
 
     scopes = None
@@ -768,13 +647,6 @@ class _Credentials(object):
     def __init__(self, access_token=None):
         self._access_token = access_token
         self._tokens = []
-
-    def get_access_token(self):
-        from oauth2client.client import AccessTokenInfo
-        token = AccessTokenInfo(access_token=self._access_token,
-                                expires_in=None)
-        self._tokens.append(token)
-        return token
 
     def create_scoped(self, scope):
         self.scopes = scope

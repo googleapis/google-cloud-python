@@ -29,7 +29,7 @@ In the hierarchy of API concepts
 
 from pkg_resources import get_distribution
 
-from grpc.beta import implementations
+from gcloud._helpers import make_stub
 
 from gcloud.bigtable._generated import (
     bigtable_instance_admin_pb2 as instance_admin_v2_pb2)
@@ -284,8 +284,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, DATA_STUB_FACTORY_V2,
-                          DATA_API_HOST_V2, DATA_API_PORT_V2)
+        return make_stub(self.credentials, self.user_agent,
+                         DATA_STUB_FACTORY_V2, DATA_API_HOST_V2,
+                         DATA_API_PORT_V2)
 
     def _make_instance_stub(self):
         """Creates gRPC stub to make requests to the Instance Admin API.
@@ -293,8 +294,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, INSTANCE_STUB_FACTORY_V2,
-                          INSTANCE_ADMIN_HOST_V2, INSTANCE_ADMIN_PORT_V2)
+        return make_stub(self.credentials, self.user_agent,
+                         INSTANCE_STUB_FACTORY_V2, INSTANCE_ADMIN_HOST_V2,
+                         INSTANCE_ADMIN_PORT_V2)
 
     def _make_operations_stub(self):
         """Creates gRPC stub to make requests to the Operations API.
@@ -305,8 +307,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, OPERATIONS_STUB_FACTORY_V2,
-                          OPERATIONS_API_HOST_V2, OPERATIONS_API_PORT_V2)
+        return make_stub(self.credentials, self.user_agent,
+                         OPERATIONS_STUB_FACTORY_V2, OPERATIONS_API_HOST_V2,
+                         OPERATIONS_API_PORT_V2)
 
     def _make_table_stub(self):
         """Creates gRPC stub to make requests to the Table Admin API.
@@ -314,8 +317,9 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         :rtype: :class:`grpc.beta._stub._AutoIntermediary`
         :returns: A gRPC stub object.
         """
-        return _make_stub(self, TABLE_STUB_FACTORY_V2,
-                          TABLE_ADMIN_HOST_V2, TABLE_ADMIN_PORT_V2)
+        return make_stub(self.credentials, self.user_agent,
+                         TABLE_STUB_FACTORY_V2, TABLE_ADMIN_HOST_V2,
+                         TABLE_ADMIN_PORT_V2)
 
     def is_started(self):
         """Check if the client has been started.
@@ -422,59 +426,3 @@ class Client(_ClientFactoryMixin, _ClientProjectMixin):
         instances = [Instance.from_pb(instance_pb, self)
                      for instance_pb in response.instances]
         return instances, response.failed_locations
-
-
-class _MetadataPlugin(object):
-    """Callable class to transform metadata for gRPC requests.
-
-    :type client: :class:`.client.Client`
-    :param client: The client that owns the instance.
-                   Provides authorization and user agent.
-    """
-
-    def __init__(self, client):
-        self._credentials = client.credentials
-        self._user_agent = client.user_agent
-
-    def __call__(self, unused_context, callback):
-        """Adds authorization header to request metadata."""
-        access_token = self._credentials.get_access_token().access_token
-        headers = [
-            ('Authorization', 'Bearer ' + access_token),
-            ('User-agent', self._user_agent),
-        ]
-        callback(headers, None)
-
-
-def _make_stub(client, stub_factory, host, port):
-    """Makes a stub for an RPC service.
-
-    Uses / depends on the beta implementation of gRPC.
-
-    :type client: :class:`.client.Client`
-    :param client: The client that owns the instance.
-                   Provides authorization and user agent.
-
-    :type stub_factory: callable
-    :param stub_factory: A factory which will create a gRPC stub for
-                         a given service.
-
-    :type host: str
-    :param host: The host for the service.
-
-    :type port: int
-    :param port: The port for the service.
-
-    :rtype: :class:`grpc.beta._stub._AutoIntermediary`
-    :returns: The stub object used to make gRPC requests to a given API.
-    """
-    # Leaving the first argument to ssl_channel_credentials() as None
-    # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
-    transport_creds = implementations.ssl_channel_credentials(None, None, None)
-    custom_metadata_plugin = _MetadataPlugin(client)
-    auth_creds = implementations.metadata_call_credentials(
-        custom_metadata_plugin, name='google_creds')
-    channel_creds = implementations.composite_channel_credentials(
-        transport_creds, auth_creds)
-    channel = implementations.secure_channel(host, port, channel_creds)
-    return stub_factory(channel)
