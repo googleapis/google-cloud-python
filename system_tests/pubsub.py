@@ -267,7 +267,7 @@ class TestPubsub(unittest.TestCase):
         def _no_topic(instance):
             return instance.topic is None
 
-        retry = RetryInstanceState(_no_topic)
+        retry = RetryInstanceState(_no_topic, max_tries=6)
         retry(orphaned.reload)()
 
         self.assertTrue(orphaned.topic is None)
