@@ -10,7 +10,7 @@
       "name": "__init__", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L126", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L127", 
       "type": "instance"
     }, 
     {
@@ -26,7 +26,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L134", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/bigtable/column_family.py/gcloud/bigtable/column_family.py#L135", 
       "type": "instance"
     }
   ], 

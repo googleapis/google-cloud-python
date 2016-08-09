@@ -20,7 +20,7 @@
       "name": "report", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/error_reporting/client.py/gcloud/error_reporting/client.py#L185", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/error_reporting/client.py/gcloud/error_reporting/client.py#L186", 
       "type": "instance"
     }, 
     {
@@ -30,7 +30,7 @@
       "name": "report_exception", 
       "params": [], 
       "returns": [], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/error_reporting/client.py/gcloud/error_reporting/client.py#L225", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/error_reporting/client.py/gcloud/error_reporting/client.py#L226", 
       "type": "instance"
     }
   ], 

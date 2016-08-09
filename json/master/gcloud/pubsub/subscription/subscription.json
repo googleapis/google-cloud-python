@@ -31,11 +31,11 @@
       "params": [
         {
           "description": " passed through to Subscription.pull", 
-          "name": "max_messages", 
+          "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "boolean"
           ]
         }, 
         {
@@ -49,11 +49,11 @@
         }, 
         {
           "description": " passed through to Subscription.pull", 
-          "name": "return_immediately", 
+          "name": "max_messages", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "int"
           ]
         }
       ], 
@@ -155,15 +155,6 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " topic resource representation returned from the API", 
-          "name": "resource", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Client which holds credentials and project configuration for a topic.", 
           "name": "client", 
           "nullable": null, 
@@ -179,6 +170,15 @@
           "optional": null, 
           "types": [
             "dict or None"
+          ]
+        }, 
+        {
+          "description": " topic resource representation returned from the API", 
+          "name": "resource", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -245,12 +245,12 @@
       "name": "pull", 
       "params": [
         {
-          "description": " the maximum number of messages to return.", 
-          "name": "max_messages", 
+          "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
+          "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "int"
+            "boolean"
           ]
         }, 
         {
@@ -263,12 +263,12 @@
           ]
         }, 
         {
-          "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
-          "name": "return_immediately", 
+          "description": " the maximum number of messages to return.", 
+          "name": "max_messages", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "int"
           ]
         }
       ], 
