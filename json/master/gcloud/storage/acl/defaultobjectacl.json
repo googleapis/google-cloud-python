@@ -98,8 +98,8 @@
       "name": "entity", 
       "params": [
         {
-          "description": " The ID of the entity (if applicable). This can be either an ID or an e-mail address.", 
-          "name": "identifier", 
+          "description": " The type of entity to create (ie, user, group, etc)", 
+          "name": "entity_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -107,8 +107,8 @@
           ]
         }, 
         {
-          "description": " The type of entity to create (ie, user, group, etc)", 
-          "name": "entity_type", 
+          "description": " The ID of the entity (if applicable). This can be either an ID or an e-mail address.", 
+          "name": "identifier", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -175,21 +175,21 @@
       "name": "get_entity", 
       "params": [
         {
-          "description": " The entity to get lookup in the ACL.", 
-          "name": "entity", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "_ACLEntity or string"
-          ]
-        }, 
-        {
           "description": " This value will be returned if the entity doesn't exist.", 
           "name": "default", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "anything"
+          ]
+        }, 
+        {
+          "description": " The entity to get lookup in the ACL.", 
+          "name": "entity", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "_ACLEntity or string"
           ]
         }
       ], 
