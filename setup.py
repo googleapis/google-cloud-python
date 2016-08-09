@@ -21,11 +21,11 @@ REQUIREMENTS = [
 
 GRPC_EXTRAS = [
     'grpcio >= 1.0rc1',
-    'google-gax >= 0.12.3, < 0.13dev',
-    'gax-google-pubsub-v1 >= 0.7.12, < 0.8dev',
-    'grpc-google-pubsub-v1 >= 0.7.12, < 0.8dev',
-    'gax-google-logging-v2 >= 0.7.12, < 0.8dev',
-    'grpc-google-logging-v2 >= 0.7.12, < 0.8dev',
+    'google-gax >= 0.12.3',
+    'gax-google-pubsub-v1 >= 0.8.0',
+    'grpc-google-pubsub-v1 >= 0.8.0',
+    'gax-google-logging-v2 >= 0.8.0',
+    'grpc-google-logging-v2 >= 0.8.0',
 ]
 
 if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
@@ -33,7 +33,7 @@ if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
 
 setup(
     name='gcloud',
-    version='0.18.0',
+    version='0.18.1',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',

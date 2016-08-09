@@ -26,9 +26,9 @@ from gcloud.pubsub.topic import Topic
 
 # pylint: disable=ungrouped-imports
 try:
-    from google.pubsub.v1.publisher_api import (
+    from google.cloud.pubsub.v1.publisher_api import (
         PublisherApi as GeneratedPublisherAPI)
-    from google.pubsub.v1.subscriber_api import (
+    from google.cloud.pubsub.v1.subscriber_api import (
         SubscriberApi as GeneratedSubscriberAPI)
     from gcloud.pubsub._gax import _PublisherAPI as GAXPublisherAPI
     from gcloud.pubsub._gax import _SubscriberAPI as GAXSubscriberAPI
