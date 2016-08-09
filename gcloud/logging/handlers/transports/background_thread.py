@@ -59,6 +59,10 @@ class _Worker(object):
 
         self._start()
 
+    @property
+    def alive(self):
+        return self._thread.is_alive()
+
     def _run(self):
         """_run is the entry point for the worker thread. It loops
         until self.stopping is set to true, and commits batch entries
@@ -160,4 +164,6 @@ class BackgroundThreadTransport(Transport):
         :type message: str
         :param message: The formatted log message
         """
+        if not self.worker.alive:
+            self.__init__(self.client, self.worker.logger.name)
         self.worker.enqueue(record, message)
