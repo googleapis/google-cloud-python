@@ -14,9 +14,9 @@
 
 import datetime
 import os
+import unittest
 
 import httplib2
-import unittest2
 
 from gcloud import _helpers
 from gcloud._helpers import UTC
@@ -66,7 +66,7 @@ def setUpModule():
                                          http=http)
 
 
-class TestDatastore(unittest2.TestCase):
+class TestDatastore(unittest.TestCase):
 
     def setUp(self):
         self.case_entities_to_delete = []

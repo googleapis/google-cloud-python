@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_ConfigurationProperty(unittest2.TestCase):
+class Test_ConfigurationProperty(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery._helpers import _ConfigurationProperty
@@ -50,7 +50,7 @@ class Test_ConfigurationProperty(unittest2.TestCase):
         self.assertEqual(wrapper._configuration._attr, None)
 
 
-class Test_TypedProperty(unittest2.TestCase):
+class Test_TypedProperty(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery._helpers import _TypedProperty
@@ -83,7 +83,7 @@ class Test_TypedProperty(unittest2.TestCase):
         self.assertEqual(wrapper._configuration._attr, None)
 
 
-class Test_EnumProperty(unittest2.TestCase):
+class Test_EnumProperty(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery._helpers import _EnumProperty

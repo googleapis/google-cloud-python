@@ -22,7 +22,6 @@ import json
 import os
 import re
 import socket
-import sys
 from threading import local as Local
 
 from google.protobuf import timestamp_pb2
@@ -336,36 +335,6 @@ def _millis_from_datetime(value):
         return _millis(value)
 
 
-def _total_seconds_backport(offset):
-    """Backport of timedelta.total_seconds() from python 2.7+.
-
-    :type offset: :class:`datetime.timedelta`
-    :param offset: A timedelta object.
-
-    :rtype: int
-    :returns: The total seconds (including microseconds) in the
-              duration.
-    """
-    seconds = offset.days * 24 * 60 * 60 + offset.seconds
-    return seconds + offset.microseconds * 1e-6
-
-
-def _total_seconds(offset):
-    """Version independent total seconds for a time delta.
-
-    :type offset: :class:`datetime.timedelta`
-    :param offset: A timedelta object.
-
-    :rtype: int
-    :returns: The total seconds (including microseconds) in the
-              duration.
-    """
-    if sys.version_info[:2] < (2, 7):  # pragma: NO COVER Python 2.6
-        return _total_seconds_backport(offset)
-    else:
-        return offset.total_seconds()
-
-
 def _rfc3339_to_datetime(dt_str):
     """Convert a microsecond-precision timetamp to a native datetime.
 
@@ -409,15 +378,23 @@ def _rfc3339_nanos_to_datetime(dt_str):
     return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
 
-def _datetime_to_rfc3339(value):
-    """Convert a native timestamp to a string.
+def _datetime_to_rfc3339(value, ignore_zone=True):
+    """Convert a timestamp to a string.
 
     :type value: :class:`datetime.datetime`
     :param value: The datetime object to be converted to a string.
 
+    :type ignore_zone: boolean
+    :param ignore_zone: If True, then the timezone (if any) of the datetime
+                        object is ignored.
+
     :rtype: str
     :returns: The string representing the datetime stamp.
     """
+    if not ignore_zone and value.tzinfo is not None:
+        # Convert to UTC and remove the time zone info.
+        value = value.replace(tzinfo=None) - value.utcoffset()
+
     return value.strftime(_RFC3339_MICROS)
 
 

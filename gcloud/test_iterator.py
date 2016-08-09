@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestIterator(unittest2.TestCase):
+class TestIterator(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.iterator import Iterator
@@ -172,7 +172,7 @@ class TestIterator(unittest2.TestCase):
                           iterator.get_items_from_response, object())
 
 
-class TestMethodIterator(unittest2.TestCase):
+class TestMethodIterator(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.iterator import MethodIterator

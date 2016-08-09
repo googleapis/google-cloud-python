@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestTable(unittest2.TestCase):
+class TestTable(unittest.TestCase):
 
     PROJECT_ID = 'project-id'
     INSTANCE_ID = 'instance-id'
@@ -427,7 +427,7 @@ class TestTable(unittest2.TestCase):
         )])
 
 
-class Test__create_row_request(unittest2.TestCase):
+class Test__create_row_request(unittest.TestCase):
 
     def _callFUT(self, table_name, row_key=None, start_key=None, end_key=None,
                  filter_=None, limit=None):

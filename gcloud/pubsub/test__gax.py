@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
 try:
@@ -39,8 +39,8 @@ class _Base(object):
         return self._getTargetClass()(*args, **kw)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_PublisherAPI(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_PublisherAPI(_Base, unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.pubsub._gax import _PublisherAPI
@@ -341,8 +341,8 @@ class Test_PublisherAPI(_Base, unittest2.TestCase):
         self.assertTrue(options.page_token is INITIAL_PAGE)
 
 
-@unittest2.skipUnless(_HAVE_GAX, 'No gax-python')
-class Test_SubscriberAPI(_Base, unittest2.TestCase):
+@unittest.skipUnless(_HAVE_GAX, 'No gax-python')
+class Test_SubscriberAPI(_Base, unittest.TestCase):
 
     PUSH_ENDPOINT = 'https://api.example.com/push'
 

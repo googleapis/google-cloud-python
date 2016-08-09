@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 PROJECT = 'my-project'
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.client import Client
@@ -28,6 +28,7 @@ class TestClient(unittest2.TestCase):
 
     def test_query(self):
         import datetime
+        from gcloud._helpers import _datetime_to_rfc3339
         from gcloud.exceptions import NotFound
 
         START_TIME = datetime.datetime(2016, 4, 6, 22, 5, 0)
@@ -119,8 +120,8 @@ class TestClient(unittest2.TestCase):
             'path': '/projects/{project}/timeSeries/'.format(project=PROJECT),
             'query_params': [
                 ('filter', 'metric.type = "{type}"'.format(type=METRIC_TYPE)),
-                ('interval.endTime', END_TIME.isoformat() + 'Z'),
-                ('interval.startTime', START_TIME.isoformat() + 'Z'),
+                ('interval.endTime', _datetime_to_rfc3339(END_TIME)),
+                ('interval.startTime', _datetime_to_rfc3339(START_TIME)),
             ],
         }
 
@@ -323,6 +324,103 @@ class TestClient(unittest2.TestCase):
         self.assertEqual(descriptor2.name, NAME2)
         self.assertEqual(descriptor2.type, TYPE2)
         self.assertEqual(descriptor2.description, DESCRIPTION2)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + PATH,
+                            'query_params': {}}
+        self.assertEqual(request, expected_request)
+
+    def test_group(self):
+        GROUP_ID = 'GROUP_ID'
+        DISPLAY_NAME = 'My Group'
+        PARENT_ID = 'PARENT_ID'
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        group = client.group(GROUP_ID, display_name=DISPLAY_NAME,
+                             parent_id=PARENT_ID, filter_string=FILTER,
+                             is_cluster=IS_CLUSTER)
+
+        self.assertEqual(group.id, GROUP_ID)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_id, PARENT_ID)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
+    def test_group_defaults(self):
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        group = client.group()
+
+        self.assertIsNone(group.id)
+        self.assertIsNone(group.display_name)
+        self.assertIsNone(group.parent_id)
+        self.assertIsNone(group.filter)
+        self.assertFalse(group.is_cluster)
+
+    def test_fetch_group(self):
+        PATH = 'projects/{project}/groups/'.format(project=PROJECT)
+        GROUP_ID = 'GROUP_ID'
+        GROUP_NAME = PATH + GROUP_ID
+        DISPLAY_NAME = 'My Group'
+        PARENT_ID = 'PARENT_ID'
+        PARENT_NAME = PATH + PARENT_ID
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        GROUP = {
+            'name': GROUP_NAME,
+            'displayName': DISPLAY_NAME,
+            'parentName': PARENT_NAME,
+            'filter': FILTER,
+            'isCluster': IS_CLUSTER
+        }
+
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        connection = client.connection = _Connection(GROUP)
+        group = client.fetch_group(GROUP_ID)
+
+        self.assertEqual(group.id, GROUP_ID)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_id, PARENT_ID)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
+
+        request, = connection._requested
+        expected_request = {'method': 'GET', 'path': '/' + GROUP_NAME}
+        self.assertEqual(request, expected_request)
+
+    def test_list_groups(self):
+        PATH = 'projects/{project}/groups/'.format(project=PROJECT)
+        GROUP_NAME = PATH + 'GROUP_ID'
+        DISPLAY_NAME = 'My Group'
+        PARENT_NAME = PATH + 'PARENT_ID'
+        FILTER = 'resource.type = "gce_instance"'
+        IS_CLUSTER = False
+
+        GROUP = {
+            'name': GROUP_NAME,
+            'displayName': DISPLAY_NAME,
+            'parentName': PARENT_NAME,
+            'filter': FILTER,
+            'isCluster': IS_CLUSTER,
+        }
+
+        RESPONSE = {
+            'group': [GROUP],
+        }
+        client = self._makeOne(project=PROJECT, credentials=_Credentials())
+        connection = client.connection = _Connection(RESPONSE)
+        groups = client.list_groups()
+
+        self.assertEqual(len(groups), 1)
+
+        group = groups[0]
+        self.assertEqual(group.name, GROUP_NAME)
+        self.assertEqual(group.display_name, DISPLAY_NAME)
+        self.assertEqual(group.parent_name, PARENT_NAME)
+        self.assertEqual(group.filter, FILTER)
+        self.assertEqual(group.is_cluster, IS_CLUSTER)
 
         request, = connection._requested
         expected_request = {'method': 'GET', 'path': '/' + PATH,

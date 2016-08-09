@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestBatch(unittest2.TestCase):
+class TestBatch(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.batch import Batch

@@ -16,7 +16,7 @@
 import operator
 import struct
 
-import unittest2
+import unittest
 
 from gcloud import _helpers
 from gcloud.bigtable import client as client_mod
@@ -84,7 +84,7 @@ def tearDownModule():
     Config.CONNECTION.close()
 
 
-class TestConnection(unittest2.TestCase):
+class TestConnection(unittest.TestCase):
 
     def test_create_and_delete_table(self):
         connection = Config.CONNECTION
@@ -105,7 +105,7 @@ class TestConnection(unittest2.TestCase):
         self.assertFalse(ALT_TABLE_NAME in connection.tables())
 
 
-class BaseTableTest(unittest2.TestCase):
+class BaseTableTest(unittest.TestCase):
 
     def setUp(self):
         self.rows_to_delete = []

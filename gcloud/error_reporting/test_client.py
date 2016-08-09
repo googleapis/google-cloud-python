@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.error_reporting.client import Client

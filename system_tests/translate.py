@@ -15,7 +15,7 @@
 
 import os
 
-import unittest2
+import unittest
 
 from gcloud import translate
 
@@ -37,7 +37,7 @@ def setUpModule():
     Config.CLIENT = translate.Client(api_key=api_key)
 
 
-class TestTranslate(unittest2.TestCase):
+class TestTranslate(unittest.TestCase):
 
     def test_get_languages(self):
         result = Config.CLIENT.get_languages()

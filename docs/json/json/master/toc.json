@@ -57,7 +57,7 @@
             "title": "Dataset"
         },
         {
-            "type": "gcloud/bigquery/job/job",
+            "type": "gcloud/bigquery/job",
             "title": "Jobs"
         },
         {
@@ -169,6 +169,15 @@
         {
             "type": "gcloud/dns/changes/changes",
             "title": "Change Sets"
+        }
+    ]
+  },{
+    "title": "Error Reporting",
+    "type": "gcloud/error_reporting",
+    "nav": [
+        {
+            "type": "gcloud/error_reporting/client/client",
+            "title": "Client"
         }
     ]
   }, {

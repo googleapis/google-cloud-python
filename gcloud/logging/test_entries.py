@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_logger_name_from_path(unittest2.TestCase):
+class Test_logger_name_from_path(unittest.TestCase):
 
     def _callFUT(self, path):
         from gcloud.logging.entries import logger_name_from_path
@@ -36,7 +36,7 @@ class Test_logger_name_from_path(unittest2.TestCase):
         self.assertEqual(logger_name, LOGGER_NAME)
 
 
-class Test_BaseEntry(unittest2.TestCase):
+class Test_BaseEntry(unittest.TestCase):
 
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'
@@ -188,7 +188,7 @@ class Test_BaseEntry(unittest2.TestCase):
         self.assertTrue(entry.logger is LOGGER)
 
 
-class TestProtobufEntry(unittest2.TestCase):
+class TestProtobufEntry(unittest.TestCase):
 
     PROJECT = 'PROJECT'
     LOGGER_NAME = 'LOGGER_NAME'

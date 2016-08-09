@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestConnection(unittest2.TestCase):
+class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.connection import Connection
@@ -75,7 +75,7 @@ class TestConnection(unittest2.TestCase):
         self.assertEqual(conn.USER_AGENT, expected_ua)
 
 
-class TestJSONConnection(unittest2.TestCase):
+class TestJSONConnection(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.connection import JSONConnection

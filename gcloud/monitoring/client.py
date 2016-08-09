@@ -30,6 +30,7 @@ and monitored resource descriptors.
 
 from gcloud.client import JSONClient
 from gcloud.monitoring.connection import Connection
+from gcloud.monitoring.group import Group
 from gcloud.monitoring.metric import MetricDescriptor
 from gcloud.monitoring.metric import MetricKind
 from gcloud.monitoring.metric import ValueType
@@ -282,3 +283,82 @@ class Client(JSONClient):
             https://cloud.google.com/monitoring/api/v3/filters
         """
         return ResourceDescriptor._list(self, filter_string)
+
+    def group(self, group_id=None, display_name=None, parent_id=None,
+              filter_string=None, is_cluster=False):
+        """Factory constructor for group object.
+
+        .. note::
+          This will not make an HTTP request; it simply instantiates
+          a group object owned by this client.
+
+        :type group_id: string or None
+        :param group_id: The ID of the group.
+
+        :type display_name: string or None
+        :param display_name:
+            A user-assigned name for this group, used only for display
+            purposes.
+
+        :type parent_id: string or None
+        :param parent_id:
+            The ID of the group's parent, if it has one.
+
+        :type filter_string: string or None
+        :param filter_string:
+            The filter string used to determine which monitored resources
+            belong to this group.
+
+        :type is_cluster: boolean
+        :param is_cluster:
+            If true, the members of this group are considered to be a cluster.
+            The system can perform additional analysis on groups that are
+            clusters.
+
+        :rtype: :class:`Group`
+        :returns: The group created with the passed-in arguments.
+
+        :raises:
+            :exc:`ValueError` if both ``group_id`` and ``name`` are specified.
+        """
+        return Group(
+            self,
+            group_id=group_id,
+            display_name=display_name,
+            parent_id=parent_id,
+            filter_string=filter_string,
+            is_cluster=is_cluster,
+        )
+
+    def fetch_group(self, group_id):
+        """Fetch a group from the API based on it's ID.
+
+        Example::
+
+            >>> try:
+            >>>     group = client.fetch_group('1234')
+            >>> except gcloud.exceptions.NotFound:
+            >>>     print('That group does not exist!')
+
+        :type group_id: string
+        :param group_id: The ID of the group.
+
+        :rtype: :class:`~gcloud.monitoring.group.Group`
+        :returns: The group instance.
+
+        :raises: :class:`gcloud.exceptions.NotFound` if the group is not found.
+        """
+        return Group._fetch(self, group_id)
+
+    def list_groups(self):
+        """List all groups for the project.
+
+        Example::
+
+            >>> for group in client.list_groups():
+            ...     print((group.display_name, group.name))
+
+        :rtype: list of :class:`~gcloud.monitoring.group.Group`
+        :returns: A list of group instances.
+        """
+        return Group._list(self)

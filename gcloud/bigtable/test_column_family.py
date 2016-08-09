@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class Test__timedelta_to_duration_pb(unittest2.TestCase):
+class Test__timedelta_to_duration_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.column_family import _timedelta_to_duration_pb
@@ -61,7 +61,7 @@ class Test__timedelta_to_duration_pb(unittest2.TestCase):
         self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
 
 
-class Test__duration_pb_to_timedelta(unittest2.TestCase):
+class Test__duration_pb_to_timedelta(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.column_family import _duration_pb_to_timedelta
@@ -81,7 +81,7 @@ class Test__duration_pb_to_timedelta(unittest2.TestCase):
         self.assertEqual(result, timedelta_val)
 
 
-class TestMaxVersionsGCRule(unittest2.TestCase):
+class TestMaxVersionsGCRule(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.column_family import MaxVersionsGCRule
@@ -114,7 +114,7 @@ class TestMaxVersionsGCRule(unittest2.TestCase):
         self.assertEqual(pb_val, expected)
 
 
-class TestMaxAgeGCRule(unittest2.TestCase):
+class TestMaxAgeGCRule(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.column_family import MaxAgeGCRule
@@ -153,7 +153,7 @@ class TestMaxAgeGCRule(unittest2.TestCase):
         self.assertEqual(pb_val, _GcRulePB(max_age=duration))
 
 
-class TestGCRuleUnion(unittest2.TestCase):
+class TestGCRuleUnion(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.column_family import GCRuleUnion
@@ -239,7 +239,7 @@ class TestGCRuleUnion(unittest2.TestCase):
         self.assertEqual(gc_rule_pb, pb_rule5)
 
 
-class TestGCRuleIntersection(unittest2.TestCase):
+class TestGCRuleIntersection(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.column_family import GCRuleIntersection
@@ -328,7 +328,7 @@ class TestGCRuleIntersection(unittest2.TestCase):
         self.assertEqual(gc_rule_pb, pb_rule5)
 
 
-class TestColumnFamily(unittest2.TestCase):
+class TestColumnFamily(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.column_family import ColumnFamily
@@ -569,7 +569,7 @@ class TestColumnFamily(unittest2.TestCase):
         )])
 
 
-class Test__gc_rule_from_pb(unittest2.TestCase):
+class Test__gc_rule_from_pb(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.column_family import _gc_rule_from_pb

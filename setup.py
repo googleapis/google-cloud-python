@@ -33,7 +33,7 @@ if sys.version_info[:2] == (2, 7) and 'READTHEDOCS' not in os.environ:
 
 setup(
     name='gcloud',
-    version='0.17.0',
+    version='0.18.0',
     description='API Client library for Google Cloud',
     author='Google Cloud Platform',
     author_email='jjg+gcloud-python@google.com',
@@ -53,7 +53,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',

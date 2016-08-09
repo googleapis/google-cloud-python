@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestQueryResults(unittest2.TestCase):
+class TestQueryResults(unittest.TestCase):
     PROJECT = 'project'
     JOB_NAME = 'job_name'
     JOB_NAME = 'test-synchronous-query'

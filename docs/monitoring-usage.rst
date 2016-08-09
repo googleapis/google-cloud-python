@@ -154,6 +154,86 @@ before you call
     projects.metricDescriptors
 
 
+Groups
+------
+
+A group is a dynamic collection of *monitored resources* whose membership is
+defined by a `filter`_.  These groups are usually created via the
+`Stackdriver dashboard`_. You can list all the groups in a project with the
+:meth:`~gcloud.monitoring.client.Client.list_groups` method::
+
+    >>> for group in client.list_groups():
+    ...     print(group.id, group.display_name, group.parent_id)
+    ('a001', 'Production', None)
+    ('a002', 'Front-end', 'a001')
+    ('1003', 'Back-end', 'a001')
+
+See :class:`~gcloud.monitoring.group.Group` and the API documentation for
+`Groups`_ and `Group members`_ for more information.
+
+You can get a specific group based on it's ID as follows::
+
+    >>> group = client.fetch_group('a001')
+
+You can get the current members of this group using the
+:meth:`~gcloud.monitoring.group.Group.list_members` method::
+
+    >>> for member in group.list_members():
+    ...     print(member)
+
+Passing in ``end_time`` and ``start_time`` to the above method will return
+historical members based on the current filter of the group. The group
+membership changes over time, as *monitored resources* come and go, and as they
+change properties.
+
+You can create new groups to define new collections of *monitored resources*.
+You do this by creating a :class:`~gcloud.monitoring.group.Group` object using
+the client's :meth:`~gcloud.monitoring.client.Client.group` factory and then
+calling the object's :meth:`~gcloud.monitoring.group.Group.create` method::
+
+    >>> filter_string = 'resource.zone = "us-central1-a"'
+    >>> group = client.group(
+    ...     display_name='My group',
+    ...     filter_string=filter_string,
+    ...     parent_id='a001',
+    ...     is_cluster=True)
+    >>> group.create()
+    >>> group.id
+    '1234'
+
+You can further manipulate an existing group by first initializing a Group
+object with it's ID or name, and then calling various methods on it.
+
+Delete a group::
+
+    >>> group = client.group('1234')
+    >>> group.exists()
+    True
+    >>> group.delete()
+
+
+Update a group::
+
+    >>> group = client.group('1234')
+    >>> group.exists()
+    True
+    >>> group.reload()
+    >>> group.display_name = 'New Display Name'
+    >>> group.update()
+
+.. _Stackdriver dashboard:
+    https://support.stackdriver.com/customer/portal/articles/\
+    1535145-creating-groups
+.. _filter:
+    https://cloud.google.com/monitoring/api/v3/filters#group-filter
+.. _Groups:
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.groups
+.. _Group members:
+    https://cloud.google.com/monitoring/api/ref_v3/rest/v3/\
+    projects.groups.members
+
+
 Time Series Queries
 -------------------
 

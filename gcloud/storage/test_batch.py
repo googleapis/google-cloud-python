@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestMIMEApplicationHTTP(unittest2.TestCase):
+class TestMIMEApplicationHTTP(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.batch import MIMEApplicationHTTP
@@ -66,7 +66,7 @@ class TestMIMEApplicationHTTP(unittest2.TestCase):
         self.assertEqual(mah.get_payload().splitlines(), LINES)
 
 
-class TestBatch(unittest2.TestCase):
+class TestBatch(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.batch import Batch
@@ -444,7 +444,7 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(isinstance(target3._properties, _FutureDict))
 
 
-class Test__unpack_batch_response(unittest2.TestCase):
+class Test__unpack_batch_response(unittest.TestCase):
 
     def _callFUT(self, response, content):
         from gcloud.storage.batch import _unpack_batch_response
@@ -535,7 +535,7 @@ Content-Length: 0
 """
 
 
-class Test__FutureDict(unittest2.TestCase):
+class Test__FutureDict(unittest.TestCase):
 
     def _makeOne(self, *args, **kw):
         from gcloud.storage.batch import _FutureDict

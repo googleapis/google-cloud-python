@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_UDFResourcesProperty(unittest2.TestCase):
+class Test_UDFResourcesProperty(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigquery.job import UDFResourcesProperty
@@ -189,7 +189,7 @@ class _Base(object):
             self.assertEqual(job.user_email, None)
 
 
-class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
+class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
     JOB_TYPE = 'load'
 
     def _getTargetClass(self):
@@ -695,7 +695,7 @@ class TestLoadTableFromStorageJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
-class TestCopyJob(unittest2.TestCase, _Base):
+class TestCopyJob(unittest.TestCase, _Base):
     JOB_TYPE = 'copy'
     SOURCE_TABLE = 'source_table'
     DESTINATION_TABLE = 'destination_table'
@@ -992,7 +992,7 @@ class TestCopyJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
-class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
+class TestExtractTableToStorageJob(unittest.TestCase, _Base):
     JOB_TYPE = 'extract'
     SOURCE_TABLE = 'source_table'
     DESTINATION_URI = 'gs://bucket_name/object_name'
@@ -1285,7 +1285,7 @@ class TestExtractTableToStorageJob(unittest2.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
 
-class TestQueryJob(unittest2.TestCase, _Base):
+class TestQueryJob(unittest.TestCase, _Base):
     JOB_TYPE = 'query'
     QUERY = 'select count(*) from persons'
     DESTINATION_TABLE = 'destination_table'

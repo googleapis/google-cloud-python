@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestSubscription(unittest2.TestCase):
+class TestSubscription(unittest.TestCase):
     PROJECT = 'PROJECT'
     TOPIC_NAME = 'topic_name'
     TOPIC_PATH = 'projects/%s/topics/%s' % (PROJECT, TOPIC_NAME)
@@ -666,7 +666,7 @@ class _FauxSubscribererAPI(object):
         return self._subscription_modify_ack_deadline_response
 
 
-class TestAutoAck(unittest2.TestCase):
+class TestAutoAck(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.pubsub.subscription import AutoAck

@@ -231,6 +231,56 @@ class Table(object):
         return self._properties.get('type')
 
     @property
+    def partitioning_type(self):
+        """Time partitioning of the table.
+        :rtype: str, or ``NoneType``
+        :returns: Returns type if the table is partitioned, None otherwise.
+        """
+        return self._properties.get('timePartitioning', {}).get('type')
+
+    @partitioning_type.setter
+    def partitioning_type(self, value):
+        """Update the partitioning type of the table
+
+        :type value: str
+        :param value: partitioning type only "DAY" is currently supported
+        """
+        if not (isinstance(value, six.string_types)
+                and value.upper() == "DAY") and value is not None:
+            raise ValueError("value must be one of ['DAY', None]")
+
+        self._properties.setdefault('timePartitioning', {})
+        if value is not None:
+            self._properties['timePartitioning']['type'] = value.upper()
+
+    @property
+    def partition_expiration(self):
+        """Expiration time in ms for a partition
+        :rtype: int, or ``NoneType``
+        :returns: Returns the time in ms for partition expiration
+        """
+        expiry = None
+        if "timePartitioning" in self._properties:
+            time_part = self._properties.get("timePartitioning")
+            expiry = time_part.get("expirationMs")
+        return expiry
+
+    @partition_expiration.setter
+    def partition_expiration(self, value):
+        """Update the experation time in ms for a partition
+
+        :type value: int
+        :param value: partition experiation time in ms
+        """
+        if not isinstance(value, int):
+            raise ValueError("must be an integer representing millisseconds")
+        try:
+            self._properties["timePartitioning"]["expirationMs"] = value
+        except KeyError:
+            self._properties['timePartitioning'] = {'type': "DAY"}
+            self._properties["timePartitioning"]["expirationMs"] = value
+
+    @property
     def description(self):
         """Description of the table.
 
@@ -348,6 +398,22 @@ class Table(object):
         """Delete SQL query defining the table as a view."""
         self._properties.pop('view', None)
 
+    def list_partitions(self, client=None):
+        """List the partitions in a table.
+
+        :type client: :class:`gcloud.bigquery.client.Client` or ``NoneType``
+        :param client: the client to use.  If not passed, falls back to the
+                       ``client`` stored on the current dataset.
+
+        :rtype: list
+        :returns: a list of time partitions
+        """
+        query = self._require_client(client).run_sync_query(
+            'SELECT partition_id from [%s.%s$__PARTITIONS_SUMMARY__]' %
+            (self.dataset_name, self.name))
+        query.run()
+        return [row[0] for row in query.rows]
+
     @classmethod
     def from_api_repr(cls, resource, dataset):
         """Factory:  construct a table given its API representation
@@ -422,6 +488,9 @@ class Table(object):
 
         if self.location is not None:
             resource['location'] = self.location
+
+        if self.partitioning_type is not None:
+            resource['timePartitioning'] = self._properties['timePartitioning']
 
         if self.view_query is not None:
             view = resource['view'] = {}

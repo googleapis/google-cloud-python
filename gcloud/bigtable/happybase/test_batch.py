@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
 class _SendMixin(object):
@@ -24,7 +24,7 @@ class _SendMixin(object):
         self._send_called = True
 
 
-class TestBatch(unittest2.TestCase):
+class TestBatch(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.happybase.batch import Batch
@@ -474,7 +474,7 @@ class TestBatch(unittest2.TestCase):
         self.assertTrue(batch._send_called)
 
 
-class Test__get_column_pairs(unittest2.TestCase):
+class Test__get_column_pairs(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.happybase.batch import _get_column_pairs

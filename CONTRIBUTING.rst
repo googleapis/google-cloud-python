@@ -81,8 +81,8 @@ In order to add a feature to ``gcloud-python``:
 - The feature must be documented in both the API and narrative
   documentation (in ``docs/``).
 
-- The feature must work fully on the following CPython versions: 2.6,
-  and 2.7 on both UNIX and Windows.
+- The feature must work fully on the following CPython versions:  2.7,
+  3.4, and 3.5 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -358,12 +358,10 @@ Supported Python Versions
 
 We support:
 
--  `Python 2.6`_
 -  `Python 2.7`_
 -  `Python 3.4`_
 -  `Python 3.5`_
 
-.. _Python 2.6: https://docs.python.org/2.6/
 .. _Python 2.7: https://docs.python.org/2.7/
 .. _Python 3.4: https://docs.python.org/3.4/
 .. _Python 3.5: https://docs.python.org/3.5/
@@ -379,7 +377,7 @@ and lack of continuous integration `support`_.
 .. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
 .. _support: http://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
 
-We may `drop 2.6`_ as a supported version as well since Python 2.6 is no
+We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
 longer supported by the core development team.
 
 We also explicitly decided to support Python 3 beginning with version
@@ -393,7 +391,7 @@ We also explicitly decided to support Python 3 beginning with version
 .. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
-.. _drop 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
+.. _dropped 2.6: https://github.com/GoogleCloudPlatform/gcloud-python/issues/995
 
 Versioning
 ----------

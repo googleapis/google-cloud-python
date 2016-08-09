@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test_BufferedStream(unittest2.TestCase):
+class Test_BufferedStream(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.buffered_stream import BufferedStream

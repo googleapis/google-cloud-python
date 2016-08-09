@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestLabelValueType(unittest2.TestCase):
+class TestLabelValueType(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.label import LabelValueType
@@ -30,7 +30,7 @@ class TestLabelValueType(unittest2.TestCase):
                 self.assertEqual(getattr(self._getTargetClass(), name), name)
 
 
-class TestLabelDescriptor(unittest2.TestCase):
+class TestLabelDescriptor(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.monitoring.label import LabelDescriptor

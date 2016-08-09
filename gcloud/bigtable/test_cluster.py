@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestOperation(unittest2.TestCase):
+class TestOperation(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.cluster import Operation
@@ -130,7 +130,7 @@ class TestOperation(unittest2.TestCase):
         self._finished_helper(done=False)
 
 
-class TestCluster(unittest2.TestCase):
+class TestCluster(unittest.TestCase):
 
     PROJECT = 'project'
     INSTANCE_ID = 'instance-id'
@@ -475,7 +475,7 @@ class TestCluster(unittest2.TestCase):
         )])
 
 
-class Test__prepare_create_request(unittest2.TestCase):
+class Test__prepare_create_request(unittest.TestCase):
 
     def _callFUT(self, cluster):
         from gcloud.bigtable.cluster import _prepare_create_request
@@ -501,7 +501,7 @@ class Test__prepare_create_request(unittest2.TestCase):
         self.assertEqual(request_pb.cluster.serve_nodes, SERVE_NODES)
 
 
-class Test__parse_pb_any_to_native(unittest2.TestCase):
+class Test__parse_pb_any_to_native(unittest.TestCase):
 
     def _callFUT(self, any_val, expected_type=None):
         from gcloud.bigtable.cluster import _parse_pb_any_to_native
@@ -554,7 +554,7 @@ class Test__parse_pb_any_to_native(unittest2.TestCase):
                 self._callFUT(any_val, expected_type=type_url1)
 
 
-class Test__process_operation(unittest2.TestCase):
+class Test__process_operation(unittest.TestCase):
 
     def _callFUT(self, operation_pb):
         from gcloud.bigtable.cluster import _process_operation

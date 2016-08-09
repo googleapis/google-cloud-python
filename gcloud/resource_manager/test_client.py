@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test__ProjectIterator(unittest2.TestCase):
+class Test__ProjectIterator(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.resource_manager.client import _ProjectIterator
@@ -69,7 +69,7 @@ class Test__ProjectIterator(unittest2.TestCase):
         self.assertEqual(project.status, PROJECT_LIFECYCLE_STATE)
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.resource_manager.client import Client

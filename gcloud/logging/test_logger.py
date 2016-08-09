@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class TestLogger(unittest2.TestCase):
+class TestLogger(unittest.TestCase):
 
     PROJECT = 'test-project'
     LOGGER_NAME = 'logger-name'
@@ -388,7 +388,7 @@ class TestLogger(unittest2.TestCase):
         self.assertEqual(client._listed, LISTED)
 
 
-class TestBatch(unittest2.TestCase):
+class TestBatch(unittest.TestCase):
 
     PROJECT = 'test-project'
 

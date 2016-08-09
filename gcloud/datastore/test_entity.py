@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 _PROJECT = 'PROJECT'
 _KIND = 'KIND'
 _ID = 1234
 
 
-class TestEntity(unittest2.TestCase):
+class TestEntity(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.entity import Entity

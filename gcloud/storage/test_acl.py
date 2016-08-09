@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_ACLEntity(unittest2.TestCase):
+class Test_ACLEntity(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.acl import _ACLEntity
@@ -124,7 +124,7 @@ class Test_ACLEntity(unittest2.TestCase):
         self.assertEqual(entity.get_roles(), set())
 
 
-class Test_ACL(unittest2.TestCase):
+class Test_ACL(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.acl import ACL
@@ -708,7 +708,7 @@ class Test_ACL(unittest2.TestCase):
         self.assertEqual(kw[0]['query_params'], {'projection': 'full'})
 
 
-class Test_BucketACL(unittest2.TestCase):
+class Test_BucketACL(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.acl import BucketACL
@@ -728,7 +728,7 @@ class Test_BucketACL(unittest2.TestCase):
         self.assertEqual(acl.save_path, '/b/%s' % NAME)
 
 
-class Test_DefaultObjectACL(unittest2.TestCase):
+class Test_DefaultObjectACL(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.acl import DefaultObjectACL
@@ -748,7 +748,7 @@ class Test_DefaultObjectACL(unittest2.TestCase):
         self.assertEqual(acl.save_path, '/b/%s' % NAME)
 
 
-class Test_ObjectACL(unittest2.TestCase):
+class Test_ObjectACL(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.storage.acl import ObjectACL

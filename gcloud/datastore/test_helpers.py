@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test__new_value_pb(unittest2.TestCase):
+class Test__new_value_pb(unittest.TestCase):
 
     def _callFUT(self, entity_pb, name):
         from gcloud.datastore.helpers import _new_value_pb
@@ -33,7 +33,7 @@ class Test__new_value_pb(unittest2.TestCase):
         self.assertEqual(entity_pb.properties[name], result)
 
 
-class Test__property_tuples(unittest2.TestCase):
+class Test__property_tuples(unittest.TestCase):
 
     def _callFUT(self, entity_pb):
         from gcloud.datastore.helpers import _property_tuples
@@ -56,7 +56,7 @@ class Test__property_tuples(unittest2.TestCase):
                          sorted([(name1, val_pb1), (name2, val_pb2)]))
 
 
-class Test_entity_from_protobuf(unittest2.TestCase):
+class Test_entity_from_protobuf(unittest.TestCase):
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import entity_from_protobuf
@@ -189,7 +189,7 @@ class Test_entity_from_protobuf(unittest2.TestCase):
         self.assertEqual(inside_entity[INSIDE_NAME], INSIDE_VALUE)
 
 
-class Test_entity_to_protobuf(unittest2.TestCase):
+class Test_entity_to_protobuf(unittest.TestCase):
 
     def _callFUT(self, entity):
         from gcloud.datastore.helpers import entity_to_protobuf
@@ -368,7 +368,7 @@ class Test_entity_to_protobuf(unittest2.TestCase):
         self._compareEntityProto(entity_pb, expected_pb)
 
 
-class Test_key_from_protobuf(unittest2.TestCase):
+class Test_key_from_protobuf(unittest.TestCase):
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import key_from_protobuf
@@ -422,7 +422,7 @@ class Test_key_from_protobuf(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, pb)
 
 
-class Test__pb_attr_value(unittest2.TestCase):
+class Test__pb_attr_value(unittest.TestCase):
 
     def _callFUT(self, val):
         from gcloud.datastore.helpers import _pb_attr_value
@@ -538,7 +538,7 @@ class Test__pb_attr_value(unittest2.TestCase):
         self.assertRaises(ValueError, self._callFUT, object())
 
 
-class Test__get_value_from_value_pb(unittest2.TestCase):
+class Test__get_value_from_value_pb(unittest.TestCase):
 
     def _callFUT(self, pb):
         from gcloud.datastore.helpers import _get_value_from_value_pb
@@ -653,7 +653,7 @@ class Test__get_value_from_value_pb(unittest2.TestCase):
             self._callFUT(pb)
 
 
-class Test_set_protobuf_value(unittest2.TestCase):
+class Test_set_protobuf_value(unittest.TestCase):
 
     def _callFUT(self, value_pb, val):
         from gcloud.datastore.helpers import _set_protobuf_value
@@ -792,7 +792,7 @@ class Test_set_protobuf_value(unittest2.TestCase):
         self.assertEqual(pb.geo_point_value, geo_pt_pb)
 
 
-class Test__get_meaning(unittest2.TestCase):
+class Test__get_meaning(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.datastore.helpers import _get_meaning
@@ -872,7 +872,7 @@ class Test__get_meaning(unittest2.TestCase):
         self.assertEqual(result, [meaning1, None])
 
 
-class TestGeoPoint(unittest2.TestCase):
+class TestGeoPoint(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.datastore.helpers import GeoPoint

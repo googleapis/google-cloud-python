@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest2
+import unittest
 
 
-class Test_topic_name_from_path(unittest2.TestCase):
+class Test_topic_name_from_path(unittest.TestCase):
 
     def _callFUT(self, path, project):
         from gcloud.pubsub._helpers import topic_name_from_path
@@ -36,7 +36,7 @@ class Test_topic_name_from_path(unittest2.TestCase):
         self.assertEqual(topic_name, TOPIC_NAME)
 
 
-class Test_subscription_name_from_path(unittest2.TestCase):
+class Test_subscription_name_from_path(unittest.TestCase):
 
     def _callFUT(self, path, project):
         from gcloud.pubsub._helpers import subscription_name_from_path

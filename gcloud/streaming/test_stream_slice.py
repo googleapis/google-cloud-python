@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test_StreamSlice(unittest2.TestCase):
+class Test_StreamSlice(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.stream_slice import StreamSlice

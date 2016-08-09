@@ -1,7 +1,7 @@
-import unittest2
+import unittest
 
 
-class Test_HttpError(unittest2.TestCase):
+class Test_HttpError(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.exceptions import HttpError
@@ -42,7 +42,7 @@ class Test_HttpError(unittest2.TestCase):
         self.assertEqual(exception.url, URL)
 
 
-class Test_RetryAfterError(unittest2.TestCase):
+class Test_RetryAfterError(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.streaming.exceptions import RetryAfterError

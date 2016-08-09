@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-import unittest2
+import unittest
 
 
-class TestClient(unittest2.TestCase):
+class TestClient(unittest.TestCase):
 
     PROJECT = 'PROJECT'
     INSTANCE_ID = 'instance-id'
@@ -636,7 +636,7 @@ class TestClient(unittest2.TestCase):
         )])
 
 
-class Test_MetadataPlugin(unittest2.TestCase):
+class Test_MetadataPlugin(unittest.TestCase):
 
     def _getTargetClass(self):
         from gcloud.bigtable.client import _MetadataPlugin
@@ -685,7 +685,7 @@ class Test_MetadataPlugin(unittest2.TestCase):
         self.assertEqual(len(credentials._tokens), 1)
 
 
-class Test__make_stub(unittest2.TestCase):
+class Test__make_stub(unittest.TestCase):
 
     def _callFUT(self, *args, **kwargs):
         from gcloud.bigtable.client import _make_stub
