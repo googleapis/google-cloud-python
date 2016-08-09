@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import operator
-import time
 
 import unittest
 
@@ -22,7 +21,9 @@ from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import bigquery
 from gcloud.exceptions import Forbidden
 
-from retry import Retry
+from retry import RetryErrors
+from retry import RetryInstanceState
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -86,7 +87,13 @@ class TestBigQuery(unittest.TestCase):
     def test_update_dataset(self):
         dataset = Config.CLIENT.dataset(DATASET_NAME)
         self.assertFalse(dataset.exists())
-        dataset.create()
+
+        # We need to wait to stay within the rate limits.
+        # The alternative outcome is a 403 Forbidden response from upstream.
+        # See: https://cloud.google.com/bigquery/quota-policy
+        retry = RetryErrors(Forbidden, max_tries=2, delay=30)
+        retry(dataset.create)()
+
         self.to_delete.append(dataset)
         self.assertTrue(dataset.exists())
         after = [grant for grant in dataset.access_grants
@@ -96,11 +103,8 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @Retry(Forbidden, tries=2, delay=30)
-        def update_dataset():
-            dataset.update()
+        retry(dataset.update)()
 
-        update_dataset()
         self.assertEqual(len(dataset.access_grants), len(after))
         for found, expected in zip(dataset.access_grants, after):
             self.assertEqual(found.role, expected.role)
@@ -202,11 +206,9 @@ class TestBigQuery(unittest.TestCase):
         # We need to wait to stay within the rate limits.
         # The alternative outcome is a 403 Forbidden response from upstream.
         # See: https://cloud.google.com/bigquery/quota-policy
-        @Retry(Forbidden, tries=2, delay=30)
-        def create_dataset():
-            dataset.create()
+        retry = RetryErrors(Forbidden, max_tries=2, delay=30)
+        retry(dataset.create)()
 
-        create_dataset()
         self.to_delete.append(dataset)
         TABLE_NAME = 'test_table'
         full_name = bigquery.SchemaField('full_name', 'STRING',
@@ -261,15 +263,15 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(len(errors), 0)
 
         rows = ()
-        counter = 9
+
+        def _has_rows(result):
+            return len(result[0]) > 0
+
         # Allow for 90 seconds of "warm up" before rows visible.  See:
         # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
-
-        while len(rows) == 0 and counter > 0:
-            counter -= 1
-            rows, _, _ = table.fetch_data()
-            if len(rows) == 0:
-                time.sleep(10)
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryResult(_has_rows, max_tries=8)
+        rows, _, _ = retry(table.fetch_data)()
 
         by_age = operator.itemgetter(1)
         self.assertEqual(sorted(rows, key=by_age),
@@ -329,13 +331,14 @@ class TestBigQuery(unittest.TestCase):
 
         job.begin()
 
-        counter = 9  # Allow for 90 seconds of lag.
+        def _job_done(instance):
+            return instance.state in ('DONE', 'done')
 
-        while job.state not in ('DONE', 'done') and counter > 0:
-            counter -= 1
-            job.reload()
-            if job.state not in ('DONE', 'done'):
-                time.sleep(10)
+        # Allow for 90 seconds of "warm up" before rows visible.  See:
+        # https://cloud.google.com/bigquery/streaming-data-into-bigquery#dataavailability
+        # 8 tries -> 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127 seconds
+        retry = RetryInstanceState(_job_done, max_tries=8)
+        retry(job.reload)()
 
         self.assertTrue(job.state in ('DONE', 'done'))
 

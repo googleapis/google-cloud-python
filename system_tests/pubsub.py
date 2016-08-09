@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import os
-import time
 import unittest
 
 import httplib2
@@ -23,6 +22,8 @@ from gcloud.environment_vars import PUBSUB_EMULATOR
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import pubsub
 
+from retry import RetryInstanceState
+from retry import RetryResult
 from system_test_utils import EmulatorCreds
 from system_test_utils import unique_resource_id
 
@@ -69,6 +70,7 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(topic.name, topic_name)
 
     def test_list_topics(self):
+        before, _ = Config.CLIENT.list_topics()
         topics_to_create = [
             'new' + unique_resource_id(),
             'newer' + unique_resource_id(),
@@ -80,8 +82,13 @@ class TestPubsub(unittest.TestCase):
             self.to_delete.append(topic)
 
         # Retrieve the topics.
-        all_topics, _ = Config.CLIENT.list_topics()
-        created = [topic for topic in all_topics
+        def _all_created(result):
+            return len(result[0]) == len(before) + len(topics_to_create)
+
+        retry = RetryResult(_all_created)
+        after, _ = retry(Config.CLIENT.list_topics)()
+
+        created = [topic for topic in after
                    if topic.name in topics_to_create and
                    topic.project == Config.CLIENT.project]
         self.assertEqual(len(created), len(topics_to_create))
@@ -133,7 +140,12 @@ class TestPubsub(unittest.TestCase):
             self.to_delete.append(subscription)
 
         # Retrieve the subscriptions.
-        all_subscriptions, _ = topic.list_subscriptions()
+        def _all_created(result):
+            return len(result[0]) == len(subscriptions_to_create)
+
+        retry = RetryResult(_all_created)
+        all_subscriptions, _ = retry(topic.list_subscriptions)()
+
         created = [subscription for subscription in all_subscriptions
                    if subscription.name in subscriptions_to_create]
         self.assertEqual(len(created), len(subscriptions_to_create))
@@ -185,12 +197,14 @@ class TestPubsub(unittest.TestCase):
         topic_name = 'test-topic-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
-        count = 5
-        while count > 0 and not topic.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(topic.exists)()
+
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
+
         if topic.check_iam_permissions([PUBSUB_TOPICS_GET_IAM_POLICY]):
             policy = topic.get_iam_policy()
             policy.viewers.add(policy.user('jjg@google.com'))
@@ -203,21 +217,24 @@ class TestPubsub(unittest.TestCase):
         topic_name = 'test-sub-iam-policy-topic' + unique_resource_id('-')
         topic = Config.CLIENT.topic(topic_name)
         topic.create()
-        count = 5
-        while count > 0 and not topic.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(topic.exists)()
+
         self.assertTrue(topic.exists())
         self.to_delete.append(topic)
         SUB_NAME = 'test-sub-iam-policy-sub' + unique_resource_id('-')
         subscription = topic.subscription(SUB_NAME)
         subscription.create()
-        count = 5
-        while count > 0 and not subscription.exists():
-            time.sleep(1)
-            count -= 1
+
+        # Retry / backoff up to 7 seconds (1 + 2 + 4)
+        retry = RetryResult(lambda result: result, max_tries=4)
+        retry(subscription.exists)()
+
         self.assertTrue(subscription.exists())
         self.to_delete.insert(0, subscription)
+
         if subscription.check_iam_permissions(
                 [PUBSUB_SUBSCRIPTIONS_GET_IAM_POLICY]):
             policy = subscription.get_iam_policy()
@@ -246,5 +263,12 @@ class TestPubsub(unittest.TestCase):
                    if subscription.name == ORPHANED]
         self.assertEqual(len(created), 1)
         orphaned = created[0]
+
+        def _no_topic(instance):
+            return instance.topic is None
+
+        retry = RetryInstanceState(_no_topic, max_tries=6)
+        retry(orphaned.reload)()
+
         self.assertTrue(orphaned.topic is None)
         orphaned.delete()

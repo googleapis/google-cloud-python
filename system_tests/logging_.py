@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
 import unittest
 
 from gcloud import _helpers
 from gcloud.environment_vars import TESTS_PROJECT
 from gcloud import logging
 
+from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -33,27 +33,10 @@ DATASET_NAME = ('system_testing_dataset' + _RESOURCE_ID).replace('-', '_')
 TOPIC_NAME = 'gcloud-python-system-testing%s' % (_RESOURCE_ID,)
 
 
-def _retry_backoff(result_predicate, meth, *args, **kw):
+def _retry_on_unavailable(exc):
+    """Retry only AbortionErrors whose status code is 'UNAVAILABLE'."""
     from grpc.beta.interfaces import StatusCode
-    from grpc.framework.interfaces.face.face import AbortionError
-    backoff_intervals = [1, 2, 4, 8]
-    while True:
-        try:
-            result = meth(*args, **kw)
-        except AbortionError as error:
-            if error.code != StatusCode.UNAVAILABLE:
-                raise
-            if backoff_intervals:
-                time.sleep(backoff_intervals.pop(0))
-                continue
-            else:
-                raise
-        if result_predicate(result):
-            return result
-        if backoff_intervals:
-            time.sleep(backoff_intervals.pop(0))
-        else:
-            raise RuntimeError('%s: %s %s' % (meth, args, kw))
+    return exc.code == StatusCode.UNAVAILABLE
 
 
 def _has_entries(result):
@@ -81,28 +64,26 @@ class TestLogging(unittest.TestCase):
 
     def tearDown(self):
         from gcloud.exceptions import NotFound
+        retry = RetryErrors(NotFound)
         for doomed in self.to_delete:
-            backoff_intervals = [1, 2, 4, 8]
-            while True:
-                try:
-                    doomed.delete()
-                    break
-                except NotFound:
-                    if backoff_intervals:
-                        time.sleep(backoff_intervals.pop(0))
-                    else:
-                        raise
+            retry(doomed.delete)()
 
     @staticmethod
     def _logger_name():
         return 'system-tests-logger' + unique_resource_id('-')
+
+    def _list_entries(self, logger):
+        from grpc.framework.interfaces.face.face import AbortionError
+        inner = RetryResult(_has_entries)(logger.list_entries)
+        outer = RetryErrors(AbortionError, _retry_on_unavailable)(inner)
+        return outer()
 
     def test_log_text(self):
         TEXT_PAYLOAD = 'System test: test_log_text'
         logger = Config.CLIENT.logger(self._logger_name())
         self.to_delete.append(logger)
         logger.log_text(TEXT_PAYLOAD)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, TEXT_PAYLOAD)
 
@@ -123,7 +104,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_text(TEXT_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                         http_request=REQUEST)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
 
@@ -146,7 +127,7 @@ class TestLogging(unittest.TestCase):
         self.to_delete.append(logger)
 
         logger.log_struct(JSON_PAYLOAD)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
@@ -171,7 +152,7 @@ class TestLogging(unittest.TestCase):
 
         logger.log_struct(JSON_PAYLOAD, insert_id=INSERT_ID, severity=SEVERITY,
                           http_request=REQUEST)
-        entries, _ = _retry_backoff(_has_entries, logger.list_entries)
+        entries, _ = self._list_entries(logger)
 
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].payload, JSON_PAYLOAD)
@@ -205,10 +186,12 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_METRIC_NAME]))
 
     def test_reload_metric(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        metric.create()
+        retry(metric.create)()
         self.to_delete.append(metric)
         metric.filter_ = 'logName:other'
         metric.description = 'local changes'
@@ -217,12 +200,14 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(metric.description, DEFAULT_DESCRIPTION)
 
     def test_update_metric(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         NEW_FILTER = 'logName:other'
         NEW_DESCRIPTION = 'updated'
         metric = Config.CLIENT.metric(
             DEFAULT_METRIC_NAME, DEFAULT_FILTER, DEFAULT_DESCRIPTION)
         self.assertFalse(metric.exists())
-        metric.create()
+        retry(metric.create)()
         self.to_delete.append(metric)
         metric.filter_ = NEW_FILTER
         metric.description = NEW_DESCRIPTION
@@ -324,10 +309,12 @@ class TestLogging(unittest.TestCase):
                          set([DEFAULT_SINK_NAME]))
 
     def test_reload_sink(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         uri = self._init_bigquery_dataset()
         sink = Config.CLIENT.sink(DEFAULT_SINK_NAME, DEFAULT_FILTER, uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         sink.filter_ = 'BOGUS FILTER'
         sink.destination = 'BOGUS DESTINATION'
@@ -336,13 +323,15 @@ class TestLogging(unittest.TestCase):
         self.assertEqual(sink.destination, uri)
 
     def test_update_sink(self):
+        from gcloud.exceptions import Conflict
+        retry = RetryErrors(Conflict)
         bucket_uri = self._init_storage_bucket()
         dataset_uri = self._init_bigquery_dataset()
         UPDATED_FILTER = 'logName:syslog'
         sink = Config.CLIENT.sink(
             DEFAULT_SINK_NAME, DEFAULT_FILTER, bucket_uri)
         self.assertFalse(sink.exists())
-        sink.create()
+        retry(sink.create)()
         self.to_delete.append(sink)
         sink.filter_ = UPDATED_FILTER
         sink.destination = dataset_uri

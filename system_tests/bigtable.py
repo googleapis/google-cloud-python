@@ -14,7 +14,6 @@
 
 import datetime
 import operator
-import time
 
 import unittest
 
@@ -32,6 +31,8 @@ from gcloud.bigtable.row_data import Cell
 from gcloud.bigtable.row_data import PartialRowData
 from gcloud.environment_vars import TESTS_PROJECT
 
+from retry import RetryErrors
+from retry import RetryResult
 from system_test_utils import unique_resource_id
 
 
@@ -75,39 +76,28 @@ def _operation_wait(operation, max_attempts=5):
     :rtype: bool
     :returns: Boolean indicating if the operation finished.
     """
-    total_sleep = 0
-    while not operation.finished():
-        if total_sleep > max_attempts:
-            return False
-        time.sleep(1)
-        total_sleep += 1
 
-    return True
+    def _operation_finished(result):
+        return result
+
+    retry = RetryResult(_operation_finished, max_tries=max_attempts)
+    return retry(operation.finished)()
 
 
-def _retry_backoff(meth, *args, **kw):
+def _retry_on_unavailable(exc):
+    """Retry only AbortionErrors whose status code is 'UNAVAILABLE'."""
     from grpc.beta.interfaces import StatusCode
-    from grpc.framework.interfaces.face.face import AbortionError
-    backoff_intervals = [1, 2, 4, 8]
-    while True:
-        try:
-            return meth(*args, **kw)
-        except AbortionError as error:
-            if error.code != StatusCode.UNAVAILABLE:
-                raise
-            if backoff_intervals:
-                time.sleep(backoff_intervals.pop(0))
-            else:
-                raise
+    return exc.code == StatusCode.UNAVAILABLE
 
 
 def setUpModule():
+    from grpc.framework.interfaces.face.face import AbortionError
     _helpers.PROJECT = TESTS_PROJECT
     Config.CLIENT = Client(admin=True)
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, LOCATION_ID)
     Config.CLIENT.start()
-    instances, failed_locations = _retry_backoff(
-        Config.CLIENT.list_instances)
+    retry = RetryErrors(AbortionError, error_predicate=_retry_on_unavailable)
+    instances, failed_locations = retry(Config.CLIENT.list_instances)()
 
     if len(failed_locations) != 0:
         raise ValueError('List instances failed in module set up.')
