@@ -30,6 +30,15 @@
       "name": "fetch", 
       "params": [
         {
+          "description": " An optional limit passed through to the iterator.", 
+          "name": "limit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
+          ]
+        }, 
+        {
           "description": " An optional cursor passed through to the iterator.", 
           "name": "end_cursor", 
           "nullable": null, 
@@ -48,12 +57,12 @@
           ]
         }, 
         {
-          "description": " An optional limit passed through to the iterator.", 
-          "name": "limit", 
+          "description": " An optional cursor passed through to the iterator.", 
+          "name": "start_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer or None"
+            "bytes"
           ]
         }, 
         {
@@ -63,15 +72,6 @@
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bytes"
           ]
         }
       ], 

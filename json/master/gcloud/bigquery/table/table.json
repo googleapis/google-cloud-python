@@ -66,21 +66,21 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
           "description": " token representing a cursor into the table's rows.", 
           "name": "page_token", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str or NoneType"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -145,6 +145,24 @@
       "name": "insert_data", 
       "params": [
         {
+          "description": " treat <code>name</code> as a template table and provide a suffix. BigQuery will create the table <name> + <template_suffix> based on the schema of the template table. See: <a href=\"https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables\">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a>", 
+          "name": "template_suffix", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str or NoneType"
+          ]
+        }, 
+        {
+          "description": " skip rows w/ invalid data?", 
+          "name": "skip_invalid_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
           "name": "client", 
           "nullable": null, 
@@ -154,12 +172,12 @@
           ]
         }, 
         {
-          "description": " treat <code>name</code> as a template table and provide a suffix. BigQuery will create the table <name> + <template_suffix> based on the schema of the template table. See: <a href=\"https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables\">https://cloud.google.com/bigquery/streaming-data-into-bigquery#template-tables</a>", 
-          "name": "template_suffix", 
+          "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
+          "name": "row_ids", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str or NoneType"
+            " string"
           ]
         }, 
         {
@@ -178,24 +196,6 @@
           "optional": null, 
           "types": [
             "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " skip rows w/ invalid data?", 
-          "name": "skip_invalid_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
-        {
-          "description": " Unique ids, one per row being inserted. If not passed, no de-duplication occurs.", 
-          "name": "row_ids", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
           ]
         }
       ], 
@@ -272,21 +272,12 @@
       "name": "upload_from_file", 
       "params": [
         {
-          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
-          "name": "source_format", 
+          "description": " job configuration option; see", 
+          "name": "quote_character", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -299,21 +290,12 @@
           ]
         }, 
         {
-          "description": " job configuration option; see", 
-          "name": "encoding", 
+          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
+          "name": "source_format", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "str"
-          ]
-        }, 
-        {
-          "description": " A file handle opened in binary mode for reading.", 
-          "name": "file_obj", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "file"
           ]
         }, 
         {
@@ -326,21 +308,30 @@
           ]
         }, 
         {
-          "description": " job configuration option; see", 
-          "name": "ignore_unknown_values", 
+          "description": " A file handle opened in binary mode for reading.", 
+          "name": "file_obj", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "file"
           ]
         }, 
         {
-          "description": " job configuration option; see", 
-          "name": "skip_leading_rows", 
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
+          "name": "rewind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }, 
         {
@@ -350,6 +341,15 @@
           "optional": null, 
           "types": [
             "integer"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "write_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -363,7 +363,7 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "create_disposition", 
+          "name": "encoding", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -371,17 +371,8 @@
           ]
         }, 
         {
-          "description": " If True, seek to the beginning of the file handle before writing the file to Cloud Storage.", 
-          "name": "rewind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
+          "description": " job configuration option; see", 
+          "name": "skip_leading_rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -399,7 +390,7 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "write_disposition", 
+          "name": "create_disposition", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,12 +398,21 @@
           ]
         }, 
         {
-          "description": " job configuration option; see", 
-          "name": "quote_character", 
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "ignore_unknown_values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
