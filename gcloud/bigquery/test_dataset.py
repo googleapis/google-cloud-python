@@ -747,7 +747,7 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(table.schema, [])
 
     def test_table_w_schema(self):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         from gcloud.bigquery.table import Table
         conn = _Connection({})
         client = _Client(project=self.PROJECT, connection=conn)

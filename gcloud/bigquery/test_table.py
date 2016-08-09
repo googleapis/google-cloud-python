@@ -15,101 +15,6 @@
 import unittest
 
 
-class TestSchemaField(unittest.TestCase):
-
-    def _getTargetClass(self):
-        from gcloud.bigquery.table import SchemaField
-        return SchemaField
-
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
-
-    def test_ctor_defaults(self):
-        field = self._makeOne('test', 'STRING')
-        self.assertEqual(field.name, 'test')
-        self.assertEqual(field.field_type, 'STRING')
-        self.assertEqual(field.mode, 'NULLABLE')
-        self.assertEqual(field.description, None)
-        self.assertEqual(field.fields, None)
-
-    def test_ctor_explicit(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
-        self.assertEqual(field.name, 'test')
-        self.assertEqual(field.field_type, 'STRING')
-        self.assertEqual(field.mode, 'REQUIRED')
-        self.assertEqual(field.description, 'Testing')
-        self.assertEqual(field.fields, None)
-
-    def test_ctor_subfields(self):
-        field = self._makeOne('phone_number', 'RECORD',
-                              fields=[self._makeOne('area_code', 'STRING'),
-                                      self._makeOne('local_number', 'STRING')])
-        self.assertEqual(field.name, 'phone_number')
-        self.assertEqual(field.field_type, 'RECORD')
-        self.assertEqual(field.mode, 'NULLABLE')
-        self.assertEqual(field.description, None)
-        self.assertEqual(len(field.fields), 2)
-        self.assertEqual(field.fields[0].name, 'area_code')
-        self.assertEqual(field.fields[0].field_type, 'STRING')
-        self.assertEqual(field.fields[0].mode, 'NULLABLE')
-        self.assertEqual(field.fields[0].description, None)
-        self.assertEqual(field.fields[0].fields, None)
-        self.assertEqual(field.fields[1].name, 'local_number')
-        self.assertEqual(field.fields[1].field_type, 'STRING')
-        self.assertEqual(field.fields[1].mode, 'NULLABLE')
-        self.assertEqual(field.fields[1].description, None)
-        self.assertEqual(field.fields[1].fields, None)
-
-    def test___eq___name_mismatch(self):
-        field = self._makeOne('test', 'STRING')
-        other = self._makeOne('other', 'STRING')
-        self.assertNotEqual(field, other)
-
-    def test___eq___field_type_mismatch(self):
-        field = self._makeOne('test', 'STRING')
-        other = self._makeOne('test', 'INTEGER')
-        self.assertNotEqual(field, other)
-
-    def test___eq___mode_mismatch(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED')
-        other = self._makeOne('test', 'STRING', mode='NULLABLE')
-        self.assertNotEqual(field, other)
-
-    def test___eq___description_mismatch(self):
-        field = self._makeOne('test', 'STRING', description='Testing')
-        other = self._makeOne('test', 'STRING', description='Other')
-        self.assertNotEqual(field, other)
-
-    def test___eq___fields_mismatch(self):
-        sub1 = self._makeOne('sub1', 'STRING')
-        sub2 = self._makeOne('sub2', 'STRING')
-        field = self._makeOne('test', 'RECORD', fields=[sub1])
-        other = self._makeOne('test', 'RECORD', fields=[sub2])
-        self.assertNotEqual(field, other)
-
-    def test___eq___hit(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
-        other = self._makeOne('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
-        self.assertEqual(field, other)
-
-    def test___eq___hit_case_diff_on_type(self):
-        field = self._makeOne('test', 'STRING', mode='REQUIRED',
-                              description='Testing')
-        other = self._makeOne('test', 'string', mode='REQUIRED',
-                              description='Testing')
-        self.assertEqual(field, other)
-
-    def test___eq___hit_w_fields(self):
-        sub1 = self._makeOne('sub1', 'STRING')
-        sub2 = self._makeOne('sub2', 'STRING')
-        field = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
-        other = self._makeOne('test', 'RECORD', fields=[sub1, sub2])
-        self.assertEqual(field, other)
-
-
 class _SchemaBase(object):
 
     def _verify_field(self, field, r_field):
@@ -592,20 +497,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(req['data'], SENT)
         self._verifyResourceProperties(table, RESOURCE)
 
-    def test_partition_type_setter_none_type(self):
-        from gcloud.bigquery.table import SchemaField
-        RESOURCE = self._makeResource()
-        conn = _Connection(RESOURCE)
-        client = _Client(project=self.PROJECT, connection=conn)
-        dataset = _Dataset(client)
-        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
-        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
-        table = self._makeOne(self.TABLE_NAME, dataset,
-                              schema=[full_name, age])
-        self.assertEqual(table.partitioning_type, None)
-        table.partitioning_type = None
-        self.assertEqual(table.partitioning_type, None)
-
     def test_partition_type_setter_bad_type(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
@@ -632,7 +523,36 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.partitioning_type = "HASH"
 
-    def test_partition_experiation_bad_type(self):
+    def test_partition_type_setter_w_known_value(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partitioning_type, None)
+        table.partitioning_type = 'DAY'
+        self.assertEqual(table.partitioning_type, 'DAY')
+
+    def test_partition_type_setter_w_none(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        table._properties['timePartitioning'] = {'type': 'DAY'}
+        table.partitioning_type = None
+        self.assertEqual(table.partitioning_type, None)
+        self.assertFalse('timePartitioning' in table._properties)
+
+    def test_partition_experation_bad_type(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -645,7 +565,7 @@ class TestTable(unittest.TestCase, _SchemaBase):
         with self.assertRaises(ValueError):
             table.partition_expiration = "NEVER"
 
-    def test_partition_expiration(self):
+    def test_partition_expiration_w_integer(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
@@ -660,11 +580,45 @@ class TestTable(unittest.TestCase, _SchemaBase):
         self.assertEqual(table.partitioning_type, "DAY")
         self.assertEqual(table.partition_expiration, 100)
 
-    def test_list_partitions(self):
+    def test_partition_expiration_w_none(self):
         from gcloud.bigquery.table import SchemaField
         RESOURCE = self._makeResource()
         conn = _Connection(RESOURCE)
         client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partition_expiration, None)
+        table._properties['timePartitioning'] = {
+            'type': 'DAY',
+            'expirationMs': 100,
+        }
+        table.partition_expiration = None
+        self.assertEqual(table.partitioning_type, "DAY")
+        self.assertEqual(table.partition_expiration, None)
+
+    def test_partition_expiration_w_none_no_partition_set(self):
+        from gcloud.bigquery.table import SchemaField
+        RESOURCE = self._makeResource()
+        conn = _Connection(RESOURCE)
+        client = _Client(project=self.PROJECT, connection=conn)
+        dataset = _Dataset(client)
+        full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
+        age = SchemaField('age', 'INTEGER', mode='REQUIRED')
+        table = self._makeOne(self.TABLE_NAME, dataset,
+                              schema=[full_name, age])
+        self.assertEqual(table.partition_expiration, None)
+        table.partition_expiration = None
+        self.assertEqual(table.partitioning_type, None)
+        self.assertEqual(table.partition_expiration, None)
+
+    def test_list_partitions(self):
+        from gcloud.bigquery.table import SchemaField
+        conn = _Connection()
+        client = _Client(project=self.PROJECT, connection=conn)
+        client._query_results = [(20160804, None), (20160805, None)]
         dataset = _Dataset(client)
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
         age = SchemaField('age', 'INTEGER', mode='REQUIRED')
@@ -1810,6 +1764,8 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
 
 class _Client(object):
 
+    _query_results = ()
+
     def __init__(self, project='project', connection=None):
         self.project = project
         self.connection = connection
@@ -1817,17 +1773,19 @@ class _Client(object):
     def job_from_resource(self, resource):  # pylint: disable=unused-argument
         return self._job
 
-    def run_sync_query(self, q=None):  # pylint: disable=unused-argument
-        return _Query(self)
+    def run_sync_query(self, query):
+        return _Query(query, self)
 
 
 class _Query(object):
 
-    def __init__(self, client=None):  # pylint: disable=unused-argument
+    def __init__(self, query, client):
+        self.query = query
         self.rows = []
+        self.client = client
 
     def run(self):
-        self.rows = [(20160804, None), (20160805, None)]
+        self.rows = self.client._query_results
 
 
 class _Dataset(object):

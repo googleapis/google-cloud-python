@@ -28,47 +28,11 @@ from gcloud.streaming.http_wrapper import Request
 from gcloud.streaming.http_wrapper import make_api_request
 from gcloud.streaming.transfer import RESUMABLE_UPLOAD
 from gcloud.streaming.transfer import Upload
+from gcloud.bigquery.schema import SchemaField
 from gcloud.bigquery._helpers import _rows_from_json
 
 
 _MARKER = object()
-
-
-class SchemaField(object):
-    """Describe a single field within a table schema.
-
-    :type name: str
-    :param name: the name of the field
-
-    :type field_type: str
-    :param field_type: the type of the field (one of 'STRING', 'INTEGER',
-                       'FLOAT', 'BOOLEAN', 'TIMESTAMP' or 'RECORD')
-
-    :type mode: str
-    :param mode: the type of the field (one of 'NULLABLE', 'REQUIRED',
-                 or 'REPEATED')
-
-    :type description: str
-    :param description: optional description for the field
-
-    :type fields: list of :class:`SchemaField`, or None
-    :param fields: subfields (requires ``field_type`` of 'RECORD').
-    """
-    def __init__(self, name, field_type, mode='NULLABLE', description=None,
-                 fields=None):
-        self.name = name
-        self.field_type = field_type
-        self.mode = mode
-        self.description = description
-        self.fields = fields
-
-    def __eq__(self, other):
-        return (
-            self.name == other.name and
-            self.field_type.lower() == other.field_type.lower() and
-            self.mode == other.mode and
-            self.description == other.description and
-            self.fields == other.fields)
 
 
 class Table(object):
@@ -245,13 +209,14 @@ class Table(object):
         :type value: str
         :param value: partitioning type only "DAY" is currently supported
         """
-        if not (isinstance(value, six.string_types)
-                and value.upper() == "DAY") and value is not None:
+        if value not in ('DAY', None):
             raise ValueError("value must be one of ['DAY', None]")
 
-        self._properties.setdefault('timePartitioning', {})
-        if value is not None:
-            self._properties['timePartitioning']['type'] = value.upper()
+        if value is None:
+            self._properties.pop('timePartitioning', None)
+        else:
+            time_part = self._properties.setdefault('timePartitioning', {})
+            time_part['type'] = value.upper()
 
     @property
     def partition_expiration(self):
@@ -259,11 +224,7 @@ class Table(object):
         :rtype: int, or ``NoneType``
         :returns: Returns the time in ms for partition expiration
         """
-        expiry = None
-        if "timePartitioning" in self._properties:
-            time_part = self._properties.get("timePartitioning")
-            expiry = time_part.get("expirationMs")
-        return expiry
+        return self._properties.get('timePartitioning', {}).get('expirationMs')
 
     @partition_expiration.setter
     def partition_expiration(self, value):
@@ -272,13 +233,19 @@ class Table(object):
         :type value: int
         :param value: partition experiation time in ms
         """
-        if not isinstance(value, int):
-            raise ValueError("must be an integer representing millisseconds")
-        try:
-            self._properties["timePartitioning"]["expirationMs"] = value
-        except KeyError:
-            self._properties['timePartitioning'] = {'type': "DAY"}
-            self._properties["timePartitioning"]["expirationMs"] = value
+        if not isinstance(value, (int, type(None))):
+            raise ValueError(
+                "must be an integer representing millisseconds or None")
+
+        if value is None:
+            if 'timePartitioning' in self._properties:
+                self._properties['timePartitioning'].pop('expirationMs')
+        else:
+            try:
+                self._properties['timePartitioning']['expirationMs'] = value
+            except KeyError:
+                self._properties['timePartitioning'] = {'type': 'DAY'}
+                self._properties['timePartitioning']['expirationMs'] = value
 
     @property
     def description(self):

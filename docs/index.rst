@@ -54,6 +54,7 @@
   bigquery-job
   bigquery-table
   bigquery-query
+  bigquery-schema
 
 .. toctree::
   :maxdepth: 0

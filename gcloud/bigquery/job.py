@@ -19,7 +19,7 @@ import six
 from gcloud.exceptions import NotFound
 from gcloud._helpers import _datetime_from_microseconds
 from gcloud.bigquery.dataset import Dataset
-from gcloud.bigquery.table import SchemaField
+from gcloud.bigquery.schema import SchemaField
 from gcloud.bigquery.table import Table
 from gcloud.bigquery.table import _build_schema_resource
 from gcloud.bigquery.table import _parse_schema_resource

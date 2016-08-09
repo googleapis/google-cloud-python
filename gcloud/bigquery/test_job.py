@@ -332,7 +332,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self.assertTrue(job.write_disposition is None)
 
     def test_ctor_w_schema(self):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         full_name = SchemaField('full_name', 'STRING', mode='REQUIRED')
@@ -349,7 +349,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             job.schema = object()
 
     def test_schema_setter_invalid_field(self):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -358,7 +358,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
             job.schema = [full_name, object()]
 
     def test_schema_setter(self):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         client = _Client(self.PROJECT)
         table = _Table()
         job = self._makeOne(self.JOB_NAME, table, [self.SOURCE1], client)
@@ -523,7 +523,7 @@ class TestLoadTableFromStorageJob(unittest.TestCase, _Base):
         self._verifyResourceProperties(job, RESOURCE)
 
     def test_begin_w_alternate_client(self):
-        from gcloud.bigquery.table import SchemaField
+        from gcloud.bigquery.schema import SchemaField
         PATH = 'projects/%s/jobs' % self.PROJECT
         RESOURCE = self._makeResource(ended=True)
         LOAD_CONFIGURATION = {
