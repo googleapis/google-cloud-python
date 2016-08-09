@@ -1,231 +1,251 @@
-import abc
+import grpc
 from grpc.beta import implementations as beta_implementations
-from grpc.early_adopter import implementations as early_adopter_implementations
-from grpc.framework.alpha import utilities as alpha_utilities
+from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality
 from grpc.framework.interfaces.face import utilities as face_utilities
-class EarlyAdopterDatastoreServicer(object):
-  """<fill me in later!>"""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
+
+
+class DatastoreStub(object):
+  """Each RPC normalizes the partition IDs of the keys in its input entities,
+  and always returns entities with keys with normalized partition IDs.
+  This applies to all keys and entities, including those in values, except keys
+  with both an empty path and an empty or unset partition ID. Normalization of
+  input keys sets the project ID (if not already set) to the project ID from
+  the request.
+
+
+  """
+
+  def __init__(self, channel):
+    """Constructor.
+
+    Args:
+      channel: A grpc.Channel.
+    """
+    self.Lookup = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/Lookup',
+        request_serializer=LookupRequest.SerializeToString,
+        response_deserializer=LookupResponse.FromString,
+        )
+    self.RunQuery = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/RunQuery',
+        request_serializer=RunQueryRequest.SerializeToString,
+        response_deserializer=RunQueryResponse.FromString,
+        )
+    self.BeginTransaction = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/BeginTransaction',
+        request_serializer=BeginTransactionRequest.SerializeToString,
+        response_deserializer=BeginTransactionResponse.FromString,
+        )
+    self.Commit = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/Commit',
+        request_serializer=CommitRequest.SerializeToString,
+        response_deserializer=CommitResponse.FromString,
+        )
+    self.Rollback = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/Rollback',
+        request_serializer=RollbackRequest.SerializeToString,
+        response_deserializer=RollbackResponse.FromString,
+        )
+    self.AllocateIds = channel.unary_unary(
+        '/google.datastore.v1beta3.Datastore/AllocateIds',
+        request_serializer=AllocateIdsRequest.SerializeToString,
+        response_deserializer=AllocateIdsResponse.FromString,
+        )
+
+
+class DatastoreServicer(object):
+  """Each RPC normalizes the partition IDs of the keys in its input entities,
+  and always returns entities with keys with normalized partition IDs.
+  This applies to all keys and entities, including those in values, except keys
+  with both an empty path and an empty or unset partition ID. Normalization of
+  input keys sets the project ID (if not already set) to the project ID from
+  the request.
+
+
+  """
+
   def Lookup(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Looks up entities by key.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def RunQuery(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Queries for entities.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def BeginTransaction(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Begins a new transaction.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def Commit(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Commits a transaction, optionally creating, deleting or modifying some
+    entities.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def Rollback(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Rolls back a transaction.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
   def AllocateIds(self, request, context):
-    raise NotImplementedError()
-class EarlyAdopterDatastoreServer(object):
-  """<fill me in later!>"""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
-  def start(self):
-    raise NotImplementedError()
-  @abc.abstractmethod
-  def stop(self):
-    raise NotImplementedError()
-class EarlyAdopterDatastoreStub(object):
-  """<fill me in later!>"""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
-  def Lookup(self, request):
-    raise NotImplementedError()
-  Lookup.async = None
-  @abc.abstractmethod
-  def RunQuery(self, request):
-    raise NotImplementedError()
-  RunQuery.async = None
-  @abc.abstractmethod
-  def BeginTransaction(self, request):
-    raise NotImplementedError()
-  BeginTransaction.async = None
-  @abc.abstractmethod
-  def Commit(self, request):
-    raise NotImplementedError()
-  Commit.async = None
-  @abc.abstractmethod
-  def Rollback(self, request):
-    raise NotImplementedError()
-  Rollback.async = None
-  @abc.abstractmethod
-  def AllocateIds(self, request):
-    raise NotImplementedError()
-  AllocateIds.async = None
-def early_adopter_create_Datastore_server(servicer, port, private_key=None, certificate_chain=None):
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  method_service_descriptions = {
-    "AllocateIds": alpha_utilities.unary_unary_service_description(
-      servicer.AllocateIds,
-      gcloud.datastore._generated.datastore_pb2.AllocateIdsRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.AllocateIdsResponse.SerializeToString,
-    ),
-    "BeginTransaction": alpha_utilities.unary_unary_service_description(
-      servicer.BeginTransaction,
-      gcloud.datastore._generated.datastore_pb2.BeginTransactionRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.BeginTransactionResponse.SerializeToString,
-    ),
-    "Commit": alpha_utilities.unary_unary_service_description(
-      servicer.Commit,
-      gcloud.datastore._generated.datastore_pb2.CommitRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.CommitResponse.SerializeToString,
-    ),
-    "Lookup": alpha_utilities.unary_unary_service_description(
-      servicer.Lookup,
-      gcloud.datastore._generated.datastore_pb2.LookupRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.LookupResponse.SerializeToString,
-    ),
-    "Rollback": alpha_utilities.unary_unary_service_description(
-      servicer.Rollback,
-      gcloud.datastore._generated.datastore_pb2.RollbackRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.RollbackResponse.SerializeToString,
-    ),
-    "RunQuery": alpha_utilities.unary_unary_service_description(
-      servicer.RunQuery,
-      gcloud.datastore._generated.datastore_pb2.RunQueryRequest.FromString,
-      gcloud.datastore._generated.datastore_pb2.RunQueryResponse.SerializeToString,
-    ),
+    """Allocates IDs for the given keys, which is useful for referencing an entity
+    before it is inserted.
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+
+def add_DatastoreServicer_to_server(servicer, server):
+  rpc_method_handlers = {
+      'Lookup': grpc.unary_unary_rpc_method_handler(
+          servicer.Lookup,
+          request_deserializer=LookupRequest.FromString,
+          response_serializer=LookupResponse.SerializeToString,
+      ),
+      'RunQuery': grpc.unary_unary_rpc_method_handler(
+          servicer.RunQuery,
+          request_deserializer=RunQueryRequest.FromString,
+          response_serializer=RunQueryResponse.SerializeToString,
+      ),
+      'BeginTransaction': grpc.unary_unary_rpc_method_handler(
+          servicer.BeginTransaction,
+          request_deserializer=BeginTransactionRequest.FromString,
+          response_serializer=BeginTransactionResponse.SerializeToString,
+      ),
+      'Commit': grpc.unary_unary_rpc_method_handler(
+          servicer.Commit,
+          request_deserializer=CommitRequest.FromString,
+          response_serializer=CommitResponse.SerializeToString,
+      ),
+      'Rollback': grpc.unary_unary_rpc_method_handler(
+          servicer.Rollback,
+          request_deserializer=RollbackRequest.FromString,
+          response_serializer=RollbackResponse.SerializeToString,
+      ),
+      'AllocateIds': grpc.unary_unary_rpc_method_handler(
+          servicer.AllocateIds,
+          request_deserializer=AllocateIdsRequest.FromString,
+          response_serializer=AllocateIdsResponse.SerializeToString,
+      ),
   }
-  return early_adopter_implementations.server("google.datastore.v1beta3.Datastore", method_service_descriptions, port, private_key=private_key, certificate_chain=certificate_chain)
-def early_adopter_create_Datastore_stub(host, port, metadata_transformer=None, secure=False, root_certificates=None, private_key=None, certificate_chain=None, server_host_override=None):
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  method_invocation_descriptions = {
-    "AllocateIds": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.AllocateIdsRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.AllocateIdsResponse.FromString,
-    ),
-    "BeginTransaction": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.BeginTransactionRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.BeginTransactionResponse.FromString,
-    ),
-    "Commit": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.CommitRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.CommitResponse.FromString,
-    ),
-    "Lookup": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.LookupRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.LookupResponse.FromString,
-    ),
-    "Rollback": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.RollbackRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.RollbackResponse.FromString,
-    ),
-    "RunQuery": alpha_utilities.unary_unary_invocation_description(
-      gcloud.datastore._generated.datastore_pb2.RunQueryRequest.SerializeToString,
-      gcloud.datastore._generated.datastore_pb2.RunQueryResponse.FromString,
-    ),
-  }
-  return early_adopter_implementations.stub("google.datastore.v1beta3.Datastore", method_invocation_descriptions, host, port, metadata_transformer=metadata_transformer, secure=secure, root_certificates=root_certificates, private_key=private_key, certificate_chain=certificate_chain, server_host_override=server_host_override)
+  generic_handler = grpc.method_handlers_generic_handler(
+      'google.datastore.v1beta3.Datastore', rpc_method_handlers)
+  server.add_generic_rpc_handlers((generic_handler,))
+
 
 class BetaDatastoreServicer(object):
-  """<fill me in later!>"""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
+  """Each RPC normalizes the partition IDs of the keys in its input entities,
+  and always returns entities with keys with normalized partition IDs.
+  This applies to all keys and entities, including those in values, except keys
+  with both an empty path and an empty or unset partition ID. Normalization of
+  input keys sets the project ID (if not already set) to the project ID from
+  the request.
+
+
+  """
   def Lookup(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Looks up entities by key.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def RunQuery(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Queries for entities.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def BeginTransaction(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Begins a new transaction.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def Commit(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Commits a transaction, optionally creating, deleting or modifying some
+    entities.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def Rollback(self, request, context):
-    raise NotImplementedError()
-  @abc.abstractmethod
+    """Rolls back a transaction.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
   def AllocateIds(self, request, context):
-    raise NotImplementedError()
+    """Allocates IDs for the given keys, which is useful for referencing an entity
+    before it is inserted.
+    """
+    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+
 
 class BetaDatastoreStub(object):
-  """The interface to which stubs will conform."""
-  __metaclass__ = abc.ABCMeta
-  @abc.abstractmethod
-  def Lookup(self, request, timeout):
+  """Each RPC normalizes the partition IDs of the keys in its input entities,
+  and always returns entities with keys with normalized partition IDs.
+  This applies to all keys and entities, including those in values, except keys
+  with both an empty path and an empty or unset partition ID. Normalization of
+  input keys sets the project ID (if not already set) to the project ID from
+  the request.
+
+
+  """
+  def Lookup(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Looks up entities by key.
+    """
     raise NotImplementedError()
   Lookup.future = None
-  @abc.abstractmethod
-  def RunQuery(self, request, timeout):
+  def RunQuery(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Queries for entities.
+    """
     raise NotImplementedError()
   RunQuery.future = None
-  @abc.abstractmethod
-  def BeginTransaction(self, request, timeout):
+  def BeginTransaction(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Begins a new transaction.
+    """
     raise NotImplementedError()
   BeginTransaction.future = None
-  @abc.abstractmethod
-  def Commit(self, request, timeout):
+  def Commit(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Commits a transaction, optionally creating, deleting or modifying some
+    entities.
+    """
     raise NotImplementedError()
   Commit.future = None
-  @abc.abstractmethod
-  def Rollback(self, request, timeout):
+  def Rollback(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Rolls back a transaction.
+    """
     raise NotImplementedError()
   Rollback.future = None
-  @abc.abstractmethod
-  def AllocateIds(self, request, timeout):
+  def AllocateIds(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    """Allocates IDs for the given keys, which is useful for referencing an entity
+    before it is inserted.
+    """
     raise NotImplementedError()
   AllocateIds.future = None
 
+
 def beta_create_Datastore_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
   request_deserializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): gcloud.datastore._generated.datastore_pb2.AllocateIdsRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): gcloud.datastore._generated.datastore_pb2.BeginTransactionRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): gcloud.datastore._generated.datastore_pb2.CommitRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): gcloud.datastore._generated.datastore_pb2.LookupRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): gcloud.datastore._generated.datastore_pb2.RollbackRequest.FromString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): gcloud.datastore._generated.datastore_pb2.RunQueryRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackRequest.FromString,
+    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryRequest.FromString,
   }
   response_serializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): gcloud.datastore._generated.datastore_pb2.AllocateIdsResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): gcloud.datastore._generated.datastore_pb2.BeginTransactionResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): gcloud.datastore._generated.datastore_pb2.CommitResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): gcloud.datastore._generated.datastore_pb2.LookupResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): gcloud.datastore._generated.datastore_pb2.RollbackResponse.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): gcloud.datastore._generated.datastore_pb2.RunQueryResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackResponse.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryResponse.SerializeToString,
   }
   method_implementations = {
     ('google.datastore.v1beta3.Datastore', 'AllocateIds'): face_utilities.unary_unary_inline(servicer.AllocateIds),
@@ -238,34 +258,23 @@ def beta_create_Datastore_server(servicer, pool=None, pool_size=None, default_ti
   server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
   return beta_implementations.server(method_implementations, options=server_options)
 
+
 def beta_create_Datastore_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
-  import gcloud.datastore._generated.datastore_pb2
   request_serializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): gcloud.datastore._generated.datastore_pb2.AllocateIdsRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): gcloud.datastore._generated.datastore_pb2.BeginTransactionRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): gcloud.datastore._generated.datastore_pb2.CommitRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): gcloud.datastore._generated.datastore_pb2.LookupRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): gcloud.datastore._generated.datastore_pb2.RollbackRequest.SerializeToString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): gcloud.datastore._generated.datastore_pb2.RunQueryRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackRequest.SerializeToString,
+    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryRequest.SerializeToString,
   }
   response_deserializers = {
-    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): gcloud.datastore._generated.datastore_pb2.AllocateIdsResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): gcloud.datastore._generated.datastore_pb2.BeginTransactionResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Commit'): gcloud.datastore._generated.datastore_pb2.CommitResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Lookup'): gcloud.datastore._generated.datastore_pb2.LookupResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'Rollback'): gcloud.datastore._generated.datastore_pb2.RollbackResponse.FromString,
-    ('google.datastore.v1beta3.Datastore', 'RunQuery'): gcloud.datastore._generated.datastore_pb2.RunQueryResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'AllocateIds'): AllocateIdsResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'BeginTransaction'): BeginTransactionResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Commit'): CommitResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Lookup'): LookupResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'Rollback'): RollbackResponse.FromString,
+    ('google.datastore.v1beta3.Datastore', 'RunQuery'): RunQueryResponse.FromString,
   }
   cardinalities = {
     'AllocateIds': cardinality.Cardinality.UNARY_UNARY,
