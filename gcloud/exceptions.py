@@ -151,6 +151,11 @@ class MethodNotImplemented(ServerError):
     code = 501
 
 
+class BadGateway(ServerError):
+    """Exception mapping a '502 Bad Gateway' response."""
+    code = 502
+
+
 class ServiceUnavailable(ServerError):
     """Exception mapping a '503 Service Unavailable' response."""
     code = 503
