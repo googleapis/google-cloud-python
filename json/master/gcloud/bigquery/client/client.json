@@ -20,21 +20,21 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " Table into which data is to be copied.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " tables to be copied.", 
           "name": "sources", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of gcloud.bigquery.table.Table"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be copied.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -90,12 +90,12 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " table to be extracted.", 
+          "name": "source", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -108,12 +108,12 @@
           ]
         }, 
         {
-          "description": " table to be extracted.", 
-          "name": "source", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "str"
           ]
         }
       ], 
@@ -178,15 +178,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -196,8 +187,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -211,6 +202,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -301,21 +301,21 @@
       "name": "list_jobs", 
       "params": [
         {
-          "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
-          "name": "state_filter", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " if true, include jobs owned by all users in the project.", 
           "name": "all_users", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
+          "name": "state_filter", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -354,21 +354,21 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " Table into which data is to be loaded.", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
-          ]
-        }, 
-        {
           "description": " URIs of data files to be loaded; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "source_uris", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "sequence of string"
+          ]
+        }, 
+        {
+          "description": " Table into which data is to be loaded.", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [

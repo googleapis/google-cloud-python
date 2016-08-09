@@ -129,15 +129,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -147,8 +138,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -162,6 +153,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -181,6 +181,15 @@
       "id": "gcloud.datastore.client.Client.get", 
       "name": "get", 
       "params": [
+        {
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
+          "name": "deferred", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
         {
           "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
           "name": "transaction", 
@@ -207,15 +216,6 @@
           "types": [
             "list"
           ]
-        }, 
-        {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
-          "name": "deferred", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
-          ]
         }
       ], 
       "returns": [
@@ -234,6 +234,15 @@
       "id": "gcloud.datastore.client.Client.get_multi", 
       "name": "get_multi", 
       "params": [
+        {
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "deferred", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "list"
+          ]
+        }, 
         {
           "description": " (Optional) Transaction to use for read consistency. If not passed, uses current transaction, if set.", 
           "name": "transaction", 
@@ -255,15 +264,6 @@
         {
           "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
           "name": "missing", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "list"
-          ]
-        }, 
-        {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [

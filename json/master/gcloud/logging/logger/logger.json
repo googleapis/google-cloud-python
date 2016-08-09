@@ -56,15 +56,6 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
           "name": "projects", 
           "nullable": null, 
@@ -80,6 +71,15 @@
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {

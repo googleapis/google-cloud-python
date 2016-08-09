@@ -224,15 +224,6 @@
           ]
         }, 
         {
-          "description": " Name of the record set.", 
-          "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " resource data for the RR", 
           "name": "rrdatas", 
           "nullable": null, 
@@ -244,6 +235,15 @@
         {
           "description": " RR type", 
           "name": "record_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Name of the record set.", 
+          "name": "name", 
           "nullable": null, 
           "optional": null, 
           "types": [

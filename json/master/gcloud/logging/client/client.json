@@ -64,15 +64,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -82,8 +73,8 @@
           ]
         }, 
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -97,6 +88,15 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -117,15 +117,6 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " One of :data:gcloud.logging.ASCENDING or", 
-          "name": "order_by", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
           "name": "projects", 
           "nullable": null, 
@@ -141,6 +132,15 @@
           "optional": null, 
           "types": [
             "int"
+          ]
+        }, 
+        {
+          "description": " One of :data:gcloud.logging.ASCENDING or", 
+          "name": "order_by", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -275,6 +275,15 @@
       "name": "metric", 
       "params": [
         {
+          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " the advanced logs filter expression defining the entries tracked by the metric. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
           "name": "filter_", 
           "nullable": null, 
@@ -286,15 +295,6 @@
         {
           "description": " the name of the metric to be constructed.", 
           "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
-          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [

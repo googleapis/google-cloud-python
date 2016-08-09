@@ -99,8 +99,8 @@
           ]
         }, 
         {
-          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
-          "name": "base_url", 
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -108,8 +108,8 @@
           ]
         }, 
         {
-          "description": " The project to connect to. This is usually your project name in the cloud console.", 
-          "name": "project", 
+          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
+          "name": "base_url", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -178,15 +178,6 @@
       "name": "lookup", 
       "params": [
         {
-          "description": " The keys to retrieve from the datastore.", 
-          "name": "key_pbs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            ""
-          ]
-        }, 
-        {
           "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
           "name": "eventual", 
           "nullable": null, 
@@ -202,6 +193,15 @@
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The keys to retrieve from the datastore.", 
+          "name": "key_pbs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            ""
           ]
         }, 
         {
@@ -268,21 +268,21 @@
           ]
         }, 
         {
-          "description": " The Protobuf representing the query to run.", 
-          "name": "query_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
           "description": " The project over which to run the query.", 
           "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
           ]
         }
       ], 

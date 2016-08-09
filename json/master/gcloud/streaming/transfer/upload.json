@@ -39,6 +39,15 @@
           ]
         }, 
         {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or None"
+          ]
+        }, 
+        {
           "description": " MIMEtype of the file being uploaded", 
           "name": "mime_type", 
           "nullable": null, 
@@ -54,15 +63,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or None"
           ]
         }
       ], 
@@ -83,24 +83,6 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " Size of the file being uploaded", 
-          "name": "total_size", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or None"
-          ]
-        }, 
-        {
-          "description": " MIMEtype of the file being uploaded", 
-          "name": "mime_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -116,6 +98,24 @@
           "optional": null, 
           "types": [
             "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " Size of the file being uploaded", 
+          "name": "total_size", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or None"
+          ]
+        }, 
+        {
+          "description": " MIMEtype of the file being uploaded", 
+          "name": "mime_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }, 
         {
