@@ -81,17 +81,8 @@
       "name": "build_api_url", 
       "params": [
         {
-          "description": " The project to connect to. This is usually your project name in the cloud console.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
-          "name": "base_url", 
+          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -108,8 +99,17 @@
           ]
         }, 
         {
-          "description": " The version of the API to connect to. You shouldn't have to provide this.", 
-          "name": "api_version", 
+          "description": " The base URL where the API lives. You shouldn't have to provide this.", 
+          "name": "base_url", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The project to connect to. This is usually your project name in the cloud console.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -134,12 +134,12 @@
       "name": "commit", 
       "params": [
         {
-          "description": " The project to which the transaction applies.", 
-          "name": "project", 
+          "description": " The protobuf with the mutations being committed.", 
+          "name": "request", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
           ]
         }, 
         {
@@ -152,12 +152,12 @@
           ]
         }, 
         {
-          "description": " The protobuf with the mutations being committed.", 
-          "name": "request", 
+          "description": " The project to which the transaction applies.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/datastore/connection/connection/_generated/datastore_pb2/commitrequest\">gcloud.datastore.connection.Connection._generated.datastore_pb2.CommitRequest</a>"
+            "string"
           ]
         }
       ], 
@@ -187,15 +187,6 @@
           ]
         }, 
         {
-          "description": " The project to look up the keys in.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " If False (the default), request <code>STRONG</code> read consistency. If True, request <code>EVENTUAL</code> read consistency.", 
           "name": "eventual", 
           "nullable": null, 
@@ -207,6 +198,15 @@
         {
           "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
           "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The project to look up the keys in.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -241,26 +241,8 @@
       "name": "run_query", 
       "params": [
         {
-          "description": " The Protobuf representing the query to run.", 
-          "name": "query_pb", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
-          ]
-        }, 
-        {
-          "description": " The project over which to run the query.", 
-          "name": "project", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
-          "name": "transaction_id", 
+          "description": " The namespace over which to run the query.", 
+          "name": "namespace", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -277,8 +259,26 @@
           ]
         }, 
         {
-          "description": " The namespace over which to run the query.", 
-          "name": "namespace", 
+          "description": " If passed, make the request in the scope of the given transaction. Incompatible with <code>eventual==True</code>.", 
+          "name": "transaction_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The Protobuf representing the query to run.", 
+          "name": "query_pb", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/datastore/_generated/query_pb2/query\">gcloud.datastore._generated.query_pb2.Query</a>"
+          ]
+        }, 
+        {
+          "description": " The project over which to run the query.", 
+          "name": "project", 
           "nullable": null, 
           "optional": null, 
           "types": [

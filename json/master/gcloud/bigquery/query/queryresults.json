@@ -20,6 +20,24 @@
       "name": "fetch_data", 
       "params": [
         {
+          "description": " zero-based index of starting row", 
+          "name": "start_index", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " timeout, in milliseconds, to wait for query to complete", 
+          "name": "timeout_ms", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
           "name": "client", 
           "nullable": null, 
@@ -44,24 +62,6 @@
           "optional": null, 
           "types": [
             "string or NoneType"
-          ]
-        }, 
-        {
-          "description": " zero-based index of starting row", 
-          "name": "start_index", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
-          "description": " timeout, in milliseconds, to wait for query to complete", 
-          "name": "timeout_ms", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
           ]
         }
       ], 
