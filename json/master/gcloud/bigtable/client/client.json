@@ -36,6 +36,15 @@
       "name": "from_service_account_json", 
       "params": [
         {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -51,15 +60,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
           ]
         }
       ], 
@@ -80,12 +80,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -98,21 +98,21 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -133,12 +133,12 @@
       "name": "instance", 
       "params": [
         {
-          "description": " The ID of the instance.", 
-          "name": "instance_id", 
+          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
+          "name": "serve_nodes", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "int"
           ]
         }, 
         {
@@ -151,21 +151,21 @@
           ]
         }, 
         {
-          "description": " (Optional) The number of nodes in the instance's cluster; used to set up the instance's cluster.", 
-          "name": "serve_nodes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " location name, in form projects/<project>/locations/<location>; used to set up the instance's cluster.", 
           "name": "location", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The ID of the instance.", 
+          "name": "instance_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
