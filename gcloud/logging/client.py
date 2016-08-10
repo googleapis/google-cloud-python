@@ -47,7 +47,8 @@ from gcloud.logging.metric import Metric
 from gcloud.logging.sink import Sink
 
 
-_USE_GAX = _HAVE_GAX and (os.environ.get('GCLOUD_ENABLE_GAX') is not None)
+_DISABLE_GAX = os.getenv('GCLOUD_DISABLE_GAX', False)
+_USE_GAX = _HAVE_GAX and not _DISABLE_GAX
 
 
 class Client(JSONClient):
