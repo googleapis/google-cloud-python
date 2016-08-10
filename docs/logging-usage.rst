@@ -13,6 +13,12 @@ Authentication and Configuration
   to interact with. If you are Google App Engine or Google Compute Engine
   this will be detected automatically.
 
+- The library now enables the ``gRPC`` transport for the logging API by
+  default, assuming that the required dependencies are installed and
+  importable.  To *disable* this transport, set the
+  :envvar:`GCLOUD_DISABLE_GAX` environment variable to a non-empty string,
+  e.g.:  ``$ export GCLOUD_DISABLE_GAX=1``.
+
 - After configuring your environment, create a
   :class:`Client <gcloud.logging.client.Client>`
 
