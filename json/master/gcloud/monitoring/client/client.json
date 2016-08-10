@@ -98,6 +98,15 @@
       "name": "from_service_account_json", 
       "params": [
         {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
@@ -113,15 +122,6 @@
           "optional": null, 
           "types": [
             "dict"
-          ]
-        }, 
-        {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
           ]
         }
       ], 
@@ -142,17 +142,17 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "tuple"
           ]
         }, 
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -169,12 +169,12 @@
           ]
         }, 
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "string"
           ]
         }
       ], 
@@ -195,15 +195,6 @@
       "name": "group", 
       "params": [
         {
-          "description": " The filter string used to determine which monitored resources belong to this group.", 
-          "name": "filter_string", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " The ID of the group.", 
           "name": "group_id", 
           "nullable": null, 
@@ -222,6 +213,15 @@
           ]
         }, 
         {
+          "description": " The ID of the group's parent, if it has one.", 
+          "name": "parent_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
           "description": " A user-assigned name for this group, used only for display purposes.", 
           "name": "display_name", 
           "nullable": null, 
@@ -231,8 +231,8 @@
           ]
         }, 
         {
-          "description": " The ID of the group's parent, if it has one.", 
-          "name": "parent_id", 
+          "description": " The filter string used to determine which monitored resources belong to this group.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -273,8 +273,8 @@
       "name": "list_metric_descriptors", 
       "params": [
         {
-          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
-          "name": "filter_string", 
+          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
+          "name": "type_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -282,8 +282,8 @@
           ]
         }, 
         {
-          "description": " An optional prefix constraining the selected metric types. This adds metric.type = starts_with(\"<prefix>\") to the filter.", 
-          "name": "type_prefix", 
+          "description": " An optional filter expression describing the metric descriptors to be returned. See the filter documentation_.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -334,17 +334,8 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " The value type of the metric. It must be one of", 
-          "name": "value_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -361,8 +352,8 @@
           ]
         }, 
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -388,8 +379,17 @@
           ]
         }, 
         {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
+          "description": " The value type of the metric. It must be one of", 
+          "name": "value_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -423,21 +423,12 @@
           ]
         }, 
         {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "integer"
-          ]
-        }, 
-        {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
           ]
         }, 
         {
@@ -450,8 +441,17 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
           "nullable": null, 
           "optional": null, 
           "types": [
