@@ -56,6 +56,15 @@
       "name": "list_entries", 
       "params": [
         {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
+        {
           "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
           "nullable": null, 
@@ -80,15 +89,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
           ]
         }, 
         {

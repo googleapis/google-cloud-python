@@ -20,17 +20,26 @@
       "name": "api_request", 
       "params": [
         {
-          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
-          "name": "query_params", 
+          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
+          "name": "_target_object", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict or list"
+            "object or NoneType"
           ]
         }, 
         {
-          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
-          "name": "method", 
+          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
+          "name": "expect_json", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "bool"
+          ]
+        }, 
+        {
+          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -56,30 +65,12 @@
           ]
         }, 
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
-          "name": "api_version", 
+          "description": " A dictionary of keys and values (or list of key-value pairs) to insert into the query string of the URL.", 
+          "name": "query_params", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The path to the resource (ie, '/b/bucket-name'). Required.", 
-          "name": "path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " If True, this method will try to parse the response as JSON and raise an exception if that cannot be done. Default is True.", 
-          "name": "expect_json", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "bool"
+            "dict or list"
           ]
         }, 
         {
@@ -92,12 +83,21 @@
           ]
         }, 
         {
-          "description": " Protected argument to be used by library callers. This can allow custom behavior, for example, to defer an HTTP request and complete initialization of the object at a later time.", 
-          "name": "_target_object", 
+          "description": " The HTTP method name (ie, GET, POST, etc). Required.", 
+          "name": "method", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "object or NoneType"
+            "string"
+          ]
+        }, 
+        {
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library. Default is the latest API version supported by gcloud-python.", 
+          "name": "api_version", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -136,8 +136,8 @@
           ]
         }, 
         {
-          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
-          "name": "api_version", 
+          "description": " The path to the resource (ie, '/b/bucket-name').", 
+          "name": "path", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -145,8 +145,8 @@
           ]
         }, 
         {
-          "description": " The path to the resource (ie, '/b/bucket-name').", 
-          "name": "path", 
+          "description": " The version of the API to call. Typically you shouldn't provide this and instead use the default for the library.", 
+          "name": "api_version", 
           "nullable": null, 
           "optional": null, 
           "types": [

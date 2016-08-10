@@ -20,12 +20,12 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }, 
         {
@@ -38,12 +38,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }
       ], 
@@ -64,24 +64,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -93,6 +75,24 @@
         {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -116,6 +116,15 @@
       "id": "gcloud.logging.client.Client.list_entries", 
       "name": "list_entries", 
       "params": [
+        {
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " strings"
+          ]
+        }, 
         {
           "description": " maximum number of entries to return, If not passed, defaults to a value set by the API.", 
           "name": "page_size", 
@@ -144,15 +153,6 @@
           ]
         }, 
         {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " strings"
-          ]
-        }, 
-        {
           "description": " One of :data:gcloud.logging.ASCENDING or", 
           "name": "order_by", 
           "nullable": null, 
@@ -169,7 +169,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L158", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L159", 
       "type": "instance"
     }, 
     {
@@ -204,7 +204,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L275", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L276", 
       "type": "instance"
     }, 
     {
@@ -239,7 +239,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L226", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L227", 
       "type": "instance"
     }, 
     {
@@ -265,7 +265,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L123", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L124", 
       "type": "instance"
     }, 
     {
@@ -309,7 +309,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L253", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L254", 
       "type": "instance"
     }, 
     {
@@ -318,6 +318,15 @@
       "id": "gcloud.logging.client.Client.sink", 
       "name": "sink", 
       "params": [
+        {
+          "description": " destination URI for the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via", 
+          "name": "destination", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
         {
           "description": " (optional) the advanced logs filter expression defining the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via Sink.reload.", 
           "name": "filter_", 
@@ -335,15 +344,6 @@
           "types": [
             "str"
           ]
-        }, 
-        {
-          "description": " destination URI for the entries exported by the sink. If not passed, the instance should already exist, to be refreshed via", 
-          "name": "destination", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
         }
       ], 
       "returns": [
@@ -353,7 +353,7 @@
           ]
         }
       ], 
-      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L203", 
+      "source": "/home/travis/build/GoogleCloudPlatform/gcloud-python/.tox/json-docs/lib/python2.7/site-packages/gcloud/logging/client.py/gcloud/logging/client.py#L204", 
       "type": "instance"
     }
   ], 
