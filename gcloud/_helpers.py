@@ -29,6 +29,10 @@ try:
     from google.appengine.api import app_identity
 except ImportError:
     app_identity = None
+try:
+    from grpc.beta import implementations
+except ImportError:  # pragma: NO COVER
+    implementations = None
 import six
 from six.moves.http_client import HTTPConnection
 from six.moves import configparser
@@ -520,6 +524,76 @@ def _name_from_project_path(path, project, template):
                 'project from resource(%s).' % (project, found_project))
 
     return match.group('name')
+
+
+class MetadataPlugin(object):
+    """Callable class to transform metadata for gRPC requests.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :param credentials: The OAuth2 Credentials to use for creating
+                        access tokens.
+
+    :type user_agent: str
+    :param user_agent: The user agent to be used with API requests.
+    """
+
+    def __init__(self, credentials, user_agent):
+        self._credentials = credentials
+        self._user_agent = user_agent
+
+    def __call__(self, unused_context, callback):
+        """Adds authorization header to request metadata.
+
+        :type unused_context: object
+        :param unused_context: A gRPC context which is not needed
+                               to modify headers.
+
+        :type callback: callable
+        :param callback: A callback which will use the headers.
+        """
+        access_token = self._credentials.get_access_token().access_token
+        headers = [
+            ('Authorization', 'Bearer ' + access_token),
+            ('User-agent', self._user_agent),
+        ]
+        callback(headers, None)
+
+
+def make_stub(credentials, user_agent, stub_factory, host, port):
+    """Makes a stub for an RPC service.
+
+    Uses / depends on the beta implementation of gRPC.
+
+    :type credentials: :class:`oauth2client.client.OAuth2Credentials`
+    :param credentials: The OAuth2 Credentials to use for creating
+                        access tokens.
+
+    :type user_agent: str
+    :param user_agent: (Optional) The user agent to be used with API requests.
+
+    :type stub_factory: callable
+    :param stub_factory: A factory which will create a gRPC stub for
+                         a given service.
+
+    :type host: str
+    :param host: The host for the service.
+
+    :type port: int
+    :param port: The port for the service.
+
+    :rtype: :class:`grpc.beta._stub._AutoIntermediary`
+    :returns: The stub object used to make gRPC requests to a given API.
+    """
+    # Leaving the first argument to ssl_channel_credentials() as None
+    # loads root certificates from `grpc/_adapter/credentials/roots.pem`.
+    transport_creds = implementations.ssl_channel_credentials(None, None, None)
+    custom_metadata_plugin = MetadataPlugin(credentials, user_agent)
+    auth_creds = implementations.metadata_call_credentials(
+        custom_metadata_plugin, name='google_creds')
+    channel_creds = implementations.composite_channel_credentials(
+        transport_creds, auth_creds)
+    channel = implementations.secure_channel(host, port, channel_creds)
+    return stub_factory(channel)
 
 
 try:
