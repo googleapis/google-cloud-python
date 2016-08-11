@@ -151,6 +151,7 @@ class TestPubsub(unittest.TestCase):
         self.assertEqual(len(created), len(subscriptions_to_create))
 
     def test_message_pull_mode_e2e(self):
+        import operator
         topic = Config.CLIENT.topic(DEFAULT_TOPIC_NAME,
                                     timestamp_messages=True)
         self.assertFalse(topic.exists())
@@ -185,10 +186,8 @@ class TestPubsub(unittest.TestCase):
         retry = RetryInstanceState(hoover.done)
         retry(hoover.suction)()
 
-        def _by_timestamp(message):
-            return message.timestamp
-
-        message1, message2 = sorted(hoover.received, key=_by_timestamp)
+        message1, message2 = sorted(hoover.received,
+                                    key=operator.attrgetter('timestamp'))
         self.assertEqual(message1.data, MESSAGE_1)
         self.assertEqual(message1.attributes['extra'], EXTRA_1)
         self.assertEqual(message2.data, MESSAGE_2)
