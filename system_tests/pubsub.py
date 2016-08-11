@@ -243,6 +243,7 @@ class TestPubsub(unittest.TestCase):
             self.assertEqual(new_policy.viewers, policy.viewers)
 
     def test_fetch_delete_subscription_w_deleted_topic(self):
+        from gcloud.iterator import MethodIterator
         TO_DELETE = 'delete-me' + unique_resource_id('-')
         ORPHANED = 'orphaned' + unique_resource_id('-')
         topic = Config.CLIENT.topic(TO_DELETE)
@@ -251,13 +252,15 @@ class TestPubsub(unittest.TestCase):
         subscription.create()
         topic.delete()
 
-        all_subs = []
-        token = None
-        while True:
-            subs, token = Config.CLIENT.list_subscriptions(page_token=token)
-            all_subs.extend(subs)
-            if token is None:
-                break
+        def _fetch():
+            return list(MethodIterator(Config.CLIENT.list_subscriptions))
+
+        def _found_orphan(result):
+            return any(subscription for subscription in result
+                        if subscription.name == ORPHANED)
+
+        retry_until_found_orphan = RetryResult(_found_orphan)
+        all_subs = retry_until_found_orphan(_fetch)()
 
         created = [subscription for subscription in all_subs
                    if subscription.name == ORPHANED]
@@ -268,8 +271,8 @@ class TestPubsub(unittest.TestCase):
             return instance.topic is None
 
         # Wait for the topic to clear: up to 63 seconds (2 ** 8 - 1)
-        retry = RetryInstanceState(_no_topic, max_tries=7)
-        retry(orphaned.reload)()
+        retry_until_no_topic = RetryInstanceState(_no_topic, max_tries=7)
+        retry_until_no_topic(orphaned.reload)()
 
         self.assertTrue(orphaned.topic is None)
         orphaned.delete()
