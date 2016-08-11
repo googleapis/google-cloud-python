@@ -267,7 +267,8 @@ class TestPubsub(unittest.TestCase):
         def _no_topic(instance):
             return instance.topic is None
 
-        retry = RetryInstanceState(_no_topic, max_tries=6)
+        # Wait for the topic to clear: up to 63 seconds (2 ** 8 - 1)
+        retry = RetryInstanceState(_no_topic, max_tries=7)
         retry(orphaned.reload)()
 
         self.assertTrue(orphaned.topic is None)
