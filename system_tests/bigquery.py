@@ -30,7 +30,8 @@ from system_test_utils import unique_resource_id
 DATASET_NAME = 'system_tests' + unique_resource_id()
 
 # We need to wait to stay within the rate limits.
-# The alternative outcome is a 403 Forbidden response from upstream.
+# The alternative outcome is a 403 Forbidden response from upstream, which
+# they return instead of the more appropriate 429.
 # See: https://cloud.google.com/bigquery/quota-policy
 retry_403 = RetryErrors(Forbidden)
 
