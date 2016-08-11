@@ -120,7 +120,12 @@ class _LoggingAPI(object):
         """
         options = None
         path = 'projects/%s/logs/%s' % (project, logger_name)
-        self._gax_api.delete_log(path, options)
+        try:
+            self._gax_api.delete_log(path, options)
+        except GaxError as exc:
+            if exc_to_code(exc.cause) == StatusCode.NOT_FOUND:
+                raise NotFound(path)
+            raise
 
 
 class _SinksAPI(object):

@@ -406,6 +406,32 @@ class Test_LoggingAPI(_Base, unittest.TestCase):
         self.assertEqual(log_name, LOG_PATH)
         self.assertEqual(options, None)
 
+    def test_logger_delete_not_found(self):
+        from gcloud.exceptions import NotFound
+        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
+        gax_api = _GAXLoggingAPI(_delete_not_found=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(NotFound):
+            api.logger_delete(self.PROJECT, self.LOG_NAME)
+
+        log_name, options = gax_api._delete_log_called_with
+        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(options, None)
+
+    def test_logger_delete_error(self):
+        from google.gax.errors import GaxError
+        LOG_PATH = 'projects/%s/logs/%s' % (self.PROJECT, self.LOG_NAME)
+        gax_api = _GAXLoggingAPI(_random_gax_error=True)
+        api = self._makeOne(gax_api)
+
+        with self.assertRaises(GaxError):
+            api.logger_delete(self.PROJECT, self.LOG_NAME)
+
+        log_name, options = gax_api._delete_log_called_with
+        self.assertEqual(log_name, LOG_PATH)
+        self.assertEqual(options, None)
+
 
 @unittest.skipUnless(_HAVE_GAX, 'No gax-python')
 class Test_SinksAPI(_Base, unittest.TestCase):
@@ -914,6 +940,8 @@ class _GAXBaseAPI(object):
 
 class _GAXLoggingAPI(_GAXBaseAPI):
 
+    _delete_not_found = False
+
     def list_log_entries(
             self, projects, filter_, order_by, page_size, options):
         self._list_log_entries_called_with = (
@@ -926,7 +954,12 @@ class _GAXLoggingAPI(_GAXBaseAPI):
             entries, log_name, resource, labels, partial_success, options)
 
     def delete_log(self, log_name, options):
+        from google.gax.errors import GaxError
         self._delete_log_called_with = log_name, options
+        if self._random_gax_error:
+            raise GaxError('error')
+        if self._delete_not_found:
+            raise GaxError('notfound', self._make_grpc_not_found())
 
 
 class _GAXSinksAPI(_GAXBaseAPI):
