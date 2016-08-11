@@ -169,15 +169,26 @@ class TestPubsub(unittest.TestCase):
         topic.publish(MESSAGE_1, extra=EXTRA_1)
         topic.publish(MESSAGE_2, extra=EXTRA_2)
 
-        received = subscription.pull(max_messages=2)
-        ack_ids = [recv[0] for recv in received]
-        subscription.acknowledge(ack_ids)
-        messages = [recv[1] for recv in received]
+        class Hoover(object):
+
+            def __init__(self):
+                self.received = []
+
+            def done(self, *dummy):
+                return len(self.received) == 2
+
+            def suction(self):
+                with subscription.auto_ack(max_messages=2) as ack:
+                    self.received.extend(ack.values())
+
+        hoover = Hoover()
+        retry = RetryInstanceState(hoover.done)
+        retry(hoover.suction)()
 
         def _by_timestamp(message):
             return message.timestamp
 
-        message1, message2 = sorted(messages, key=_by_timestamp)
+        message1, message2 = sorted(hoover.received, key=_by_timestamp)
         self.assertEqual(message1.data, MESSAGE_1)
         self.assertEqual(message1.attributes['extra'], EXTRA_1)
         self.assertEqual(message2.data, MESSAGE_2)
@@ -257,7 +268,7 @@ class TestPubsub(unittest.TestCase):
 
         def _found_orphan(result):
             return any(subscription for subscription in result
-                        if subscription.name == ORPHANED)
+                       if subscription.name == ORPHANED)
 
         retry_until_found_orphan = RetryResult(_found_orphan)
         all_subs = retry_until_found_orphan(_fetch)()
