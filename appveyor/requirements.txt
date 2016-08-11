@@ -1,0 +1,13 @@
+# Install the build dependencies of the project. If some dependencies contain
+# compiled extensions and are not provided as pre-built wheel packages,
+# pip will build them from source using the MSVC compiler matching the
+# target Python version and architecture
+wheel
+nose
+nose-exclude
+cryptography
+grpcio >= 1.0rc1
+grpc-google-pubsub-v1
+grpc-google-logging-v2
+gax-google-pubsub-v1
+gax-google-logging-v2
