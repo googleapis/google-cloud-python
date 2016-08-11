@@ -20,6 +20,24 @@
       "name": "fetch_data", 
       "params": [
         {
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
+          ]
+        }, 
+        {
+          "description": " token representing a cursor into the table's rows.", 
+          "name": "page_token", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or NoneType"
+          ]
+        }, 
+        {
           "description": " timeout, in milliseconds, to wait for query to complete", 
           "name": "timeout_ms", 
           "nullable": null, 
@@ -44,24 +62,6 @@
           "optional": null, 
           "types": [
             "integer or NoneType"
-          ]
-        }, 
-        {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
-          "description": " token representing a cursor into the table's rows.", 
-          "name": "page_token", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or NoneType"
           ]
         }
       ], 

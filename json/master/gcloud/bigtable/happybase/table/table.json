@@ -20,24 +20,6 @@
       "name": "batch", 
       "params": [
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch) that all mutations will be applied at.", 
-          "name": "timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
-          "name": "wal", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "object"
-          ]
-        }, 
-        {
           "description": " (Optional) The maximum number of mutations to allow to accumulate before committing them.", 
           "name": "batch_size", 
           "nullable": null, 
@@ -53,6 +35,24 @@
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch) that all mutations will be applied at.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Unused parameter (to be passed to the created batch). Provided for compatibility with HappyBase, but irrelevant for Cloud Bigtable since it does not have a Write Ahead Log.", 
+          "name": "wal", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "object"
           ]
         }
       ], 
@@ -72,24 +72,6 @@
       "id": "gcloud.bigtable.happybase.table.Table.cells", 
       "name": "cells", 
       "params": [
-        {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
-          "name": "timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " Row key for the row we are reading from.", 
-          "name": "row", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
         {
           "description": " Flag to indicate if cell timestamps should be included with the output.", 
           "name": "include_timestamp", 
@@ -116,6 +98,24 @@
           "types": [
             "str"
           ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
         }
       ], 
       "returns": [
@@ -135,8 +135,8 @@
       "name": "counter_dec", 
       "params": [
         {
-          "description": " Row key for the row we are decrementing a counter in.", 
-          "name": "row", 
+          "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -153,8 +153,8 @@
           ]
         }, 
         {
-          "description": " Column we are decrementing a value in; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are decrementing a counter in.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -179,8 +179,8 @@
       "name": "counter_get", 
       "params": [
         {
-          "description": " Row key for the row we are getting a counter from.", 
-          "name": "row", 
+          "description": " Column we are get-ing from; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -188,8 +188,8 @@
           ]
         }, 
         {
-          "description": " Column we are get-ing from; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are getting a counter from.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -214,8 +214,8 @@
       "name": "counter_inc", 
       "params": [
         {
-          "description": " Row key for the row we are incrementing a counter in.", 
-          "name": "row", 
+          "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
+          "name": "column", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -232,8 +232,8 @@
           ]
         }, 
         {
-          "description": " Column we are incrementing a value in; of the form <code>fam:col</code>.", 
-          "name": "column", 
+          "description": " Row key for the row we are incrementing a counter in.", 
+          "name": "row", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -314,24 +314,6 @@
       "name": "row", 
       "params": [
         {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
-          "name": "timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
-          "description": " Row key for the row we are reading from.", 
-          "name": "row", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Flag to indicate if cell timestamps should be included with the output.", 
           "name": "include_timestamp", 
           "nullable": null, 
@@ -347,6 +329,24 @@
           "optional": null, 
           "types": [
             "list"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before the the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
+          "description": " Row key for the row we are reading from.", 
+          "name": "row", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -366,15 +366,6 @@
       "id": "gcloud.bigtable.happybase.table.Table.rows", 
       "name": "rows", 
       "params": [
-        {
-          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
-          "name": "timestamp", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
         {
           "description": " Flag to indicate if cell timestamps should be included with the output.", 
           "name": "include_timestamp", 
@@ -400,6 +391,15 @@
           "optional": null, 
           "types": [
             "list"
+          ]
+        }, 
+        {
+          "description": " (Optional) Timestamp (in milliseconds since the epoch). If specified, only cells returned before (or at) the timestamp will be returned.", 
+          "name": "timestamp", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }
       ], 

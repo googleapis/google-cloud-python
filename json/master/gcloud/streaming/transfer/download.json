@@ -30,24 +30,6 @@
       "name": "from_file", 
       "params": [
         {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " should an existing file be overwritten", 
-          "name": "overwrite", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -63,6 +45,24 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " should an existing file be overwritten", 
+          "name": "overwrite", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }
       ], 
@@ -83,21 +83,21 @@
       "name": "from_stream", 
       "params": [
         {
-          "description": " should the transfer be started immediately", 
-          "name": "auto_transfer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
-        {
           "description": " the target file", 
           "name": "stream", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "writable file-like object"
+          ]
+        }, 
+        {
+          "description": " should the transfer be started immediately", 
+          "name": "auto_transfer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }, 
         {
