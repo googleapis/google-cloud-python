@@ -142,15 +142,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
-          "name": "private_key_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining keyword arguments to pass to constructor.", 
           "name": "kwargs", 
           "nullable": null, 
@@ -176,6 +167,15 @@
           "types": [
             "tuple"
           ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
+          "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
         }
       ], 
       "returns": [
@@ -194,15 +194,6 @@
       "id": "gcloud.monitoring.client.Client.group", 
       "name": "group", 
       "params": [
-        {
-          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
-          "name": "is_cluster", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean"
-          ]
-        }, 
         {
           "description": " The ID of the group.", 
           "name": "group_id", 
@@ -228,6 +219,15 @@
           "optional": null, 
           "types": [
             "string or None"
+          ]
+        }, 
+        {
+          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
+          "name": "is_cluster", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
           ]
         }, 
         {
@@ -334,15 +334,6 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The kind of measurement. It must be one of", 
           "name": "metric_kind", 
           "nullable": null, 
@@ -352,8 +343,8 @@
           ]
         }, 
         {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -370,6 +361,24 @@
           ]
         }, 
         {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
           "name": "labels", 
           "nullable": null, 
@@ -379,17 +388,8 @@
           ]
         }, 
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -414,21 +414,21 @@
       "name": "query", 
       "params": [
         {
-          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
-          "name": "end_time", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "datetime.datetime or None"
-          ]
-        }, 
-        {
           "description": " The metric type name. The default value is", 
           "name": "metric_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {
@@ -441,17 +441,17 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The end time (inclusive) of the time interval for which results should be returned, as a datetime object. The default is the start of the current minute. The start time (exclusive) is determined by combining the values of days, hours, and minutes, and subtracting the resulting duration from the end time. It is also allowed to omit the end time and duration here, in which case", 
+          "name": "end_time", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "datetime.datetime or None"
           ]
         }, 
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [

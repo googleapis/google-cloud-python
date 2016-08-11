@@ -30,21 +30,21 @@
       "name": "auto_ack", 
       "params": [
         {
-          "description": " passed through to Subscription.pull", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " passed through to Subscription.pull and", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " passed through to Subscription.pull", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }, 
         {
@@ -155,12 +155,12 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " A mapping of topic names -> topics. If not passed, the subscription will have a newly-created topic.", 
-          "name": "topics", 
+          "description": " Client which holds credentials and project configuration for a topic.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict or None"
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
           ]
         }, 
         {
@@ -173,12 +173,12 @@
           ]
         }, 
         {
-          "description": " Client which holds credentials and project configuration for a topic.", 
-          "name": "client", 
+          "description": " A mapping of topic names -> topics. If not passed, the subscription will have a newly-created topic.", 
+          "name": "topics", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+            "dict or None"
           ]
         }
       ], 
@@ -245,21 +245,21 @@
       "name": "pull", 
       "params": [
         {
-          "description": " the maximum number of messages to return.", 
-          "name": "max_messages", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the maximum number of messages to return.", 
+          "name": "max_messages", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
           ]
         }, 
         {
@@ -299,21 +299,21 @@
       "name": "set_iam_policy", 
       "params": [
         {
-          "description": " the new policy, typically fetched via", 
-          "name": "policy", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " the new policy, typically fetched via", 
+          "name": "policy", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/iam/policy\">gcloud.pubsub.iam.Policy</a>"
           ]
         }
       ], 
