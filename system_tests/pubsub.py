@@ -266,8 +266,8 @@ class TestPubsub(unittest.TestCase):
             return list(MethodIterator(Config.CLIENT.list_subscriptions))
 
         def _found_orphan(result):
-            return any(subscription for subscription in result
-                       if subscription.name == ORPHANED)
+            names = [subscription.name for subscription in result]
+            return ORPHANED in names
 
         retry_until_found_orphan = RetryResult(_found_orphan)
         all_subs = retry_until_found_orphan(_fetch)()
