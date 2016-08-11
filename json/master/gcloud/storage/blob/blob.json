@@ -127,60 +127,6 @@
       "name": "generate_signed_url", 
       "params": [
         {
-          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
-          "name": "generation", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
-          "name": "response_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
-          ]
-        }, 
-        {
-          "description": " When the signed URL should expire.", 
-          "name": "expiration", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int, long, datetime.datetime, datetime.timedelta"
-          ]
-        }, 
-        {
-          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
-          "name": "content_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " The HTTP verb that will be used when requesting the URL.", 
           "name": "method", 
           "nullable": null, 
@@ -196,6 +142,60 @@
           "optional": null, 
           "types": [
             "str"
+          ]
+        }, 
+        {
+          "description": " When the signed URL should expire.", 
+          "name": "expiration", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int, long, datetime.datetime, datetime.timedelta"
+          ]
+        }, 
+        {
+          "description": " (Optional) The client to use. If not passed, falls back to the <code>client</code> stored on the blob's bucket.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " (Optional) Content disposition of responses to requests for the signed URL. For example, to enable the signed URL to initiate a file of blog.png, use the value 'attachment; filename=blob.png'.", 
+          "name": "response_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The content type of the object referenced by <code>resource</code>.", 
+          "name": "content_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
           ]
         }
       ], 

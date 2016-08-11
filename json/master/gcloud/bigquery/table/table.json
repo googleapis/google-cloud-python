@@ -66,21 +66,21 @@
       "name": "fetch_data", 
       "params": [
         {
-          "description": " maximum number of rows to return.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer or NoneType"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " maximum number of rows to return.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer or NoneType"
           ]
         }, 
         {
@@ -110,21 +110,21 @@
       "name": "from_api_repr", 
       "params": [
         {
-          "description": " The dataset containing the table.", 
-          "name": "dataset", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/dataset/dataset\">gcloud.bigquery.dataset.Dataset</a>"
-          ]
-        }, 
-        {
           "description": " table resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The dataset containing the table.", 
+          "name": "dataset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/dataset/dataset\">gcloud.bigquery.dataset.Dataset</a>"
           ]
         }
       ], 
@@ -144,24 +144,6 @@
       "id": "gcloud.bigquery.table.Table.insert_data", 
       "name": "insert_data", 
       "params": [
-        {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
-          ]
-        }, 
-        {
-          "description": " skip rows w/ invalid data?", 
-          "name": "skip_invalid_rows", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "boolean or NoneType"
-          ]
-        }, 
         {
           "description": " Row data to be inserted. Each tuple should contain data for each schema field on the current table and in the same order as the schema fields.", 
           "name": "rows", 
@@ -183,6 +165,24 @@
         {
           "description": " ignore columns beyond schema?", 
           "name": "ignore_unknown_values", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean or NoneType"
+          ]
+        }, 
+        {
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/bigquery/client/client or nonetype\">gcloud.bigquery.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " skip rows w/ invalid data?", 
+          "name": "skip_invalid_rows", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -273,6 +273,15 @@
       "params": [
         {
           "description": " job configuration option; see", 
+          "name": "allow_jagged_rows", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "boolean"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
           "name": "skip_leading_rows", 
           "nullable": null, 
           "optional": null, 
@@ -281,12 +290,21 @@
           ]
         }, 
         {
-          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
-          "name": "client", 
+          "description": " job configuration option; see", 
+          "name": "field_delimiter", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+            "str"
+          ]
+        }, 
+        {
+          "description": " job configuration option; see", 
+          "name": "encoding", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }, 
         {
@@ -300,20 +318,11 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "allow_jagged_rows", 
+          "name": "quote_character", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
-          ]
-        }, 
-        {
-          "description": " Number of upload retries. Defaults to 6.", 
-          "name": "num_retries", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
+            "str"
           ]
         }, 
         {
@@ -335,6 +344,33 @@
           ]
         }, 
         {
+          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
+          "name": "source_format", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " Number of upload retries. Defaults to 6.", 
+          "name": "num_retries", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " Optional. The client to use. If not passed, falls back to the <code>client</code> stored on the current dataset.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/storage/client/client or nonetype\">gcloud.storage.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
           "description": " A file handle opened in binary mode for reading.", 
           "name": "file_obj", 
           "nullable": null, 
@@ -345,43 +381,7 @@
         }, 
         {
           "description": " job configuration option; see", 
-          "name": "field_delimiter", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
           "name": "create_disposition", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "encoding", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "quote_character", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " job configuration option; see", 
-          "name": "write_disposition", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -398,21 +398,21 @@
           ]
         }, 
         {
+          "description": " job configuration option; see", 
+          "name": "write_disposition", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " The number of bytes to read from the file handle. If not provided, we'll try to guess the size using", 
           "name": "size", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "int"
-          ]
-        }, 
-        {
-          "description": " one of 'CSV' or 'NEWLINE_DELIMITED_JSON'. job configuration option; see", 
-          "name": "source_format", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
           ]
         }
       ], 

@@ -30,17 +30,8 @@
       "name": "fetch", 
       "params": [
         {
-          "description": " An optional offset passed through to the iterator.", 
-          "name": "offset", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "start_cursor", 
+          "name": "end_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -58,7 +49,7 @@
         }, 
         {
           "description": " An optional cursor passed through to the iterator.", 
-          "name": "end_cursor", 
+          "name": "start_cursor", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -72,6 +63,15 @@
           "optional": null, 
           "types": [
             "integer or None"
+          ]
+        }, 
+        {
+          "description": " An optional offset passed through to the iterator.", 
+          "name": "offset", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }
       ], 
