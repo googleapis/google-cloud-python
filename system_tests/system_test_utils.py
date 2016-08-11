@@ -28,8 +28,6 @@ CREDENTIALS = os.getenv(TEST_CREDENTIALS)
 ENVIRON_ERROR_MSG = """\
 To run the system tests, you need to set some environment variables.
 Please check the CONTRIBUTING guide for instructions.
-
-Missing variables: %s
 """
 
 
@@ -47,15 +45,24 @@ class EmulatorCreds(object):
 
 def check_environ():
     missing = []
+    extra = ''
 
     if PROJECT_ID is None:
         missing.append(TESTS_PROJECT)
 
-    if CREDENTIALS is None or not os.path.isfile(CREDENTIALS):
+    if CREDENTIALS is None:
         missing.append(TEST_CREDENTIALS)
+    elif not os.path.isfile(CREDENTIALS):
+        extra = '\nThe %s path %r is not a file.' % (TEST_CREDENTIALS,
+                                                     CREDENTIALS)
 
-    if missing:
-        print(ENVIRON_ERROR_MSG % ', '.join(missing), file=sys.stderr)
+    if missing or extra:
+        msg = ENVIRON_ERROR_MSG
+        if missing:
+            msg += '\nMissing variables: ' + ', '.join(missing)
+        if extra:
+            msg += extra
+        print(msg, file=sys.stderr)
         sys.exit(1)
 
 
