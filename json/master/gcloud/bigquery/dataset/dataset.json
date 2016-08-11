@@ -156,21 +156,21 @@
       "name": "table", 
       "params": [
         {
-          "description": " Name of the table.", 
-          "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The table's schema", 
           "name": "schema", 
           "nullable": null, 
           "optional": null, 
           "types": [
             " gcloud.bigquery.table.SchemaField"
+          ]
+        }, 
+        {
+          "description": " Name of the table.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
