@@ -4,6 +4,21 @@ from grpc.beta import interfaces as beta_interfaces
 from grpc.framework.common import cardinality
 from grpc.framework.interfaces.face import utilities as face_utilities
 
+# BEGIN: Manually added imports
+from gcloud.datastore._generated.datastore_pb2 import AllocateIdsRequest
+from gcloud.datastore._generated.datastore_pb2 import AllocateIdsResponse
+from gcloud.datastore._generated.datastore_pb2 import BeginTransactionRequest
+from gcloud.datastore._generated.datastore_pb2 import BeginTransactionResponse
+from gcloud.datastore._generated.datastore_pb2 import CommitRequest
+from gcloud.datastore._generated.datastore_pb2 import CommitResponse
+from gcloud.datastore._generated.datastore_pb2 import LookupRequest
+from gcloud.datastore._generated.datastore_pb2 import LookupResponse
+from gcloud.datastore._generated.datastore_pb2 import RollbackRequest
+from gcloud.datastore._generated.datastore_pb2 import RollbackResponse
+from gcloud.datastore._generated.datastore_pb2 import RunQueryRequest
+from gcloud.datastore._generated.datastore_pb2 import RunQueryResponse
+#   END: Manually added imports
+
 
 class DatastoreStub(object):
   """Each RPC normalizes the partition IDs of the keys in its input entities,

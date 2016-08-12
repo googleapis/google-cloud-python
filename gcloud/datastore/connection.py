@@ -18,14 +18,40 @@ import os
 
 from google.rpc import status_pb2
 
+from gcloud._helpers import make_stub
 from gcloud import connection as connection_module
 from gcloud.environment_vars import GCD_HOST
+from gcloud.exceptions import Conflict
 from gcloud.exceptions import make_exception
 from gcloud.datastore._generated import datastore_pb2 as _datastore_pb2
+# pylint: disable=ungrouped-imports
+try:
+    from grpc.beta.interfaces import StatusCode
+    from grpc.framework.interfaces.face.face import AbortionError
+    from gcloud.datastore._generated import datastore_grpc_pb2
+    DATASTORE_STUB_FACTORY = datastore_grpc_pb2.beta_create_Datastore_stub
+except ImportError:  # pragma: NO COVER
+    _HAVE_GRPC = False
+    DATASTORE_STUB_FACTORY = None
+    StatusCode = None
+    AbortionError = Exception
+else:
+    _HAVE_GRPC = True
+# pylint: enable=ungrouped-imports
+
+
+DATASTORE_API_HOST = 'datastore.googleapis.com'
+"""Datastore API request host."""
+DATASTORE_API_PORT = 443
+"""Datastore API request port."""
+GRPC_TIMEOUT_SECONDS = 10
+"""The default timeout to use for API requests via gRPC."""
 
 
 class _DatastoreAPIOverHttp(object):
     """Helper mapping datastore API methods.
+
+    Makes requests to send / receive protobuf content over HTTP/1.1.
 
     Methods make bare API requests without any helpers for constructing
     the requests or parsing the responses.
@@ -196,6 +222,139 @@ class _DatastoreAPIOverHttp(object):
                          _datastore_pb2.AllocateIdsResponse)
 
 
+class _DatastoreAPIOverGRPC(object):
+    """Helper mapping datastore API methods.
+
+    Makes requests to send / receive protobuf content over gRPC.
+
+    Methods make bare API requests without any helpers for constructing
+    the requests or parsing the responses.
+
+    :type connection: :class:`gcloud.datastore.connection.Connection`
+    :param connection: A connection object that contains helpful
+                       information for making requests.
+    """
+
+    def __init__(self, connection):
+        self._stub = make_stub(connection.credentials, connection.USER_AGENT,
+                               DATASTORE_STUB_FACTORY, DATASTORE_API_HOST,
+                               DATASTORE_API_PORT)
+        self._stub.__enter__()
+
+    def __del__(self):
+        """Destructor for object.
+
+        Ensures that the stub is exited so the shell can close properly.
+        """
+        try:
+            self._stub.__exit__(None, None, None)
+            del self._stub
+        except AttributeError:
+            pass
+
+    def lookup(self, project, request_pb):
+        """Perform a ``lookup`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.LookupRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.LookupResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.Lookup(request_pb, GRPC_TIMEOUT_SECONDS)
+
+    def run_query(self, project, request_pb):
+        """Perform a ``runQuery`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RunQueryRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RunQueryResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.RunQuery(request_pb, GRPC_TIMEOUT_SECONDS)
+
+    def begin_transaction(self, project, request_pb):
+        """Perform a ``beginTransaction`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb:
+            :class:`._generated.datastore_pb2.BeginTransactionRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.BeginTransactionResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.BeginTransaction(request_pb, GRPC_TIMEOUT_SECONDS)
+
+    def commit(self, project, request_pb):
+        """Perform a ``commit`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.CommitRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.CommitResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        try:
+            return self._stub.Commit(request_pb, GRPC_TIMEOUT_SECONDS)
+        except AbortionError as exc:
+            if exc.code == StatusCode.ABORTED:
+                raise Conflict(exc.details)
+            raise
+
+    def rollback(self, project, request_pb):
+        """Perform a ``rollback`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.RollbackRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.RollbackResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.Rollback(request_pb, GRPC_TIMEOUT_SECONDS)
+
+    def allocate_ids(self, project, request_pb):
+        """Perform an ``allocateIds`` request.
+
+        :type project: string
+        :param project: The project to connect to. This is
+                        usually your project name in the cloud console.
+
+        :type request_pb: :class:`._generated.datastore_pb2.AllocateIdsRequest`
+        :param request_pb: The request protobuf object.
+
+        :rtype: :class:`._generated.datastore_pb2.AllocateIdsResponse`
+        :returns: The returned protobuf response object.
+        """
+        request_pb.project_id = project
+        return self._stub.AllocateIds(request_pb, GRPC_TIMEOUT_SECONDS)
+
+
 class Connection(connection_module.Connection):
     """A connection to the Google Cloud Datastore via the Protobuf API.
 
@@ -213,7 +372,7 @@ class Connection(connection_module.Connection):
                          :attr:`API_BASE_URL`.
     """
 
-    API_BASE_URL = 'https://datastore.googleapis.com'
+    API_BASE_URL = 'https://' + DATASTORE_API_HOST
     """The base of the API call URL."""
 
     API_VERSION = 'v1'
@@ -236,7 +395,10 @@ class Connection(connection_module.Connection):
             except KeyError:
                 api_base_url = self.__class__.API_BASE_URL
         self.api_base_url = api_base_url
-        self._datastore_api = _DatastoreAPIOverHttp(self)
+        if _HAVE_GRPC:
+            self._datastore_api = _DatastoreAPIOverGRPC(self)
+        else:
+            self._datastore_api = _DatastoreAPIOverHttp(self)
 
     def build_api_url(self, project, method, base_url=None,
                       api_version=None):

@@ -14,6 +14,8 @@
 
 import unittest
 
+from gcloud.datastore.connection import _HAVE_GRPC
+
 
 class Test_DatastoreAPIOverHttp(unittest.TestCase):
 
@@ -25,8 +27,6 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         return self._getTargetClass()(*args, **kw)
 
     def test__rpc(self):
-        from gcloud.datastore.connection import Connection
-
         class ReqPB(object):
 
             def SerializeToString(self):
@@ -44,15 +44,10 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         REQPB = b'REQPB'
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
-        conn = Connection()
+        URI = 'http://api-url'
+        conn = _Connection(URI)
         datastore_api = self._makeOne(conn)
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        http = conn._http = Http({'status': '200'}, 'CONTENT')
+        http = conn.http = Http({'status': '200'}, 'CONTENT')
         response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
         self.assertTrue(isinstance(response, RspPB))
         self.assertEqual(response._pb, 'CONTENT')
@@ -64,22 +59,17 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(called_with['headers']['User-Agent'],
                          conn.USER_AGENT)
         self.assertEqual(called_with['body'], REQPB)
+        self.assertEqual(conn.build_kwargs,
+                         [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_w_200(self):
-        from gcloud.datastore.connection import Connection
-
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = b'DATA'
-        conn = Connection()
+        URI = 'http://api-url'
+        conn = _Connection(URI)
         datastore_api = self._makeOne(conn)
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        http = conn._http = Http({'status': '200'}, 'CONTENT')
+        http = conn.http = Http({'status': '200'}, 'CONTENT')
         self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
                          'CONTENT')
         called_with = http._called_with
@@ -90,9 +80,10 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         self.assertEqual(called_with['headers']['User-Agent'],
                          conn.USER_AGENT)
         self.assertEqual(called_with['body'], DATA)
+        self.assertEqual(conn.build_kwargs,
+                         [{'method': METHOD, 'project': PROJECT}])
 
     def test__request_not_200(self):
-        from gcloud.datastore.connection import Connection
         from gcloud.exceptions import BadRequest
         from google.rpc import status_pb2
 
@@ -103,13 +94,215 @@ class Test_DatastoreAPIOverHttp(unittest.TestCase):
         PROJECT = 'PROJECT'
         METHOD = 'METHOD'
         DATA = 'DATA'
-        conn = Connection()
+        URI = 'http://api-url'
+        conn = _Connection(URI)
         datastore_api = self._makeOne(conn)
-        conn._http = Http({'status': '400'}, error.SerializeToString())
-        with self.assertRaises(BadRequest) as e:
+        conn.http = Http({'status': '400'}, error.SerializeToString())
+        with self.assertRaises(BadRequest) as exc:
             datastore_api._request(PROJECT, METHOD, DATA)
         expected_message = '400 Entity value is indexed.'
-        self.assertEqual(str(e.exception), expected_message)
+        self.assertEqual(str(exc.exception), expected_message)
+        self.assertEqual(conn.build_kwargs,
+                         [{'method': METHOD, 'project': PROJECT}])
+
+
+class Test_DatastoreAPIOverGRPC(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.datastore.connection import _DatastoreAPIOverGRPC
+        return _DatastoreAPIOverGRPC
+
+    def _makeOne(self, connection=None, stub=None, mock_args=None):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import connection as MUT
+
+        if connection is None:
+            connection = _Connection(None)
+            connection.credentials = object()
+
+        if stub is None:
+            stub = _GRPCStub()
+
+        if mock_args is None:
+            mock_args = []
+
+        def mock_make_stub(*args):
+            mock_args.append(args)
+            return stub
+
+        with _Monkey(MUT, make_stub=mock_make_stub):
+            return self._getTargetClass()(connection)
+
+    def test_constructor(self):
+        from gcloud.datastore import connection as MUT
+
+        conn = _Connection(None)
+        conn.credentials = object()
+
+        stub = _GRPCStub()
+        mock_args = []
+        self.assertEqual(stub.enter_calls, 0)
+        datastore_api = self._makeOne(conn, stub=stub, mock_args=mock_args)
+        self.assertIs(datastore_api._stub, stub)
+
+        self.assertEqual(mock_args, [(
+            conn.credentials,
+            conn.USER_AGENT,
+            MUT.DATASTORE_STUB_FACTORY,
+            MUT.DATASTORE_API_HOST,
+            MUT.DATASTORE_API_PORT,
+        )])
+
+    def test___del__valid_stub(self):
+        datastore_api = self._makeOne()
+
+        stub = datastore_api._stub
+        self.assertEqual(stub.exit_calls, [])
+        self.assertIs(datastore_api._stub, stub)
+        datastore_api.__del__()
+        self.assertEqual(stub.exit_calls, [(None, None, None)])
+        self.assertFalse(hasattr(datastore_api, '_stub'))
+
+    def test___del__invalid_stub(self):
+        datastore_api = self._makeOne()
+
+        stub = datastore_api._stub
+        self.assertEqual(stub.exit_calls, [])
+
+        del datastore_api._stub
+        self.assertFalse(hasattr(datastore_api, '_stub'))
+        datastore_api.__del__()
+        self.assertEqual(stub.exit_calls, [])
+        self.assertFalse(hasattr(datastore_api, '_stub'))
+
+    def test_lookup(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.lookup(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Lookup')])
+
+    def test_run_query(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.run_query(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'RunQuery')])
+
+    def test_begin_transaction(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.begin_transaction(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(
+            stub.method_calls,
+            [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'BeginTransaction')])
+
+    def test_commit_success(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.commit(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Commit')])
+
+    def _commit_failure_helper(self, exc, err_class):
+        from gcloud.datastore import connection as MUT
+
+        stub = _GRPCStub(side_effect=exc)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        with self.assertRaises(err_class):
+            datastore_api.commit(project, request_pb)
+
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Commit')])
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_commit_failure_aborted(self):
+        from grpc.beta.interfaces import StatusCode
+        from grpc.framework.interfaces.face.face import AbortionError
+        from gcloud.exceptions import Conflict
+
+        exc = AbortionError(None, None, StatusCode.ABORTED, None)
+        self._commit_failure_helper(exc, Conflict)
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_commit_failure_cancelled(self):
+        from grpc.beta.interfaces import StatusCode
+        from grpc.framework.interfaces.face.face import AbortionError
+
+        exc = AbortionError(None, None, StatusCode.CANCELLED, None)
+        self._commit_failure_helper(exc, AbortionError)
+
+    @unittest.skipUnless(_HAVE_GRPC, 'No gRPC')
+    def test_commit_failure_non_grpc_err(self):
+        exc = RuntimeError('Not a gRPC error')
+        self._commit_failure_helper(exc, RuntimeError)
+
+    def test_rollback(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.rollback(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(stub.method_calls,
+                         [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'Rollback')])
+
+    def test_allocate_ids(self):
+        from gcloud.datastore import connection as MUT
+
+        return_val = object()
+        stub = _GRPCStub(return_val)
+        datastore_api = self._makeOne(stub=stub)
+
+        request_pb = _RequestPB()
+        project = 'PROJECT'
+        result = datastore_api.allocate_ids(project, request_pb)
+        self.assertIs(result, return_val)
+        self.assertEqual(request_pb.project_id, project)
+        self.assertEqual(
+            stub.method_calls,
+            [(request_pb, MUT.GRPC_TIMEOUT_SECONDS, 'AllocateIds')])
 
 
 class TestConnection(unittest.TestCase):
@@ -132,8 +325,13 @@ class TestConnection(unittest.TestCase):
         pb.kind.add().name = kind
         return pb
 
-    def _makeOne(self, *args, **kw):
-        return self._getTargetClass()(*args, **kw)
+    def _makeOne(self, credentials=None, http=None,
+                 api_base_url=None, have_grpc=False):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import connection as MUT
+        with _Monkey(MUT, _HAVE_GRPC=have_grpc):
+            return self._getTargetClass()(credentials=credentials, http=http,
+                                          api_base_url=api_base_url)
 
     def _verifyProtobufCall(self, called_with, URI, conn):
         self.assertEqual(called_with['uri'], URI)
@@ -191,6 +389,42 @@ class TestConnection(unittest.TestCase):
     def test_ctor_defaults(self):
         conn = self._makeOne()
         self.assertEqual(conn.credentials, None)
+
+    def test_ctor_without_grpc(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import connection as MUT
+
+        connections = []
+        return_val = object()
+
+        def mock_api(connection):
+            connections.append(connection)
+            return return_val
+
+        with _Monkey(MUT, _DatastoreAPIOverHttp=mock_api):
+            conn = self._makeOne(have_grpc=False)
+
+        self.assertEqual(conn.credentials, None)
+        self.assertIs(conn._datastore_api, return_val)
+        self.assertEqual(connections, [conn])
+
+    def test_ctor_with_grpc(self):
+        from gcloud._testing import _Monkey
+        from gcloud.datastore import connection as MUT
+
+        connections = []
+        return_val = object()
+
+        def mock_api(connection):
+            connections.append(connection)
+            return return_val
+
+        with _Monkey(MUT, _DatastoreAPIOverGRPC=mock_api):
+            conn = self._makeOne(have_grpc=True)
+
+        self.assertEqual(conn.credentials, None)
+        self.assertIs(conn._datastore_api, return_val)
+        self.assertEqual(connections, [conn])
 
     def test_ctor_explicit(self):
         class Creds(object):
@@ -901,3 +1135,63 @@ class _KeyProto(object):
 
     def __init__(self, id_):
         self.path = [_PathElementProto(id_)]
+
+
+class _Connection(object):
+
+    USER_AGENT = 'you-sir-age-int'
+
+    def __init__(self, api_url):
+        self.api_url = api_url
+        self.build_kwargs = []
+
+    def build_api_url(self, **kwargs):
+        self.build_kwargs.append(kwargs)
+        return self.api_url
+
+
+class _GRPCStub(object):
+
+    def __init__(self, return_val=None, side_effect=Exception):
+        self.return_val = return_val
+        self.side_effect = side_effect
+        self.enter_calls = 0
+        self.exit_calls = []
+        self.method_calls = []
+
+    def __enter__(self):
+        self.enter_calls += 1
+        return self
+
+    def __exit__(self, *args):
+        self.exit_calls.append(args)
+
+    def _method(self, request_pb, timeout, name):
+        self.method_calls.append((request_pb, timeout, name))
+        return self.return_val
+
+    def Lookup(self, request_pb, timeout):
+        return self._method(request_pb, timeout, 'Lookup')
+
+    def RunQuery(self, request_pb, timeout):
+        return self._method(request_pb, timeout, 'RunQuery')
+
+    def BeginTransaction(self, request_pb, timeout):
+        return self._method(request_pb, timeout, 'BeginTransaction')
+
+    def Commit(self, request_pb, timeout):
+        result = self._method(request_pb, timeout, 'Commit')
+        if self.side_effect is Exception:
+            return result
+        else:
+            raise self.side_effect
+
+    def Rollback(self, request_pb, timeout):
+        return self._method(request_pb, timeout, 'Rollback')
+
+    def AllocateIds(self, request_pb, timeout):
+        return self._method(request_pb, timeout, 'AllocateIds')
+
+
+class _RequestPB(object):
+    project_id = None
