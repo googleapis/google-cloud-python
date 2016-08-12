@@ -15,6 +15,103 @@
 import unittest
 
 
+class Test_DatastoreAPIOverHttp(unittest.TestCase):
+
+    def _getTargetClass(self):
+        from gcloud.datastore.connection import _DatastoreAPIOverHttp
+        return _DatastoreAPIOverHttp
+
+    def _makeOne(self, *args, **kw):
+        return self._getTargetClass()(*args, **kw)
+
+    def test__rpc(self):
+        from gcloud.datastore.connection import Connection
+
+        class ReqPB(object):
+
+            def SerializeToString(self):
+                return REQPB
+
+        class RspPB(object):
+
+            def __init__(self, pb):
+                self._pb = pb
+
+            @classmethod
+            def FromString(cls, pb):
+                return cls(pb)
+
+        REQPB = b'REQPB'
+        PROJECT = 'PROJECT'
+        METHOD = 'METHOD'
+        conn = Connection()
+        datastore_api = self._makeOne(conn)
+        URI = '/'.join([
+            conn.api_base_url,
+            conn.API_VERSION,
+            'projects',
+            PROJECT + ':' + METHOD,
+        ])
+        http = conn._http = Http({'status': '200'}, 'CONTENT')
+        response = datastore_api._rpc(PROJECT, METHOD, ReqPB(), RspPB)
+        self.assertTrue(isinstance(response, RspPB))
+        self.assertEqual(response._pb, 'CONTENT')
+        called_with = http._called_with
+        self.assertEqual(called_with['uri'], URI)
+        self.assertEqual(called_with['method'], 'POST')
+        self.assertEqual(called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+        self.assertEqual(called_with['body'], REQPB)
+
+    def test__request_w_200(self):
+        from gcloud.datastore.connection import Connection
+
+        PROJECT = 'PROJECT'
+        METHOD = 'METHOD'
+        DATA = b'DATA'
+        conn = Connection()
+        datastore_api = self._makeOne(conn)
+        URI = '/'.join([
+            conn.api_base_url,
+            conn.API_VERSION,
+            'projects',
+            PROJECT + ':' + METHOD,
+        ])
+        http = conn._http = Http({'status': '200'}, 'CONTENT')
+        self.assertEqual(datastore_api._request(PROJECT, METHOD, DATA),
+                         'CONTENT')
+        called_with = http._called_with
+        self.assertEqual(called_with['uri'], URI)
+        self.assertEqual(called_with['method'], 'POST')
+        self.assertEqual(called_with['headers']['Content-Type'],
+                         'application/x-protobuf')
+        self.assertEqual(called_with['headers']['User-Agent'],
+                         conn.USER_AGENT)
+        self.assertEqual(called_with['body'], DATA)
+
+    def test__request_not_200(self):
+        from gcloud.datastore.connection import Connection
+        from gcloud.exceptions import BadRequest
+        from google.rpc import status_pb2
+
+        error = status_pb2.Status()
+        error.message = 'Entity value is indexed.'
+        error.code = 9  # FAILED_PRECONDITION
+
+        PROJECT = 'PROJECT'
+        METHOD = 'METHOD'
+        DATA = 'DATA'
+        conn = Connection()
+        datastore_api = self._makeOne(conn)
+        conn._http = Http({'status': '400'}, error.SerializeToString())
+        with self.assertRaises(BadRequest) as e:
+            datastore_api._request(PROJECT, METHOD, DATA)
+        expected_message = '400 Entity value is indexed.'
+        self.assertEqual(str(e.exception), expected_message)
+
+
 class TestConnection(unittest.TestCase):
 
     def _getTargetClass(self):
@@ -134,73 +231,6 @@ class TestConnection(unittest.TestCase):
         conn = self._makeOne(creds)
         self.assertTrue(conn.http is authorized)
         self.assertTrue(isinstance(creds._called_with, httplib2.Http))
-
-    def test__request_w_200(self):
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = b'DATA'
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        http = conn._http = Http({'status': '200'}, 'CONTENT')
-        self.assertEqual(conn._request(PROJECT, METHOD, DATA), 'CONTENT')
-        self._verifyProtobufCall(http._called_with, URI, conn)
-        self.assertEqual(http._called_with['body'], DATA)
-
-    def test__request_not_200(self):
-        from gcloud.exceptions import BadRequest
-        from google.rpc import status_pb2
-
-        error = status_pb2.Status()
-        error.message = 'Entity value is indexed.'
-        error.code = 9  # FAILED_PRECONDITION
-
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        DATA = 'DATA'
-        conn = self._makeOne()
-        conn._http = Http({'status': '400'}, error.SerializeToString())
-        with self.assertRaises(BadRequest) as e:
-            conn._request(PROJECT, METHOD, DATA)
-        expected_message = '400 Entity value is indexed.'
-        self.assertEqual(str(e.exception), expected_message)
-
-    def test__rpc(self):
-
-        class ReqPB(object):
-
-            def SerializeToString(self):
-                return REQPB
-
-        class RspPB(object):
-
-            def __init__(self, pb):
-                self._pb = pb
-
-            @classmethod
-            def FromString(cls, pb):
-                return cls(pb)
-
-        REQPB = b'REQPB'
-        PROJECT = 'PROJECT'
-        METHOD = 'METHOD'
-        conn = self._makeOne()
-        URI = '/'.join([
-            conn.api_base_url,
-            conn.API_VERSION,
-            'projects',
-            PROJECT + ':' + METHOD,
-        ])
-        http = conn._http = Http({'status': '200'}, 'CONTENT')
-        response = conn._rpc(PROJECT, METHOD, ReqPB(), RspPB)
-        self.assertTrue(isinstance(response, RspPB))
-        self.assertEqual(response._pb, 'CONTENT')
-        self._verifyProtobufCall(http._called_with, URI, conn)
-        self.assertEqual(http._called_with['body'], REQPB)
 
     def test_build_api_url_w_default_base_version(self):
         PROJECT = 'PROJECT'
