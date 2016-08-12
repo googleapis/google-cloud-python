@@ -31,7 +31,8 @@ _PACK_I64 = struct.Struct('>q').pack
 _FIRST_ELT = operator.itemgetter(0)
 _helpers.PROJECT = TESTS_PROJECT
 LOCATION_ID = 'us-central1-c'
-INSTANCE_ID = 'gcloud' + unique_resource_id('-')
+# NOTE: Avoid using the same name as in bigtable.py
+INSTANCE_ID = 'gcl-hb' + unique_resource_id('-')
 TABLE_NAME = 'table-name'
 ALT_TABLE_NAME = 'other-table'
 TTL_FOR_TEST = 3
