@@ -60,21 +60,21 @@
       "name": "table", 
       "params": [
         {
-          "description": " The name of the table to be created.", 
-          "name": "name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " Whether to use the table prefix (if any).", 
           "name": "use_prefix", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "bool"
+          ]
+        }, 
+        {
+          "description": " The name of the table to be created.", 
+          "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 

@@ -30,12 +30,12 @@
       "name": "auto_ack", 
       "params": [
         {
-          "description": " passed through to Subscription.pull", 
-          "name": "return_immediately", 
+          "description": " passed through to Subscription.pull and", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -48,12 +48,12 @@
           ]
         }, 
         {
-          "description": " passed through to Subscription.pull and", 
-          "name": "client", 
+          "description": " passed through to Subscription.pull", 
+          "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+            "boolean"
           ]
         }
       ], 
@@ -74,21 +74,21 @@
       "name": "check_iam_permissions", 
       "params": [
         {
-          "description": " list of permissions to be tested", 
-          "name": "permissions", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " string"
-          ]
-        }, 
-        {
           "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
           "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+          ]
+        }, 
+        {
+          "description": " list of permissions to be tested", 
+          "name": "permissions", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " string"
           ]
         }
       ], 
@@ -155,6 +155,15 @@
       "name": "from_api_repr", 
       "params": [
         {
+          "description": " Client which holds credentials and project configuration for a topic.", 
+          "name": "client", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
+          ]
+        }, 
+        {
           "description": " topic resource representation returned from the API", 
           "name": "resource", 
           "nullable": null, 
@@ -170,15 +179,6 @@
           "optional": null, 
           "types": [
             "dict or None"
-          ]
-        }, 
-        {
-          "description": " Client which holds credentials and project configuration for a topic.", 
-          "name": "client", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client\">gcloud.pubsub.client.Client</a>"
           ]
         }
       ], 
@@ -245,12 +245,12 @@
       "name": "pull", 
       "params": [
         {
-          "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
-          "name": "return_immediately", 
+          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
+          "name": "client", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
           ]
         }, 
         {
@@ -263,12 +263,12 @@
           ]
         }, 
         {
-          "description": " the client to use. If not passed, falls back to the <code>client</code> stored on the current subscription's topic.", 
-          "name": "client", 
+          "description": " if True, the back-end returns even if no messages are available; if False, the API call blocks until one or more messages are available.", 
+          "name": "return_immediately", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/pubsub/client/client or nonetype\">gcloud.pubsub.client.Client or NoneType</a>"
+            "boolean"
           ]
         }
       ], 

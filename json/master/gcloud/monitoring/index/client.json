@@ -98,21 +98,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -142,12 +142,12 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "tuple"
+            "dict"
           ]
         }, 
         {
@@ -160,12 +160,12 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "dict"
+            "tuple"
           ]
         }, 
         {
@@ -204,12 +204,12 @@
           ]
         }, 
         {
-          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
-          "name": "is_cluster", 
+          "description": " The filter string used to determine which monitored resources belong to this group.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "boolean"
+            "string or None"
           ]
         }, 
         {
@@ -222,17 +222,17 @@
           ]
         }, 
         {
-          "description": " A user-assigned name for this group, used only for display purposes.", 
-          "name": "display_name", 
+          "description": " If true, the members of this group are considered to be a cluster. The system can perform additional analysis on groups that are clusters.", 
+          "name": "is_cluster", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string or None"
+            "boolean"
           ]
         }, 
         {
-          "description": " The filter string used to determine which monitored resources belong to this group.", 
-          "name": "filter_string", 
+          "description": " A user-assigned name for this group, used only for display purposes.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -334,33 +334,6 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
-          ]
-        }, 
-        {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " The value type of the metric. It must be one of", 
           "name": "value_type", 
           "nullable": null, 
@@ -370,8 +343,8 @@
           ]
         }, 
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -388,12 +361,39 @@
           ]
         }, 
         {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
           ]
         }
       ], 
@@ -414,6 +414,15 @@
       "name": "query", 
       "params": [
         {
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " The number of minutes in the time interval.", 
           "name": "minutes", 
           "nullable": null, 
@@ -423,8 +432,8 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -441,17 +450,8 @@
           ]
         }, 
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [

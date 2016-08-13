@@ -145,6 +145,24 @@
           ]
         }, 
         {
+          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
+          "name": "credentials", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "oauth2client.client.OAuth2Credentials or"
+          ]
+        }, 
+        {
+          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
+          "name": "generation", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
           "description": " When the signed URL should expire.", 
           "name": "expiration", 
           "nullable": null, 
@@ -174,24 +192,6 @@
         {
           "description": " (Optional) Content type of responses to requests for the signed URL. Used to over-ride the content type of the underlying blob/object.", 
           "name": "response_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
-          "description": " (Optional) The OAuth2 credentials to use to sign the URL. Defaults to the credentials stored on the client used.", 
-          "name": "credentials", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "oauth2client.client.OAuth2Credentials or"
-          ]
-        }, 
-        {
-          "description": " (Optional) A value that indicates which generation of the resource to fetch.", 
-          "name": "generation", 
           "nullable": null, 
           "optional": null, 
           "types": [
