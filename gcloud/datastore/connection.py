@@ -43,7 +43,7 @@ class Connection(connection.Connection):
     API_BASE_URL = 'https://datastore.googleapis.com'
     """The base of the API call URL."""
 
-    API_VERSION = 'v1beta3'
+    API_VERSION = 'v1'
     """The version of the API, used in building the API call's URL."""
 
     API_URL_TEMPLATE = ('{api_base}/{api_version}/projects'
