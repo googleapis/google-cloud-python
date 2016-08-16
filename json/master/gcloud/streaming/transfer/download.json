@@ -30,6 +30,15 @@
       "name": "from_file", 
       "params": [
         {
+          "description": " path/filename for the target file", 
+          "name": "filename", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
           "nullable": null, 
@@ -55,15 +64,6 @@
           "types": [
             "boolean"
           ]
-        }, 
-        {
-          "description": " path/filename for the target file", 
-          "name": "filename", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
         }
       ], 
       "returns": [
@@ -82,6 +82,15 @@
       "id": "gcloud.streaming.transfer.Download.from_stream", 
       "name": "from_stream", 
       "params": [
+        {
+          "description": " the target file", 
+          "name": "stream", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "writable file-like object"
+          ]
+        }, 
         {
           "description": " should the transfer be started immediately", 
           "name": "auto_transfer", 
@@ -107,15 +116,6 @@
           "optional": null, 
           "types": [
             "integer or None"
-          ]
-        }, 
-        {
-          "description": " the target file", 
-          "name": "stream", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "writable file-like object"
           ]
         }
       ], 

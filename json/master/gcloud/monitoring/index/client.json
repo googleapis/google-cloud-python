@@ -98,15 +98,6 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
-          "name": "json_credentials_path", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -122,6 +113,15 @@
           "optional": null, 
           "types": [
             "dict"
+          ]
+        }, 
+        {
+          "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
+          "name": "json_credentials_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -142,24 +142,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
@@ -169,8 +151,26 @@
           ]
         }, 
         {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
+          ]
+        }, 
+        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -195,24 +195,6 @@
       "name": "group", 
       "params": [
         {
-          "description": " The ID of the group.", 
-          "name": "group_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
-          "description": " The filter string used to determine which monitored resources belong to this group.", 
-          "name": "filter_string", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " The ID of the group's parent, if it has one.", 
           "name": "parent_id", 
           "nullable": null, 
@@ -233,6 +215,24 @@
         {
           "description": " A user-assigned name for this group, used only for display purposes.", 
           "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " The ID of the group.", 
+          "name": "group_id", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " The filter string used to determine which monitored resources belong to this group.", 
+          "name": "filter_string", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -343,8 +343,17 @@
           ]
         }, 
         {
-          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
-          "name": "type_", 
+          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
+          "name": "labels", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " ~gcloud.monitoring.label.LabelDescriptor"
+          ]
+        }, 
+        {
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -370,8 +379,8 @@
           ]
         }, 
         {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
+          "description": " The metric type including a DNS name prefix. For example: <code>\"custom.googleapis.com/my_metric\"</code>", 
+          "name": "type_", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -385,15 +394,6 @@
           "optional": null, 
           "types": [
             "string"
-          ]
-        }, 
-        {
-          "description": " A sequence of zero or more label descriptors specifying the labels used to identify a specific instance of this metric.", 
-          "name": "labels", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " ~gcloud.monitoring.label.LabelDescriptor"
           ]
         }
       ], 
@@ -414,26 +414,8 @@
       "name": "query", 
       "params": [
         {
-          "description": " The metric type name. The default value is", 
-          "name": "metric_type", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
-          "description": " The number of days in the time interval.", 
-          "name": "days", 
+          "description": " The number of hours in the time interval.", 
+          "name": "hours", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -450,8 +432,26 @@
           ]
         }, 
         {
-          "description": " The number of hours in the time interval.", 
-          "name": "hours", 
+          "description": " The number of days in the time interval.", 
+          "name": "days", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
+          ]
+        }, 
+        {
+          "description": " The metric type name. The default value is", 
+          "name": "metric_type", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
           "nullable": null, 
           "optional": null, 
           "types": [

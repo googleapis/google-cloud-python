@@ -20,12 +20,12 @@
       "name": "align", 
       "params": [
         {
-          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
-          "name": "per_series_aligner", 
+          "description": " The number of seconds in the alignment period.", 
+          "name": "seconds", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "string"
+            "integer"
           ]
         }, 
         {
@@ -38,12 +38,12 @@
           ]
         }, 
         {
-          "description": " The number of seconds in the alignment period.", 
-          "name": "seconds", 
+          "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
+          "name": "per_series_aligner", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "integer"
+            "string"
           ]
         }, 
         {
@@ -134,21 +134,21 @@
       "name": "reduce", 
       "params": [
         {
-          "description": " The approach to be used to combine time series. For example:", 
-          "name": "cross_series_reducer", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
           "description": " Fields to be preserved by the reduction. For example, specifying just <code>\"resource.zone\"</code> will result in one time series per zone. The default is to aggregate all of the time series into just one.", 
           "name": "group_by_fields", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "strings"
+          ]
+        }, 
+        {
+          "description": " The approach to be used to combine time series. For example:", 
+          "name": "cross_series_reducer", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
           ]
         }
       ], 
@@ -230,21 +230,21 @@
       "name": "select_metrics", 
       "params": [
         {
-          "description": " Label filters to include in the conjunction as described above.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Label filters to include in the conjunction as described above.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -291,21 +291,21 @@
       "name": "select_resources", 
       "params": [
         {
-          "description": " Label filters to include in the conjunction as described above.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Raw filter expression strings to include in the conjunction. If just one is provided and no keyword arguments are provided, it can be a disjunction.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Label filters to include in the conjunction as described above.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
