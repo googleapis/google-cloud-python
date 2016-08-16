@@ -98,8 +98,8 @@
       "name": "entity", 
       "params": [
         {
-          "description": " The ID of the entity (if applicable). This can be either an ID or an e-mail address.", 
-          "name": "identifier", 
+          "description": " The type of entity to create (ie, user, group, etc)", 
+          "name": "entity_type", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -107,8 +107,8 @@
           ]
         }, 
         {
-          "description": " The type of entity to create (ie, user, group, etc)", 
-          "name": "entity_type", 
+          "description": " The ID of the entity (if applicable). This can be either an ID or an e-mail address.", 
+          "name": "identifier", 
           "nullable": null, 
           "optional": null, 
           "types": [
