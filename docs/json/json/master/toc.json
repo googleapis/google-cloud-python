@@ -97,22 +97,6 @@
             {
                 "type": "gcloud/bigtable/table/table",
                 "title": "Table"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/batch/batch",
-                "title": "HappyBase Batch"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/connection/connection",
-                "title": "HappyBase Connection"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/pool/connectionpool",
-                "title": "HappyBase Connection Pool"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/table",
-                "title": "HappyBase Table"
             }
     ]
   },{

@@ -62,7 +62,6 @@
   :caption: Cloud Bigtable
 
   bigtable-usage
-  HappyBase <happybase-package>
   bigtable-client-intro
   bigtable-instance-api
   bigtable-table-api
@@ -75,10 +74,6 @@
   bigtable-row
   bigtable-row-filters
   bigtable-row-data
-  happybase-connection
-  happybase-pool
-  happybase-table
-  happybase-batch
 
 .. toctree::
   :maxdepth: 0

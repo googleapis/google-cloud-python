@@ -18,7 +18,6 @@ import unittest
 
 import bigquery
 import bigtable
-import bigtable_happybase
 import datastore
 import logging_
 import monitoring
@@ -34,7 +33,6 @@ TEST_MODULES = {
     'pubsub': pubsub,
     'bigquery': bigquery,
     'bigtable': bigtable,
-    'bigtable-happybase': bigtable_happybase,
     'logging': logging_,
     'monitoring': monitoring,
     'translate': translate,

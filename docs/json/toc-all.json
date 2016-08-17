@@ -277,30 +277,6 @@
             {
                 "type": "gcloud/bigtable/table/table",
                 "title": "Table"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/batch/batch",
-                "title": "Batch"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/connection/connection",
-                "title": "Connection"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/pool/connectionpool",
-                "title": "ConnectionPool"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/pool/noconnectionsavailable",
-                "title": "NoConnectionsAvailable"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/table/table",
-                "title": "Table"
-            },
-            {
-                "type": "gcloud/bigtable/happybase/table",
-                "title": "Table"
             }
     ]
   },{
