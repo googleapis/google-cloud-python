@@ -22,13 +22,9 @@ import types
 import pdoc
 from parinx.parser import parse_docstring
 from parinx.errors import MethodParsingException
+import six
 
 from verify_included_modules import get_public_modules
-
-import gcloud
-
-ABSOLUTE_LIBRARY_PATH = os.path.dirname(os.path.dirname(os.path.abspath(
-    gcloud.__file__)))
 
 
 class Module(object):
@@ -46,9 +42,6 @@ class Module(object):
     def from_module_name(cls, name, base_path):
         module = pdoc.Module(pdoc.import_module(name), allsubmodules=True)
         methods = module.functions() + module.variables()
-
-        mod = __import__(name)
-
         examples = []
 
         if '__init__' in name:
@@ -56,7 +49,7 @@ class Module(object):
                                             os.path.join(base_path, 'docs'))
             examples.extend(snippets)
 
-        source_path = clean_source_path(inspect.getsourcefile(mod))
+        source_path = clean_source_path(module)
 
         return cls(module_id=name,
                    name=name.split('.')[-1].title(),
@@ -90,8 +83,7 @@ class Klass(object):
         methods = kls.methods()
 
         examples = []
-        source_module = __import__(module.name)
-        source_path = clean_source_path(inspect.getsourcefile(source_module))
+        source_path = clean_source_path(module)
 
         return cls(module_id=kls.name,
                    name=kls.name.split('.')[-1].title(),
@@ -254,19 +246,19 @@ def build_link_from_type(type_name, object_type=None):
     type_markup = '<a data-custom-type="%s"' % doc_path
     if object_type == 'instance':
         type_markup += ' data-method="%s"' % type_name
-    type_markup += '>%s</a>' % type_name
+    type_markup += '>%s</a>' % (type_name,)
 
     return type_markup
 
 
-def build_source(mod, method):
-    if isinstance(mod, (types.ModuleType, types.ClassType,
-                        types.MethodType, types.FunctionType,
-                        types.TracebackType, types.FrameType,
-                        types.CodeType, types.TypeType)):
+def build_source(module, method):
+    if isinstance(module, (types.ModuleType, types.ClassType,
+                           types.MethodType, types.FunctionType,
+                           types.TracebackType, types.FrameType,
+                           types.CodeType, types.TypeType)):
 
-        line = inspect.getsourcelines(mod)[1]
-        source_path = clean_source_path(inspect.getsourcefile(mod))
+        _, line = inspect.getsourcelines(module)
+        source_path = clean_source_path(module)
 
         if line:
             source_path = source_path + '#L' + str(line)
@@ -294,12 +286,14 @@ def build_type(type_id, title, contents):
     }
 
 
-def clean_source_path(source):
-    source_path = ''
-    if ABSOLUTE_LIBRARY_PATH in source:
-        source_path = source.replace(ABSOLUTE_LIBRARY_PATH, source)
-
-    return source_path
+def clean_source_path(module):
+    if isinstance(module, six.string_types):
+        source_id = module
+    elif hasattr(module, 'refname'):
+        source_id = module.refname
+    else:
+        source_id = inspect.getmodule(module).__name__
+    return '%s.py' % (source_id.replace('.', '/'),)
 
 
 def process_code_blocks(doc):
@@ -321,7 +315,7 @@ def process_code_blocks(doc):
             is_code = True
 
         if is_code:
-            block = {'code': '<pre><code>%s</code></pre>' % block}
+            block = {'code': '<pre><code>%s</code></pre>' % (block,)}
 
         formatted_blocks.append(block)
     return formatted_blocks
@@ -349,11 +343,11 @@ def process_words(line):
 
         if word.startswith('``') and word.endswith('``'):
             word = word.replace('``', '')
-            word = '<code>%s</code>' % word
+            word = '<code>%s</code>' % (word,)
 
         if word.startswith('**') and word.endswith('**'):
             word = word.replace('**', '')
-            word = '<b>%s</b>' % word
+            word = '<b>%s</b>' % (word,)
 
         if word.startswith(':class:'):
             word = word.replace(':class:', '').replace('`', '')
@@ -379,7 +373,7 @@ def process_words(line):
         if end_sentence:
             word += '.'
 
-        processed_line += ' %s' % word
+        processed_line += ' %s' % (word,)
 
     processed_line = processed_line.replace('::', '')
 
