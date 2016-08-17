@@ -85,21 +85,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -129,21 +129,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -191,8 +191,8 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
-          "name": "missing", 
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
+          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -209,8 +209,8 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it.", 
-          "name": "deferred", 
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it.", 
+          "name": "missing", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -235,17 +235,8 @@
       "name": "get_multi", 
       "params": [
         {
-          "description": " The keys to be retrieved from the datastore.", 
-          "name": "keys", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            " gcloud.datastore.key.Key"
-          ]
-        }, 
-        {
-          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "missing", 
+          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "deferred", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -262,8 +253,17 @@
           ]
         }, 
         {
-          "description": " (Optional) If a list is passed, the keys returned by the backend as \"deferred\" will be copied into it. If the list is not empty, an error will occur.", 
-          "name": "deferred", 
+          "description": " The keys to be retrieved from the datastore.", 
+          "name": "keys", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            " gcloud.datastore.key.Key"
+          ]
+        }, 
+        {
+          "description": " (Optional) If a list is passed, the key-only entities returned by the backend as \"missing\" will be copied into it. If the list is not empty, an error will occur.", 
+          "name": "missing", 
           "nullable": null, 
           "optional": null, 
           "types": [

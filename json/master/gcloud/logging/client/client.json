@@ -20,21 +20,21 @@
       "name": "from_service_account_json", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must contain a JSON object with a private key and other credentials information (downloaded from the Google APIs console).", 
           "name": "json_credentials_path", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -64,21 +64,21 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " Remaining positional arguments to pass to constructor.", 
-          "name": "args", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "tuple"
-          ]
-        }, 
-        {
           "description": " The e-mail attached to the service account.", 
           "name": "client_email", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " Remaining positional arguments to pass to constructor.", 
+          "name": "args", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "tuple"
           ]
         }, 
         {
@@ -117,12 +117,12 @@
       "name": "list_entries", 
       "params": [
         {
-          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
-          "name": "filter_", 
+          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
+          "name": "projects", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            " strings"
           ]
         }, 
         {
@@ -135,12 +135,12 @@
           ]
         }, 
         {
-          "description": " project IDs to include. If not passed, defaults to the project bound to the client.", 
-          "name": "projects", 
+          "description": " a filter expression. See: <a href=\"https://cloud.google.com/logging/docs/view/advanced_filters\">https://cloud.google.com/logging/docs/view/advanced_filters</a>", 
+          "name": "filter_", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            " strings"
+            "str"
           ]
         }, 
         {
@@ -275,15 +275,6 @@
       "name": "metric", 
       "params": [
         {
-          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
-          "name": "description", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " the advanced logs filter expression defining the entries tracked by the metric. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
           "name": "filter_", 
           "nullable": null, 
@@ -295,6 +286,15 @@
         {
           "description": " the name of the metric to be constructed.", 
           "name": "name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
+          ]
+        }, 
+        {
+          "description": " the description of the metric to be constructed. If not passed, the instance should already exist, to be refreshed via Metric.reload.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
