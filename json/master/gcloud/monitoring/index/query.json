@@ -29,21 +29,21 @@
           ]
         }, 
         {
-          "description": " The number of minutes in the alignment period.", 
-          "name": "minutes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The approach to be used to align individual time series. For example: :data:Aligner.ALIGN_MEAN. See Aligner and the descriptions of the supported aligners_.", 
           "name": "per_series_aligner", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "string"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the alignment period.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {
