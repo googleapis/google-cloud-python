@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import argparse
+import cgi
+import doctest
 import inspect
 import json
 import os
@@ -25,6 +27,9 @@ from parinx.errors import MethodParsingException
 import six
 
 from verify_included_modules import get_public_modules
+
+
+_DOCSTRING_TEST_PARSER = doctest.DocTestParser()
 
 
 class Module(object):
@@ -148,35 +153,37 @@ class Method(object):
         components = element.refname.split('.')
 
         mod = __import__(components[0])
-
         for comp in components[1:]:
             mod = getattr(mod, comp)
 
-        build_source(mod, method)
+        # Get method line number.
+        method.add_source_line(get_source_line_number(mod))
+
+        # Get method Examples.
+        examples = get_examples_from_docstring(element.docstring)
+        if examples:
+            method.add_example(examples)
 
         if element.docstring:
             if not isinstance(element, pdoc.Class) and element.cls:
-                cls = element.cls.cls
+                klass = element.cls.cls
             elif element.cls:
-                cls = element.cls
+                klass = element.cls
             else:
-                cls = None
+                klass = None
 
             # Hack for old-style classes
-            if str(cls)[0] != '<':
-                cls = '<class \'' + str(cls) + '\'>'
+            if not str(klass).startswith('<'):
+                klass = '<class \'%s\'>' % (klass,)
 
             try:
-                method_info = parse_docstring(element.docstring, cls)
+                method_info = parse_docstring(element.docstring, klass)
             except (MethodParsingException, IndexError):
                 return method
 
             for name, data in method_info['arguments'].items():
                 param = Param.from_docstring_section(name, data)
                 method.add_param(param)
-
-            if method_info.get('example'):
-                method.add_example(method_info['example'])
 
             if method_info.get('return'):
                 if len(method_info['return']['type_name']) > 0:
@@ -296,9 +303,35 @@ def clean_source_path(module):
     return '%s.py' % (source_id.replace('.', '/'),)
 
 
+def get_examples_from_docstring(doc_str):
+    """Parse doctest style code examples from a docstring."""
+    examples = _DOCSTRING_TEST_PARSER.get_examples(doc_str)
+    example_str = ''
+    for example in examples:
+        example_str += '%s' % (example.source,)
+        example_str += '%s' % (example.want,)
+
+    return cgi.escape(example_str)
+
+
+def get_source_line_number(module):
+    if isinstance(module, (types.ModuleType, types.ClassType,
+                           types.MethodType, types.FunctionType,
+                           types.TracebackType, types.FrameType,
+                           types.CodeType, types.TypeType)):
+
+        _, line = inspect.getsourcelines(module)
+        source_path = clean_source_path(module)
+
+        if line:
+            source_path = source_path + '#L' + str(line)
+        return source_path
+
+
 def process_code_blocks(doc):
     blocks = []
     index = 0
+
     for line in doc.splitlines(True):
         if len(blocks) - 1 < index:
             blocks.append('')
