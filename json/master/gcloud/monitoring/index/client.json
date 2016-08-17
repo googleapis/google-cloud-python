@@ -107,21 +107,21 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -142,24 +142,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
           "nullable": null, 
@@ -175,6 +157,24 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -195,26 +195,8 @@
       "name": "group", 
       "params": [
         {
-          "description": " The filter string used to determine which monitored resources belong to this group.", 
-          "name": "filter_string", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
           "description": " The ID of the group.", 
           "name": "group_id", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string or None"
-          ]
-        }, 
-        {
-          "description": " A user-assigned name for this group, used only for display purposes.", 
-          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -228,6 +210,24 @@
           "optional": null, 
           "types": [
             "boolean"
+          ]
+        }, 
+        {
+          "description": " The filter string used to determine which monitored resources belong to this group.", 
+          "name": "filter_string", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
+          ]
+        }, 
+        {
+          "description": " A user-assigned name for this group, used only for display purposes.", 
+          "name": "display_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string or None"
           ]
         }, 
         {
@@ -334,8 +334,26 @@
       "name": "metric_descriptor", 
       "params": [
         {
-          "description": " An optional concise name for the metric.", 
-          "name": "display_name", 
+          "description": " An optional unit in which the metric value is reported.", 
+          "name": "unit", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " The kind of measurement. It must be one of", 
+          "name": "metric_kind", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " An optional detailed description of the metric.", 
+          "name": "description", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -361,26 +379,8 @@
           ]
         }, 
         {
-          "description": " The kind of measurement. It must be one of", 
-          "name": "metric_kind", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional unit in which the metric value is reported.", 
-          "name": "unit", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " An optional detailed description of the metric.", 
-          "name": "description", 
+          "description": " An optional concise name for the metric.", 
+          "name": "display_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -414,15 +414,6 @@
       "name": "query", 
       "params": [
         {
-          "description": " The number of minutes in the time interval.", 
-          "name": "minutes", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "integer"
-          ]
-        }, 
-        {
           "description": " The metric type name. The default value is", 
           "name": "metric_type", 
           "nullable": null, 
@@ -438,6 +429,15 @@
           "optional": null, 
           "types": [
             "datetime.datetime or None"
+          ]
+        }, 
+        {
+          "description": " The number of minutes in the time interval.", 
+          "name": "minutes", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "integer"
           ]
         }, 
         {

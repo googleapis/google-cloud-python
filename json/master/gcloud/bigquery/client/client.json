@@ -20,12 +20,12 @@
       "name": "copy_table", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " Table into which data is to be copied.", 
+          "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -38,12 +38,12 @@
           ]
         }, 
         {
-          "description": " Table into which data is to be copied.", 
-          "name": "destination", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "str"
           ]
         }
       ], 
@@ -90,15 +90,6 @@
       "name": "extract_table_to_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "str"
-          ]
-        }, 
-        {
           "description": " URIs of CloudStorage file(s) into which table data is to be extracted; in format <code>gs://<bucket_name>/<object_name_or_glob></code>.", 
           "name": "destination_uris", 
           "nullable": null, 
@@ -114,6 +105,15 @@
           "optional": null, 
           "types": [
             "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+          ]
+        }, 
+        {
+          "description": " Name of the job.", 
+          "name": "job_name", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "str"
           ]
         }
       ], 
@@ -143,21 +143,21 @@
           ]
         }, 
         {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " Remaining positional arguments to pass to constructor.", 
           "name": "args", 
           "nullable": null, 
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -178,24 +178,6 @@
       "name": "from_service_account_p12", 
       "params": [
         {
-          "description": " The e-mail attached to the service account.", 
-          "name": "client_email", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "string"
-          ]
-        }, 
-        {
-          "description": " Remaining keyword arguments to pass to constructor.", 
-          "name": "kwargs", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "dict"
-          ]
-        }, 
-        {
           "description": " The path to a private key file (this file was given to you when you created the service account). This file must be in P12 format.", 
           "name": "private_key_path", 
           "nullable": null, 
@@ -211,6 +193,24 @@
           "optional": null, 
           "types": [
             "tuple"
+          ]
+        }, 
+        {
+          "description": " The e-mail attached to the service account.", 
+          "name": "client_email", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "string"
+          ]
+        }, 
+        {
+          "description": " Remaining keyword arguments to pass to constructor.", 
+          "name": "kwargs", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "dict"
           ]
         }
       ], 
@@ -301,6 +301,15 @@
       "name": "list_jobs", 
       "params": [
         {
+          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
+          "name": "max_results", 
+          "nullable": null, 
+          "optional": null, 
+          "types": [
+            "int"
+          ]
+        }, 
+        {
           "description": " if passed, include only jobs matching the given state. One of * <code>\"done\"</code> * <code>\"pending\"</code> * <code>\"running\"</code>", 
           "name": "state_filter", 
           "nullable": null, 
@@ -316,15 +325,6 @@
           "optional": null, 
           "types": [
             "boolean"
-          ]
-        }, 
-        {
-          "description": " maximum number of jobs to return, If not passed, defaults to a value set by the API.", 
-          "name": "max_results", 
-          "nullable": null, 
-          "optional": null, 
-          "types": [
-            "int"
           ]
         }, 
         {
@@ -354,12 +354,12 @@
       "name": "load_table_from_storage", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " Table into which data is to be loaded.", 
+          "name": "destination", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "str"
+            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
           ]
         }, 
         {
@@ -372,12 +372,12 @@
           ]
         }, 
         {
-          "description": " Table into which data is to be loaded.", 
-          "name": "destination", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
-            "<a data-custom-type=\"gcloud/bigquery/table/table\">gcloud.bigquery.table.Table</a>"
+            "str"
           ]
         }
       ], 
@@ -398,8 +398,8 @@
       "name": "run_async_query", 
       "params": [
         {
-          "description": " Name of the job.", 
-          "name": "job_name", 
+          "description": " SQL query to be executed", 
+          "name": "query", 
           "nullable": null, 
           "optional": null, 
           "types": [
@@ -407,8 +407,8 @@
           ]
         }, 
         {
-          "description": " SQL query to be executed", 
-          "name": "query", 
+          "description": " Name of the job.", 
+          "name": "job_name", 
           "nullable": null, 
           "optional": null, 
           "types": [
