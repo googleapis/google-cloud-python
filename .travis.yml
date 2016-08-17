@@ -9,13 +9,13 @@ script:
   - tox -e py27
   - tox -e py34
   - tox -e lint
+  - tox -e cover
   - tox -e system-tests
   - tox -e system-tests3
   - tox -e json-docs
 
 after_success:
   - tox -e coveralls
-  - tox -e codecov
 
 deploy:
   provider: pypi
