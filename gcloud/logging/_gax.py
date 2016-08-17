@@ -16,7 +16,6 @@
 
 import json
 
-# pylint: disable=import-error
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
@@ -27,7 +26,6 @@ from google.logging.v2.logging_metrics_pb2 import LogMetric
 from google.logging.v2.log_entry_pb2 import LogEntry
 from google.protobuf.json_format import Parse
 from grpc.beta.interfaces import StatusCode
-# pylint: enable=import-error
 
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound

@@ -77,6 +77,7 @@ load-plugins=pylint.extensions.check_docs
 #                          return int(value)
 #                      else:
 #                          return float(value)
+# - import-error: imports are checked via tests.
 # - wrong-import-position: This error is overzealous. It assumes imports are
 #                          completed whenever something non-trivial is
 #                          defined, e.g.
@@ -100,6 +101,7 @@ disable =
     similarities,
     star-args,
     redefined-variable-type,
+    import-error,
     wrong-import-position,
     no-name-in-module,
     missing-raises-doc,

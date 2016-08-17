@@ -14,7 +14,6 @@
 
 """GAX wrapper for Pubsub API requests."""
 
-# pylint: disable=import-error
 from google.gax import CallOptions
 from google.gax import INITIAL_PAGE
 from google.gax.errors import GaxError
@@ -22,7 +21,6 @@ from google.gax.grpc import exc_to_code
 from google.pubsub.v1.pubsub_pb2 import PubsubMessage
 from google.pubsub.v1.pubsub_pb2 import PushConfig
 from grpc.beta.interfaces import StatusCode
-# pylint: enable=import-error
 
 from gcloud.exceptions import Conflict
 from gcloud.exceptions import NotFound
